@@ -1,23 +1,5 @@
-﻿// ------------------------------------------------------------------------------
-//  Copyright (c) 2016 Microsoft Corporation
-// 
-//  Permission is hereby granted, free of charge, to any person obtaining a copy
-//  of this software and associated documentation files (the "Software"), to deal
-//  in the Software without restriction, including without limitation the rights
-//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-//  copies of the Software, and to permit persons to whom the Software is
-//  furnished to do so, subject to the following conditions:
-// 
-//  The above copyright notice and this permission notice shall be included in
-//  all copies or substantial portions of the Software.
-// 
-//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-//  THE SOFTWARE.
+// ------------------------------------------------------------------------------
+//  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
 namespace Microsoft.Graph
@@ -73,9 +55,12 @@ namespace Microsoft.Graph
                 }
             }
 
+            var assemblyVersion = this.GetType().GetTypeInfo().Assembly.GetName().Version;
             this.sdkVersionHeaderValue = string.Format(
                 Constants.Headers.SdkVersionHeaderValue,
-                this.GetType().GetTypeInfo().Assembly.GetName().Version);
+                assemblyVersion.Major,
+                assemblyVersion.Minor,
+                assemblyVersion.Build);
         }
 
         /// <summary>
@@ -112,15 +97,15 @@ namespace Microsoft.Graph
         /// Sends the request.
         /// </summary>
         /// <param name="serializableObject">The serializable object to send.</param>
-        /// <param name="completionOption">The <see cref="HttpCompletionOption"/> to pass to the <see cref="IHttpProvider"/> on send.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <param name="completionOption">The <see cref="HttpCompletionOption"/> to pass to the <see cref="IHttpProvider"/> on send.</param>
         /// <returns>The task to await.</returns>
         public async Task SendAsync(
             object serializableObject,
-            HttpCompletionOption completionOption,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken,
+            HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
-            using (var response = await this.SendRequestAsync(serializableObject, completionOption, cancellationToken).ConfigureAwait(false))
+            using (var response = await this.SendRequestAsync(serializableObject, cancellationToken, completionOption).ConfigureAwait(false))
             {
             }
         }
@@ -130,15 +115,15 @@ namespace Microsoft.Graph
         /// </summary>
         /// <typeparam name="T">The expected response object type for deserialization.</typeparam>
         /// <param name="serializableObject">The serializable object to send.</param>
-        /// <param name="completionOption">The <see cref="HttpCompletionOption"/> to pass to the <see cref="IHttpProvider"/> on send.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <param name="completionOption">The <see cref="HttpCompletionOption"/> to pass to the <see cref="IHttpProvider"/> on send.</param>
         /// <returns>The deserialized response object.</returns>
         public async Task<T> SendAsync<T>(
             object serializableObject,
-            HttpCompletionOption completionOption,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken,
+            HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
-            using (var response = await this.SendRequestAsync(serializableObject, completionOption, cancellationToken).ConfigureAwait(false))
+            using (var response = await this.SendRequestAsync(serializableObject, cancellationToken, completionOption).ConfigureAwait(false))
             {
                 if (response.Content != null)
                 {
@@ -155,15 +140,15 @@ namespace Microsoft.Graph
         /// </summary>
         /// <typeparam name="T">The expected response object type for deserialization.</typeparam>
         /// <param name="serializableObject">The serializable object to send.</param>
-        /// <param name="completionOption">The <see cref="HttpCompletionOption"/> to pass to the <see cref="IHttpProvider"/> on send.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <param name="completionOption">The <see cref="HttpCompletionOption"/> to pass to the <see cref="IHttpProvider"/> on send.</param>
         /// <returns>The stream.</returns>
         public async Task<Stream> SendStreamRequestAsync(
             object serializableObject,
-            HttpCompletionOption completionOption,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken,
+            HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
-            var response = await this.SendRequestAsync(serializableObject, completionOption, cancellationToken).ConfigureAwait(false);
+            var response = await this.SendRequestAsync(serializableObject, cancellationToken, completionOption).ConfigureAwait(false);
             return await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
         }
 
@@ -172,13 +157,13 @@ namespace Microsoft.Graph
         /// </summary>
         /// <typeparam name="T">The expected response object type for deserialization.</typeparam>
         /// <param name="serializableObject">The serializable object to send.</param>
-        /// <param name="completionOption">The <see cref="HttpCompletionOption"/> to pass to the <see cref="IHttpProvider"/> on send.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <param name="completionOption">The <see cref="HttpCompletionOption"/> to pass to the <see cref="IHttpProvider"/> on send.</param>
         /// <returns>The <see cref="HttpResponseMessage"/> object.</returns>
         public async Task<HttpResponseMessage> SendRequestAsync(
             object serializableObject,
-            HttpCompletionOption completionOption,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken,
+            HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
             if (string.IsNullOrEmpty(this.RequestUrl))
             {
@@ -234,7 +219,7 @@ namespace Microsoft.Graph
         public HttpRequestMessage GetHttpRequestMessage()
         {
             var queryString = this.BuildQueryString();
-            var request = new HttpRequestMessage(new HttpMethod(this.Method), this.RequestUrl + queryString);
+            var request = new HttpRequestMessage(new HttpMethod(this.Method), string.Concat(this.RequestUrl, queryString));
 
             this.AddHeadersToRequest(request);
 

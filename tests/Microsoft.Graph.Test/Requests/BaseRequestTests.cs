@@ -1,23 +1,5 @@
-﻿// ------------------------------------------------------------------------------
-//  Copyright (c) 2016 Microsoft Corporation
-// 
-//  Permission is hereby granted, free of charge, to any person obtaining a copy
-//  of this software and associated documentation files (the "Software"), to deal
-//  in the Software without restriction, including without limitation the rights
-//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-//  copies of the Software, and to permit persons to whom the Software is
-//  furnished to do so, subject to the following conditions:
-// 
-//  The above copyright notice and this permission notice shall be included in
-//  all copies or substantial portions of the Software.
-// 
-//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-//  THE SOFTWARE.
+// ------------------------------------------------------------------------------
+//  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
 namespace Microsoft.Graph.Test.Requests
@@ -100,9 +82,9 @@ namespace Microsoft.Graph.Test.Requests
             Assert.AreEqual("value1", httpRequestMessage.Headers.GetValues("header1").First(), "Unexpected first header in request.");
             Assert.AreEqual("value2", httpRequestMessage.Headers.GetValues("header2").First(), "Unexpected second header in request.");
 
-            var expectedVersionNumber = typeof(BaseRequest).GetTypeInfo().Assembly.GetName().Version;
+            var expectedVersion = typeof(BaseRequest).GetTypeInfo().Assembly.GetName().Version;
             Assert.AreEqual(
-                string.Format(Constants.Headers.SdkVersionHeaderValue, expectedVersionNumber),
+                string.Format(Constants.Headers.SdkVersionHeaderValue, expectedVersion.Major, expectedVersion.Minor, expectedVersion.Build),
                 httpRequestMessage.Headers.GetValues(Constants.Headers.SdkVersionHeaderName).First(), "Unexpected request stats header.");
         }
 
@@ -120,9 +102,9 @@ namespace Microsoft.Graph.Test.Requests
                 "Unexpected base URL in request.");
             Assert.AreEqual(1, httpRequestMessage.Headers.Count(), "Unexpected headers in request.");
 
-            var expectedVersionNumber = typeof(BaseRequest).GetTypeInfo().Assembly.GetName().Version;
+            var expectedVersion = typeof(BaseRequest).GetTypeInfo().Assembly.GetName().Version;
             Assert.AreEqual(
-                string.Format(Constants.Headers.SdkVersionHeaderValue, expectedVersionNumber),
+                string.Format(Constants.Headers.SdkVersionHeaderValue, expectedVersion.Major, expectedVersion.Minor, expectedVersion.Build),
                 httpRequestMessage.Headers.GetValues(Constants.Headers.SdkVersionHeaderName).First(), "Unexpected request stats header.");
         }
 
@@ -155,7 +137,7 @@ namespace Microsoft.Graph.Test.Requests
                     serializer => serializer.DeserializeObject<DriveItem>(It.IsAny<string>()))
                     .Returns(expectedResponseItem);
 
-                var responseItem = await baseRequest.SendAsync<DriveItem>("string", HttpCompletionOption.ResponseContentRead, CancellationToken.None);
+                var responseItem = await baseRequest.SendAsync<DriveItem>("string", CancellationToken.None);
 
                 Assert.IsNotNull(responseItem, "DriveItem not returned.");
                 Assert.AreEqual(expectedResponseItem.Id, responseItem.Id, "Unexpected item ID.");
@@ -174,7 +156,7 @@ namespace Microsoft.Graph.Test.Requests
 
             try
             {
-                await baseRequest.SendAsync<DriveItem>("string", HttpCompletionOption.ResponseContentRead, CancellationToken.None);
+                await baseRequest.SendAsync<DriveItem>("string", CancellationToken.None);
             }
             catch (ServiceException exception)
             {
@@ -209,7 +191,7 @@ namespace Microsoft.Graph.Test.Requests
                     serializer => serializer.SerializeObject(It.IsAny<string>()))
                     .Returns(string.Empty);
 
-                await baseRequest.SendAsync("string", HttpCompletionOption.ResponseContentRead, CancellationToken.None);
+                await baseRequest.SendAsync("string", CancellationToken.None);
 
                 this.authenticationProvider.Verify(provider => provider.AuthenticateRequestAsync(It.IsAny<HttpRequestMessage>()), Times.Once);
             }
@@ -225,7 +207,7 @@ namespace Microsoft.Graph.Test.Requests
 
             try
             {
-                await baseRequest.SendAsync<DriveItem>("string", HttpCompletionOption.ResponseContentRead, CancellationToken.None);
+                await baseRequest.SendAsync<DriveItem>("string", CancellationToken.None);
             }
             catch (ServiceException exception)
             {

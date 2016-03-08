@@ -3,24 +3,24 @@
   <metadata>
     <id>Microsoft.Graph</id>
     <version>1.0.0</version>
-    <title>Microsoft Graph .NET SDK</title>
+    <title>Microsoft Graph Client Library</title>
     <authors>Microsoft</authors>
     <owners>Microsoft</owners>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
-    <description>Integrate the Microsoft Graph API into your .NET app!</description>
-    <copyright>Copyright 2016 Microsoft Corporation</copyright>
-    <projectUrl>https://github.com/microsoftgraph/sdk-dotnet</projectUrl>
-    <licenseUrl>http://msdn.microsoft.com/en-US/cc300389</licenseUrl>
-    <tags>microsoft graph o365 outlook exchange sharepoint onedrive files cloud storage windowsphone windowsstore metro xaml html</tags>
+    <summary>Microsoft Graph Client Library allows you to call Office 365, Azure AD and other Microsoft services through a single unified developer experience.</summary>
+    <description>This package includes the client libraries for connecting your app to the Microsoft Graph. Microsoft Graph enables your app to interact with data entities and their relationships from many Microsoft cloud services with a unified developer experience. Learn more about Microsoft Graph at http://graph.microsoft.io.</description>
+    <copyright>Copyright (c) Microsoft Corporation</copyright>
+    <projectUrl>https://graph.microsoft.io</projectUrl>
+    <licenseUrl>http://aka.ms/devservicesagreement</licenseUrl>
+    <tags>Microsoft Office365 Graph GraphServiceClient Outlook OneDrive AzureAD GraphAPI Productivity SharePoint SDK</tags>
     <dependencies>
       <group>
-        <dependency id="Newtonsoft.Json" version="8.0.2" />
+        <dependency id="Newtonsoft.Json" version="6.0.2" />
       </group>
     </dependencies>
-
   </metadata>
   <files>
     <!-- PCL projects -->
-    <file src="..\src\OneDriveSdk\bin\Release\Microsoft.Graph.dll" target="lib\portable-net45+netcore45+wpa81+win8\Microsoft.Graph.dll" />
+    <file src="..\src\Microsoft.Graph\bin\Release\Microsoft.Graph.dll" target="lib\portable-net45+netcore45+wpa81+win8\Microsoft.Graph.dll" />
   </files>
 </package>

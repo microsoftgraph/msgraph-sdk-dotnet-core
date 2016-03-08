@@ -1,23 +1,5 @@
-﻿// ------------------------------------------------------------------------------
-//  Copyright (c) 2016 Microsoft Corporation
-// 
-//  Permission is hereby granted, free of charge, to any person obtaining a copy
-//  of this software and associated documentation files (the "Software"), to deal
-//  in the Software without restriction, including without limitation the rights
-//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-//  copies of the Software, and to permit persons to whom the Software is
-//  furnished to do so, subject to the following conditions:
-// 
-//  The above copyright notice and this permission notice shall be included in
-//  all copies or substantial portions of the Software.
-// 
-//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-//  THE SOFTWARE.
+// ------------------------------------------------------------------------------
+//  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
 namespace Microsoft.Graph
@@ -26,7 +8,6 @@ namespace Microsoft.Graph
     using System.Linq;
     using System.Reflection;
     using Newtonsoft.Json;
-    using Newtonsoft.Json.Converters;
     using Newtonsoft.Json.Linq;
     using System.Globalization;
 
@@ -35,9 +16,9 @@ namespace Microsoft.Graph
     /// </summary>
     public class DerivedTypeConverter : JsonConverter
     {
-        private static string assemblyName;
-
         private TextInfo textInfo;
+
+        internal static string assemblyName;
 
         static DerivedTypeConverter()
         {
@@ -77,7 +58,24 @@ namespace Microsoft.Graph
 
             var type = jObject.GetValue(Constants.Serialization.ODataType);
 
-            var instance = this.Create(type == null ? objectType.FullName : type.ToString());
+            var instance = this.Create(type == null ? objectType.AssemblyQualifiedName : type.ToString());
+
+            // If @odata.type is set but we aren't able to create an instance of it type try using the method-provided
+            // object type instead. This means unknown types will be deserialized as a parent type.
+            if (instance == null && type != null)
+            {
+                instance = this.Create(objectType.AssemblyQualifiedName);
+            }
+
+            if (instance == null)
+            {
+                throw new ServiceException(
+                    new Error
+                    {
+                        Code = GraphErrorCode.GeneralException.ToString(),
+                        Message = string.Format("Unable to create an instance of type {0}.", objectType.AssemblyQualifiedName),
+                    });
+            }
 
             using (var objectReader = this.GetObjectReader(reader, jObject))
             {
@@ -91,34 +89,38 @@ namespace Microsoft.Graph
             throw new NotImplementedException();
         }
 
-        /// <summary>
-        /// Converts the type string to title case.
-        /// </summary>
-        /// <param name="typeString">The type string.</param>
-        /// <returns>The converted string.</returns>
-        private string ConvertTypeToTitleCase(string typeString)
-        {
-            var stringSegments = typeString.Split('.').Select(
-                segment => string.Concat(segment.Substring(0, 1).ToUpperInvariant(), segment.Substring(1)));
-            return string.Join(".", stringSegments);
-        }
-
         private object Create(string typeString)
         {
             typeString = typeString.TrimStart('#');
-            typeString = this.ConvertTypeToTitleCase(typeString);
+            typeString = StringHelper.ConvertTypeToTitleCase(typeString);
+
+            var type = Type.GetType(typeString);
+
+            if (type == null)
+            {
+                return null;
+            }
 
             try
             {
-                return Activator.CreateInstance(Type.GetType(typeString));
+                // Find the default constructor. Abstract entity classes use non-public constructors.
+                var constructorInfo = type.GetTypeInfo().DeclaredConstructors.FirstOrDefault(
+                    constructor => !constructor.GetParameters().Any() && !constructor.IsStatic);
+
+                if (constructorInfo == null)
+                {
+                    return null;
+                }
+
+                return constructorInfo.Invoke( new object[] { } );
             }
-            catch(Exception exception)
+            catch (Exception exception)
             {
                 throw new ServiceException(
                     new Error
                     {
                         Code = GraphErrorCode.GeneralException.ToString(),
-                        Message = "An unexpected error occurred during deserialization."
+                        Message = string.Format("Unable to create an instance of type {0}.", typeString),
                     },
                     exception);
             }
@@ -129,7 +131,6 @@ namespace Microsoft.Graph
             var objectReader = jObject.CreateReader();
             
             objectReader.Culture = originalReader.Culture;
-            objectReader.DateFormatString = originalReader.DateFormatString;
             objectReader.DateParseHandling = originalReader.DateParseHandling;
             objectReader.DateTimeZoneHandling = originalReader.DateTimeZoneHandling;
             objectReader.FloatParseHandling = originalReader.FloatParseHandling;

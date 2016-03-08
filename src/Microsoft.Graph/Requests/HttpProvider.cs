@@ -1,23 +1,5 @@
-﻿// ------------------------------------------------------------------------------
-//  Copyright (c) 2016 Microsoft Corporation
-// 
-//  Permission is hereby granted, free of charge, to any person obtaining a copy
-//  of this software and associated documentation files (the "Software"), to deal
-//  in the Software without restriction, including without limitation the rights
-//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-//  copies of the Software, and to permit persons to whom the Software is
-//  furnished to do so, subject to the following conditions:
-// 
-//  The above copyright notice and this permission notice shall be included in
-//  all copies or substantial portions of the Software.
-// 
-//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-//  THE SOFTWARE.
+// ------------------------------------------------------------------------------
+//  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
 namespace Microsoft.Graph
@@ -34,20 +16,52 @@ namespace Microsoft.Graph
     /// <summary>
     /// An <see cref="IHttpProvider"/> implementation using standard .NET libraries.
     /// </summary>
-    public class HttpProvider : IHttpProvider, IDisposable
+    public class HttpProvider : IHttpProvider
     {
         private const int maxRedirects = 5;
 
+        internal bool disposeHandler;
+
         internal HttpClient httpClient;
+
+        internal HttpMessageHandler httpMessageHandler;
 
         /// <summary>
         /// Constructs a new <see cref="HttpProvider"/>.
         /// </summary>
         /// <param name="serializer">A serializer for serializing and deserializing JSON objects.</param>
         public HttpProvider(ISerializer serializer = null)
+            : this((HttpMessageHandler)null, true, serializer)
         {
-            var clientHandler = new HttpClientHandler { AllowAutoRedirect = false };
-            this.httpClient = new HttpClient(clientHandler, /* disposeHandler */ true);
+        }
+
+        /// <summary>
+        /// Constructs a new <see cref="HttpProvider"/>.
+        /// </summary>
+        /// <param name="httpClientHandler">An HTTP client handler to pass to the <see cref="HttpClient"/> for sending requests.</param>
+        /// <param name="disposeHandler">Whether or not to dispose the client handler on Dispose().</param>
+        /// <param name="serializer">A serializer for serializing and deserializing JSON objects.</param>
+        /// <remarks>
+        ///     By default, HttpProvider disables automatic redirects and handles redirects to preserve authentication headers. If providing
+        ///     an <see cref="HttpClientHandler"/> to the constructor and enabling automatic redirects this could cause issues with authentication
+        ///     over the redirect.
+        /// </remarks>
+        public HttpProvider(HttpClientHandler httpClientHandler, bool disposeHandler, ISerializer serializer = null)
+            : this((HttpMessageHandler)httpClientHandler, disposeHandler, serializer)
+        {
+        }
+
+        /// <summary>
+        /// Constructs a new <see cref="HttpProvider"/>.
+        /// </summary>
+        /// <param name="httpMessageHandler">An HTTP message handler to pass to the <see cref="HttpClient"/> for sending requests.</param>
+        /// <param name="disposeHandler">Whether or not to dispose the client handler on Dispose().</param>
+        /// <param name="serializer">A serializer for serializing and deserializing JSON objects.</param>
+        internal HttpProvider(HttpMessageHandler httpMessageHandler, bool disposeHandler, ISerializer serializer)
+        {
+            this.disposeHandler = disposeHandler;
+            this.httpMessageHandler = httpMessageHandler ?? new HttpClientHandler { AllowAutoRedirect = false };
+            this.httpClient = new HttpClient(this.httpMessageHandler, this.disposeHandler);
 
             this.CacheControlHeader = new CacheControlHeaderValue { NoCache = true, NoStore = true };
             this.Serializer = serializer ?? new Serializer();

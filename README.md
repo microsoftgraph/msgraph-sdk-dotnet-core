@@ -1,18 +1,18 @@
-# Microsoft Graph SDK for C#
+# Microsoft Graph .NET Client Library
 
-Integrate the [Microsoft Graph API](https://graph.microsoft.io) into your C#
+Integrate the [Microsoft Graph API](https://graph.microsoft.io) into your .NET
 project!
 
-The Microsoft Graph SDK is built as a Portable Class Library and targets the
-following frameworks:
+The Microsoft Graph .NET Client Library is built as a Portable Class Library targeting profile 111.
+This targets the following frameworks:
 
-* .NET 4.5.1
+* .NET 4.5
 * .NET for Windows Store apps
 * Windows Phone 8.1 and higher
 
 ## Installation via NuGet
 
-To install the Graph SDK via NuGet:
+To install the client library via NuGet:
 
 * Search for `Microsoft.Graph` in the NuGet Library, or
 * Type `Install-Package Microsoft.Graph` into the Package Manager Console.
@@ -22,94 +22,63 @@ To install the Graph SDK via NuGet:
 ### 1. Register your application
 
 Register your application to use Microsoft Graph API using one of the following
-supported authentication providers:
+supported authentication portals:
 
 * [Microsoft Application Registration Portal](https://apps.dev.microsoft.com):
   Register a new application that works with Microsoft Account and/or
-  organizational accounts using the Azure unified authentication end point.
+  organizational accounts using the unified V2 Authentication Endpoint.
 * [Microsoft Azure Active Directory](https://manage.windowsazure.com): Register
   a new application in your tenant's Active Directory to support work or school
   users for your tenant or multiple tenants.
+  
+### 2. Authenticate for the Microsoft Graph service
 
-### 2. Setting your application id and scopes
+The Microsoft Graph .NET Client Library does not include any default authentication implementations.
+Instead, the user will want to authenticate with the library of their choice, or against the OAuth
+endpoint directly, and built-in **DelegateAuthenticationProvider** class to authenticate each request.
+For more information on `DelegateAuthenticationProvider`, see the [library overview](docs/overview)
 
-Before being granted access to Microsoft Graph APIs your application requests
-consent from the user for the aspects of Microsoft Graph it will be using. These
-are defined using authorization scopes. Your application can either ask for all
-required permissions initially, or can request essential scopes and then request
-additional scopes as necessary.
+The recommended library for authenticating against AAD is [ADAL](https://github.com/AzureAD/azure-activedirectory-library-for-dotnet).
 
-For more information on available scopes, see [Authentication scopes](https://dev.onedrive.com/auth/msa_oauth.htm#authentication-scopes).
+For an example of authenticating a UWP app using the V2 Authentication Endpoint, see the [Microsoft Graph UWP Connect Library](https://github.com/ginach/Microsoft-Graph-UWP-Connect-Library).
 
-### 3. Create a Microsoft Graph Client object with an authentication provider
+### 3. Create a Microsoft Graph client object with an authentication provider
 
-An instance of the **GraphServicesClient** class handles building requests,
+An instance of the **GraphServiceClient** class handles building requests,
 sending them to Microsoft Graph API, and processing the responses. To create a
 new instance of this class, you need to provide an instance of
-IAuthenticationProvider which can authenticate requests to Microsoft Graph.
+`IAuthenticationProvider` which can authenticate requests to Microsoft Graph.
 
-For consumer and converged scenarios, you can use the OAuth2AuthProvider supplied
-by the **Microsoft.Graph.OAuth** NuGet package.
-
-```csharp
-var scopes = new string[] {
-  "https://graph.microsoft.com/files.readwrite",
-  "https://graph.microsoft.com/users.read",
-  "https://graph.microsoft.com/mail.read"
-};
-var authProvider = new Microsoft.Graph.OAuth2AuthProvider("app_id", scopes)
-var graphClient = new Microsoft.Graph.GraphServicesClient("https://graph.microsoft.com", authProvider);
-```
-
-Before using the newly created **graphCliet** object, you need to have the user
-login and consent to the requested scopes. You initiate the login flow by calling
-**LoginAsync()** on the **OAuth2AuthProvider** instance.
-
-```csharp
-await authProvider.LoginAsync();
-```
-
-For more information on using the OAuth2AuthProvider, see
-[Using the OAuth2 Authentication Provider](docs/oauth2authprovider.md).
-
-For enterprise and advanced scenarios, you can use ADAL or another authentication
-library and built-in **DelegateAuthProvider** class to authenticate each request. For an
-example, see
-[more information about using ADAL with Microsoft Graph SDK](docs/UsingAdalWithGraphSDK.md).
+For more information on initializing a client instance, see the [library overview](docs/overview)
 
 ### 4. Make requests to the graph
 
-Once you have completed authentication and have a GraphServicesClient, you can
+Once you have completed authentication and have a GraphServiceClient, you can
 begin to make calls to the service. The requests in the SDK follow the format
 of the Microsoft Graph API's RESTful syntax.
 
-For example, to retrieve a user's OneDrive:
+For example, to retrieve a user's default drive:
 
 ```csharp
 var drive = await graphClient.Me.Drive.Request().GetAsync();
 ```
 
 `GetAsync` will return a `Drive` object on success and throw a
-`GraphException` on error.
+`ServiceException` on error.
 
-To get the current user's root folder of their OneDrive:
+To get the current user's root folder of their default drive:
 
 ```csharp
 var rootItem = await graphClient.Me.Drive.Root.Request().GetAsync();
 ```
 
 `GetAsync` will return a `DriveItem` object on success and throw a
-`GraphException` on error.
+`ServiceException` on error.
 
 For a general overview of how the SDK is designed, see [overview](docs/overview.md).
 
 The following sample applications are also available:
-* [OneDrive API Browser](samples/OneDriveApiBrowser) - Windows Forms app
-* [OneDrive Photo Browser](samples/OneDrivePhotoBrowser) - Windows Universal app
-
-To run the OneDrivePhotoBrowser sample app your machine will need to be
-configured for [UWP app development](https://msdn.microsoft.com/en-us/library/windows/apps/dn609832.aspx)
-and the project must be associated with the Windows Store.
+* [Microsoft Graph UWP Connect Library](https://github.com/ginach/Microsoft-Graph-UWP-Connect-Library) - Windows Universal app
 
 ## Documentation and resources
 
@@ -122,13 +91,13 @@ and the project must be associated with the Windows Store.
 
 ## Issues
 
-To view or log issues, see [issues](https://github.com/OneDrive/onedrive-sdk-csharp/issues).
+To view or log issues, see [issues](https://github.com/microsoftgraph/msgraph-sdk-dotnet/issues).
 
 ## Other resources
 
-* NuGet Package: [https://www.nuget.org/packages/Microsoft.OneDriveSDK](https://www.nuget.org/packages/Microsoft.OneDriveSDK)
+* NuGet Package: [https://www.nuget.org/packages/Microsoft.Graph](https://www.nuget.org/packages/Microsoft.Graph)
 
 
 ## License
 
-[License](LICENSE.txt)
+Copyright (c) Microsoft Corporation. All Rights Reserved. Licensed under the MIT [license](LICENSE.txt)

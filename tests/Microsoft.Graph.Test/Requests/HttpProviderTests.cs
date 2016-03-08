@@ -1,23 +1,5 @@
-﻿// ------------------------------------------------------------------------------
-//  Copyright (c) 2016 Microsoft Corporation
-// 
-//  Permission is hereby granted, free of charge, to any person obtaining a copy
-//  of this software and associated documentation files (the "Software"), to deal
-//  in the Software without restriction, including without limitation the rights
-//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-//  copies of the Software, and to permit persons to whom the Software is
-//  furnished to do so, subject to the following conditions:
-// 
-//  The above copyright notice and this permission notice shall be included in
-//  all copies or substantial portions of the Software.
-// 
-//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-//  THE SOFTWARE.
+// ------------------------------------------------------------------------------
+//  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
 namespace Microsoft.Graph.Test.Requests
@@ -39,7 +21,6 @@ namespace Microsoft.Graph.Test.Requests
     [TestClass]
     public class HttpProviderTests
     {
-        private HttpClient httpClient;
         private HttpProvider httpProvider;
         private MockSerializer serializer = new MockSerializer();
         private TestHttpMessageHandler testHttpMessageHandler;
@@ -48,16 +29,12 @@ namespace Microsoft.Graph.Test.Requests
         public void Setup()
         {
             this.testHttpMessageHandler = new TestHttpMessageHandler();
-            this.httpClient = new HttpClient(this.testHttpMessageHandler, /* disposeHandler */ true);
-            this.httpProvider = new HttpProvider(this.serializer.Object);
-            this.httpProvider.httpClient.Dispose();
-            this.httpProvider.httpClient = this.httpClient;
+            this.httpProvider = new HttpProvider(this.testHttpMessageHandler, true, this.serializer.Object);
         }
 
         [TestCleanup]
         public void Teardown()
         {
-            this.httpClient.Dispose();
             this.httpProvider.Dispose();
         }
 
@@ -78,6 +55,17 @@ namespace Microsoft.Graph.Test.Requests
         }
 
         [TestMethod]
+        public void HttpProvider_CustomHttpClientHandler()
+        {
+            using (var httpClientHandler = new HttpClientHandler())
+            using (var httpProvider = new HttpProvider(httpClientHandler, false, null))
+            {
+                Assert.AreEqual(httpClientHandler, httpProvider.httpMessageHandler, "Unexpected message handler set.");
+                Assert.IsFalse(httpProvider.disposeHandler, "Dispose handler set to true.");
+            }
+        }
+
+        [TestMethod]
         public void HttpProvider_DefaultConstructor()
         {
             using (var defaultHttpProvider = new HttpProvider())
@@ -85,9 +73,41 @@ namespace Microsoft.Graph.Test.Requests
                 Assert.IsTrue(defaultHttpProvider.httpClient.DefaultRequestHeaders.CacheControl.NoCache, "NoCache false.");
                 Assert.IsTrue(defaultHttpProvider.httpClient.DefaultRequestHeaders.CacheControl.NoStore, "NoStore false.");
 
+                Assert.IsTrue(defaultHttpProvider.disposeHandler, "Dispose handler set to false.");
+                Assert.IsNotNull(defaultHttpProvider.httpMessageHandler, "HttpClientHandler not initialized.");
+                Assert.IsFalse(((HttpClientHandler)defaultHttpProvider.httpMessageHandler).AllowAutoRedirect, "AllowAutoRedirect set to true.");
+
                 Assert.AreEqual(TimeSpan.FromSeconds(100), defaultHttpProvider.httpClient.Timeout, "Unexpected default timeout set.");
 
                 Assert.IsInstanceOfType(defaultHttpProvider.Serializer, typeof(Serializer), "Unexpected serializer initialized.");
+            }
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ServiceException))]
+        public async Task OverallTimeout_RequestAlreadySent()
+        {
+            using (var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, "https://localhost"))
+            using (var httpResponseMessage = new HttpResponseMessage())
+            {
+                this.testHttpMessageHandler.AddResponseMapping(httpRequestMessage.RequestUri.ToString(), httpResponseMessage);
+                var returnedResponseMessage = await this.httpProvider.SendAsync(httpRequestMessage);
+            }
+
+            try
+            {
+                this.httpProvider.OverallTimeout = new TimeSpan(0, 0, 30);
+            }
+            catch (ServiceException serviceException)
+            {
+                Assert.IsTrue(serviceException.IsMatch(GraphErrorCode.NotAllowed.ToString()), "Unexpected error code thrown.");
+                Assert.AreEqual(
+                    "Overall timeout cannot be set after the first request is sent.",
+                    serviceException.Error.Message,
+                    "Unexpected error message thrown.");
+                Assert.IsInstanceOfType(serviceException.InnerException, typeof(InvalidOperationException), "Unexpected inner exception thrown.");
+
+                throw;
             }
         }
 
@@ -110,11 +130,10 @@ namespace Microsoft.Graph.Test.Requests
         {
             using (var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, "https://localhost"))
             {
-                this.httpClient.Dispose();
+                this.httpProvider.Dispose();
 
                 var clientException = new Exception();
-                this.httpClient = new HttpClient(new ExceptionHttpMessageHandler(clientException), /* disposeHandler */ true);
-                this.httpProvider.httpClient = this.httpClient;
+                this.httpProvider = new HttpProvider(new ExceptionHttpMessageHandler(clientException), /* disposeHandler */ true, null);
 
                 try
                 {
@@ -138,11 +157,10 @@ namespace Microsoft.Graph.Test.Requests
         {
             using (var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, "https://localhost"))
             {
-                this.httpClient.Dispose();
+                this.httpProvider.Dispose();
 
                 var clientException = new TaskCanceledException();
-                this.httpClient = new HttpClient(new ExceptionHttpMessageHandler(clientException), /* disposeHandler */ true);
-                this.httpProvider.httpClient = this.httpClient;
+                this.httpProvider = new HttpProvider(new ExceptionHttpMessageHandler(clientException), /* disposeHandler */ true, null);
 
                 try
                 {
@@ -199,6 +217,7 @@ namespace Microsoft.Graph.Test.Requests
             {
                 httpRequestMessage.Headers.Authorization = new AuthenticationHeaderValue("bearer", "token");
                 httpRequestMessage.Headers.Add("testHeader", "testValue");
+                httpRequestMessage.Headers.CacheControl = new CacheControlHeaderValue { NoCache = true, NoStore = true };
 
                 redirectResponseMessage.StatusCode = HttpStatusCode.Redirect;
                 redirectResponseMessage.Headers.Location = new Uri("https://localhost/redirect");
@@ -209,18 +228,17 @@ namespace Microsoft.Graph.Test.Requests
 
                 var returnedResponseMessage = await this.httpProvider.SendAsync(httpRequestMessage);
 
-                Assert.AreEqual(2, finalResponseMessage.RequestMessage.Headers.Count(), "Unexpected number of headers on redirect request message.");
+                Assert.AreEqual(3, finalResponseMessage.RequestMessage.Headers.Count(), "Unexpected number of headers on redirect request message.");
                 
                 foreach (var header in httpRequestMessage.Headers)
                 {
-                    var expectedValues = header.Value.ToList();
-                    var actualValues = finalResponseMessage.RequestMessage.Headers.GetValues(header.Key).ToList();
+                    var actualValues = finalResponseMessage.RequestMessage.Headers.GetValues(header.Key);
 
-                    Assert.AreEqual(actualValues.Count, expectedValues.Count, "Unexpected header on redirect request message.");
+                    Assert.AreEqual(actualValues.Count(), header.Value.Count(), "Unexpected header on redirect request message.");
 
-                    for (var i = 0; i < expectedValues.Count; i++)
+                    foreach (var headerValue in header.Value)
                     {
-                        Assert.AreEqual(expectedValues[i], actualValues[i], "Unexpected header on redirect request message.");
+                        Assert.IsTrue(actualValues.Contains(headerValue), "Unexpected header on redirect request message.");
                     }
                 }
             }
