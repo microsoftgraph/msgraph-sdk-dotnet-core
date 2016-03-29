@@ -110,3 +110,7 @@ var user = await graphServiceClient
 All properties other than `Id` will be null on the returned user object.
 
 Expand, Skip, Top, OrderBy, and Filter are also supported via the client library when supported by the Microsoft Graph service for the request type.
+
+## Collections
+
+Please see [collections](docs/collections.md) for details on collections and paging.
