@@ -1,6 +1,6 @@
 # Microsoft Graph .NET Client Library
 
-[![Build status](https://ci.appveyor.com/api/projects/status/4hh16o3rooajemyu/branch/master?svg=true)](https://ci.appveyor.com/project/OneDrive/msgraph-sdk-dotnet/branch/master)
+[![Build status](https://ci.appveyor.com/api/projects/status/3av5qjyletkwf6h8/branch/master?svg=true)](https://ci.appveyor.com/project/OneDrive/msgraph-sdk-dotnet/branch/master)
 
 Integrate the [Microsoft Graph API](https://graph.microsoft.io) into your .NET
 project!
