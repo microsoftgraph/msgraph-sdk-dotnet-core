@@ -42,7 +42,7 @@ For more information on `DelegateAuthenticationProvider`, see the [library overv
 
 The recommended library for authenticating against AAD is [ADAL](https://github.com/AzureAD/azure-activedirectory-library-for-dotnet).
 
-For an example of authenticating a UWP app using the V2 Authentication Endpoint, see the [Microsoft Graph UWP Connect Library](https://github.com/ginach/Microsoft-Graph-UWP-Connect-Library).
+For an example of authenticating a UWP app using the V2 Authentication Endpoint, see the [Microsoft Graph UWP Connect Library](https://github.com/OfficeDev/Microsoft-Graph-UWP-Connect-Library).
 
 ### 3. Create a Microsoft Graph client object with an authentication provider
 
