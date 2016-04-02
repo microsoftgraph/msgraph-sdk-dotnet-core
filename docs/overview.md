@@ -113,4 +113,4 @@ Expand, Skip, Top, OrderBy, and Filter are also supported via the client library
 
 ## Collections
 
-Please see [collections](docs/collections.md) for details on collections and paging.
+Please see [collections](/docs/collections.md) for details on collections and paging.
