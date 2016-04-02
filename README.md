@@ -38,7 +38,7 @@ supported authentication portals:
 The Microsoft Graph .NET Client Library does not include any default authentication implementations.
 Instead, the user will want to authenticate with the library of their choice, or against the OAuth
 endpoint directly, and built-in **DelegateAuthenticationProvider** class to authenticate each request.
-For more information on `DelegateAuthenticationProvider`, see the [library overview](docs/overview)
+For more information on `DelegateAuthenticationProvider`, see the [library overview](docs/overview.md)
 
 The recommended library for authenticating against AAD is [ADAL](https://github.com/AzureAD/azure-activedirectory-library-for-dotnet).
 
@@ -51,7 +51,7 @@ sending them to Microsoft Graph API, and processing the responses. To create a
 new instance of this class, you need to provide an instance of
 `IAuthenticationProvider` which can authenticate requests to Microsoft Graph.
 
-For more information on initializing a client instance, see the [library overview](docs/overview)
+For more information on initializing a client instance, see the [library overview](docs/overview.md)
 
 ### 4. Make requests to the graph
 
