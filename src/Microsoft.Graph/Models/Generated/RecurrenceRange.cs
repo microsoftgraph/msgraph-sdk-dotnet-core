@@ -30,16 +30,14 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets or sets startDate.
         /// </summary>
-        [EdmDateConverter]
         [DataMember(Name = "startDate", EmitDefaultValue = false, IsRequired = false)]
-        public DateTimeOffset? StartDate { get; set; }
+        public EdmDate? StartDate { get; set; }
     
         /// <summary>
         /// Gets or sets endDate.
         /// </summary>
-        [EdmDateConverter]
         [DataMember(Name = "endDate", EmitDefaultValue = false, IsRequired = false)]
-        public DateTimeOffset? EndDate { get; set; }
+        public EdmDate? EndDate { get; set; }
     
         /// <summary>
         /// Gets or sets recurrenceTimeZone.
