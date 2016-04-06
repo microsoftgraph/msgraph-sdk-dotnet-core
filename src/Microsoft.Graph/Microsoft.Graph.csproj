@@ -77,6 +77,7 @@
     <Compile Include="Requests\Options\Option.cs" />
     <Compile Include="Requests\Options\HeaderOption.cs" />
     <Compile Include="Requests\Options\QueryOption.cs" />
+    <Compile Include="Serialization\EdmDateConverter.cs" />
     <Compile Include="Serialization\EnumConverter.cs" />
     <Compile Include="Serialization\DerivedTypeConverter.cs" />
     <Compile Include="Serialization\ISerializer.cs" />
