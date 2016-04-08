@@ -12,6 +12,7 @@ namespace Microsoft.Graph.Test.Serialization
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Mocks;
+    using Newtonsoft.Json;
 
     [TestClass]
     public class SerializerTests
@@ -143,14 +144,14 @@ namespace Microsoft.Graph.Test.Serialization
         }
 
         [TestMethod]
-        public void DeserializeEdmDateEnumerableValue()
+        public void DeserializeDateEnumerableValue()
         {
             var now = DateTimeOffset.UtcNow;
             var tomorrow = now.AddDays(1);
 
-            var stringToDeserialize = string.Format("{{\"StartDate\":[\"{0}\",\"{1}\"]}}", now.ToString("yyyy-MM-dd"), tomorrow.ToString("yyyy-MM-dd"));
+            var stringToDeserialize = string.Format("{{\"startDate\":[\"{0}\",\"{1}\"]}}", now.ToString("yyyy-MM-dd"), tomorrow.ToString("yyyy-MM-dd"));
 
-            var deserializedObject = this.serializer.DeserializeObject<EdmDateEnumerableClass>(stringToDeserialize);
+            var deserializedObject = this.serializer.DeserializeObject<DateTestClass>(stringToDeserialize);
 
             Assert.AreEqual(2, deserializedObject.StartDate.Count(), "Unexpected number of dates deserialized.");
             Assert.IsTrue(deserializedObject.StartDate.Any(
@@ -169,7 +170,7 @@ namespace Microsoft.Graph.Test.Serialization
         }
 
         [TestMethod]
-        public void DeserializeEdmDateValue()
+        public void DeserializeDateValue()
         {
             var now = DateTimeOffset.UtcNow;
 
@@ -197,6 +198,26 @@ namespace Microsoft.Graph.Test.Serialization
             Assert.IsInstanceOfType(deserializedPage, typeof(DriveItemChildrenCollectionPage), "Unexpected object deserialized.");
             Assert.AreEqual(1, deserializedPage.Count, "Unexpected driveItems deserialized.");
             Assert.AreEqual("id", deserializedPage[0].Id, "Unexpected driveItem deserialized.");
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ServiceException))]
+        public void DeserializeInvalidTypeForDateConverter()
+        {
+            var stringToDeserialize = "{\"invalidType\":1}";
+
+            try
+            {
+                var date = this.serializer.DeserializeObject<DateTestClass>(stringToDeserialize);
+            }
+            catch (ServiceException serviceException)
+            {
+                Assert.IsTrue(serviceException.IsMatch(GraphErrorCode.GeneralException.ToString()), "Unexpected error code thrown.");
+                Assert.AreEqual("Unable to deserialize the returned Date.", serviceException.Error.Message, "Unexpected error message thrown.");
+                Assert.IsInstanceOfType(serviceException.InnerException, typeof(JsonSerializationException), "Unexpected inner exception thrown.");
+
+                throw;
+            }
         }
 
         [TestMethod]
@@ -247,16 +268,16 @@ namespace Microsoft.Graph.Test.Serialization
         }
 
         [TestMethod]
-        public void SerializeEdmDateEnumerableValue()
+        public void SerializeDateEnumerableValue()
         {
             var now = DateTimeOffset.UtcNow;
             var tomorrow = now.AddDays(1);
 
-            var expectedSerializedString = string.Format("{{\"StartDate\":[\"{0}\",\"{1}\"]}}", now.ToString("yyyy-MM-dd"), tomorrow.ToString("yyyy-MM-dd"));
+            var expectedSerializedString = string.Format("{{\"startDate\":[\"{0}\",\"{1}\"]}}", now.ToString("yyyy-MM-dd"), tomorrow.ToString("yyyy-MM-dd"));
 
-            var recurrence = new EdmDateEnumerableClass
+            var recurrence = new DateTestClass
             {
-                StartDate = new List<EdmDate> { new EdmDate(now.Year, now.Month, now.Day), new EdmDate(tomorrow.Year, tomorrow.Month, tomorrow.Day) },
+                StartDate = new List<Date> { new Date(now.Year, now.Month, now.Day), new Date(tomorrow.Year, tomorrow.Month, tomorrow.Day) },
             };
 
             var serializedString = this.serializer.SerializeObject(recurrence);
@@ -265,7 +286,7 @@ namespace Microsoft.Graph.Test.Serialization
         }
 
         [TestMethod]
-        public void SerializeEdmDateValue()
+        public void SerializeDateValue()
         {
             var now = DateTimeOffset.UtcNow;
 
@@ -273,12 +294,34 @@ namespace Microsoft.Graph.Test.Serialization
 
             var recurrence = new RecurrenceRange
             {
-                StartDate = new EdmDate(now.Year, now.Month, now.Day),
+                StartDate = new Date(now.Year, now.Month, now.Day),
             };
 
             var serializedString = this.serializer.SerializeObject(recurrence);
 
             Assert.AreEqual(expectedSerializedString, serializedString, "Unexpected value serialized.");
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ServiceException))]
+        public void SerializeInvalidTypeForDateConverter()
+        {
+            var dateToSerialize = new DateTestClass
+            {
+                InvalidType = 1,
+            };
+
+            try
+            {
+                var serializedString = this.serializer.SerializeObject(dateToSerialize);
+            }
+            catch (ServiceException serviceException)
+            {
+                Assert.IsTrue(serviceException.IsMatch(GraphErrorCode.GeneralException.ToString()), "Unexpected error code thrown.");
+                Assert.AreEqual("DateConverter can only serialize objects of type Date.", serviceException.Error.Message, "Unexpected error message thrown.");
+
+                throw;
+            }
         }
     }
 }

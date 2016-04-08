@@ -8,26 +8,26 @@ namespace Microsoft.Graph
 
     using Newtonsoft.Json;
 
-    [JsonConverter(typeof(EdmDateConverter))]
-    public class EdmDate
+    [JsonConverter(typeof(DateConverter))]
+    public class Date
     {
-        internal EdmDate(DateTimeOffset dateTimeOffset)
-            : this(dateTimeOffset.Year, dateTimeOffset.Month, dateTimeOffset.Day)
+        internal Date(DateTime dateTime)
+        {
+            this.DateTime = dateTime;
+        }
+
+        public Date(int year, int month, int day)
+            : this(new DateTime(year, month, day))
         {
         }
 
-        public EdmDate(int year, int month, int day)
-        {
-            this.DateTimeOffset = new DateTimeOffset(new DateTime(year, month, day));
-        }
-
-        internal DateTimeOffset DateTimeOffset { get; set; }
+        internal DateTime DateTime { get; set; }
 
         public int Year
         {
             get
             {
-                return this.DateTimeOffset.Year;
+                return this.DateTime.Year;
             }
         }
 
@@ -35,7 +35,7 @@ namespace Microsoft.Graph
         {
             get
             {
-                return this.DateTimeOffset.Month;
+                return this.DateTime.Month;
             }
         }
 
@@ -43,8 +43,13 @@ namespace Microsoft.Graph
         {
             get
             {
-                return this.DateTimeOffset.Day;
+                return this.DateTime.Day;
             }
+        }
+
+        public override string ToString()
+        {
+            return this.DateTime.ToString("yyyy-MM-dd");
         }
     }
 }
