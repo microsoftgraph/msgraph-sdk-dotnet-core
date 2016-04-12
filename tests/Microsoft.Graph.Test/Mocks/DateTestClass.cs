@@ -16,7 +16,13 @@ namespace Microsoft.Graph.Test.Mocks
     public class DateTestClass
     {
         /// <summary>
-        /// Gets or sets StartDate.
+        /// Gets or sets nullableDate.
+        /// </summary>
+        [DataMember(Name = "nullableDate", EmitDefaultValue = true, IsRequired = false)]
+        public Date NullableDate { get; set; }
+
+        /// <summary>
+        /// Gets or sets startDate.
         /// </summary>
         [DataMember(Name = "startDate", EmitDefaultValue = false, IsRequired = false)]
         public IEnumerable<Date> StartDate { get; set; }

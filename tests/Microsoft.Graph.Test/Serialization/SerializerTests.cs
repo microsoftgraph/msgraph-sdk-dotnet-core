@@ -273,7 +273,7 @@ namespace Microsoft.Graph.Test.Serialization
             var now = DateTimeOffset.UtcNow;
             var tomorrow = now.AddDays(1);
 
-            var expectedSerializedString = string.Format("{{\"startDate\":[\"{0}\",\"{1}\"]}}", now.ToString("yyyy-MM-dd"), tomorrow.ToString("yyyy-MM-dd"));
+            var expectedSerializedString = string.Format("{{\"nullableDate\":null,\"startDate\":[\"{0}\",\"{1}\"]}}", now.ToString("yyyy-MM-dd"), tomorrow.ToString("yyyy-MM-dd"));
 
             var recurrence = new DateTestClass
             {
@@ -282,6 +282,20 @@ namespace Microsoft.Graph.Test.Serialization
 
             var serializedString = this.serializer.SerializeObject(recurrence);
             
+            Assert.AreEqual(expectedSerializedString, serializedString, "Unexpected value serialized.");
+        }
+
+        [TestMethod]
+        public void SerializeDateNullValue()
+        {
+            var now = DateTimeOffset.UtcNow;
+
+            var expectedSerializedString = "{\"nullableDate\":null}";
+
+            var recurrence = new DateTestClass();
+
+            var serializedString = this.serializer.SerializeObject(recurrence);
+
             Assert.AreEqual(expectedSerializedString, serializedString, "Unexpected value serialized.");
         }
 
