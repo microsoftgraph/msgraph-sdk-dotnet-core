@@ -9,26 +9,26 @@ namespace Microsoft.Graph.Test.Serialization
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     [TestClass]
-    public class EdmDateConverterTests
+    public class DateConverterTests
     {
-        private EdmDateConverter converter;
+        private DateConverter converter;
 
         [TestInitialize]
         public void Setup()
         {
-            this.converter = new EdmDateConverter();
+            this.converter = new DateConverter();
         }
 
         [TestMethod]
-        public void CanConvert_EdmDate()
+        public void CanConvert_Date()
         {
-            Assert.IsTrue(this.converter.CanConvert(typeof(EdmDate)), "Unexpected value for CanConvert.");
+            Assert.IsTrue(this.converter.CanConvert(typeof(Date)), "Unexpected value for CanConvert.");
         }
 
         [TestMethod]
         public void CanConvert_InvalidType()
         {
-            Assert.IsFalse(this.converter.CanConvert(typeof(DateTimeOffset)), "Unexpected value for CanConvert.");
+            Assert.IsFalse(this.converter.CanConvert(typeof(DateTime)), "Unexpected value for CanConvert.");
         }
     }
 }
