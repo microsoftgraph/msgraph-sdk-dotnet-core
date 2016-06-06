@@ -153,10 +153,10 @@ namespace Microsoft.Graph
         /// <param name="contactFolderToInitialize">The <see cref="ContactFolder"/> with the collection properties to initialize.</param>
         private void InitializeCollectionProperties(ContactFolder contactFolderToInitialize)
         {
-        
+
             if (contactFolderToInitialize != null && contactFolderToInitialize.AdditionalData != null)
             {
-        
+
                 if (contactFolderToInitialize.Contacts != null && contactFolderToInitialize.Contacts.CurrentPage != null)
                 {
                     contactFolderToInitialize.Contacts.AdditionalData = contactFolderToInitialize.AdditionalData;
@@ -172,7 +172,7 @@ namespace Microsoft.Graph
                             nextPageLinkString);
                     }
                 }
-        
+
                 if (contactFolderToInitialize.ChildFolders != null && contactFolderToInitialize.ChildFolders.CurrentPage != null)
                 {
                     contactFolderToInitialize.ChildFolders.AdditionalData = contactFolderToInitialize.AdditionalData;
@@ -188,10 +188,10 @@ namespace Microsoft.Graph
                             nextPageLinkString);
                     }
                 }
-        
+
             }
 
-        
+
         }
     }
 }

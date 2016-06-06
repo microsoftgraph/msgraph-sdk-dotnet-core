@@ -15,17 +15,6 @@ namespace Microsoft.Graph
     /// </summary>
     public partial interface IPostForwardRequestBuilder
     {
-    
-        /// <summary>
-        /// Gets the Comment.
-        /// </summary>
-        string Comment { get; }
-    
-        /// <summary>
-        /// Gets the ToRecipients.
-        /// </summary>
-        IEnumerable<Recipient> ToRecipients { get; }
-    
         /// <summary>
         /// Builds the request.
         /// </summary>

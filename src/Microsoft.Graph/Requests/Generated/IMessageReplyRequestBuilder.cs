@@ -15,12 +15,6 @@ namespace Microsoft.Graph
     /// </summary>
     public partial interface IMessageReplyRequestBuilder
     {
-    
-        /// <summary>
-        /// Gets the Comment.
-        /// </summary>
-        string Comment { get; }
-    
         /// <summary>
         /// Builds the request.
         /// </summary>

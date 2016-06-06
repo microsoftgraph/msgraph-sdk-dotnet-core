@@ -240,6 +240,18 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
+        /// Gets the request builder for InferenceClassification.
+        /// </summary>
+        /// <returns>The <see cref="IInferenceClassificationRequestBuilder"/>.</returns>
+        public IInferenceClassificationRequestBuilder InferenceClassification
+        {
+            get
+            {
+                return new InferenceClassificationRequestBuilder(this.AppendSegmentToRequestUrl("inferenceClassification"), this.Client);
+            }
+        }
+
+        /// <summary>
         /// Gets the request builder for Photo.
         /// </summary>
         /// <returns>The <see cref="IProfilePhotoRequestBuilder"/>.</returns>

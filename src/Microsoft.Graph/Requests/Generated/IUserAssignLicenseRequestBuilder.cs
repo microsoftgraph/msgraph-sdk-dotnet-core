@@ -15,17 +15,6 @@ namespace Microsoft.Graph
     /// </summary>
     public partial interface IUserAssignLicenseRequestBuilder
     {
-    
-        /// <summary>
-        /// Gets the AddLicenses.
-        /// </summary>
-        IEnumerable<AssignedLicense> AddLicenses { get; }
-    
-        /// <summary>
-        /// Gets the RemoveLicenses.
-        /// </summary>
-        IEnumerable<Guid> RemoveLicenses { get; }
-    
         /// <summary>
         /// Builds the request.
         /// </summary>

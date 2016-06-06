@@ -19,30 +19,25 @@ namespace Microsoft.Graph
     /// </summary>
     public partial class DriveItemCreateLinkRequest : BaseRequest, IDriveItemCreateLinkRequest
     {
-    
         /// <summary>
         /// Constructs a new DriveItemCreateLinkRequest.
         /// </summary>
         public DriveItemCreateLinkRequest(
             string requestUrl,
             IBaseClient client,
-            IEnumerable<Option> options,
-            string type = null,
-            string scope = null)
+            IEnumerable<Option> options)
             : base(requestUrl, client, options)
         {
             this.Method = "POST";
             this.ContentType = "application/json";
             this.RequestBody = new DriveItemCreateLinkRequestBody();
-            this.RequestBody.Type = type;
-            this.RequestBody.Scope = scope;
         }
-    
+
         /// <summary>
         /// Gets the request body.
         /// </summary>
         public DriveItemCreateLinkRequestBody RequestBody { get; private set; }
-    
+
         /// <summary>
         /// Issues the POST request.
         /// </summary>
@@ -54,15 +49,14 @@ namespace Microsoft.Graph
         /// <summary>
         /// Issues the POST request.
         /// </summary>
-        /// /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
-        /// <returns>ThePermission</returns>
-        public Task<Permission> PostAsync(CancellationToken cancellationToken)
+        /// <param name=""cancellationToken"">The <see cref=""CancellationToken""/> for the request.</param>
+        /// <returns>The task to await for async call.</returns>
+        public Task<Permission> PostAsync(
+            CancellationToken cancellationToken)
         {
-    
             return this.SendAsync<Permission>(this.RequestBody, cancellationToken);
-    
         }
-    
+
         /// <summary>
         /// Adds the specified expand value to the request.
         /// </summary>
@@ -84,6 +78,5 @@ namespace Microsoft.Graph
             this.QueryOptions.Add(new QueryOption("$select", value));
             return this;
         }
-    
     }
 }

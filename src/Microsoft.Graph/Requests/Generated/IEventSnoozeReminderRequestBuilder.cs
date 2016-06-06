@@ -15,12 +15,6 @@ namespace Microsoft.Graph
     /// </summary>
     public partial interface IEventSnoozeReminderRequestBuilder
     {
-    
-        /// <summary>
-        /// Gets the NewReminderTime.
-        /// </summary>
-        DateTimeTimeZone NewReminderTime { get; }
-    
         /// <summary>
         /// Builds the request.
         /// </summary>

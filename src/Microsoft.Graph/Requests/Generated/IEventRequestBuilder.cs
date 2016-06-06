@@ -41,6 +41,12 @@ namespace Microsoft.Graph
         IEventInstancesCollectionRequestBuilder Instances { get; }
 
         /// <summary>
+        /// Gets the request builder for Extensions.
+        /// </summary>
+        /// <returns>The <see cref="IEventExtensionsCollectionRequestBuilder"/>.</returns>
+        IEventExtensionsCollectionRequestBuilder Extensions { get; }
+
+        /// <summary>
         /// Gets the request builder for Attachments.
         /// </summary>
         /// <returns>The <see cref="IEventAttachmentsCollectionRequestBuilder"/>.</returns>

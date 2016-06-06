@@ -48,6 +48,18 @@ namespace Microsoft.Graph
         }
         
         /// <summary>
+        /// Gets the request builder for Extensions.
+        /// </summary>
+        /// <returns>The <see cref="IContactExtensionsCollectionRequestBuilder"/>.</returns>
+        public IContactExtensionsCollectionRequestBuilder Extensions
+        {
+            get
+            {
+                return new ContactExtensionsCollectionRequestBuilder(this.AppendSegmentToRequestUrl("extensions"), this.Client);
+            }
+        }
+
+        /// <summary>
         /// Gets the request builder for Photo.
         /// </summary>
         /// <returns>The <see cref="IProfilePhotoRequestBuilder"/>.</returns>

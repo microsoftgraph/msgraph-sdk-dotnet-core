@@ -100,28 +100,6 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Adds the specified expand value to the request.
-        /// </summary>
-        /// <param name="value">The expand value.</param>
-        /// <returns>The request object to send.</returns>
-        public IGroupRejectedSendersCollectionRequest Expand(string value)
-        {
-            this.QueryOptions.Add(new QueryOption("$expand", value));
-            return this;
-        }
-
-        /// <summary>
-        /// Adds the specified select value to the request.
-        /// </summary>
-        /// <param name="value">The select value.</param>
-        /// <returns>The request object to send.</returns>
-        public IGroupRejectedSendersCollectionRequest Select(string value)
-        {
-            this.QueryOptions.Add(new QueryOption("$select", value));
-            return this;
-        }
-
-        /// <summary>
         /// Adds the specified top value to the request.
         /// </summary>
         /// <param name="value">The top value.</param>
@@ -129,28 +107,6 @@ namespace Microsoft.Graph
         public IGroupRejectedSendersCollectionRequest Top(int value)
         {
             this.QueryOptions.Add(new QueryOption("$top", value.ToString()));
-            return this;
-        }
-        
-        /// <summary>
-        /// Adds the specified filter value to the request.
-        /// </summary>
-        /// <param name="value">The filter value.</param>
-        /// <returns>The request object to send.</returns>
-        public IGroupRejectedSendersCollectionRequest Filter(string value)
-        {
-            this.QueryOptions.Add(new QueryOption("$filter", value));
-            return this;
-        }
-
-        /// <summary>
-        /// Adds the specified skip value to the request.
-        /// </summary>
-        /// <param name="value">The skip value.</param>
-        /// <returns>The request object to send.</returns>
-        public IGroupRejectedSendersCollectionRequest Skip(int value)
-        {
-            this.QueryOptions.Add(new QueryOption("$skip", value.ToString()));
             return this;
         }
 

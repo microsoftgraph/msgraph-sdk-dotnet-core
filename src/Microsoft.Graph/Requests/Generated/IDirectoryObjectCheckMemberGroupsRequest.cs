@@ -19,12 +19,12 @@ namespace Microsoft.Graph
     /// </summary>
     public partial interface IDirectoryObjectCheckMemberGroupsRequest : IBaseRequest
     {
-    
+
         /// <summary>
         /// Gets the request body.
         /// </summary>
         DirectoryObjectCheckMemberGroupsRequestBody RequestBody { get; }
-        
+
         /// <summary>
         /// Issues the POST request.
         /// </summary>
@@ -36,7 +36,7 @@ namespace Microsoft.Graph
         /// /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>TheIDirectoryObjectCheckMemberGroupsCollectionPage</returns>
         Task<IDirectoryObjectCheckMemberGroupsCollectionPage> PostAsync(CancellationToken cancellationToken);
-            
+
         /// <summary>
         /// Adds the specified expand value to the request.
         /// </summary>
@@ -50,14 +50,14 @@ namespace Microsoft.Graph
         /// <param name="value">The select value.</param>
         /// <returns>The request object to send.</returns>
         IDirectoryObjectCheckMemberGroupsRequest Select(string value);
-    
+
         /// <summary>
         /// Adds the specified top value to the request.
         /// </summary>
         /// <param name="value">The top value.</param>
         /// <returns>The request object to send.</returns>
         IDirectoryObjectCheckMemberGroupsRequest Top(int value);
-        
+
         /// <summary>
         /// Adds the specified filter value to the request.
         /// </summary>
@@ -78,6 +78,5 @@ namespace Microsoft.Graph
         /// <param name="value">The orderby value.</param>
         /// <returns>The request object to send.</returns>
         IDirectoryObjectCheckMemberGroupsRequest OrderBy(string value);
-    
     }
 }

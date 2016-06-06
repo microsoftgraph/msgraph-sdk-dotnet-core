@@ -125,6 +125,12 @@ namespace Microsoft.Graph
         IUserContactFoldersCollectionRequestBuilder ContactFolders { get; }
 
         /// <summary>
+        /// Gets the request builder for InferenceClassification.
+        /// </summary>
+        /// <returns>The <see cref="IInferenceClassificationRequestBuilder"/>.</returns>
+        IInferenceClassificationRequestBuilder InferenceClassification { get; }
+
+        /// <summary>
         /// Gets the request builder for Photo.
         /// </summary>
         /// <returns>The <see cref="IProfilePhotoRequestBuilder"/>.</returns>

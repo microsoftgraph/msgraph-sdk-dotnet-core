@@ -91,6 +91,13 @@ namespace Microsoft.Graph
         /// Gets the request builder for DriveItemDelta.
         /// </summary>
         /// <returns>The <see cref="IDriveItemDeltaRequestBuilder"/>.</returns>
+        IDriveItemDeltaRequestBuilder Delta(
+            string token = null);
+
+        /// <summary>
+        /// Gets the request builder for DriveItemDelta.
+        /// </summary>
+        /// <returns>The <see cref="IDriveItemDeltaRequestBuilder"/>.</returns>
         IDriveItemDeltaRequestBuilder Delta();
     
     }

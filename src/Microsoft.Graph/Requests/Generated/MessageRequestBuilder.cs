@@ -48,6 +48,18 @@ namespace Microsoft.Graph
         }
         
         /// <summary>
+        /// Gets the request builder for Extensions.
+        /// </summary>
+        /// <returns>The <see cref="IMessageExtensionsCollectionRequestBuilder"/>.</returns>
+        public IMessageExtensionsCollectionRequestBuilder Extensions
+        {
+            get
+            {
+                return new MessageExtensionsCollectionRequestBuilder(this.AppendSegmentToRequestUrl("extensions"), this.Client);
+            }
+        }
+
+        /// <summary>
         /// Gets the request builder for Attachments.
         /// </summary>
         /// <returns>The <see cref="IMessageAttachmentsCollectionRequestBuilder"/>.</returns>

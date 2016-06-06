@@ -15,12 +15,6 @@ namespace Microsoft.Graph
     /// </summary>
     public partial interface IMessageMoveRequestBuilder
     {
-    
-        /// <summary>
-        /// Gets the DestinationId.
-        /// </summary>
-        string DestinationId { get; }
-    
         /// <summary>
         /// Builds the request.
         /// </summary>

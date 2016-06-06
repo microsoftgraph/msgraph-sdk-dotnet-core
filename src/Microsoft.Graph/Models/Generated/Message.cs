@@ -11,7 +11,6 @@ namespace Microsoft.Graph
     using System.Collections.Generic;
     using System.IO;
     using System.Runtime.Serialization;
-
     using Newtonsoft.Json;
 
     /// <summary>
@@ -152,6 +151,18 @@ namespace Microsoft.Graph
         /// </summary>
         [DataMember(Name = "webLink", EmitDefaultValue = false, IsRequired = false)]
         public string WebLink { get; set; }
+    
+        /// <summary>
+        /// Gets or sets inference classification.
+        /// </summary>
+        [DataMember(Name = "inferenceClassification", EmitDefaultValue = false, IsRequired = false)]
+        public InferenceClassificationType? InferenceClassification { get; set; }
+    
+        /// <summary>
+        /// Gets or sets extensions.
+        /// </summary>
+        [DataMember(Name = "extensions", EmitDefaultValue = false, IsRequired = false)]
+        public IMessageExtensionsCollectionPage Extensions { get; set; }
     
         /// <summary>
         /// Gets or sets attachments.

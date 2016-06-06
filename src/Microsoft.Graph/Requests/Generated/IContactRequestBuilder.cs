@@ -29,6 +29,12 @@ namespace Microsoft.Graph
         new IContactRequest Request(IEnumerable<Option> options);
         
         /// <summary>
+        /// Gets the request builder for Extensions.
+        /// </summary>
+        /// <returns>The <see cref="IContactExtensionsCollectionRequestBuilder"/>.</returns>
+        IContactExtensionsCollectionRequestBuilder Extensions { get; }
+
+        /// <summary>
         /// Gets the request builder for Photo.
         /// </summary>
         /// <returns>The <see cref="IProfilePhotoRequestBuilder"/>.</returns>

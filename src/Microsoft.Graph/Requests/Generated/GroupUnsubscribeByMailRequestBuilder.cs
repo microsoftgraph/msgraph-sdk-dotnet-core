@@ -9,38 +9,35 @@ namespace Microsoft.Graph
 {
     using System;
     using System.Collections.Generic;
-    using System.Text;
 
     /// <summary>
-    /// The type GroupUnsubscribeByMailRequestBuilder.
+    /// The type DriveItemDeltaRequestBuilder.
     /// </summary>
-    public partial class GroupUnsubscribeByMailRequestBuilder : BaseRequestBuilder, IGroupUnsubscribeByMailRequestBuilder
+    public partial class GroupUnsubscribeByMailRequestBuilder : BaseGetMethodRequestBuilder<IGroupUnsubscribeByMailRequest>, IGroupUnsubscribeByMailRequestBuilder
     {
-    
+        /// <summary>
+        /// Constructs a new <see cref="GroupUnsubscribeByMailRequestBuilder"/>.
+        /// </summary>
+        /// <param name="requestUrl">The URL for the request.</param>
+        /// <param name="client">The <see cref="IBaseClient"/> for handling requests.</param>
         public GroupUnsubscribeByMailRequestBuilder(
             string requestUrl,
             IBaseClient client)
             : base(requestUrl, client)
         {
-            
-
         }
-    
+
         /// <summary>
-        /// Builds the request.
+        /// A method used by the base class to construct a request class instance.
         /// </summary>
+        /// <param name="functionUrl">The request URL to </param>
         /// <param name="options">The query and header options for the request.</param>
-        /// <returns>The built request.</returns>
-        public IGroupUnsubscribeByMailRequest Request(IEnumerable<Option> options = null)
+        /// <returns>An instance of a specific request class.</returns>
+        protected override IGroupUnsubscribeByMailRequest CreateRequest(string functionUrl, IEnumerable<Option> options)
         {
-                
-            return new GroupUnsubscribeByMailRequest(
-                this.RequestUrl,
-                this.Client,
-                options);
-        
-        }
+            var request = new GroupUnsubscribeByMailRequest(functionUrl, this.Client, options);
 
+            return request;
+        }
     }
 }
-

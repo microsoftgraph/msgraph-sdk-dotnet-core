@@ -153,7 +153,7 @@ namespace Microsoft.Graph
         /// <param name="thumbnailToInitialize">The <see cref="Thumbnail"/> with the collection properties to initialize.</param>
         private void InitializeCollectionProperties(Thumbnail thumbnailToInitialize)
         {
-        
+
         }
     }
 }

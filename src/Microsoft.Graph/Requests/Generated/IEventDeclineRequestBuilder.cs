@@ -15,17 +15,6 @@ namespace Microsoft.Graph
     /// </summary>
     public partial interface IEventDeclineRequestBuilder
     {
-    
-        /// <summary>
-        /// Gets the Comment.
-        /// </summary>
-        string Comment { get; }
-    
-        /// <summary>
-        /// Gets the SendResponse.
-        /// </summary>
-        bool? SendResponse { get; }
-    
         /// <summary>
         /// Builds the request.
         /// </summary>

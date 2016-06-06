@@ -15,12 +15,6 @@ namespace Microsoft.Graph
     /// </summary>
     public partial interface IDirectoryObjectGetMemberObjectsRequestBuilder
     {
-    
-        /// <summary>
-        /// Gets the SecurityEnabledOnly.
-        /// </summary>
-        bool? SecurityEnabledOnly { get; }
-    
         /// <summary>
         /// Builds the request.
         /// </summary>

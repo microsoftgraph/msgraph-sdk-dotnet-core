@@ -15,17 +15,6 @@ namespace Microsoft.Graph
     /// </summary>
     public partial interface IDriveItemCopyRequestBuilder
     {
-    
-        /// <summary>
-        /// Gets the Name.
-        /// </summary>
-        string Name { get; }
-    
-        /// <summary>
-        /// Gets the ParentReference.
-        /// </summary>
-        ItemReference ParentReference { get; }
-    
         /// <summary>
         /// Builds the request.
         /// </summary>

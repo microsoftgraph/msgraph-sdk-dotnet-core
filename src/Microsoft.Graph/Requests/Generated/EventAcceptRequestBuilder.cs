@@ -9,54 +9,47 @@ namespace Microsoft.Graph
 {
     using System;
     using System.Collections.Generic;
-    using System.Text;
 
     /// <summary>
-    /// The type EventAcceptRequestBuilder.
+    /// The type DriveItemDeltaRequestBuilder.
     /// </summary>
-    public partial class EventAcceptRequestBuilder : BaseRequestBuilder, IEventAcceptRequestBuilder
+    public partial class EventAcceptRequestBuilder : BasePostMethodRequestBuilder<IEventAcceptRequest>, IEventAcceptRequestBuilder
     {
-    
+        /// <summary>
+        /// Constructs a new <see cref="EventAcceptRequestBuilder"/>.
+        /// </summary>
+        /// <param name="requestUrl">The URL for the request.</param>
+        /// <param name="client">The <see cref="IBaseClient"/> for handling requests.</param>
+        /// <param name="comment">A comment parameter for the OData method call.</param>
+        /// <param name="sendResponse">A sendResponse parameter for the OData method call.</param>
         public EventAcceptRequestBuilder(
             string requestUrl,
             IBaseClient client,
-            string comment = null,
-            bool? sendResponse = null)
+            string comment,
+            bool? sendResponse)
             : base(requestUrl, client)
         {
-            
-            this.Comment = comment;
-            this.SendResponse = sendResponse;
-
+            SetParameter("comment", comment, true);
+            SetParameter("sendResponse", sendResponse, true);
         }
-    
+
         /// <summary>
-        /// Gets the value of Comment.
+        /// A method used by the base class to construct a request class instance.
         /// </summary>
-        public string Comment { get; set; }
-    
-        /// <summary>
-        /// Gets the value of SendResponse.
-        /// </summary>
-        public bool? SendResponse { get; set; }
-    
-        /// <summary>
-        /// Builds the request.
-        /// </summary>
+        /// <param name="functionUrl">The request URL to </param>
         /// <param name="options">The query and header options for the request.</param>
-        /// <returns>The built request.</returns>
-        public IEventAcceptRequest Request(IEnumerable<Option> options = null)
+        /// <returns>An instance of a specific request class.</returns>
+        protected override IEventAcceptRequest CreateRequest(string functionUrl, IEnumerable<Option> options)
         {
-                
-            return new EventAcceptRequest(
-                this.RequestUrl,
-                this.Client,
-                options,
-                this.Comment,
-                this.SendResponse);
-        
-        }
+            var request = new EventAcceptRequest(functionUrl, this.Client, options);
 
+            if (HasParameter("comment"))
+                request.RequestBody.Comment = GetParameter<string>("comment");
+
+            if (HasParameter("sendResponse"))
+                request.RequestBody.SendResponse = GetParameter<bool?>("sendResponse");
+
+            return request;
+        }
     }
 }
-

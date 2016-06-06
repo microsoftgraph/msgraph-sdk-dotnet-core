@@ -9,64 +9,47 @@ namespace Microsoft.Graph
 {
     using System;
     using System.Collections.Generic;
-    using System.Text;
 
     /// <summary>
-    /// The type DriveItemCreateLinkRequestBuilder.
+    /// The type DriveItemDeltaRequestBuilder.
     /// </summary>
-    public partial class DriveItemCreateLinkRequestBuilder : BaseRequestBuilder, IDriveItemCreateLinkRequestBuilder
+    public partial class DriveItemCreateLinkRequestBuilder : BasePostMethodRequestBuilder<IDriveItemCreateLinkRequest>, IDriveItemCreateLinkRequestBuilder
     {
-    
+        /// <summary>
+        /// Constructs a new <see cref="DriveItemCreateLinkRequestBuilder"/>.
+        /// </summary>
+        /// <param name="requestUrl">The URL for the request.</param>
+        /// <param name="client">The <see cref="IBaseClient"/> for handling requests.</param>
+        /// <param name="type">A type parameter for the OData method call.</param>
+        /// <param name="scope">A scope parameter for the OData method call.</param>
         public DriveItemCreateLinkRequestBuilder(
             string requestUrl,
             IBaseClient client,
             string type,
-            string scope = null)
+            string scope)
             : base(requestUrl, client)
         {
-            
-            this.Type = type;
-            this.Scope = scope;
-
+            SetParameter("type", type, false);
+            SetParameter("scope", scope, true);
         }
-    
+
         /// <summary>
-        /// Gets the value of Type.
+        /// A method used by the base class to construct a request class instance.
         /// </summary>
-        public string Type { get; set; }
-    
-        /// <summary>
-        /// Gets the value of Scope.
-        /// </summary>
-        public string Scope { get; set; }
-    
-        /// <summary>
-        /// Builds the request.
-        /// </summary>
+        /// <param name="functionUrl">The request URL to </param>
         /// <param name="options">The query and header options for the request.</param>
-        /// <returns>The built request.</returns>
-        public IDriveItemCreateLinkRequest Request(IEnumerable<Option> options = null)
+        /// <returns>An instance of a specific request class.</returns>
+        protected override IDriveItemCreateLinkRequest CreateRequest(string functionUrl, IEnumerable<Option> options)
         {
-        
-            if (this.Type == null)
-            {
-                throw new ServiceException(
-                    new Error
-                    {
-                        Code = "invalidRequest",
-                        Message = "type is a required parameter for this method request.",
-                    });
-            }
-                
-            return new DriveItemCreateLinkRequest(
-                this.RequestUrl,
-                this.Client,
-                options,
-                this.Type,
-                this.Scope);
-        
-        }
+            var request = new DriveItemCreateLinkRequest(functionUrl, this.Client, options);
 
+            if (HasParameter("type"))
+                request.RequestBody.Type = GetParameter<string>("type");
+
+            if (HasParameter("scope"))
+                request.RequestBody.Scope = GetParameter<string>("scope");
+
+            return request;
+        }
     }
 }
-

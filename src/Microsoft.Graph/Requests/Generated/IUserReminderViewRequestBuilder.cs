@@ -15,17 +15,6 @@ namespace Microsoft.Graph
     /// </summary>
     public partial interface IUserReminderViewRequestBuilder
     {
-    
-        /// <summary>
-        /// Gets the StartDateTime.
-        /// </summary>
-        string StartDateTime { get; }
-    
-        /// <summary>
-        /// Gets the EndDateTime.
-        /// </summary>
-        string EndDateTime { get; }
-    
         /// <summary>
         /// Builds the request.
         /// </summary>

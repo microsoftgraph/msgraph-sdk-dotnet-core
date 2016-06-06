@@ -15,17 +15,6 @@ namespace Microsoft.Graph
     /// </summary>
     public partial interface IUserSendMailRequestBuilder
     {
-    
-        /// <summary>
-        /// Gets the Message.
-        /// </summary>
-        Message Message { get; }
-    
-        /// <summary>
-        /// Gets the SaveToSentItems.
-        /// </summary>
-        bool? SaveToSentItems { get; }
-    
         /// <summary>
         /// Builds the request.
         /// </summary>

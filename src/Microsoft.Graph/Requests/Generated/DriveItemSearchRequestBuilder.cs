@@ -9,60 +9,38 @@ namespace Microsoft.Graph
 {
     using System;
     using System.Collections.Generic;
-    using System.Text;
 
     /// <summary>
-    /// The type DriveItemSearchRequestBuilder.
+    /// The type DriveItemDeltaRequestBuilder.
     /// </summary>
-    public partial class DriveItemSearchRequestBuilder : BaseRequestBuilder, IDriveItemSearchRequestBuilder
+    public partial class DriveItemSearchRequestBuilder : BaseGetMethodRequestBuilder<IDriveItemSearchRequest>, IDriveItemSearchRequestBuilder
     {
-    
+        /// <summary>
+        /// Constructs a new <see cref="DriveItemSearchRequestBuilder"/>.
+        /// </summary>
+        /// <param name="requestUrl">The URL for the request.</param>
+        /// <param name="client">The <see cref="IBaseClient"/> for handling requests.</param>
+        /// <param name="q">A q parameter for the OData method call.</param>
         public DriveItemSearchRequestBuilder(
             string requestUrl,
             IBaseClient client,
-            string q = null)
+            string q)
             : base(requestUrl, client)
         {
-            
-            this.Q = q;
-
+            SetParameter("q", q, true);
         }
-    
+
         /// <summary>
-        /// Gets the value of Q.
+        /// A method used by the base class to construct a request class instance.
         /// </summary>
-        public string Q { get; set; }
-    
-        /// <summary>
-        /// Builds the request.
-        /// </summary>
+        /// <param name="functionUrl">The request URL to </param>
         /// <param name="options">The query and header options for the request.</param>
-        /// <returns>The built request.</returns>
-        public IDriveItemSearchRequest Request(IEnumerable<Option> options = null)
+        /// <returns>An instance of a specific request class.</returns>
+        protected override IDriveItemSearchRequest CreateRequest(string functionUrl, IEnumerable<Option> options)
         {
-        
-            var functionRequestUrl = this.RequestUrl;
-            
-            var functionParametersStringBuilder = new StringBuilder();
+            var request = new DriveItemSearchRequest(functionUrl, this.Client, options);
 
-            if (this.Q != null)
-            {
-                functionParametersStringBuilder.AppendFormat("q='{0}'", this.Q);
-            }
-            else
-            {
-                functionParametersStringBuilder.Append("q=null");
-            }
-
-            functionRequestUrl = string.Format("{0}({1})", this.RequestUrl, functionParametersStringBuilder.ToString());
-            
-            return new DriveItemSearchRequest(
-                functionRequestUrl,
-                this.Client,
-                options);
-        
+            return request;
         }
-
     }
 }
-

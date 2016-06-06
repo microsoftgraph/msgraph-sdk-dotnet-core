@@ -153,7 +153,7 @@ namespace Microsoft.Graph
         /// <param name="outlookItemToInitialize">The <see cref="OutlookItem"/> with the collection properties to initialize.</param>
         private void InitializeCollectionProperties(OutlookItem outlookItemToInitialize)
         {
-        
+
         }
     }
 }

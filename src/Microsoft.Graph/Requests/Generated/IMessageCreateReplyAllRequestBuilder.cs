@@ -15,7 +15,6 @@ namespace Microsoft.Graph
     /// </summary>
     public partial interface IMessageCreateReplyAllRequestBuilder
     {
-    
         /// <summary>
         /// Builds the request.
         /// </summary>

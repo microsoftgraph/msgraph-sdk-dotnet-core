@@ -19,30 +19,25 @@ namespace Microsoft.Graph
     /// </summary>
     public partial class UserAssignLicenseRequest : BaseRequest, IUserAssignLicenseRequest
     {
-    
         /// <summary>
         /// Constructs a new UserAssignLicenseRequest.
         /// </summary>
         public UserAssignLicenseRequest(
             string requestUrl,
             IBaseClient client,
-            IEnumerable<Option> options,
-            IEnumerable<AssignedLicense> addLicenses = null,
-            IEnumerable<Guid> removeLicenses = null)
+            IEnumerable<Option> options)
             : base(requestUrl, client, options)
         {
             this.Method = "POST";
             this.ContentType = "application/json";
             this.RequestBody = new UserAssignLicenseRequestBody();
-            this.RequestBody.AddLicenses = addLicenses;
-            this.RequestBody.RemoveLicenses = removeLicenses;
         }
-    
+
         /// <summary>
         /// Gets the request body.
         /// </summary>
         public UserAssignLicenseRequestBody RequestBody { get; private set; }
-    
+
         /// <summary>
         /// Issues the POST request.
         /// </summary>
@@ -54,15 +49,14 @@ namespace Microsoft.Graph
         /// <summary>
         /// Issues the POST request.
         /// </summary>
-        /// /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
-        /// <returns>TheUser</returns>
-        public Task<User> PostAsync(CancellationToken cancellationToken)
+        /// <param name=""cancellationToken"">The <see cref=""CancellationToken""/> for the request.</param>
+        /// <returns>The task to await for async call.</returns>
+        public Task<User> PostAsync(
+            CancellationToken cancellationToken)
         {
-    
             return this.SendAsync<User>(this.RequestBody, cancellationToken);
-    
         }
-    
+
         /// <summary>
         /// Adds the specified expand value to the request.
         /// </summary>
@@ -84,6 +78,5 @@ namespace Microsoft.Graph
             this.QueryOptions.Add(new QueryOption("$select", value));
             return this;
         }
-    
     }
 }

@@ -9,56 +9,41 @@ namespace Microsoft.Graph
 {
     using System;
     using System.Collections.Generic;
-    using System.Text;
 
     /// <summary>
-    /// The type DirectoryObjectCheckMemberGroupsRequestBuilder.
+    /// The type DriveItemDeltaRequestBuilder.
     /// </summary>
-    public partial class DirectoryObjectCheckMemberGroupsRequestBuilder : BaseRequestBuilder, IDirectoryObjectCheckMemberGroupsRequestBuilder
+    public partial class DirectoryObjectCheckMemberGroupsRequestBuilder : BasePostMethodRequestBuilder<IDirectoryObjectCheckMemberGroupsRequest>, IDirectoryObjectCheckMemberGroupsRequestBuilder
     {
-    
+        /// <summary>
+        /// Constructs a new <see cref="DirectoryObjectCheckMemberGroupsRequestBuilder"/>.
+        /// </summary>
+        /// <param name="requestUrl">The URL for the request.</param>
+        /// <param name="client">The <see cref="IBaseClient"/> for handling requests.</param>
+        /// <param name="groupIds">A groupIds parameter for the OData method call.</param>
         public DirectoryObjectCheckMemberGroupsRequestBuilder(
             string requestUrl,
             IBaseClient client,
             IEnumerable<string> groupIds)
             : base(requestUrl, client)
         {
-            
-            this.GroupIds = groupIds;
-
+            SetParameter("groupIds", groupIds, false);
         }
-    
+
         /// <summary>
-        /// Gets the value of GroupIds.
+        /// A method used by the base class to construct a request class instance.
         /// </summary>
-        public IEnumerable<string> GroupIds { get; set; }
-    
-        /// <summary>
-        /// Builds the request.
-        /// </summary>
+        /// <param name="functionUrl">The request URL to </param>
         /// <param name="options">The query and header options for the request.</param>
-        /// <returns>The built request.</returns>
-        public IDirectoryObjectCheckMemberGroupsRequest Request(IEnumerable<Option> options = null)
+        /// <returns>An instance of a specific request class.</returns>
+        protected override IDirectoryObjectCheckMemberGroupsRequest CreateRequest(string functionUrl, IEnumerable<Option> options)
         {
-        
-            if (this.GroupIds == null)
-            {
-                throw new ServiceException(
-                    new Error
-                    {
-                        Code = "invalidRequest",
-                        Message = "groupIds is a required parameter for this method request.",
-                    });
-            }
-                
-            return new DirectoryObjectCheckMemberGroupsRequest(
-                this.RequestUrl,
-                this.Client,
-                options,
-                this.GroupIds);
-        
-        }
+            var request = new DirectoryObjectCheckMemberGroupsRequest(functionUrl, this.Client, options);
 
+            if (HasParameter("groupIds"))
+                request.RequestBody.GroupIds = GetParameter<IEnumerable<string>>("groupIds");
+
+            return request;
+        }
     }
 }
-

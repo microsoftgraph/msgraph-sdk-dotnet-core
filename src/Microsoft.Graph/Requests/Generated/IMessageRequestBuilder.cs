@@ -29,6 +29,12 @@ namespace Microsoft.Graph
         new IMessageRequest Request(IEnumerable<Option> options);
         
         /// <summary>
+        /// Gets the request builder for Extensions.
+        /// </summary>
+        /// <returns>The <see cref="IMessageExtensionsCollectionRequestBuilder"/>.</returns>
+        IMessageExtensionsCollectionRequestBuilder Extensions { get; }
+
+        /// <summary>
         /// Gets the request builder for Attachments.
         /// </summary>
         /// <returns>The <see cref="IMessageAttachmentsCollectionRequestBuilder"/>.</returns>

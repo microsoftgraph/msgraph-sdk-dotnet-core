@@ -153,10 +153,10 @@ namespace Microsoft.Graph
         /// <param name="conversationThreadToInitialize">The <see cref="ConversationThread"/> with the collection properties to initialize.</param>
         private void InitializeCollectionProperties(ConversationThread conversationThreadToInitialize)
         {
-        
+
             if (conversationThreadToInitialize != null && conversationThreadToInitialize.AdditionalData != null)
             {
-        
+
                 if (conversationThreadToInitialize.Posts != null && conversationThreadToInitialize.Posts.CurrentPage != null)
                 {
                     conversationThreadToInitialize.Posts.AdditionalData = conversationThreadToInitialize.AdditionalData;
@@ -172,10 +172,10 @@ namespace Microsoft.Graph
                             nextPageLinkString);
                     }
                 }
-        
+
             }
 
-        
+
         }
     }
 }

@@ -9,54 +9,47 @@ namespace Microsoft.Graph
 {
     using System;
     using System.Collections.Generic;
-    using System.Text;
 
     /// <summary>
-    /// The type DriveItemCopyRequestBuilder.
+    /// The type DriveItemDeltaRequestBuilder.
     /// </summary>
-    public partial class DriveItemCopyRequestBuilder : BaseRequestBuilder, IDriveItemCopyRequestBuilder
+    public partial class DriveItemCopyRequestBuilder : BasePostMethodRequestBuilder<IDriveItemCopyRequest>, IDriveItemCopyRequestBuilder
     {
-    
+        /// <summary>
+        /// Constructs a new <see cref="DriveItemCopyRequestBuilder"/>.
+        /// </summary>
+        /// <param name="requestUrl">The URL for the request.</param>
+        /// <param name="client">The <see cref="IBaseClient"/> for handling requests.</param>
+        /// <param name="name">A name parameter for the OData method call.</param>
+        /// <param name="parentReference">A parentReference parameter for the OData method call.</param>
         public DriveItemCopyRequestBuilder(
             string requestUrl,
             IBaseClient client,
-            string name = null,
-            ItemReference parentReference = null)
+            string name,
+            ItemReference parentReference)
             : base(requestUrl, client)
         {
-            
-            this.Name = name;
-            this.ParentReference = parentReference;
-
+            SetParameter("name", name, true);
+            SetParameter("parentReference", parentReference, true);
         }
-    
+
         /// <summary>
-        /// Gets the value of Name.
+        /// A method used by the base class to construct a request class instance.
         /// </summary>
-        public string Name { get; set; }
-    
-        /// <summary>
-        /// Gets the value of ParentReference.
-        /// </summary>
-        public ItemReference ParentReference { get; set; }
-    
-        /// <summary>
-        /// Builds the request.
-        /// </summary>
+        /// <param name="functionUrl">The request URL to </param>
         /// <param name="options">The query and header options for the request.</param>
-        /// <returns>The built request.</returns>
-        public IDriveItemCopyRequest Request(IEnumerable<Option> options = null)
+        /// <returns>An instance of a specific request class.</returns>
+        protected override IDriveItemCopyRequest CreateRequest(string functionUrl, IEnumerable<Option> options)
         {
-                
-            return new DriveItemCopyRequest(
-                this.RequestUrl,
-                this.Client,
-                options,
-                this.Name,
-                this.ParentReference);
-        
-        }
+            var request = new DriveItemCopyRequest(functionUrl, this.Client, options);
 
+            if (HasParameter("name"))
+                request.RequestBody.Name = GetParameter<string>("name");
+
+            if (HasParameter("parentReference"))
+                request.RequestBody.ParentReference = GetParameter<ItemReference>("parentReference");
+
+            return request;
+        }
     }
 }
-

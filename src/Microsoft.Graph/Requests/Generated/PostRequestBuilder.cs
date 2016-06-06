@@ -48,6 +48,18 @@ namespace Microsoft.Graph
         }
         
         /// <summary>
+        /// Gets the request builder for Extensions.
+        /// </summary>
+        /// <returns>The <see cref="IPostExtensionsCollectionRequestBuilder"/>.</returns>
+        public IPostExtensionsCollectionRequestBuilder Extensions
+        {
+            get
+            {
+                return new PostExtensionsCollectionRequestBuilder(this.AppendSegmentToRequestUrl("extensions"), this.Client);
+            }
+        }
+
+        /// <summary>
         /// Gets the request builder for InReplyTo.
         /// </summary>
         /// <returns>The <see cref="IPostRequestBuilder"/>.</returns>

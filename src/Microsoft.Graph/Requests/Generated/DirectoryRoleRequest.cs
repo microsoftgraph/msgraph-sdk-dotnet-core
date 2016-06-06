@@ -126,37 +126,15 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Adds the specified expand value to the request.
-        /// </summary>
-        /// <param name="value">The expand value.</param>
-        /// <returns>The request object to send.</returns>
-        public IDirectoryRoleRequest Expand(string value)
-        {
-            this.QueryOptions.Add(new QueryOption("$expand", value));
-            return this;
-        }
-
-        /// <summary>
-        /// Adds the specified select value to the request.
-        /// </summary>
-        /// <param name="value">The select value.</param>
-        /// <returns>The request object to send.</returns>
-        public IDirectoryRoleRequest Select(string value)
-        {
-            this.QueryOptions.Add(new QueryOption("$select", value));
-            return this;
-        }
-
-        /// <summary>
         /// Initializes any collection properties after deserialization, like next requests for paging.
         /// </summary>
         /// <param name="directoryRoleToInitialize">The <see cref="DirectoryRole"/> with the collection properties to initialize.</param>
         private void InitializeCollectionProperties(DirectoryRole directoryRoleToInitialize)
         {
-        
+
             if (directoryRoleToInitialize != null && directoryRoleToInitialize.AdditionalData != null)
             {
-        
+
                 if (directoryRoleToInitialize.Members != null && directoryRoleToInitialize.Members.CurrentPage != null)
                 {
                     directoryRoleToInitialize.Members.AdditionalData = directoryRoleToInitialize.AdditionalData;
@@ -172,10 +150,10 @@ namespace Microsoft.Graph
                             nextPageLinkString);
                     }
                 }
-        
+
             }
 
-        
+
         }
     }
 }

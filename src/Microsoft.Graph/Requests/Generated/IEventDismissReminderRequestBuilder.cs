@@ -15,7 +15,6 @@ namespace Microsoft.Graph
     /// </summary>
     public partial interface IEventDismissReminderRequestBuilder
     {
-    
         /// <summary>
         /// Builds the request.
         /// </summary>

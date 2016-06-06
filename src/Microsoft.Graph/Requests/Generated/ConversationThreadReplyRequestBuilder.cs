@@ -9,56 +9,41 @@ namespace Microsoft.Graph
 {
     using System;
     using System.Collections.Generic;
-    using System.Text;
 
     /// <summary>
-    /// The type ConversationThreadReplyRequestBuilder.
+    /// The type DriveItemDeltaRequestBuilder.
     /// </summary>
-    public partial class ConversationThreadReplyRequestBuilder : BaseRequestBuilder, IConversationThreadReplyRequestBuilder
+    public partial class ConversationThreadReplyRequestBuilder : BasePostMethodRequestBuilder<IConversationThreadReplyRequest>, IConversationThreadReplyRequestBuilder
     {
-    
+        /// <summary>
+        /// Constructs a new <see cref="ConversationThreadReplyRequestBuilder"/>.
+        /// </summary>
+        /// <param name="requestUrl">The URL for the request.</param>
+        /// <param name="client">The <see cref="IBaseClient"/> for handling requests.</param>
+        /// <param name="post">A post parameter for the OData method call.</param>
         public ConversationThreadReplyRequestBuilder(
             string requestUrl,
             IBaseClient client,
             Post post)
             : base(requestUrl, client)
         {
-            
-            this.Post = post;
-
+            SetParameter("post", post, false);
         }
-    
+
         /// <summary>
-        /// Gets the value of Post.
+        /// A method used by the base class to construct a request class instance.
         /// </summary>
-        public Post Post { get; set; }
-    
-        /// <summary>
-        /// Builds the request.
-        /// </summary>
+        /// <param name="functionUrl">The request URL to </param>
         /// <param name="options">The query and header options for the request.</param>
-        /// <returns>The built request.</returns>
-        public IConversationThreadReplyRequest Request(IEnumerable<Option> options = null)
+        /// <returns>An instance of a specific request class.</returns>
+        protected override IConversationThreadReplyRequest CreateRequest(string functionUrl, IEnumerable<Option> options)
         {
-        
-            if (this.Post == null)
-            {
-                throw new ServiceException(
-                    new Error
-                    {
-                        Code = "invalidRequest",
-                        Message = "post is a required parameter for this method request.",
-                    });
-            }
-                
-            return new ConversationThreadReplyRequest(
-                this.RequestUrl,
-                this.Client,
-                options,
-                this.Post);
-        
-        }
+            var request = new ConversationThreadReplyRequest(functionUrl, this.Client, options);
 
+            if (HasParameter("post"))
+                request.RequestBody.Post = GetParameter<Post>("post");
+
+            return request;
+        }
     }
 }
-

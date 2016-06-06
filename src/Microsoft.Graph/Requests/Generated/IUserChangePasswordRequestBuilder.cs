@@ -15,17 +15,6 @@ namespace Microsoft.Graph
     /// </summary>
     public partial interface IUserChangePasswordRequestBuilder
     {
-    
-        /// <summary>
-        /// Gets the CurrentPassword.
-        /// </summary>
-        string CurrentPassword { get; }
-    
-        /// <summary>
-        /// Gets the NewPassword.
-        /// </summary>
-        string NewPassword { get; }
-    
         /// <summary>
         /// Builds the request.
         /// </summary>

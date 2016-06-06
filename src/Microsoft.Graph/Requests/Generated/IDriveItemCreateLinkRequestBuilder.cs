@@ -15,17 +15,6 @@ namespace Microsoft.Graph
     /// </summary>
     public partial interface IDriveItemCreateLinkRequestBuilder
     {
-    
-        /// <summary>
-        /// Gets the Type.
-        /// </summary>
-        string Type { get; }
-    
-        /// <summary>
-        /// Gets the Scope.
-        /// </summary>
-        string Scope { get; }
-    
         /// <summary>
         /// Builds the request.
         /// </summary>

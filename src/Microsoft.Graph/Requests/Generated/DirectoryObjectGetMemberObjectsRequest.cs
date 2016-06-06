@@ -19,28 +19,25 @@ namespace Microsoft.Graph
     /// </summary>
     public partial class DirectoryObjectGetMemberObjectsRequest : BaseRequest, IDirectoryObjectGetMemberObjectsRequest
     {
-    
         /// <summary>
         /// Constructs a new DirectoryObjectGetMemberObjectsRequest.
         /// </summary>
         public DirectoryObjectGetMemberObjectsRequest(
             string requestUrl,
             IBaseClient client,
-            IEnumerable<Option> options,
-            bool? securityEnabledOnly = null)
+            IEnumerable<Option> options)
             : base(requestUrl, client, options)
         {
             this.Method = "POST";
             this.ContentType = "application/json";
             this.RequestBody = new DirectoryObjectGetMemberObjectsRequestBody();
-            this.RequestBody.SecurityEnabledOnly = securityEnabledOnly;
         }
-    
+
         /// <summary>
         /// Gets the request body.
         /// </summary>
         public DirectoryObjectGetMemberObjectsRequestBody RequestBody { get; private set; }
-    
+
         /// <summary>
         /// Issues the POST request.
         /// </summary>
@@ -52,11 +49,11 @@ namespace Microsoft.Graph
         /// <summary>
         /// Issues the POST request.
         /// </summary>
-        /// /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
-        /// <returns>TheIDirectoryObjectGetMemberObjectsCollectionPage</returns>
-        public async Task<IDirectoryObjectGetMemberObjectsCollectionPage> PostAsync(CancellationToken cancellationToken)
+        /// <param name=""cancellationToken"">The <see cref=""CancellationToken""/> for the request.</param>
+        /// <returns>The task to await for async call.</returns>
+        public async Task<IDirectoryObjectGetMemberObjectsCollectionPage> PostAsync(
+            CancellationToken cancellationToken)
         {
-    
             var response = await this.SendAsync<DirectoryObjectGetMemberObjectsCollectionResponse>(this.RequestBody, cancellationToken).ConfigureAwait(false);
             if (response != null && response.Value != null && response.Value.CurrentPage != null)
             {
@@ -81,9 +78,8 @@ namespace Microsoft.Graph
             }
 
             return null;
-    
         }
-    
+
         /// <summary>
         /// Adds the specified expand value to the request.
         /// </summary>
@@ -105,7 +101,7 @@ namespace Microsoft.Graph
             this.QueryOptions.Add(new QueryOption("$select", value));
             return this;
         }
-    
+
         /// <summary>
         /// Adds the specified top value to the request.
         /// </summary>
@@ -116,7 +112,7 @@ namespace Microsoft.Graph
             this.QueryOptions.Add(new QueryOption("$top", value.ToString()));
             return this;
         }
-		
+
         /// <summary>
         /// Adds the specified filter value to the request.
         /// </summary>
@@ -149,6 +145,5 @@ namespace Microsoft.Graph
             this.QueryOptions.Add(new QueryOption("$orderby", value));
             return this;
         }
-    
     }
 }

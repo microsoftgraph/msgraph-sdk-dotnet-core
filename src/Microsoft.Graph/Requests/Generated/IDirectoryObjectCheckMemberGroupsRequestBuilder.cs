@@ -15,12 +15,6 @@ namespace Microsoft.Graph
     /// </summary>
     public partial interface IDirectoryObjectCheckMemberGroupsRequestBuilder
     {
-    
-        /// <summary>
-        /// Gets the GroupIds.
-        /// </summary>
-        IEnumerable<string> GroupIds { get; }
-    
         /// <summary>
         /// Builds the request.
         /// </summary>

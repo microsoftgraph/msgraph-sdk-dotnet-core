@@ -29,6 +29,12 @@ namespace Microsoft.Graph
         new IPostRequest Request(IEnumerable<Option> options);
         
         /// <summary>
+        /// Gets the request builder for Extensions.
+        /// </summary>
+        /// <returns>The <see cref="IPostExtensionsCollectionRequestBuilder"/>.</returns>
+        IPostExtensionsCollectionRequestBuilder Extensions { get; }
+
+        /// <summary>
         /// Gets the request builder for InReplyTo.
         /// </summary>
         /// <returns>The <see cref="IPostRequestBuilder"/>.</returns>

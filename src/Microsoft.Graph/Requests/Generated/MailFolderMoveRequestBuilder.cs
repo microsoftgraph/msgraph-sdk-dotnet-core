@@ -9,46 +9,41 @@ namespace Microsoft.Graph
 {
     using System;
     using System.Collections.Generic;
-    using System.Text;
 
     /// <summary>
-    /// The type MailFolderMoveRequestBuilder.
+    /// The type DriveItemDeltaRequestBuilder.
     /// </summary>
-    public partial class MailFolderMoveRequestBuilder : BaseRequestBuilder, IMailFolderMoveRequestBuilder
+    public partial class MailFolderMoveRequestBuilder : BasePostMethodRequestBuilder<IMailFolderMoveRequest>, IMailFolderMoveRequestBuilder
     {
-    
+        /// <summary>
+        /// Constructs a new <see cref="MailFolderMoveRequestBuilder"/>.
+        /// </summary>
+        /// <param name="requestUrl">The URL for the request.</param>
+        /// <param name="client">The <see cref="IBaseClient"/> for handling requests.</param>
+        /// <param name="destinationId">A destinationId parameter for the OData method call.</param>
         public MailFolderMoveRequestBuilder(
             string requestUrl,
             IBaseClient client,
-            string destinationId = null)
+            string destinationId)
             : base(requestUrl, client)
         {
-            
-            this.DestinationId = destinationId;
-
+            SetParameter("destinationId", destinationId, true);
         }
-    
+
         /// <summary>
-        /// Gets the value of DestinationId.
+        /// A method used by the base class to construct a request class instance.
         /// </summary>
-        public string DestinationId { get; set; }
-    
-        /// <summary>
-        /// Builds the request.
-        /// </summary>
+        /// <param name="functionUrl">The request URL to </param>
         /// <param name="options">The query and header options for the request.</param>
-        /// <returns>The built request.</returns>
-        public IMailFolderMoveRequest Request(IEnumerable<Option> options = null)
+        /// <returns>An instance of a specific request class.</returns>
+        protected override IMailFolderMoveRequest CreateRequest(string functionUrl, IEnumerable<Option> options)
         {
-                
-            return new MailFolderMoveRequest(
-                this.RequestUrl,
-                this.Client,
-                options,
-                this.DestinationId);
-        
-        }
+            var request = new MailFolderMoveRequest(functionUrl, this.Client, options);
 
+            if (HasParameter("destinationId"))
+                request.RequestBody.DestinationId = GetParameter<string>("destinationId");
+
+            return request;
+        }
     }
 }
-

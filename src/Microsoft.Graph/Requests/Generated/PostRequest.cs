@@ -153,10 +153,26 @@ namespace Microsoft.Graph
         /// <param name="postToInitialize">The <see cref="Post"/> with the collection properties to initialize.</param>
         private void InitializeCollectionProperties(Post postToInitialize)
         {
-        
+
             if (postToInitialize != null && postToInitialize.AdditionalData != null)
             {
-        
+
+                if (postToInitialize.Extensions != null && postToInitialize.Extensions.CurrentPage != null)
+                {
+                    postToInitialize.Extensions.AdditionalData = postToInitialize.AdditionalData;
+
+                    object nextPageLink;
+                    postToInitialize.AdditionalData.TryGetValue("extensions@odata.nextLink", out nextPageLink);
+                    var nextPageLinkString = nextPageLink as string;
+
+                    if (!string.IsNullOrEmpty(nextPageLinkString))
+                    {
+                        postToInitialize.Extensions.InitializeNextPageRequest(
+                            this.Client,
+                            nextPageLinkString);
+                    }
+                }
+
                 if (postToInitialize.Attachments != null && postToInitialize.Attachments.CurrentPage != null)
                 {
                     postToInitialize.Attachments.AdditionalData = postToInitialize.AdditionalData;
@@ -172,10 +188,10 @@ namespace Microsoft.Graph
                             nextPageLinkString);
                     }
                 }
-        
+
             }
 
-        
+
         }
     }
 }
