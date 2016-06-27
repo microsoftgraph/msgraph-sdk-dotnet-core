@@ -8,6 +8,7 @@ namespace Microsoft.Graph.Test.Requests.Generated
     using System.Collections.Generic;
     using System.IO;
     using System.Net.Http;
+    using System.Threading;
     using System.Threading.Tasks;
 
     using Microsoft.Graph;
@@ -56,7 +57,9 @@ namespace Microsoft.Graph.Test.Requests.Generated
                     provider => provider.SendAsync(
                         It.Is<HttpRequestMessage>(
                             request => request.RequestUri.ToString().StartsWith(requestUrl)
-                                && request.Method == HttpMethod.Get)))
+                                && request.Method == HttpMethod.Get),
+                        HttpCompletionOption.ResponseContentRead,
+                        CancellationToken.None))
                     .Returns(Task.FromResult(httpResponseMessage));
 
                 var calendarsCollectionPage = new UserCalendarsCollectionPage
@@ -111,7 +114,9 @@ namespace Microsoft.Graph.Test.Requests.Generated
                     provider => provider.SendAsync(
                         It.Is<HttpRequestMessage>(
                             request => request.RequestUri.ToString().StartsWith(requestUrl)
-                                && request.Method == HttpMethod.Post)))
+                                && request.Method == HttpMethod.Post),
+                        HttpCompletionOption.ResponseContentRead,
+                        CancellationToken.None))
                     .Returns(Task.FromResult(httpResponseMessage));
 
                 var addedCalendar = new Calendar();
@@ -148,7 +153,9 @@ namespace Microsoft.Graph.Test.Requests.Generated
                     provider => provider.SendAsync(
                         It.Is<HttpRequestMessage>(
                             request => request.RequestUri.ToString().StartsWith(requestUrl)
-                                && request.Method == HttpMethod.Post)))
+                                && request.Method == HttpMethod.Post),
+                        HttpCompletionOption.ResponseContentRead,
+                        CancellationToken.None))
                     .Returns(Task.FromResult(httpResponseMessage));
 
                 var attachmentToAdd = new FileAttachment();

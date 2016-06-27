@@ -7,6 +7,7 @@ namespace Microsoft.Graph.Test.Requests.Generated
     using System;
     using System.IO;
     using System.Net.Http;
+    using System.Threading;
     using System.Threading.Tasks;
 
     using Microsoft.Graph;
@@ -50,7 +51,9 @@ namespace Microsoft.Graph.Test.Requests.Generated
                         It.Is<HttpRequestMessage>(
                             request => request.RequestUri.ToString().Equals(requestUrl)
                                 && request.Method == HttpMethod.Post
-                                && string.Equals(request.Content.Headers.ContentType.ToString(), "application/json"))))
+                                && string.Equals(request.Content.Headers.ContentType.ToString(), "application/json")),
+                        HttpCompletionOption.ResponseContentRead,
+                        CancellationToken.None))
                     .Returns(Task.FromResult(httpResponseMessage));
 
                 var userToCreate = new User { Id = "id" };

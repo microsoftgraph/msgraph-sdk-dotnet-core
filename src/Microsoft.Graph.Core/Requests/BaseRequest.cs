@@ -210,7 +210,7 @@ namespace Microsoft.Graph
                     }
                 }
 
-                return await this.Client.HttpProvider.SendAsync(request).ConfigureAwait(false);
+                return await this.Client.HttpProvider.SendAsync(request, completionOption, cancellationToken).ConfigureAwait(false);
             }
         }
 

@@ -8,6 +8,7 @@ namespace Microsoft.Graph.Test.Requests.Generated
     using System.Collections.Generic;
     using System.IO;
     using System.Net.Http;
+    using System.Threading;
     using System.Threading.Tasks;
 
     using Microsoft.Graph.Core;
@@ -177,7 +178,9 @@ namespace Microsoft.Graph.Test.Requests.Generated
                     provider => provider.SendAsync(
                         It.Is<HttpRequestMessage>(
                             request => request.RequestUri.ToString().StartsWith(requestUrl)
-                                && request.Method == HttpMethod.Post)))
+                                && request.Method == HttpMethod.Post),
+                        HttpCompletionOption.ResponseContentRead,
+                        CancellationToken.None))
                     .Returns(Task.FromResult(httpResponseMessage));
 
                 var checkMemberGroupsCollectionPage = new DirectoryObjectCheckMemberGroupsCollectionPage
@@ -236,7 +239,9 @@ namespace Microsoft.Graph.Test.Requests.Generated
                     provider => provider.SendAsync(
                         It.Is<HttpRequestMessage>(
                             request => request.RequestUri.ToString().StartsWith(requestUrl)
-                                && request.Method == HttpMethod.Post)))
+                                && request.Method == HttpMethod.Post),
+                        HttpCompletionOption.ResponseContentRead,
+                        CancellationToken.None))
                     .Returns(Task.FromResult(httpResponseMessage));
 
                 var expectedPermission = new Permission { Id = "id", Link = new SharingLink { Type = "edit" } };
@@ -272,7 +277,9 @@ namespace Microsoft.Graph.Test.Requests.Generated
                 this.httpProvider.Setup(
                     provider => provider.SendAsync(
                         It.Is<HttpRequestMessage>(
-                            request => request.RequestUri.ToString().StartsWith(requestUrl))))
+                            request => request.RequestUri.ToString().StartsWith(requestUrl)),
+                        HttpCompletionOption.ResponseContentRead,
+                        CancellationToken.None))
                     .Returns(Task.FromResult(httpResponseMessage));
 
                 await this.graphServiceClient.Me.MailFolders.Drafts.Messages["messageId"].Send().Request().PostAsync();
