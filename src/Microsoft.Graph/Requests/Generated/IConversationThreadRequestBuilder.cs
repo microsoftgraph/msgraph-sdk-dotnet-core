@@ -9,6 +9,7 @@ namespace Microsoft.Graph
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
 
     /// <summary>
     /// The interface IConversationThreadRequestBuilder.
@@ -39,7 +40,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IConversationThreadReplyRequestBuilder"/>.</returns>
         IConversationThreadReplyRequestBuilder Reply(
-            Post post);
+            Post Post);
     
     }
 }

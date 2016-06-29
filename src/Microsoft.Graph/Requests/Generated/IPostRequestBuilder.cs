@@ -9,6 +9,7 @@ namespace Microsoft.Graph
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
 
     /// <summary>
     /// The interface IPostRequestBuilder.
@@ -51,15 +52,15 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IPostForwardRequestBuilder"/>.</returns>
         IPostForwardRequestBuilder Forward(
-            IEnumerable<Recipient> toRecipients,
-            string comment = null);
+            IEnumerable<Recipient> ToRecipients,
+            string Comment = null);
 
         /// <summary>
         /// Gets the request builder for PostReply.
         /// </summary>
         /// <returns>The <see cref="IPostReplyRequestBuilder"/>.</returns>
         IPostReplyRequestBuilder Reply(
-            Post post);
+            Post Post);
     
     }
 }

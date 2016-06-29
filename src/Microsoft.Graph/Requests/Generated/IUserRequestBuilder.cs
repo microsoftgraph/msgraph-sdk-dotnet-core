@@ -9,6 +9,7 @@ namespace Microsoft.Graph
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
 
     /// <summary>
     /// The interface IUserRequestBuilder.
@@ -163,16 +164,16 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IUserSendMailRequestBuilder"/>.</returns>
         IUserSendMailRequestBuilder SendMail(
-            Message message,
-            bool? saveToSentItems = null);
+            Message Message,
+            bool? SaveToSentItems = null);
 
         /// <summary>
         /// Gets the request builder for UserReminderView.
         /// </summary>
         /// <returns>The <see cref="IUserReminderViewRequestBuilder"/>.</returns>
         IUserReminderViewRequestBuilder ReminderView(
-            string startDateTime,
-            string endDateTime = null);
+            string StartDateTime,
+            string EndDateTime = null);
     
     }
 }

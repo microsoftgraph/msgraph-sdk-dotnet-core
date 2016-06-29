@@ -9,6 +9,7 @@ namespace Microsoft.Graph
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
 
     /// <summary>
     /// The type MessageRequestBuilder.
@@ -76,12 +77,12 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IMessageCopyRequestBuilder"/>.</returns>
         public IMessageCopyRequestBuilder Copy(
-            string destinationId = null)
+            string DestinationId = null)
         {
             return new MessageCopyRequestBuilder(
                 this.AppendSegmentToRequestUrl("microsoft.graph.copy"),
                 this.Client,
-                destinationId);
+                DestinationId);
         }
 
         /// <summary>
@@ -89,12 +90,12 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IMessageMoveRequestBuilder"/>.</returns>
         public IMessageMoveRequestBuilder Move(
-            string destinationId = null)
+            string DestinationId = null)
         {
             return new MessageMoveRequestBuilder(
                 this.AppendSegmentToRequestUrl("microsoft.graph.move"),
                 this.Client,
-                destinationId);
+                DestinationId);
         }
 
         /// <summary>
@@ -135,12 +136,12 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IMessageReplyRequestBuilder"/>.</returns>
         public IMessageReplyRequestBuilder Reply(
-            string comment = null)
+            string Comment = null)
         {
             return new MessageReplyRequestBuilder(
                 this.AppendSegmentToRequestUrl("microsoft.graph.reply"),
                 this.Client,
-                comment);
+                Comment);
         }
 
         /// <summary>
@@ -148,12 +149,12 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IMessageReplyAllRequestBuilder"/>.</returns>
         public IMessageReplyAllRequestBuilder ReplyAll(
-            string comment = null)
+            string Comment = null)
         {
             return new MessageReplyAllRequestBuilder(
                 this.AppendSegmentToRequestUrl("microsoft.graph.replyAll"),
                 this.Client,
-                comment);
+                Comment);
         }
 
         /// <summary>
@@ -161,14 +162,14 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IMessageForwardRequestBuilder"/>.</returns>
         public IMessageForwardRequestBuilder Forward(
-            string comment = null,
-            IEnumerable<Recipient> toRecipients = null)
+            string Comment = null,
+            IEnumerable<Recipient> ToRecipients = null)
         {
             return new MessageForwardRequestBuilder(
                 this.AppendSegmentToRequestUrl("microsoft.graph.forward"),
                 this.Client,
-                comment,
-                toRecipients);
+                Comment,
+                ToRecipients);
         }
 
         /// <summary>

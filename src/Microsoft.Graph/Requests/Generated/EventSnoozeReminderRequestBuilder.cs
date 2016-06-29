@@ -9,6 +9,7 @@ namespace Microsoft.Graph
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
 
     /// <summary>
     /// The type DriveItemDeltaRequestBuilder.
@@ -20,14 +21,14 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="requestUrl">The URL for the request.</param>
         /// <param name="client">The <see cref="IBaseClient"/> for handling requests.</param>
-        /// <param name="newReminderTime">A newReminderTime parameter for the OData method call.</param>
+        /// <param name="NewReminderTime">A NewReminderTime parameter for the OData method call.</param>
         public EventSnoozeReminderRequestBuilder(
             string requestUrl,
             IBaseClient client,
-            DateTimeTimeZone newReminderTime)
+            DateTimeTimeZone NewReminderTime)
             : base(requestUrl, client)
         {
-            SetParameter("newReminderTime", newReminderTime, false);
+            SetParameter("newReminderTime", NewReminderTime, false);
         }
 
         /// <summary>

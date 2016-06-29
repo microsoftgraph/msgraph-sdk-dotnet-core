@@ -9,6 +9,7 @@ namespace Microsoft.Graph
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
 
     /// <summary>
     /// The type DriveItemDeltaRequestBuilder.
@@ -20,17 +21,17 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="requestUrl">The URL for the request.</param>
         /// <param name="client">The <see cref="IBaseClient"/> for handling requests.</param>
-        /// <param name="startDateTime">A startDateTime parameter for the OData method call.</param>
-        /// <param name="endDateTime">A endDateTime parameter for the OData method call.</param>
+        /// <param name="StartDateTime">A StartDateTime parameter for the OData method call.</param>
+        /// <param name="EndDateTime">A EndDateTime parameter for the OData method call.</param>
         public UserReminderViewRequestBuilder(
             string requestUrl,
             IBaseClient client,
-            string startDateTime,
-            string endDateTime)
+            string StartDateTime,
+            string EndDateTime)
             : base(requestUrl, client)
         {
-            SetParameter("startDateTime", startDateTime, false);
-            SetParameter("endDateTime", endDateTime, true);
+            SetParameter("startDateTime", StartDateTime, false);
+            SetParameter("endDateTime", EndDateTime, true);
         }
 
         /// <summary>

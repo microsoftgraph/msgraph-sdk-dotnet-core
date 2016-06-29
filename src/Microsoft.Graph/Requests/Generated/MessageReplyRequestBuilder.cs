@@ -9,6 +9,7 @@ namespace Microsoft.Graph
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
 
     /// <summary>
     /// The type DriveItemDeltaRequestBuilder.
@@ -20,14 +21,14 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="requestUrl">The URL for the request.</param>
         /// <param name="client">The <see cref="IBaseClient"/> for handling requests.</param>
-        /// <param name="comment">A comment parameter for the OData method call.</param>
+        /// <param name="Comment">A Comment parameter for the OData method call.</param>
         public MessageReplyRequestBuilder(
             string requestUrl,
             IBaseClient client,
-            string comment)
+            string Comment)
             : base(requestUrl, client)
         {
-            SetParameter("comment", comment, true);
+            SetParameter("comment", Comment, true);
         }
 
         /// <summary>

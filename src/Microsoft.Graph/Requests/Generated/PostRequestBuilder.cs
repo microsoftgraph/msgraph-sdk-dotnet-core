@@ -9,6 +9,7 @@ namespace Microsoft.Graph
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
 
     /// <summary>
     /// The type PostRequestBuilder.
@@ -88,14 +89,14 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IPostForwardRequestBuilder"/>.</returns>
         public IPostForwardRequestBuilder Forward(
-            IEnumerable<Recipient> toRecipients,
-            string comment = null)
+            IEnumerable<Recipient> ToRecipients,
+            string Comment = null)
         {
             return new PostForwardRequestBuilder(
                 this.AppendSegmentToRequestUrl("microsoft.graph.forward"),
                 this.Client,
-                toRecipients,
-                comment);
+                ToRecipients,
+                Comment);
         }
 
         /// <summary>
@@ -103,12 +104,12 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IPostReplyRequestBuilder"/>.</returns>
         public IPostReplyRequestBuilder Reply(
-            Post post)
+            Post Post)
         {
             return new PostReplyRequestBuilder(
                 this.AppendSegmentToRequestUrl("microsoft.graph.reply"),
                 this.Client,
-                post);
+                Post);
         }
     
     }

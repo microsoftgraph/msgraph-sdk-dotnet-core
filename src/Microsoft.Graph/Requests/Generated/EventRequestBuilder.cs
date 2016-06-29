@@ -9,6 +9,7 @@ namespace Microsoft.Graph
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
 
     /// <summary>
     /// The type EventRequestBuilder.
@@ -100,14 +101,14 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IEventAcceptRequestBuilder"/>.</returns>
         public IEventAcceptRequestBuilder Accept(
-            string comment = null,
-            bool? sendResponse = null)
+            string Comment = null,
+            bool? SendResponse = null)
         {
             return new EventAcceptRequestBuilder(
                 this.AppendSegmentToRequestUrl("microsoft.graph.accept"),
                 this.Client,
-                comment,
-                sendResponse);
+                Comment,
+                SendResponse);
         }
 
         /// <summary>
@@ -115,14 +116,14 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IEventDeclineRequestBuilder"/>.</returns>
         public IEventDeclineRequestBuilder Decline(
-            string comment = null,
-            bool? sendResponse = null)
+            string Comment = null,
+            bool? SendResponse = null)
         {
             return new EventDeclineRequestBuilder(
                 this.AppendSegmentToRequestUrl("microsoft.graph.decline"),
                 this.Client,
-                comment,
-                sendResponse);
+                Comment,
+                SendResponse);
         }
 
         /// <summary>
@@ -130,14 +131,14 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IEventTentativelyAcceptRequestBuilder"/>.</returns>
         public IEventTentativelyAcceptRequestBuilder TentativelyAccept(
-            string comment = null,
-            bool? sendResponse = null)
+            string Comment = null,
+            bool? SendResponse = null)
         {
             return new EventTentativelyAcceptRequestBuilder(
                 this.AppendSegmentToRequestUrl("microsoft.graph.tentativelyAccept"),
                 this.Client,
-                comment,
-                sendResponse);
+                Comment,
+                SendResponse);
         }
 
         /// <summary>
@@ -145,12 +146,12 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IEventSnoozeReminderRequestBuilder"/>.</returns>
         public IEventSnoozeReminderRequestBuilder SnoozeReminder(
-            DateTimeTimeZone newReminderTime)
+            DateTimeTimeZone NewReminderTime)
         {
             return new EventSnoozeReminderRequestBuilder(
                 this.AppendSegmentToRequestUrl("microsoft.graph.snoozeReminder"),
                 this.Client,
-                newReminderTime);
+                NewReminderTime);
         }
 
         /// <summary>

@@ -9,6 +9,7 @@ namespace Microsoft.Graph
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
 
     /// <summary>
     /// The type DriveItemDeltaRequestBuilder.
@@ -20,14 +21,14 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="requestUrl">The URL for the request.</param>
         /// <param name="client">The <see cref="IBaseClient"/> for handling requests.</param>
-        /// <param name="post">A post parameter for the OData method call.</param>
+        /// <param name="Post">A Post parameter for the OData method call.</param>
         public PostReplyRequestBuilder(
             string requestUrl,
             IBaseClient client,
-            Post post)
+            Post Post)
             : base(requestUrl, client)
         {
-            SetParameter("post", post, false);
+            SetParameter("post", Post, false);
         }
 
         /// <summary>

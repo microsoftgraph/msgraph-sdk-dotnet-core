@@ -9,6 +9,7 @@ namespace Microsoft.Graph
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
 
     /// <summary>
     /// The type DriveItemDeltaRequestBuilder.
@@ -20,17 +21,17 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="requestUrl">The URL for the request.</param>
         /// <param name="client">The <see cref="IBaseClient"/> for handling requests.</param>
-        /// <param name="message">A message parameter for the OData method call.</param>
-        /// <param name="saveToSentItems">A saveToSentItems parameter for the OData method call.</param>
+        /// <param name="Message">A Message parameter for the OData method call.</param>
+        /// <param name="SaveToSentItems">A SaveToSentItems parameter for the OData method call.</param>
         public UserSendMailRequestBuilder(
             string requestUrl,
             IBaseClient client,
-            Message message,
-            bool? saveToSentItems)
+            Message Message,
+            bool? SaveToSentItems)
             : base(requestUrl, client)
         {
-            SetParameter("message", message, false);
-            SetParameter("saveToSentItems", saveToSentItems, true);
+            SetParameter("message", Message, false);
+            SetParameter("saveToSentItems", SaveToSentItems, true);
         }
 
         /// <summary>

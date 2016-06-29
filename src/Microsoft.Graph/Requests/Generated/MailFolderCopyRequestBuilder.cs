@@ -9,6 +9,7 @@ namespace Microsoft.Graph
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
 
     /// <summary>
     /// The type DriveItemDeltaRequestBuilder.
@@ -20,14 +21,14 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="requestUrl">The URL for the request.</param>
         /// <param name="client">The <see cref="IBaseClient"/> for handling requests.</param>
-        /// <param name="destinationId">A destinationId parameter for the OData method call.</param>
+        /// <param name="DestinationId">A DestinationId parameter for the OData method call.</param>
         public MailFolderCopyRequestBuilder(
             string requestUrl,
             IBaseClient client,
-            string destinationId)
+            string DestinationId)
             : base(requestUrl, client)
         {
-            SetParameter("destinationId", destinationId, true);
+            SetParameter("destinationId", DestinationId, true);
         }
 
         /// <summary>
