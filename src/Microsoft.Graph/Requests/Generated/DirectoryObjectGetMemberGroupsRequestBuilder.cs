@@ -12,7 +12,7 @@ namespace Microsoft.Graph
     using System.IO;
 
     /// <summary>
-    /// The type DriveItemDeltaRequestBuilder.
+    /// The type DirectoryObjectGetMemberGroupsRequestBuilder.
     /// </summary>
     public partial class DirectoryObjectGetMemberGroupsRequestBuilder : BasePostMethodRequestBuilder<IDirectoryObjectGetMemberGroupsRequest>, IDirectoryObjectGetMemberGroupsRequestBuilder
     {
@@ -28,7 +28,7 @@ namespace Microsoft.Graph
             bool? securityEnabledOnly)
             : base(requestUrl, client)
         {
-            SetParameter("securityEnabledOnly", securityEnabledOnly, true);
+            this.SetParameter("securityEnabledOnly", securityEnabledOnly, true);
         }
 
         /// <summary>
@@ -41,8 +41,10 @@ namespace Microsoft.Graph
         {
             var request = new DirectoryObjectGetMemberGroupsRequest(functionUrl, this.Client, options);
 
-            if (HasParameter("securityEnabledOnly"))
-                request.RequestBody.SecurityEnabledOnly = GetParameter<bool?>("securityEnabledOnly");
+            if (this.HasParameter("securityEnabledOnly"))
+            {
+                request.RequestBody.SecurityEnabledOnly = this.GetParameter<bool?>("securityEnabledOnly");
+            }
 
             return request;
         }

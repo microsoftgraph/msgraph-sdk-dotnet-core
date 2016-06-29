@@ -12,7 +12,7 @@ namespace Microsoft.Graph
     using System.IO;
 
     /// <summary>
-    /// The type DriveItemDeltaRequestBuilder.
+    /// The type EventSnoozeReminderRequestBuilder.
     /// </summary>
     public partial class EventSnoozeReminderRequestBuilder : BasePostMethodRequestBuilder<IEventSnoozeReminderRequest>, IEventSnoozeReminderRequestBuilder
     {
@@ -28,7 +28,7 @@ namespace Microsoft.Graph
             DateTimeTimeZone NewReminderTime)
             : base(requestUrl, client)
         {
-            SetParameter("newReminderTime", NewReminderTime, false);
+            this.SetParameter("newReminderTime", NewReminderTime, false);
         }
 
         /// <summary>
@@ -41,8 +41,10 @@ namespace Microsoft.Graph
         {
             var request = new EventSnoozeReminderRequest(functionUrl, this.Client, options);
 
-            if (HasParameter("newReminderTime"))
-                request.RequestBody.NewReminderTime = GetParameter<DateTimeTimeZone>("newReminderTime");
+            if (this.HasParameter("newReminderTime"))
+            {
+                request.RequestBody.NewReminderTime = this.GetParameter<DateTimeTimeZone>("newReminderTime");
+            }
 
             return request;
         }

@@ -12,7 +12,7 @@ namespace Microsoft.Graph
     using System.IO;
 
     /// <summary>
-    /// The type DriveItemDeltaRequestBuilder.
+    /// The type GroupResetUnseenCountRequestBuilder.
     /// </summary>
     public partial class GroupResetUnseenCountRequestBuilder : BaseGetMethodRequestBuilder<IGroupResetUnseenCountRequest>, IGroupResetUnseenCountRequestBuilder
     {

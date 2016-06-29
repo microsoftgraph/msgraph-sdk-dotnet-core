@@ -12,7 +12,7 @@ namespace Microsoft.Graph
     using System.IO;
 
     /// <summary>
-    /// The type DriveItemDeltaRequestBuilder.
+    /// The type UserSendMailRequestBuilder.
     /// </summary>
     public partial class UserSendMailRequestBuilder : BasePostMethodRequestBuilder<IUserSendMailRequest>, IUserSendMailRequestBuilder
     {
@@ -30,8 +30,8 @@ namespace Microsoft.Graph
             bool? SaveToSentItems)
             : base(requestUrl, client)
         {
-            SetParameter("message", Message, false);
-            SetParameter("saveToSentItems", SaveToSentItems, true);
+            this.SetParameter("message", Message, false);
+            this.SetParameter("saveToSentItems", SaveToSentItems, true);
         }
 
         /// <summary>
@@ -44,11 +44,15 @@ namespace Microsoft.Graph
         {
             var request = new UserSendMailRequest(functionUrl, this.Client, options);
 
-            if (HasParameter("message"))
-                request.RequestBody.Message = GetParameter<Message>("message");
+            if (this.HasParameter("message"))
+            {
+                request.RequestBody.Message = this.GetParameter<Message>("message");
+            }
 
-            if (HasParameter("saveToSentItems"))
-                request.RequestBody.SaveToSentItems = GetParameter<bool?>("saveToSentItems");
+            if (this.HasParameter("saveToSentItems"))
+            {
+                request.RequestBody.SaveToSentItems = this.GetParameter<bool?>("saveToSentItems");
+            }
 
             return request;
         }

@@ -12,7 +12,7 @@ namespace Microsoft.Graph
     using System.IO;
 
     /// <summary>
-    /// The type DriveItemDeltaRequestBuilder.
+    /// The type EventDismissReminderRequestBuilder.
     /// </summary>
     public partial class EventDismissReminderRequestBuilder : BaseGetMethodRequestBuilder<IEventDismissReminderRequest>, IEventDismissReminderRequestBuilder
     {

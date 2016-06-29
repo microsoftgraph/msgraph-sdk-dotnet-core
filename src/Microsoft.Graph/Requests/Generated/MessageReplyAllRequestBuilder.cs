@@ -12,7 +12,7 @@ namespace Microsoft.Graph
     using System.IO;
 
     /// <summary>
-    /// The type DriveItemDeltaRequestBuilder.
+    /// The type MessageReplyAllRequestBuilder.
     /// </summary>
     public partial class MessageReplyAllRequestBuilder : BasePostMethodRequestBuilder<IMessageReplyAllRequest>, IMessageReplyAllRequestBuilder
     {
@@ -28,7 +28,7 @@ namespace Microsoft.Graph
             string Comment)
             : base(requestUrl, client)
         {
-            SetParameter("comment", Comment, true);
+            this.SetParameter("comment", Comment, true);
         }
 
         /// <summary>
@@ -41,8 +41,10 @@ namespace Microsoft.Graph
         {
             var request = new MessageReplyAllRequest(functionUrl, this.Client, options);
 
-            if (HasParameter("comment"))
-                request.RequestBody.Comment = GetParameter<string>("comment");
+            if (this.HasParameter("comment"))
+            {
+                request.RequestBody.Comment = this.GetParameter<string>("comment");
+            }
 
             return request;
         }

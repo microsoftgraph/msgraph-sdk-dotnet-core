@@ -28,7 +28,7 @@ namespace Microsoft.Graph
             string token)
             : base(requestUrl, client)
         {
-            SetParameter("token", token, true);
+            this.SetParameter("token", token, true);
         }
 
         /// <summary>

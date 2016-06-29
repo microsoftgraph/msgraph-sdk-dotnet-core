@@ -12,7 +12,7 @@ namespace Microsoft.Graph
     using System.IO;
 
     /// <summary>
-    /// The type DriveItemDeltaRequestBuilder.
+    /// The type MessageSendRequestBuilder.
     /// </summary>
     public partial class MessageSendRequestBuilder : BaseGetMethodRequestBuilder<IMessageSendRequest>, IMessageSendRequestBuilder
     {

@@ -12,7 +12,7 @@ namespace Microsoft.Graph
     using System.IO;
 
     /// <summary>
-    /// The type DriveItemDeltaRequestBuilder.
+    /// The type DriveItemSearchRequestBuilder.
     /// </summary>
     public partial class DriveItemSearchRequestBuilder : BaseGetMethodRequestBuilder<IDriveItemSearchRequest>, IDriveItemSearchRequestBuilder
     {
@@ -28,7 +28,7 @@ namespace Microsoft.Graph
             string q)
             : base(requestUrl, client)
         {
-            SetParameter("q", q, true);
+            this.SetParameter("q", q, true);
         }
 
         /// <summary>

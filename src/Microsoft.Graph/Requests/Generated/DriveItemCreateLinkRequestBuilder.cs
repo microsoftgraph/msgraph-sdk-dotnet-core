@@ -12,7 +12,7 @@ namespace Microsoft.Graph
     using System.IO;
 
     /// <summary>
-    /// The type DriveItemDeltaRequestBuilder.
+    /// The type DriveItemCreateLinkRequestBuilder.
     /// </summary>
     public partial class DriveItemCreateLinkRequestBuilder : BasePostMethodRequestBuilder<IDriveItemCreateLinkRequest>, IDriveItemCreateLinkRequestBuilder
     {
@@ -30,8 +30,8 @@ namespace Microsoft.Graph
             string scope)
             : base(requestUrl, client)
         {
-            SetParameter("type", type, false);
-            SetParameter("scope", scope, true);
+            this.SetParameter("type", type, false);
+            this.SetParameter("scope", scope, true);
         }
 
         /// <summary>
@@ -44,11 +44,15 @@ namespace Microsoft.Graph
         {
             var request = new DriveItemCreateLinkRequest(functionUrl, this.Client, options);
 
-            if (HasParameter("type"))
-                request.RequestBody.Type = GetParameter<string>("type");
+            if (this.HasParameter("type"))
+            {
+                request.RequestBody.Type = this.GetParameter<string>("type");
+            }
 
-            if (HasParameter("scope"))
-                request.RequestBody.Scope = GetParameter<string>("scope");
+            if (this.HasParameter("scope"))
+            {
+                request.RequestBody.Scope = this.GetParameter<string>("scope");
+            }
 
             return request;
         }

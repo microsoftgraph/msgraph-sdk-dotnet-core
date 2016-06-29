@@ -12,7 +12,7 @@ namespace Microsoft.Graph
     using System.IO;
 
     /// <summary>
-    /// The type DriveItemDeltaRequestBuilder.
+    /// The type DriveItemCopyRequestBuilder.
     /// </summary>
     public partial class DriveItemCopyRequestBuilder : BasePostMethodRequestBuilder<IDriveItemCopyRequest>, IDriveItemCopyRequestBuilder
     {
@@ -30,8 +30,8 @@ namespace Microsoft.Graph
             ItemReference parentReference)
             : base(requestUrl, client)
         {
-            SetParameter("name", name, true);
-            SetParameter("parentReference", parentReference, true);
+            this.SetParameter("name", name, true);
+            this.SetParameter("parentReference", parentReference, true);
         }
 
         /// <summary>
@@ -44,11 +44,15 @@ namespace Microsoft.Graph
         {
             var request = new DriveItemCopyRequest(functionUrl, this.Client, options);
 
-            if (HasParameter("name"))
-                request.RequestBody.Name = GetParameter<string>("name");
+            if (this.HasParameter("name"))
+            {
+                request.RequestBody.Name = this.GetParameter<string>("name");
+            }
 
-            if (HasParameter("parentReference"))
-                request.RequestBody.ParentReference = GetParameter<ItemReference>("parentReference");
+            if (this.HasParameter("parentReference"))
+            {
+                request.RequestBody.ParentReference = this.GetParameter<ItemReference>("parentReference");
+            }
 
             return request;
         }

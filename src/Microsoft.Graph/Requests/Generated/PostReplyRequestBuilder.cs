@@ -12,7 +12,7 @@ namespace Microsoft.Graph
     using System.IO;
 
     /// <summary>
-    /// The type DriveItemDeltaRequestBuilder.
+    /// The type PostReplyRequestBuilder.
     /// </summary>
     public partial class PostReplyRequestBuilder : BasePostMethodRequestBuilder<IPostReplyRequest>, IPostReplyRequestBuilder
     {
@@ -28,7 +28,7 @@ namespace Microsoft.Graph
             Post Post)
             : base(requestUrl, client)
         {
-            SetParameter("post", Post, false);
+            this.SetParameter("post", Post, false);
         }
 
         /// <summary>
@@ -41,8 +41,10 @@ namespace Microsoft.Graph
         {
             var request = new PostReplyRequest(functionUrl, this.Client, options);
 
-            if (HasParameter("post"))
-                request.RequestBody.Post = GetParameter<Post>("post");
+            if (this.HasParameter("post"))
+            {
+                request.RequestBody.Post = this.GetParameter<Post>("post");
+            }
 
             return request;
         }

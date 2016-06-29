@@ -12,7 +12,7 @@ namespace Microsoft.Graph
     using System.IO;
 
     /// <summary>
-    /// The type DriveItemDeltaRequestBuilder.
+    /// The type ConversationThreadReplyRequestBuilder.
     /// </summary>
     public partial class ConversationThreadReplyRequestBuilder : BasePostMethodRequestBuilder<IConversationThreadReplyRequest>, IConversationThreadReplyRequestBuilder
     {
@@ -28,7 +28,7 @@ namespace Microsoft.Graph
             Post Post)
             : base(requestUrl, client)
         {
-            SetParameter("post", Post, false);
+            this.SetParameter("post", Post, false);
         }
 
         /// <summary>
@@ -41,8 +41,10 @@ namespace Microsoft.Graph
         {
             var request = new ConversationThreadReplyRequest(functionUrl, this.Client, options);
 
-            if (HasParameter("post"))
-                request.RequestBody.Post = GetParameter<Post>("post");
+            if (this.HasParameter("post"))
+            {
+                request.RequestBody.Post = this.GetParameter<Post>("post");
+            }
 
             return request;
         }

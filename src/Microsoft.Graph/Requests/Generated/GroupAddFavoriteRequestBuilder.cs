@@ -12,7 +12,7 @@ namespace Microsoft.Graph
     using System.IO;
 
     /// <summary>
-    /// The type DriveItemDeltaRequestBuilder.
+    /// The type GroupAddFavoriteRequestBuilder.
     /// </summary>
     public partial class GroupAddFavoriteRequestBuilder : BaseGetMethodRequestBuilder<IGroupAddFavoriteRequest>, IGroupAddFavoriteRequestBuilder
     {

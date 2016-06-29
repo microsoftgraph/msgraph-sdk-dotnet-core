@@ -12,7 +12,7 @@ namespace Microsoft.Graph
     using System.IO;
 
     /// <summary>
-    /// The type DriveItemDeltaRequestBuilder.
+    /// The type UserAssignLicenseRequestBuilder.
     /// </summary>
     public partial class UserAssignLicenseRequestBuilder : BasePostMethodRequestBuilder<IUserAssignLicenseRequest>, IUserAssignLicenseRequestBuilder
     {
@@ -30,8 +30,8 @@ namespace Microsoft.Graph
             IEnumerable<Guid> removeLicenses)
             : base(requestUrl, client)
         {
-            SetParameter("addLicenses", addLicenses, false);
-            SetParameter("removeLicenses", removeLicenses, false);
+            this.SetParameter("addLicenses", addLicenses, false);
+            this.SetParameter("removeLicenses", removeLicenses, false);
         }
 
         /// <summary>
@@ -44,11 +44,15 @@ namespace Microsoft.Graph
         {
             var request = new UserAssignLicenseRequest(functionUrl, this.Client, options);
 
-            if (HasParameter("addLicenses"))
-                request.RequestBody.AddLicenses = GetParameter<IEnumerable<AssignedLicense>>("addLicenses");
+            if (this.HasParameter("addLicenses"))
+            {
+                request.RequestBody.AddLicenses = this.GetParameter<IEnumerable<AssignedLicense>>("addLicenses");
+            }
 
-            if (HasParameter("removeLicenses"))
-                request.RequestBody.RemoveLicenses = GetParameter<IEnumerable<Guid>>("removeLicenses");
+            if (this.HasParameter("removeLicenses"))
+            {
+                request.RequestBody.RemoveLicenses = this.GetParameter<IEnumerable<Guid>>("removeLicenses");
+            }
 
             return request;
         }

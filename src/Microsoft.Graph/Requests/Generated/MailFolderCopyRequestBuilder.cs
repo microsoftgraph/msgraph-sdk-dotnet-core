@@ -12,7 +12,7 @@ namespace Microsoft.Graph
     using System.IO;
 
     /// <summary>
-    /// The type DriveItemDeltaRequestBuilder.
+    /// The type MailFolderCopyRequestBuilder.
     /// </summary>
     public partial class MailFolderCopyRequestBuilder : BasePostMethodRequestBuilder<IMailFolderCopyRequest>, IMailFolderCopyRequestBuilder
     {
@@ -28,7 +28,7 @@ namespace Microsoft.Graph
             string DestinationId)
             : base(requestUrl, client)
         {
-            SetParameter("destinationId", DestinationId, true);
+            this.SetParameter("destinationId", DestinationId, true);
         }
 
         /// <summary>
@@ -41,8 +41,10 @@ namespace Microsoft.Graph
         {
             var request = new MailFolderCopyRequest(functionUrl, this.Client, options);
 
-            if (HasParameter("destinationId"))
-                request.RequestBody.DestinationId = GetParameter<string>("destinationId");
+            if (this.HasParameter("destinationId"))
+            {
+                request.RequestBody.DestinationId = this.GetParameter<string>("destinationId");
+            }
 
             return request;
         }

@@ -12,7 +12,7 @@ namespace Microsoft.Graph
     using System.IO;
 
     /// <summary>
-    /// The type DriveItemDeltaRequestBuilder.
+    /// The type DirectoryObjectCheckMemberGroupsRequestBuilder.
     /// </summary>
     public partial class DirectoryObjectCheckMemberGroupsRequestBuilder : BasePostMethodRequestBuilder<IDirectoryObjectCheckMemberGroupsRequest>, IDirectoryObjectCheckMemberGroupsRequestBuilder
     {
@@ -28,7 +28,7 @@ namespace Microsoft.Graph
             IEnumerable<string> groupIds)
             : base(requestUrl, client)
         {
-            SetParameter("groupIds", groupIds, false);
+            this.SetParameter("groupIds", groupIds, false);
         }
 
         /// <summary>
@@ -41,8 +41,10 @@ namespace Microsoft.Graph
         {
             var request = new DirectoryObjectCheckMemberGroupsRequest(functionUrl, this.Client, options);
 
-            if (HasParameter("groupIds"))
-                request.RequestBody.GroupIds = GetParameter<IEnumerable<string>>("groupIds");
+            if (this.HasParameter("groupIds"))
+            {
+                request.RequestBody.GroupIds = this.GetParameter<IEnumerable<string>>("groupIds");
+            }
 
             return request;
         }

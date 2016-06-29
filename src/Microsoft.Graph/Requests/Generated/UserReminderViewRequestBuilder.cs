@@ -12,7 +12,7 @@ namespace Microsoft.Graph
     using System.IO;
 
     /// <summary>
-    /// The type DriveItemDeltaRequestBuilder.
+    /// The type UserReminderViewRequestBuilder.
     /// </summary>
     public partial class UserReminderViewRequestBuilder : BaseGetMethodRequestBuilder<IUserReminderViewRequest>, IUserReminderViewRequestBuilder
     {
@@ -30,8 +30,8 @@ namespace Microsoft.Graph
             string EndDateTime)
             : base(requestUrl, client)
         {
-            SetParameter("startDateTime", StartDateTime, false);
-            SetParameter("endDateTime", EndDateTime, true);
+            this.SetParameter("startDateTime", StartDateTime, false);
+            this.SetParameter("endDateTime", EndDateTime, true);
         }
 
         /// <summary>

@@ -12,7 +12,7 @@ namespace Microsoft.Graph
     using System.IO;
 
     /// <summary>
-    /// The type DriveItemDeltaRequestBuilder.
+    /// The type MessageForwardRequestBuilder.
     /// </summary>
     public partial class MessageForwardRequestBuilder : BasePostMethodRequestBuilder<IMessageForwardRequest>, IMessageForwardRequestBuilder
     {
@@ -30,8 +30,8 @@ namespace Microsoft.Graph
             IEnumerable<Recipient> ToRecipients)
             : base(requestUrl, client)
         {
-            SetParameter("comment", Comment, true);
-            SetParameter("toRecipients", ToRecipients, true);
+            this.SetParameter("comment", Comment, true);
+            this.SetParameter("toRecipients", ToRecipients, true);
         }
 
         /// <summary>
@@ -44,11 +44,15 @@ namespace Microsoft.Graph
         {
             var request = new MessageForwardRequest(functionUrl, this.Client, options);
 
-            if (HasParameter("comment"))
-                request.RequestBody.Comment = GetParameter<string>("comment");
+            if (this.HasParameter("comment"))
+            {
+                request.RequestBody.Comment = this.GetParameter<string>("comment");
+            }
 
-            if (HasParameter("toRecipients"))
-                request.RequestBody.ToRecipients = GetParameter<IEnumerable<Recipient>>("toRecipients");
+            if (this.HasParameter("toRecipients"))
+            {
+                request.RequestBody.ToRecipients = this.GetParameter<IEnumerable<Recipient>>("toRecipients");
+            }
 
             return request;
         }

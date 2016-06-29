@@ -12,7 +12,7 @@ namespace Microsoft.Graph
     using System.IO;
 
     /// <summary>
-    /// The type DriveItemDeltaRequestBuilder.
+    /// The type EventDeclineRequestBuilder.
     /// </summary>
     public partial class EventDeclineRequestBuilder : BasePostMethodRequestBuilder<IEventDeclineRequest>, IEventDeclineRequestBuilder
     {
@@ -30,8 +30,8 @@ namespace Microsoft.Graph
             bool? SendResponse)
             : base(requestUrl, client)
         {
-            SetParameter("comment", Comment, true);
-            SetParameter("sendResponse", SendResponse, true);
+            this.SetParameter("comment", Comment, true);
+            this.SetParameter("sendResponse", SendResponse, true);
         }
 
         /// <summary>
@@ -44,11 +44,15 @@ namespace Microsoft.Graph
         {
             var request = new EventDeclineRequest(functionUrl, this.Client, options);
 
-            if (HasParameter("comment"))
-                request.RequestBody.Comment = GetParameter<string>("comment");
+            if (this.HasParameter("comment"))
+            {
+                request.RequestBody.Comment = this.GetParameter<string>("comment");
+            }
 
-            if (HasParameter("sendResponse"))
-                request.RequestBody.SendResponse = GetParameter<bool?>("sendResponse");
+            if (this.HasParameter("sendResponse"))
+            {
+                request.RequestBody.SendResponse = this.GetParameter<bool?>("sendResponse");
+            }
 
             return request;
         }

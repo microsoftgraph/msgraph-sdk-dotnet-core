@@ -12,7 +12,7 @@ namespace Microsoft.Graph
     using System.IO;
 
     /// <summary>
-    /// The type DriveItemDeltaRequestBuilder.
+    /// The type DriveSharedWithMeRequestBuilder.
     /// </summary>
     public partial class DriveSharedWithMeRequestBuilder : BaseGetMethodRequestBuilder<IDriveSharedWithMeRequest>, IDriveSharedWithMeRequestBuilder
     {

@@ -12,7 +12,7 @@ namespace Microsoft.Graph
     using System.IO;
 
     /// <summary>
-    /// The type DriveItemDeltaRequestBuilder.
+    /// The type GroupUnsubscribeByMailRequestBuilder.
     /// </summary>
     public partial class GroupUnsubscribeByMailRequestBuilder : BaseGetMethodRequestBuilder<IGroupUnsubscribeByMailRequest>, IGroupUnsubscribeByMailRequestBuilder
     {

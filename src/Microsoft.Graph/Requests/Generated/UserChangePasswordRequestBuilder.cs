@@ -12,7 +12,7 @@ namespace Microsoft.Graph
     using System.IO;
 
     /// <summary>
-    /// The type DriveItemDeltaRequestBuilder.
+    /// The type UserChangePasswordRequestBuilder.
     /// </summary>
     public partial class UserChangePasswordRequestBuilder : BasePostMethodRequestBuilder<IUserChangePasswordRequest>, IUserChangePasswordRequestBuilder
     {
@@ -30,8 +30,8 @@ namespace Microsoft.Graph
             string newPassword)
             : base(requestUrl, client)
         {
-            SetParameter("currentPassword", currentPassword, true);
-            SetParameter("newPassword", newPassword, true);
+            this.SetParameter("currentPassword", currentPassword, true);
+            this.SetParameter("newPassword", newPassword, true);
         }
 
         /// <summary>
@@ -44,11 +44,15 @@ namespace Microsoft.Graph
         {
             var request = new UserChangePasswordRequest(functionUrl, this.Client, options);
 
-            if (HasParameter("currentPassword"))
-                request.RequestBody.CurrentPassword = GetParameter<string>("currentPassword");
+            if (this.HasParameter("currentPassword"))
+            {
+                request.RequestBody.CurrentPassword = this.GetParameter<string>("currentPassword");
+            }
 
-            if (HasParameter("newPassword"))
-                request.RequestBody.NewPassword = GetParameter<string>("newPassword");
+            if (this.HasParameter("newPassword"))
+            {
+                request.RequestBody.NewPassword = this.GetParameter<string>("newPassword");
+            }
 
             return request;
         }
