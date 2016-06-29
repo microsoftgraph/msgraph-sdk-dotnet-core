@@ -24,7 +24,7 @@ namespace Microsoft.Graph.Core.Test.TestModels
         /// Gets or sets id.
         /// </summary>
         [DataMember(Name = "data", EmitDefaultValue = false, IsRequired = false)]
-        public JObject Data { get; set; }
+        public JToken Data { get; set; }
 
         /// <summary>
         /// Gets or sets additional data.
