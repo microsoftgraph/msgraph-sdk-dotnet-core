@@ -9,6 +9,7 @@ namespace Microsoft.Graph
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
 
     /// <summary>
     /// The type ConversationThreadRequestBuilder.
@@ -64,12 +65,12 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IConversationThreadReplyRequestBuilder"/>.</returns>
         public IConversationThreadReplyRequestBuilder Reply(
-            Post post)
+            Post Post)
         {
             return new ConversationThreadReplyRequestBuilder(
                 this.AppendSegmentToRequestUrl("microsoft.graph.reply"),
                 this.Client,
-                post);
+                Post);
         }
     
     }

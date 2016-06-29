@@ -9,23 +9,13 @@ namespace Microsoft.Graph
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
 
     /// <summary>
     /// The interface IDriveItemCreateLinkRequestBuilder.
     /// </summary>
     public partial interface IDriveItemCreateLinkRequestBuilder
     {
-    
-        /// <summary>
-        /// Gets the Type.
-        /// </summary>
-        string Type { get; }
-    
-        /// <summary>
-        /// Gets the Scope.
-        /// </summary>
-        string Scope { get; }
-    
         /// <summary>
         /// Builds the request.
         /// </summary>

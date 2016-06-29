@@ -9,13 +9,13 @@ namespace Microsoft.Graph
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
 
     /// <summary>
     /// The interface IDriveItemDeltaRequestBuilder.
     /// </summary>
     public partial interface IDriveItemDeltaRequestBuilder
     {
-    
         /// <summary>
         /// Builds the request.
         /// </summary>

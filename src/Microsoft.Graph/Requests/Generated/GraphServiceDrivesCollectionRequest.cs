@@ -31,7 +31,30 @@ namespace Microsoft.Graph
             : base(requestUrl, client, options)
         {
         }
-          
+        
+        /// <summary>
+        /// Adds the specified Drive to the collection via POST.
+        /// </summary>
+        /// <param name="drive">The Drive to add.</param>
+        /// <returns>The created Drive.</returns>
+        public Task<Drive> AddAsync(Drive drive)
+        {
+            return this.AddAsync(drive, CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Adds the specified Drive to the collection via POST.
+        /// </summary>
+        /// <param name="drive">The Drive to add.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The created Drive.</returns>
+        public Task<Drive> AddAsync(Drive drive, CancellationToken cancellationToken)
+        {
+            this.ContentType = "application/json";
+            this.Method = "POST";
+            return this.SendAsync<Drive>(drive, cancellationToken);
+        }
+  
         /// <summary>
         /// Gets the collection page.
         /// </summary>
@@ -108,7 +131,7 @@ namespace Microsoft.Graph
             this.QueryOptions.Add(new QueryOption("$top", value.ToString()));
             return this;
         }
-        
+
         /// <summary>
         /// Adds the specified filter value to the request.
         /// </summary>

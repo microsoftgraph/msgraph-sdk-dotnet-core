@@ -6,7 +6,7 @@
 
 
 namespace Microsoft.Graph
-{
+{   
     /// <summary>
     /// The type DirectoryObjectGetMemberObjectsCollectionPage.
     /// </summary>

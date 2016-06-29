@@ -66,7 +66,7 @@ namespace Microsoft.Graph
         /// <param name="value">The top value.</param>
         /// <returns>The request object to send.</returns>
         IContactFolderChildFoldersCollectionRequest Top(int value);
-        
+
         /// <summary>
         /// Adds the specified filter value to the request.
         /// </summary>

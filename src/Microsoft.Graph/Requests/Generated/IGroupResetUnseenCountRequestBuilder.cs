@@ -9,13 +9,13 @@ namespace Microsoft.Graph
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
 
     /// <summary>
     /// The interface IGroupResetUnseenCountRequestBuilder.
     /// </summary>
     public partial interface IGroupResetUnseenCountRequestBuilder
     {
-    
         /// <summary>
         /// Builds the request.
         /// </summary>

@@ -9,13 +9,13 @@ namespace Microsoft.Graph
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
 
     /// <summary>
     /// The interface IMessageCreateReplyAllRequestBuilder.
     /// </summary>
     public partial interface IMessageCreateReplyAllRequestBuilder
     {
-    
         /// <summary>
         /// Builds the request.
         /// </summary>

@@ -31,7 +31,30 @@ namespace Microsoft.Graph
             : base(requestUrl, client, options)
         {
         }
-          
+        
+        /// <summary>
+        /// Adds the specified ThumbnailSet to the collection via POST.
+        /// </summary>
+        /// <param name="thumbnailSet">The ThumbnailSet to add.</param>
+        /// <returns>The created ThumbnailSet.</returns>
+        public Task<ThumbnailSet> AddAsync(ThumbnailSet thumbnailSet)
+        {
+            return this.AddAsync(thumbnailSet, CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Adds the specified ThumbnailSet to the collection via POST.
+        /// </summary>
+        /// <param name="thumbnailSet">The ThumbnailSet to add.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The created ThumbnailSet.</returns>
+        public Task<ThumbnailSet> AddAsync(ThumbnailSet thumbnailSet, CancellationToken cancellationToken)
+        {
+            this.ContentType = "application/json";
+            this.Method = "POST";
+            return this.SendAsync<ThumbnailSet>(thumbnailSet, cancellationToken);
+        }
+  
         /// <summary>
         /// Gets the collection page.
         /// </summary>
@@ -108,7 +131,7 @@ namespace Microsoft.Graph
             this.QueryOptions.Add(new QueryOption("$top", value.ToString()));
             return this;
         }
-        
+
         /// <summary>
         /// Adds the specified filter value to the request.
         /// </summary>

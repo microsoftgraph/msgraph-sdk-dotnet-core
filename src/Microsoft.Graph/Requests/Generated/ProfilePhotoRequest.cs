@@ -153,7 +153,7 @@ namespace Microsoft.Graph
         /// <param name="profilePhotoToInitialize">The <see cref="ProfilePhoto"/> with the collection properties to initialize.</param>
         private void InitializeCollectionProperties(ProfilePhoto profilePhotoToInitialize)
         {
-        
+
         }
     }
 }

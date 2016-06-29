@@ -9,6 +9,7 @@ namespace Microsoft.Graph
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
 
     /// <summary>
     /// The type UserRequestBuilder.
@@ -240,6 +241,18 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
+        /// Gets the request builder for InferenceClassification.
+        /// </summary>
+        /// <returns>The <see cref="IInferenceClassificationRequestBuilder"/>.</returns>
+        public IInferenceClassificationRequestBuilder InferenceClassification
+        {
+            get
+            {
+                return new InferenceClassificationRequestBuilder(this.AppendSegmentToRequestUrl("inferenceClassification"), this.Client);
+            }
+        }
+
+        /// <summary>
         /// Gets the request builder for Photo.
         /// </summary>
         /// <returns>The <see cref="IProfilePhotoRequestBuilder"/>.</returns>
@@ -298,14 +311,14 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IUserSendMailRequestBuilder"/>.</returns>
         public IUserSendMailRequestBuilder SendMail(
-            Message message,
-            bool? saveToSentItems = null)
+            Message Message,
+            bool? SaveToSentItems = null)
         {
             return new UserSendMailRequestBuilder(
                 this.AppendSegmentToRequestUrl("microsoft.graph.sendMail"),
                 this.Client,
-                message,
-                saveToSentItems);
+                Message,
+                SaveToSentItems);
         }
 
         /// <summary>
@@ -313,14 +326,14 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IUserReminderViewRequestBuilder"/>.</returns>
         public IUserReminderViewRequestBuilder ReminderView(
-            string startDateTime,
-            string endDateTime = null)
+            string StartDateTime,
+            string EndDateTime = null)
         {
             return new UserReminderViewRequestBuilder(
                 this.AppendSegmentToRequestUrl("microsoft.graph.reminderView"),
                 this.Client,
-                startDateTime,
-                endDateTime);
+                StartDateTime,
+                EndDateTime);
         }
     
     }

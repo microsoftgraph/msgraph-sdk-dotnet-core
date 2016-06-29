@@ -153,10 +153,10 @@ namespace Microsoft.Graph
         /// <param name="eventToInitialize">The <see cref="Event"/> with the collection properties to initialize.</param>
         private void InitializeCollectionProperties(Event eventToInitialize)
         {
-        
+
             if (eventToInitialize != null && eventToInitialize.AdditionalData != null)
             {
-        
+
                 if (eventToInitialize.Instances != null && eventToInitialize.Instances.CurrentPage != null)
                 {
                     eventToInitialize.Instances.AdditionalData = eventToInitialize.AdditionalData;
@@ -172,7 +172,23 @@ namespace Microsoft.Graph
                             nextPageLinkString);
                     }
                 }
-        
+
+                if (eventToInitialize.Extensions != null && eventToInitialize.Extensions.CurrentPage != null)
+                {
+                    eventToInitialize.Extensions.AdditionalData = eventToInitialize.AdditionalData;
+
+                    object nextPageLink;
+                    eventToInitialize.AdditionalData.TryGetValue("extensions@odata.nextLink", out nextPageLink);
+                    var nextPageLinkString = nextPageLink as string;
+
+                    if (!string.IsNullOrEmpty(nextPageLinkString))
+                    {
+                        eventToInitialize.Extensions.InitializeNextPageRequest(
+                            this.Client,
+                            nextPageLinkString);
+                    }
+                }
+
                 if (eventToInitialize.Attachments != null && eventToInitialize.Attachments.CurrentPage != null)
                 {
                     eventToInitialize.Attachments.AdditionalData = eventToInitialize.AdditionalData;
@@ -188,10 +204,10 @@ namespace Microsoft.Graph
                             nextPageLinkString);
                     }
                 }
-        
+
             }
 
-        
+
         }
     }
 }

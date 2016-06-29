@@ -31,18 +31,5 @@ namespace Microsoft.Graph
         /// <returns>The User.</returns>
         Task<User> GetAsync(CancellationToken cancellationToken);
 
-        /// <summary>
-        /// Adds the specified expand value to the request.
-        /// </summary>
-        /// <param name="value">The expand value.</param>
-        /// <returns>The request object to send.</returns>
-        IUserWithReferenceRequest Expand(string value);
-
-        /// <summary>
-        /// Adds the specified select value to the request.
-        /// </summary>
-        /// <param name="value">The select value.</param>
-        /// <returns>The request object to send.</returns>
-        IUserWithReferenceRequest Select(string value);
     }
 }

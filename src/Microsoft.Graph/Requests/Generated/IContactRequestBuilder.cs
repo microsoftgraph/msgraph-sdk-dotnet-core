@@ -9,6 +9,7 @@ namespace Microsoft.Graph
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
 
     /// <summary>
     /// The interface IContactRequestBuilder.
@@ -28,6 +29,12 @@ namespace Microsoft.Graph
         /// <returns>The built request.</returns>
         new IContactRequest Request(IEnumerable<Option> options);
         
+        /// <summary>
+        /// Gets the request builder for Extensions.
+        /// </summary>
+        /// <returns>The <see cref="IContactExtensionsCollectionRequestBuilder"/>.</returns>
+        IContactExtensionsCollectionRequestBuilder Extensions { get; }
+
         /// <summary>
         /// Gets the request builder for Photo.
         /// </summary>

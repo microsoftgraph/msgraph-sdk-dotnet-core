@@ -77,28 +77,6 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Adds the specified expand value to the request.
-        /// </summary>
-        /// <param name="value">The expand value.</param>
-        /// <returns>The request object to send.</returns>
-        public IUserOwnedObjectsCollectionWithReferencesRequest Expand(string value)
-        {
-            this.QueryOptions.Add(new QueryOption("$expand", value));
-            return this;
-        }
-
-        /// <summary>
-        /// Adds the specified select value to the request.
-        /// </summary>
-        /// <param name="value">The select value.</param>
-        /// <returns>The request object to send.</returns>
-        public IUserOwnedObjectsCollectionWithReferencesRequest Select(string value)
-        {
-            this.QueryOptions.Add(new QueryOption("$select", value));
-            return this;
-        }
-
-        /// <summary>
         /// Adds the specified top value to the request.
         /// </summary>
         /// <param name="value">The top value.</param>
@@ -106,28 +84,6 @@ namespace Microsoft.Graph
         public IUserOwnedObjectsCollectionWithReferencesRequest Top(int value)
         {
             this.QueryOptions.Add(new QueryOption("$top", value.ToString()));
-            return this;
-        }
-
-        /// <summary>
-        /// Adds the specified filter value to the request.
-        /// </summary>
-        /// <param name="value">The filter value.</param>
-        /// <returns>The request object to send.</returns>
-        public IUserOwnedObjectsCollectionWithReferencesRequest Filter(string value)
-        {
-            this.QueryOptions.Add(new QueryOption("$filter", value));
-            return this;
-        }
-
-        /// <summary>
-        /// Adds the specified skip value to the request.
-        /// </summary>
-        /// <param name="value">The skip value.</param>
-        /// <returns>The request object to send.</returns>
-        public IUserOwnedObjectsCollectionWithReferencesRequest Skip(int value)
-        {
-            this.QueryOptions.Add(new QueryOption("$skip", value.ToString()));
             return this;
         }
 

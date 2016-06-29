@@ -9,46 +9,44 @@ namespace Microsoft.Graph
 {
     using System;
     using System.Collections.Generic;
-    using System.Text;
+    using System.IO;
 
     /// <summary>
     /// The type DirectoryObjectGetMemberObjectsRequestBuilder.
     /// </summary>
-    public partial class DirectoryObjectGetMemberObjectsRequestBuilder : BaseRequestBuilder, IDirectoryObjectGetMemberObjectsRequestBuilder
+    public partial class DirectoryObjectGetMemberObjectsRequestBuilder : BasePostMethodRequestBuilder<IDirectoryObjectGetMemberObjectsRequest>, IDirectoryObjectGetMemberObjectsRequestBuilder
     {
-    
+        /// <summary>
+        /// Constructs a new <see cref="DirectoryObjectGetMemberObjectsRequestBuilder"/>.
+        /// </summary>
+        /// <param name="requestUrl">The URL for the request.</param>
+        /// <param name="client">The <see cref="IBaseClient"/> for handling requests.</param>
+        /// <param name="securityEnabledOnly">A securityEnabledOnly parameter for the OData method call.</param>
         public DirectoryObjectGetMemberObjectsRequestBuilder(
             string requestUrl,
             IBaseClient client,
-            bool? securityEnabledOnly = null)
+            bool? securityEnabledOnly)
             : base(requestUrl, client)
         {
-            
-            this.SecurityEnabledOnly = securityEnabledOnly;
-
+            this.SetParameter("securityEnabledOnly", securityEnabledOnly, true);
         }
-    
+
         /// <summary>
-        /// Gets the value of SecurityEnabledOnly.
+        /// A method used by the base class to construct a request class instance.
         /// </summary>
-        public bool? SecurityEnabledOnly { get; set; }
-    
-        /// <summary>
-        /// Builds the request.
-        /// </summary>
+        /// <param name="functionUrl">The request URL to </param>
         /// <param name="options">The query and header options for the request.</param>
-        /// <returns>The built request.</returns>
-        public IDirectoryObjectGetMemberObjectsRequest Request(IEnumerable<Option> options = null)
+        /// <returns>An instance of a specific request class.</returns>
+        protected override IDirectoryObjectGetMemberObjectsRequest CreateRequest(string functionUrl, IEnumerable<Option> options)
         {
-                
-            return new DirectoryObjectGetMemberObjectsRequest(
-                this.RequestUrl,
-                this.Client,
-                options,
-                this.SecurityEnabledOnly);
-        
-        }
+            var request = new DirectoryObjectGetMemberObjectsRequest(functionUrl, this.Client, options);
 
+            if (this.HasParameter("securityEnabledOnly"))
+            {
+                request.RequestBody.SecurityEnabledOnly = this.GetParameter<bool?>("securityEnabledOnly");
+            }
+
+            return request;
+        }
     }
 }
-

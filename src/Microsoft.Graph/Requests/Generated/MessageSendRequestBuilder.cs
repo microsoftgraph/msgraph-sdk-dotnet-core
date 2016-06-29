@@ -9,38 +9,36 @@ namespace Microsoft.Graph
 {
     using System;
     using System.Collections.Generic;
-    using System.Text;
+    using System.IO;
 
     /// <summary>
     /// The type MessageSendRequestBuilder.
     /// </summary>
-    public partial class MessageSendRequestBuilder : BaseRequestBuilder, IMessageSendRequestBuilder
+    public partial class MessageSendRequestBuilder : BaseGetMethodRequestBuilder<IMessageSendRequest>, IMessageSendRequestBuilder
     {
-    
+        /// <summary>
+        /// Constructs a new <see cref="MessageSendRequestBuilder"/>.
+        /// </summary>
+        /// <param name="requestUrl">The URL for the request.</param>
+        /// <param name="client">The <see cref="IBaseClient"/> for handling requests.</param>
         public MessageSendRequestBuilder(
             string requestUrl,
             IBaseClient client)
             : base(requestUrl, client)
         {
-            
-
         }
-    
+
         /// <summary>
-        /// Builds the request.
+        /// A method used by the base class to construct a request class instance.
         /// </summary>
+        /// <param name="functionUrl">The request URL to </param>
         /// <param name="options">The query and header options for the request.</param>
-        /// <returns>The built request.</returns>
-        public IMessageSendRequest Request(IEnumerable<Option> options = null)
+        /// <returns>An instance of a specific request class.</returns>
+        protected override IMessageSendRequest CreateRequest(string functionUrl, IEnumerable<Option> options)
         {
-                
-            return new MessageSendRequest(
-                this.RequestUrl,
-                this.Client,
-                options);
-        
-        }
+            var request = new MessageSendRequest(functionUrl, this.Client, options);
 
+            return request;
+        }
     }
 }
-

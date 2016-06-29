@@ -9,18 +9,13 @@ namespace Microsoft.Graph
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
 
     /// <summary>
     /// The interface IMessageReplyRequestBuilder.
     /// </summary>
     public partial interface IMessageReplyRequestBuilder
     {
-    
-        /// <summary>
-        /// Gets the Comment.
-        /// </summary>
-        string Comment { get; }
-    
         /// <summary>
         /// Builds the request.
         /// </summary>

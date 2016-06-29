@@ -9,6 +9,7 @@ namespace Microsoft.Graph
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
 
     /// <summary>
     /// The interface IDriveItemRequestBuilder.
@@ -86,6 +87,13 @@ namespace Microsoft.Graph
         /// <returns>The <see cref="IDriveItemSearchRequestBuilder"/>.</returns>
         IDriveItemSearchRequestBuilder Search(
             string q = null);
+
+        /// <summary>
+        /// Gets the request builder for DriveItemDelta.
+        /// </summary>
+        /// <returns>The <see cref="IDriveItemDeltaRequestBuilder"/>.</returns>
+        IDriveItemDeltaRequestBuilder Delta(
+            string token = null);
 
         /// <summary>
         /// Gets the request builder for DriveItemDelta.

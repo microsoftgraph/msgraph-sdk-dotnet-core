@@ -9,18 +9,13 @@ namespace Microsoft.Graph
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
 
     /// <summary>
     /// The interface IDriveItemSearchRequestBuilder.
     /// </summary>
     public partial interface IDriveItemSearchRequestBuilder
     {
-    
-        /// <summary>
-        /// Gets the Q.
-        /// </summary>
-        string Q { get; }
-    
         /// <summary>
         /// Builds the request.
         /// </summary>

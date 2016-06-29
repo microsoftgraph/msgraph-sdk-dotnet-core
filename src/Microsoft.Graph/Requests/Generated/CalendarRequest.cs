@@ -153,10 +153,10 @@ namespace Microsoft.Graph
         /// <param name="calendarToInitialize">The <see cref="Calendar"/> with the collection properties to initialize.</param>
         private void InitializeCollectionProperties(Calendar calendarToInitialize)
         {
-        
+
             if (calendarToInitialize != null && calendarToInitialize.AdditionalData != null)
             {
-        
+
                 if (calendarToInitialize.Events != null && calendarToInitialize.Events.CurrentPage != null)
                 {
                     calendarToInitialize.Events.AdditionalData = calendarToInitialize.AdditionalData;
@@ -172,7 +172,7 @@ namespace Microsoft.Graph
                             nextPageLinkString);
                     }
                 }
-        
+
                 if (calendarToInitialize.CalendarView != null && calendarToInitialize.CalendarView.CurrentPage != null)
                 {
                     calendarToInitialize.CalendarView.AdditionalData = calendarToInitialize.AdditionalData;
@@ -188,10 +188,10 @@ namespace Microsoft.Graph
                             nextPageLinkString);
                     }
                 }
-        
+
             }
 
-        
+
         }
     }
 }

@@ -126,37 +126,15 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Adds the specified expand value to the request.
-        /// </summary>
-        /// <param name="value">The expand value.</param>
-        /// <returns>The request object to send.</returns>
-        public IUserRequest Expand(string value)
-        {
-            this.QueryOptions.Add(new QueryOption("$expand", value));
-            return this;
-        }
-
-        /// <summary>
-        /// Adds the specified select value to the request.
-        /// </summary>
-        /// <param name="value">The select value.</param>
-        /// <returns>The request object to send.</returns>
-        public IUserRequest Select(string value)
-        {
-            this.QueryOptions.Add(new QueryOption("$select", value));
-            return this;
-        }
-
-        /// <summary>
         /// Initializes any collection properties after deserialization, like next requests for paging.
         /// </summary>
         /// <param name="userToInitialize">The <see cref="User"/> with the collection properties to initialize.</param>
         private void InitializeCollectionProperties(User userToInitialize)
         {
-        
+
             if (userToInitialize != null && userToInitialize.AdditionalData != null)
             {
-        
+
                 if (userToInitialize.OwnedDevices != null && userToInitialize.OwnedDevices.CurrentPage != null)
                 {
                     userToInitialize.OwnedDevices.AdditionalData = userToInitialize.AdditionalData;
@@ -172,7 +150,7 @@ namespace Microsoft.Graph
                             nextPageLinkString);
                     }
                 }
-        
+
                 if (userToInitialize.RegisteredDevices != null && userToInitialize.RegisteredDevices.CurrentPage != null)
                 {
                     userToInitialize.RegisteredDevices.AdditionalData = userToInitialize.AdditionalData;
@@ -188,7 +166,7 @@ namespace Microsoft.Graph
                             nextPageLinkString);
                     }
                 }
-        
+
                 if (userToInitialize.DirectReports != null && userToInitialize.DirectReports.CurrentPage != null)
                 {
                     userToInitialize.DirectReports.AdditionalData = userToInitialize.AdditionalData;
@@ -204,7 +182,7 @@ namespace Microsoft.Graph
                             nextPageLinkString);
                     }
                 }
-        
+
                 if (userToInitialize.MemberOf != null && userToInitialize.MemberOf.CurrentPage != null)
                 {
                     userToInitialize.MemberOf.AdditionalData = userToInitialize.AdditionalData;
@@ -220,7 +198,7 @@ namespace Microsoft.Graph
                             nextPageLinkString);
                     }
                 }
-        
+
                 if (userToInitialize.CreatedObjects != null && userToInitialize.CreatedObjects.CurrentPage != null)
                 {
                     userToInitialize.CreatedObjects.AdditionalData = userToInitialize.AdditionalData;
@@ -236,7 +214,7 @@ namespace Microsoft.Graph
                             nextPageLinkString);
                     }
                 }
-        
+
                 if (userToInitialize.OwnedObjects != null && userToInitialize.OwnedObjects.CurrentPage != null)
                 {
                     userToInitialize.OwnedObjects.AdditionalData = userToInitialize.AdditionalData;
@@ -252,7 +230,7 @@ namespace Microsoft.Graph
                             nextPageLinkString);
                     }
                 }
-        
+
                 if (userToInitialize.Messages != null && userToInitialize.Messages.CurrentPage != null)
                 {
                     userToInitialize.Messages.AdditionalData = userToInitialize.AdditionalData;
@@ -268,7 +246,7 @@ namespace Microsoft.Graph
                             nextPageLinkString);
                     }
                 }
-        
+
                 if (userToInitialize.MailFolders != null && userToInitialize.MailFolders.CurrentPage != null)
                 {
                     userToInitialize.MailFolders.AdditionalData = userToInitialize.AdditionalData;
@@ -284,7 +262,7 @@ namespace Microsoft.Graph
                             nextPageLinkString);
                     }
                 }
-        
+
                 if (userToInitialize.Calendars != null && userToInitialize.Calendars.CurrentPage != null)
                 {
                     userToInitialize.Calendars.AdditionalData = userToInitialize.AdditionalData;
@@ -300,7 +278,7 @@ namespace Microsoft.Graph
                             nextPageLinkString);
                     }
                 }
-        
+
                 if (userToInitialize.CalendarGroups != null && userToInitialize.CalendarGroups.CurrentPage != null)
                 {
                     userToInitialize.CalendarGroups.AdditionalData = userToInitialize.AdditionalData;
@@ -316,7 +294,7 @@ namespace Microsoft.Graph
                             nextPageLinkString);
                     }
                 }
-        
+
                 if (userToInitialize.CalendarView != null && userToInitialize.CalendarView.CurrentPage != null)
                 {
                     userToInitialize.CalendarView.AdditionalData = userToInitialize.AdditionalData;
@@ -332,7 +310,7 @@ namespace Microsoft.Graph
                             nextPageLinkString);
                     }
                 }
-        
+
                 if (userToInitialize.Events != null && userToInitialize.Events.CurrentPage != null)
                 {
                     userToInitialize.Events.AdditionalData = userToInitialize.AdditionalData;
@@ -348,7 +326,7 @@ namespace Microsoft.Graph
                             nextPageLinkString);
                     }
                 }
-        
+
                 if (userToInitialize.Contacts != null && userToInitialize.Contacts.CurrentPage != null)
                 {
                     userToInitialize.Contacts.AdditionalData = userToInitialize.AdditionalData;
@@ -364,7 +342,7 @@ namespace Microsoft.Graph
                             nextPageLinkString);
                     }
                 }
-        
+
                 if (userToInitialize.ContactFolders != null && userToInitialize.ContactFolders.CurrentPage != null)
                 {
                     userToInitialize.ContactFolders.AdditionalData = userToInitialize.AdditionalData;
@@ -380,10 +358,10 @@ namespace Microsoft.Graph
                             nextPageLinkString);
                     }
                 }
-        
+
             }
 
-        
+
         }
     }
 }

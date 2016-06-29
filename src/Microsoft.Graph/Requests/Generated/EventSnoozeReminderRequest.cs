@@ -19,28 +19,25 @@ namespace Microsoft.Graph
     /// </summary>
     public partial class EventSnoozeReminderRequest : BaseRequest, IEventSnoozeReminderRequest
     {
-    
         /// <summary>
         /// Constructs a new EventSnoozeReminderRequest.
         /// </summary>
         public EventSnoozeReminderRequest(
             string requestUrl,
             IBaseClient client,
-            IEnumerable<Option> options,
-            DateTimeTimeZone newReminderTime = null)
+            IEnumerable<Option> options)
             : base(requestUrl, client, options)
         {
             this.Method = "POST";
             this.ContentType = "application/json";
             this.RequestBody = new EventSnoozeReminderRequestBody();
-            this.RequestBody.NewReminderTime = newReminderTime;
         }
-    
+
         /// <summary>
         /// Gets the request body.
         /// </summary>
         public EventSnoozeReminderRequestBody RequestBody { get; private set; }
-    
+
         /// <summary>
         /// Issues the POST request.
         /// </summary>
@@ -52,15 +49,14 @@ namespace Microsoft.Graph
         /// <summary>
         /// Issues the POST request.
         /// </summary>
-        /// /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
-        /// <returns>The task to await.</returns>
-        public Task PostAsync(CancellationToken cancellationToken)
+        /// <param name=""cancellationToken"">The <see cref=""CancellationToken""/> for the request.</param>
+        /// <returns>The task to await for async call.</returns>
+        public Task PostAsync(
+            CancellationToken cancellationToken)
         {
-    
             return this.SendAsync(this.RequestBody, cancellationToken); 
-    
         }
-    
+
         /// <summary>
         /// Adds the specified expand value to the request.
         /// </summary>
@@ -82,6 +78,5 @@ namespace Microsoft.Graph
             this.QueryOptions.Add(new QueryOption("$select", value));
             return this;
         }
-    
     }
 }

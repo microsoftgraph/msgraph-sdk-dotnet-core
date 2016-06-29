@@ -153,10 +153,10 @@ namespace Microsoft.Graph
         /// <param name="mailFolderToInitialize">The <see cref="MailFolder"/> with the collection properties to initialize.</param>
         private void InitializeCollectionProperties(MailFolder mailFolderToInitialize)
         {
-        
+
             if (mailFolderToInitialize != null && mailFolderToInitialize.AdditionalData != null)
             {
-        
+
                 if (mailFolderToInitialize.Messages != null && mailFolderToInitialize.Messages.CurrentPage != null)
                 {
                     mailFolderToInitialize.Messages.AdditionalData = mailFolderToInitialize.AdditionalData;
@@ -172,7 +172,7 @@ namespace Microsoft.Graph
                             nextPageLinkString);
                     }
                 }
-        
+
                 if (mailFolderToInitialize.ChildFolders != null && mailFolderToInitialize.ChildFolders.CurrentPage != null)
                 {
                     mailFolderToInitialize.ChildFolders.AdditionalData = mailFolderToInitialize.AdditionalData;
@@ -188,10 +188,10 @@ namespace Microsoft.Graph
                             nextPageLinkString);
                     }
                 }
-        
+
             }
 
-        
+
         }
     }
 }

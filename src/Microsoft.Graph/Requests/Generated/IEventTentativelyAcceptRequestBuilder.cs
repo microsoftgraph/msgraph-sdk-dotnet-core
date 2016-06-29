@@ -9,23 +9,13 @@ namespace Microsoft.Graph
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
 
     /// <summary>
     /// The interface IEventTentativelyAcceptRequestBuilder.
     /// </summary>
     public partial interface IEventTentativelyAcceptRequestBuilder
     {
-    
-        /// <summary>
-        /// Gets the Comment.
-        /// </summary>
-        string Comment { get; }
-    
-        /// <summary>
-        /// Gets the SendResponse.
-        /// </summary>
-        bool? SendResponse { get; }
-    
         /// <summary>
         /// Builds the request.
         /// </summary>
