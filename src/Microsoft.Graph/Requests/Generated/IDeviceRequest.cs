@@ -72,18 +72,5 @@ namespace Microsoft.Graph
         /// <returns>The updated Device.</returns>
         Task<Device> UpdateAsync(Device deviceToUpdate, CancellationToken cancellationToken);
 
-        /// <summary>
-        /// Adds the specified expand value to the request.
-        /// </summary>
-        /// <param name="value">The expand value.</param>
-        /// <returns>The request object to send.</returns>
-        IDeviceRequest Expand(string value);
-
-        /// <summary>
-        /// Adds the specified select value to the request.
-        /// </summary>
-        /// <param name="value">The select value.</param>
-        /// <returns>The request object to send.</returns>
-        IDeviceRequest Select(string value);
     }
 }

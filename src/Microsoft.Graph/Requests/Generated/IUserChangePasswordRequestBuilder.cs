@@ -9,23 +9,13 @@ namespace Microsoft.Graph
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
 
     /// <summary>
     /// The interface IUserChangePasswordRequestBuilder.
     /// </summary>
     public partial interface IUserChangePasswordRequestBuilder
     {
-    
-        /// <summary>
-        /// Gets the CurrentPassword.
-        /// </summary>
-        string CurrentPassword { get; }
-    
-        /// <summary>
-        /// Gets the NewPassword.
-        /// </summary>
-        string NewPassword { get; }
-    
         /// <summary>
         /// Builds the request.
         /// </summary>

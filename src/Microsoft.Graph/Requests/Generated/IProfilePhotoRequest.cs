@@ -85,5 +85,6 @@ namespace Microsoft.Graph
         /// <param name="value">The select value.</param>
         /// <returns>The request object to send.</returns>
         IProfilePhotoRequest Select(string value);
+
     }
 }

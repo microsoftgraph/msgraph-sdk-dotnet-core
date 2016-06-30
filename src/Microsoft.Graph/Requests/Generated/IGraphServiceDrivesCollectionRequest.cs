@@ -20,6 +20,20 @@ namespace Microsoft.Graph
     {
         
         /// <summary>
+        /// Adds the specified Drive to the collection via POST.
+        /// </summary>
+        /// <param name="drive">The Drive to add.</param>
+        /// <returns>The created Drive.</returns>
+        Task<Drive> AddAsync(Drive drive);
+
+        /// <summary>
+        /// Adds the specified Drive to the collection via POST.
+        /// </summary>
+        /// <param name="drive">The Drive to add.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The created Drive.</returns>
+        Task<Drive> AddAsync(Drive drive, CancellationToken cancellationToken);
+        /// <summary>
         /// Gets the collection page.
         /// </summary>
         /// <returns>The collection page.</returns>
@@ -52,7 +66,7 @@ namespace Microsoft.Graph
         /// <param name="value">The top value.</param>
         /// <returns>The request object to send.</returns>
         IGraphServiceDrivesCollectionRequest Top(int value);
-        
+
         /// <summary>
         /// Adds the specified filter value to the request.
         /// </summary>

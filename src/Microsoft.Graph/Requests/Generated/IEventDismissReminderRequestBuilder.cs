@@ -9,13 +9,13 @@ namespace Microsoft.Graph
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
 
     /// <summary>
     /// The interface IEventDismissReminderRequestBuilder.
     /// </summary>
     public partial interface IEventDismissReminderRequestBuilder
     {
-    
         /// <summary>
         /// Builds the request.
         /// </summary>

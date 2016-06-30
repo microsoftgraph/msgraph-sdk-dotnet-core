@@ -69,6 +69,7 @@ namespace Microsoft.Graph.Test.Requests.Generated
             }
         }
 
+#if false // This test can no longer run at this time since the Graph does not have a $ref navigation that allows expand.
         /// <summary>
         /// Tests the Expand() method on the request for an entity with a $ref navigation.
         /// </summary>
@@ -85,7 +86,9 @@ namespace Microsoft.Graph.Test.Requests.Generated
             Assert.AreEqual("$expand", managerRequest.QueryOptions[0].Name, "Unexpected query option name.");
             Assert.AreEqual("value", managerRequest.QueryOptions[0].Value, "Unexpected query option value.");
         }
+#endif
 
+#if false // This test can no longer run at this time since the Graph does not have a $ref navigation that allows select.
         /// <summary>
         /// Tests the Select() method on the request for an entity with a $ref navigation.
         /// </summary>
@@ -102,5 +105,6 @@ namespace Microsoft.Graph.Test.Requests.Generated
             Assert.AreEqual("$select", managerRequest.QueryOptions[0].Name, "Unexpected query option name.");
             Assert.AreEqual("value", managerRequest.QueryOptions[0].Value, "Unexpected query option value.");
         }
+#endif
     }
 }

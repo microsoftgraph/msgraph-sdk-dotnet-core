@@ -54,7 +54,9 @@
     <Compile Include="Models\ReferenceRequestBody.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Requests\BaseClient.cs" />
+    <Compile Include="Requests\BasePostMethodRequestBuilder.cs" />
     <Compile Include="Requests\BaseRequest.cs" />
+    <Compile Include="Requests\BaseGetMethodRequestBuilder.cs" />
     <Compile Include="Requests\BaseRequestBuilder.cs" />
     <Compile Include="Requests\HttpProvider.cs" />
     <Compile Include="Requests\IBaseClient.cs" />

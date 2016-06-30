@@ -126,37 +126,15 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Adds the specified expand value to the request.
-        /// </summary>
-        /// <param name="value">The expand value.</param>
-        /// <returns>The request object to send.</returns>
-        public IDeviceRequest Expand(string value)
-        {
-            this.QueryOptions.Add(new QueryOption("$expand", value));
-            return this;
-        }
-
-        /// <summary>
-        /// Adds the specified select value to the request.
-        /// </summary>
-        /// <param name="value">The select value.</param>
-        /// <returns>The request object to send.</returns>
-        public IDeviceRequest Select(string value)
-        {
-            this.QueryOptions.Add(new QueryOption("$select", value));
-            return this;
-        }
-
-        /// <summary>
         /// Initializes any collection properties after deserialization, like next requests for paging.
         /// </summary>
         /// <param name="deviceToInitialize">The <see cref="Device"/> with the collection properties to initialize.</param>
         private void InitializeCollectionProperties(Device deviceToInitialize)
         {
-        
+
             if (deviceToInitialize != null && deviceToInitialize.AdditionalData != null)
             {
-        
+
                 if (deviceToInitialize.RegisteredOwners != null && deviceToInitialize.RegisteredOwners.CurrentPage != null)
                 {
                     deviceToInitialize.RegisteredOwners.AdditionalData = deviceToInitialize.AdditionalData;
@@ -172,7 +150,7 @@ namespace Microsoft.Graph
                             nextPageLinkString);
                     }
                 }
-        
+
                 if (deviceToInitialize.RegisteredUsers != null && deviceToInitialize.RegisteredUsers.CurrentPage != null)
                 {
                     deviceToInitialize.RegisteredUsers.AdditionalData = deviceToInitialize.AdditionalData;
@@ -188,10 +166,10 @@ namespace Microsoft.Graph
                             nextPageLinkString);
                     }
                 }
-        
+
             }
 
-        
+
         }
     }
 }

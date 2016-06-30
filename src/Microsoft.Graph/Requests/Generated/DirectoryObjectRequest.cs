@@ -126,34 +126,12 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Adds the specified expand value to the request.
-        /// </summary>
-        /// <param name="value">The expand value.</param>
-        /// <returns>The request object to send.</returns>
-        public IDirectoryObjectRequest Expand(string value)
-        {
-            this.QueryOptions.Add(new QueryOption("$expand", value));
-            return this;
-        }
-
-        /// <summary>
-        /// Adds the specified select value to the request.
-        /// </summary>
-        /// <param name="value">The select value.</param>
-        /// <returns>The request object to send.</returns>
-        public IDirectoryObjectRequest Select(string value)
-        {
-            this.QueryOptions.Add(new QueryOption("$select", value));
-            return this;
-        }
-
-        /// <summary>
         /// Initializes any collection properties after deserialization, like next requests for paging.
         /// </summary>
         /// <param name="directoryObjectToInitialize">The <see cref="DirectoryObject"/> with the collection properties to initialize.</param>
         private void InitializeCollectionProperties(DirectoryObject directoryObjectToInitialize)
         {
-        
+
         }
     }
 }

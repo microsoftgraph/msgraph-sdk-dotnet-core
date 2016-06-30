@@ -153,7 +153,7 @@ namespace Microsoft.Graph
         /// <param name="eventMessageToInitialize">The <see cref="EventMessage"/> with the collection properties to initialize.</param>
         private void InitializeCollectionProperties(EventMessage eventMessageToInitialize)
         {
-        
+
         }
     }
 }

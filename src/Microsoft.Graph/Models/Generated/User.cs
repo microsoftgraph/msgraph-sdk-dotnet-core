@@ -11,7 +11,6 @@ namespace Microsoft.Graph
     using System.Collections.Generic;
     using System.IO;
     using System.Runtime.Serialization;
-
     using Newtonsoft.Json;
 
     /// <summary>
@@ -362,6 +361,12 @@ namespace Microsoft.Graph
         /// </summary>
         [DataMember(Name = "contactFolders", EmitDefaultValue = false, IsRequired = false)]
         public IUserContactFoldersCollectionPage ContactFolders { get; set; }
+    
+        /// <summary>
+        /// Gets or sets inference classification.
+        /// </summary>
+        [DataMember(Name = "inferenceClassification", EmitDefaultValue = false, IsRequired = false)]
+        public InferenceClassification InferenceClassification { get; set; }
     
         /// <summary>
         /// Gets or sets photo.

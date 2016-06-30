@@ -153,7 +153,7 @@ namespace Microsoft.Graph
         /// <param name="entityToInitialize">The <see cref="Entity"/> with the collection properties to initialize.</param>
         private void InitializeCollectionProperties(Entity entityToInitialize)
         {
-        
+
         }
     }
 }

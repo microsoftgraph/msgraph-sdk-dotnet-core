@@ -153,7 +153,7 @@ namespace Microsoft.Graph
         /// <param name="referenceAttachmentToInitialize">The <see cref="ReferenceAttachment"/> with the collection properties to initialize.</param>
         private void InitializeCollectionProperties(ReferenceAttachment referenceAttachmentToInitialize)
         {
-        
+
         }
     }
 }

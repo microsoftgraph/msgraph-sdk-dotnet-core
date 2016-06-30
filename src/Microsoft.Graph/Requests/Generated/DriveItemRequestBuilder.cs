@@ -9,6 +9,7 @@ namespace Microsoft.Graph
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
 
     /// <summary>
     /// The type DriveItemRequestBuilder.
@@ -160,6 +161,19 @@ namespace Microsoft.Graph
                 this.AppendSegmentToRequestUrl("microsoft.graph.search"),
                 this.Client,
                 q);
+        }
+
+        /// <summary>
+        /// Gets the request builder for DriveItemDelta.
+        /// </summary>
+        /// <returns>The <see cref="IDriveItemDeltaRequestBuilder"/>.</returns>
+        public IDriveItemDeltaRequestBuilder Delta(
+            string token = null)
+        {
+            return new DriveItemDeltaRequestBuilder(
+                this.AppendSegmentToRequestUrl("microsoft.graph.delta"),
+                this.Client,
+                token);
         }
 
         /// <summary>

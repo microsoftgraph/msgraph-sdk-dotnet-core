@@ -153,7 +153,29 @@ namespace Microsoft.Graph
         /// <param name="contactToInitialize">The <see cref="Contact"/> with the collection properties to initialize.</param>
         private void InitializeCollectionProperties(Contact contactToInitialize)
         {
-        
+
+            if (contactToInitialize != null && contactToInitialize.AdditionalData != null)
+            {
+
+                if (contactToInitialize.Extensions != null && contactToInitialize.Extensions.CurrentPage != null)
+                {
+                    contactToInitialize.Extensions.AdditionalData = contactToInitialize.AdditionalData;
+
+                    object nextPageLink;
+                    contactToInitialize.AdditionalData.TryGetValue("extensions@odata.nextLink", out nextPageLink);
+                    var nextPageLinkString = nextPageLink as string;
+
+                    if (!string.IsNullOrEmpty(nextPageLinkString))
+                    {
+                        contactToInitialize.Extensions.InitializeNextPageRequest(
+                            this.Client,
+                            nextPageLinkString);
+                    }
+                }
+
+            }
+
+
         }
     }
 }

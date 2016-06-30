@@ -19,12 +19,12 @@ namespace Microsoft.Graph
     /// </summary>
     public partial interface IMessageReplyAllRequest : IBaseRequest
     {
-    
+
         /// <summary>
         /// Gets the request body.
         /// </summary>
         MessageReplyAllRequestBody RequestBody { get; }
-        
+
         /// <summary>
         /// Issues the POST request.
         /// </summary>
@@ -36,7 +36,7 @@ namespace Microsoft.Graph
         /// /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await.</returns>
         Task PostAsync(CancellationToken cancellationToken);
-            
+
         /// <summary>
         /// Adds the specified expand value to the request.
         /// </summary>
@@ -50,6 +50,5 @@ namespace Microsoft.Graph
         /// <param name="value">The select value.</param>
         /// <returns>The request object to send.</returns>
         IMessageReplyAllRequest Select(string value);
-    
     }
 }

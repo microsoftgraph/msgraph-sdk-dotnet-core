@@ -9,23 +9,13 @@ namespace Microsoft.Graph
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
 
     /// <summary>
     /// The interface IUserReminderViewRequestBuilder.
     /// </summary>
     public partial interface IUserReminderViewRequestBuilder
     {
-    
-        /// <summary>
-        /// Gets the StartDateTime.
-        /// </summary>
-        string StartDateTime { get; }
-    
-        /// <summary>
-        /// Gets the EndDateTime.
-        /// </summary>
-        string EndDateTime { get; }
-    
         /// <summary>
         /// Builds the request.
         /// </summary>

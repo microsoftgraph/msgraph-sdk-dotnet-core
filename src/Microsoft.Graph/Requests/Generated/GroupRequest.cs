@@ -126,37 +126,15 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Adds the specified expand value to the request.
-        /// </summary>
-        /// <param name="value">The expand value.</param>
-        /// <returns>The request object to send.</returns>
-        public IGroupRequest Expand(string value)
-        {
-            this.QueryOptions.Add(new QueryOption("$expand", value));
-            return this;
-        }
-
-        /// <summary>
-        /// Adds the specified select value to the request.
-        /// </summary>
-        /// <param name="value">The select value.</param>
-        /// <returns>The request object to send.</returns>
-        public IGroupRequest Select(string value)
-        {
-            this.QueryOptions.Add(new QueryOption("$select", value));
-            return this;
-        }
-
-        /// <summary>
         /// Initializes any collection properties after deserialization, like next requests for paging.
         /// </summary>
         /// <param name="groupToInitialize">The <see cref="Group"/> with the collection properties to initialize.</param>
         private void InitializeCollectionProperties(Group groupToInitialize)
         {
-        
+
             if (groupToInitialize != null && groupToInitialize.AdditionalData != null)
             {
-        
+
                 if (groupToInitialize.Members != null && groupToInitialize.Members.CurrentPage != null)
                 {
                     groupToInitialize.Members.AdditionalData = groupToInitialize.AdditionalData;
@@ -172,7 +150,7 @@ namespace Microsoft.Graph
                             nextPageLinkString);
                     }
                 }
-        
+
                 if (groupToInitialize.MemberOf != null && groupToInitialize.MemberOf.CurrentPage != null)
                 {
                     groupToInitialize.MemberOf.AdditionalData = groupToInitialize.AdditionalData;
@@ -188,7 +166,7 @@ namespace Microsoft.Graph
                             nextPageLinkString);
                     }
                 }
-        
+
                 if (groupToInitialize.Owners != null && groupToInitialize.Owners.CurrentPage != null)
                 {
                     groupToInitialize.Owners.AdditionalData = groupToInitialize.AdditionalData;
@@ -204,7 +182,7 @@ namespace Microsoft.Graph
                             nextPageLinkString);
                     }
                 }
-        
+
                 if (groupToInitialize.Threads != null && groupToInitialize.Threads.CurrentPage != null)
                 {
                     groupToInitialize.Threads.AdditionalData = groupToInitialize.AdditionalData;
@@ -220,7 +198,7 @@ namespace Microsoft.Graph
                             nextPageLinkString);
                     }
                 }
-        
+
                 if (groupToInitialize.CalendarView != null && groupToInitialize.CalendarView.CurrentPage != null)
                 {
                     groupToInitialize.CalendarView.AdditionalData = groupToInitialize.AdditionalData;
@@ -236,7 +214,7 @@ namespace Microsoft.Graph
                             nextPageLinkString);
                     }
                 }
-        
+
                 if (groupToInitialize.Events != null && groupToInitialize.Events.CurrentPage != null)
                 {
                     groupToInitialize.Events.AdditionalData = groupToInitialize.AdditionalData;
@@ -252,7 +230,7 @@ namespace Microsoft.Graph
                             nextPageLinkString);
                     }
                 }
-        
+
                 if (groupToInitialize.Conversations != null && groupToInitialize.Conversations.CurrentPage != null)
                 {
                     groupToInitialize.Conversations.AdditionalData = groupToInitialize.AdditionalData;
@@ -268,7 +246,7 @@ namespace Microsoft.Graph
                             nextPageLinkString);
                     }
                 }
-        
+
                 if (groupToInitialize.AcceptedSenders != null && groupToInitialize.AcceptedSenders.CurrentPage != null)
                 {
                     groupToInitialize.AcceptedSenders.AdditionalData = groupToInitialize.AdditionalData;
@@ -284,7 +262,7 @@ namespace Microsoft.Graph
                             nextPageLinkString);
                     }
                 }
-        
+
                 if (groupToInitialize.RejectedSenders != null && groupToInitialize.RejectedSenders.CurrentPage != null)
                 {
                     groupToInitialize.RejectedSenders.AdditionalData = groupToInitialize.AdditionalData;
@@ -300,10 +278,10 @@ namespace Microsoft.Graph
                             nextPageLinkString);
                     }
                 }
-        
+
             }
 
-        
+
         }
     }
 }

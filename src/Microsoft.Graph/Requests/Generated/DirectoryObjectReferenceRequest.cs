@@ -30,7 +30,7 @@ namespace Microsoft.Graph
             : base(requestUrl, client, options)
         {
         }
-        
+
         /// <summary>
         /// Deletes the specified DirectoryObject reference.
         /// </summary>

@@ -131,7 +131,7 @@ namespace Microsoft.Graph
             this.QueryOptions.Add(new QueryOption("$top", value.ToString()));
             return this;
         }
-        
+
         /// <summary>
         /// Adds the specified filter value to the request.
         /// </summary>

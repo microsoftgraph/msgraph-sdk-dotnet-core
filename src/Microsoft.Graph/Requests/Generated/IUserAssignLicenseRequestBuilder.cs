@@ -9,23 +9,13 @@ namespace Microsoft.Graph
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
 
     /// <summary>
     /// The interface IUserAssignLicenseRequestBuilder.
     /// </summary>
     public partial interface IUserAssignLicenseRequestBuilder
     {
-    
-        /// <summary>
-        /// Gets the AddLicenses.
-        /// </summary>
-        IEnumerable<AssignedLicense> AddLicenses { get; }
-    
-        /// <summary>
-        /// Gets the RemoveLicenses.
-        /// </summary>
-        IEnumerable<Guid> RemoveLicenses { get; }
-    
         /// <summary>
         /// Builds the request.
         /// </summary>

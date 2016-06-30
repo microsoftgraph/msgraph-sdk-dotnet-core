@@ -9,18 +9,13 @@ namespace Microsoft.Graph
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
 
     /// <summary>
     /// The interface IConversationThreadReplyRequestBuilder.
     /// </summary>
     public partial interface IConversationThreadReplyRequestBuilder
     {
-    
-        /// <summary>
-        /// Gets the Post.
-        /// </summary>
-        Post Post { get; }
-    
         /// <summary>
         /// Builds the request.
         /// </summary>

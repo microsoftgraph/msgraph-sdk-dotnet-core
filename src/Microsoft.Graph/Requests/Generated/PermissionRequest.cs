@@ -153,7 +153,7 @@ namespace Microsoft.Graph
         /// <param name="permissionToInitialize">The <see cref="Permission"/> with the collection properties to initialize.</param>
         private void InitializeCollectionProperties(Permission permissionToInitialize)
         {
-        
+
         }
     }
 }

@@ -153,10 +153,10 @@ namespace Microsoft.Graph
         /// <param name="driveToInitialize">The <see cref="Drive"/> with the collection properties to initialize.</param>
         private void InitializeCollectionProperties(Drive driveToInitialize)
         {
-        
+
             if (driveToInitialize != null && driveToInitialize.AdditionalData != null)
             {
-        
+
                 if (driveToInitialize.Items != null && driveToInitialize.Items.CurrentPage != null)
                 {
                     driveToInitialize.Items.AdditionalData = driveToInitialize.AdditionalData;
@@ -172,7 +172,7 @@ namespace Microsoft.Graph
                             nextPageLinkString);
                     }
                 }
-        
+
                 if (driveToInitialize.Special != null && driveToInitialize.Special.CurrentPage != null)
                 {
                     driveToInitialize.Special.AdditionalData = driveToInitialize.AdditionalData;
@@ -188,10 +188,10 @@ namespace Microsoft.Graph
                             nextPageLinkString);
                     }
                 }
-        
+
             }
 
-        
+
         }
     }
 }

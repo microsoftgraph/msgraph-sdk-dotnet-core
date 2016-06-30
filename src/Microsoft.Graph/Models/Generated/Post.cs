@@ -11,7 +11,6 @@ namespace Microsoft.Graph
     using System.Collections.Generic;
     using System.IO;
     using System.Runtime.Serialization;
-
     using Newtonsoft.Json;
 
     /// <summary>
@@ -68,6 +67,12 @@ namespace Microsoft.Graph
         /// </summary>
         [DataMember(Name = "conversationId", EmitDefaultValue = false, IsRequired = false)]
         public string ConversationId { get; set; }
+    
+        /// <summary>
+        /// Gets or sets extensions.
+        /// </summary>
+        [DataMember(Name = "extensions", EmitDefaultValue = false, IsRequired = false)]
+        public IPostExtensionsCollectionPage Extensions { get; set; }
     
         /// <summary>
         /// Gets or sets in reply to.

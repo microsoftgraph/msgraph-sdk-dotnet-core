@@ -33,8 +33,6 @@ namespace Microsoft.Graph.Test.Requests.Generated
 
             Assert.IsNotNull(assignLicenseRequestBuilder, "Unexpected request builder.");
             Assert.AreEqual(expectedRequestUrl, assignLicenseRequestBuilder.RequestUrl, "Unexpected request builder URL.");
-            Assert.AreEqual(addLicenses, assignLicenseRequestBuilder.AddLicenses, "Unexpected value for AddLicenses.");
-            Assert.AreEqual(removeLicenses, assignLicenseRequestBuilder.RemoveLicenses, "Unexpected value for RemoveLicenses.");
 
             var assignLicenseRequest = assignLicenseRequestBuilder.Request() as UserAssignLicenseRequest;
             Assert.IsNotNull(assignLicenseRequest, "Unexpected request.");

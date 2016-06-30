@@ -153,10 +153,10 @@ namespace Microsoft.Graph
         /// <param name="driveItemToInitialize">The <see cref="DriveItem"/> with the collection properties to initialize.</param>
         private void InitializeCollectionProperties(DriveItem driveItemToInitialize)
         {
-        
+
             if (driveItemToInitialize != null && driveItemToInitialize.AdditionalData != null)
             {
-        
+
                 if (driveItemToInitialize.Permissions != null && driveItemToInitialize.Permissions.CurrentPage != null)
                 {
                     driveItemToInitialize.Permissions.AdditionalData = driveItemToInitialize.AdditionalData;
@@ -172,7 +172,7 @@ namespace Microsoft.Graph
                             nextPageLinkString);
                     }
                 }
-        
+
                 if (driveItemToInitialize.Children != null && driveItemToInitialize.Children.CurrentPage != null)
                 {
                     driveItemToInitialize.Children.AdditionalData = driveItemToInitialize.AdditionalData;
@@ -188,7 +188,7 @@ namespace Microsoft.Graph
                             nextPageLinkString);
                     }
                 }
-        
+
                 if (driveItemToInitialize.Thumbnails != null && driveItemToInitialize.Thumbnails.CurrentPage != null)
                 {
                     driveItemToInitialize.Thumbnails.AdditionalData = driveItemToInitialize.AdditionalData;
@@ -204,10 +204,10 @@ namespace Microsoft.Graph
                             nextPageLinkString);
                     }
                 }
-        
+
             }
 
-        
+
         }
     }
 }

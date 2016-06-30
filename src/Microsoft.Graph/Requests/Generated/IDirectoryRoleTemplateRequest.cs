@@ -72,18 +72,5 @@ namespace Microsoft.Graph
         /// <returns>The updated DirectoryRoleTemplate.</returns>
         Task<DirectoryRoleTemplate> UpdateAsync(DirectoryRoleTemplate directoryRoleTemplateToUpdate, CancellationToken cancellationToken);
 
-        /// <summary>
-        /// Adds the specified expand value to the request.
-        /// </summary>
-        /// <param name="value">The expand value.</param>
-        /// <returns>The request object to send.</returns>
-        IDirectoryRoleTemplateRequest Expand(string value);
-
-        /// <summary>
-        /// Adds the specified select value to the request.
-        /// </summary>
-        /// <param name="value">The select value.</param>
-        /// <returns>The request object to send.</returns>
-        IDirectoryRoleTemplateRequest Select(string value);
     }
 }

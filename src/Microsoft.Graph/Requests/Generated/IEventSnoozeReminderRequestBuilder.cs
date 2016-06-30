@@ -9,18 +9,13 @@ namespace Microsoft.Graph
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
 
     /// <summary>
     /// The interface IEventSnoozeReminderRequestBuilder.
     /// </summary>
     public partial interface IEventSnoozeReminderRequestBuilder
     {
-    
-        /// <summary>
-        /// Gets the NewReminderTime.
-        /// </summary>
-        DateTimeTimeZone NewReminderTime { get; }
-    
         /// <summary>
         /// Builds the request.
         /// </summary>
