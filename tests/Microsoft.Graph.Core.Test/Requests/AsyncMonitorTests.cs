@@ -24,7 +24,7 @@ namespace Microsoft.Graph.Core.Test.Requests
         private const string itemUrl = "https://localhost/item";
         private const string monitorUrl = "https://localhost/monitor";
 
-        private TestAsyncMonitor asyncMonitor;
+        private AsyncMonitor<DerivedTypeClass> asyncMonitor;
         private MockAuthenticationProvider authenticationProvider;
         private MockHttpProvider httpProvider;
         private HttpResponseMessage httpResponseMessage;
@@ -48,7 +48,7 @@ namespace Microsoft.Graph.Core.Test.Requests
 
             this.progress = new MockProgress();
             
-            this.asyncMonitor = new TestAsyncMonitor(this.client.Object, AsyncMonitorTests.monitorUrl);
+            this.asyncMonitor = new AsyncMonitor<DerivedTypeClass>(this.client.Object, AsyncMonitorTests.monitorUrl);
         }
 
         [TestCleanup]
@@ -60,7 +60,7 @@ namespace Microsoft.Graph.Core.Test.Requests
         [TestMethod]
         public async Task PollForOperationCompletionAsync_IsCancelled()
         {
-            var item = await this.asyncMonitor.CompleteOperationAsync(this.progress.Object, new CancellationToken(true));
+            var item = await this.asyncMonitor.PollForOperationCompletionAsync(this.progress.Object, new CancellationToken(true));
             Assert.IsNull(item, "Operation not cancelled.");
         }
 
@@ -89,7 +89,7 @@ namespace Microsoft.Graph.Core.Test.Requests
                         It.Is<HttpRequestMessage>(requestMessage => requestMessage.RequestUri.ToString().Equals(AsyncMonitorTests.itemUrl))))
                     .Returns(Task.FromResult(redirectedResponseMessage));
 
-                var item = await this.asyncMonitor.CompleteOperationAsync(this.progress.Object, CancellationToken.None);
+                var item = await this.asyncMonitor.PollForOperationCompletionAsync(this.progress.Object, CancellationToken.None);
 
                 Assert.IsTrue(called, "Progress not called");
                 Assert.IsNotNull(item, "No item returned.");
@@ -120,7 +120,7 @@ namespace Microsoft.Graph.Core.Test.Requests
                 this.httpResponseMessage.Content = stringContent;
                 this.httpResponseMessage.StatusCode = HttpStatusCode.Accepted;
                 
-                var item = await this.asyncMonitor.CompleteOperationAsync(this.progress.Object, CancellationToken.None);
+                var item = await this.asyncMonitor.PollForOperationCompletionAsync(this.progress.Object, CancellationToken.None);
                 Assert.IsNull(item, "Unexpected item returned.");
             }
         }
@@ -141,7 +141,7 @@ namespace Microsoft.Graph.Core.Test.Requests
 
                 try
                 {
-                    await this.asyncMonitor.CompleteOperationAsync(this.progress.Object, CancellationToken.None);
+                    await this.asyncMonitor.PollForOperationCompletionAsync(this.progress.Object, CancellationToken.None);
                 }
                 catch (ServiceException exception)
                 {
@@ -171,7 +171,7 @@ namespace Microsoft.Graph.Core.Test.Requests
 
                 try
                 {
-                    await this.asyncMonitor.CompleteOperationAsync(this.progress.Object, CancellationToken.None);
+                    await this.asyncMonitor.PollForOperationCompletionAsync(this.progress.Object, CancellationToken.None);
                 }
                 catch (ServiceException exception)
                 {
@@ -198,7 +198,7 @@ namespace Microsoft.Graph.Core.Test.Requests
 
                 try
                 {
-                    await this.asyncMonitor.CompleteOperationAsync(this.progress.Object, CancellationToken.None);
+                    await this.asyncMonitor.PollForOperationCompletionAsync(this.progress.Object, CancellationToken.None);
                 }
                 catch (ServiceException exception)
                 {

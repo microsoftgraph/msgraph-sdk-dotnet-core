@@ -10,7 +10,7 @@ namespace Microsoft.Graph
     using System.Threading;
     using System.Threading.Tasks;
 
-    public class AsyncMonitor<T>
+    public class AsyncMonitor<T> : IAsyncMonitor<T>
     {
         private AsyncOperationStatus asyncOperationStatus;
         private IBaseClient client;
@@ -23,7 +23,7 @@ namespace Microsoft.Graph
             this.monitorUrl = monitorUrl;
         }
         
-        protected async Task<T> PollForOperationCompletionAsync(IProgress<AsyncOperationStatus> progress, CancellationToken cancellationToken)
+        public async Task<T> PollForOperationCompletionAsync(IProgress<AsyncOperationStatus> progress, CancellationToken cancellationToken)
         {
             while (!cancellationToken.IsCancellationRequested)
             {
