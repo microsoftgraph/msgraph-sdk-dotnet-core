@@ -11,7 +11,6 @@ namespace Microsoft.Graph
     using System.Collections.Generic;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The type ConversationThreadPostsCollectionRequest.
@@ -37,7 +36,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="post">The Post to add.</param>
         /// <returns>The created Post.</returns>
-        public Task<Post> AddAsync(Post post)
+        public System.Threading.Tasks.Task<Post> AddAsync(Post post)
         {
             return this.AddAsync(post, CancellationToken.None);
         }
@@ -48,28 +47,28 @@ namespace Microsoft.Graph
         /// <param name="post">The Post to add.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created Post.</returns>
-        public Task<Post> AddAsync(Post post, CancellationToken cancellationToken)
+        public System.Threading.Tasks.Task<Post> AddAsync(Post post, CancellationToken cancellationToken)
         {
             this.ContentType = "application/json";
             this.Method = "POST";
             return this.SendAsync<Post>(post, cancellationToken);
         }
-  
+
         /// <summary>
         /// Gets the collection page.
         /// </summary>
         /// <returns>The collection page.</returns>
-        public Task<IConversationThreadPostsCollectionPage> GetAsync()
+        public System.Threading.Tasks.Task<IConversationThreadPostsCollectionPage> GetAsync()
         {
             return this.GetAsync(CancellationToken.None);
         }
-        
+
         /// <summary>
         /// Gets the collection page.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The collection page.</returns>
-        public async Task<IConversationThreadPostsCollectionPage> GetAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<IConversationThreadPostsCollectionPage> GetAsync(CancellationToken cancellationToken)
         {
             this.Method = "GET";
             var response = await this.SendAsync<ConversationThreadPostsCollectionResponse>(null, cancellationToken).ConfigureAwait(false);
@@ -88,7 +87,7 @@ namespace Microsoft.Graph
                             this.Client,
                             nextPageLinkString);
                     }
-                    
+
                     // Copy the additional data collection to the page itself so that information is not lost
                     response.Value.AdditionalData = response.AdditionalData;
                 }

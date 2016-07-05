@@ -11,7 +11,6 @@ namespace Microsoft.Graph
     using System.IO;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The interface IMailFolderRequest.
@@ -23,46 +22,46 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="mailFolderToCreate">The MailFolder to create.</param>
         /// <returns>The created MailFolder.</returns>
-        Task<MailFolder> CreateAsync(MailFolder mailFolderToCreate);        /// <summary>
+        System.Threading.Tasks.Task<MailFolder> CreateAsync(MailFolder mailFolderToCreate);        /// <summary>
         /// Creates the specified MailFolder using PUT.
         /// </summary>
         /// <param name="mailFolderToCreate">The MailFolder to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created MailFolder.</returns>
-        Task<MailFolder> CreateAsync(MailFolder mailFolderToCreate, CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<MailFolder> CreateAsync(MailFolder mailFolderToCreate, CancellationToken cancellationToken);
 
         /// <summary>
         /// Deletes the specified MailFolder.
         /// </summary>
         /// <returns>The task to await.</returns>
-        Task DeleteAsync();
+        System.Threading.Tasks.Task DeleteAsync();
 
         /// <summary>
         /// Deletes the specified MailFolder.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await.</returns>
-        Task DeleteAsync(CancellationToken cancellationToken);
+        System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken);
 
         /// <summary>
         /// Gets the specified MailFolder.
         /// </summary>
         /// <returns>The MailFolder.</returns>
-        Task<MailFolder> GetAsync();
+        System.Threading.Tasks.Task<MailFolder> GetAsync();
 
         /// <summary>
         /// Gets the specified MailFolder.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The MailFolder.</returns>
-        Task<MailFolder> GetAsync(CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<MailFolder> GetAsync(CancellationToken cancellationToken);
 
         /// <summary>
         /// Updates the specified MailFolder using PATCH.
         /// </summary>
         /// <param name="mailFolderToUpdate">The MailFolder to update.</param>
         /// <returns>The updated MailFolder.</returns>
-        Task<MailFolder> UpdateAsync(MailFolder mailFolderToUpdate);
+        System.Threading.Tasks.Task<MailFolder> UpdateAsync(MailFolder mailFolderToUpdate);
 
         /// <summary>
         /// Updates the specified MailFolder using PATCH.
@@ -70,7 +69,7 @@ namespace Microsoft.Graph
         /// <param name="mailFolderToUpdate">The MailFolder to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The updated MailFolder.</returns>
-        Task<MailFolder> UpdateAsync(MailFolder mailFolderToUpdate, CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<MailFolder> UpdateAsync(MailFolder mailFolderToUpdate, CancellationToken cancellationToken);
 
         /// <summary>
         /// Adds the specified expand value to the request.

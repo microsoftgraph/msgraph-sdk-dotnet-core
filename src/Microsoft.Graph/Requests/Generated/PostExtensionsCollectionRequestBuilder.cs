@@ -13,7 +13,7 @@ namespace Microsoft.Graph
     /// The type PostExtensionsCollectionRequestBuilder.
     /// </summary>
     public partial class PostExtensionsCollectionRequestBuilder : BaseRequestBuilder, IPostExtensionsCollectionRequestBuilder
-    {  
+    {
         /// <summary>
         /// Constructs a new PostExtensionsCollectionRequestBuilder.
         /// </summary>

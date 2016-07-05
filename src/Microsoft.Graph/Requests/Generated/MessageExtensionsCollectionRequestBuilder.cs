@@ -13,7 +13,7 @@ namespace Microsoft.Graph
     /// The type MessageExtensionsCollectionRequestBuilder.
     /// </summary>
     public partial class MessageExtensionsCollectionRequestBuilder : BaseRequestBuilder, IMessageExtensionsCollectionRequestBuilder
-    {  
+    {
         /// <summary>
         /// Constructs a new MessageExtensionsCollectionRequestBuilder.
         /// </summary>

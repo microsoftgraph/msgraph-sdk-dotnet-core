@@ -11,7 +11,6 @@ namespace Microsoft.Graph
     using System.IO;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The interface ISubscribedSkuRequest.
@@ -23,46 +22,46 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="subscribedSkuToCreate">The SubscribedSku to create.</param>
         /// <returns>The created SubscribedSku.</returns>
-        Task<SubscribedSku> CreateAsync(SubscribedSku subscribedSkuToCreate);        /// <summary>
+        System.Threading.Tasks.Task<SubscribedSku> CreateAsync(SubscribedSku subscribedSkuToCreate);        /// <summary>
         /// Creates the specified SubscribedSku using PUT.
         /// </summary>
         /// <param name="subscribedSkuToCreate">The SubscribedSku to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created SubscribedSku.</returns>
-        Task<SubscribedSku> CreateAsync(SubscribedSku subscribedSkuToCreate, CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<SubscribedSku> CreateAsync(SubscribedSku subscribedSkuToCreate, CancellationToken cancellationToken);
 
         /// <summary>
         /// Deletes the specified SubscribedSku.
         /// </summary>
         /// <returns>The task to await.</returns>
-        Task DeleteAsync();
+        System.Threading.Tasks.Task DeleteAsync();
 
         /// <summary>
         /// Deletes the specified SubscribedSku.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await.</returns>
-        Task DeleteAsync(CancellationToken cancellationToken);
+        System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken);
 
         /// <summary>
         /// Gets the specified SubscribedSku.
         /// </summary>
         /// <returns>The SubscribedSku.</returns>
-        Task<SubscribedSku> GetAsync();
+        System.Threading.Tasks.Task<SubscribedSku> GetAsync();
 
         /// <summary>
         /// Gets the specified SubscribedSku.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The SubscribedSku.</returns>
-        Task<SubscribedSku> GetAsync(CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<SubscribedSku> GetAsync(CancellationToken cancellationToken);
 
         /// <summary>
         /// Updates the specified SubscribedSku using PATCH.
         /// </summary>
         /// <param name="subscribedSkuToUpdate">The SubscribedSku to update.</param>
         /// <returns>The updated SubscribedSku.</returns>
-        Task<SubscribedSku> UpdateAsync(SubscribedSku subscribedSkuToUpdate);
+        System.Threading.Tasks.Task<SubscribedSku> UpdateAsync(SubscribedSku subscribedSkuToUpdate);
 
         /// <summary>
         /// Updates the specified SubscribedSku using PATCH.
@@ -70,7 +69,7 @@ namespace Microsoft.Graph
         /// <param name="subscribedSkuToUpdate">The SubscribedSku to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The updated SubscribedSku.</returns>
-        Task<SubscribedSku> UpdateAsync(SubscribedSku subscribedSkuToUpdate, CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<SubscribedSku> UpdateAsync(SubscribedSku subscribedSkuToUpdate, CancellationToken cancellationToken);
 
     }
 }

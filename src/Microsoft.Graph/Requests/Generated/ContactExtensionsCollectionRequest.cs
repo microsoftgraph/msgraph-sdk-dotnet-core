@@ -11,7 +11,6 @@ namespace Microsoft.Graph
     using System.Collections.Generic;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The type ContactExtensionsCollectionRequest.
@@ -37,7 +36,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="extension">The Extension to add.</param>
         /// <returns>The created Extension.</returns>
-        public Task<Extension> AddAsync(Extension extension)
+        public System.Threading.Tasks.Task<Extension> AddAsync(Extension extension)
         {
             return this.AddAsync(extension, CancellationToken.None);
         }
@@ -48,29 +47,29 @@ namespace Microsoft.Graph
         /// <param name="extension">The Extension to add.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created Extension.</returns>
-        public Task<Extension> AddAsync(Extension extension, CancellationToken cancellationToken)
+        public System.Threading.Tasks.Task<Extension> AddAsync(Extension extension, CancellationToken cancellationToken)
         {
             this.ContentType = "application/json";
             this.Method = "POST";
             extension.ODataType = string.Concat("#", StringHelper.ConvertTypeToLowerCamelCase(extension.GetType().FullName));
             return this.SendAsync<Extension>(extension, cancellationToken);
         }
-  
+
         /// <summary>
         /// Gets the collection page.
         /// </summary>
         /// <returns>The collection page.</returns>
-        public Task<IContactExtensionsCollectionPage> GetAsync()
+        public System.Threading.Tasks.Task<IContactExtensionsCollectionPage> GetAsync()
         {
             return this.GetAsync(CancellationToken.None);
         }
-        
+
         /// <summary>
         /// Gets the collection page.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The collection page.</returns>
-        public async Task<IContactExtensionsCollectionPage> GetAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<IContactExtensionsCollectionPage> GetAsync(CancellationToken cancellationToken)
         {
             this.Method = "GET";
             var response = await this.SendAsync<ContactExtensionsCollectionResponse>(null, cancellationToken).ConfigureAwait(false);
@@ -89,7 +88,7 @@ namespace Microsoft.Graph
                             this.Client,
                             nextPageLinkString);
                     }
-                    
+
                     // Copy the additional data collection to the page itself so that information is not lost
                     response.Value.AdditionalData = response.AdditionalData;
                 }

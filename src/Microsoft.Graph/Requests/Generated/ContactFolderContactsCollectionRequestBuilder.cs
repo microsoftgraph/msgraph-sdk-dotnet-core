@@ -13,7 +13,7 @@ namespace Microsoft.Graph
     /// The type ContactFolderContactsCollectionRequestBuilder.
     /// </summary>
     public partial class ContactFolderContactsCollectionRequestBuilder : BaseRequestBuilder, IContactFolderContactsCollectionRequestBuilder
-    {  
+    {
         /// <summary>
         /// Constructs a new ContactFolderContactsCollectionRequestBuilder.
         /// </summary>

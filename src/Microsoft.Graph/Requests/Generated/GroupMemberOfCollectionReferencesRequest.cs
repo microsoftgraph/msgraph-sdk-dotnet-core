@@ -11,7 +11,6 @@ namespace Microsoft.Graph
     using System.Collections.Generic;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The type GroupMemberOfCollectionReferencesRequest.
@@ -37,7 +36,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="directoryObject">The DirectoryObject to add.</param>
         /// <returns>The task to await.</returns>
-        public Task AddAsync(DirectoryObject directoryObject)
+        public System.Threading.Tasks.Task AddAsync(DirectoryObject directoryObject)
         {
             return this.AddAsync(directoryObject, CancellationToken.None);
         }
@@ -48,7 +47,7 @@ namespace Microsoft.Graph
         /// <param name="directoryObject">The DirectoryObject to add.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await.</returns>
-        public Task AddAsync(DirectoryObject directoryObject, CancellationToken cancellationToken)
+        public System.Threading.Tasks.Task AddAsync(DirectoryObject directoryObject, CancellationToken cancellationToken)
         {
             this.ContentType = "application/json";
             this.Method = "POST";

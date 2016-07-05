@@ -11,7 +11,6 @@ namespace Microsoft.Graph
     using System.Collections.Generic;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The type GroupRejectedSendersCollectionRequest.
@@ -37,7 +36,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="directoryObject">The DirectoryObject to add.</param>
         /// <returns>The created DirectoryObject.</returns>
-        public Task<DirectoryObject> AddAsync(DirectoryObject directoryObject)
+        public System.Threading.Tasks.Task<DirectoryObject> AddAsync(DirectoryObject directoryObject)
         {
             return this.AddAsync(directoryObject, CancellationToken.None);
         }
@@ -48,28 +47,28 @@ namespace Microsoft.Graph
         /// <param name="directoryObject">The DirectoryObject to add.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created DirectoryObject.</returns>
-        public Task<DirectoryObject> AddAsync(DirectoryObject directoryObject, CancellationToken cancellationToken)
+        public System.Threading.Tasks.Task<DirectoryObject> AddAsync(DirectoryObject directoryObject, CancellationToken cancellationToken)
         {
             this.ContentType = "application/json";
             this.Method = "POST";
             return this.SendAsync<DirectoryObject>(directoryObject, cancellationToken);
         }
-  
+
         /// <summary>
         /// Gets the collection page.
         /// </summary>
         /// <returns>The collection page.</returns>
-        public Task<IGroupRejectedSendersCollectionPage> GetAsync()
+        public System.Threading.Tasks.Task<IGroupRejectedSendersCollectionPage> GetAsync()
         {
             return this.GetAsync(CancellationToken.None);
         }
-        
+
         /// <summary>
         /// Gets the collection page.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The collection page.</returns>
-        public async Task<IGroupRejectedSendersCollectionPage> GetAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<IGroupRejectedSendersCollectionPage> GetAsync(CancellationToken cancellationToken)
         {
             this.Method = "GET";
             var response = await this.SendAsync<GroupRejectedSendersCollectionResponse>(null, cancellationToken).ConfigureAwait(false);
@@ -88,7 +87,7 @@ namespace Microsoft.Graph
                             this.Client,
                             nextPageLinkString);
                     }
-                    
+
                     // Copy the additional data collection to the page itself so that information is not lost
                     response.Value.AdditionalData = response.AdditionalData;
                 }

@@ -13,7 +13,7 @@ namespace Microsoft.Graph
     /// The type UserMailFoldersCollectionRequestBuilder.
     /// </summary>
     public partial class UserMailFoldersCollectionRequestBuilder : BaseRequestBuilder, IUserMailFoldersCollectionRequestBuilder
-    {  
+    {
         /// <summary>
         /// Constructs a new UserMailFoldersCollectionRequestBuilder.
         /// </summary>

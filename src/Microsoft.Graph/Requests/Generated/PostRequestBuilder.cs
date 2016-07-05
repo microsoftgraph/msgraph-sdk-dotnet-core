@@ -47,7 +47,7 @@ namespace Microsoft.Graph
         {
             return new PostRequest(this.RequestUrl, this.Client, options);
         }
-        
+    
         /// <summary>
         /// Gets the request builder for Extensions.
         /// </summary>
@@ -83,7 +83,7 @@ namespace Microsoft.Graph
                 return new PostAttachmentsCollectionRequestBuilder(this.AppendSegmentToRequestUrl("attachments"), this.Client);
             }
         }
-        
+    
         /// <summary>
         /// Gets the request builder for PostForward.
         /// </summary>

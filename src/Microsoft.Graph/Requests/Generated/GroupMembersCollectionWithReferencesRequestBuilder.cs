@@ -45,7 +45,7 @@ namespace Microsoft.Graph
         {
             return new GroupMembersCollectionWithReferencesRequest(this.RequestUrl, this.Client, options);
         }
-        
+
         /// <summary>
         /// Gets an <see cref="IDirectoryObjectWithReferenceRequestBuilder"/> for the specified GroupDirectoryObject.
         /// </summary>

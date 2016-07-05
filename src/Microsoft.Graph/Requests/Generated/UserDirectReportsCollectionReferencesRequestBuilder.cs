@@ -14,7 +14,7 @@ namespace Microsoft.Graph
     /// </summary>
     public partial class UserDirectReportsCollectionReferencesRequestBuilder : BaseRequestBuilder, IUserDirectReportsCollectionReferencesRequestBuilder
     {
-    
+
         /// <summary>
         /// Constructs a new UserDirectReportsCollectionReferencesRequestBuilder.
         /// </summary>

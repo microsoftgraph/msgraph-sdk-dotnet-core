@@ -11,7 +11,6 @@ namespace Microsoft.Graph
     using System.Collections.Generic;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The interface IUserCalendarGroupsCollectionRequest.
@@ -24,7 +23,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="calendarGroup">The CalendarGroup to add.</param>
         /// <returns>The created CalendarGroup.</returns>
-        Task<CalendarGroup> AddAsync(CalendarGroup calendarGroup);
+        System.Threading.Tasks.Task<CalendarGroup> AddAsync(CalendarGroup calendarGroup);
 
         /// <summary>
         /// Adds the specified CalendarGroup to the collection via POST.
@@ -32,19 +31,19 @@ namespace Microsoft.Graph
         /// <param name="calendarGroup">The CalendarGroup to add.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created CalendarGroup.</returns>
-        Task<CalendarGroup> AddAsync(CalendarGroup calendarGroup, CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<CalendarGroup> AddAsync(CalendarGroup calendarGroup, CancellationToken cancellationToken);
         /// <summary>
         /// Gets the collection page.
         /// </summary>
         /// <returns>The collection page.</returns>
-        Task<IUserCalendarGroupsCollectionPage> GetAsync();
-        
+        System.Threading.Tasks.Task<IUserCalendarGroupsCollectionPage> GetAsync();
+
         /// <summary>
         /// Gets the collection page.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The collection page.</returns>
-        Task<IUserCalendarGroupsCollectionPage> GetAsync(CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<IUserCalendarGroupsCollectionPage> GetAsync(CancellationToken cancellationToken);
 
         /// <summary>
         /// Adds the specified expand value to the request.

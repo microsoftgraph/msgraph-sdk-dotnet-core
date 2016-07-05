@@ -12,7 +12,6 @@ namespace Microsoft.Graph
     using System.IO;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The type DriveRequest.
@@ -38,7 +37,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="driveToCreate">The Drive to create.</param>
         /// <returns>The created Drive.</returns>
-        public Task<Drive> CreateAsync(Drive driveToCreate)
+        public System.Threading.Tasks.Task<Drive> CreateAsync(Drive driveToCreate)
         {
             return this.CreateAsync(driveToCreate, CancellationToken.None);
         }
@@ -49,7 +48,7 @@ namespace Microsoft.Graph
         /// <param name="driveToCreate">The Drive to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created Drive.</returns>
-        public async Task<Drive> CreateAsync(Drive driveToCreate, CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Drive> CreateAsync(Drive driveToCreate, CancellationToken cancellationToken)
         {
             this.ContentType = "application/json";
             this.Method = "PUT";
@@ -62,7 +61,7 @@ namespace Microsoft.Graph
         /// Deletes the specified Drive.
         /// </summary>
         /// <returns>The task to await.</returns>
-        public Task DeleteAsync()
+        public System.Threading.Tasks.Task DeleteAsync()
         {
             return this.DeleteAsync(CancellationToken.None);
         }
@@ -72,7 +71,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await.</returns>
-        public async Task DeleteAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken)
         {
             this.Method = "DELETE";
             await this.SendAsync<Drive>(null, cancellationToken).ConfigureAwait(false);
@@ -82,7 +81,7 @@ namespace Microsoft.Graph
         /// Gets the specified Drive.
         /// </summary>
         /// <returns>The Drive.</returns>
-        public Task<Drive> GetAsync()
+        public System.Threading.Tasks.Task<Drive> GetAsync()
         {
             return this.GetAsync(CancellationToken.None);
         }
@@ -92,7 +91,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The Drive.</returns>
-        public async Task<Drive> GetAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Drive> GetAsync(CancellationToken cancellationToken)
         {
             this.Method = "GET";
             var retrievedEntity = await this.SendAsync<Drive>(null, cancellationToken).ConfigureAwait(false);
@@ -105,7 +104,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="driveToUpdate">The Drive to update.</param>
         /// <returns>The updated Drive.</returns>
-        public Task<Drive> UpdateAsync(Drive driveToUpdate)
+        public System.Threading.Tasks.Task<Drive> UpdateAsync(Drive driveToUpdate)
         {
             return this.UpdateAsync(driveToUpdate, CancellationToken.None);
         }
@@ -116,7 +115,7 @@ namespace Microsoft.Graph
         /// <param name="driveToUpdate">The Drive to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The updated Drive.</returns>
-        public async Task<Drive> UpdateAsync(Drive driveToUpdate, CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Drive> UpdateAsync(Drive driveToUpdate, CancellationToken cancellationToken)
         {
             this.ContentType = "application/json";
             this.Method = "PATCH";

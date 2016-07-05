@@ -12,8 +12,7 @@ namespace Microsoft.Graph
     using System.IO;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
-    
+
     /// <summary>
     /// The interface IDriveItemCopyRequest.
     /// </summary>
@@ -28,14 +27,14 @@ namespace Microsoft.Graph
         /// <summary>
         /// Issues the POST request.
         /// </summary>
-        Task<DriveItem> PostAsync();
+        System.Threading.Tasks.Task<DriveItem> PostAsync();
 
         /// <summary>
         /// Issues the POST request.
         /// </summary>
         /// /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>TheDriveItem</returns>
-        Task<DriveItem> PostAsync(CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<DriveItem> PostAsync(CancellationToken cancellationToken);
 
         /// <summary>
         /// Adds the specified expand value to the request.

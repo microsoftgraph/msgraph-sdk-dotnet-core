@@ -47,7 +47,7 @@ namespace Microsoft.Graph
         {
             return new DeviceRequest(this.RequestUrl, this.Client, options);
         }
-        
+    
         /// <summary>
         /// Gets the request builder for RegisteredOwners.
         /// </summary>

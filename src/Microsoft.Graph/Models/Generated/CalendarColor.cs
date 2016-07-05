@@ -9,68 +9,68 @@
 namespace Microsoft.Graph
 {
     using Newtonsoft.Json;
-    
+
     /// <summary>
     /// The enum CalendarColor.
     /// </summary>
     [JsonConverter(typeof(EnumConverter))]
     public enum CalendarColor
     {
-        
+    
         /// <summary>
         /// light Blue
         /// </summary>
         LightBlue,
-        
+    
         /// <summary>
         /// light Green
         /// </summary>
         LightGreen,
-        
+    
         /// <summary>
         /// light Orange
         /// </summary>
         LightOrange,
-        
+    
         /// <summary>
         /// light Gray
         /// </summary>
         LightGray,
-        
+    
         /// <summary>
         /// light Yellow
         /// </summary>
         LightYellow,
-        
+    
         /// <summary>
         /// light Teal
         /// </summary>
         LightTeal,
-        
+    
         /// <summary>
         /// light Pink
         /// </summary>
         LightPink,
-        
+    
         /// <summary>
         /// light Brown
         /// </summary>
         LightBrown,
-        
+    
         /// <summary>
         /// light Red
         /// </summary>
         LightRed,
-        
+    
         /// <summary>
         /// max Color
         /// </summary>
         MaxColor,
-        
+    
         /// <summary>
         /// auto
         /// </summary>
         Auto,
-        
+    
     }
 }

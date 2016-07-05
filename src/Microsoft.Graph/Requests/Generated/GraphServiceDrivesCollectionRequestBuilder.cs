@@ -13,7 +13,7 @@ namespace Microsoft.Graph
     /// The type GraphServiceDrivesCollectionRequestBuilder.
     /// </summary>
     public partial class GraphServiceDrivesCollectionRequestBuilder : BaseRequestBuilder, IGraphServiceDrivesCollectionRequestBuilder
-    {  
+    {
         /// <summary>
         /// Constructs a new GraphServiceDrivesCollectionRequestBuilder.
         /// </summary>

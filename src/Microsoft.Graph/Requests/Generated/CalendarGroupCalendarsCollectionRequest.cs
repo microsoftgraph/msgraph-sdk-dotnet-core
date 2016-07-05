@@ -11,7 +11,6 @@ namespace Microsoft.Graph
     using System.Collections.Generic;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The type CalendarGroupCalendarsCollectionRequest.
@@ -37,7 +36,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="calendar">The Calendar to add.</param>
         /// <returns>The created Calendar.</returns>
-        public Task<Calendar> AddAsync(Calendar calendar)
+        public System.Threading.Tasks.Task<Calendar> AddAsync(Calendar calendar)
         {
             return this.AddAsync(calendar, CancellationToken.None);
         }
@@ -48,28 +47,28 @@ namespace Microsoft.Graph
         /// <param name="calendar">The Calendar to add.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created Calendar.</returns>
-        public Task<Calendar> AddAsync(Calendar calendar, CancellationToken cancellationToken)
+        public System.Threading.Tasks.Task<Calendar> AddAsync(Calendar calendar, CancellationToken cancellationToken)
         {
             this.ContentType = "application/json";
             this.Method = "POST";
             return this.SendAsync<Calendar>(calendar, cancellationToken);
         }
-  
+
         /// <summary>
         /// Gets the collection page.
         /// </summary>
         /// <returns>The collection page.</returns>
-        public Task<ICalendarGroupCalendarsCollectionPage> GetAsync()
+        public System.Threading.Tasks.Task<ICalendarGroupCalendarsCollectionPage> GetAsync()
         {
             return this.GetAsync(CancellationToken.None);
         }
-        
+
         /// <summary>
         /// Gets the collection page.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The collection page.</returns>
-        public async Task<ICalendarGroupCalendarsCollectionPage> GetAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<ICalendarGroupCalendarsCollectionPage> GetAsync(CancellationToken cancellationToken)
         {
             this.Method = "GET";
             var response = await this.SendAsync<CalendarGroupCalendarsCollectionResponse>(null, cancellationToken).ConfigureAwait(false);
@@ -88,7 +87,7 @@ namespace Microsoft.Graph
                             this.Client,
                             nextPageLinkString);
                     }
-                    
+
                     // Copy the additional data collection to the page itself so that information is not lost
                     response.Value.AdditionalData = response.AdditionalData;
                 }

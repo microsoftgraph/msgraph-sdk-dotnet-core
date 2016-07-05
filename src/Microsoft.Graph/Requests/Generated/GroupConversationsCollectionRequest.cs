@@ -11,7 +11,6 @@ namespace Microsoft.Graph
     using System.Collections.Generic;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The type GroupConversationsCollectionRequest.
@@ -37,7 +36,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="conversation">The Conversation to add.</param>
         /// <returns>The created Conversation.</returns>
-        public Task<Conversation> AddAsync(Conversation conversation)
+        public System.Threading.Tasks.Task<Conversation> AddAsync(Conversation conversation)
         {
             return this.AddAsync(conversation, CancellationToken.None);
         }
@@ -48,28 +47,28 @@ namespace Microsoft.Graph
         /// <param name="conversation">The Conversation to add.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created Conversation.</returns>
-        public Task<Conversation> AddAsync(Conversation conversation, CancellationToken cancellationToken)
+        public System.Threading.Tasks.Task<Conversation> AddAsync(Conversation conversation, CancellationToken cancellationToken)
         {
             this.ContentType = "application/json";
             this.Method = "POST";
             return this.SendAsync<Conversation>(conversation, cancellationToken);
         }
-  
+
         /// <summary>
         /// Gets the collection page.
         /// </summary>
         /// <returns>The collection page.</returns>
-        public Task<IGroupConversationsCollectionPage> GetAsync()
+        public System.Threading.Tasks.Task<IGroupConversationsCollectionPage> GetAsync()
         {
             return this.GetAsync(CancellationToken.None);
         }
-        
+
         /// <summary>
         /// Gets the collection page.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The collection page.</returns>
-        public async Task<IGroupConversationsCollectionPage> GetAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<IGroupConversationsCollectionPage> GetAsync(CancellationToken cancellationToken)
         {
             this.Method = "GET";
             var response = await this.SendAsync<GroupConversationsCollectionResponse>(null, cancellationToken).ConfigureAwait(false);
@@ -88,7 +87,7 @@ namespace Microsoft.Graph
                             this.Client,
                             nextPageLinkString);
                     }
-                    
+
                     // Copy the additional data collection to the page itself so that information is not lost
                     response.Value.AdditionalData = response.AdditionalData;
                 }

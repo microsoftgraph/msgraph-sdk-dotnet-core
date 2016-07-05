@@ -13,7 +13,7 @@ namespace Microsoft.Graph
     /// The type GroupConversationsCollectionRequestBuilder.
     /// </summary>
     public partial class GroupConversationsCollectionRequestBuilder : BaseRequestBuilder, IGroupConversationsCollectionRequestBuilder
-    {  
+    {
         /// <summary>
         /// Constructs a new GroupConversationsCollectionRequestBuilder.
         /// </summary>

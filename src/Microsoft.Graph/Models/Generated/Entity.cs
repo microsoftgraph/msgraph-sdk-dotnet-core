@@ -37,7 +37,7 @@ namespace Microsoft.Graph
         /// </summary>
         [DataMember(Name = "@odata.type", EmitDefaultValue = false, IsRequired = false)]
         public string ODataType { get; set; }
-        
+
         /// <summary>
         /// Gets or sets additional data.
         /// </summary>
