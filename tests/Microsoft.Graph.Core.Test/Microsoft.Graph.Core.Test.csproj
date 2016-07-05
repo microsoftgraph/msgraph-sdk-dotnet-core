@@ -90,7 +90,6 @@
     <Compile Include="Requests\RequestTestBase.cs" />
     <Compile Include="Serialization\DateConverterTests.cs" />
     <Compile Include="Serialization\SerializerTests.cs" />
-    <Compile Include="TestModels\TestAsyncMonitor.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
