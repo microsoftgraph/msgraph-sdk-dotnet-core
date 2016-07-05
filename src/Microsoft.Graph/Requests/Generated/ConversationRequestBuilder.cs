@@ -47,7 +47,7 @@ namespace Microsoft.Graph
         {
             return new ConversationRequest(this.RequestUrl, this.Client, options);
         }
-        
+    
         /// <summary>
         /// Gets the request builder for Threads.
         /// </summary>

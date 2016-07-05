@@ -11,7 +11,6 @@ namespace Microsoft.Graph
     using System.Collections.Generic;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The interface IInferenceClassificationOverridesCollectionRequest.
@@ -24,7 +23,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="inferenceClassificationOverride">The InferenceClassificationOverride to add.</param>
         /// <returns>The created InferenceClassificationOverride.</returns>
-        Task<InferenceClassificationOverride> AddAsync(InferenceClassificationOverride inferenceClassificationOverride);
+        System.Threading.Tasks.Task<InferenceClassificationOverride> AddAsync(InferenceClassificationOverride inferenceClassificationOverride);
 
         /// <summary>
         /// Adds the specified InferenceClassificationOverride to the collection via POST.
@@ -32,19 +31,19 @@ namespace Microsoft.Graph
         /// <param name="inferenceClassificationOverride">The InferenceClassificationOverride to add.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created InferenceClassificationOverride.</returns>
-        Task<InferenceClassificationOverride> AddAsync(InferenceClassificationOverride inferenceClassificationOverride, CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<InferenceClassificationOverride> AddAsync(InferenceClassificationOverride inferenceClassificationOverride, CancellationToken cancellationToken);
         /// <summary>
         /// Gets the collection page.
         /// </summary>
         /// <returns>The collection page.</returns>
-        Task<IInferenceClassificationOverridesCollectionPage> GetAsync();
-        
+        System.Threading.Tasks.Task<IInferenceClassificationOverridesCollectionPage> GetAsync();
+
         /// <summary>
         /// Gets the collection page.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The collection page.</returns>
-        Task<IInferenceClassificationOverridesCollectionPage> GetAsync(CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<IInferenceClassificationOverridesCollectionPage> GetAsync(CancellationToken cancellationToken);
 
         /// <summary>
         /// Adds the specified expand value to the request.

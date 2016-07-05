@@ -47,7 +47,7 @@ namespace Microsoft.Graph
         {
             return new GroupRequest(this.RequestUrl, this.Client, options);
         }
-        
+    
         /// <summary>
         /// Gets the request builder for Members.
         /// </summary>
@@ -203,7 +203,7 @@ namespace Microsoft.Graph
                 return new DriveRequestBuilder(this.AppendSegmentToRequestUrl("drive"), this.Client);
             }
         }
-        
+    
         /// <summary>
         /// Gets the request builder for GroupSubscribeByMail.
         /// </summary>

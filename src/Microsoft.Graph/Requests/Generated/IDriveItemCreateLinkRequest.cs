@@ -12,8 +12,7 @@ namespace Microsoft.Graph
     using System.IO;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
-    
+
     /// <summary>
     /// The interface IDriveItemCreateLinkRequest.
     /// </summary>
@@ -28,14 +27,14 @@ namespace Microsoft.Graph
         /// <summary>
         /// Issues the POST request.
         /// </summary>
-        Task<Permission> PostAsync();
+        System.Threading.Tasks.Task<Permission> PostAsync();
 
         /// <summary>
         /// Issues the POST request.
         /// </summary>
         /// /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>ThePermission</returns>
-        Task<Permission> PostAsync(CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<Permission> PostAsync(CancellationToken cancellationToken);
 
         /// <summary>
         /// Adds the specified expand value to the request.

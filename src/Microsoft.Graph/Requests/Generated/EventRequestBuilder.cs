@@ -47,7 +47,7 @@ namespace Microsoft.Graph
         {
             return new EventRequest(this.RequestUrl, this.Client, options);
         }
-        
+    
         /// <summary>
         /// Gets the request builder for Calendar.
         /// </summary>
@@ -95,7 +95,7 @@ namespace Microsoft.Graph
                 return new EventAttachmentsCollectionRequestBuilder(this.AppendSegmentToRequestUrl("attachments"), this.Client);
             }
         }
-        
+    
         /// <summary>
         /// Gets the request builder for EventAccept.
         /// </summary>

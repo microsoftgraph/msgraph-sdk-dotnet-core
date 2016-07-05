@@ -47,7 +47,7 @@ namespace Microsoft.Graph
         {
             return new UserRequest(this.RequestUrl, this.Client, options);
         }
-        
+    
         /// <summary>
         /// Gets the request builder for OwnedDevices.
         /// </summary>
@@ -275,7 +275,7 @@ namespace Microsoft.Graph
                 return new DriveRequestBuilder(this.AppendSegmentToRequestUrl("drive"), this.Client);
             }
         }
-        
+    
         /// <summary>
         /// Gets the request builder for UserAssignLicense.
         /// </summary>

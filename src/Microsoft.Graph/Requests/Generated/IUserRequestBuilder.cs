@@ -28,7 +28,7 @@ namespace Microsoft.Graph
         /// <param name="options">The query and header options for the request.</param>
         /// <returns>The built request.</returns>
         new IUserRequest Request(IEnumerable<Option> options);
-        
+    
         /// <summary>
         /// Gets the request builder for OwnedDevices.
         /// </summary>
@@ -142,7 +142,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IDriveRequestBuilder"/>.</returns>
         IDriveRequestBuilder Drive { get; }
-        
+    
         /// <summary>
         /// Gets the request builder for UserAssignLicense.
         /// </summary>

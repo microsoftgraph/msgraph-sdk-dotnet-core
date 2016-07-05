@@ -9,38 +9,38 @@
 namespace Microsoft.Graph
 {
     using Newtonsoft.Json;
-    
+
     /// <summary>
     /// The enum WeekIndex.
     /// </summary>
     [JsonConverter(typeof(EnumConverter))]
     public enum WeekIndex
     {
-        
+    
         /// <summary>
         /// first
         /// </summary>
         First,
-        
+    
         /// <summary>
         /// second
         /// </summary>
         Second,
-        
+    
         /// <summary>
         /// third
         /// </summary>
         Third,
-        
+    
         /// <summary>
         /// fourth
         /// </summary>
         Fourth,
-        
+    
         /// <summary>
         /// last
         /// </summary>
         Last,
-        
+    
     }
 }

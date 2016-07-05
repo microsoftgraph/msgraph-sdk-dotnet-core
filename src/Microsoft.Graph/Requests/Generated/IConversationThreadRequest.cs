@@ -11,7 +11,6 @@ namespace Microsoft.Graph
     using System.IO;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The interface IConversationThreadRequest.
@@ -23,46 +22,46 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="conversationThreadToCreate">The ConversationThread to create.</param>
         /// <returns>The created ConversationThread.</returns>
-        Task<ConversationThread> CreateAsync(ConversationThread conversationThreadToCreate);        /// <summary>
+        System.Threading.Tasks.Task<ConversationThread> CreateAsync(ConversationThread conversationThreadToCreate);        /// <summary>
         /// Creates the specified ConversationThread using PUT.
         /// </summary>
         /// <param name="conversationThreadToCreate">The ConversationThread to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created ConversationThread.</returns>
-        Task<ConversationThread> CreateAsync(ConversationThread conversationThreadToCreate, CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<ConversationThread> CreateAsync(ConversationThread conversationThreadToCreate, CancellationToken cancellationToken);
 
         /// <summary>
         /// Deletes the specified ConversationThread.
         /// </summary>
         /// <returns>The task to await.</returns>
-        Task DeleteAsync();
+        System.Threading.Tasks.Task DeleteAsync();
 
         /// <summary>
         /// Deletes the specified ConversationThread.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await.</returns>
-        Task DeleteAsync(CancellationToken cancellationToken);
+        System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken);
 
         /// <summary>
         /// Gets the specified ConversationThread.
         /// </summary>
         /// <returns>The ConversationThread.</returns>
-        Task<ConversationThread> GetAsync();
+        System.Threading.Tasks.Task<ConversationThread> GetAsync();
 
         /// <summary>
         /// Gets the specified ConversationThread.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The ConversationThread.</returns>
-        Task<ConversationThread> GetAsync(CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<ConversationThread> GetAsync(CancellationToken cancellationToken);
 
         /// <summary>
         /// Updates the specified ConversationThread using PATCH.
         /// </summary>
         /// <param name="conversationThreadToUpdate">The ConversationThread to update.</param>
         /// <returns>The updated ConversationThread.</returns>
-        Task<ConversationThread> UpdateAsync(ConversationThread conversationThreadToUpdate);
+        System.Threading.Tasks.Task<ConversationThread> UpdateAsync(ConversationThread conversationThreadToUpdate);
 
         /// <summary>
         /// Updates the specified ConversationThread using PATCH.
@@ -70,7 +69,7 @@ namespace Microsoft.Graph
         /// <param name="conversationThreadToUpdate">The ConversationThread to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The updated ConversationThread.</returns>
-        Task<ConversationThread> UpdateAsync(ConversationThread conversationThreadToUpdate, CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<ConversationThread> UpdateAsync(ConversationThread conversationThreadToUpdate, CancellationToken cancellationToken);
 
         /// <summary>
         /// Adds the specified expand value to the request.

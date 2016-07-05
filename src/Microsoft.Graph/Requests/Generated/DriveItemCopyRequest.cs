@@ -12,7 +12,6 @@ namespace Microsoft.Graph
     using System.IO;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The type DriveItemCopyRequest.
@@ -41,17 +40,17 @@ namespace Microsoft.Graph
         /// <summary>
         /// Issues the POST request.
         /// </summary>
-        public Task<DriveItem> PostAsync()
+        public System.Threading.Tasks.Task<DriveItem> PostAsync()
         {
             return this.PostAsync(CancellationToken.None);
         }
-        
+
         /// <summary>
         /// Issues the POST request.
         /// </summary>
         /// <param name=""cancellationToken"">The <see cref=""CancellationToken""/> for the request.</param>
         /// <returns>The task to await for async call.</returns>
-        public Task<DriveItem> PostAsync(
+        public System.Threading.Tasks.Task<DriveItem> PostAsync(
             CancellationToken cancellationToken)
         {
             return this.SendAsync<DriveItem>(this.RequestBody, cancellationToken);

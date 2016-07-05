@@ -11,7 +11,6 @@ namespace Microsoft.Graph
     using System.IO;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The type ProfilePhotoContentRequest.
@@ -36,33 +35,33 @@ namespace Microsoft.Graph
         /// Gets the stream.
         /// </summary>
         /// <returns>The stream.</returns>
-        public Task<Stream> GetAsync()
+        public System.Threading.Tasks.Task<Stream> GetAsync()
         {
             return this.GetAsync(CancellationToken.None);
         }
-        
+
         /// <summary>
         /// Gets the stream.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <param name="completionOption">The <see cref="HttpCompletionOption"/> to pass to the <see cref="IHttpProvider"/> on send.</param>
         /// <returns>The stream.</returns>
-        public Task<Stream> GetAsync(CancellationToken cancellationToken, HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        public System.Threading.Tasks.Task<Stream> GetAsync(CancellationToken cancellationToken, HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
             this.Method = "GET";
             return this.SendStreamRequestAsync(null, cancellationToken, completionOption);
         }
-        
+    
         /// <summary>
         /// PUTs the specified stream.
         /// </summary>
         /// <param name="content">The stream to PUT.</param>
         /// <returns>The updated stream.</returns>
-        public Task<Stream> PutAsync(Stream content)
+        public System.Threading.Tasks.Task<Stream> PutAsync(Stream content)
         {
             return this.PutAsync(content, CancellationToken.None);
         }
-        
+
         /// <summary>
         /// PUTs the specified stream.
         /// </summary>
@@ -70,7 +69,7 @@ namespace Microsoft.Graph
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <param name="completionOption">The <see cref="HttpCompletionOption"/> to pass to the <see cref="IHttpProvider"/> on send.</param>
         /// <returns>The updated stream.</returns>
-        public Task<Stream> PutAsync(Stream content, CancellationToken cancellationToken, HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        public System.Threading.Tasks.Task<Stream> PutAsync(Stream content, CancellationToken cancellationToken, HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
         {
             this.ContentType = "application/octet-stream";
             this.Method = "PUT";

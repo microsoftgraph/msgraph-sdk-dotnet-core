@@ -28,7 +28,7 @@ namespace Microsoft.Graph
         /// <param name="options">The query and header options for the request.</param>
         /// <returns>The built request.</returns>
         new IMailFolderRequest Request(IEnumerable<Option> options);
-        
+    
         /// <summary>
         /// Gets the request builder for Messages.
         /// </summary>
@@ -40,7 +40,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IMailFolderChildFoldersCollectionRequestBuilder"/>.</returns>
         IMailFolderChildFoldersCollectionRequestBuilder ChildFolders { get; }
-        
+    
         /// <summary>
         /// Gets the request builder for MailFolderCopy.
         /// </summary>

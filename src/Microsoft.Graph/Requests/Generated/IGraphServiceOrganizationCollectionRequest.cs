@@ -11,7 +11,6 @@ namespace Microsoft.Graph
     using System.Collections.Generic;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The interface IGraphServiceOrganizationCollectionRequest.
@@ -24,7 +23,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="organization">The Organization to add.</param>
         /// <returns>The created Organization.</returns>
-        Task<Organization> AddAsync(Organization organization);
+        System.Threading.Tasks.Task<Organization> AddAsync(Organization organization);
 
         /// <summary>
         /// Adds the specified Organization to the collection via POST.
@@ -32,19 +31,19 @@ namespace Microsoft.Graph
         /// <param name="organization">The Organization to add.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created Organization.</returns>
-        Task<Organization> AddAsync(Organization organization, CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<Organization> AddAsync(Organization organization, CancellationToken cancellationToken);
         /// <summary>
         /// Gets the collection page.
         /// </summary>
         /// <returns>The collection page.</returns>
-        Task<IGraphServiceOrganizationCollectionPage> GetAsync();
-        
+        System.Threading.Tasks.Task<IGraphServiceOrganizationCollectionPage> GetAsync();
+
         /// <summary>
         /// Gets the collection page.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The collection page.</returns>
-        Task<IGraphServiceOrganizationCollectionPage> GetAsync(CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<IGraphServiceOrganizationCollectionPage> GetAsync(CancellationToken cancellationToken);
 
         /// <summary>
         /// Adds the specified top value to the request.

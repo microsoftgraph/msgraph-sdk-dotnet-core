@@ -11,7 +11,6 @@ namespace Microsoft.Graph
     using System.IO;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The interface IDriveItemRequest.
@@ -23,46 +22,46 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="driveItemToCreate">The DriveItem to create.</param>
         /// <returns>The created DriveItem.</returns>
-        Task<DriveItem> CreateAsync(DriveItem driveItemToCreate);        /// <summary>
+        System.Threading.Tasks.Task<DriveItem> CreateAsync(DriveItem driveItemToCreate);        /// <summary>
         /// Creates the specified DriveItem using PUT.
         /// </summary>
         /// <param name="driveItemToCreate">The DriveItem to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created DriveItem.</returns>
-        Task<DriveItem> CreateAsync(DriveItem driveItemToCreate, CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<DriveItem> CreateAsync(DriveItem driveItemToCreate, CancellationToken cancellationToken);
 
         /// <summary>
         /// Deletes the specified DriveItem.
         /// </summary>
         /// <returns>The task to await.</returns>
-        Task DeleteAsync();
+        System.Threading.Tasks.Task DeleteAsync();
 
         /// <summary>
         /// Deletes the specified DriveItem.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await.</returns>
-        Task DeleteAsync(CancellationToken cancellationToken);
+        System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken);
 
         /// <summary>
         /// Gets the specified DriveItem.
         /// </summary>
         /// <returns>The DriveItem.</returns>
-        Task<DriveItem> GetAsync();
+        System.Threading.Tasks.Task<DriveItem> GetAsync();
 
         /// <summary>
         /// Gets the specified DriveItem.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The DriveItem.</returns>
-        Task<DriveItem> GetAsync(CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<DriveItem> GetAsync(CancellationToken cancellationToken);
 
         /// <summary>
         /// Updates the specified DriveItem using PATCH.
         /// </summary>
         /// <param name="driveItemToUpdate">The DriveItem to update.</param>
         /// <returns>The updated DriveItem.</returns>
-        Task<DriveItem> UpdateAsync(DriveItem driveItemToUpdate);
+        System.Threading.Tasks.Task<DriveItem> UpdateAsync(DriveItem driveItemToUpdate);
 
         /// <summary>
         /// Updates the specified DriveItem using PATCH.
@@ -70,7 +69,7 @@ namespace Microsoft.Graph
         /// <param name="driveItemToUpdate">The DriveItem to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The updated DriveItem.</returns>
-        Task<DriveItem> UpdateAsync(DriveItem driveItemToUpdate, CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<DriveItem> UpdateAsync(DriveItem driveItemToUpdate, CancellationToken cancellationToken);
 
         /// <summary>
         /// Adds the specified expand value to the request.

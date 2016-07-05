@@ -11,7 +11,6 @@ namespace Microsoft.Graph
     using System.Collections.Generic;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The interface IGraphServiceDrivesCollectionRequest.
@@ -24,7 +23,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="drive">The Drive to add.</param>
         /// <returns>The created Drive.</returns>
-        Task<Drive> AddAsync(Drive drive);
+        System.Threading.Tasks.Task<Drive> AddAsync(Drive drive);
 
         /// <summary>
         /// Adds the specified Drive to the collection via POST.
@@ -32,19 +31,19 @@ namespace Microsoft.Graph
         /// <param name="drive">The Drive to add.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created Drive.</returns>
-        Task<Drive> AddAsync(Drive drive, CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<Drive> AddAsync(Drive drive, CancellationToken cancellationToken);
         /// <summary>
         /// Gets the collection page.
         /// </summary>
         /// <returns>The collection page.</returns>
-        Task<IGraphServiceDrivesCollectionPage> GetAsync();
-        
+        System.Threading.Tasks.Task<IGraphServiceDrivesCollectionPage> GetAsync();
+
         /// <summary>
         /// Gets the collection page.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The collection page.</returns>
-        Task<IGraphServiceDrivesCollectionPage> GetAsync(CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<IGraphServiceDrivesCollectionPage> GetAsync(CancellationToken cancellationToken);
 
         /// <summary>
         /// Adds the specified expand value to the request.

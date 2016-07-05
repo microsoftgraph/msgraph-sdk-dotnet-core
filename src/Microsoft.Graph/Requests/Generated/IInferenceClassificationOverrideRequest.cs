@@ -11,7 +11,6 @@ namespace Microsoft.Graph
     using System.IO;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The interface IInferenceClassificationOverrideRequest.
@@ -23,46 +22,46 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="inferenceClassificationOverrideToCreate">The InferenceClassificationOverride to create.</param>
         /// <returns>The created InferenceClassificationOverride.</returns>
-        Task<InferenceClassificationOverride> CreateAsync(InferenceClassificationOverride inferenceClassificationOverrideToCreate);        /// <summary>
+        System.Threading.Tasks.Task<InferenceClassificationOverride> CreateAsync(InferenceClassificationOverride inferenceClassificationOverrideToCreate);        /// <summary>
         /// Creates the specified InferenceClassificationOverride using PUT.
         /// </summary>
         /// <param name="inferenceClassificationOverrideToCreate">The InferenceClassificationOverride to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created InferenceClassificationOverride.</returns>
-        Task<InferenceClassificationOverride> CreateAsync(InferenceClassificationOverride inferenceClassificationOverrideToCreate, CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<InferenceClassificationOverride> CreateAsync(InferenceClassificationOverride inferenceClassificationOverrideToCreate, CancellationToken cancellationToken);
 
         /// <summary>
         /// Deletes the specified InferenceClassificationOverride.
         /// </summary>
         /// <returns>The task to await.</returns>
-        Task DeleteAsync();
+        System.Threading.Tasks.Task DeleteAsync();
 
         /// <summary>
         /// Deletes the specified InferenceClassificationOverride.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await.</returns>
-        Task DeleteAsync(CancellationToken cancellationToken);
+        System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken);
 
         /// <summary>
         /// Gets the specified InferenceClassificationOverride.
         /// </summary>
         /// <returns>The InferenceClassificationOverride.</returns>
-        Task<InferenceClassificationOverride> GetAsync();
+        System.Threading.Tasks.Task<InferenceClassificationOverride> GetAsync();
 
         /// <summary>
         /// Gets the specified InferenceClassificationOverride.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The InferenceClassificationOverride.</returns>
-        Task<InferenceClassificationOverride> GetAsync(CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<InferenceClassificationOverride> GetAsync(CancellationToken cancellationToken);
 
         /// <summary>
         /// Updates the specified InferenceClassificationOverride using PATCH.
         /// </summary>
         /// <param name="inferenceClassificationOverrideToUpdate">The InferenceClassificationOverride to update.</param>
         /// <returns>The updated InferenceClassificationOverride.</returns>
-        Task<InferenceClassificationOverride> UpdateAsync(InferenceClassificationOverride inferenceClassificationOverrideToUpdate);
+        System.Threading.Tasks.Task<InferenceClassificationOverride> UpdateAsync(InferenceClassificationOverride inferenceClassificationOverrideToUpdate);
 
         /// <summary>
         /// Updates the specified InferenceClassificationOverride using PATCH.
@@ -70,7 +69,7 @@ namespace Microsoft.Graph
         /// <param name="inferenceClassificationOverrideToUpdate">The InferenceClassificationOverride to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The updated InferenceClassificationOverride.</returns>
-        Task<InferenceClassificationOverride> UpdateAsync(InferenceClassificationOverride inferenceClassificationOverrideToUpdate, CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<InferenceClassificationOverride> UpdateAsync(InferenceClassificationOverride inferenceClassificationOverrideToUpdate, CancellationToken cancellationToken);
 
         /// <summary>
         /// Adds the specified expand value to the request.

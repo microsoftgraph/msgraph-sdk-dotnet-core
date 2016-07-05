@@ -12,7 +12,6 @@ namespace Microsoft.Graph
     using System.IO;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The type CalendarRequest.
@@ -38,7 +37,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="calendarToCreate">The Calendar to create.</param>
         /// <returns>The created Calendar.</returns>
-        public Task<Calendar> CreateAsync(Calendar calendarToCreate)
+        public System.Threading.Tasks.Task<Calendar> CreateAsync(Calendar calendarToCreate)
         {
             return this.CreateAsync(calendarToCreate, CancellationToken.None);
         }
@@ -49,7 +48,7 @@ namespace Microsoft.Graph
         /// <param name="calendarToCreate">The Calendar to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created Calendar.</returns>
-        public async Task<Calendar> CreateAsync(Calendar calendarToCreate, CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Calendar> CreateAsync(Calendar calendarToCreate, CancellationToken cancellationToken)
         {
             this.ContentType = "application/json";
             this.Method = "PUT";
@@ -62,7 +61,7 @@ namespace Microsoft.Graph
         /// Deletes the specified Calendar.
         /// </summary>
         /// <returns>The task to await.</returns>
-        public Task DeleteAsync()
+        public System.Threading.Tasks.Task DeleteAsync()
         {
             return this.DeleteAsync(CancellationToken.None);
         }
@@ -72,7 +71,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await.</returns>
-        public async Task DeleteAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken)
         {
             this.Method = "DELETE";
             await this.SendAsync<Calendar>(null, cancellationToken).ConfigureAwait(false);
@@ -82,7 +81,7 @@ namespace Microsoft.Graph
         /// Gets the specified Calendar.
         /// </summary>
         /// <returns>The Calendar.</returns>
-        public Task<Calendar> GetAsync()
+        public System.Threading.Tasks.Task<Calendar> GetAsync()
         {
             return this.GetAsync(CancellationToken.None);
         }
@@ -92,7 +91,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The Calendar.</returns>
-        public async Task<Calendar> GetAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Calendar> GetAsync(CancellationToken cancellationToken)
         {
             this.Method = "GET";
             var retrievedEntity = await this.SendAsync<Calendar>(null, cancellationToken).ConfigureAwait(false);
@@ -105,7 +104,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="calendarToUpdate">The Calendar to update.</param>
         /// <returns>The updated Calendar.</returns>
-        public Task<Calendar> UpdateAsync(Calendar calendarToUpdate)
+        public System.Threading.Tasks.Task<Calendar> UpdateAsync(Calendar calendarToUpdate)
         {
             return this.UpdateAsync(calendarToUpdate, CancellationToken.None);
         }
@@ -116,7 +115,7 @@ namespace Microsoft.Graph
         /// <param name="calendarToUpdate">The Calendar to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The updated Calendar.</returns>
-        public async Task<Calendar> UpdateAsync(Calendar calendarToUpdate, CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Calendar> UpdateAsync(Calendar calendarToUpdate, CancellationToken cancellationToken)
         {
             this.ContentType = "application/json";
             this.Method = "PATCH";

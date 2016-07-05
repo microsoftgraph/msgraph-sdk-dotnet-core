@@ -11,7 +11,6 @@ namespace Microsoft.Graph
     using System.Collections.Generic;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The interface IGraphServiceDirectoryRolesCollectionRequest.
@@ -24,7 +23,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="directoryRole">The DirectoryRole to add.</param>
         /// <returns>The created DirectoryRole.</returns>
-        Task<DirectoryRole> AddAsync(DirectoryRole directoryRole);
+        System.Threading.Tasks.Task<DirectoryRole> AddAsync(DirectoryRole directoryRole);
 
         /// <summary>
         /// Adds the specified DirectoryRole to the collection via POST.
@@ -32,19 +31,19 @@ namespace Microsoft.Graph
         /// <param name="directoryRole">The DirectoryRole to add.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created DirectoryRole.</returns>
-        Task<DirectoryRole> AddAsync(DirectoryRole directoryRole, CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<DirectoryRole> AddAsync(DirectoryRole directoryRole, CancellationToken cancellationToken);
         /// <summary>
         /// Gets the collection page.
         /// </summary>
         /// <returns>The collection page.</returns>
-        Task<IGraphServiceDirectoryRolesCollectionPage> GetAsync();
-        
+        System.Threading.Tasks.Task<IGraphServiceDirectoryRolesCollectionPage> GetAsync();
+
         /// <summary>
         /// Gets the collection page.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The collection page.</returns>
-        Task<IGraphServiceDirectoryRolesCollectionPage> GetAsync(CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<IGraphServiceDirectoryRolesCollectionPage> GetAsync(CancellationToken cancellationToken);
 
         /// <summary>
         /// Adds the specified orderby value to the request.

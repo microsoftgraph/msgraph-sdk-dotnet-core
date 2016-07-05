@@ -13,7 +13,7 @@ namespace Microsoft.Graph
     /// The type ConversationThreadPostsCollectionRequestBuilder.
     /// </summary>
     public partial class ConversationThreadPostsCollectionRequestBuilder : BaseRequestBuilder, IConversationThreadPostsCollectionRequestBuilder
-    {  
+    {
         /// <summary>
         /// Constructs a new ConversationThreadPostsCollectionRequestBuilder.
         /// </summary>

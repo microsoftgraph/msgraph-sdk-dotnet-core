@@ -13,7 +13,7 @@ namespace Microsoft.Graph
     /// The type InferenceClassificationOverridesCollectionRequestBuilder.
     /// </summary>
     public partial class InferenceClassificationOverridesCollectionRequestBuilder : BaseRequestBuilder, IInferenceClassificationOverridesCollectionRequestBuilder
-    {  
+    {
         /// <summary>
         /// Constructs a new InferenceClassificationOverridesCollectionRequestBuilder.
         /// </summary>

@@ -11,7 +11,6 @@ namespace Microsoft.Graph
     using System.IO;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The interface IExtensionRequest.
@@ -23,46 +22,46 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="extensionToCreate">The Extension to create.</param>
         /// <returns>The created Extension.</returns>
-        Task<Extension> CreateAsync(Extension extensionToCreate);        /// <summary>
+        System.Threading.Tasks.Task<Extension> CreateAsync(Extension extensionToCreate);        /// <summary>
         /// Creates the specified Extension using PUT.
         /// </summary>
         /// <param name="extensionToCreate">The Extension to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created Extension.</returns>
-        Task<Extension> CreateAsync(Extension extensionToCreate, CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<Extension> CreateAsync(Extension extensionToCreate, CancellationToken cancellationToken);
 
         /// <summary>
         /// Deletes the specified Extension.
         /// </summary>
         /// <returns>The task to await.</returns>
-        Task DeleteAsync();
+        System.Threading.Tasks.Task DeleteAsync();
 
         /// <summary>
         /// Deletes the specified Extension.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await.</returns>
-        Task DeleteAsync(CancellationToken cancellationToken);
+        System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken);
 
         /// <summary>
         /// Gets the specified Extension.
         /// </summary>
         /// <returns>The Extension.</returns>
-        Task<Extension> GetAsync();
+        System.Threading.Tasks.Task<Extension> GetAsync();
 
         /// <summary>
         /// Gets the specified Extension.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The Extension.</returns>
-        Task<Extension> GetAsync(CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<Extension> GetAsync(CancellationToken cancellationToken);
 
         /// <summary>
         /// Updates the specified Extension using PATCH.
         /// </summary>
         /// <param name="extensionToUpdate">The Extension to update.</param>
         /// <returns>The updated Extension.</returns>
-        Task<Extension> UpdateAsync(Extension extensionToUpdate);
+        System.Threading.Tasks.Task<Extension> UpdateAsync(Extension extensionToUpdate);
 
         /// <summary>
         /// Updates the specified Extension using PATCH.
@@ -70,7 +69,7 @@ namespace Microsoft.Graph
         /// <param name="extensionToUpdate">The Extension to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The updated Extension.</returns>
-        Task<Extension> UpdateAsync(Extension extensionToUpdate, CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<Extension> UpdateAsync(Extension extensionToUpdate, CancellationToken cancellationToken);
 
         /// <summary>
         /// Adds the specified expand value to the request.

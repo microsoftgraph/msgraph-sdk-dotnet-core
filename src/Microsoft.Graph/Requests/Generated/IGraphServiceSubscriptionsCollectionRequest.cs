@@ -11,7 +11,6 @@ namespace Microsoft.Graph
     using System.Collections.Generic;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The interface IGraphServiceSubscriptionsCollectionRequest.
@@ -24,7 +23,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="subscription">The Subscription to add.</param>
         /// <returns>The created Subscription.</returns>
-        Task<Subscription> AddAsync(Subscription subscription);
+        System.Threading.Tasks.Task<Subscription> AddAsync(Subscription subscription);
 
         /// <summary>
         /// Adds the specified Subscription to the collection via POST.
@@ -32,19 +31,19 @@ namespace Microsoft.Graph
         /// <param name="subscription">The Subscription to add.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created Subscription.</returns>
-        Task<Subscription> AddAsync(Subscription subscription, CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<Subscription> AddAsync(Subscription subscription, CancellationToken cancellationToken);
         /// <summary>
         /// Gets the collection page.
         /// </summary>
         /// <returns>The collection page.</returns>
-        Task<IGraphServiceSubscriptionsCollectionPage> GetAsync();
-        
+        System.Threading.Tasks.Task<IGraphServiceSubscriptionsCollectionPage> GetAsync();
+
         /// <summary>
         /// Gets the collection page.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The collection page.</returns>
-        Task<IGraphServiceSubscriptionsCollectionPage> GetAsync(CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<IGraphServiceSubscriptionsCollectionPage> GetAsync(CancellationToken cancellationToken);
 
     }
 }

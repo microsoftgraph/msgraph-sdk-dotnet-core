@@ -13,7 +13,7 @@ namespace Microsoft.Graph
     /// The type PostAttachmentsCollectionRequestBuilder.
     /// </summary>
     public partial class PostAttachmentsCollectionRequestBuilder : BaseRequestBuilder, IPostAttachmentsCollectionRequestBuilder
-    {  
+    {
         /// <summary>
         /// Constructs a new PostAttachmentsCollectionRequestBuilder.
         /// </summary>
