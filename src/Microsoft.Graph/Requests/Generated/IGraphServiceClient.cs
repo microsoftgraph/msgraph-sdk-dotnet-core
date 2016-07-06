@@ -7,7 +7,7 @@
 
 namespace Microsoft.Graph
 {
-
+    
     /// <summary>
     /// The interface IGraphServiceClient.
     /// </summary>

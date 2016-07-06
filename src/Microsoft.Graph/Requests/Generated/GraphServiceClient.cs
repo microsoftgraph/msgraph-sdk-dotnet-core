@@ -7,7 +7,7 @@
 
 namespace Microsoft.Graph
 {
-
+   
     /// <summary>
     /// The type GraphServiceClient.
     /// </summary>
