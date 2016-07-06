@@ -11,7 +11,6 @@ namespace Microsoft.Graph
     using System.IO;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The interface IDirectoryObjectRequest.
@@ -23,46 +22,46 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="directoryObjectToCreate">The DirectoryObject to create.</param>
         /// <returns>The created DirectoryObject.</returns>
-        Task<DirectoryObject> CreateAsync(DirectoryObject directoryObjectToCreate);        /// <summary>
+        System.Threading.Tasks.Task<DirectoryObject> CreateAsync(DirectoryObject directoryObjectToCreate);        /// <summary>
         /// Creates the specified DirectoryObject using PUT.
         /// </summary>
         /// <param name="directoryObjectToCreate">The DirectoryObject to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created DirectoryObject.</returns>
-        Task<DirectoryObject> CreateAsync(DirectoryObject directoryObjectToCreate, CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<DirectoryObject> CreateAsync(DirectoryObject directoryObjectToCreate, CancellationToken cancellationToken);
 
         /// <summary>
         /// Deletes the specified DirectoryObject.
         /// </summary>
         /// <returns>The task to await.</returns>
-        Task DeleteAsync();
+        System.Threading.Tasks.Task DeleteAsync();
 
         /// <summary>
         /// Deletes the specified DirectoryObject.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await.</returns>
-        Task DeleteAsync(CancellationToken cancellationToken);
+        System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken);
 
         /// <summary>
         /// Gets the specified DirectoryObject.
         /// </summary>
         /// <returns>The DirectoryObject.</returns>
-        Task<DirectoryObject> GetAsync();
+        System.Threading.Tasks.Task<DirectoryObject> GetAsync();
 
         /// <summary>
         /// Gets the specified DirectoryObject.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The DirectoryObject.</returns>
-        Task<DirectoryObject> GetAsync(CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<DirectoryObject> GetAsync(CancellationToken cancellationToken);
 
         /// <summary>
         /// Updates the specified DirectoryObject using PATCH.
         /// </summary>
         /// <param name="directoryObjectToUpdate">The DirectoryObject to update.</param>
         /// <returns>The updated DirectoryObject.</returns>
-        Task<DirectoryObject> UpdateAsync(DirectoryObject directoryObjectToUpdate);
+        System.Threading.Tasks.Task<DirectoryObject> UpdateAsync(DirectoryObject directoryObjectToUpdate);
 
         /// <summary>
         /// Updates the specified DirectoryObject using PATCH.
@@ -70,7 +69,7 @@ namespace Microsoft.Graph
         /// <param name="directoryObjectToUpdate">The DirectoryObject to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The updated DirectoryObject.</returns>
-        Task<DirectoryObject> UpdateAsync(DirectoryObject directoryObjectToUpdate, CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<DirectoryObject> UpdateAsync(DirectoryObject directoryObjectToUpdate, CancellationToken cancellationToken);
 
     }
 }

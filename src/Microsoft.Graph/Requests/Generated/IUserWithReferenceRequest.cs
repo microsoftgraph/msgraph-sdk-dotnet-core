@@ -11,7 +11,6 @@ namespace Microsoft.Graph
     using System.IO;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The interface IUserWithReferenceRequest.
@@ -22,14 +21,14 @@ namespace Microsoft.Graph
         /// Gets the specified User.
         /// </summary>
         /// <returns>The User.</returns>
-        Task<User> GetAsync();
+        System.Threading.Tasks.Task<User> GetAsync();
 
         /// <summary>
         /// Gets the specified User.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The User.</returns>
-        Task<User> GetAsync(CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<User> GetAsync(CancellationToken cancellationToken);
 
     }
 }

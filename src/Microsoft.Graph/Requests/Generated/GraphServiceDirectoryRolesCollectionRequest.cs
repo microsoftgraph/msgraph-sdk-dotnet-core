@@ -11,7 +11,6 @@ namespace Microsoft.Graph
     using System.Collections.Generic;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The type GraphServiceDirectoryRolesCollectionRequest.
@@ -37,7 +36,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="directoryRole">The DirectoryRole to add.</param>
         /// <returns>The created DirectoryRole.</returns>
-        public Task<DirectoryRole> AddAsync(DirectoryRole directoryRole)
+        public System.Threading.Tasks.Task<DirectoryRole> AddAsync(DirectoryRole directoryRole)
         {
             return this.AddAsync(directoryRole, CancellationToken.None);
         }
@@ -48,28 +47,28 @@ namespace Microsoft.Graph
         /// <param name="directoryRole">The DirectoryRole to add.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created DirectoryRole.</returns>
-        public Task<DirectoryRole> AddAsync(DirectoryRole directoryRole, CancellationToken cancellationToken)
+        public System.Threading.Tasks.Task<DirectoryRole> AddAsync(DirectoryRole directoryRole, CancellationToken cancellationToken)
         {
             this.ContentType = "application/json";
             this.Method = "POST";
             return this.SendAsync<DirectoryRole>(directoryRole, cancellationToken);
         }
-  
+
         /// <summary>
         /// Gets the collection page.
         /// </summary>
         /// <returns>The collection page.</returns>
-        public Task<IGraphServiceDirectoryRolesCollectionPage> GetAsync()
+        public System.Threading.Tasks.Task<IGraphServiceDirectoryRolesCollectionPage> GetAsync()
         {
             return this.GetAsync(CancellationToken.None);
         }
-        
+
         /// <summary>
         /// Gets the collection page.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The collection page.</returns>
-        public async Task<IGraphServiceDirectoryRolesCollectionPage> GetAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<IGraphServiceDirectoryRolesCollectionPage> GetAsync(CancellationToken cancellationToken)
         {
             this.Method = "GET";
             var response = await this.SendAsync<GraphServiceDirectoryRolesCollectionResponse>(null, cancellationToken).ConfigureAwait(false);
@@ -88,7 +87,7 @@ namespace Microsoft.Graph
                             this.Client,
                             nextPageLinkString);
                     }
-                    
+
                     // Copy the additional data collection to the page itself so that information is not lost
                     response.Value.AdditionalData = response.AdditionalData;
                 }

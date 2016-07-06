@@ -9,43 +9,43 @@
 namespace Microsoft.Graph
 {
     using Newtonsoft.Json;
-    
+
     /// <summary>
     /// The enum RecurrencePatternType.
     /// </summary>
     [JsonConverter(typeof(EnumConverter))]
     public enum RecurrencePatternType
     {
-        
+    
         /// <summary>
         /// daily
         /// </summary>
         Daily,
-        
+    
         /// <summary>
         /// weekly
         /// </summary>
         Weekly,
-        
+    
         /// <summary>
         /// absolute Monthly
         /// </summary>
         AbsoluteMonthly,
-        
+    
         /// <summary>
         /// relative Monthly
         /// </summary>
         RelativeMonthly,
-        
+    
         /// <summary>
         /// absolute Yearly
         /// </summary>
         AbsoluteYearly,
-        
+    
         /// <summary>
         /// relative Yearly
         /// </summary>
         RelativeYearly,
-        
+    
     }
 }

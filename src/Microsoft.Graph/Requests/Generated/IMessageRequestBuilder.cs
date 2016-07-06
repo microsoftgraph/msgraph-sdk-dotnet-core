@@ -28,7 +28,7 @@ namespace Microsoft.Graph
         /// <param name="options">The query and header options for the request.</param>
         /// <returns>The built request.</returns>
         new IMessageRequest Request(IEnumerable<Option> options);
-        
+    
         /// <summary>
         /// Gets the request builder for Extensions.
         /// </summary>
@@ -40,7 +40,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IMessageAttachmentsCollectionRequestBuilder"/>.</returns>
         IMessageAttachmentsCollectionRequestBuilder Attachments { get; }
-        
+    
         /// <summary>
         /// Gets the request builder for MessageCopy.
         /// </summary>

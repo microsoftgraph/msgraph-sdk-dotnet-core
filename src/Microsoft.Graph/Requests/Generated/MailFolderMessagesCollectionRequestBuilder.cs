@@ -13,7 +13,7 @@ namespace Microsoft.Graph
     /// The type MailFolderMessagesCollectionRequestBuilder.
     /// </summary>
     public partial class MailFolderMessagesCollectionRequestBuilder : BaseRequestBuilder, IMailFolderMessagesCollectionRequestBuilder
-    {  
+    {
         /// <summary>
         /// Constructs a new MailFolderMessagesCollectionRequestBuilder.
         /// </summary>

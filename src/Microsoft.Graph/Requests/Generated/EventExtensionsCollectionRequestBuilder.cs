@@ -13,7 +13,7 @@ namespace Microsoft.Graph
     /// The type EventExtensionsCollectionRequestBuilder.
     /// </summary>
     public partial class EventExtensionsCollectionRequestBuilder : BaseRequestBuilder, IEventExtensionsCollectionRequestBuilder
-    {  
+    {
         /// <summary>
         /// Constructs a new EventExtensionsCollectionRequestBuilder.
         /// </summary>

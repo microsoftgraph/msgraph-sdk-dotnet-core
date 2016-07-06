@@ -11,7 +11,6 @@ namespace Microsoft.Graph
     using System.Collections.Generic;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The interface IConversationThreadsCollectionRequest.
@@ -24,7 +23,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="conversationThread">The ConversationThread to add.</param>
         /// <returns>The created ConversationThread.</returns>
-        Task<ConversationThread> AddAsync(ConversationThread conversationThread);
+        System.Threading.Tasks.Task<ConversationThread> AddAsync(ConversationThread conversationThread);
 
         /// <summary>
         /// Adds the specified ConversationThread to the collection via POST.
@@ -32,19 +31,19 @@ namespace Microsoft.Graph
         /// <param name="conversationThread">The ConversationThread to add.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created ConversationThread.</returns>
-        Task<ConversationThread> AddAsync(ConversationThread conversationThread, CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<ConversationThread> AddAsync(ConversationThread conversationThread, CancellationToken cancellationToken);
         /// <summary>
         /// Gets the collection page.
         /// </summary>
         /// <returns>The collection page.</returns>
-        Task<IConversationThreadsCollectionPage> GetAsync();
-        
+        System.Threading.Tasks.Task<IConversationThreadsCollectionPage> GetAsync();
+
         /// <summary>
         /// Gets the collection page.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The collection page.</returns>
-        Task<IConversationThreadsCollectionPage> GetAsync(CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<IConversationThreadsCollectionPage> GetAsync(CancellationToken cancellationToken);
 
         /// <summary>
         /// Adds the specified expand value to the request.

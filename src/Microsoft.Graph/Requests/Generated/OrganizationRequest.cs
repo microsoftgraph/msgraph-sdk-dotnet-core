@@ -12,7 +12,6 @@ namespace Microsoft.Graph
     using System.IO;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The type OrganizationRequest.
@@ -38,7 +37,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="organizationToCreate">The Organization to create.</param>
         /// <returns>The created Organization.</returns>
-        public Task<Organization> CreateAsync(Organization organizationToCreate)
+        public System.Threading.Tasks.Task<Organization> CreateAsync(Organization organizationToCreate)
         {
             return this.CreateAsync(organizationToCreate, CancellationToken.None);
         }
@@ -49,7 +48,7 @@ namespace Microsoft.Graph
         /// <param name="organizationToCreate">The Organization to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created Organization.</returns>
-        public async Task<Organization> CreateAsync(Organization organizationToCreate, CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Organization> CreateAsync(Organization organizationToCreate, CancellationToken cancellationToken)
         {
             this.ContentType = "application/json";
             this.Method = "PUT";
@@ -62,7 +61,7 @@ namespace Microsoft.Graph
         /// Deletes the specified Organization.
         /// </summary>
         /// <returns>The task to await.</returns>
-        public Task DeleteAsync()
+        public System.Threading.Tasks.Task DeleteAsync()
         {
             return this.DeleteAsync(CancellationToken.None);
         }
@@ -72,7 +71,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await.</returns>
-        public async Task DeleteAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken)
         {
             this.Method = "DELETE";
             await this.SendAsync<Organization>(null, cancellationToken).ConfigureAwait(false);
@@ -82,7 +81,7 @@ namespace Microsoft.Graph
         /// Gets the specified Organization.
         /// </summary>
         /// <returns>The Organization.</returns>
-        public Task<Organization> GetAsync()
+        public System.Threading.Tasks.Task<Organization> GetAsync()
         {
             return this.GetAsync(CancellationToken.None);
         }
@@ -92,7 +91,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The Organization.</returns>
-        public async Task<Organization> GetAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Organization> GetAsync(CancellationToken cancellationToken)
         {
             this.Method = "GET";
             var retrievedEntity = await this.SendAsync<Organization>(null, cancellationToken).ConfigureAwait(false);
@@ -105,7 +104,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="organizationToUpdate">The Organization to update.</param>
         /// <returns>The updated Organization.</returns>
-        public Task<Organization> UpdateAsync(Organization organizationToUpdate)
+        public System.Threading.Tasks.Task<Organization> UpdateAsync(Organization organizationToUpdate)
         {
             return this.UpdateAsync(organizationToUpdate, CancellationToken.None);
         }
@@ -116,7 +115,7 @@ namespace Microsoft.Graph
         /// <param name="organizationToUpdate">The Organization to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The updated Organization.</returns>
-        public async Task<Organization> UpdateAsync(Organization organizationToUpdate, CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Organization> UpdateAsync(Organization organizationToUpdate, CancellationToken cancellationToken)
         {
             this.ContentType = "application/json";
             this.Method = "PATCH";

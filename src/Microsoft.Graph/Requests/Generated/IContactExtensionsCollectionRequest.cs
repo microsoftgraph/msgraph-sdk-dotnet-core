@@ -11,7 +11,6 @@ namespace Microsoft.Graph
     using System.Collections.Generic;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The interface IContactExtensionsCollectionRequest.
@@ -24,7 +23,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="extension">The Extension to add.</param>
         /// <returns>The created Extension.</returns>
-        Task<Extension> AddAsync(Extension extension);
+        System.Threading.Tasks.Task<Extension> AddAsync(Extension extension);
 
         /// <summary>
         /// Adds the specified Extension to the collection via POST.
@@ -32,19 +31,19 @@ namespace Microsoft.Graph
         /// <param name="extension">The Extension to add.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created Extension.</returns>
-        Task<Extension> AddAsync(Extension extension, CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<Extension> AddAsync(Extension extension, CancellationToken cancellationToken);
         /// <summary>
         /// Gets the collection page.
         /// </summary>
         /// <returns>The collection page.</returns>
-        Task<IContactExtensionsCollectionPage> GetAsync();
-        
+        System.Threading.Tasks.Task<IContactExtensionsCollectionPage> GetAsync();
+
         /// <summary>
         /// Gets the collection page.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The collection page.</returns>
-        Task<IContactExtensionsCollectionPage> GetAsync(CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<IContactExtensionsCollectionPage> GetAsync(CancellationToken cancellationToken);
 
         /// <summary>
         /// Adds the specified expand value to the request.

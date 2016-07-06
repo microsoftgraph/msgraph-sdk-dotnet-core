@@ -47,7 +47,7 @@ namespace Microsoft.Graph
         {
             return new MessageRequest(this.RequestUrl, this.Client, options);
         }
-        
+    
         /// <summary>
         /// Gets the request builder for Extensions.
         /// </summary>
@@ -71,7 +71,7 @@ namespace Microsoft.Graph
                 return new MessageAttachmentsCollectionRequestBuilder(this.AppendSegmentToRequestUrl("attachments"), this.Client);
             }
         }
-        
+    
         /// <summary>
         /// Gets the request builder for MessageCopy.
         /// </summary>

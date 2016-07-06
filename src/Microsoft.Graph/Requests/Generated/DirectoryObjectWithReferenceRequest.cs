@@ -12,7 +12,6 @@ namespace Microsoft.Graph
     using System.IO;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The type DirectoryObjectWithReferenceRequest.
@@ -37,7 +36,7 @@ namespace Microsoft.Graph
         /// Gets the specified DirectoryObject.
         /// </summary>
         /// <returns>The DirectoryObject.</returns>
-        public Task<DirectoryObject> GetAsync()
+        public System.Threading.Tasks.Task<DirectoryObject> GetAsync()
         {
             return this.GetAsync(CancellationToken.None);
         }
@@ -47,7 +46,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The DirectoryObject.</returns>
-        public async Task<DirectoryObject> GetAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<DirectoryObject> GetAsync(CancellationToken cancellationToken)
         {
             this.Method = "GET";
             var retrievedEntity = await this.SendAsync<DirectoryObject>(null, cancellationToken).ConfigureAwait(false);

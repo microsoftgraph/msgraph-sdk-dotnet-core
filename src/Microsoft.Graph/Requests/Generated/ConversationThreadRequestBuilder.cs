@@ -47,7 +47,7 @@ namespace Microsoft.Graph
         {
             return new ConversationThreadRequest(this.RequestUrl, this.Client, options);
         }
-        
+    
         /// <summary>
         /// Gets the request builder for Posts.
         /// </summary>
@@ -59,7 +59,7 @@ namespace Microsoft.Graph
                 return new ConversationThreadPostsCollectionRequestBuilder(this.AppendSegmentToRequestUrl("posts"), this.Client);
             }
         }
-        
+    
         /// <summary>
         /// Gets the request builder for ConversationThreadReply.
         /// </summary>

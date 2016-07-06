@@ -9,23 +9,23 @@
 namespace Microsoft.Graph
 {
     using Newtonsoft.Json;
-    
+
     /// <summary>
     /// The enum BodyType.
     /// </summary>
     [JsonConverter(typeof(EnumConverter))]
     public enum BodyType
     {
-        
+    
         /// <summary>
         /// text
         /// </summary>
         Text,
-        
+    
         /// <summary>
         /// html
         /// </summary>
         Html,
-        
+    
     }
 }

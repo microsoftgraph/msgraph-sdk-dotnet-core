@@ -13,7 +13,7 @@ namespace Microsoft.Graph
     /// The type UserCalendarsCollectionRequestBuilder.
     /// </summary>
     public partial class UserCalendarsCollectionRequestBuilder : BaseRequestBuilder, IUserCalendarsCollectionRequestBuilder
-    {  
+    {
         /// <summary>
         /// Constructs a new UserCalendarsCollectionRequestBuilder.
         /// </summary>

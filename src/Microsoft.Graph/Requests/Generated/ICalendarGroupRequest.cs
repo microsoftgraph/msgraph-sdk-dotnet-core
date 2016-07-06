@@ -11,7 +11,6 @@ namespace Microsoft.Graph
     using System.IO;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The interface ICalendarGroupRequest.
@@ -23,46 +22,46 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="calendarGroupToCreate">The CalendarGroup to create.</param>
         /// <returns>The created CalendarGroup.</returns>
-        Task<CalendarGroup> CreateAsync(CalendarGroup calendarGroupToCreate);        /// <summary>
+        System.Threading.Tasks.Task<CalendarGroup> CreateAsync(CalendarGroup calendarGroupToCreate);        /// <summary>
         /// Creates the specified CalendarGroup using PUT.
         /// </summary>
         /// <param name="calendarGroupToCreate">The CalendarGroup to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created CalendarGroup.</returns>
-        Task<CalendarGroup> CreateAsync(CalendarGroup calendarGroupToCreate, CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<CalendarGroup> CreateAsync(CalendarGroup calendarGroupToCreate, CancellationToken cancellationToken);
 
         /// <summary>
         /// Deletes the specified CalendarGroup.
         /// </summary>
         /// <returns>The task to await.</returns>
-        Task DeleteAsync();
+        System.Threading.Tasks.Task DeleteAsync();
 
         /// <summary>
         /// Deletes the specified CalendarGroup.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await.</returns>
-        Task DeleteAsync(CancellationToken cancellationToken);
+        System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken);
 
         /// <summary>
         /// Gets the specified CalendarGroup.
         /// </summary>
         /// <returns>The CalendarGroup.</returns>
-        Task<CalendarGroup> GetAsync();
+        System.Threading.Tasks.Task<CalendarGroup> GetAsync();
 
         /// <summary>
         /// Gets the specified CalendarGroup.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The CalendarGroup.</returns>
-        Task<CalendarGroup> GetAsync(CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<CalendarGroup> GetAsync(CancellationToken cancellationToken);
 
         /// <summary>
         /// Updates the specified CalendarGroup using PATCH.
         /// </summary>
         /// <param name="calendarGroupToUpdate">The CalendarGroup to update.</param>
         /// <returns>The updated CalendarGroup.</returns>
-        Task<CalendarGroup> UpdateAsync(CalendarGroup calendarGroupToUpdate);
+        System.Threading.Tasks.Task<CalendarGroup> UpdateAsync(CalendarGroup calendarGroupToUpdate);
 
         /// <summary>
         /// Updates the specified CalendarGroup using PATCH.
@@ -70,7 +69,7 @@ namespace Microsoft.Graph
         /// <param name="calendarGroupToUpdate">The CalendarGroup to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The updated CalendarGroup.</returns>
-        Task<CalendarGroup> UpdateAsync(CalendarGroup calendarGroupToUpdate, CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<CalendarGroup> UpdateAsync(CalendarGroup calendarGroupToUpdate, CancellationToken cancellationToken);
 
         /// <summary>
         /// Adds the specified expand value to the request.

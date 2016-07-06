@@ -12,7 +12,6 @@ namespace Microsoft.Graph
     using System.IO;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The type DriveItemRequest.
@@ -38,7 +37,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="driveItemToCreate">The DriveItem to create.</param>
         /// <returns>The created DriveItem.</returns>
-        public Task<DriveItem> CreateAsync(DriveItem driveItemToCreate)
+        public System.Threading.Tasks.Task<DriveItem> CreateAsync(DriveItem driveItemToCreate)
         {
             return this.CreateAsync(driveItemToCreate, CancellationToken.None);
         }
@@ -49,7 +48,7 @@ namespace Microsoft.Graph
         /// <param name="driveItemToCreate">The DriveItem to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created DriveItem.</returns>
-        public async Task<DriveItem> CreateAsync(DriveItem driveItemToCreate, CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<DriveItem> CreateAsync(DriveItem driveItemToCreate, CancellationToken cancellationToken)
         {
             this.ContentType = "application/json";
             this.Method = "PUT";
@@ -62,7 +61,7 @@ namespace Microsoft.Graph
         /// Deletes the specified DriveItem.
         /// </summary>
         /// <returns>The task to await.</returns>
-        public Task DeleteAsync()
+        public System.Threading.Tasks.Task DeleteAsync()
         {
             return this.DeleteAsync(CancellationToken.None);
         }
@@ -72,7 +71,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await.</returns>
-        public async Task DeleteAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken)
         {
             this.Method = "DELETE";
             await this.SendAsync<DriveItem>(null, cancellationToken).ConfigureAwait(false);
@@ -82,7 +81,7 @@ namespace Microsoft.Graph
         /// Gets the specified DriveItem.
         /// </summary>
         /// <returns>The DriveItem.</returns>
-        public Task<DriveItem> GetAsync()
+        public System.Threading.Tasks.Task<DriveItem> GetAsync()
         {
             return this.GetAsync(CancellationToken.None);
         }
@@ -92,7 +91,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The DriveItem.</returns>
-        public async Task<DriveItem> GetAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<DriveItem> GetAsync(CancellationToken cancellationToken)
         {
             this.Method = "GET";
             var retrievedEntity = await this.SendAsync<DriveItem>(null, cancellationToken).ConfigureAwait(false);
@@ -105,7 +104,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="driveItemToUpdate">The DriveItem to update.</param>
         /// <returns>The updated DriveItem.</returns>
-        public Task<DriveItem> UpdateAsync(DriveItem driveItemToUpdate)
+        public System.Threading.Tasks.Task<DriveItem> UpdateAsync(DriveItem driveItemToUpdate)
         {
             return this.UpdateAsync(driveItemToUpdate, CancellationToken.None);
         }
@@ -116,7 +115,7 @@ namespace Microsoft.Graph
         /// <param name="driveItemToUpdate">The DriveItem to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The updated DriveItem.</returns>
-        public async Task<DriveItem> UpdateAsync(DriveItem driveItemToUpdate, CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<DriveItem> UpdateAsync(DriveItem driveItemToUpdate, CancellationToken cancellationToken)
         {
             this.ContentType = "application/json";
             this.Method = "PATCH";

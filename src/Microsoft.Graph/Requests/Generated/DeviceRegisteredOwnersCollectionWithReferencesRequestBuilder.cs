@@ -45,7 +45,7 @@ namespace Microsoft.Graph
         {
             return new DeviceRegisteredOwnersCollectionWithReferencesRequest(this.RequestUrl, this.Client, options);
         }
-        
+
         /// <summary>
         /// Gets an <see cref="IDirectoryObjectWithReferenceRequestBuilder"/> for the specified DeviceDirectoryObject.
         /// </summary>

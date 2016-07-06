@@ -11,7 +11,6 @@ namespace Microsoft.Graph
     using System.IO;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The interface ISubscriptionRequest.
@@ -23,46 +22,46 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="subscriptionToCreate">The Subscription to create.</param>
         /// <returns>The created Subscription.</returns>
-        Task<Subscription> CreateAsync(Subscription subscriptionToCreate);        /// <summary>
+        System.Threading.Tasks.Task<Subscription> CreateAsync(Subscription subscriptionToCreate);        /// <summary>
         /// Creates the specified Subscription using PUT.
         /// </summary>
         /// <param name="subscriptionToCreate">The Subscription to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created Subscription.</returns>
-        Task<Subscription> CreateAsync(Subscription subscriptionToCreate, CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<Subscription> CreateAsync(Subscription subscriptionToCreate, CancellationToken cancellationToken);
 
         /// <summary>
         /// Deletes the specified Subscription.
         /// </summary>
         /// <returns>The task to await.</returns>
-        Task DeleteAsync();
+        System.Threading.Tasks.Task DeleteAsync();
 
         /// <summary>
         /// Deletes the specified Subscription.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await.</returns>
-        Task DeleteAsync(CancellationToken cancellationToken);
+        System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken);
 
         /// <summary>
         /// Gets the specified Subscription.
         /// </summary>
         /// <returns>The Subscription.</returns>
-        Task<Subscription> GetAsync();
+        System.Threading.Tasks.Task<Subscription> GetAsync();
 
         /// <summary>
         /// Gets the specified Subscription.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The Subscription.</returns>
-        Task<Subscription> GetAsync(CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<Subscription> GetAsync(CancellationToken cancellationToken);
 
         /// <summary>
         /// Updates the specified Subscription using PATCH.
         /// </summary>
         /// <param name="subscriptionToUpdate">The Subscription to update.</param>
         /// <returns>The updated Subscription.</returns>
-        Task<Subscription> UpdateAsync(Subscription subscriptionToUpdate);
+        System.Threading.Tasks.Task<Subscription> UpdateAsync(Subscription subscriptionToUpdate);
 
         /// <summary>
         /// Updates the specified Subscription using PATCH.
@@ -70,7 +69,7 @@ namespace Microsoft.Graph
         /// <param name="subscriptionToUpdate">The Subscription to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The updated Subscription.</returns>
-        Task<Subscription> UpdateAsync(Subscription subscriptionToUpdate, CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<Subscription> UpdateAsync(Subscription subscriptionToUpdate, CancellationToken cancellationToken);
 
     }
 }
