@@ -14,7 +14,7 @@ namespace Microsoft.Graph
     /// </summary>
     public partial class UserRegisteredDevicesCollectionReferencesRequestBuilder : BaseRequestBuilder, IUserRegisteredDevicesCollectionReferencesRequestBuilder
     {
-    
+
         /// <summary>
         /// Constructs a new UserRegisteredDevicesCollectionReferencesRequestBuilder.
         /// </summary>

@@ -28,7 +28,7 @@ namespace Microsoft.Graph
         /// <param name="options">The query and header options for the request.</param>
         /// <returns>The built request.</returns>
         new IDriveRequest Request(IEnumerable<Option> options);
-        
+    
         /// <summary>
         /// Gets the request builder for Items.
         /// </summary>
@@ -46,7 +46,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IDriveItemRequestBuilder"/>.</returns>
         IDriveItemRequestBuilder Root { get; }
-        
+    
         /// <summary>
         /// Gets the request builder for DriveRecent.
         /// </summary>

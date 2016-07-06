@@ -12,7 +12,6 @@ namespace Microsoft.Graph
     using System.IO;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The type DirectoryObjectGetMemberObjectsRequest.
@@ -41,17 +40,17 @@ namespace Microsoft.Graph
         /// <summary>
         /// Issues the POST request.
         /// </summary>
-        public Task<IDirectoryObjectGetMemberObjectsCollectionPage> PostAsync()
+        public System.Threading.Tasks.Task<IDirectoryObjectGetMemberObjectsCollectionPage> PostAsync()
         {
             return this.PostAsync(CancellationToken.None);
         }
-        
+
         /// <summary>
         /// Issues the POST request.
         /// </summary>
         /// <param name=""cancellationToken"">The <see cref=""CancellationToken""/> for the request.</param>
         /// <returns>The task to await for async call.</returns>
-        public async Task<IDirectoryObjectGetMemberObjectsCollectionPage> PostAsync(
+        public async System.Threading.Tasks.Task<IDirectoryObjectGetMemberObjectsCollectionPage> PostAsync(
             CancellationToken cancellationToken)
         {
             var response = await this.SendAsync<DirectoryObjectGetMemberObjectsCollectionResponse>(this.RequestBody, cancellationToken).ConfigureAwait(false);
@@ -60,7 +59,7 @@ namespace Microsoft.Graph
                 if (response.AdditionalData != null)
                 {
                     response.Value.AdditionalData = response.AdditionalData;
-                    
+
                     object nextPageLink;
                     response.AdditionalData.TryGetValue("@odata.nextLink", out nextPageLink);
 

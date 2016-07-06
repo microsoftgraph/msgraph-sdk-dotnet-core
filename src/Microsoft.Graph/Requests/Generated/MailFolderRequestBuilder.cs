@@ -47,7 +47,7 @@ namespace Microsoft.Graph
         {
             return new MailFolderRequest(this.RequestUrl, this.Client, options);
         }
-        
+    
         /// <summary>
         /// Gets the request builder for Messages.
         /// </summary>
@@ -71,7 +71,7 @@ namespace Microsoft.Graph
                 return new MailFolderChildFoldersCollectionRequestBuilder(this.AppendSegmentToRequestUrl("childFolders"), this.Client);
             }
         }
-        
+    
         /// <summary>
         /// Gets the request builder for MailFolderCopy.
         /// </summary>

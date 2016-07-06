@@ -13,7 +13,7 @@ namespace Microsoft.Graph
     /// The type MessageAttachmentsCollectionRequestBuilder.
     /// </summary>
     public partial class MessageAttachmentsCollectionRequestBuilder : BaseRequestBuilder, IMessageAttachmentsCollectionRequestBuilder
-    {  
+    {
         /// <summary>
         /// Constructs a new MessageAttachmentsCollectionRequestBuilder.
         /// </summary>

@@ -14,7 +14,7 @@ namespace Microsoft.Graph
     /// </summary>
     public partial class DirectoryRoleMembersCollectionReferencesRequestBuilder : BaseRequestBuilder, IDirectoryRoleMembersCollectionReferencesRequestBuilder
     {
-    
+
         /// <summary>
         /// Constructs a new DirectoryRoleMembersCollectionReferencesRequestBuilder.
         /// </summary>

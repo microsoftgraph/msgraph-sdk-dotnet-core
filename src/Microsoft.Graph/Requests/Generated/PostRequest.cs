@@ -12,7 +12,6 @@ namespace Microsoft.Graph
     using System.IO;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The type PostRequest.
@@ -38,7 +37,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="postToCreate">The Post to create.</param>
         /// <returns>The created Post.</returns>
-        public Task<Post> CreateAsync(Post postToCreate)
+        public System.Threading.Tasks.Task<Post> CreateAsync(Post postToCreate)
         {
             return this.CreateAsync(postToCreate, CancellationToken.None);
         }
@@ -49,7 +48,7 @@ namespace Microsoft.Graph
         /// <param name="postToCreate">The Post to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created Post.</returns>
-        public async Task<Post> CreateAsync(Post postToCreate, CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Post> CreateAsync(Post postToCreate, CancellationToken cancellationToken)
         {
             this.ContentType = "application/json";
             this.Method = "PUT";
@@ -62,7 +61,7 @@ namespace Microsoft.Graph
         /// Deletes the specified Post.
         /// </summary>
         /// <returns>The task to await.</returns>
-        public Task DeleteAsync()
+        public System.Threading.Tasks.Task DeleteAsync()
         {
             return this.DeleteAsync(CancellationToken.None);
         }
@@ -72,7 +71,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await.</returns>
-        public async Task DeleteAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken)
         {
             this.Method = "DELETE";
             await this.SendAsync<Post>(null, cancellationToken).ConfigureAwait(false);
@@ -82,7 +81,7 @@ namespace Microsoft.Graph
         /// Gets the specified Post.
         /// </summary>
         /// <returns>The Post.</returns>
-        public Task<Post> GetAsync()
+        public System.Threading.Tasks.Task<Post> GetAsync()
         {
             return this.GetAsync(CancellationToken.None);
         }
@@ -92,7 +91,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The Post.</returns>
-        public async Task<Post> GetAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Post> GetAsync(CancellationToken cancellationToken)
         {
             this.Method = "GET";
             var retrievedEntity = await this.SendAsync<Post>(null, cancellationToken).ConfigureAwait(false);
@@ -105,7 +104,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="postToUpdate">The Post to update.</param>
         /// <returns>The updated Post.</returns>
-        public Task<Post> UpdateAsync(Post postToUpdate)
+        public System.Threading.Tasks.Task<Post> UpdateAsync(Post postToUpdate)
         {
             return this.UpdateAsync(postToUpdate, CancellationToken.None);
         }
@@ -116,7 +115,7 @@ namespace Microsoft.Graph
         /// <param name="postToUpdate">The Post to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The updated Post.</returns>
-        public async Task<Post> UpdateAsync(Post postToUpdate, CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Post> UpdateAsync(Post postToUpdate, CancellationToken cancellationToken)
         {
             this.ContentType = "application/json";
             this.Method = "PATCH";

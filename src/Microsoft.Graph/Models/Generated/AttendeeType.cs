@@ -9,28 +9,28 @@
 namespace Microsoft.Graph
 {
     using Newtonsoft.Json;
-    
+
     /// <summary>
     /// The enum AttendeeType.
     /// </summary>
     [JsonConverter(typeof(EnumConverter))]
     public enum AttendeeType
     {
-        
+    
         /// <summary>
         /// required
         /// </summary>
         Required,
-        
+    
         /// <summary>
         /// optional
         /// </summary>
         Optional,
-        
+    
         /// <summary>
         /// resource
         /// </summary>
         Resource,
-        
+    
     }
 }

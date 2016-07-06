@@ -11,7 +11,6 @@ namespace Microsoft.Graph
     using System.Collections.Generic;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The interface IGroupEventsCollectionRequest.
@@ -24,7 +23,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="eventsEvent">The Event to add.</param>
         /// <returns>The created Event.</returns>
-        Task<Event> AddAsync(Event eventsEvent);
+        System.Threading.Tasks.Task<Event> AddAsync(Event eventsEvent);
 
         /// <summary>
         /// Adds the specified Event to the collection via POST.
@@ -32,19 +31,19 @@ namespace Microsoft.Graph
         /// <param name="eventsEvent">The Event to add.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created Event.</returns>
-        Task<Event> AddAsync(Event eventsEvent, CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<Event> AddAsync(Event eventsEvent, CancellationToken cancellationToken);
         /// <summary>
         /// Gets the collection page.
         /// </summary>
         /// <returns>The collection page.</returns>
-        Task<IGroupEventsCollectionPage> GetAsync();
-        
+        System.Threading.Tasks.Task<IGroupEventsCollectionPage> GetAsync();
+
         /// <summary>
         /// Gets the collection page.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The collection page.</returns>
-        Task<IGroupEventsCollectionPage> GetAsync(CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<IGroupEventsCollectionPage> GetAsync(CancellationToken cancellationToken);
 
         /// <summary>
         /// Adds the specified expand value to the request.

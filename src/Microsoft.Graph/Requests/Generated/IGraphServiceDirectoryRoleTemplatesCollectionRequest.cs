@@ -11,7 +11,6 @@ namespace Microsoft.Graph
     using System.Collections.Generic;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The interface IGraphServiceDirectoryRoleTemplatesCollectionRequest.
@@ -24,7 +23,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="directoryRoleTemplate">The DirectoryRoleTemplate to add.</param>
         /// <returns>The created DirectoryRoleTemplate.</returns>
-        Task<DirectoryRoleTemplate> AddAsync(DirectoryRoleTemplate directoryRoleTemplate);
+        System.Threading.Tasks.Task<DirectoryRoleTemplate> AddAsync(DirectoryRoleTemplate directoryRoleTemplate);
 
         /// <summary>
         /// Adds the specified DirectoryRoleTemplate to the collection via POST.
@@ -32,19 +31,19 @@ namespace Microsoft.Graph
         /// <param name="directoryRoleTemplate">The DirectoryRoleTemplate to add.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created DirectoryRoleTemplate.</returns>
-        Task<DirectoryRoleTemplate> AddAsync(DirectoryRoleTemplate directoryRoleTemplate, CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<DirectoryRoleTemplate> AddAsync(DirectoryRoleTemplate directoryRoleTemplate, CancellationToken cancellationToken);
         /// <summary>
         /// Gets the collection page.
         /// </summary>
         /// <returns>The collection page.</returns>
-        Task<IGraphServiceDirectoryRoleTemplatesCollectionPage> GetAsync();
-        
+        System.Threading.Tasks.Task<IGraphServiceDirectoryRoleTemplatesCollectionPage> GetAsync();
+
         /// <summary>
         /// Gets the collection page.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The collection page.</returns>
-        Task<IGraphServiceDirectoryRoleTemplatesCollectionPage> GetAsync(CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<IGraphServiceDirectoryRoleTemplatesCollectionPage> GetAsync(CancellationToken cancellationToken);
 
         /// <summary>
         /// Adds the specified orderby value to the request.

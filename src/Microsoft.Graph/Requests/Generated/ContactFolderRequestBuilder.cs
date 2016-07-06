@@ -47,7 +47,7 @@ namespace Microsoft.Graph
         {
             return new ContactFolderRequest(this.RequestUrl, this.Client, options);
         }
-        
+    
         /// <summary>
         /// Gets the request builder for Contacts.
         /// </summary>

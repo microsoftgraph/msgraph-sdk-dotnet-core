@@ -11,7 +11,6 @@ namespace Microsoft.Graph
     using System.IO;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The interface IContactRequest.
@@ -23,46 +22,46 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="contactToCreate">The Contact to create.</param>
         /// <returns>The created Contact.</returns>
-        Task<Contact> CreateAsync(Contact contactToCreate);        /// <summary>
+        System.Threading.Tasks.Task<Contact> CreateAsync(Contact contactToCreate);        /// <summary>
         /// Creates the specified Contact using PUT.
         /// </summary>
         /// <param name="contactToCreate">The Contact to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created Contact.</returns>
-        Task<Contact> CreateAsync(Contact contactToCreate, CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<Contact> CreateAsync(Contact contactToCreate, CancellationToken cancellationToken);
 
         /// <summary>
         /// Deletes the specified Contact.
         /// </summary>
         /// <returns>The task to await.</returns>
-        Task DeleteAsync();
+        System.Threading.Tasks.Task DeleteAsync();
 
         /// <summary>
         /// Deletes the specified Contact.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await.</returns>
-        Task DeleteAsync(CancellationToken cancellationToken);
+        System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken);
 
         /// <summary>
         /// Gets the specified Contact.
         /// </summary>
         /// <returns>The Contact.</returns>
-        Task<Contact> GetAsync();
+        System.Threading.Tasks.Task<Contact> GetAsync();
 
         /// <summary>
         /// Gets the specified Contact.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The Contact.</returns>
-        Task<Contact> GetAsync(CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<Contact> GetAsync(CancellationToken cancellationToken);
 
         /// <summary>
         /// Updates the specified Contact using PATCH.
         /// </summary>
         /// <param name="contactToUpdate">The Contact to update.</param>
         /// <returns>The updated Contact.</returns>
-        Task<Contact> UpdateAsync(Contact contactToUpdate);
+        System.Threading.Tasks.Task<Contact> UpdateAsync(Contact contactToUpdate);
 
         /// <summary>
         /// Updates the specified Contact using PATCH.
@@ -70,7 +69,7 @@ namespace Microsoft.Graph
         /// <param name="contactToUpdate">The Contact to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The updated Contact.</returns>
-        Task<Contact> UpdateAsync(Contact contactToUpdate, CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<Contact> UpdateAsync(Contact contactToUpdate, CancellationToken cancellationToken);
 
         /// <summary>
         /// Adds the specified expand value to the request.

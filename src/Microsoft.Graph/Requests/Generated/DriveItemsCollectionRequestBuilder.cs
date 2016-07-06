@@ -13,7 +13,7 @@ namespace Microsoft.Graph
     /// The type DriveItemsCollectionRequestBuilder.
     /// </summary>
     public partial class DriveItemsCollectionRequestBuilder : BaseRequestBuilder, IDriveItemsCollectionRequestBuilder
-    {  
+    {
         /// <summary>
         /// Constructs a new DriveItemsCollectionRequestBuilder.
         /// </summary>

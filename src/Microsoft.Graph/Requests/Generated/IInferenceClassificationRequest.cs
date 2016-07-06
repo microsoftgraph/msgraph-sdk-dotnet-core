@@ -11,7 +11,6 @@ namespace Microsoft.Graph
     using System.IO;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The interface IInferenceClassificationRequest.
@@ -23,46 +22,46 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="inferenceClassificationToCreate">The InferenceClassification to create.</param>
         /// <returns>The created InferenceClassification.</returns>
-        Task<InferenceClassification> CreateAsync(InferenceClassification inferenceClassificationToCreate);        /// <summary>
+        System.Threading.Tasks.Task<InferenceClassification> CreateAsync(InferenceClassification inferenceClassificationToCreate);        /// <summary>
         /// Creates the specified InferenceClassification using PUT.
         /// </summary>
         /// <param name="inferenceClassificationToCreate">The InferenceClassification to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created InferenceClassification.</returns>
-        Task<InferenceClassification> CreateAsync(InferenceClassification inferenceClassificationToCreate, CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<InferenceClassification> CreateAsync(InferenceClassification inferenceClassificationToCreate, CancellationToken cancellationToken);
 
         /// <summary>
         /// Deletes the specified InferenceClassification.
         /// </summary>
         /// <returns>The task to await.</returns>
-        Task DeleteAsync();
+        System.Threading.Tasks.Task DeleteAsync();
 
         /// <summary>
         /// Deletes the specified InferenceClassification.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await.</returns>
-        Task DeleteAsync(CancellationToken cancellationToken);
+        System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken);
 
         /// <summary>
         /// Gets the specified InferenceClassification.
         /// </summary>
         /// <returns>The InferenceClassification.</returns>
-        Task<InferenceClassification> GetAsync();
+        System.Threading.Tasks.Task<InferenceClassification> GetAsync();
 
         /// <summary>
         /// Gets the specified InferenceClassification.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The InferenceClassification.</returns>
-        Task<InferenceClassification> GetAsync(CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<InferenceClassification> GetAsync(CancellationToken cancellationToken);
 
         /// <summary>
         /// Updates the specified InferenceClassification using PATCH.
         /// </summary>
         /// <param name="inferenceClassificationToUpdate">The InferenceClassification to update.</param>
         /// <returns>The updated InferenceClassification.</returns>
-        Task<InferenceClassification> UpdateAsync(InferenceClassification inferenceClassificationToUpdate);
+        System.Threading.Tasks.Task<InferenceClassification> UpdateAsync(InferenceClassification inferenceClassificationToUpdate);
 
         /// <summary>
         /// Updates the specified InferenceClassification using PATCH.
@@ -70,7 +69,7 @@ namespace Microsoft.Graph
         /// <param name="inferenceClassificationToUpdate">The InferenceClassification to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The updated InferenceClassification.</returns>
-        Task<InferenceClassification> UpdateAsync(InferenceClassification inferenceClassificationToUpdate, CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<InferenceClassification> UpdateAsync(InferenceClassification inferenceClassificationToUpdate, CancellationToken cancellationToken);
 
         /// <summary>
         /// Adds the specified expand value to the request.

@@ -11,7 +11,6 @@ namespace Microsoft.Graph
     using System.IO;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The interface IEventMessageRequest.
@@ -23,46 +22,46 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="eventMessageToCreate">The EventMessage to create.</param>
         /// <returns>The created EventMessage.</returns>
-        Task<EventMessage> CreateAsync(EventMessage eventMessageToCreate);        /// <summary>
+        System.Threading.Tasks.Task<EventMessage> CreateAsync(EventMessage eventMessageToCreate);        /// <summary>
         /// Creates the specified EventMessage using PUT.
         /// </summary>
         /// <param name="eventMessageToCreate">The EventMessage to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created EventMessage.</returns>
-        Task<EventMessage> CreateAsync(EventMessage eventMessageToCreate, CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<EventMessage> CreateAsync(EventMessage eventMessageToCreate, CancellationToken cancellationToken);
 
         /// <summary>
         /// Deletes the specified EventMessage.
         /// </summary>
         /// <returns>The task to await.</returns>
-        Task DeleteAsync();
+        System.Threading.Tasks.Task DeleteAsync();
 
         /// <summary>
         /// Deletes the specified EventMessage.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await.</returns>
-        Task DeleteAsync(CancellationToken cancellationToken);
+        System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken);
 
         /// <summary>
         /// Gets the specified EventMessage.
         /// </summary>
         /// <returns>The EventMessage.</returns>
-        Task<EventMessage> GetAsync();
+        System.Threading.Tasks.Task<EventMessage> GetAsync();
 
         /// <summary>
         /// Gets the specified EventMessage.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The EventMessage.</returns>
-        Task<EventMessage> GetAsync(CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<EventMessage> GetAsync(CancellationToken cancellationToken);
 
         /// <summary>
         /// Updates the specified EventMessage using PATCH.
         /// </summary>
         /// <param name="eventMessageToUpdate">The EventMessage to update.</param>
         /// <returns>The updated EventMessage.</returns>
-        Task<EventMessage> UpdateAsync(EventMessage eventMessageToUpdate);
+        System.Threading.Tasks.Task<EventMessage> UpdateAsync(EventMessage eventMessageToUpdate);
 
         /// <summary>
         /// Updates the specified EventMessage using PATCH.
@@ -70,7 +69,7 @@ namespace Microsoft.Graph
         /// <param name="eventMessageToUpdate">The EventMessage to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The updated EventMessage.</returns>
-        Task<EventMessage> UpdateAsync(EventMessage eventMessageToUpdate, CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<EventMessage> UpdateAsync(EventMessage eventMessageToUpdate, CancellationToken cancellationToken);
 
         /// <summary>
         /// Adds the specified expand value to the request.

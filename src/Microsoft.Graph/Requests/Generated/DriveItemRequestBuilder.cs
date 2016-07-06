@@ -47,7 +47,7 @@ namespace Microsoft.Graph
         {
             return new DriveItemRequest(this.RequestUrl, this.Client, options);
         }
-        
+    
         /// <summary>
         /// Gets the request builder for CreatedByUser.
         /// </summary>
@@ -119,7 +119,7 @@ namespace Microsoft.Graph
                 return new DriveItemContentRequestBuilder(this.AppendSegmentToRequestUrl("content"), this.Client);
             }
         }
-        
+    
         /// <summary>
         /// Gets the request builder for DriveItemCreateLink.
         /// </summary>

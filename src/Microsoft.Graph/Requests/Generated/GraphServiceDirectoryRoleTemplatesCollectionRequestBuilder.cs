@@ -13,7 +13,7 @@ namespace Microsoft.Graph
     /// The type GraphServiceDirectoryRoleTemplatesCollectionRequestBuilder.
     /// </summary>
     public partial class GraphServiceDirectoryRoleTemplatesCollectionRequestBuilder : BaseRequestBuilder, IGraphServiceDirectoryRoleTemplatesCollectionRequestBuilder
-    {  
+    {
         /// <summary>
         /// Constructs a new GraphServiceDirectoryRoleTemplatesCollectionRequestBuilder.
         /// </summary>

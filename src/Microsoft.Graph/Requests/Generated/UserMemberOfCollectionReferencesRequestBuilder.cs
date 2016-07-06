@@ -14,7 +14,7 @@ namespace Microsoft.Graph
     /// </summary>
     public partial class UserMemberOfCollectionReferencesRequestBuilder : BaseRequestBuilder, IUserMemberOfCollectionReferencesRequestBuilder
     {
-    
+
         /// <summary>
         /// Constructs a new UserMemberOfCollectionReferencesRequestBuilder.
         /// </summary>

@@ -12,7 +12,6 @@ namespace Microsoft.Graph
     using System.IO;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The type ExtensionRequest.
@@ -38,7 +37,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="extensionToCreate">The Extension to create.</param>
         /// <returns>The created Extension.</returns>
-        public Task<Extension> CreateAsync(Extension extensionToCreate)
+        public System.Threading.Tasks.Task<Extension> CreateAsync(Extension extensionToCreate)
         {
             return this.CreateAsync(extensionToCreate, CancellationToken.None);
         }
@@ -49,7 +48,7 @@ namespace Microsoft.Graph
         /// <param name="extensionToCreate">The Extension to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created Extension.</returns>
-        public async Task<Extension> CreateAsync(Extension extensionToCreate, CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Extension> CreateAsync(Extension extensionToCreate, CancellationToken cancellationToken)
         {
             this.ContentType = "application/json";
             this.Method = "PUT";
@@ -62,7 +61,7 @@ namespace Microsoft.Graph
         /// Deletes the specified Extension.
         /// </summary>
         /// <returns>The task to await.</returns>
-        public Task DeleteAsync()
+        public System.Threading.Tasks.Task DeleteAsync()
         {
             return this.DeleteAsync(CancellationToken.None);
         }
@@ -72,7 +71,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await.</returns>
-        public async Task DeleteAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken)
         {
             this.Method = "DELETE";
             await this.SendAsync<Extension>(null, cancellationToken).ConfigureAwait(false);
@@ -82,7 +81,7 @@ namespace Microsoft.Graph
         /// Gets the specified Extension.
         /// </summary>
         /// <returns>The Extension.</returns>
-        public Task<Extension> GetAsync()
+        public System.Threading.Tasks.Task<Extension> GetAsync()
         {
             return this.GetAsync(CancellationToken.None);
         }
@@ -92,7 +91,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The Extension.</returns>
-        public async Task<Extension> GetAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Extension> GetAsync(CancellationToken cancellationToken)
         {
             this.Method = "GET";
             var retrievedEntity = await this.SendAsync<Extension>(null, cancellationToken).ConfigureAwait(false);
@@ -105,7 +104,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="extensionToUpdate">The Extension to update.</param>
         /// <returns>The updated Extension.</returns>
-        public Task<Extension> UpdateAsync(Extension extensionToUpdate)
+        public System.Threading.Tasks.Task<Extension> UpdateAsync(Extension extensionToUpdate)
         {
             return this.UpdateAsync(extensionToUpdate, CancellationToken.None);
         }
@@ -116,7 +115,7 @@ namespace Microsoft.Graph
         /// <param name="extensionToUpdate">The Extension to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The updated Extension.</returns>
-        public async Task<Extension> UpdateAsync(Extension extensionToUpdate, CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Extension> UpdateAsync(Extension extensionToUpdate, CancellationToken cancellationToken)
         {
             this.ContentType = "application/json";
             this.Method = "PATCH";

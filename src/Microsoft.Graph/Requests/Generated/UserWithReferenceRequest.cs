@@ -12,7 +12,6 @@ namespace Microsoft.Graph
     using System.IO;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The type UserWithReferenceRequest.
@@ -37,7 +36,7 @@ namespace Microsoft.Graph
         /// Gets the specified User.
         /// </summary>
         /// <returns>The User.</returns>
-        public Task<User> GetAsync()
+        public System.Threading.Tasks.Task<User> GetAsync()
         {
             return this.GetAsync(CancellationToken.None);
         }
@@ -47,7 +46,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The User.</returns>
-        public async Task<User> GetAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<User> GetAsync(CancellationToken cancellationToken)
         {
             this.Method = "GET";
             var retrievedEntity = await this.SendAsync<User>(null, cancellationToken).ConfigureAwait(false);

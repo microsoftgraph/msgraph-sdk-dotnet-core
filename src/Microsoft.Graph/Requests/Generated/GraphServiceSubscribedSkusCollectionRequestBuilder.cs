@@ -13,7 +13,7 @@ namespace Microsoft.Graph
     /// The type GraphServiceSubscribedSkusCollectionRequestBuilder.
     /// </summary>
     public partial class GraphServiceSubscribedSkusCollectionRequestBuilder : BaseRequestBuilder, IGraphServiceSubscribedSkusCollectionRequestBuilder
-    {  
+    {
         /// <summary>
         /// Constructs a new GraphServiceSubscribedSkusCollectionRequestBuilder.
         /// </summary>

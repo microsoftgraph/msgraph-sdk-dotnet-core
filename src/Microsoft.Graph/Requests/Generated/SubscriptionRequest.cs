@@ -12,7 +12,6 @@ namespace Microsoft.Graph
     using System.IO;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The type SubscriptionRequest.
@@ -38,7 +37,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="subscriptionToCreate">The Subscription to create.</param>
         /// <returns>The created Subscription.</returns>
-        public Task<Subscription> CreateAsync(Subscription subscriptionToCreate)
+        public System.Threading.Tasks.Task<Subscription> CreateAsync(Subscription subscriptionToCreate)
         {
             return this.CreateAsync(subscriptionToCreate, CancellationToken.None);
         }
@@ -49,7 +48,7 @@ namespace Microsoft.Graph
         /// <param name="subscriptionToCreate">The Subscription to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created Subscription.</returns>
-        public async Task<Subscription> CreateAsync(Subscription subscriptionToCreate, CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Subscription> CreateAsync(Subscription subscriptionToCreate, CancellationToken cancellationToken)
         {
             this.ContentType = "application/json";
             this.Method = "PUT";
@@ -62,7 +61,7 @@ namespace Microsoft.Graph
         /// Deletes the specified Subscription.
         /// </summary>
         /// <returns>The task to await.</returns>
-        public Task DeleteAsync()
+        public System.Threading.Tasks.Task DeleteAsync()
         {
             return this.DeleteAsync(CancellationToken.None);
         }
@@ -72,7 +71,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await.</returns>
-        public async Task DeleteAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken)
         {
             this.Method = "DELETE";
             await this.SendAsync<Subscription>(null, cancellationToken).ConfigureAwait(false);
@@ -82,7 +81,7 @@ namespace Microsoft.Graph
         /// Gets the specified Subscription.
         /// </summary>
         /// <returns>The Subscription.</returns>
-        public Task<Subscription> GetAsync()
+        public System.Threading.Tasks.Task<Subscription> GetAsync()
         {
             return this.GetAsync(CancellationToken.None);
         }
@@ -92,7 +91,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The Subscription.</returns>
-        public async Task<Subscription> GetAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Subscription> GetAsync(CancellationToken cancellationToken)
         {
             this.Method = "GET";
             var retrievedEntity = await this.SendAsync<Subscription>(null, cancellationToken).ConfigureAwait(false);
@@ -105,7 +104,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="subscriptionToUpdate">The Subscription to update.</param>
         /// <returns>The updated Subscription.</returns>
-        public Task<Subscription> UpdateAsync(Subscription subscriptionToUpdate)
+        public System.Threading.Tasks.Task<Subscription> UpdateAsync(Subscription subscriptionToUpdate)
         {
             return this.UpdateAsync(subscriptionToUpdate, CancellationToken.None);
         }
@@ -116,7 +115,7 @@ namespace Microsoft.Graph
         /// <param name="subscriptionToUpdate">The Subscription to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The updated Subscription.</returns>
-        public async Task<Subscription> UpdateAsync(Subscription subscriptionToUpdate, CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Subscription> UpdateAsync(Subscription subscriptionToUpdate, CancellationToken cancellationToken)
         {
             this.ContentType = "application/json";
             this.Method = "PATCH";

@@ -9,23 +9,23 @@
 namespace Microsoft.Graph
 {
     using Newtonsoft.Json;
-    
+
     /// <summary>
     /// The enum InferenceClassificationType.
     /// </summary>
     [JsonConverter(typeof(EnumConverter))]
     public enum InferenceClassificationType
     {
-        
+    
         /// <summary>
         /// focused
         /// </summary>
         Focused,
-        
+    
         /// <summary>
         /// other
         /// </summary>
         Other,
-        
+    
     }
 }

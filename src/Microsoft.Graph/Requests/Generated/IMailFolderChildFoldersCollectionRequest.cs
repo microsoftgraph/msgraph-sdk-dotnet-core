@@ -11,7 +11,6 @@ namespace Microsoft.Graph
     using System.Collections.Generic;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The interface IMailFolderChildFoldersCollectionRequest.
@@ -24,7 +23,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="mailFolder">The MailFolder to add.</param>
         /// <returns>The created MailFolder.</returns>
-        Task<MailFolder> AddAsync(MailFolder mailFolder);
+        System.Threading.Tasks.Task<MailFolder> AddAsync(MailFolder mailFolder);
 
         /// <summary>
         /// Adds the specified MailFolder to the collection via POST.
@@ -32,19 +31,19 @@ namespace Microsoft.Graph
         /// <param name="mailFolder">The MailFolder to add.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created MailFolder.</returns>
-        Task<MailFolder> AddAsync(MailFolder mailFolder, CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<MailFolder> AddAsync(MailFolder mailFolder, CancellationToken cancellationToken);
         /// <summary>
         /// Gets the collection page.
         /// </summary>
         /// <returns>The collection page.</returns>
-        Task<IMailFolderChildFoldersCollectionPage> GetAsync();
-        
+        System.Threading.Tasks.Task<IMailFolderChildFoldersCollectionPage> GetAsync();
+
         /// <summary>
         /// Gets the collection page.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The collection page.</returns>
-        Task<IMailFolderChildFoldersCollectionPage> GetAsync(CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<IMailFolderChildFoldersCollectionPage> GetAsync(CancellationToken cancellationToken);
 
         /// <summary>
         /// Adds the specified expand value to the request.

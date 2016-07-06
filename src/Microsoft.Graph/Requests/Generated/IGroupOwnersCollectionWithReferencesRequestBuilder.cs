@@ -26,7 +26,7 @@ namespace Microsoft.Graph
         /// <param name="options">The query and header options for the request.</param>
         /// <returns>The built request.</returns>
         IGroupOwnersCollectionWithReferencesRequest Request(IEnumerable<Option> options);
-        
+
         /// <summary>
         /// Gets an <see cref="IDirectoryObjectWithReferenceRequestBuilder"/> for the specified DirectoryObject.
         /// </summary>

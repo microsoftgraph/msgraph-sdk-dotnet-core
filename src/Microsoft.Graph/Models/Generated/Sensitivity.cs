@@ -9,33 +9,33 @@
 namespace Microsoft.Graph
 {
     using Newtonsoft.Json;
-    
+
     /// <summary>
     /// The enum Sensitivity.
     /// </summary>
     [JsonConverter(typeof(EnumConverter))]
     public enum Sensitivity
     {
-        
+    
         /// <summary>
         /// normal
         /// </summary>
         Normal,
-        
+    
         /// <summary>
         /// personal
         /// </summary>
         Personal,
-        
+    
         /// <summary>
         /// private
         /// </summary>
         Private,
-        
+    
         /// <summary>
         /// confidential
         /// </summary>
         Confidential,
-        
+    
     }
 }

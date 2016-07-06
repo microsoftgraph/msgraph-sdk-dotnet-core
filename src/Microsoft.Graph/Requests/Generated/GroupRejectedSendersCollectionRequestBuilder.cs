@@ -13,7 +13,7 @@ namespace Microsoft.Graph
     /// The type GroupRejectedSendersCollectionRequestBuilder.
     /// </summary>
     public partial class GroupRejectedSendersCollectionRequestBuilder : BaseRequestBuilder, IGroupRejectedSendersCollectionRequestBuilder
-    {  
+    {
         /// <summary>
         /// Constructs a new GroupRejectedSendersCollectionRequestBuilder.
         /// </summary>

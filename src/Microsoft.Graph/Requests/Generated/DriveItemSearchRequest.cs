@@ -12,7 +12,6 @@ namespace Microsoft.Graph
     using System.IO;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The type DriveItemSearchRequest.
@@ -34,17 +33,17 @@ namespace Microsoft.Graph
         /// <summary>
         /// Issues the GET request.
         /// </summary>
-        public Task<IDriveItemSearchCollectionPage> GetAsync()
+        public System.Threading.Tasks.Task<IDriveItemSearchCollectionPage> GetAsync()
         {
             return this.GetAsync(CancellationToken.None);
         }
-        
+
         /// <summary>
         /// Issues the GET request.
         /// </summary>
         /// <param name=""cancellationToken"">The <see cref=""CancellationToken""/> for the request.</param>
         /// <returns>The task to await for async call.</returns>
-        public async Task<IDriveItemSearchCollectionPage> GetAsync(
+        public async System.Threading.Tasks.Task<IDriveItemSearchCollectionPage> GetAsync(
             CancellationToken cancellationToken)
         {
             var response = await this.SendAsync<DriveItemSearchCollectionResponse>(null, cancellationToken).ConfigureAwait(false);
@@ -53,7 +52,7 @@ namespace Microsoft.Graph
                 if (response.AdditionalData != null)
                 {
                     response.Value.AdditionalData = response.AdditionalData;
-                    
+
                     object nextPageLink;
                     response.AdditionalData.TryGetValue("@odata.nextLink", out nextPageLink);
 

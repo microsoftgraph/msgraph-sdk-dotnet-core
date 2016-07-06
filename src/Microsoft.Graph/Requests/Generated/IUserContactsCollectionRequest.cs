@@ -11,7 +11,6 @@ namespace Microsoft.Graph
     using System.Collections.Generic;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The interface IUserContactsCollectionRequest.
@@ -24,7 +23,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="contact">The Contact to add.</param>
         /// <returns>The created Contact.</returns>
-        Task<Contact> AddAsync(Contact contact);
+        System.Threading.Tasks.Task<Contact> AddAsync(Contact contact);
 
         /// <summary>
         /// Adds the specified Contact to the collection via POST.
@@ -32,19 +31,19 @@ namespace Microsoft.Graph
         /// <param name="contact">The Contact to add.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created Contact.</returns>
-        Task<Contact> AddAsync(Contact contact, CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<Contact> AddAsync(Contact contact, CancellationToken cancellationToken);
         /// <summary>
         /// Gets the collection page.
         /// </summary>
         /// <returns>The collection page.</returns>
-        Task<IUserContactsCollectionPage> GetAsync();
-        
+        System.Threading.Tasks.Task<IUserContactsCollectionPage> GetAsync();
+
         /// <summary>
         /// Gets the collection page.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The collection page.</returns>
-        Task<IUserContactsCollectionPage> GetAsync(CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<IUserContactsCollectionPage> GetAsync(CancellationToken cancellationToken);
 
         /// <summary>
         /// Adds the specified expand value to the request.
