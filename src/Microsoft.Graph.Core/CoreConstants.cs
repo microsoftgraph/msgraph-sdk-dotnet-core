@@ -6,6 +6,8 @@ namespace Microsoft.Graph
 {
     public static class CoreConstants
     {
+        public const int PollingIntervalInMs = 5000;
+
         public static class Headers
         {
             public const string Bearer = "Bearer";

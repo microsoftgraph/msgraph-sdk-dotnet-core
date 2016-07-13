@@ -5,6 +5,7 @@
 namespace Microsoft.Graph
 {
     using System.Collections.Generic;
+    using System.Linq;
 
     /// <summary>
     /// The base method request builder class.
@@ -12,6 +13,9 @@ namespace Microsoft.Graph
     public abstract class BaseGetMethodRequestBuilder<T> : BaseRequestBuilder where T : IBaseRequest
     {
         private List<string> _parameters = new List<string>();
+        private List<QueryOption> _queryOptions = new List<QueryOption>();
+
+        protected bool passParametersInQueryString;
 
         /// <summary>
         /// Constructs a new <see cref="BaseMethodRequestBuilder"/>.
@@ -42,7 +46,19 @@ namespace Microsoft.Graph
         public T Request(IEnumerable<Option> options = null)
         {
             string fnUrl = this.RequestUrl;
-            if (_parameters.Count > 0)
+
+            if (this.passParametersInQueryString && this._queryOptions.Count > 0)
+            {
+                if (options == null)
+                {
+                    options = this._queryOptions;
+                }
+                else
+                {
+                    options.ToList().AddRange(this._queryOptions);
+                }
+            }
+            else if (!this.passParametersInQueryString && _parameters.Count > 0)
             {
                 fnUrl = string.Format("{0}({1})", fnUrl, string.Join(",", _parameters));
             }
@@ -71,13 +87,20 @@ namespace Microsoft.Graph
                     });
             }
 
-            string valueAsString = value != null ? value.ToString() : "null";
-            if (value != null && value is string)
+            if (passParametersInQueryString && value != null)
             {
-                valueAsString = "'" + EscapeStringValue(valueAsString) + "'";
+                _queryOptions.Add(new QueryOption(name, value.ToString()));
             }
+            else if (!passParametersInQueryString)
+            {
+                string valueAsString = value != null ? value.ToString() : "null";
+                if (value != null && value is string)
+                {
+                    valueAsString = "'" + EscapeStringValue(valueAsString) + "'";
+                }
 
-            _parameters.Add(string.Format("{0}={1}", name, valueAsString));
+                _parameters.Add(string.Format("{0}={1}", name, valueAsString));
+            }
         }
 
         /// <summary>
