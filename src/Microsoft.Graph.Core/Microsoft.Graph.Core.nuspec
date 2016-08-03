@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/10/nuspec.xsd">
+  <metadata>
+    <id>Microsoft.Graph.Core</id>
+    <version>$version$</version>
+    <title>Microsoft Graph Core Client Library</title>
+    <authors>$author$</authors>
+    <owners>$author$</owners>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <summary>Microsoft Graph Core Client Library implements core functionality used by Microsoft Graph Client Libraries.</summary>
+    <description>$description$</description>
+    <copyright>Copyright (c) Microsoft Corporation</copyright>
+    <projectUrl>https://graph.microsoft.io</projectUrl>
+    <licenseUrl>http://aka.ms/devservicesagreement</licenseUrl>
+    <tags>Microsoft Office365 Graph GraphServiceClient Outlook OneDrive AzureAD GraphAPI Productivity SharePoint SDK</tags>
+  </metadata>
+</package>

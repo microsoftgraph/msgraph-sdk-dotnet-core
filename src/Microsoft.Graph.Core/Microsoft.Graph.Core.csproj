@@ -74,6 +74,7 @@
     <Compile Include="Serialization\Serializer.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Microsoft.Graph.Core.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -84,11 +85,28 @@
     </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
+  </Target>-->
+  <UsingTask TaskName="DownloadFile" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll">
+    <ParameterGroup>
+      <Url ParameterType="System.String" Required="true" />
+      <FileName ParameterType="System.String" Required="true" />
+    </ParameterGroup>
+    <Task>
+      <Reference Include="System" />
+      <Code Type="Fragment" Language="cs">
+        <![CDATA[
+          new System.Net.WebClient().DownloadFile(Url, FileName);
+        ]]>
+      </Code>
+    </Task>
+  </UsingTask>
+  <Target Name="AfterBuild" Condition="'$(Configuration)' == 'Release'">
+    <!-- Download nuget.exe if we need it -->
+    <DownloadFile Condition="!Exists('$(OutputPath)\nuget.exe')" FileName="$(OutputPath)\nuget.exe" Url="https://dist.nuget.org/win-x86-commandline/latest/nuget.exe" />
+    <!-- Pack up a nuget package -->
+    <Exec Command="$(OutputPath)\nuget pack $(ProjectFileName) -Properties Configuration=Release -Symbols -OutputDirectory $(OutputPath)" />
   </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>
