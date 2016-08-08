@@ -38,7 +38,7 @@ namespace Microsoft.Graph
             : base(baseUrl, authenticationProvider, httpProvider)
         {
         }
-    
+
         /// <summary>
         /// Gets the GraphServiceDirectoryObjects request builder.
         /// </summary>
@@ -49,7 +49,7 @@ namespace Microsoft.Graph
                 return new GraphServiceDirectoryObjectsCollectionRequestBuilder(this.BaseUrl + "/directoryObjects", this);
             }
         }
-    
+
         /// <summary>
         /// Gets the GraphServiceDevices request builder.
         /// </summary>
@@ -60,7 +60,7 @@ namespace Microsoft.Graph
                 return new GraphServiceDevicesCollectionRequestBuilder(this.BaseUrl + "/devices", this);
             }
         }
-    
+
         /// <summary>
         /// Gets the GraphServiceGroups request builder.
         /// </summary>
@@ -71,7 +71,7 @@ namespace Microsoft.Graph
                 return new GraphServiceGroupsCollectionRequestBuilder(this.BaseUrl + "/groups", this);
             }
         }
-    
+
         /// <summary>
         /// Gets the GraphServiceDirectoryRoles request builder.
         /// </summary>
@@ -82,7 +82,7 @@ namespace Microsoft.Graph
                 return new GraphServiceDirectoryRolesCollectionRequestBuilder(this.BaseUrl + "/directoryRoles", this);
             }
         }
-    
+
         /// <summary>
         /// Gets the GraphServiceDirectoryRoleTemplates request builder.
         /// </summary>
@@ -93,7 +93,7 @@ namespace Microsoft.Graph
                 return new GraphServiceDirectoryRoleTemplatesCollectionRequestBuilder(this.BaseUrl + "/directoryRoleTemplates", this);
             }
         }
-    
+
         /// <summary>
         /// Gets the GraphServiceOrganization request builder.
         /// </summary>
@@ -104,7 +104,7 @@ namespace Microsoft.Graph
                 return new GraphServiceOrganizationCollectionRequestBuilder(this.BaseUrl + "/organization", this);
             }
         }
-    
+
         /// <summary>
         /// Gets the GraphServiceSubscribedSkus request builder.
         /// </summary>
@@ -115,7 +115,7 @@ namespace Microsoft.Graph
                 return new GraphServiceSubscribedSkusCollectionRequestBuilder(this.BaseUrl + "/subscribedSkus", this);
             }
         }
-    
+
         /// <summary>
         /// Gets the GraphServiceUsers request builder.
         /// </summary>
@@ -126,7 +126,7 @@ namespace Microsoft.Graph
                 return new GraphServiceUsersCollectionRequestBuilder(this.BaseUrl + "/users", this);
             }
         }
-    
+
         /// <summary>
         /// Gets the GraphServiceDrives request builder.
         /// </summary>
@@ -137,7 +137,7 @@ namespace Microsoft.Graph
                 return new GraphServiceDrivesCollectionRequestBuilder(this.BaseUrl + "/drives", this);
             }
         }
-    
+
         /// <summary>
         /// Gets the GraphServiceSubscriptions request builder.
         /// </summary>
@@ -148,7 +148,7 @@ namespace Microsoft.Graph
                 return new GraphServiceSubscriptionsCollectionRequestBuilder(this.BaseUrl + "/subscriptions", this);
             }
         }
-    
+
         /// <summary>
         /// Gets the GraphServiceMe request builder.
         /// </summary>
@@ -159,7 +159,7 @@ namespace Microsoft.Graph
                 return new UserRequestBuilder(this.BaseUrl + "/me", this);
             }
         }
-    
+
         /// <summary>
         /// Gets the GraphServiceDrive request builder.
         /// </summary>
@@ -170,6 +170,5 @@ namespace Microsoft.Graph
                 return new DriveRequestBuilder(this.BaseUrl + "/drive", this);
             }
         }
-    
     }
 }
