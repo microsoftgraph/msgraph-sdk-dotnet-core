@@ -29,10 +29,11 @@ namespace Microsoft.Graph
         /// <summary>
         /// Builds the request.
         /// </summary>
+        /// <param name="options">The query and header options for the request.</param>
         /// <returns>The built request.</returns>
-        public IDriveItemContentRequest Request()
+        public IDriveItemContentRequest Request(IEnumerable<Option> options = null)
         {
-            return new DriveItemContentRequest(this.RequestUrl, this.Client, null);
+            return new DriveItemContentRequest(this.RequestUrl, this.Client, options);
         }
     }
 }

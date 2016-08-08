@@ -29,10 +29,11 @@ namespace Microsoft.Graph
         /// <summary>
         /// Builds the request.
         /// </summary>
+        /// <param name="options">The query and header options for the request.</param>
         /// <returns>The built request.</returns>
-        public IProfilePhotoContentRequest Request()
+        public IProfilePhotoContentRequest Request(IEnumerable<Option> options = null)
         {
-            return new ProfilePhotoContentRequest(this.RequestUrl, this.Client, null);
+            return new ProfilePhotoContentRequest(this.RequestUrl, this.Client, options);
         }
     }
 }
