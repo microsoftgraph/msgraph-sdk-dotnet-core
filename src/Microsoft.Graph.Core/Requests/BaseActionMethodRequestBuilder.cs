@@ -5,24 +5,20 @@
 namespace Microsoft.Graph
 {
     using System.Collections.Generic;
-    using System.Linq;
 
     /// <summary>
-    /// The base method request builder class.
+    /// The base method request builder class used for POST actions.
     /// </summary>
-    public abstract class BaseGetMethodRequestBuilder<T> : BaseRequestBuilder where T : IBaseRequest
+    public abstract class BaseActionMethodRequestBuilder<T> : BaseRequestBuilder where T : IBaseRequest
     {
-        private List<string> _parameters = new List<string>();
-        private List<QueryOption> _queryOptions = new List<QueryOption>();
-
-        protected bool passParametersInQueryString;
+        private Dictionary<string, object> _parameters = new Dictionary<string, object>();
 
         /// <summary>
-        /// Constructs a new <see cref="BaseMethodRequestBuilder"/>.
+        /// Constructs a new <see cref="BasePostMethodRequestBuilder"/>.
         /// </summary>
         /// <param name="requestUrl">The URL for the request.</param>
         /// <param name="client">The <see cref="IBaseClient"/> for handling requests.</param>
-        public BaseGetMethodRequestBuilder(
+        public BaseActionMethodRequestBuilder(
             string requestUrl,
             IBaseClient client)
             : base(requestUrl, client)
@@ -45,25 +41,7 @@ namespace Microsoft.Graph
         /// <returns>The built request.</returns>
         public T Request(IEnumerable<Option> options = null)
         {
-            string fnUrl = this.RequestUrl;
-
-            if (this.passParametersInQueryString && this._queryOptions.Count > 0)
-            {
-                if (options == null)
-                {
-                    options = this._queryOptions;
-                }
-                else
-                {
-                    options.ToList().AddRange(this._queryOptions);
-                }
-            }
-            else if (!this.passParametersInQueryString && _parameters.Count > 0)
-            {
-                fnUrl = string.Format("{0}({1})", fnUrl, string.Join(",", _parameters));
-            }
-
-            return CreateRequest(fnUrl, options);
+            return CreateRequest(this.RequestUrl, options);
         }
 
         /// <summary>
@@ -74,8 +52,9 @@ namespace Microsoft.Graph
         /// <param name="name">The parameter name.<param>
         /// <param name="value">The parameter value.</param>
         /// <param name="nullable">A flag specifying whether the parameter is allowed to be null.</param>
+        /// <typeparam name="U">The type of the value parameter.</typeparam>
         /// <returns>A string representing the parameter for an OData method call.</returns>
-        protected void SetParameter(string name, object value, bool nullable)
+        protected void SetParameter<U>(string name, U value, bool nullable)
         {
             if (value == null && !nullable)
             {
@@ -87,31 +66,17 @@ namespace Microsoft.Graph
                     });
             }
 
-            if (passParametersInQueryString && value != null)
-            {
-                _queryOptions.Add(new QueryOption(name, value.ToString()));
-            }
-            else if (!passParametersInQueryString)
-            {
-                string valueAsString = value != null ? value.ToString() : "null";
-                if (value != null && value is string)
-                {
-                    valueAsString = "'" + EscapeStringValue(valueAsString) + "'";
-                }
-
-                _parameters.Add(string.Format("{0}={1}", name, valueAsString));
-            }
+            _parameters.Add(name, value);
         }
 
-        /// <summary>
-        /// Escapes a string value to be safe for OData method calls.
-        /// </summary>
-        /// <param name="value">The value of the string.</param>
-        /// <returns>A properly escaped string.</returns>
-        private string EscapeStringValue(string value)
+        protected bool HasParameter(string name)
         {
-            // Per OData spec, single quotes within a string must be escaped with a second single quote.
-            return value.Replace("'", "''");
+            return _parameters.ContainsKey(name);
+        }
+
+        protected U GetParameter<U>(string name)
+        {
+            return (U)_parameters[name];
         }
     }
 }

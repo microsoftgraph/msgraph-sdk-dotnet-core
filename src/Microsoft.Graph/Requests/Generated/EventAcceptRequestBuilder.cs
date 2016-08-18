@@ -14,7 +14,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type EventAcceptRequestBuilder.
     /// </summary>
-    public partial class EventAcceptRequestBuilder : BasePostMethodRequestBuilder<IEventAcceptRequest>, IEventAcceptRequestBuilder
+    public partial class EventAcceptRequestBuilder : BaseActionMethodRequestBuilder<IEventAcceptRequest>, IEventAcceptRequestBuilder
     {
         /// <summary>
         /// Constructs a new <see cref="EventAcceptRequestBuilder"/>.

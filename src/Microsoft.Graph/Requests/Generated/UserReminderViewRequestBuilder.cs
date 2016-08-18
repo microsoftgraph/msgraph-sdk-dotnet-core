@@ -14,7 +14,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type UserReminderViewRequestBuilder.
     /// </summary>
-    public partial class UserReminderViewRequestBuilder : BaseGetMethodRequestBuilder<IUserReminderViewRequest>, IUserReminderViewRequestBuilder
+    public partial class UserReminderViewRequestBuilder : BaseFunctionMethodRequestBuilder<IUserReminderViewRequest>, IUserReminderViewRequestBuilder
     {
         /// <summary>
         /// Constructs a new <see cref="UserReminderViewRequestBuilder"/>.

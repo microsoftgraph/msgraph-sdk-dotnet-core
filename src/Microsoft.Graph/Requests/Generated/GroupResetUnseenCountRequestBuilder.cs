@@ -14,7 +14,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type GroupResetUnseenCountRequestBuilder.
     /// </summary>
-    public partial class GroupResetUnseenCountRequestBuilder : BaseGetMethodRequestBuilder<IGroupResetUnseenCountRequest>, IGroupResetUnseenCountRequestBuilder
+    public partial class GroupResetUnseenCountRequestBuilder : BaseFunctionMethodRequestBuilder<IGroupResetUnseenCountRequest>, IGroupResetUnseenCountRequestBuilder
     {
         /// <summary>
         /// Constructs a new <see cref="GroupResetUnseenCountRequestBuilder"/>.

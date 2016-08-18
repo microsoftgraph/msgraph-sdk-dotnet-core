@@ -14,7 +14,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type MailFolderMoveRequestBuilder.
     /// </summary>
-    public partial class MailFolderMoveRequestBuilder : BasePostMethodRequestBuilder<IMailFolderMoveRequest>, IMailFolderMoveRequestBuilder
+    public partial class MailFolderMoveRequestBuilder : BaseActionMethodRequestBuilder<IMailFolderMoveRequest>, IMailFolderMoveRequestBuilder
     {
         /// <summary>
         /// Constructs a new <see cref="MailFolderMoveRequestBuilder"/>.

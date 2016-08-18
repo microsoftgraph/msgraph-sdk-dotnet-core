@@ -14,7 +14,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type EventDismissReminderRequestBuilder.
     /// </summary>
-    public partial class EventDismissReminderRequestBuilder : BaseGetMethodRequestBuilder<IEventDismissReminderRequest>, IEventDismissReminderRequestBuilder
+    public partial class EventDismissReminderRequestBuilder : BaseFunctionMethodRequestBuilder<IEventDismissReminderRequest>, IEventDismissReminderRequestBuilder
     {
         /// <summary>
         /// Constructs a new <see cref="EventDismissReminderRequestBuilder"/>.

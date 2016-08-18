@@ -14,7 +14,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type EventSnoozeReminderRequestBuilder.
     /// </summary>
-    public partial class EventSnoozeReminderRequestBuilder : BasePostMethodRequestBuilder<IEventSnoozeReminderRequest>, IEventSnoozeReminderRequestBuilder
+    public partial class EventSnoozeReminderRequestBuilder : BaseActionMethodRequestBuilder<IEventSnoozeReminderRequest>, IEventSnoozeReminderRequestBuilder
     {
         /// <summary>
         /// Constructs a new <see cref="EventSnoozeReminderRequestBuilder"/>.

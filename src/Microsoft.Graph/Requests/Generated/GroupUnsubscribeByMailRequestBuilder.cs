@@ -14,7 +14,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type GroupUnsubscribeByMailRequestBuilder.
     /// </summary>
-    public partial class GroupUnsubscribeByMailRequestBuilder : BaseGetMethodRequestBuilder<IGroupUnsubscribeByMailRequest>, IGroupUnsubscribeByMailRequestBuilder
+    public partial class GroupUnsubscribeByMailRequestBuilder : BaseFunctionMethodRequestBuilder<IGroupUnsubscribeByMailRequest>, IGroupUnsubscribeByMailRequestBuilder
     {
         /// <summary>
         /// Constructs a new <see cref="GroupUnsubscribeByMailRequestBuilder"/>.

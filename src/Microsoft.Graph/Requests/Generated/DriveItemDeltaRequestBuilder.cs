@@ -14,7 +14,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type DriveItemDeltaRequestBuilder.
     /// </summary>
-    public partial class DriveItemDeltaRequestBuilder : BaseGetMethodRequestBuilder<IDriveItemDeltaRequest>, IDriveItemDeltaRequestBuilder
+    public partial class DriveItemDeltaRequestBuilder : BaseFunctionMethodRequestBuilder<IDriveItemDeltaRequest>, IDriveItemDeltaRequestBuilder
     {
         /// <summary>
         /// Constructs a new <see cref="DriveItemDeltaRequestBuilder"/>.
