@@ -33,5 +33,7 @@ namespace Microsoft.Graph
         /// <param name="id">The ID for the DirectoryRole.</param>
         /// <returns>The <see cref="IDirectoryRoleRequestBuilder"/>.</returns>
         IDirectoryRoleRequestBuilder this[string id] { get; }
+
+        
     }
 }

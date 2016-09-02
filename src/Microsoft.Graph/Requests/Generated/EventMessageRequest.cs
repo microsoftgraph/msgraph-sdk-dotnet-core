@@ -33,7 +33,7 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Creates the specified EventMessage using PUT.
+        /// Creates the specified EventMessage using POST.
         /// </summary>
         /// <param name="eventMessageToCreate">The EventMessage to create.</param>
         /// <returns>The created EventMessage.</returns>
@@ -43,7 +43,7 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Creates the specified EventMessage using PUT.
+        /// Creates the specified EventMessage using POST.
         /// </summary>
         /// <param name="eventMessageToCreate">The EventMessage to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
@@ -51,7 +51,7 @@ namespace Microsoft.Graph
         public async System.Threading.Tasks.Task<EventMessage> CreateAsync(EventMessage eventMessageToCreate, CancellationToken cancellationToken)
         {
             this.ContentType = "application/json";
-            this.Method = "PUT";
+            this.Method = "POST";
             var newEntity = await this.SendAsync<EventMessage>(eventMessageToCreate, cancellationToken).ConfigureAwait(false);
             this.InitializeCollectionProperties(newEntity);
             return newEntity;

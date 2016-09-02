@@ -33,5 +33,7 @@ namespace Microsoft.Graph
         /// <param name="id">The ID for the Extension.</param>
         /// <returns>The <see cref="IExtensionRequestBuilder"/>.</returns>
         IExtensionRequestBuilder this[string id] { get; }
+
+        
     }
 }

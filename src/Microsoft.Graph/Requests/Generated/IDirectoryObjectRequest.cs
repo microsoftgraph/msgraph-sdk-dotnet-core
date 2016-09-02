@@ -71,5 +71,19 @@ namespace Microsoft.Graph
         /// <returns>The updated DirectoryObject.</returns>
         System.Threading.Tasks.Task<DirectoryObject> UpdateAsync(DirectoryObject directoryObjectToUpdate, CancellationToken cancellationToken);
 
+        /// <summary>
+        /// Adds the specified expand value to the request.
+        /// </summary>
+        /// <param name="value">The expand value.</param>
+        /// <returns>The request object to send.</returns>
+        IDirectoryObjectRequest Expand(string value);
+
+        /// <summary>
+        /// Adds the specified select value to the request.
+        /// </summary>
+        /// <param name="value">The select value.</param>
+        /// <returns>The request object to send.</returns>
+        IDirectoryObjectRequest Select(string value);
+
     }
 }

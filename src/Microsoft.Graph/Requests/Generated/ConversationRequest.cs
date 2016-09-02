@@ -33,7 +33,7 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Creates the specified Conversation using PUT.
+        /// Creates the specified Conversation using POST.
         /// </summary>
         /// <param name="conversationToCreate">The Conversation to create.</param>
         /// <returns>The created Conversation.</returns>
@@ -43,7 +43,7 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Creates the specified Conversation using PUT.
+        /// Creates the specified Conversation using POST.
         /// </summary>
         /// <param name="conversationToCreate">The Conversation to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
@@ -51,7 +51,7 @@ namespace Microsoft.Graph
         public async System.Threading.Tasks.Task<Conversation> CreateAsync(Conversation conversationToCreate, CancellationToken cancellationToken)
         {
             this.ContentType = "application/json";
-            this.Method = "PUT";
+            this.Method = "POST";
             var newEntity = await this.SendAsync<Conversation>(conversationToCreate, cancellationToken).ConfigureAwait(false);
             this.InitializeCollectionProperties(newEntity);
             return newEntity;

@@ -57,5 +57,7 @@ namespace Microsoft.Graph
                 return new DriveRequestBuilder(this.AppendSegmentToRequestUrl(id), this.Client);
             }
         }
+
+        
     }
 }

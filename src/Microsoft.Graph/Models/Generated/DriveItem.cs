@@ -189,6 +189,12 @@ namespace Microsoft.Graph
         public User CreatedByUser { get; set; }
     
         /// <summary>
+        /// Gets or sets workbook.
+        /// </summary>
+        [DataMember(Name = "workbook", EmitDefaultValue = false, IsRequired = false)]
+        public Workbook Workbook { get; set; }
+    
+        /// <summary>
         /// Gets or sets last modified by user.
         /// </summary>
         [DataMember(Name = "lastModifiedByUser", EmitDefaultValue = false, IsRequired = false)]

@@ -57,5 +57,7 @@ namespace Microsoft.Graph
                 return new ThumbnailSetRequestBuilder(this.AppendSegmentToRequestUrl(id), this.Client);
             }
         }
+
+        
     }
 }

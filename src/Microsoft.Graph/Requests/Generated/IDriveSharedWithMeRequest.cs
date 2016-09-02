@@ -19,17 +19,23 @@ namespace Microsoft.Graph
     public partial interface IDriveSharedWithMeRequest : IBaseRequest
     {
 
-        /// <summary>
-        /// Issues the GET request.
-        /// </summary>
-        System.Threading.Tasks.Task<IDriveSharedWithMeCollectionPage> GetAsync();
 
         /// <summary>
         /// Issues the GET request.
         /// </summary>
-        /// /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
-        /// <returns>TheIDriveSharedWithMeCollectionPage</returns>
-        System.Threading.Tasks.Task<IDriveSharedWithMeCollectionPage> GetAsync(CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<IDriveSharedWithMeCollectionPage> GetAsync();
+        
+        /// <summary>
+        /// Issues the GET request.
+        /// </summary>
+        /// <param name=""cancellationToken"">The <see cref=""CancellationToken""/> for the request.</param>
+        /// <returns>The task to await for async call.</returns>
+        System.Threading.Tasks.Task<IDriveSharedWithMeCollectionPage> GetAsync(
+            CancellationToken cancellationToken);
+  
+
+
+
 
         /// <summary>
         /// Adds the specified expand value to the request.

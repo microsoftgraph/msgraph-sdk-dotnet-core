@@ -57,5 +57,7 @@ namespace Microsoft.Graph
                 return new DeviceRequestBuilder(this.AppendSegmentToRequestUrl(id), this.Client);
             }
         }
+
+        
     }
 }

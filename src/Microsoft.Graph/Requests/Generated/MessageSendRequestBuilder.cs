@@ -14,7 +14,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type MessageSendRequestBuilder.
     /// </summary>
-    public partial class MessageSendRequestBuilder : BaseFunctionMethodRequestBuilder<IMessageSendRequest>, IMessageSendRequestBuilder
+    public partial class MessageSendRequestBuilder : BaseActionMethodRequestBuilder<IMessageSendRequest>, IMessageSendRequestBuilder
     {
         /// <summary>
         /// Constructs a new <see cref="MessageSendRequestBuilder"/>.

@@ -57,5 +57,7 @@ namespace Microsoft.Graph
                 return new ContactFolderRequestBuilder(this.AppendSegmentToRequestUrl(id), this.Client);
             }
         }
+
+        
     }
 }

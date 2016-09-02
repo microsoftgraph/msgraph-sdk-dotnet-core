@@ -33,7 +33,7 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Creates the specified SubscribedSku using PUT.
+        /// Creates the specified SubscribedSku using POST.
         /// </summary>
         /// <param name="subscribedSkuToCreate">The SubscribedSku to create.</param>
         /// <returns>The created SubscribedSku.</returns>
@@ -43,7 +43,7 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Creates the specified SubscribedSku using PUT.
+        /// Creates the specified SubscribedSku using POST.
         /// </summary>
         /// <param name="subscribedSkuToCreate">The SubscribedSku to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
@@ -51,7 +51,7 @@ namespace Microsoft.Graph
         public async System.Threading.Tasks.Task<SubscribedSku> CreateAsync(SubscribedSku subscribedSkuToCreate, CancellationToken cancellationToken)
         {
             this.ContentType = "application/json";
-            this.Method = "PUT";
+            this.Method = "POST";
             var newEntity = await this.SendAsync<SubscribedSku>(subscribedSkuToCreate, cancellationToken).ConfigureAwait(false);
             this.InitializeCollectionProperties(newEntity);
             return newEntity;
@@ -122,6 +122,28 @@ namespace Microsoft.Graph
             var updatedEntity = await this.SendAsync<SubscribedSku>(subscribedSkuToUpdate, cancellationToken).ConfigureAwait(false);
             this.InitializeCollectionProperties(updatedEntity);
             return updatedEntity;
+        }
+
+        /// <summary>
+        /// Adds the specified expand value to the request.
+        /// </summary>
+        /// <param name="value">The expand value.</param>
+        /// <returns>The request object to send.</returns>
+        public ISubscribedSkuRequest Expand(string value)
+        {
+            this.QueryOptions.Add(new QueryOption("$expand", value));
+            return this;
+        }
+
+        /// <summary>
+        /// Adds the specified select value to the request.
+        /// </summary>
+        /// <param name="value">The select value.</param>
+        /// <returns>The request object to send.</returns>
+        public ISubscribedSkuRequest Select(string value)
+        {
+            this.QueryOptions.Add(new QueryOption("$select", value));
+            return this;
         }
 
         /// <summary>

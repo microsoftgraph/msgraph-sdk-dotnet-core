@@ -33,5 +33,7 @@ namespace Microsoft.Graph
         /// <param name="id">The ID for the Conversation.</param>
         /// <returns>The <see cref="IConversationRequestBuilder"/>.</returns>
         IConversationRequestBuilder this[string id] { get; }
+
+        
     }
 }

@@ -33,5 +33,7 @@ namespace Microsoft.Graph
         /// <param name="id">The ID for the Calendar.</param>
         /// <returns>The <see cref="ICalendarRequestBuilder"/>.</returns>
         ICalendarRequestBuilder this[string id] { get; }
+
+        
     }
 }

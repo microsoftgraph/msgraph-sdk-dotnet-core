@@ -33,5 +33,7 @@ namespace Microsoft.Graph
         /// <param name="id">The ID for the ThumbnailSet.</param>
         /// <returns>The <see cref="IThumbnailSetRequestBuilder"/>.</returns>
         IThumbnailSetRequestBuilder this[string id] { get; }
+
+        
     }
 }

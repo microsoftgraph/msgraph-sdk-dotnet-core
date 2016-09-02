@@ -14,7 +14,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type GroupRemoveFavoriteRequestBuilder.
     /// </summary>
-    public partial class GroupRemoveFavoriteRequestBuilder : BaseFunctionMethodRequestBuilder<IGroupRemoveFavoriteRequest>, IGroupRemoveFavoriteRequestBuilder
+    public partial class GroupRemoveFavoriteRequestBuilder : BaseActionMethodRequestBuilder<IGroupRemoveFavoriteRequest>, IGroupRemoveFavoriteRequestBuilder
     {
         /// <summary>
         /// Constructs a new <see cref="GroupRemoveFavoriteRequestBuilder"/>.

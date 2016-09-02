@@ -27,7 +27,6 @@ namespace Microsoft.Graph
             IEnumerable<Option> options)
             : base(requestUrl, client, options)
         {
-            this.Method = "GET";
         }
 
         /// <summary>
@@ -46,6 +45,7 @@ namespace Microsoft.Graph
         public async System.Threading.Tasks.Task<IUserReminderViewCollectionPage> GetAsync(
             CancellationToken cancellationToken)
         {
+            this.Method = "GET";
             var response = await this.SendAsync<UserReminderViewCollectionResponse>(null, cancellationToken).ConfigureAwait(false);
             if (response != null && response.Value != null && response.Value.CurrentPage != null)
             {
@@ -71,6 +71,7 @@ namespace Microsoft.Graph
 
             return null;
         }
+
 
         /// <summary>
         /// Adds the specified expand value to the request.

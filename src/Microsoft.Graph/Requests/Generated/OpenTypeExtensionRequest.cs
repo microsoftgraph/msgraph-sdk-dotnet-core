@@ -33,7 +33,7 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Creates the specified OpenTypeExtension using PUT.
+        /// Creates the specified OpenTypeExtension using POST.
         /// </summary>
         /// <param name="openTypeExtensionToCreate">The OpenTypeExtension to create.</param>
         /// <returns>The created OpenTypeExtension.</returns>
@@ -43,7 +43,7 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Creates the specified OpenTypeExtension using PUT.
+        /// Creates the specified OpenTypeExtension using POST.
         /// </summary>
         /// <param name="openTypeExtensionToCreate">The OpenTypeExtension to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
@@ -51,7 +51,7 @@ namespace Microsoft.Graph
         public async System.Threading.Tasks.Task<OpenTypeExtension> CreateAsync(OpenTypeExtension openTypeExtensionToCreate, CancellationToken cancellationToken)
         {
             this.ContentType = "application/json";
-            this.Method = "PUT";
+            this.Method = "POST";
             var newEntity = await this.SendAsync<OpenTypeExtension>(openTypeExtensionToCreate, cancellationToken).ConfigureAwait(false);
             this.InitializeCollectionProperties(newEntity);
             return newEntity;

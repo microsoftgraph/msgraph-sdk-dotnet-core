@@ -33,5 +33,7 @@ namespace Microsoft.Graph
         /// <param name="id">The ID for the Subscription.</param>
         /// <returns>The <see cref="ISubscriptionRequestBuilder"/>.</returns>
         ISubscriptionRequestBuilder this[string id] { get; }
+
+        
     }
 }

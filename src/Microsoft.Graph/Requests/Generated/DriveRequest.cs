@@ -33,7 +33,7 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Creates the specified Drive using PUT.
+        /// Creates the specified Drive using POST.
         /// </summary>
         /// <param name="driveToCreate">The Drive to create.</param>
         /// <returns>The created Drive.</returns>
@@ -43,7 +43,7 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Creates the specified Drive using PUT.
+        /// Creates the specified Drive using POST.
         /// </summary>
         /// <param name="driveToCreate">The Drive to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
@@ -51,7 +51,7 @@ namespace Microsoft.Graph
         public async System.Threading.Tasks.Task<Drive> CreateAsync(Drive driveToCreate, CancellationToken cancellationToken)
         {
             this.ContentType = "application/json";
-            this.Method = "PUT";
+            this.Method = "POST";
             var newEntity = await this.SendAsync<Drive>(driveToCreate, cancellationToken).ConfigureAwait(false);
             this.InitializeCollectionProperties(newEntity);
             return newEntity;
