@@ -19,30 +19,6 @@ namespace Microsoft.Graph.Test.Requests.Generated
     public class ActionRequestTests : RequestTestBase
     {
         /// <summary>
-        /// Tests building a request for an action with multiple required parameters (assignLicence).
-        /// </summary>
-        [TestMethod]
-        public void MultipleRequiredParameters()
-        {
-            var expectedRequestUrl = string.Format("{0}/me/microsoft.graph.assignLicense", this.graphBaseUrl);
-
-            var addLicenses = new List<AssignedLicense> { new AssignedLicense() };
-            var removeLicenses = new List<Guid> { new Guid() };
-
-            var assignLicenseRequestBuilder = this.graphServiceClient.Me.AssignLicense(addLicenses, removeLicenses) as UserAssignLicenseRequestBuilder;
-
-            Assert.IsNotNull(assignLicenseRequestBuilder, "Unexpected request builder.");
-            Assert.AreEqual(expectedRequestUrl, assignLicenseRequestBuilder.RequestUrl, "Unexpected request builder URL.");
-
-            var assignLicenseRequest = assignLicenseRequestBuilder.Request() as UserAssignLicenseRequest;
-            Assert.IsNotNull(assignLicenseRequest, "Unexpected request.");
-            Assert.AreEqual(new Uri(expectedRequestUrl), new Uri(assignLicenseRequest.RequestUrl), "Unexpected request URL.");
-            Assert.AreEqual("POST", assignLicenseRequest.Method, "Unexpected HTTP method.");
-            Assert.AreEqual(addLicenses, assignLicenseRequest.RequestBody.AddLicenses, "Unexpected value for AddLicenses in request body.");
-            Assert.AreEqual(removeLicenses, assignLicenseRequest.RequestBody.RemoveLicenses, "Unexpected value for RemoveLicenses in request body.");
-        }
-
-        /// <summary>
         /// Tests building a request for an action with an optional parameter set to null that's not a nullable type.
         /// </summary>
         [TestMethod]
