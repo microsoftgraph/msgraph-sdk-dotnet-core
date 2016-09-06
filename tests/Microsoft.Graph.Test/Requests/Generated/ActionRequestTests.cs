@@ -19,46 +19,6 @@ namespace Microsoft.Graph.Test.Requests.Generated
     public class ActionRequestTests : RequestTestBase
     {
         /// <summary>
-        /// Tests building a request for an action with an optional parameter set to null that's not a nullable type.
-        /// </summary>
-        [TestMethod]
-        public void OptionalParameterWithNonNullableType_NullValue()
-        {
-            var expectedRequestUrl = string.Format("{0}/me/microsoft.graph.getMemberGroups", this.graphBaseUrl);
-
-            var getMemberGroupsRequestBuilder = this.graphServiceClient.Me.GetMemberGroups() as DirectoryObjectGetMemberGroupsRequestBuilder;
-
-            Assert.IsNotNull(getMemberGroupsRequestBuilder, "Unexpected request builder.");
-            Assert.AreEqual(expectedRequestUrl, getMemberGroupsRequestBuilder.RequestUrl, "Unexpected request builder URL.");
-
-            var getMemberGroupsRequest = getMemberGroupsRequestBuilder.Request() as DirectoryObjectGetMemberGroupsRequest;
-            Assert.IsNotNull(getMemberGroupsRequest, "Unexpected request.");
-            Assert.AreEqual(new Uri(expectedRequestUrl), new Uri(getMemberGroupsRequest.RequestUrl), "Unexpected request URL.");
-            Assert.AreEqual("POST", getMemberGroupsRequest.Method, "Unexpected HTTP method.");
-            Assert.IsNull(getMemberGroupsRequest.RequestBody.SecurityEnabledOnly, "Unexpected value for SecurityEnabledOnly in request body.");
-        }
-
-        /// <summary>
-        /// Tests building a request for an action with an optional parameter that's not a nullable type.
-        /// </summary>
-        [TestMethod]
-        public void OptionalParameterWithNonNullableType_ValueSet()
-        {
-            var expectedRequestUrl = string.Format("{0}/me/microsoft.graph.getMemberGroups", this.graphBaseUrl);
-
-            var getMemberGroupsRequestBuilder = this.graphServiceClient.Me.GetMemberGroups(true) as DirectoryObjectGetMemberGroupsRequestBuilder;
-
-            Assert.IsNotNull(getMemberGroupsRequestBuilder, "Unexpected request builder.");
-            Assert.AreEqual(expectedRequestUrl, getMemberGroupsRequestBuilder.RequestUrl, "Unexpected request builder URL.");
-
-            var getMemberGroupsRequest = getMemberGroupsRequestBuilder.Request() as DirectoryObjectGetMemberGroupsRequest;
-            Assert.IsNotNull(getMemberGroupsRequest, "Unexpected request.");
-            Assert.AreEqual(new Uri(expectedRequestUrl), new Uri(getMemberGroupsRequest.RequestUrl), "Unexpected request URL.");
-            Assert.AreEqual("POST", getMemberGroupsRequest.Method, "Unexpected HTTP method.");
-            Assert.IsTrue(getMemberGroupsRequest.RequestBody.SecurityEnabledOnly.Value, "Unexpected value for SecurityEnabledOnly in request body.");
-        }
-
-        /// <summary>
         /// Tests that an exception is thrown when the first of required parameters passed to an action request is null (assignLicence).
         /// </summary>
         [TestMethod]
