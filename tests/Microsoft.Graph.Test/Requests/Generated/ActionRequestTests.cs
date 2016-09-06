@@ -69,27 +69,6 @@ namespace Microsoft.Graph.Test.Requests.Generated
         }
 
         /// <summary>
-        /// Tests building a request for an action that takes in no parameters (send).
-        /// </summary>
-        [TestMethod]
-        public void NoParameters()
-        {
-            var messageId = "messageId";
-            
-            var expectedRequestUrl = string.Format("{0}/me/mailFolders/Drafts/messages/{1}/microsoft.graph.send", this.graphBaseUrl, messageId);
-            
-            var sendRequestBuilder = this.graphServiceClient.Me.MailFolders.Drafts.Messages[messageId].Send() as MessageSendRequestBuilder;
-
-            Assert.IsNotNull(sendRequestBuilder, "Unexpected request builder.");
-            Assert.AreEqual(expectedRequestUrl, sendRequestBuilder.RequestUrl, "Unexpected request builder URL.");
-
-            var sendRequest = sendRequestBuilder.Request() as MessageSendRequest;
-            Assert.IsNotNull(sendRequest, "Unexpected request.");
-            Assert.AreEqual(new Uri(expectedRequestUrl), new Uri(sendRequest.RequestUrl), "Unexpected request URL.");
-            Assert.AreEqual("POST", sendRequest.Method, "Unexpected HTTP method.");
-        }
-
-        /// <summary>
         /// Tests the PostAsync() method for an action that returns a collection of primitives (checkMemberGroups).
         /// The action is also inherited from the base class.
         /// </summary>
