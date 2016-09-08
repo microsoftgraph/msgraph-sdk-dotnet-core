@@ -16,20 +16,20 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type Workbook Chart Point.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class WorkbookChartPoint : Entity
     {
     
         /// <summary>
         /// Gets or sets value.
         /// </summary>
-        [DataMember(Name = "value", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "value", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken Value { get; set; }
     
         /// <summary>
         /// Gets or sets format.
         /// </summary>
-        [DataMember(Name = "format", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "format", Required = Required.Default)]
         public WorkbookChartPointFormat Format { get; set; }
     
     }

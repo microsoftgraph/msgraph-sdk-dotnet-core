@@ -16,20 +16,20 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type Workbook Function Result.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class WorkbookFunctionResult : Entity
     {
     
         /// <summary>
         /// Gets or sets error.
         /// </summary>
-        [DataMember(Name = "error", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "error", Required = Required.Default)]
         public string Error { get; set; }
     
         /// <summary>
         /// Gets or sets value.
         /// </summary>
-        [DataMember(Name = "value", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "value", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken Value { get; set; }
     
     }

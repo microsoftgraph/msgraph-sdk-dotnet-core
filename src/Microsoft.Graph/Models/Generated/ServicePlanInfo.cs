@@ -16,7 +16,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type ServicePlanInfo.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     [JsonConverter(typeof(DerivedTypeConverter))]
     public partial class ServicePlanInfo
     {
@@ -24,25 +24,25 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets or sets servicePlanId.
         /// </summary>
-        [DataMember(Name = "servicePlanId", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "servicePlanId", Required = Required.Default)]
         public Guid? ServicePlanId { get; set; }
     
         /// <summary>
         /// Gets or sets servicePlanName.
         /// </summary>
-        [DataMember(Name = "servicePlanName", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "servicePlanName", Required = Required.Default)]
         public string ServicePlanName { get; set; }
     
         /// <summary>
         /// Gets or sets provisioningStatus.
         /// </summary>
-        [DataMember(Name = "provisioningStatus", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "provisioningStatus", Required = Required.Default)]
         public string ProvisioningStatus { get; set; }
     
         /// <summary>
         /// Gets or sets appliesTo.
         /// </summary>
-        [DataMember(Name = "appliesTo", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "appliesTo", Required = Required.Default)]
         public string AppliesTo { get; set; }
     
         /// <summary>

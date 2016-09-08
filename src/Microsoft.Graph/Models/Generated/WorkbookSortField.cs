@@ -16,7 +16,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type WorkbookSortField.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     [JsonConverter(typeof(DerivedTypeConverter))]
     public partial class WorkbookSortField
     {
@@ -24,37 +24,37 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets or sets ascending.
         /// </summary>
-        [DataMember(Name = "ascending", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "ascending", Required = Required.Default)]
         public bool? Ascending { get; set; }
     
         /// <summary>
         /// Gets or sets color.
         /// </summary>
-        [DataMember(Name = "color", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "color", Required = Required.Default)]
         public string Color { get; set; }
     
         /// <summary>
         /// Gets or sets dataOption.
         /// </summary>
-        [DataMember(Name = "dataOption", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "dataOption", Required = Required.Default)]
         public string DataOption { get; set; }
     
         /// <summary>
         /// Gets or sets icon.
         /// </summary>
-        [DataMember(Name = "icon", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "icon", Required = Required.Default)]
         public WorkbookIcon Icon { get; set; }
     
         /// <summary>
         /// Gets or sets key.
         /// </summary>
-        [DataMember(Name = "key", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "key", Required = Required.Default)]
         public Int32? Key { get; set; }
     
         /// <summary>
         /// Gets or sets sortOn.
         /// </summary>
-        [DataMember(Name = "sortOn", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "sortOn", Required = Required.Default)]
         public string SortOn { get; set; }
     
         /// <summary>

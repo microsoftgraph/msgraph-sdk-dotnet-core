@@ -16,20 +16,20 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type Workbook Format Protection.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class WorkbookFormatProtection : Entity
     {
     
         /// <summary>
         /// Gets or sets formula hidden.
         /// </summary>
-        [DataMember(Name = "formulaHidden", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "formulaHidden", Required = Required.Default)]
         public bool? FormulaHidden { get; set; }
     
         /// <summary>
         /// Gets or sets locked.
         /// </summary>
-        [DataMember(Name = "locked", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "locked", Required = Required.Default)]
         public bool? Locked { get; set; }
     
     }

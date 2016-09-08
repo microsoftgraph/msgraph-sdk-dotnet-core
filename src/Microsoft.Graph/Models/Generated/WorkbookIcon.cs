@@ -16,7 +16,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type WorkbookIcon.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     [JsonConverter(typeof(DerivedTypeConverter))]
     public partial class WorkbookIcon
     {
@@ -24,13 +24,13 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets or sets index.
         /// </summary>
-        [DataMember(Name = "index", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "index", Required = Required.Default)]
         public Int32? Index { get; set; }
     
         /// <summary>
         /// Gets or sets set.
         /// </summary>
-        [DataMember(Name = "set", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "set", Required = Required.Default)]
         public string Set { get; set; }
     
         /// <summary>

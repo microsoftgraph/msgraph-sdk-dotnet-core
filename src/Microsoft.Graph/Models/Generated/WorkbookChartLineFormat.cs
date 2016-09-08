@@ -16,14 +16,14 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type Workbook Chart Line Format.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class WorkbookChartLineFormat : Entity
     {
     
         /// <summary>
         /// Gets or sets color.
         /// </summary>
-        [DataMember(Name = "color", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "color", Required = Required.Default)]
         public string Color { get; set; }
     
     }

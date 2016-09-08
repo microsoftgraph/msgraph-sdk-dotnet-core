@@ -16,80 +16,80 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type Workbook Chart.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class WorkbookChart : Entity
     {
     
         /// <summary>
         /// Gets or sets height.
         /// </summary>
-        [DataMember(Name = "height", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "height", Required = Required.Default)]
         public double? Height { get; set; }
     
         /// <summary>
         /// Gets or sets left.
         /// </summary>
-        [DataMember(Name = "left", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "left", Required = Required.Default)]
         public double? Left { get; set; }
     
         /// <summary>
         /// Gets or sets name.
         /// </summary>
-        [DataMember(Name = "name", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "name", Required = Required.Default)]
         public string Name { get; set; }
     
         /// <summary>
         /// Gets or sets top.
         /// </summary>
-        [DataMember(Name = "top", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "top", Required = Required.Default)]
         public double? Top { get; set; }
     
         /// <summary>
         /// Gets or sets width.
         /// </summary>
-        [DataMember(Name = "width", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "width", Required = Required.Default)]
         public double? Width { get; set; }
     
         /// <summary>
         /// Gets or sets axes.
         /// </summary>
-        [DataMember(Name = "axes", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "axes", Required = Required.Default)]
         public WorkbookChartAxes Axes { get; set; }
     
         /// <summary>
         /// Gets or sets data labels.
         /// </summary>
-        [DataMember(Name = "dataLabels", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "dataLabels", Required = Required.Default)]
         public WorkbookChartDataLabels DataLabels { get; set; }
     
         /// <summary>
         /// Gets or sets format.
         /// </summary>
-        [DataMember(Name = "format", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "format", Required = Required.Default)]
         public WorkbookChartAreaFormat Format { get; set; }
     
         /// <summary>
         /// Gets or sets legend.
         /// </summary>
-        [DataMember(Name = "legend", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "legend", Required = Required.Default)]
         public WorkbookChartLegend Legend { get; set; }
     
         /// <summary>
         /// Gets or sets series.
         /// </summary>
-        [DataMember(Name = "series", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "series", Required = Required.Default)]
         public IWorkbookChartSeriesCollectionPage Series { get; set; }
     
         /// <summary>
         /// Gets or sets title.
         /// </summary>
-        [DataMember(Name = "title", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "title", Required = Required.Default)]
         public WorkbookChartTitle Title { get; set; }
     
         /// <summary>
         /// Gets or sets worksheet.
         /// </summary>
-        [DataMember(Name = "worksheet", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "worksheet", Required = Required.Default)]
         public WorkbookWorksheet Worksheet { get; set; }
     
     }

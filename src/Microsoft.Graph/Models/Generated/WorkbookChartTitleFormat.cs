@@ -16,20 +16,20 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type Workbook Chart Title Format.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class WorkbookChartTitleFormat : Entity
     {
     
         /// <summary>
         /// Gets or sets fill.
         /// </summary>
-        [DataMember(Name = "fill", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "fill", Required = Required.Default)]
         public WorkbookChartFill Fill { get; set; }
     
         /// <summary>
         /// Gets or sets font.
         /// </summary>
-        [DataMember(Name = "font", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "font", Required = Required.Default)]
         public WorkbookChartFont Font { get; set; }
     
     }

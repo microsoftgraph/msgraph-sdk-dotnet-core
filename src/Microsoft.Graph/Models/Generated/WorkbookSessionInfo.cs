@@ -16,7 +16,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type WorkbookSessionInfo.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     [JsonConverter(typeof(DerivedTypeConverter))]
     public partial class WorkbookSessionInfo
     {
@@ -24,13 +24,13 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets or sets id.
         /// </summary>
-        [DataMember(Name = "id", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "id", Required = Required.Default)]
         public string Id { get; set; }
     
         /// <summary>
         /// Gets or sets persistChanges.
         /// </summary>
-        [DataMember(Name = "persistChanges", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "persistChanges", Required = Required.Default)]
         public bool? PersistChanges { get; set; }
     
         /// <summary>

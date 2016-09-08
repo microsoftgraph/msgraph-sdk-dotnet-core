@@ -16,32 +16,32 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type Workbook Table Column.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class WorkbookTableColumn : Entity
     {
     
         /// <summary>
         /// Gets or sets index.
         /// </summary>
-        [DataMember(Name = "index", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "index", Required = Required.Default)]
         public Int32? Index { get; set; }
     
         /// <summary>
         /// Gets or sets name.
         /// </summary>
-        [DataMember(Name = "name", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "name", Required = Required.Default)]
         public string Name { get; set; }
     
         /// <summary>
         /// Gets or sets values.
         /// </summary>
-        [DataMember(Name = "values", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "values", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken Values { get; set; }
     
         /// <summary>
         /// Gets or sets filter.
         /// </summary>
-        [DataMember(Name = "filter", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "filter", Required = Required.Default)]
         public WorkbookFilter Filter { get; set; }
     
     }

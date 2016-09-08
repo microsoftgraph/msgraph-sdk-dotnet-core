@@ -16,7 +16,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type Workbook Range Sort.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class WorkbookRangeSort : Entity
     {
     

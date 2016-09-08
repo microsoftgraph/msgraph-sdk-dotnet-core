@@ -16,7 +16,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type Workbook Functions.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class WorkbookFunctions : Entity
     {
     

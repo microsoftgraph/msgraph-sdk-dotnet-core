@@ -16,26 +16,26 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type Workbook Chart Series.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class WorkbookChartSeries : Entity
     {
     
         /// <summary>
         /// Gets or sets name.
         /// </summary>
-        [DataMember(Name = "name", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "name", Required = Required.Default)]
         public string Name { get; set; }
     
         /// <summary>
         /// Gets or sets format.
         /// </summary>
-        [DataMember(Name = "format", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "format", Required = Required.Default)]
         public WorkbookChartSeriesFormat Format { get; set; }
     
         /// <summary>
         /// Gets or sets points.
         /// </summary>
-        [DataMember(Name = "points", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "points", Required = Required.Default)]
         public IWorkbookChartSeriesPointsCollectionPage Points { get; set; }
     
     }

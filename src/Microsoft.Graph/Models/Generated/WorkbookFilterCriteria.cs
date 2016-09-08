@@ -16,7 +16,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type WorkbookFilterCriteria.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     [JsonConverter(typeof(DerivedTypeConverter))]
     public partial class WorkbookFilterCriteria
     {
@@ -24,49 +24,49 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets or sets color.
         /// </summary>
-        [DataMember(Name = "color", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "color", Required = Required.Default)]
         public string Color { get; set; }
     
         /// <summary>
         /// Gets or sets criterion1.
         /// </summary>
-        [DataMember(Name = "criterion1", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "criterion1", Required = Required.Default)]
         public string Criterion1 { get; set; }
     
         /// <summary>
         /// Gets or sets criterion2.
         /// </summary>
-        [DataMember(Name = "criterion2", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "criterion2", Required = Required.Default)]
         public string Criterion2 { get; set; }
     
         /// <summary>
         /// Gets or sets dynamicCriteria.
         /// </summary>
-        [DataMember(Name = "dynamicCriteria", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "dynamicCriteria", Required = Required.Default)]
         public string DynamicCriteria { get; set; }
     
         /// <summary>
         /// Gets or sets filterOn.
         /// </summary>
-        [DataMember(Name = "filterOn", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "filterOn", Required = Required.Default)]
         public string FilterOn { get; set; }
     
         /// <summary>
         /// Gets or sets icon.
         /// </summary>
-        [DataMember(Name = "icon", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "icon", Required = Required.Default)]
         public WorkbookIcon Icon { get; set; }
     
         /// <summary>
         /// Gets or sets operator.
         /// </summary>
-        [DataMember(Name = "operator", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "operator", Required = Required.Default)]
         public string Operator { get; set; }
     
         /// <summary>
         /// Gets or sets values.
         /// </summary>
-        [DataMember(Name = "values", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "values", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken Values { get; set; }
     
         /// <summary>

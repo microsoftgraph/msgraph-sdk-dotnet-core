@@ -16,7 +16,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type Extension.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class Extension : Entity
     {
     

@@ -16,7 +16,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type Reference Attachment.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class ReferenceAttachment : Attachment
     {
     

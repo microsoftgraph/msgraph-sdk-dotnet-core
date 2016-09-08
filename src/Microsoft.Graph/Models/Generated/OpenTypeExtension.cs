@@ -16,14 +16,14 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type Open Type Extension.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class OpenTypeExtension : Extension
     {
     
         /// <summary>
         /// Gets or sets extension name.
         /// </summary>
-        [DataMember(Name = "extensionName", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "extensionName", Required = Required.Default)]
         public string ExtensionName { get; set; }
     
     }

@@ -16,20 +16,20 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type Workbook Worksheet Protection.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class WorkbookWorksheetProtection : Entity
     {
     
         /// <summary>
         /// Gets or sets options.
         /// </summary>
-        [DataMember(Name = "options", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "options", Required = Required.Default)]
         public WorkbookWorksheetProtectionOptions Options { get; set; }
     
         /// <summary>
         /// Gets or sets protected.
         /// </summary>
-        [DataMember(Name = "protected", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "protected", Required = Required.Default)]
         public bool? Protected { get; set; }
     
     }

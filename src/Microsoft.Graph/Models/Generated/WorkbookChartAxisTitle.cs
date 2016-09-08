@@ -16,26 +16,26 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type Workbook Chart Axis Title.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class WorkbookChartAxisTitle : Entity
     {
     
         /// <summary>
         /// Gets or sets text.
         /// </summary>
-        [DataMember(Name = "text", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "text", Required = Required.Default)]
         public string Text { get; set; }
     
         /// <summary>
         /// Gets or sets visible.
         /// </summary>
-        [DataMember(Name = "visible", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "visible", Required = Required.Default)]
         public bool? Visible { get; set; }
     
         /// <summary>
         /// Gets or sets format.
         /// </summary>
-        [DataMember(Name = "format", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "format", Required = Required.Default)]
         public WorkbookChartAxisTitleFormat Format { get; set; }
     
     }

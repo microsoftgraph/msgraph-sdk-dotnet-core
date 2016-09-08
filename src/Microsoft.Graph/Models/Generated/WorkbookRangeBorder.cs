@@ -16,32 +16,32 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type Workbook Range Border.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class WorkbookRangeBorder : Entity
     {
     
         /// <summary>
         /// Gets or sets color.
         /// </summary>
-        [DataMember(Name = "color", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "color", Required = Required.Default)]
         public string Color { get; set; }
     
         /// <summary>
         /// Gets or sets side index.
         /// </summary>
-        [DataMember(Name = "sideIndex", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "sideIndex", Required = Required.Default)]
         public string SideIndex { get; set; }
     
         /// <summary>
         /// Gets or sets style.
         /// </summary>
-        [DataMember(Name = "style", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "style", Required = Required.Default)]
         public string Style { get; set; }
     
         /// <summary>
         /// Gets or sets weight.
         /// </summary>
-        [DataMember(Name = "weight", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "weight", Required = Required.Default)]
         public string Weight { get; set; }
     
     }

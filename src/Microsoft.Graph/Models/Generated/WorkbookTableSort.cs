@@ -16,26 +16,26 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type Workbook Table Sort.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class WorkbookTableSort : Entity
     {
     
         /// <summary>
         /// Gets or sets fields.
         /// </summary>
-        [DataMember(Name = "fields", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "fields", Required = Required.Default)]
         public IEnumerable<WorkbookSortField> Fields { get; set; }
     
         /// <summary>
         /// Gets or sets match case.
         /// </summary>
-        [DataMember(Name = "matchCase", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "matchCase", Required = Required.Default)]
         public bool? MatchCase { get; set; }
     
         /// <summary>
         /// Gets or sets method.
         /// </summary>
-        [DataMember(Name = "method", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "method", Required = Required.Default)]
         public string Method { get; set; }
     
     }

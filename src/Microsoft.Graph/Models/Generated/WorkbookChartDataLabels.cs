@@ -16,62 +16,62 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type Workbook Chart Data Labels.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class WorkbookChartDataLabels : Entity
     {
     
         /// <summary>
         /// Gets or sets position.
         /// </summary>
-        [DataMember(Name = "position", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "position", Required = Required.Default)]
         public string Position { get; set; }
     
         /// <summary>
         /// Gets or sets separator.
         /// </summary>
-        [DataMember(Name = "separator", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "separator", Required = Required.Default)]
         public string Separator { get; set; }
     
         /// <summary>
         /// Gets or sets show bubble size.
         /// </summary>
-        [DataMember(Name = "showBubbleSize", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "showBubbleSize", Required = Required.Default)]
         public bool? ShowBubbleSize { get; set; }
     
         /// <summary>
         /// Gets or sets show category name.
         /// </summary>
-        [DataMember(Name = "showCategoryName", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "showCategoryName", Required = Required.Default)]
         public bool? ShowCategoryName { get; set; }
     
         /// <summary>
         /// Gets or sets show legend key.
         /// </summary>
-        [DataMember(Name = "showLegendKey", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "showLegendKey", Required = Required.Default)]
         public bool? ShowLegendKey { get; set; }
     
         /// <summary>
         /// Gets or sets show percentage.
         /// </summary>
-        [DataMember(Name = "showPercentage", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "showPercentage", Required = Required.Default)]
         public bool? ShowPercentage { get; set; }
     
         /// <summary>
         /// Gets or sets show series name.
         /// </summary>
-        [DataMember(Name = "showSeriesName", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "showSeriesName", Required = Required.Default)]
         public bool? ShowSeriesName { get; set; }
     
         /// <summary>
         /// Gets or sets show value.
         /// </summary>
-        [DataMember(Name = "showValue", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "showValue", Required = Required.Default)]
         public bool? ShowValue { get; set; }
     
         /// <summary>
         /// Gets or sets format.
         /// </summary>
-        [DataMember(Name = "format", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "format", Required = Required.Default)]
         public WorkbookChartDataLabelFormat Format { get; set; }
     
     }

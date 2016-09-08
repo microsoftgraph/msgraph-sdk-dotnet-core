@@ -16,14 +16,14 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type Workbook Chart Point Format.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class WorkbookChartPointFormat : Entity
     {
     
         /// <summary>
         /// Gets or sets fill.
         /// </summary>
-        [DataMember(Name = "fill", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "fill", Required = Required.Default)]
         public WorkbookChartFill Fill { get; set; }
     
     }

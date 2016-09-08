@@ -16,44 +16,44 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type Workbook Worksheet.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class WorkbookWorksheet : Entity
     {
     
         /// <summary>
         /// Gets or sets name.
         /// </summary>
-        [DataMember(Name = "name", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "name", Required = Required.Default)]
         public string Name { get; set; }
     
         /// <summary>
         /// Gets or sets position.
         /// </summary>
-        [DataMember(Name = "position", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "position", Required = Required.Default)]
         public Int32? Position { get; set; }
     
         /// <summary>
         /// Gets or sets visibility.
         /// </summary>
-        [DataMember(Name = "visibility", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "visibility", Required = Required.Default)]
         public string Visibility { get; set; }
     
         /// <summary>
         /// Gets or sets charts.
         /// </summary>
-        [DataMember(Name = "charts", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "charts", Required = Required.Default)]
         public IWorkbookWorksheetChartsCollectionPage Charts { get; set; }
     
         /// <summary>
         /// Gets or sets protection.
         /// </summary>
-        [DataMember(Name = "protection", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "protection", Required = Required.Default)]
         public WorkbookWorksheetProtection Protection { get; set; }
     
         /// <summary>
         /// Gets or sets tables.
         /// </summary>
-        [DataMember(Name = "tables", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "tables", Required = Required.Default)]
         public IWorkbookWorksheetTablesCollectionPage Tables { get; set; }
     
     }

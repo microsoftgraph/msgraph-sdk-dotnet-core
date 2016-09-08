@@ -16,56 +16,56 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type Workbook Table.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class WorkbookTable : Entity
     {
     
         /// <summary>
         /// Gets or sets name.
         /// </summary>
-        [DataMember(Name = "name", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "name", Required = Required.Default)]
         public string Name { get; set; }
     
         /// <summary>
         /// Gets or sets show headers.
         /// </summary>
-        [DataMember(Name = "showHeaders", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "showHeaders", Required = Required.Default)]
         public bool? ShowHeaders { get; set; }
     
         /// <summary>
         /// Gets or sets show totals.
         /// </summary>
-        [DataMember(Name = "showTotals", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "showTotals", Required = Required.Default)]
         public bool? ShowTotals { get; set; }
     
         /// <summary>
         /// Gets or sets style.
         /// </summary>
-        [DataMember(Name = "style", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "style", Required = Required.Default)]
         public string Style { get; set; }
     
         /// <summary>
         /// Gets or sets columns.
         /// </summary>
-        [DataMember(Name = "columns", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "columns", Required = Required.Default)]
         public IWorkbookTableColumnsCollectionPage Columns { get; set; }
     
         /// <summary>
         /// Gets or sets rows.
         /// </summary>
-        [DataMember(Name = "rows", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "rows", Required = Required.Default)]
         public IWorkbookTableRowsCollectionPage Rows { get; set; }
     
         /// <summary>
         /// Gets or sets sort.
         /// </summary>
-        [DataMember(Name = "sort", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "sort", Required = Required.Default)]
         public WorkbookTableSort Sort { get; set; }
     
         /// <summary>
         /// Gets or sets worksheet.
         /// </summary>
-        [DataMember(Name = "worksheet", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "worksheet", Required = Required.Default)]
         public WorkbookWorksheet Worksheet { get; set; }
     
     }

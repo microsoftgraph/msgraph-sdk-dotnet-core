@@ -16,44 +16,44 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type Workbook Range Font.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class WorkbookRangeFont : Entity
     {
     
         /// <summary>
         /// Gets or sets bold.
         /// </summary>
-        [DataMember(Name = "bold", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "bold", Required = Required.Default)]
         public bool? Bold { get; set; }
     
         /// <summary>
         /// Gets or sets color.
         /// </summary>
-        [DataMember(Name = "color", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "color", Required = Required.Default)]
         public string Color { get; set; }
     
         /// <summary>
         /// Gets or sets italic.
         /// </summary>
-        [DataMember(Name = "italic", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "italic", Required = Required.Default)]
         public bool? Italic { get; set; }
     
         /// <summary>
         /// Gets or sets name.
         /// </summary>
-        [DataMember(Name = "name", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "name", Required = Required.Default)]
         public string Name { get; set; }
     
         /// <summary>
         /// Gets or sets size.
         /// </summary>
-        [DataMember(Name = "size", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "size", Required = Required.Default)]
         public double? Size { get; set; }
     
         /// <summary>
         /// Gets or sets underline.
         /// </summary>
-        [DataMember(Name = "underline", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "underline", Required = Required.Default)]
         public string Underline { get; set; }
     
     }

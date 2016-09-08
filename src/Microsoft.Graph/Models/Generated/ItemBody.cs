@@ -16,7 +16,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type ItemBody.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     [JsonConverter(typeof(DerivedTypeConverter))]
     public partial class ItemBody
     {
@@ -24,13 +24,13 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets or sets contentType.
         /// </summary>
-        [DataMember(Name = "contentType", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "contentType", Required = Required.Default)]
         public BodyType? ContentType { get; set; }
     
         /// <summary>
         /// Gets or sets content.
         /// </summary>
-        [DataMember(Name = "content", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "content", Required = Required.Default)]
         public string Content { get; set; }
     
         /// <summary>

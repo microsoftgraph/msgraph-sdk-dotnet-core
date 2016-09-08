@@ -16,7 +16,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type WorkbookFilterDatetime.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     [JsonConverter(typeof(DerivedTypeConverter))]
     public partial class WorkbookFilterDatetime
     {
@@ -24,13 +24,13 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets or sets date.
         /// </summary>
-        [DataMember(Name = "date", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "date", Required = Required.Default)]
         public string Date { get; set; }
     
         /// <summary>
         /// Gets or sets specificity.
         /// </summary>
-        [DataMember(Name = "specificity", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "specificity", Required = Required.Default)]
         public string Specificity { get; set; }
     
         /// <summary>

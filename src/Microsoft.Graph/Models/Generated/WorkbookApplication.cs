@@ -16,14 +16,14 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type Workbook Application.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class WorkbookApplication : Entity
     {
     
         /// <summary>
         /// Gets or sets calculation mode.
         /// </summary>
-        [DataMember(Name = "calculationMode", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "calculationMode", Required = Required.Default)]
         public string CalculationMode { get; set; }
     
     }

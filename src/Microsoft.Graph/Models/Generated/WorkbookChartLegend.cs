@@ -16,32 +16,32 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type Workbook Chart Legend.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class WorkbookChartLegend : Entity
     {
     
         /// <summary>
         /// Gets or sets overlay.
         /// </summary>
-        [DataMember(Name = "overlay", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "overlay", Required = Required.Default)]
         public bool? Overlay { get; set; }
     
         /// <summary>
         /// Gets or sets position.
         /// </summary>
-        [DataMember(Name = "position", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "position", Required = Required.Default)]
         public string Position { get; set; }
     
         /// <summary>
         /// Gets or sets visible.
         /// </summary>
-        [DataMember(Name = "visible", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "visible", Required = Required.Default)]
         public bool? Visible { get; set; }
     
         /// <summary>
         /// Gets or sets format.
         /// </summary>
-        [DataMember(Name = "format", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "format", Required = Required.Default)]
         public WorkbookChartLegendFormat Format { get; set; }
     
     }

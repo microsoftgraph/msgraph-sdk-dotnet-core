@@ -16,7 +16,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type Package.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     [JsonConverter(typeof(DerivedTypeConverter))]
     public partial class Package
     {
@@ -24,7 +24,7 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets or sets type.
         /// </summary>
-        [DataMember(Name = "type", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "type", Required = Required.Default)]
         public string Type { get; set; }
     
         /// <summary>

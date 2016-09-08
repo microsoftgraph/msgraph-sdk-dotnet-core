@@ -16,38 +16,38 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type Subscription.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class Subscription : Entity
     {
     
         /// <summary>
         /// Gets or sets resource.
         /// </summary>
-        [DataMember(Name = "resource", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "resource", Required = Required.Default)]
         public string Resource { get; set; }
     
         /// <summary>
         /// Gets or sets change type.
         /// </summary>
-        [DataMember(Name = "changeType", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "changeType", Required = Required.Default)]
         public string ChangeType { get; set; }
     
         /// <summary>
         /// Gets or sets client state.
         /// </summary>
-        [DataMember(Name = "clientState", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "clientState", Required = Required.Default)]
         public string ClientState { get; set; }
     
         /// <summary>
         /// Gets or sets notification url.
         /// </summary>
-        [DataMember(Name = "notificationUrl", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "notificationUrl", Required = Required.Default)]
         public string NotificationUrl { get; set; }
     
         /// <summary>
         /// Gets or sets expiration date time.
         /// </summary>
-        [DataMember(Name = "expirationDateTime", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "expirationDateTime", Required = Required.Default)]
         public DateTimeOffset? ExpirationDateTime { get; set; }
     
     }

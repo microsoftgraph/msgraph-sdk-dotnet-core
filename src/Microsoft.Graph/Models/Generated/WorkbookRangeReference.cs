@@ -16,7 +16,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type WorkbookRangeReference.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     [JsonConverter(typeof(DerivedTypeConverter))]
     public partial class WorkbookRangeReference
     {
@@ -24,7 +24,7 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets or sets address.
         /// </summary>
-        [DataMember(Name = "address", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "address", Required = Required.Default)]
         public string Address { get; set; }
     
         /// <summary>

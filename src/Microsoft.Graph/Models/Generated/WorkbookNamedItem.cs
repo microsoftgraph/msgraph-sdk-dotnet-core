@@ -16,32 +16,32 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type Workbook Named Item.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class WorkbookNamedItem : Entity
     {
     
         /// <summary>
         /// Gets or sets name.
         /// </summary>
-        [DataMember(Name = "name", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "name", Required = Required.Default)]
         public string Name { get; set; }
     
         /// <summary>
         /// Gets or sets type.
         /// </summary>
-        [DataMember(Name = "type", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "type", Required = Required.Default)]
         public string Type { get; set; }
     
         /// <summary>
         /// Gets or sets value.
         /// </summary>
-        [DataMember(Name = "value", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "value", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken Value { get; set; }
     
         /// <summary>
         /// Gets or sets visible.
         /// </summary>
-        [DataMember(Name = "visible", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "visible", Required = Required.Default)]
         public bool? Visible { get; set; }
     
     }

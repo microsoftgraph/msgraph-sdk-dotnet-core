@@ -16,20 +16,20 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type Workbook Table Row.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class WorkbookTableRow : Entity
     {
     
         /// <summary>
         /// Gets or sets index.
         /// </summary>
-        [DataMember(Name = "index", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "index", Required = Required.Default)]
         public Int32? Index { get; set; }
     
         /// <summary>
         /// Gets or sets values.
         /// </summary>
-        [DataMember(Name = "values", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "values", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken Values { get; set; }
     
     }

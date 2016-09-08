@@ -16,128 +16,128 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type Workbook Range.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class WorkbookRange : Entity
     {
     
         /// <summary>
         /// Gets or sets address.
         /// </summary>
-        [DataMember(Name = "address", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "address", Required = Required.Default)]
         public string Address { get; set; }
     
         /// <summary>
         /// Gets or sets address local.
         /// </summary>
-        [DataMember(Name = "addressLocal", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "addressLocal", Required = Required.Default)]
         public string AddressLocal { get; set; }
     
         /// <summary>
         /// Gets or sets cell count.
         /// </summary>
-        [DataMember(Name = "cellCount", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "cellCount", Required = Required.Default)]
         public Int32? CellCount { get; set; }
     
         /// <summary>
         /// Gets or sets column count.
         /// </summary>
-        [DataMember(Name = "columnCount", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "columnCount", Required = Required.Default)]
         public Int32? ColumnCount { get; set; }
     
         /// <summary>
         /// Gets or sets column hidden.
         /// </summary>
-        [DataMember(Name = "columnHidden", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "columnHidden", Required = Required.Default)]
         public bool? ColumnHidden { get; set; }
     
         /// <summary>
         /// Gets or sets column index.
         /// </summary>
-        [DataMember(Name = "columnIndex", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "columnIndex", Required = Required.Default)]
         public Int32? ColumnIndex { get; set; }
     
         /// <summary>
         /// Gets or sets formulas.
         /// </summary>
-        [DataMember(Name = "formulas", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "formulas", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken Formulas { get; set; }
     
         /// <summary>
         /// Gets or sets formulas local.
         /// </summary>
-        [DataMember(Name = "formulasLocal", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "formulasLocal", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken FormulasLocal { get; set; }
     
         /// <summary>
         /// Gets or sets formulas r1c1.
         /// </summary>
-        [DataMember(Name = "formulasR1C1", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "formulasR1C1", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken FormulasR1C1 { get; set; }
     
         /// <summary>
         /// Gets or sets hidden.
         /// </summary>
-        [DataMember(Name = "hidden", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "hidden", Required = Required.Default)]
         public bool? Hidden { get; set; }
     
         /// <summary>
         /// Gets or sets number format.
         /// </summary>
-        [DataMember(Name = "numberFormat", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "numberFormat", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken NumberFormat { get; set; }
     
         /// <summary>
         /// Gets or sets row count.
         /// </summary>
-        [DataMember(Name = "rowCount", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "rowCount", Required = Required.Default)]
         public Int32? RowCount { get; set; }
     
         /// <summary>
         /// Gets or sets row hidden.
         /// </summary>
-        [DataMember(Name = "rowHidden", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "rowHidden", Required = Required.Default)]
         public bool? RowHidden { get; set; }
     
         /// <summary>
         /// Gets or sets row index.
         /// </summary>
-        [DataMember(Name = "rowIndex", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "rowIndex", Required = Required.Default)]
         public Int32? RowIndex { get; set; }
     
         /// <summary>
         /// Gets or sets text.
         /// </summary>
-        [DataMember(Name = "text", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "text", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken Text { get; set; }
     
         /// <summary>
         /// Gets or sets value types.
         /// </summary>
-        [DataMember(Name = "valueTypes", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "valueTypes", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken ValueTypes { get; set; }
     
         /// <summary>
         /// Gets or sets values.
         /// </summary>
-        [DataMember(Name = "values", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "values", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken Values { get; set; }
     
         /// <summary>
         /// Gets or sets format.
         /// </summary>
-        [DataMember(Name = "format", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "format", Required = Required.Default)]
         public WorkbookRangeFormat Format { get; set; }
     
         /// <summary>
         /// Gets or sets sort.
         /// </summary>
-        [DataMember(Name = "sort", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "sort", Required = Required.Default)]
         public WorkbookRangeSort Sort { get; set; }
     
         /// <summary>
         /// Gets or sets worksheet.
         /// </summary>
-        [DataMember(Name = "worksheet", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "worksheet", Required = Required.Default)]
         public WorkbookWorksheet Worksheet { get; set; }
     
     }

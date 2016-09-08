@@ -16,62 +16,62 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type Workbook Range Format.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class WorkbookRangeFormat : Entity
     {
     
         /// <summary>
         /// Gets or sets column width.
         /// </summary>
-        [DataMember(Name = "columnWidth", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "columnWidth", Required = Required.Default)]
         public double? ColumnWidth { get; set; }
     
         /// <summary>
         /// Gets or sets horizontal alignment.
         /// </summary>
-        [DataMember(Name = "horizontalAlignment", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "horizontalAlignment", Required = Required.Default)]
         public string HorizontalAlignment { get; set; }
     
         /// <summary>
         /// Gets or sets row height.
         /// </summary>
-        [DataMember(Name = "rowHeight", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "rowHeight", Required = Required.Default)]
         public double? RowHeight { get; set; }
     
         /// <summary>
         /// Gets or sets vertical alignment.
         /// </summary>
-        [DataMember(Name = "verticalAlignment", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "verticalAlignment", Required = Required.Default)]
         public string VerticalAlignment { get; set; }
     
         /// <summary>
         /// Gets or sets wrap text.
         /// </summary>
-        [DataMember(Name = "wrapText", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "wrapText", Required = Required.Default)]
         public bool? WrapText { get; set; }
     
         /// <summary>
         /// Gets or sets borders.
         /// </summary>
-        [DataMember(Name = "borders", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "borders", Required = Required.Default)]
         public IWorkbookRangeFormatBordersCollectionPage Borders { get; set; }
     
         /// <summary>
         /// Gets or sets fill.
         /// </summary>
-        [DataMember(Name = "fill", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "fill", Required = Required.Default)]
         public WorkbookRangeFill Fill { get; set; }
     
         /// <summary>
         /// Gets or sets font.
         /// </summary>
-        [DataMember(Name = "font", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "font", Required = Required.Default)]
         public WorkbookRangeFont Font { get; set; }
     
         /// <summary>
         /// Gets or sets protection.
         /// </summary>
-        [DataMember(Name = "protection", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "protection", Required = Required.Default)]
         public WorkbookFormatProtection Protection { get; set; }
     
     }

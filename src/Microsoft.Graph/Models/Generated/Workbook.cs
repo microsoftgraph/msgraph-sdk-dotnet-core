@@ -16,38 +16,38 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type Workbook.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class Workbook : Entity
     {
     
         /// <summary>
         /// Gets or sets application.
         /// </summary>
-        [DataMember(Name = "application", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "application", Required = Required.Default)]
         public WorkbookApplication Application { get; set; }
     
         /// <summary>
         /// Gets or sets names.
         /// </summary>
-        [DataMember(Name = "names", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "names", Required = Required.Default)]
         public IWorkbookNamesCollectionPage Names { get; set; }
     
         /// <summary>
         /// Gets or sets tables.
         /// </summary>
-        [DataMember(Name = "tables", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "tables", Required = Required.Default)]
         public IWorkbookTablesCollectionPage Tables { get; set; }
     
         /// <summary>
         /// Gets or sets worksheets.
         /// </summary>
-        [DataMember(Name = "worksheets", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "worksheets", Required = Required.Default)]
         public IWorkbookWorksheetsCollectionPage Worksheets { get; set; }
     
         /// <summary>
         /// Gets or sets functions.
         /// </summary>
-        [DataMember(Name = "functions", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "functions", Required = Required.Default)]
         public WorkbookFunctions Functions { get; set; }
     
     }

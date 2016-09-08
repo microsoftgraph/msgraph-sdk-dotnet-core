@@ -16,20 +16,20 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type Workbook Chart Axis Format.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class WorkbookChartAxisFormat : Entity
     {
     
         /// <summary>
         /// Gets or sets font.
         /// </summary>
-        [DataMember(Name = "font", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "font", Required = Required.Default)]
         public WorkbookChartFont Font { get; set; }
     
         /// <summary>
         /// Gets or sets line.
         /// </summary>
-        [DataMember(Name = "line", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "line", Required = Required.Default)]
         public WorkbookChartLineFormat Line { get; set; }
     
     }

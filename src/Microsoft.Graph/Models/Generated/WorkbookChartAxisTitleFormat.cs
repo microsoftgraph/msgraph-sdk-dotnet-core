@@ -16,14 +16,14 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type Workbook Chart Axis Title Format.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class WorkbookChartAxisTitleFormat : Entity
     {
     
         /// <summary>
         /// Gets or sets font.
         /// </summary>
-        [DataMember(Name = "font", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "font", Required = Required.Default)]
         public WorkbookChartFont Font { get; set; }
     
     }

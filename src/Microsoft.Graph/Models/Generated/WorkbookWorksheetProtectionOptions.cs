@@ -16,7 +16,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type WorkbookWorksheetProtectionOptions.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     [JsonConverter(typeof(DerivedTypeConverter))]
     public partial class WorkbookWorksheetProtectionOptions
     {
@@ -24,67 +24,67 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets or sets allowAutoFilter.
         /// </summary>
-        [DataMember(Name = "allowAutoFilter", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "allowAutoFilter", Required = Required.Default)]
         public bool? AllowAutoFilter { get; set; }
     
         /// <summary>
         /// Gets or sets allowDeleteColumns.
         /// </summary>
-        [DataMember(Name = "allowDeleteColumns", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "allowDeleteColumns", Required = Required.Default)]
         public bool? AllowDeleteColumns { get; set; }
     
         /// <summary>
         /// Gets or sets allowDeleteRows.
         /// </summary>
-        [DataMember(Name = "allowDeleteRows", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "allowDeleteRows", Required = Required.Default)]
         public bool? AllowDeleteRows { get; set; }
     
         /// <summary>
         /// Gets or sets allowFormatCells.
         /// </summary>
-        [DataMember(Name = "allowFormatCells", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "allowFormatCells", Required = Required.Default)]
         public bool? AllowFormatCells { get; set; }
     
         /// <summary>
         /// Gets or sets allowFormatColumns.
         /// </summary>
-        [DataMember(Name = "allowFormatColumns", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "allowFormatColumns", Required = Required.Default)]
         public bool? AllowFormatColumns { get; set; }
     
         /// <summary>
         /// Gets or sets allowFormatRows.
         /// </summary>
-        [DataMember(Name = "allowFormatRows", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "allowFormatRows", Required = Required.Default)]
         public bool? AllowFormatRows { get; set; }
     
         /// <summary>
         /// Gets or sets allowInsertColumns.
         /// </summary>
-        [DataMember(Name = "allowInsertColumns", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "allowInsertColumns", Required = Required.Default)]
         public bool? AllowInsertColumns { get; set; }
     
         /// <summary>
         /// Gets or sets allowInsertHyperlinks.
         /// </summary>
-        [DataMember(Name = "allowInsertHyperlinks", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "allowInsertHyperlinks", Required = Required.Default)]
         public bool? AllowInsertHyperlinks { get; set; }
     
         /// <summary>
         /// Gets or sets allowInsertRows.
         /// </summary>
-        [DataMember(Name = "allowInsertRows", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "allowInsertRows", Required = Required.Default)]
         public bool? AllowInsertRows { get; set; }
     
         /// <summary>
         /// Gets or sets allowPivotTables.
         /// </summary>
-        [DataMember(Name = "allowPivotTables", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "allowPivotTables", Required = Required.Default)]
         public bool? AllowPivotTables { get; set; }
     
         /// <summary>
         /// Gets or sets allowSort.
         /// </summary>
-        [DataMember(Name = "allowSort", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "allowSort", Required = Required.Default)]
         public bool? AllowSort { get; set; }
     
         /// <summary>

@@ -16,116 +16,116 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type Organization.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class Organization : DirectoryObject
     {
     
         /// <summary>
         /// Gets or sets assigned plans.
         /// </summary>
-        [DataMember(Name = "assignedPlans", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "assignedPlans", Required = Required.Default)]
         public IEnumerable<AssignedPlan> AssignedPlans { get; set; }
     
         /// <summary>
         /// Gets or sets business phones.
         /// </summary>
-        [DataMember(Name = "businessPhones", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "businessPhones", Required = Required.Default)]
         public IEnumerable<string> BusinessPhones { get; set; }
     
         /// <summary>
         /// Gets or sets city.
         /// </summary>
-        [DataMember(Name = "city", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "city", Required = Required.Default)]
         public string City { get; set; }
     
         /// <summary>
         /// Gets or sets country.
         /// </summary>
-        [DataMember(Name = "country", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "country", Required = Required.Default)]
         public string Country { get; set; }
     
         /// <summary>
         /// Gets or sets country letter code.
         /// </summary>
-        [DataMember(Name = "countryLetterCode", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "countryLetterCode", Required = Required.Default)]
         public string CountryLetterCode { get; set; }
     
         /// <summary>
         /// Gets or sets display name.
         /// </summary>
-        [DataMember(Name = "displayName", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "displayName", Required = Required.Default)]
         public string DisplayName { get; set; }
     
         /// <summary>
         /// Gets or sets marketing notification emails.
         /// </summary>
-        [DataMember(Name = "marketingNotificationEmails", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "marketingNotificationEmails", Required = Required.Default)]
         public IEnumerable<string> MarketingNotificationEmails { get; set; }
     
         /// <summary>
         /// Gets or sets on premises last sync date time.
         /// </summary>
-        [DataMember(Name = "onPremisesLastSyncDateTime", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "onPremisesLastSyncDateTime", Required = Required.Default)]
         public DateTimeOffset? OnPremisesLastSyncDateTime { get; set; }
     
         /// <summary>
         /// Gets or sets on premises sync enabled.
         /// </summary>
-        [DataMember(Name = "onPremisesSyncEnabled", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "onPremisesSyncEnabled", Required = Required.Default)]
         public bool? OnPremisesSyncEnabled { get; set; }
     
         /// <summary>
         /// Gets or sets postal code.
         /// </summary>
-        [DataMember(Name = "postalCode", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "postalCode", Required = Required.Default)]
         public string PostalCode { get; set; }
     
         /// <summary>
         /// Gets or sets preferred language.
         /// </summary>
-        [DataMember(Name = "preferredLanguage", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "preferredLanguage", Required = Required.Default)]
         public string PreferredLanguage { get; set; }
     
         /// <summary>
         /// Gets or sets provisioned plans.
         /// </summary>
-        [DataMember(Name = "provisionedPlans", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "provisionedPlans", Required = Required.Default)]
         public IEnumerable<ProvisionedPlan> ProvisionedPlans { get; set; }
     
         /// <summary>
         /// Gets or sets security compliance notification mails.
         /// </summary>
-        [DataMember(Name = "securityComplianceNotificationMails", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "securityComplianceNotificationMails", Required = Required.Default)]
         public IEnumerable<string> SecurityComplianceNotificationMails { get; set; }
     
         /// <summary>
         /// Gets or sets security compliance notification phones.
         /// </summary>
-        [DataMember(Name = "securityComplianceNotificationPhones", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "securityComplianceNotificationPhones", Required = Required.Default)]
         public IEnumerable<string> SecurityComplianceNotificationPhones { get; set; }
     
         /// <summary>
         /// Gets or sets state.
         /// </summary>
-        [DataMember(Name = "state", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "state", Required = Required.Default)]
         public string State { get; set; }
     
         /// <summary>
         /// Gets or sets street.
         /// </summary>
-        [DataMember(Name = "street", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "street", Required = Required.Default)]
         public string Street { get; set; }
     
         /// <summary>
         /// Gets or sets technical notification mails.
         /// </summary>
-        [DataMember(Name = "technicalNotificationMails", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "technicalNotificationMails", Required = Required.Default)]
         public IEnumerable<string> TechnicalNotificationMails { get; set; }
     
         /// <summary>
         /// Gets or sets verified domains.
         /// </summary>
-        [DataMember(Name = "verifiedDomains", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "verifiedDomains", Required = Required.Default)]
         public IEnumerable<VerifiedDomain> VerifiedDomains { get; set; }
     
     }

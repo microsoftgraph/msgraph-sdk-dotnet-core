@@ -16,26 +16,26 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type Workbook Chart Axes.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class WorkbookChartAxes : Entity
     {
     
         /// <summary>
         /// Gets or sets category axis.
         /// </summary>
-        [DataMember(Name = "categoryAxis", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "categoryAxis", Required = Required.Default)]
         public WorkbookChartAxis CategoryAxis { get; set; }
     
         /// <summary>
         /// Gets or sets series axis.
         /// </summary>
-        [DataMember(Name = "seriesAxis", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "seriesAxis", Required = Required.Default)]
         public WorkbookChartAxis SeriesAxis { get; set; }
     
         /// <summary>
         /// Gets or sets value axis.
         /// </summary>
-        [DataMember(Name = "valueAxis", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "valueAxis", Required = Required.Default)]
         public WorkbookChartAxis ValueAxis { get; set; }
     
     }

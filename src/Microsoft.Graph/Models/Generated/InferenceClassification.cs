@@ -16,14 +16,14 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type Inference Classification.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class InferenceClassification : Entity
     {
     
         /// <summary>
         /// Gets or sets overrides.
         /// </summary>
-        [DataMember(Name = "overrides", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "overrides", Required = Required.Default)]
         public IInferenceClassificationOverridesCollectionPage Overrides { get; set; }
     
     }

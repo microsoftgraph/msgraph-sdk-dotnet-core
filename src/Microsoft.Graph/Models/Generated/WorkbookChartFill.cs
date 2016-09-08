@@ -16,7 +16,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type Workbook Chart Fill.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class WorkbookChartFill : Entity
     {
     

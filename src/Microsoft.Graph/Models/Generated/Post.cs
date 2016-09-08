@@ -16,74 +16,74 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type Post.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class Post : OutlookItem
     {
     
         /// <summary>
         /// Gets or sets body.
         /// </summary>
-        [DataMember(Name = "body", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "body", Required = Required.Default)]
         public ItemBody Body { get; set; }
     
         /// <summary>
         /// Gets or sets received date time.
         /// </summary>
-        [DataMember(Name = "receivedDateTime", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "receivedDateTime", Required = Required.Default)]
         public DateTimeOffset? ReceivedDateTime { get; set; }
     
         /// <summary>
         /// Gets or sets has attachments.
         /// </summary>
-        [DataMember(Name = "hasAttachments", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "hasAttachments", Required = Required.Default)]
         public bool? HasAttachments { get; set; }
     
         /// <summary>
         /// Gets or sets from.
         /// </summary>
-        [DataMember(Name = "from", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "from", Required = Required.Default)]
         public Recipient From { get; set; }
     
         /// <summary>
         /// Gets or sets sender.
         /// </summary>
-        [DataMember(Name = "sender", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "sender", Required = Required.Default)]
         public Recipient Sender { get; set; }
     
         /// <summary>
         /// Gets or sets conversation thread id.
         /// </summary>
-        [DataMember(Name = "conversationThreadId", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "conversationThreadId", Required = Required.Default)]
         public string ConversationThreadId { get; set; }
     
         /// <summary>
         /// Gets or sets new participants.
         /// </summary>
-        [DataMember(Name = "newParticipants", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "newParticipants", Required = Required.Default)]
         public IEnumerable<Recipient> NewParticipants { get; set; }
     
         /// <summary>
         /// Gets or sets conversation id.
         /// </summary>
-        [DataMember(Name = "conversationId", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "conversationId", Required = Required.Default)]
         public string ConversationId { get; set; }
     
         /// <summary>
         /// Gets or sets extensions.
         /// </summary>
-        [DataMember(Name = "extensions", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "extensions", Required = Required.Default)]
         public IPostExtensionsCollectionPage Extensions { get; set; }
     
         /// <summary>
         /// Gets or sets in reply to.
         /// </summary>
-        [DataMember(Name = "inReplyTo", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "inReplyTo", Required = Required.Default)]
         public Post InReplyTo { get; set; }
     
         /// <summary>
         /// Gets or sets attachments.
         /// </summary>
-        [DataMember(Name = "attachments", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "attachments", Required = Required.Default)]
         public IPostAttachmentsCollectionPage Attachments { get; set; }
     
     }

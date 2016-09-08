@@ -16,14 +16,14 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type Workbook Filter.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class WorkbookFilter : Entity
     {
     
         /// <summary>
         /// Gets or sets criteria.
         /// </summary>
-        [DataMember(Name = "criteria", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "criteria", Required = Required.Default)]
         public WorkbookFilterCriteria Criteria { get; set; }
     
     }
