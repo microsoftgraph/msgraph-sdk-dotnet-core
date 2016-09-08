@@ -172,5 +172,32 @@ namespace Microsoft.Graph.Test.Requests.Functional
                 Assert.AreEqual("Request_BadRequest", e.Error.Code, "Unexpected error occurred.");
             }
         }
+
+        [TestMethod]
+        // Addressing https://github.com/microsoftgraph/msgraph-sdk-dotnet/issues/28
+        public async Task UpdateUser()
+        {
+            try
+            {
+                var me = await graphClient.Me.Request().GetAsync();
+
+                var betterMe = new User()
+                {
+                    GivenName = "Beth"
+                };
+
+                // Update the user to Beth
+                await graphClient.Users[me.UserPrincipalName].Request().UpdateAsync(betterMe);
+
+                // Update the user back to me.
+                await graphClient.Users[me.UserPrincipalName].Request().UpdateAsync(me);
+
+            }
+            catch (Microsoft.Graph.ServiceException e)
+            {
+
+                throw;
+            }
+        }
     }
 }
