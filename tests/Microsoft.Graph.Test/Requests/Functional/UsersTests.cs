@@ -195,8 +195,7 @@ namespace Microsoft.Graph.Test.Requests.Functional
             }
             catch (Microsoft.Graph.ServiceException e)
             {
-
-                throw;
+                Assert.Fail("Something happened. Error code: {0}", e.Error.Code);
             }
         }
     }
