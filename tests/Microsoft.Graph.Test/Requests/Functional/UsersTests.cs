@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace Microsoft.Graph.Test.Requests.Functional
 {
+    [Ignore]
     [TestClass]
     public class UsersTests : GraphTestBase
     {

@@ -18,6 +18,7 @@ namespace Microsoft.Graph.Test.Requests.Functional
     /// <summary>
     /// The tests in this class cover the Excel REST API.
     /// </summary>
+    [Ignore]
     [TestClass]
     public class ExcelTests : GraphTestBase
     {

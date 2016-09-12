@@ -11,6 +11,7 @@ namespace Microsoft.Graph.Test.Requests.Functional
     using System.Net.Http;
     using System.Threading.Tasks;
 
+    [Ignore]
     [TestClass]
     public class GraphTestBase
     {
