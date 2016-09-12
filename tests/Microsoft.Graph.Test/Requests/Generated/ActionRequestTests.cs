@@ -19,6 +19,87 @@ namespace Microsoft.Graph.Test.Requests.Generated
     public class ActionRequestTests : RequestTestBase
     {
         /// <summary>
+        /// Tests building a request for an action with multiple required parameters (assignLicence).
+        /// </summary>
+        [TestMethod]
+        public void MultipleRequiredParameters()
+        {
+            var expectedRequestUrl = string.Format("{0}/me/microsoft.graph.assignLicense", this.graphBaseUrl);
+
+            var addLicenses = new List<AssignedLicense> { new AssignedLicense() };
+            var removeLicenses = new List<Guid> { new Guid() };
+
+            var assignLicenseRequestBuilder = this.graphServiceClient.Me.AssignLicense(addLicenses, removeLicenses) as UserAssignLicenseRequestBuilder;
+
+            Assert.IsNotNull(assignLicenseRequestBuilder, "Unexpected request builder.");
+            Assert.AreEqual(expectedRequestUrl, assignLicenseRequestBuilder.RequestUrl, "Unexpected request builder URL.");
+
+            var assignLicenseRequest = assignLicenseRequestBuilder.Request() as UserAssignLicenseRequest;
+            Assert.IsNotNull(assignLicenseRequest, "Unexpected request.");
+            Assert.AreEqual(new Uri(expectedRequestUrl), new Uri(assignLicenseRequest.RequestUrl), "Unexpected request URL.");
+            Assert.AreEqual(addLicenses, assignLicenseRequest.RequestBody.AddLicenses, "Unexpected value for AddLicenses in request body.");
+            Assert.AreEqual(removeLicenses, assignLicenseRequest.RequestBody.RemoveLicenses, "Unexpected value for RemoveLicenses in request body.");
+        }
+
+        /// <summary>
+        /// Tests building a request for an action with an optional parameter set to null that's not a nullable type.
+        /// </summary>
+        [TestMethod]
+        public void OptionalParameterWithNonNullableType_NullValue()
+        {
+            var expectedRequestUrl = string.Format("{0}/me/microsoft.graph.getMemberGroups", this.graphBaseUrl);
+
+            var getMemberGroupsRequestBuilder = this.graphServiceClient.Me.GetMemberGroups() as DirectoryObjectGetMemberGroupsRequestBuilder;
+
+            Assert.IsNotNull(getMemberGroupsRequestBuilder, "Unexpected request builder.");
+            Assert.AreEqual(expectedRequestUrl, getMemberGroupsRequestBuilder.RequestUrl, "Unexpected request builder URL.");
+
+            var getMemberGroupsRequest = getMemberGroupsRequestBuilder.Request() as DirectoryObjectGetMemberGroupsRequest;
+            Assert.IsNotNull(getMemberGroupsRequest, "Unexpected request.");
+            Assert.AreEqual(new Uri(expectedRequestUrl), new Uri(getMemberGroupsRequest.RequestUrl), "Unexpected request URL.");
+            Assert.IsNull(getMemberGroupsRequest.RequestBody.SecurityEnabledOnly, "Unexpected value for SecurityEnabledOnly in request body.");
+        }
+
+        /// <summary>
+        /// Tests building a request for an action with an optional parameter that's not a nullable type.
+        /// </summary>
+        [TestMethod]
+        public void OptionalParameterWithNonNullableType_ValueSet()
+        {
+            var expectedRequestUrl = string.Format("{0}/me/microsoft.graph.getMemberGroups", this.graphBaseUrl);
+
+            var getMemberGroupsRequestBuilder = this.graphServiceClient.Me.GetMemberGroups(true) as DirectoryObjectGetMemberGroupsRequestBuilder;
+
+            Assert.IsNotNull(getMemberGroupsRequestBuilder, "Unexpected request builder.");
+            Assert.AreEqual(expectedRequestUrl, getMemberGroupsRequestBuilder.RequestUrl, "Unexpected request builder URL.");
+
+            var getMemberGroupsRequest = getMemberGroupsRequestBuilder.Request() as DirectoryObjectGetMemberGroupsRequest;
+            Assert.IsNotNull(getMemberGroupsRequest, "Unexpected request.");
+            Assert.AreEqual(new Uri(expectedRequestUrl), new Uri(getMemberGroupsRequest.RequestUrl), "Unexpected request URL.");
+            Assert.IsTrue(getMemberGroupsRequest.RequestBody.SecurityEnabledOnly.Value, "Unexpected value for SecurityEnabledOnly in request body.");
+        }
+
+        /// <summary>
+        /// Tests building a request for an action that takes in no parameters (send).
+        /// </summary>
+        [TestMethod]
+        public void NoParameters()
+        {
+            var messageId = "messageId";
+
+            var expectedRequestUrl = string.Format("{0}/me/mailFolders/Drafts/messages/{1}/microsoft.graph.send", this.graphBaseUrl, messageId);
+
+            var sendRequestBuilder = this.graphServiceClient.Me.MailFolders.Drafts.Messages[messageId].Send() as MessageSendRequestBuilder;
+
+            Assert.IsNotNull(sendRequestBuilder, "Unexpected request builder.");
+            Assert.AreEqual(expectedRequestUrl, sendRequestBuilder.RequestUrl, "Unexpected request builder URL.");
+
+            var sendRequest = sendRequestBuilder.Request() as MessageSendRequest;
+            Assert.IsNotNull(sendRequest, "Unexpected request.");
+            Assert.AreEqual(new Uri(expectedRequestUrl), new Uri(sendRequest.RequestUrl), "Unexpected request URL.");
+        }
+
+        /// <summary>
         /// Tests that an exception is thrown when the first of required parameters passed to an action request is null (assignLicence).
         /// </summary>
         [TestMethod]
