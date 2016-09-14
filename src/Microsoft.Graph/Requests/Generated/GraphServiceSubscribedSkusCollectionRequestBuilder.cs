@@ -57,5 +57,7 @@ namespace Microsoft.Graph
                 return new SubscribedSkuRequestBuilder(this.AppendSegmentToRequestUrl(id), this.Client);
             }
         }
+
+        
     }
 }

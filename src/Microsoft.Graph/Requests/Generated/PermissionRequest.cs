@@ -33,7 +33,7 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Creates the specified Permission using PUT.
+        /// Creates the specified Permission using POST.
         /// </summary>
         /// <param name="permissionToCreate">The Permission to create.</param>
         /// <returns>The created Permission.</returns>
@@ -43,7 +43,7 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Creates the specified Permission using PUT.
+        /// Creates the specified Permission using POST.
         /// </summary>
         /// <param name="permissionToCreate">The Permission to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
@@ -51,7 +51,7 @@ namespace Microsoft.Graph
         public async System.Threading.Tasks.Task<Permission> CreateAsync(Permission permissionToCreate, CancellationToken cancellationToken)
         {
             this.ContentType = "application/json";
-            this.Method = "PUT";
+            this.Method = "POST";
             var newEntity = await this.SendAsync<Permission>(permissionToCreate, cancellationToken).ConfigureAwait(false);
             this.InitializeCollectionProperties(newEntity);
             return newEntity;

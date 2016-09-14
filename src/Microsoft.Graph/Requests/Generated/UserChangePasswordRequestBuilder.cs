@@ -14,7 +14,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type UserChangePasswordRequestBuilder.
     /// </summary>
-    public partial class UserChangePasswordRequestBuilder : BasePostMethodRequestBuilder<IUserChangePasswordRequest>, IUserChangePasswordRequestBuilder
+    public partial class UserChangePasswordRequestBuilder : BaseActionMethodRequestBuilder<IUserChangePasswordRequest>, IUserChangePasswordRequestBuilder
     {
         /// <summary>
         /// Constructs a new <see cref="UserChangePasswordRequestBuilder"/>.

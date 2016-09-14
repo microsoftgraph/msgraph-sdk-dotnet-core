@@ -33,7 +33,7 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Creates the specified Contact using PUT.
+        /// Creates the specified Contact using POST.
         /// </summary>
         /// <param name="contactToCreate">The Contact to create.</param>
         /// <returns>The created Contact.</returns>
@@ -43,7 +43,7 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Creates the specified Contact using PUT.
+        /// Creates the specified Contact using POST.
         /// </summary>
         /// <param name="contactToCreate">The Contact to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
@@ -51,7 +51,7 @@ namespace Microsoft.Graph
         public async System.Threading.Tasks.Task<Contact> CreateAsync(Contact contactToCreate, CancellationToken cancellationToken)
         {
             this.ContentType = "application/json";
-            this.Method = "PUT";
+            this.Method = "POST";
             var newEntity = await this.SendAsync<Contact>(contactToCreate, cancellationToken).ConfigureAwait(false);
             this.InitializeCollectionProperties(newEntity);
             return newEntity;

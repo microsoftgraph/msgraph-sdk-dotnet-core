@@ -57,5 +57,7 @@ namespace Microsoft.Graph
                 return new ConversationRequestBuilder(this.AppendSegmentToRequestUrl(id), this.Client);
             }
         }
+
+        
     }
 }

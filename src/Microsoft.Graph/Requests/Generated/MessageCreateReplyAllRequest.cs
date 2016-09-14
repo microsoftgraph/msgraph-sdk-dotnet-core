@@ -27,7 +27,6 @@ namespace Microsoft.Graph
             IEnumerable<Option> options)
             : base(requestUrl, client, options)
         {
-            this.Method = "POST";
         }
 
         /// <summary>
@@ -46,8 +45,12 @@ namespace Microsoft.Graph
         public System.Threading.Tasks.Task<Message> PostAsync(
             CancellationToken cancellationToken)
         {
+            this.Method = "POST";
             return this.SendAsync<Message>(null, cancellationToken);
         }
+
+
+
 
         /// <summary>
         /// Adds the specified expand value to the request.

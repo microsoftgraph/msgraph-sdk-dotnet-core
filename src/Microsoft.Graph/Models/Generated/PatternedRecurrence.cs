@@ -16,7 +16,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type PatternedRecurrence.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     [JsonConverter(typeof(DerivedTypeConverter))]
     public partial class PatternedRecurrence
     {
@@ -24,13 +24,13 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets or sets pattern.
         /// </summary>
-        [DataMember(Name = "pattern", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "pattern", Required = Required.Default)]
         public RecurrencePattern Pattern { get; set; }
     
         /// <summary>
         /// Gets or sets range.
         /// </summary>
-        [DataMember(Name = "range", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "range", Required = Required.Default)]
         public RecurrenceRange Range { get; set; }
     
         /// <summary>

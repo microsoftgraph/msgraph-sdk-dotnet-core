@@ -49,5 +49,32 @@ namespace Microsoft.Graph
             this.Method = "DELETE";
             await this.SendAsync<DirectoryObject>(null, cancellationToken).ConfigureAwait(false);
         }
+
+        /// <summary>
+        /// Puts the specified DirectoryObject reference.
+        /// </summary>
+        /// <param name="id">The DirectoryObject reference to update.</param>
+        /// <returns>The task to await.</returns>
+        public System.Threading.Tasks.Task PutAsync(string id)
+        {
+            return this.PutAsync(id, CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Puts the specified DirectoryObject reference.
+        /// </summary>
+        /// <param name="id">The DirectoryObject reference to update.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The task to await.</returns>
+        public async System.Threading.Tasks.Task PutAsync(string id, CancellationToken cancellationToken)
+        {
+            var baseUrl = this.Client.BaseUrl;
+            var objectUri = string.Format(@"{0}/users/{1}", baseUrl, id);
+            var payload = new Newtonsoft.Json.Linq.JObject(
+                            new Newtonsoft.Json.Linq.JProperty("@odata.id", objectUri));
+            this.Method = "PUT";
+            this.ContentType = "application/json";
+            await this.SendAsync(payload.ToString(), cancellationToken).ConfigureAwait(false);
+        }
     }
 }

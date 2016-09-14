@@ -57,5 +57,7 @@ namespace Microsoft.Graph
                 return new InferenceClassificationOverrideRequestBuilder(this.AppendSegmentToRequestUrl(id), this.Client);
             }
         }
+
+        
     }
 }

@@ -16,20 +16,20 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type Attendee.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class Attendee : Recipient
     {
     
         /// <summary>
         /// Gets or sets status.
         /// </summary>
-        [DataMember(Name = "status", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "status", Required = Required.Default)]
         public ResponseStatus Status { get; set; }
     
         /// <summary>
         /// Gets or sets type.
         /// </summary>
-        [DataMember(Name = "type", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "type", Required = Required.Default)]
         public AttendeeType? Type { get; set; }
     
     }

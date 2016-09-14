@@ -16,7 +16,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type Thumbnail.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     [JsonConverter(typeof(DerivedTypeConverter))]
     public partial class Thumbnail
     {
@@ -24,25 +24,25 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets or sets content.
         /// </summary>
-        [DataMember(Name = "content", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "content", Required = Required.Default)]
         public Stream Content { get; set; }
     
         /// <summary>
         /// Gets or sets height.
         /// </summary>
-        [DataMember(Name = "height", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "height", Required = Required.Default)]
         public Int32? Height { get; set; }
     
         /// <summary>
         /// Gets or sets url.
         /// </summary>
-        [DataMember(Name = "url", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "url", Required = Required.Default)]
         public string Url { get; set; }
     
         /// <summary>
         /// Gets or sets width.
         /// </summary>
-        [DataMember(Name = "width", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "width", Required = Required.Default)]
         public Int32? Width { get; set; }
     
         /// <summary>

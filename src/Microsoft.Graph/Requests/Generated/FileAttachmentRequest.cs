@@ -33,7 +33,7 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Creates the specified FileAttachment using PUT.
+        /// Creates the specified FileAttachment using POST.
         /// </summary>
         /// <param name="fileAttachmentToCreate">The FileAttachment to create.</param>
         /// <returns>The created FileAttachment.</returns>
@@ -43,7 +43,7 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Creates the specified FileAttachment using PUT.
+        /// Creates the specified FileAttachment using POST.
         /// </summary>
         /// <param name="fileAttachmentToCreate">The FileAttachment to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
@@ -51,7 +51,7 @@ namespace Microsoft.Graph
         public async System.Threading.Tasks.Task<FileAttachment> CreateAsync(FileAttachment fileAttachmentToCreate, CancellationToken cancellationToken)
         {
             this.ContentType = "application/json";
-            this.Method = "PUT";
+            this.Method = "POST";
             var newEntity = await this.SendAsync<FileAttachment>(fileAttachmentToCreate, cancellationToken).ConfigureAwait(false);
             this.InitializeCollectionProperties(newEntity);
             return newEntity;

@@ -16,7 +16,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type Shared.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     [JsonConverter(typeof(DerivedTypeConverter))]
     public partial class Shared
     {
@@ -24,13 +24,13 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets or sets owner.
         /// </summary>
-        [DataMember(Name = "owner", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "owner", Required = Required.Default)]
         public IdentitySet Owner { get; set; }
     
         /// <summary>
         /// Gets or sets scope.
         /// </summary>
-        [DataMember(Name = "scope", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "scope", Required = Required.Default)]
         public string Scope { get; set; }
     
         /// <summary>

@@ -45,5 +45,46 @@ namespace Microsoft.Graph
         /// <returns>The collection page.</returns>
         System.Threading.Tasks.Task<IGraphServiceSubscriptionsCollectionPage> GetAsync(CancellationToken cancellationToken);
 
+        /// <summary>
+        /// Adds the specified expand value to the request.
+        /// </summary>
+        /// <param name="value">The expand value.</param>
+        /// <returns>The request object to send.</returns>
+        IGraphServiceSubscriptionsCollectionRequest Expand(string value);
+
+        /// <summary>
+        /// Adds the specified select value to the request.
+        /// </summary>
+        /// <param name="value">The select value.</param>
+        /// <returns>The request object to send.</returns>
+        IGraphServiceSubscriptionsCollectionRequest Select(string value);
+
+        /// <summary>
+        /// Adds the specified top value to the request.
+        /// </summary>
+        /// <param name="value">The top value.</param>
+        /// <returns>The request object to send.</returns>
+        IGraphServiceSubscriptionsCollectionRequest Top(int value);
+
+        /// <summary>
+        /// Adds the specified filter value to the request.
+        /// </summary>
+        /// <param name="value">The filter value.</param>
+        /// <returns>The request object to send.</returns>
+        IGraphServiceSubscriptionsCollectionRequest Filter(string value);
+
+        /// <summary>
+        /// Adds the specified skip value to the request.
+        /// </summary>
+        /// <param name="value">The skip value.</param>
+        /// <returns>The request object to send.</returns>
+        IGraphServiceSubscriptionsCollectionRequest Skip(int value);
+
+        /// <summary>
+        /// Adds the specified orderby value to the request.
+        /// </summary>
+        /// <param name="value">The orderby value.</param>
+        /// <returns>The request object to send.</returns>
+        IGraphServiceSubscriptionsCollectionRequest OrderBy(string value);
     }
 }

@@ -14,7 +14,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type PostReplyRequestBuilder.
     /// </summary>
-    public partial class PostReplyRequestBuilder : BasePostMethodRequestBuilder<IPostReplyRequest>, IPostReplyRequestBuilder
+    public partial class PostReplyRequestBuilder : BaseActionMethodRequestBuilder<IPostReplyRequest>, IPostReplyRequestBuilder
     {
         /// <summary>
         /// Constructs a new <see cref="PostReplyRequestBuilder"/>.

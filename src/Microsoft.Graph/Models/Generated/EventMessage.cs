@@ -16,20 +16,20 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type Event Message.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class EventMessage : Message
     {
     
         /// <summary>
         /// Gets or sets meeting message type.
         /// </summary>
-        [DataMember(Name = "meetingMessageType", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "meetingMessageType", Required = Required.Default)]
         public MeetingMessageType? MeetingMessageType { get; set; }
     
         /// <summary>
         /// Gets or sets event.
         /// </summary>
-        [DataMember(Name = "event", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "event", Required = Required.Default)]
         public Event Event { get; set; }
     
     }

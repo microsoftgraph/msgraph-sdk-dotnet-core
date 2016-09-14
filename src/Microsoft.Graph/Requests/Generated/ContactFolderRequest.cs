@@ -33,7 +33,7 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Creates the specified ContactFolder using PUT.
+        /// Creates the specified ContactFolder using POST.
         /// </summary>
         /// <param name="contactFolderToCreate">The ContactFolder to create.</param>
         /// <returns>The created ContactFolder.</returns>
@@ -43,7 +43,7 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Creates the specified ContactFolder using PUT.
+        /// Creates the specified ContactFolder using POST.
         /// </summary>
         /// <param name="contactFolderToCreate">The ContactFolder to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
@@ -51,7 +51,7 @@ namespace Microsoft.Graph
         public async System.Threading.Tasks.Task<ContactFolder> CreateAsync(ContactFolder contactFolderToCreate, CancellationToken cancellationToken)
         {
             this.ContentType = "application/json";
-            this.Method = "PUT";
+            this.Method = "POST";
             var newEntity = await this.SendAsync<ContactFolder>(contactFolderToCreate, cancellationToken).ConfigureAwait(false);
             this.InitializeCollectionProperties(newEntity);
             return newEntity;

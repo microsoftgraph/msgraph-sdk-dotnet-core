@@ -57,5 +57,7 @@ namespace Microsoft.Graph
                 return new CalendarGroupRequestBuilder(this.AppendSegmentToRequestUrl(id), this.Client);
             }
         }
+
+        
     }
 }

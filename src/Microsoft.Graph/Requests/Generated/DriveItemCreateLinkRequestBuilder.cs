@@ -14,7 +14,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type DriveItemCreateLinkRequestBuilder.
     /// </summary>
-    public partial class DriveItemCreateLinkRequestBuilder : BasePostMethodRequestBuilder<IDriveItemCreateLinkRequest>, IDriveItemCreateLinkRequestBuilder
+    public partial class DriveItemCreateLinkRequestBuilder : BaseActionMethodRequestBuilder<IDriveItemCreateLinkRequest>, IDriveItemCreateLinkRequestBuilder
     {
         /// <summary>
         /// Constructs a new <see cref="DriveItemCreateLinkRequestBuilder"/>.

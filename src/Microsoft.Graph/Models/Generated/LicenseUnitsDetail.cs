@@ -16,7 +16,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type LicenseUnitsDetail.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     [JsonConverter(typeof(DerivedTypeConverter))]
     public partial class LicenseUnitsDetail
     {
@@ -24,19 +24,19 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets or sets enabled.
         /// </summary>
-        [DataMember(Name = "enabled", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "enabled", Required = Required.Default)]
         public Int32? Enabled { get; set; }
     
         /// <summary>
         /// Gets or sets suspended.
         /// </summary>
-        [DataMember(Name = "suspended", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "suspended", Required = Required.Default)]
         public Int32? Suspended { get; set; }
     
         /// <summary>
         /// Gets or sets warning.
         /// </summary>
-        [DataMember(Name = "warning", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "warning", Required = Required.Default)]
         public Int32? Warning { get; set; }
     
         /// <summary>

@@ -33,5 +33,7 @@ namespace Microsoft.Graph
         /// <param name="id">The ID for the MailFolder.</param>
         /// <returns>The <see cref="IMailFolderRequestBuilder"/>.</returns>
         IMailFolderRequestBuilder this[string id] { get; }
+
+        
     }
 }

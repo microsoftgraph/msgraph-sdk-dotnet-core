@@ -16,7 +16,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type ItemReference.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     [JsonConverter(typeof(DerivedTypeConverter))]
     public partial class ItemReference
     {
@@ -24,19 +24,19 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets or sets driveId.
         /// </summary>
-        [DataMember(Name = "driveId", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "driveId", Required = Required.Default)]
         public string DriveId { get; set; }
     
         /// <summary>
         /// Gets or sets id.
         /// </summary>
-        [DataMember(Name = "id", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "id", Required = Required.Default)]
         public string Id { get; set; }
     
         /// <summary>
         /// Gets or sets path.
         /// </summary>
-        [DataMember(Name = "path", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "path", Required = Required.Default)]
         public string Path { get; set; }
     
         /// <summary>

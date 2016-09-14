@@ -31,11 +31,39 @@ namespace Microsoft.Graph
         System.Threading.Tasks.Task<IDeviceRegisteredUsersCollectionWithReferencesPage> GetAsync(CancellationToken cancellationToken);
 
         /// <summary>
+        /// Adds the specified expand value to the request.
+        /// </summary>
+        /// <param name="value">The expand value.</param>
+        /// <returns>The request object to send.</returns>
+        IDeviceRegisteredUsersCollectionWithReferencesRequest Expand(string value);
+
+        /// <summary>
+        /// Adds the specified select value to the request.
+        /// </summary>
+        /// <param name="value">The select value.</param>
+        /// <returns>The request object to send.</returns>
+        IDeviceRegisteredUsersCollectionWithReferencesRequest Select(string value);
+
+        /// <summary>
         /// Adds the specified top value to the request.
         /// </summary>
         /// <param name="value">The top value.</param>
         /// <returns>The request object to send.</returns>
         IDeviceRegisteredUsersCollectionWithReferencesRequest Top(int value);
+
+        /// <summary>
+        /// Adds the specified filter value to the request.
+        /// </summary>
+        /// <param name="value">The filter value.</param>
+        /// <returns>The request object to send.</returns>
+        IDeviceRegisteredUsersCollectionWithReferencesRequest Filter(string value);
+
+        /// <summary>
+        /// Adds the specified skip value to the request.
+        /// </summary>
+        /// <param name="value">The skip value.</param>
+        /// <returns>The request object to send.</returns>
+        IDeviceRegisteredUsersCollectionWithReferencesRequest Skip(int value);
 
         /// <summary>
         /// Adds the specified orderby value to the request.

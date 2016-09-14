@@ -27,7 +27,6 @@ namespace Microsoft.Graph
             IEnumerable<Option> options)
             : base(requestUrl, client, options)
         {
-            this.Method = "POST";
             this.ContentType = "application/json";
             this.RequestBody = new DirectoryObjectCheckMemberGroupsRequestBody();
         }
@@ -53,6 +52,7 @@ namespace Microsoft.Graph
         public async System.Threading.Tasks.Task<IDirectoryObjectCheckMemberGroupsCollectionPage> PostAsync(
             CancellationToken cancellationToken)
         {
+            this.Method = "POST";
             var response = await this.SendAsync<DirectoryObjectCheckMemberGroupsCollectionResponse>(this.RequestBody, cancellationToken).ConfigureAwait(false);
             if (response != null && response.Value != null && response.Value.CurrentPage != null)
             {
@@ -78,6 +78,9 @@ namespace Microsoft.Graph
 
             return null;
         }
+
+
+
 
         /// <summary>
         /// Adds the specified expand value to the request.

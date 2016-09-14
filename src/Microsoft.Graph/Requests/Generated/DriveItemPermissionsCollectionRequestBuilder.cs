@@ -57,5 +57,7 @@ namespace Microsoft.Graph
                 return new PermissionRequestBuilder(this.AppendSegmentToRequestUrl(id), this.Client);
             }
         }
+
+        
     }
 }

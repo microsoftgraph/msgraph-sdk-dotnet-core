@@ -33,7 +33,7 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Creates the specified InferenceClassificationOverride using PUT.
+        /// Creates the specified InferenceClassificationOverride using POST.
         /// </summary>
         /// <param name="inferenceClassificationOverrideToCreate">The InferenceClassificationOverride to create.</param>
         /// <returns>The created InferenceClassificationOverride.</returns>
@@ -43,7 +43,7 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Creates the specified InferenceClassificationOverride using PUT.
+        /// Creates the specified InferenceClassificationOverride using POST.
         /// </summary>
         /// <param name="inferenceClassificationOverrideToCreate">The InferenceClassificationOverride to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
@@ -51,7 +51,7 @@ namespace Microsoft.Graph
         public async System.Threading.Tasks.Task<InferenceClassificationOverride> CreateAsync(InferenceClassificationOverride inferenceClassificationOverrideToCreate, CancellationToken cancellationToken)
         {
             this.ContentType = "application/json";
-            this.Method = "PUT";
+            this.Method = "POST";
             var newEntity = await this.SendAsync<InferenceClassificationOverride>(inferenceClassificationOverrideToCreate, cancellationToken).ConfigureAwait(false);
             this.InitializeCollectionProperties(newEntity);
             return newEntity;

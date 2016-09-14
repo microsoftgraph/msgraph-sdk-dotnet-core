@@ -14,7 +14,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type DriveSharedWithMeRequestBuilder.
     /// </summary>
-    public partial class DriveSharedWithMeRequestBuilder : BaseGetMethodRequestBuilder<IDriveSharedWithMeRequest>, IDriveSharedWithMeRequestBuilder
+    public partial class DriveSharedWithMeRequestBuilder : BaseFunctionMethodRequestBuilder<IDriveSharedWithMeRequest>, IDriveSharedWithMeRequestBuilder
     {
         /// <summary>
         /// Constructs a new <see cref="DriveSharedWithMeRequestBuilder"/>.

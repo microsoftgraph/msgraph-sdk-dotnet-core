@@ -14,7 +14,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type MessageCopyRequestBuilder.
     /// </summary>
-    public partial class MessageCopyRequestBuilder : BasePostMethodRequestBuilder<IMessageCopyRequest>, IMessageCopyRequestBuilder
+    public partial class MessageCopyRequestBuilder : BaseActionMethodRequestBuilder<IMessageCopyRequest>, IMessageCopyRequestBuilder
     {
         /// <summary>
         /// Constructs a new <see cref="MessageCopyRequestBuilder"/>.

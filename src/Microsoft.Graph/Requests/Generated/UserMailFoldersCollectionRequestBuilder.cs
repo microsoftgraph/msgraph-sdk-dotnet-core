@@ -57,5 +57,7 @@ namespace Microsoft.Graph
                 return new MailFolderRequestBuilder(this.AppendSegmentToRequestUrl(id), this.Client);
             }
         }
+
+        
     }
 }
