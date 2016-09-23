@@ -16,7 +16,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type Reminder.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     [JsonConverter(typeof(DerivedTypeConverter))]
     public partial class Reminder
     {
@@ -24,49 +24,49 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets or sets eventId.
         /// </summary>
-        [DataMember(Name = "eventId", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "eventId", Required = Required.Default)]
         public string EventId { get; set; }
     
         /// <summary>
         /// Gets or sets eventStartTime.
         /// </summary>
-        [DataMember(Name = "eventStartTime", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "eventStartTime", Required = Required.Default)]
         public DateTimeTimeZone EventStartTime { get; set; }
     
         /// <summary>
         /// Gets or sets eventEndTime.
         /// </summary>
-        [DataMember(Name = "eventEndTime", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "eventEndTime", Required = Required.Default)]
         public DateTimeTimeZone EventEndTime { get; set; }
     
         /// <summary>
         /// Gets or sets changeKey.
         /// </summary>
-        [DataMember(Name = "changeKey", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "changeKey", Required = Required.Default)]
         public string ChangeKey { get; set; }
     
         /// <summary>
         /// Gets or sets eventSubject.
         /// </summary>
-        [DataMember(Name = "eventSubject", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "eventSubject", Required = Required.Default)]
         public string EventSubject { get; set; }
     
         /// <summary>
         /// Gets or sets eventLocation.
         /// </summary>
-        [DataMember(Name = "eventLocation", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "eventLocation", Required = Required.Default)]
         public Location EventLocation { get; set; }
     
         /// <summary>
         /// Gets or sets eventWebLink.
         /// </summary>
-        [DataMember(Name = "eventWebLink", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "eventWebLink", Required = Required.Default)]
         public string EventWebLink { get; set; }
     
         /// <summary>
         /// Gets or sets reminderFireTime.
         /// </summary>
-        [DataMember(Name = "reminderFireTime", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "reminderFireTime", Required = Required.Default)]
         public DateTimeTimeZone ReminderFireTime { get; set; }
     
         /// <summary>

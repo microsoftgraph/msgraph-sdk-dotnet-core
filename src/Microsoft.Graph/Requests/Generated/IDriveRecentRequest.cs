@@ -19,17 +19,23 @@ namespace Microsoft.Graph
     public partial interface IDriveRecentRequest : IBaseRequest
     {
 
-        /// <summary>
-        /// Issues the GET request.
-        /// </summary>
-        System.Threading.Tasks.Task<IDriveRecentCollectionPage> GetAsync();
 
         /// <summary>
         /// Issues the GET request.
         /// </summary>
-        /// /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
-        /// <returns>TheIDriveRecentCollectionPage</returns>
-        System.Threading.Tasks.Task<IDriveRecentCollectionPage> GetAsync(CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<IDriveRecentCollectionPage> GetAsync();
+        
+        /// <summary>
+        /// Issues the GET request.
+        /// </summary>
+        /// <param name=""cancellationToken"">The <see cref=""CancellationToken""/> for the request.</param>
+        /// <returns>The task to await for async call.</returns>
+        System.Threading.Tasks.Task<IDriveRecentCollectionPage> GetAsync(
+            CancellationToken cancellationToken);
+  
+
+
+
 
         /// <summary>
         /// Adds the specified expand value to the request.

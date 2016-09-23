@@ -16,7 +16,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type Entity.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     [JsonConverter(typeof(DerivedTypeConverter))]
     public partial class Entity
     {
@@ -29,13 +29,13 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets or sets id.
         /// </summary>
-        [DataMember(Name = "id", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "id", Required = Required.Default)]
         public string Id { get; set; }
     
         /// <summary>
         /// Gets or sets @odata.type.
         /// </summary>
-        [DataMember(Name = "@odata.type", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "@odata.type", Required = Required.Default)]
         public string ODataType { get; set; }
 
         /// <summary>

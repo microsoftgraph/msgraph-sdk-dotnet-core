@@ -57,5 +57,7 @@ namespace Microsoft.Graph
                 return new GroupRequestBuilder(this.AppendSegmentToRequestUrl(id), this.Client);
             }
         }
+
+        
     }
 }

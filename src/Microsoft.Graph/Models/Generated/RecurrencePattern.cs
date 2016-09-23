@@ -16,7 +16,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type RecurrencePattern.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     [JsonConverter(typeof(DerivedTypeConverter))]
     public partial class RecurrencePattern
     {
@@ -24,43 +24,43 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets or sets type.
         /// </summary>
-        [DataMember(Name = "type", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "type", Required = Required.Default)]
         public RecurrencePatternType? Type { get; set; }
     
         /// <summary>
         /// Gets or sets interval.
         /// </summary>
-        [DataMember(Name = "interval", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "interval", Required = Required.Default)]
         public Int32? Interval { get; set; }
     
         /// <summary>
         /// Gets or sets month.
         /// </summary>
-        [DataMember(Name = "month", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "month", Required = Required.Default)]
         public Int32? Month { get; set; }
     
         /// <summary>
         /// Gets or sets dayOfMonth.
         /// </summary>
-        [DataMember(Name = "dayOfMonth", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "dayOfMonth", Required = Required.Default)]
         public Int32? DayOfMonth { get; set; }
     
         /// <summary>
         /// Gets or sets daysOfWeek.
         /// </summary>
-        [DataMember(Name = "daysOfWeek", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "daysOfWeek", Required = Required.Default)]
         public IEnumerable<DayOfWeek> DaysOfWeek { get; set; }
     
         /// <summary>
         /// Gets or sets firstDayOfWeek.
         /// </summary>
-        [DataMember(Name = "firstDayOfWeek", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "firstDayOfWeek", Required = Required.Default)]
         public DayOfWeek? FirstDayOfWeek { get; set; }
     
         /// <summary>
         /// Gets or sets index.
         /// </summary>
-        [DataMember(Name = "index", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "index", Required = Required.Default)]
         public WeekIndex? Index { get; set; }
     
         /// <summary>

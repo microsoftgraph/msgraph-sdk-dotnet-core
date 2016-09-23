@@ -14,7 +14,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type ConversationThreadReplyRequestBuilder.
     /// </summary>
-    public partial class ConversationThreadReplyRequestBuilder : BasePostMethodRequestBuilder<IConversationThreadReplyRequest>, IConversationThreadReplyRequestBuilder
+    public partial class ConversationThreadReplyRequestBuilder : BaseActionMethodRequestBuilder<IConversationThreadReplyRequest>, IConversationThreadReplyRequestBuilder
     {
         /// <summary>
         /// Constructs a new <see cref="ConversationThreadReplyRequestBuilder"/>.

@@ -33,5 +33,7 @@ namespace Microsoft.Graph
         /// <param name="id">The ID for the User.</param>
         /// <returns>The <see cref="IUserRequestBuilder"/>.</returns>
         IUserRequestBuilder this[string id] { get; }
+
+        
     }
 }

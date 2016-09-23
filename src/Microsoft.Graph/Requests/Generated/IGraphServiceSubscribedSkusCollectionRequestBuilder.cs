@@ -33,5 +33,7 @@ namespace Microsoft.Graph
         /// <param name="id">The ID for the SubscribedSku.</param>
         /// <returns>The <see cref="ISubscribedSkuRequestBuilder"/>.</returns>
         ISubscribedSkuRequestBuilder this[string id] { get; }
+
+        
     }
 }

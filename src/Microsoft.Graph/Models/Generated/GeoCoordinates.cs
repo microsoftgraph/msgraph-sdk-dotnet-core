@@ -16,7 +16,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type GeoCoordinates.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     [JsonConverter(typeof(DerivedTypeConverter))]
     public partial class GeoCoordinates
     {
@@ -24,19 +24,19 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets or sets altitude.
         /// </summary>
-        [DataMember(Name = "altitude", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "altitude", Required = Required.Default)]
         public double? Altitude { get; set; }
     
         /// <summary>
         /// Gets or sets latitude.
         /// </summary>
-        [DataMember(Name = "latitude", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "latitude", Required = Required.Default)]
         public double? Latitude { get; set; }
     
         /// <summary>
         /// Gets or sets longitude.
         /// </summary>
-        [DataMember(Name = "longitude", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "longitude", Required = Required.Default)]
         public double? Longitude { get; set; }
     
         /// <summary>

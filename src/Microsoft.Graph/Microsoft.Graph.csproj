@@ -55,10 +55,6 @@
     <Compile Include="Requests\Extensions\ThumbnailSetExtensions.cs" />
     <Compile Include="Requests\Extensions\ThumbnailSetRequestBuilderExtensions.cs" />
     <Compile Include="Requests\Generated\*.cs" />
-    <Compile Include="Requests\IThumbnailRequest.cs" />
-    <Compile Include="Requests\IThumbnailRequestBuilder.cs" />
-    <Compile Include="Requests\ThumbnailRequest.cs" />
-    <Compile Include="Requests\ThumbnailRequestBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Microsoft.Graph.Core\Microsoft.Graph.Core.csproj">
@@ -71,9 +67,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Newtonsoft.Json.6.0.2\lib\portable-net45+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.9.0.1\lib\portable-net45+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
   </ItemGroup>
@@ -98,6 +93,6 @@
     <!-- Download nuget.exe if we need it -->
     <DownloadFile Condition="!Exists('$(OutputPath)\nuget.exe')" FileName="$(OutputPath)\nuget.exe" Url="https://dist.nuget.org/win-x86-commandline/latest/nuget.exe" />
     <!-- Pack up a nuget package -->
-    <Exec Command="$(OutputPath)\nuget pack $(ProjectFileName) -Properties Configuration=Release -Symbols -OutputDirectory $(OutputPath) -IncludeReferencedProjects" />
+    <Exec Command="$(OutputPath)\nuget pack $(ProjectFileName) -Properties Configuration=Release -OutputDirectory $(OutputPath) -IncludeReferencedProjects" />
   </Target>
 </Project>

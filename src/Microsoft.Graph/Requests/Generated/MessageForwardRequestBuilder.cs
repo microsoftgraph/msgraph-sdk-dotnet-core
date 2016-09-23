@@ -14,7 +14,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type MessageForwardRequestBuilder.
     /// </summary>
-    public partial class MessageForwardRequestBuilder : BasePostMethodRequestBuilder<IMessageForwardRequest>, IMessageForwardRequestBuilder
+    public partial class MessageForwardRequestBuilder : BaseActionMethodRequestBuilder<IMessageForwardRequest>, IMessageForwardRequestBuilder
     {
         /// <summary>
         /// Constructs a new <see cref="MessageForwardRequestBuilder"/>.

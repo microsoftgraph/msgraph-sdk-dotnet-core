@@ -16,368 +16,368 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type User.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class User : DirectoryObject
     {
     
         /// <summary>
         /// Gets or sets account enabled.
         /// </summary>
-        [DataMember(Name = "accountEnabled", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "accountEnabled", Required = Required.Default)]
         public bool? AccountEnabled { get; set; }
     
         /// <summary>
         /// Gets or sets assigned licenses.
         /// </summary>
-        [DataMember(Name = "assignedLicenses", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "assignedLicenses", Required = Required.Default)]
         public IEnumerable<AssignedLicense> AssignedLicenses { get; set; }
     
         /// <summary>
         /// Gets or sets assigned plans.
         /// </summary>
-        [DataMember(Name = "assignedPlans", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "assignedPlans", Required = Required.Default)]
         public IEnumerable<AssignedPlan> AssignedPlans { get; set; }
     
         /// <summary>
         /// Gets or sets business phones.
         /// </summary>
-        [DataMember(Name = "businessPhones", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "businessPhones", Required = Required.Default)]
         public IEnumerable<string> BusinessPhones { get; set; }
     
         /// <summary>
         /// Gets or sets city.
         /// </summary>
-        [DataMember(Name = "city", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "city", Required = Required.Default)]
         public string City { get; set; }
     
         /// <summary>
         /// Gets or sets company name.
         /// </summary>
-        [DataMember(Name = "companyName", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "companyName", Required = Required.Default)]
         public string CompanyName { get; set; }
     
         /// <summary>
         /// Gets or sets country.
         /// </summary>
-        [DataMember(Name = "country", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "country", Required = Required.Default)]
         public string Country { get; set; }
     
         /// <summary>
         /// Gets or sets department.
         /// </summary>
-        [DataMember(Name = "department", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "department", Required = Required.Default)]
         public string Department { get; set; }
     
         /// <summary>
         /// Gets or sets display name.
         /// </summary>
-        [DataMember(Name = "displayName", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "displayName", Required = Required.Default)]
         public string DisplayName { get; set; }
     
         /// <summary>
         /// Gets or sets given name.
         /// </summary>
-        [DataMember(Name = "givenName", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "givenName", Required = Required.Default)]
         public string GivenName { get; set; }
     
         /// <summary>
         /// Gets or sets job title.
         /// </summary>
-        [DataMember(Name = "jobTitle", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "jobTitle", Required = Required.Default)]
         public string JobTitle { get; set; }
     
         /// <summary>
         /// Gets or sets mail.
         /// </summary>
-        [DataMember(Name = "mail", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "mail", Required = Required.Default)]
         public string Mail { get; set; }
     
         /// <summary>
         /// Gets or sets mail nickname.
         /// </summary>
-        [DataMember(Name = "mailNickname", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "mailNickname", Required = Required.Default)]
         public string MailNickname { get; set; }
     
         /// <summary>
         /// Gets or sets mobile phone.
         /// </summary>
-        [DataMember(Name = "mobilePhone", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "mobilePhone", Required = Required.Default)]
         public string MobilePhone { get; set; }
     
         /// <summary>
         /// Gets or sets on premises immutable id.
         /// </summary>
-        [DataMember(Name = "onPremisesImmutableId", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "onPremisesImmutableId", Required = Required.Default)]
         public string OnPremisesImmutableId { get; set; }
     
         /// <summary>
         /// Gets or sets on premises last sync date time.
         /// </summary>
-        [DataMember(Name = "onPremisesLastSyncDateTime", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "onPremisesLastSyncDateTime", Required = Required.Default)]
         public DateTimeOffset? OnPremisesLastSyncDateTime { get; set; }
     
         /// <summary>
         /// Gets or sets on premises security identifier.
         /// </summary>
-        [DataMember(Name = "onPremisesSecurityIdentifier", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "onPremisesSecurityIdentifier", Required = Required.Default)]
         public string OnPremisesSecurityIdentifier { get; set; }
     
         /// <summary>
         /// Gets or sets on premises sync enabled.
         /// </summary>
-        [DataMember(Name = "onPremisesSyncEnabled", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "onPremisesSyncEnabled", Required = Required.Default)]
         public bool? OnPremisesSyncEnabled { get; set; }
     
         /// <summary>
         /// Gets or sets password policies.
         /// </summary>
-        [DataMember(Name = "passwordPolicies", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "passwordPolicies", Required = Required.Default)]
         public string PasswordPolicies { get; set; }
     
         /// <summary>
         /// Gets or sets password profile.
         /// </summary>
-        [DataMember(Name = "passwordProfile", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "passwordProfile", Required = Required.Default)]
         public PasswordProfile PasswordProfile { get; set; }
     
         /// <summary>
         /// Gets or sets office location.
         /// </summary>
-        [DataMember(Name = "officeLocation", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "officeLocation", Required = Required.Default)]
         public string OfficeLocation { get; set; }
     
         /// <summary>
         /// Gets or sets postal code.
         /// </summary>
-        [DataMember(Name = "postalCode", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "postalCode", Required = Required.Default)]
         public string PostalCode { get; set; }
     
         /// <summary>
         /// Gets or sets preferred language.
         /// </summary>
-        [DataMember(Name = "preferredLanguage", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "preferredLanguage", Required = Required.Default)]
         public string PreferredLanguage { get; set; }
     
         /// <summary>
         /// Gets or sets provisioned plans.
         /// </summary>
-        [DataMember(Name = "provisionedPlans", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "provisionedPlans", Required = Required.Default)]
         public IEnumerable<ProvisionedPlan> ProvisionedPlans { get; set; }
     
         /// <summary>
         /// Gets or sets proxy addresses.
         /// </summary>
-        [DataMember(Name = "proxyAddresses", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "proxyAddresses", Required = Required.Default)]
         public IEnumerable<string> ProxyAddresses { get; set; }
     
         /// <summary>
         /// Gets or sets state.
         /// </summary>
-        [DataMember(Name = "state", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "state", Required = Required.Default)]
         public string State { get; set; }
     
         /// <summary>
         /// Gets or sets street address.
         /// </summary>
-        [DataMember(Name = "streetAddress", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "streetAddress", Required = Required.Default)]
         public string StreetAddress { get; set; }
     
         /// <summary>
         /// Gets or sets surname.
         /// </summary>
-        [DataMember(Name = "surname", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "surname", Required = Required.Default)]
         public string Surname { get; set; }
     
         /// <summary>
         /// Gets or sets usage location.
         /// </summary>
-        [DataMember(Name = "usageLocation", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "usageLocation", Required = Required.Default)]
         public string UsageLocation { get; set; }
     
         /// <summary>
         /// Gets or sets user principal name.
         /// </summary>
-        [DataMember(Name = "userPrincipalName", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "userPrincipalName", Required = Required.Default)]
         public string UserPrincipalName { get; set; }
     
         /// <summary>
         /// Gets or sets user type.
         /// </summary>
-        [DataMember(Name = "userType", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "userType", Required = Required.Default)]
         public string UserType { get; set; }
     
         /// <summary>
         /// Gets or sets about me.
         /// </summary>
-        [DataMember(Name = "aboutMe", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "aboutMe", Required = Required.Default)]
         public string AboutMe { get; set; }
     
         /// <summary>
         /// Gets or sets birthday.
         /// </summary>
-        [DataMember(Name = "birthday", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "birthday", Required = Required.Default)]
         public DateTimeOffset? Birthday { get; set; }
     
         /// <summary>
         /// Gets or sets hire date.
         /// </summary>
-        [DataMember(Name = "hireDate", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "hireDate", Required = Required.Default)]
         public DateTimeOffset? HireDate { get; set; }
     
         /// <summary>
         /// Gets or sets interests.
         /// </summary>
-        [DataMember(Name = "interests", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "interests", Required = Required.Default)]
         public IEnumerable<string> Interests { get; set; }
     
         /// <summary>
         /// Gets or sets my site.
         /// </summary>
-        [DataMember(Name = "mySite", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "mySite", Required = Required.Default)]
         public string MySite { get; set; }
     
         /// <summary>
         /// Gets or sets past projects.
         /// </summary>
-        [DataMember(Name = "pastProjects", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "pastProjects", Required = Required.Default)]
         public IEnumerable<string> PastProjects { get; set; }
     
         /// <summary>
         /// Gets or sets preferred name.
         /// </summary>
-        [DataMember(Name = "preferredName", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "preferredName", Required = Required.Default)]
         public string PreferredName { get; set; }
     
         /// <summary>
         /// Gets or sets responsibilities.
         /// </summary>
-        [DataMember(Name = "responsibilities", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "responsibilities", Required = Required.Default)]
         public IEnumerable<string> Responsibilities { get; set; }
     
         /// <summary>
         /// Gets or sets schools.
         /// </summary>
-        [DataMember(Name = "schools", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "schools", Required = Required.Default)]
         public IEnumerable<string> Schools { get; set; }
     
         /// <summary>
         /// Gets or sets skills.
         /// </summary>
-        [DataMember(Name = "skills", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "skills", Required = Required.Default)]
         public IEnumerable<string> Skills { get; set; }
     
         /// <summary>
         /// Gets or sets owned devices.
         /// </summary>
-        [DataMember(Name = "ownedDevices", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "ownedDevices", Required = Required.Default)]
         public IUserOwnedDevicesCollectionWithReferencesPage OwnedDevices { get; set; }
     
         /// <summary>
         /// Gets or sets registered devices.
         /// </summary>
-        [DataMember(Name = "registeredDevices", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "registeredDevices", Required = Required.Default)]
         public IUserRegisteredDevicesCollectionWithReferencesPage RegisteredDevices { get; set; }
     
         /// <summary>
         /// Gets or sets manager.
         /// </summary>
-        [DataMember(Name = "manager", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "manager", Required = Required.Default)]
         public DirectoryObject Manager { get; set; }
     
         /// <summary>
         /// Gets or sets direct reports.
         /// </summary>
-        [DataMember(Name = "directReports", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "directReports", Required = Required.Default)]
         public IUserDirectReportsCollectionWithReferencesPage DirectReports { get; set; }
     
         /// <summary>
         /// Gets or sets member of.
         /// </summary>
-        [DataMember(Name = "memberOf", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "memberOf", Required = Required.Default)]
         public IUserMemberOfCollectionWithReferencesPage MemberOf { get; set; }
     
         /// <summary>
         /// Gets or sets created objects.
         /// </summary>
-        [DataMember(Name = "createdObjects", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "createdObjects", Required = Required.Default)]
         public IUserCreatedObjectsCollectionWithReferencesPage CreatedObjects { get; set; }
     
         /// <summary>
         /// Gets or sets owned objects.
         /// </summary>
-        [DataMember(Name = "ownedObjects", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "ownedObjects", Required = Required.Default)]
         public IUserOwnedObjectsCollectionWithReferencesPage OwnedObjects { get; set; }
     
         /// <summary>
         /// Gets or sets messages.
         /// </summary>
-        [DataMember(Name = "messages", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "messages", Required = Required.Default)]
         public IUserMessagesCollectionPage Messages { get; set; }
     
         /// <summary>
         /// Gets or sets mail folders.
         /// </summary>
-        [DataMember(Name = "mailFolders", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "mailFolders", Required = Required.Default)]
         public IUserMailFoldersCollectionPage MailFolders { get; set; }
     
         /// <summary>
         /// Gets or sets calendar.
         /// </summary>
-        [DataMember(Name = "calendar", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "calendar", Required = Required.Default)]
         public Calendar Calendar { get; set; }
     
         /// <summary>
         /// Gets or sets calendars.
         /// </summary>
-        [DataMember(Name = "calendars", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "calendars", Required = Required.Default)]
         public IUserCalendarsCollectionPage Calendars { get; set; }
     
         /// <summary>
         /// Gets or sets calendar groups.
         /// </summary>
-        [DataMember(Name = "calendarGroups", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "calendarGroups", Required = Required.Default)]
         public IUserCalendarGroupsCollectionPage CalendarGroups { get; set; }
     
         /// <summary>
         /// Gets or sets calendar view.
         /// </summary>
-        [DataMember(Name = "calendarView", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "calendarView", Required = Required.Default)]
         public IUserCalendarViewCollectionPage CalendarView { get; set; }
     
         /// <summary>
         /// Gets or sets events.
         /// </summary>
-        [DataMember(Name = "events", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "events", Required = Required.Default)]
         public IUserEventsCollectionPage Events { get; set; }
     
         /// <summary>
         /// Gets or sets contacts.
         /// </summary>
-        [DataMember(Name = "contacts", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "contacts", Required = Required.Default)]
         public IUserContactsCollectionPage Contacts { get; set; }
     
         /// <summary>
         /// Gets or sets contact folders.
         /// </summary>
-        [DataMember(Name = "contactFolders", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "contactFolders", Required = Required.Default)]
         public IUserContactFoldersCollectionPage ContactFolders { get; set; }
     
         /// <summary>
         /// Gets or sets inference classification.
         /// </summary>
-        [DataMember(Name = "inferenceClassification", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "inferenceClassification", Required = Required.Default)]
         public InferenceClassification InferenceClassification { get; set; }
     
         /// <summary>
         /// Gets or sets photo.
         /// </summary>
-        [DataMember(Name = "photo", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "photo", Required = Required.Default)]
         public ProfilePhoto Photo { get; set; }
     
         /// <summary>
         /// Gets or sets drive.
         /// </summary>
-        [DataMember(Name = "drive", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "drive", Required = Required.Default)]
         public Drive Drive { get; set; }
     
     }

@@ -98,5 +98,70 @@ namespace Microsoft.Graph
             return null;
         }
 
+        /// <summary>
+        /// Adds the specified expand value to the request.
+        /// </summary>
+        /// <param name="value">The expand value.</param>
+        /// <returns>The request object to send.</returns>
+        public IGraphServiceSubscriptionsCollectionRequest Expand(string value)
+        {
+            this.QueryOptions.Add(new QueryOption("$expand", value));
+            return this;
+        }
+
+        /// <summary>
+        /// Adds the specified select value to the request.
+        /// </summary>
+        /// <param name="value">The select value.</param>
+        /// <returns>The request object to send.</returns>
+        public IGraphServiceSubscriptionsCollectionRequest Select(string value)
+        {
+            this.QueryOptions.Add(new QueryOption("$select", value));
+            return this;
+        }
+
+        /// <summary>
+        /// Adds the specified top value to the request.
+        /// </summary>
+        /// <param name="value">The top value.</param>
+        /// <returns>The request object to send.</returns>
+        public IGraphServiceSubscriptionsCollectionRequest Top(int value)
+        {
+            this.QueryOptions.Add(new QueryOption("$top", value.ToString()));
+            return this;
+        }
+
+        /// <summary>
+        /// Adds the specified filter value to the request.
+        /// </summary>
+        /// <param name="value">The filter value.</param>
+        /// <returns>The request object to send.</returns>
+        public IGraphServiceSubscriptionsCollectionRequest Filter(string value)
+        {
+            this.QueryOptions.Add(new QueryOption("$filter", value));
+            return this;
+        }
+
+        /// <summary>
+        /// Adds the specified skip value to the request.
+        /// </summary>
+        /// <param name="value">The skip value.</param>
+        /// <returns>The request object to send.</returns>
+        public IGraphServiceSubscriptionsCollectionRequest Skip(int value)
+        {
+            this.QueryOptions.Add(new QueryOption("$skip", value.ToString()));
+            return this;
+        }
+
+        /// <summary>
+        /// Adds the specified orderby value to the request.
+        /// </summary>
+        /// <param name="value">The orderby value.</param>
+        /// <returns>The request object to send.</returns>
+        public IGraphServiceSubscriptionsCollectionRequest OrderBy(string value)
+        {
+            this.QueryOptions.Add(new QueryOption("$orderby", value));
+            return this;
+        }
     }
 }

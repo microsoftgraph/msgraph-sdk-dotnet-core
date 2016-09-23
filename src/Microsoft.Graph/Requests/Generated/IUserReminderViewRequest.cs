@@ -19,17 +19,23 @@ namespace Microsoft.Graph
     public partial interface IUserReminderViewRequest : IBaseRequest
     {
 
-        /// <summary>
-        /// Issues the GET request.
-        /// </summary>
-        System.Threading.Tasks.Task<IUserReminderViewCollectionPage> GetAsync();
 
         /// <summary>
         /// Issues the GET request.
         /// </summary>
-        /// /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
-        /// <returns>TheIUserReminderViewCollectionPage</returns>
-        System.Threading.Tasks.Task<IUserReminderViewCollectionPage> GetAsync(CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<IUserReminderViewCollectionPage> GetAsync();
+        
+        /// <summary>
+        /// Issues the GET request.
+        /// </summary>
+        /// <param name=""cancellationToken"">The <see cref=""CancellationToken""/> for the request.</param>
+        /// <returns>The task to await for async call.</returns>
+        System.Threading.Tasks.Task<IUserReminderViewCollectionPage> GetAsync(
+            CancellationToken cancellationToken);
+  
+
+
+
 
         /// <summary>
         /// Adds the specified expand value to the request.

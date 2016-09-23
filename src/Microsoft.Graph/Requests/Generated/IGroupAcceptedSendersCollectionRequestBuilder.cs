@@ -33,5 +33,7 @@ namespace Microsoft.Graph
         /// <param name="id">The ID for the DirectoryObject.</param>
         /// <returns>The <see cref="IDirectoryObjectRequestBuilder"/>.</returns>
         IDirectoryObjectRequestBuilder this[string id] { get; }
+
+        
     }
 }

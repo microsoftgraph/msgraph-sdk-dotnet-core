@@ -16,32 +16,32 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type Thumbnail Set.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class ThumbnailSet : Entity
     {
     
         /// <summary>
         /// Gets or sets large.
         /// </summary>
-        [DataMember(Name = "large", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "large", Required = Required.Default)]
         public Thumbnail Large { get; set; }
     
         /// <summary>
         /// Gets or sets medium.
         /// </summary>
-        [DataMember(Name = "medium", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "medium", Required = Required.Default)]
         public Thumbnail Medium { get; set; }
     
         /// <summary>
         /// Gets or sets small.
         /// </summary>
-        [DataMember(Name = "small", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "small", Required = Required.Default)]
         public Thumbnail Small { get; set; }
     
         /// <summary>
         /// Gets or sets source.
         /// </summary>
-        [DataMember(Name = "source", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "source", Required = Required.Default)]
         public Thumbnail Source { get; set; }
     
     }

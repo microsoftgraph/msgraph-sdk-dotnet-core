@@ -16,7 +16,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type Quota.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     [JsonConverter(typeof(DerivedTypeConverter))]
     public partial class Quota
     {
@@ -24,31 +24,31 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets or sets deleted.
         /// </summary>
-        [DataMember(Name = "deleted", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "deleted", Required = Required.Default)]
         public Int64? Deleted { get; set; }
     
         /// <summary>
         /// Gets or sets remaining.
         /// </summary>
-        [DataMember(Name = "remaining", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "remaining", Required = Required.Default)]
         public Int64? Remaining { get; set; }
     
         /// <summary>
         /// Gets or sets state.
         /// </summary>
-        [DataMember(Name = "state", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "state", Required = Required.Default)]
         public string State { get; set; }
     
         /// <summary>
         /// Gets or sets total.
         /// </summary>
-        [DataMember(Name = "total", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "total", Required = Required.Default)]
         public Int64? Total { get; set; }
     
         /// <summary>
         /// Gets or sets used.
         /// </summary>
-        [DataMember(Name = "used", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "used", Required = Required.Default)]
         public Int64? Used { get; set; }
     
         /// <summary>

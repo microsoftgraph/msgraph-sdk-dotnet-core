@@ -33,5 +33,7 @@ namespace Microsoft.Graph
         /// <param name="id">The ID for the Post.</param>
         /// <returns>The <see cref="IPostRequestBuilder"/>.</returns>
         IPostRequestBuilder this[string id] { get; }
+
+        
     }
 }

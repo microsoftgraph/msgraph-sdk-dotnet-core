@@ -33,5 +33,7 @@ namespace Microsoft.Graph
         /// <param name="id">The ID for the Attachment.</param>
         /// <returns>The <see cref="IAttachmentRequestBuilder"/>.</returns>
         IAttachmentRequestBuilder this[string id] { get; }
+
+        
     }
 }

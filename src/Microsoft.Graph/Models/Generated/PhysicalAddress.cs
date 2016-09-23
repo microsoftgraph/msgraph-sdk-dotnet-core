@@ -16,7 +16,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type PhysicalAddress.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     [JsonConverter(typeof(DerivedTypeConverter))]
     public partial class PhysicalAddress
     {
@@ -24,31 +24,31 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets or sets street.
         /// </summary>
-        [DataMember(Name = "street", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "street", Required = Required.Default)]
         public string Street { get; set; }
     
         /// <summary>
         /// Gets or sets city.
         /// </summary>
-        [DataMember(Name = "city", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "city", Required = Required.Default)]
         public string City { get; set; }
     
         /// <summary>
         /// Gets or sets state.
         /// </summary>
-        [DataMember(Name = "state", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "state", Required = Required.Default)]
         public string State { get; set; }
     
         /// <summary>
         /// Gets or sets countryOrRegion.
         /// </summary>
-        [DataMember(Name = "countryOrRegion", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "countryOrRegion", Required = Required.Default)]
         public string CountryOrRegion { get; set; }
     
         /// <summary>
         /// Gets or sets postalCode.
         /// </summary>
-        [DataMember(Name = "postalCode", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "postalCode", Required = Required.Default)]
         public string PostalCode { get; set; }
     
         /// <summary>

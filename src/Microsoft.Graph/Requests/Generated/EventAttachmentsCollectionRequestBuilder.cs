@@ -57,5 +57,7 @@ namespace Microsoft.Graph
                 return new AttachmentRequestBuilder(this.AppendSegmentToRequestUrl(id), this.Client);
             }
         }
+
+        
     }
 }

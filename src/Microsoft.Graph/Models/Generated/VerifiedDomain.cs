@@ -16,7 +16,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type VerifiedDomain.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     [JsonConverter(typeof(DerivedTypeConverter))]
     public partial class VerifiedDomain
     {
@@ -24,31 +24,31 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets or sets capabilities.
         /// </summary>
-        [DataMember(Name = "capabilities", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "capabilities", Required = Required.Default)]
         public string Capabilities { get; set; }
     
         /// <summary>
         /// Gets or sets isDefault.
         /// </summary>
-        [DataMember(Name = "isDefault", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "isDefault", Required = Required.Default)]
         public bool? IsDefault { get; set; }
     
         /// <summary>
         /// Gets or sets isInitial.
         /// </summary>
-        [DataMember(Name = "isInitial", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "isInitial", Required = Required.Default)]
         public bool? IsInitial { get; set; }
     
         /// <summary>
         /// Gets or sets name.
         /// </summary>
-        [DataMember(Name = "name", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "name", Required = Required.Default)]
         public string Name { get; set; }
     
         /// <summary>
         /// Gets or sets type.
         /// </summary>
-        [DataMember(Name = "type", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "type", Required = Required.Default)]
         public string Type { get; set; }
     
         /// <summary>

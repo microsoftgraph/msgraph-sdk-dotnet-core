@@ -14,7 +14,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type UserAssignLicenseRequestBuilder.
     /// </summary>
-    public partial class UserAssignLicenseRequestBuilder : BasePostMethodRequestBuilder<IUserAssignLicenseRequest>, IUserAssignLicenseRequestBuilder
+    public partial class UserAssignLicenseRequestBuilder : BaseActionMethodRequestBuilder<IUserAssignLicenseRequest>, IUserAssignLicenseRequestBuilder
     {
         /// <summary>
         /// Constructs a new <see cref="UserAssignLicenseRequestBuilder"/>.

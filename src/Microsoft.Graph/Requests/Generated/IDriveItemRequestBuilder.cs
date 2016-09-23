@@ -36,6 +36,12 @@ namespace Microsoft.Graph
         IUserWithReferenceRequestBuilder CreatedByUser { get; }
 
         /// <summary>
+        /// Gets the request builder for Workbook.
+        /// </summary>
+        /// <returns>The <see cref="IWorkbookRequestBuilder"/>.</returns>
+        IWorkbookRequestBuilder Workbook { get; }
+
+        /// <summary>
         /// Gets the request builder for LastModifiedByUser.
         /// </summary>
         /// <returns>The <see cref="IUserWithReferenceRequestBuilder"/>.</returns>

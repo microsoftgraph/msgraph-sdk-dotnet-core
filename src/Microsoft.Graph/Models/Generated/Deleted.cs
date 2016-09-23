@@ -16,7 +16,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type Deleted.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     [JsonConverter(typeof(DerivedTypeConverter))]
     public partial class Deleted
     {
@@ -24,7 +24,7 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets or sets state.
         /// </summary>
-        [DataMember(Name = "state", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "state", Required = Required.Default)]
         public string State { get; set; }
     
         /// <summary>

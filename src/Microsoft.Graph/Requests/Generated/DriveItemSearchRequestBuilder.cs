@@ -14,7 +14,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type DriveItemSearchRequestBuilder.
     /// </summary>
-    public partial class DriveItemSearchRequestBuilder : BaseGetMethodRequestBuilder<IDriveItemSearchRequest>, IDriveItemSearchRequestBuilder
+    public partial class DriveItemSearchRequestBuilder : BaseFunctionMethodRequestBuilder<IDriveItemSearchRequest>, IDriveItemSearchRequestBuilder
     {
         /// <summary>
         /// Constructs a new <see cref="DriveItemSearchRequestBuilder"/>.

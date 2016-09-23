@@ -16,50 +16,50 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type Subscribed Sku.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class SubscribedSku : Entity
     {
     
         /// <summary>
         /// Gets or sets capability status.
         /// </summary>
-        [DataMember(Name = "capabilityStatus", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "capabilityStatus", Required = Required.Default)]
         public string CapabilityStatus { get; set; }
     
         /// <summary>
         /// Gets or sets consumed units.
         /// </summary>
-        [DataMember(Name = "consumedUnits", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "consumedUnits", Required = Required.Default)]
         public Int32? ConsumedUnits { get; set; }
     
         /// <summary>
         /// Gets or sets prepaid units.
         /// </summary>
-        [DataMember(Name = "prepaidUnits", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "prepaidUnits", Required = Required.Default)]
         public LicenseUnitsDetail PrepaidUnits { get; set; }
     
         /// <summary>
         /// Gets or sets service plans.
         /// </summary>
-        [DataMember(Name = "servicePlans", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "servicePlans", Required = Required.Default)]
         public IEnumerable<ServicePlanInfo> ServicePlans { get; set; }
     
         /// <summary>
         /// Gets or sets sku id.
         /// </summary>
-        [DataMember(Name = "skuId", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "skuId", Required = Required.Default)]
         public Guid? SkuId { get; set; }
     
         /// <summary>
         /// Gets or sets sku part number.
         /// </summary>
-        [DataMember(Name = "skuPartNumber", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "skuPartNumber", Required = Required.Default)]
         public string SkuPartNumber { get; set; }
     
         /// <summary>
         /// Gets or sets applies to.
         /// </summary>
-        [DataMember(Name = "appliesTo", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "appliesTo", Required = Required.Default)]
         public string AppliesTo { get; set; }
     
     }

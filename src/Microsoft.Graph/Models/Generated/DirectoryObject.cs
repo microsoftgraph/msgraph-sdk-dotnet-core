@@ -16,7 +16,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type Directory Object.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class DirectoryObject : Entity
     {
     

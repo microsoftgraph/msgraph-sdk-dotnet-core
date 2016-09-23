@@ -14,7 +14,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type EventTentativelyAcceptRequestBuilder.
     /// </summary>
-    public partial class EventTentativelyAcceptRequestBuilder : BasePostMethodRequestBuilder<IEventTentativelyAcceptRequest>, IEventTentativelyAcceptRequestBuilder
+    public partial class EventTentativelyAcceptRequestBuilder : BaseActionMethodRequestBuilder<IEventTentativelyAcceptRequest>, IEventTentativelyAcceptRequestBuilder
     {
         /// <summary>
         /// Constructs a new <see cref="EventTentativelyAcceptRequestBuilder"/>.

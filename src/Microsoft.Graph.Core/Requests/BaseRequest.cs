@@ -42,7 +42,7 @@ namespace Microsoft.Graph
             this.RequestUrl = this.InitializeUrl(requestUrl);
 
             this.sdkVersionHeaderName = CoreConstants.Headers.SdkVersionHeaderName;
-            this.SdkVersionHeaderPrefix = "graph";
+            this.SdkVersionHeaderPrefix = "Graph";
 
             if (options != null)
             {
