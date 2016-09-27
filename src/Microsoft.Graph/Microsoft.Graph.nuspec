@@ -35,6 +35,9 @@ This will support workload specific client libraries.
 * Updated to use NewtonSoft 9.0.1 from 6.0.2. Tested. Set allowed package version range to greater than or equal to 9 and less than 10.
 * Updated the data contracts to only use NewtonSoft.</releaseNotes>
     <tags>Microsoft Office365 Graph GraphServiceClient Outlook OneDrive AzureAD GraphAPI Productivity SharePoint SDK</tags>
+    <dependencies>
+      <dependency id="Newtonsoft.Json" version="[6.0.1,10)"  />
+    </dependencies>
   </metadata>
   <files>
     <!-- This dependency comes from packages.config-->
