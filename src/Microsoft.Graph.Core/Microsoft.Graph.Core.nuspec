@@ -13,6 +13,9 @@
     <projectUrl>https://graph.microsoft.io</projectUrl>
     <licenseUrl>http://aka.ms/devservicesagreement</licenseUrl>
     <tags>Microsoft Office365 Graph GraphServiceClient Outlook OneDrive AzureAD GraphAPI Productivity SharePoint SDK</tags>
+    <dependencies>
+      <dependency id="Newtonsoft.Json" version="[6.0.1,10)"  />
+    </dependencies>
   </metadata>
   <files>
     <!-- This dependency comes from packages.config-->

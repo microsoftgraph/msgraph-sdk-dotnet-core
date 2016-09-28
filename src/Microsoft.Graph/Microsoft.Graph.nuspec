@@ -12,7 +12,7 @@
     <copyright>Copyright (c) Microsoft Corporation</copyright>
     <projectUrl>https://graph.microsoft.io</projectUrl>
     <licenseUrl>http://aka.ms/devservicesagreement</licenseUrl>
-    <releaseNotes>## September 2016 Release Summary (version 1.1.0)
+    <releaseNotes>## September 2016 Release Summary (version 1.1.1)
 
 We've got a new addition to the .Net Microsoft Graph client API family. Excel files stored in OneDrive can now be accessed from .Net applications. We've refactored the base classes to be included in the Microsoft.Graph.Core assembly so that custom clients can target specific workloads. Here are the changes made with this release.
 
@@ -35,6 +35,9 @@ This will support workload specific client libraries.
 * Updated to use NewtonSoft 9.0.1 from 6.0.2. Tested. Set allowed package version range to greater than or equal to 9 and less than 10.
 * Updated the data contracts to only use NewtonSoft.</releaseNotes>
     <tags>Microsoft Office365 Graph GraphServiceClient Outlook OneDrive AzureAD GraphAPI Productivity SharePoint SDK</tags>
+    <dependencies>
+      <dependency id="Newtonsoft.Json" version="[6.0.1,10)"  />
+    </dependencies>
   </metadata>
   <files>
     <!-- This dependency comes from packages.config-->
