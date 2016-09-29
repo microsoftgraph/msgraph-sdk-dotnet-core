@@ -22,7 +22,7 @@ await graphServiceClient
 |--------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------|
 |**CurrentPage**     |An `IList<Item>`.                                                                                                                                            |
 |**NextPageRequest** |An `IGraphServiceGroupsCollectionRequest` used to get to the next page of items, if another page exists. This value will be null if there is not a next page.|
-|**AdditionData**    |An `IDictionary<string, object>` to any additional values returned by the service. In this case, none.                                                       |
+|**AdditionalData**    |An `IDictionary<string, object>` to any additional values returned by the service. In this case, none.                                                       |
 
 ## Adding to a collection
 
