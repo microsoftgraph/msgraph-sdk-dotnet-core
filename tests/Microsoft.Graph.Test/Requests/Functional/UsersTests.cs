@@ -13,6 +13,25 @@ namespace Microsoft.Graph.Test.Requests.Functional
     [TestClass]
     public class UsersTests : GraphTestBase
     {
+        // Filter on displayname
+        // https://github.com/microsoftgraph/msgraph-sdk-dotnet/issues/41
+        [TestMethod]
+        public async Task UserFilterStartsWith()
+        {
+            try
+            {
+                var usersQuery = await graphClient.Users.Request().Filter("startswith(displayName,'A')").GetAsync();
+                foreach (User u in usersQuery)
+                {
+                    StringAssert.StartsWith(u.DisplayName, "A", "Expected a display name that started with the letter A.");
+                }
+            }
+            catch (Microsoft.Graph.ServiceException e)
+            {
+                Assert.Fail("Something happened, check out a trace. Error code: {0}", e.Error.Code);
+            }
+        }
+
         // Get the test user's photo.
         [TestMethod]
         public async Task UserGetPhoto()
