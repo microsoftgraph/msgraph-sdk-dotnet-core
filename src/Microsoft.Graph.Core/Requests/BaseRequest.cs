@@ -327,7 +327,16 @@ namespace Microsoft.Graph
                 var queryOptions = queryString.Split('&').Select(
                         queryValue =>
                         {
-                            var segments = queryValue.Split('=');
+                            // We want to split on the first occurrence of = since there are scenarios where a query option can 
+                            // have 'sub-query' options on navigation properties for $expand scenarios. This way we can properly
+                            // split the query option name/value into the QueryOption object. Take this for example:
+                            // $expand=extensions($filter=Id%20eq%20'SMB'%20)
+                            // We want to get '$expand' as the name and 'extensions($filter=Id%20eq%20'SMB'%20)' as the value
+                            // for QueryOption object.
+                            // OData URL conventions 5.1.2 System Query Option $expand
+                            // http://docs.oasis-open.org/odata/odata/v4.0/errata03/os/complete/part2-url-conventions/odata-v4.0-errata03-os-part2-url-conventions-complete.html#_Toc453752359
+
+                            var segments = queryValue.Split(new[] { '=' }, 2);
                             return new QueryOption(
                                 segments[0],
                                 segments.Length > 1 ? segments[1] : string.Empty);
