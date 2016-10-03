@@ -19,7 +19,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="expression">The expression to search</param>
         /// <param name="error">Message about what's wrong with the expression if return value is null</param>
-        /// <returns>A list of strings or null</returns>
+        /// <returns>A comma-separated list of strings or null</returns>
         public static string ExtractMembers<T>(Expression<Func<T, object>> expression, out string error)
         {
             error = null;
