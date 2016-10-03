@@ -63,20 +63,36 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Newtonsoft.Json.6.0.2\lib\portable-net45+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
+    <None Include="Microsoft.Graph.nuspec" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.9.0.1\lib\portable-net45+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
+  </Target>-->
+  <UsingTask TaskName="DownloadFile" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll">
+    <ParameterGroup>
+      <Url ParameterType="System.String" Required="true" />
+      <FileName ParameterType="System.String" Required="true" />
+    </ParameterGroup>
+    <Task>
+      <Reference Include="System" />
+      <Code Type="Fragment" Language="cs"><![CDATA[
+          new System.Net.WebClient().DownloadFile(Url, FileName);
+        ]]></Code>
+    </Task>
+  </UsingTask>
+  <Target Name="AfterBuild" Condition="'$(Configuration)' == 'Release'">
+    <!-- Download nuget.exe if we need it -->
+    <DownloadFile Condition="!Exists('$(OutputPath)\nuget.exe')" FileName="$(OutputPath)\nuget.exe" Url="https://dist.nuget.org/win-x86-commandline/latest/nuget.exe" />
+    <!-- Pack up a nuget package -->
+    <Exec Command="$(OutputPath)\nuget pack $(ProjectFileName) -Properties Configuration=Release -OutputDirectory $(OutputPath) -IncludeReferencedProjects" />
   </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

@@ -9,6 +9,7 @@ namespace Microsoft.Graph
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
 
     /// <summary>
     /// The type MailFolderRequestBuilder.
@@ -46,7 +47,7 @@ namespace Microsoft.Graph
         {
             return new MailFolderRequest(this.RequestUrl, this.Client, options);
         }
-        
+    
         /// <summary>
         /// Gets the request builder for Messages.
         /// </summary>
@@ -70,18 +71,18 @@ namespace Microsoft.Graph
                 return new MailFolderChildFoldersCollectionRequestBuilder(this.AppendSegmentToRequestUrl("childFolders"), this.Client);
             }
         }
-        
+    
         /// <summary>
         /// Gets the request builder for MailFolderCopy.
         /// </summary>
         /// <returns>The <see cref="IMailFolderCopyRequestBuilder"/>.</returns>
         public IMailFolderCopyRequestBuilder Copy(
-            string destinationId = null)
+            string DestinationId = null)
         {
             return new MailFolderCopyRequestBuilder(
                 this.AppendSegmentToRequestUrl("microsoft.graph.copy"),
                 this.Client,
-                destinationId);
+                DestinationId);
         }
 
         /// <summary>
@@ -89,12 +90,12 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IMailFolderMoveRequestBuilder"/>.</returns>
         public IMailFolderMoveRequestBuilder Move(
-            string destinationId = null)
+            string DestinationId = null)
         {
             return new MailFolderMoveRequestBuilder(
                 this.AppendSegmentToRequestUrl("microsoft.graph.move"),
                 this.Client,
-                destinationId);
+                DestinationId);
         }
     
     }

@@ -12,55 +12,53 @@ namespace Microsoft.Graph
     using System.IO;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The type ConversationThreadReplyRequest.
     /// </summary>
     public partial class ConversationThreadReplyRequest : BaseRequest, IConversationThreadReplyRequest
     {
-    
         /// <summary>
         /// Constructs a new ConversationThreadReplyRequest.
         /// </summary>
         public ConversationThreadReplyRequest(
             string requestUrl,
             IBaseClient client,
-            IEnumerable<Option> options,
-            Post post = null)
+            IEnumerable<Option> options)
             : base(requestUrl, client, options)
         {
-            this.Method = "POST";
             this.ContentType = "application/json";
             this.RequestBody = new ConversationThreadReplyRequestBody();
-            this.RequestBody.Post = post;
         }
-    
+
         /// <summary>
         /// Gets the request body.
         /// </summary>
         public ConversationThreadReplyRequestBody RequestBody { get; private set; }
-    
+
         /// <summary>
         /// Issues the POST request.
         /// </summary>
-        public Task PostAsync()
+        public System.Threading.Tasks.Task PostAsync()
         {
             return this.PostAsync(CancellationToken.None);
         }
-        
+
         /// <summary>
         /// Issues the POST request.
         /// </summary>
-        /// /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
-        /// <returns>The task to await.</returns>
-        public Task PostAsync(CancellationToken cancellationToken)
+        /// <param name=""cancellationToken"">The <see cref=""CancellationToken""/> for the request.</param>
+        /// <returns>The task to await for async call.</returns>
+        public System.Threading.Tasks.Task PostAsync(
+            CancellationToken cancellationToken)
         {
-    
-            return this.SendAsync(this.RequestBody, cancellationToken); 
-    
+            this.Method = "POST";
+            return this.SendAsync(this.RequestBody, cancellationToken);
         }
-    
+
+
+
+
         /// <summary>
         /// Adds the specified expand value to the request.
         /// </summary>
@@ -82,6 +80,5 @@ namespace Microsoft.Graph
             this.QueryOptions.Add(new QueryOption("$select", value));
             return this;
         }
-    
     }
 }

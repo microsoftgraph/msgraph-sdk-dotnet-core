@@ -9,64 +9,52 @@ namespace Microsoft.Graph
 {
     using System;
     using System.Collections.Generic;
-    using System.Text;
+    using System.IO;
 
     /// <summary>
     /// The type PostForwardRequestBuilder.
     /// </summary>
-    public partial class PostForwardRequestBuilder : BaseRequestBuilder, IPostForwardRequestBuilder
+    public partial class PostForwardRequestBuilder : BaseActionMethodRequestBuilder<IPostForwardRequest>, IPostForwardRequestBuilder
     {
-    
+        /// <summary>
+        /// Constructs a new <see cref="PostForwardRequestBuilder"/>.
+        /// </summary>
+        /// <param name="requestUrl">The URL for the request.</param>
+        /// <param name="client">The <see cref="IBaseClient"/> for handling requests.</param>
+        /// <param name="ToRecipients">A ToRecipients parameter for the OData method call.</param>
+        /// <param name="Comment">A Comment parameter for the OData method call.</param>
         public PostForwardRequestBuilder(
             string requestUrl,
             IBaseClient client,
-            IEnumerable<Recipient> toRecipients,
-            string comment = null)
+            IEnumerable<Recipient> ToRecipients,
+            string Comment)
             : base(requestUrl, client)
         {
-            
-            this.ToRecipients = toRecipients;
-            this.Comment = comment;
-
+            this.SetParameter("toRecipients", ToRecipients, false);
+            this.SetParameter("comment", Comment, true);
         }
-    
+
         /// <summary>
-        /// Gets the value of Comment.
+        /// A method used by the base class to construct a request class instance.
         /// </summary>
-        public string Comment { get; set; }
-    
-        /// <summary>
-        /// Gets the value of ToRecipients.
-        /// </summary>
-        public IEnumerable<Recipient> ToRecipients { get; set; }
-    
-        /// <summary>
-        /// Builds the request.
-        /// </summary>
+        /// <param name="functionUrl">The request URL to </param>
         /// <param name="options">The query and header options for the request.</param>
-        /// <returns>The built request.</returns>
-        public IPostForwardRequest Request(IEnumerable<Option> options = null)
+        /// <returns>An instance of a specific request class.</returns>
+        protected override IPostForwardRequest CreateRequest(string functionUrl, IEnumerable<Option> options)
         {
-        
-            if (this.ToRecipients == null)
-            {
-                throw new ServiceException(
-                    new Error
-                    {
-                        Code = "invalidRequest",
-                        Message = "toRecipients is a required parameter for this method request.",
-                    });
-            }
-                
-            return new PostForwardRequest(
-                this.RequestUrl,
-                this.Client,
-                options,
-                this.ToRecipients,
-                this.Comment);
-        
-        }
+            var request = new PostForwardRequest(functionUrl, this.Client, options);
 
+            if (this.HasParameter("toRecipients"))
+            {
+                request.RequestBody.ToRecipients = this.GetParameter<IEnumerable<Recipient>>("toRecipients");
+            }
+
+            if (this.HasParameter("comment"))
+            {
+                request.RequestBody.Comment = this.GetParameter<string>("comment");
+            }
+
+            return request;
+        }
     }
 }
-

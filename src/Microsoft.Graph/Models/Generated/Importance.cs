@@ -9,28 +9,28 @@
 namespace Microsoft.Graph
 {
     using Newtonsoft.Json;
-    
+
     /// <summary>
     /// The enum Importance.
     /// </summary>
     [JsonConverter(typeof(EnumConverter))]
     public enum Importance
     {
-        
+    
         /// <summary>
         /// low
         /// </summary>
         Low,
-        
+    
         /// <summary>
         /// normal
         /// </summary>
         Normal,
-        
+    
         /// <summary>
         /// high
         /// </summary>
         High,
-        
+    
     }
 }

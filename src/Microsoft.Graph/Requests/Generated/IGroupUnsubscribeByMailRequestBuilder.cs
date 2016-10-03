@@ -9,13 +9,13 @@ namespace Microsoft.Graph
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
 
     /// <summary>
     /// The interface IGroupUnsubscribeByMailRequestBuilder.
     /// </summary>
     public partial interface IGroupUnsubscribeByMailRequestBuilder
     {
-    
         /// <summary>
         /// Builds the request.
         /// </summary>

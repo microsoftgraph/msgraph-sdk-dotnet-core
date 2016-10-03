@@ -12,7 +12,6 @@ namespace Microsoft.Graph
     using System.IO;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The type PermissionRequest.
@@ -34,25 +33,25 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Creates the specified Permission using PUT.
+        /// Creates the specified Permission using POST.
         /// </summary>
         /// <param name="permissionToCreate">The Permission to create.</param>
         /// <returns>The created Permission.</returns>
-        public Task<Permission> CreateAsync(Permission permissionToCreate)
+        public System.Threading.Tasks.Task<Permission> CreateAsync(Permission permissionToCreate)
         {
             return this.CreateAsync(permissionToCreate, CancellationToken.None);
         }
 
         /// <summary>
-        /// Creates the specified Permission using PUT.
+        /// Creates the specified Permission using POST.
         /// </summary>
         /// <param name="permissionToCreate">The Permission to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created Permission.</returns>
-        public async Task<Permission> CreateAsync(Permission permissionToCreate, CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Permission> CreateAsync(Permission permissionToCreate, CancellationToken cancellationToken)
         {
             this.ContentType = "application/json";
-            this.Method = "PUT";
+            this.Method = "POST";
             var newEntity = await this.SendAsync<Permission>(permissionToCreate, cancellationToken).ConfigureAwait(false);
             this.InitializeCollectionProperties(newEntity);
             return newEntity;
@@ -62,7 +61,7 @@ namespace Microsoft.Graph
         /// Deletes the specified Permission.
         /// </summary>
         /// <returns>The task to await.</returns>
-        public Task DeleteAsync()
+        public System.Threading.Tasks.Task DeleteAsync()
         {
             return this.DeleteAsync(CancellationToken.None);
         }
@@ -72,7 +71,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await.</returns>
-        public async Task DeleteAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken)
         {
             this.Method = "DELETE";
             await this.SendAsync<Permission>(null, cancellationToken).ConfigureAwait(false);
@@ -82,7 +81,7 @@ namespace Microsoft.Graph
         /// Gets the specified Permission.
         /// </summary>
         /// <returns>The Permission.</returns>
-        public Task<Permission> GetAsync()
+        public System.Threading.Tasks.Task<Permission> GetAsync()
         {
             return this.GetAsync(CancellationToken.None);
         }
@@ -92,7 +91,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The Permission.</returns>
-        public async Task<Permission> GetAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Permission> GetAsync(CancellationToken cancellationToken)
         {
             this.Method = "GET";
             var retrievedEntity = await this.SendAsync<Permission>(null, cancellationToken).ConfigureAwait(false);
@@ -105,7 +104,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="permissionToUpdate">The Permission to update.</param>
         /// <returns>The updated Permission.</returns>
-        public Task<Permission> UpdateAsync(Permission permissionToUpdate)
+        public System.Threading.Tasks.Task<Permission> UpdateAsync(Permission permissionToUpdate)
         {
             return this.UpdateAsync(permissionToUpdate, CancellationToken.None);
         }
@@ -116,7 +115,7 @@ namespace Microsoft.Graph
         /// <param name="permissionToUpdate">The Permission to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The updated Permission.</returns>
-        public async Task<Permission> UpdateAsync(Permission permissionToUpdate, CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Permission> UpdateAsync(Permission permissionToUpdate, CancellationToken cancellationToken)
         {
             this.ContentType = "application/json";
             this.Method = "PATCH";
@@ -153,7 +152,7 @@ namespace Microsoft.Graph
         /// <param name="permissionToInitialize">The <see cref="Permission"/> with the collection properties to initialize.</param>
         private void InitializeCollectionProperties(Permission permissionToInitialize)
         {
-        
+
         }
     }
 }

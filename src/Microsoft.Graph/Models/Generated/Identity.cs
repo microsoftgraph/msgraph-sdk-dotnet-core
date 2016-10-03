@@ -11,13 +11,12 @@ namespace Microsoft.Graph
     using System.Collections.Generic;
     using System.IO;
     using System.Runtime.Serialization;
-
     using Newtonsoft.Json;
 
     /// <summary>
     /// The type Identity.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     [JsonConverter(typeof(DerivedTypeConverter))]
     public partial class Identity
     {
@@ -25,13 +24,13 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets or sets displayName.
         /// </summary>
-        [DataMember(Name = "displayName", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "displayName", Required = Required.Default)]
         public string DisplayName { get; set; }
     
         /// <summary>
         /// Gets or sets id.
         /// </summary>
-        [DataMember(Name = "id", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "id", Required = Required.Default)]
         public string Id { get; set; }
     
         /// <summary>

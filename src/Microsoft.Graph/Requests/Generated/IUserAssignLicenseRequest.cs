@@ -12,31 +12,37 @@ namespace Microsoft.Graph
     using System.IO;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
-    
+
     /// <summary>
     /// The interface IUserAssignLicenseRequest.
     /// </summary>
     public partial interface IUserAssignLicenseRequest : IBaseRequest
     {
-    
+
         /// <summary>
         /// Gets the request body.
         /// </summary>
         UserAssignLicenseRequestBody RequestBody { get; }
-        
-        /// <summary>
-        /// Issues the POST request.
-        /// </summary>
-        Task<User> PostAsync();
+
 
         /// <summary>
         /// Issues the POST request.
         /// </summary>
-        /// /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
-        /// <returns>TheUser</returns>
-        Task<User> PostAsync(CancellationToken cancellationToken);
-            
+        System.Threading.Tasks.Task<User> PostAsync();
+
+        /// <summary>
+        /// Issues the POST request.
+        /// </summary>
+        /// <param name=""cancellationToken"">The <see cref=""CancellationToken""/> for the request.</param>
+        /// <returns>The task to await for async call.</returns>
+        System.Threading.Tasks.Task<User> PostAsync(
+            CancellationToken cancellationToken);
+        
+
+
+
+
+
         /// <summary>
         /// Adds the specified expand value to the request.
         /// </summary>
@@ -50,6 +56,5 @@ namespace Microsoft.Graph
         /// <param name="value">The select value.</param>
         /// <returns>The request object to send.</returns>
         IUserAssignLicenseRequest Select(string value);
-    
     }
 }

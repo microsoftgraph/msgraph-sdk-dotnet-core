@@ -12,7 +12,6 @@ namespace Microsoft.Graph
     using System.IO;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The type GroupRequest.
@@ -34,25 +33,25 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Creates the specified Group using PUT.
+        /// Creates the specified Group using POST.
         /// </summary>
         /// <param name="groupToCreate">The Group to create.</param>
         /// <returns>The created Group.</returns>
-        public Task<Group> CreateAsync(Group groupToCreate)
+        public System.Threading.Tasks.Task<Group> CreateAsync(Group groupToCreate)
         {
             return this.CreateAsync(groupToCreate, CancellationToken.None);
         }
 
         /// <summary>
-        /// Creates the specified Group using PUT.
+        /// Creates the specified Group using POST.
         /// </summary>
         /// <param name="groupToCreate">The Group to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created Group.</returns>
-        public async Task<Group> CreateAsync(Group groupToCreate, CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Group> CreateAsync(Group groupToCreate, CancellationToken cancellationToken)
         {
             this.ContentType = "application/json";
-            this.Method = "PUT";
+            this.Method = "POST";
             var newEntity = await this.SendAsync<Group>(groupToCreate, cancellationToken).ConfigureAwait(false);
             this.InitializeCollectionProperties(newEntity);
             return newEntity;
@@ -62,7 +61,7 @@ namespace Microsoft.Graph
         /// Deletes the specified Group.
         /// </summary>
         /// <returns>The task to await.</returns>
-        public Task DeleteAsync()
+        public System.Threading.Tasks.Task DeleteAsync()
         {
             return this.DeleteAsync(CancellationToken.None);
         }
@@ -72,7 +71,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await.</returns>
-        public async Task DeleteAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken)
         {
             this.Method = "DELETE";
             await this.SendAsync<Group>(null, cancellationToken).ConfigureAwait(false);
@@ -82,7 +81,7 @@ namespace Microsoft.Graph
         /// Gets the specified Group.
         /// </summary>
         /// <returns>The Group.</returns>
-        public Task<Group> GetAsync()
+        public System.Threading.Tasks.Task<Group> GetAsync()
         {
             return this.GetAsync(CancellationToken.None);
         }
@@ -92,7 +91,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The Group.</returns>
-        public async Task<Group> GetAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Group> GetAsync(CancellationToken cancellationToken)
         {
             this.Method = "GET";
             var retrievedEntity = await this.SendAsync<Group>(null, cancellationToken).ConfigureAwait(false);
@@ -105,7 +104,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="groupToUpdate">The Group to update.</param>
         /// <returns>The updated Group.</returns>
-        public Task<Group> UpdateAsync(Group groupToUpdate)
+        public System.Threading.Tasks.Task<Group> UpdateAsync(Group groupToUpdate)
         {
             return this.UpdateAsync(groupToUpdate, CancellationToken.None);
         }
@@ -116,7 +115,7 @@ namespace Microsoft.Graph
         /// <param name="groupToUpdate">The Group to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The updated Group.</returns>
-        public async Task<Group> UpdateAsync(Group groupToUpdate, CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Group> UpdateAsync(Group groupToUpdate, CancellationToken cancellationToken)
         {
             this.ContentType = "application/json";
             this.Method = "PATCH";
@@ -153,10 +152,10 @@ namespace Microsoft.Graph
         /// <param name="groupToInitialize">The <see cref="Group"/> with the collection properties to initialize.</param>
         private void InitializeCollectionProperties(Group groupToInitialize)
         {
-        
+
             if (groupToInitialize != null && groupToInitialize.AdditionalData != null)
             {
-        
+
                 if (groupToInitialize.Members != null && groupToInitialize.Members.CurrentPage != null)
                 {
                     groupToInitialize.Members.AdditionalData = groupToInitialize.AdditionalData;
@@ -172,7 +171,7 @@ namespace Microsoft.Graph
                             nextPageLinkString);
                     }
                 }
-        
+
                 if (groupToInitialize.MemberOf != null && groupToInitialize.MemberOf.CurrentPage != null)
                 {
                     groupToInitialize.MemberOf.AdditionalData = groupToInitialize.AdditionalData;
@@ -188,7 +187,7 @@ namespace Microsoft.Graph
                             nextPageLinkString);
                     }
                 }
-        
+
                 if (groupToInitialize.Owners != null && groupToInitialize.Owners.CurrentPage != null)
                 {
                     groupToInitialize.Owners.AdditionalData = groupToInitialize.AdditionalData;
@@ -204,7 +203,7 @@ namespace Microsoft.Graph
                             nextPageLinkString);
                     }
                 }
-        
+
                 if (groupToInitialize.Threads != null && groupToInitialize.Threads.CurrentPage != null)
                 {
                     groupToInitialize.Threads.AdditionalData = groupToInitialize.AdditionalData;
@@ -220,7 +219,7 @@ namespace Microsoft.Graph
                             nextPageLinkString);
                     }
                 }
-        
+
                 if (groupToInitialize.CalendarView != null && groupToInitialize.CalendarView.CurrentPage != null)
                 {
                     groupToInitialize.CalendarView.AdditionalData = groupToInitialize.AdditionalData;
@@ -236,7 +235,7 @@ namespace Microsoft.Graph
                             nextPageLinkString);
                     }
                 }
-        
+
                 if (groupToInitialize.Events != null && groupToInitialize.Events.CurrentPage != null)
                 {
                     groupToInitialize.Events.AdditionalData = groupToInitialize.AdditionalData;
@@ -252,7 +251,7 @@ namespace Microsoft.Graph
                             nextPageLinkString);
                     }
                 }
-        
+
                 if (groupToInitialize.Conversations != null && groupToInitialize.Conversations.CurrentPage != null)
                 {
                     groupToInitialize.Conversations.AdditionalData = groupToInitialize.AdditionalData;
@@ -268,7 +267,7 @@ namespace Microsoft.Graph
                             nextPageLinkString);
                     }
                 }
-        
+
                 if (groupToInitialize.AcceptedSenders != null && groupToInitialize.AcceptedSenders.CurrentPage != null)
                 {
                     groupToInitialize.AcceptedSenders.AdditionalData = groupToInitialize.AdditionalData;
@@ -284,7 +283,7 @@ namespace Microsoft.Graph
                             nextPageLinkString);
                     }
                 }
-        
+
                 if (groupToInitialize.RejectedSenders != null && groupToInitialize.RejectedSenders.CurrentPage != null)
                 {
                     groupToInitialize.RejectedSenders.AdditionalData = groupToInitialize.AdditionalData;
@@ -300,10 +299,10 @@ namespace Microsoft.Graph
                             nextPageLinkString);
                     }
                 }
-        
+
             }
 
-        
+
         }
     }
 }

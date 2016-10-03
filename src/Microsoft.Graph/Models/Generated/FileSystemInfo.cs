@@ -11,13 +11,12 @@ namespace Microsoft.Graph
     using System.Collections.Generic;
     using System.IO;
     using System.Runtime.Serialization;
-
     using Newtonsoft.Json;
 
     /// <summary>
     /// The type FileSystemInfo.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     [JsonConverter(typeof(DerivedTypeConverter))]
     public partial class FileSystemInfo
     {
@@ -25,13 +24,13 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets or sets createdDateTime.
         /// </summary>
-        [DataMember(Name = "createdDateTime", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "createdDateTime", Required = Required.Default)]
         public DateTimeOffset? CreatedDateTime { get; set; }
     
         /// <summary>
         /// Gets or sets lastModifiedDateTime.
         /// </summary>
-        [DataMember(Name = "lastModifiedDateTime", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "lastModifiedDateTime", Required = Required.Default)]
         public DateTimeOffset? LastModifiedDateTime { get; set; }
     
         /// <summary>

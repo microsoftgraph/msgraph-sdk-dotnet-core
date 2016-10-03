@@ -13,7 +13,7 @@ namespace Microsoft.Graph
     /// The type DriveItemPermissionsCollectionRequestBuilder.
     /// </summary>
     public partial class DriveItemPermissionsCollectionRequestBuilder : BaseRequestBuilder, IDriveItemPermissionsCollectionRequestBuilder
-    {  
+    {
         /// <summary>
         /// Constructs a new DriveItemPermissionsCollectionRequestBuilder.
         /// </summary>
@@ -57,5 +57,7 @@ namespace Microsoft.Graph
                 return new PermissionRequestBuilder(this.AppendSegmentToRequestUrl(id), this.Client);
             }
         }
+
+        
     }
 }

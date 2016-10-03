@@ -11,7 +11,6 @@ namespace Microsoft.Graph
     using System.Collections.Generic;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The interface IUserContactFoldersCollectionRequest.
@@ -24,7 +23,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="contactFolder">The ContactFolder to add.</param>
         /// <returns>The created ContactFolder.</returns>
-        Task<ContactFolder> AddAsync(ContactFolder contactFolder);
+        System.Threading.Tasks.Task<ContactFolder> AddAsync(ContactFolder contactFolder);
 
         /// <summary>
         /// Adds the specified ContactFolder to the collection via POST.
@@ -32,19 +31,19 @@ namespace Microsoft.Graph
         /// <param name="contactFolder">The ContactFolder to add.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created ContactFolder.</returns>
-        Task<ContactFolder> AddAsync(ContactFolder contactFolder, CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<ContactFolder> AddAsync(ContactFolder contactFolder, CancellationToken cancellationToken);
         /// <summary>
         /// Gets the collection page.
         /// </summary>
         /// <returns>The collection page.</returns>
-        Task<IUserContactFoldersCollectionPage> GetAsync();
-        
+        System.Threading.Tasks.Task<IUserContactFoldersCollectionPage> GetAsync();
+
         /// <summary>
         /// Gets the collection page.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The collection page.</returns>
-        Task<IUserContactFoldersCollectionPage> GetAsync(CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<IUserContactFoldersCollectionPage> GetAsync(CancellationToken cancellationToken);
 
         /// <summary>
         /// Adds the specified expand value to the request.
@@ -66,7 +65,7 @@ namespace Microsoft.Graph
         /// <param name="value">The top value.</param>
         /// <returns>The request object to send.</returns>
         IUserContactFoldersCollectionRequest Top(int value);
-        
+
         /// <summary>
         /// Adds the specified filter value to the request.
         /// </summary>

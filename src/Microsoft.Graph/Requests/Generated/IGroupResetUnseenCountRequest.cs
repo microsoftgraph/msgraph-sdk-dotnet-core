@@ -12,26 +12,32 @@ namespace Microsoft.Graph
     using System.IO;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
-    
+
     /// <summary>
     /// The interface IGroupResetUnseenCountRequest.
     /// </summary>
     public partial interface IGroupResetUnseenCountRequest : IBaseRequest
     {
-        
-        /// <summary>
-        /// Issues the POST request.
-        /// </summary>
-        Task PostAsync();
+
 
         /// <summary>
         /// Issues the POST request.
         /// </summary>
-        /// /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
-        /// <returns>The task to await.</returns>
-        Task PostAsync(CancellationToken cancellationToken);
-            
+        System.Threading.Tasks.Task PostAsync();
+
+        /// <summary>
+        /// Issues the POST request.
+        /// </summary>
+        /// <param name=""cancellationToken"">The <see cref=""CancellationToken""/> for the request.</param>
+        /// <returns>The task to await for async call.</returns>
+        System.Threading.Tasks.Task PostAsync(
+            CancellationToken cancellationToken);
+        
+
+
+
+
+
         /// <summary>
         /// Adds the specified expand value to the request.
         /// </summary>
@@ -45,6 +51,5 @@ namespace Microsoft.Graph
         /// <param name="value">The select value.</param>
         /// <returns>The request object to send.</returns>
         IGroupResetUnseenCountRequest Select(string value);
-    
     }
 }

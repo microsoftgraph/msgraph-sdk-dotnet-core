@@ -13,7 +13,7 @@ namespace Microsoft.Graph
     /// The type MailFolderChildFoldersCollectionRequestBuilder.
     /// </summary>
     public partial class MailFolderChildFoldersCollectionRequestBuilder : BaseRequestBuilder, IMailFolderChildFoldersCollectionRequestBuilder
-    {  
+    {
         /// <summary>
         /// Constructs a new MailFolderChildFoldersCollectionRequestBuilder.
         /// </summary>
@@ -57,5 +57,7 @@ namespace Microsoft.Graph
                 return new MailFolderRequestBuilder(this.AppendSegmentToRequestUrl(id), this.Client);
             }
         }
+
+        
     }
 }

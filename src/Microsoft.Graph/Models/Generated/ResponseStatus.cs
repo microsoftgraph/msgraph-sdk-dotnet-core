@@ -11,13 +11,12 @@ namespace Microsoft.Graph
     using System.Collections.Generic;
     using System.IO;
     using System.Runtime.Serialization;
-
     using Newtonsoft.Json;
 
     /// <summary>
     /// The type ResponseStatus.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     [JsonConverter(typeof(DerivedTypeConverter))]
     public partial class ResponseStatus
     {
@@ -25,13 +24,13 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets or sets response.
         /// </summary>
-        [DataMember(Name = "response", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "response", Required = Required.Default)]
         public ResponseType? Response { get; set; }
     
         /// <summary>
         /// Gets or sets time.
         /// </summary>
-        [DataMember(Name = "time", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "time", Required = Required.Default)]
         public DateTimeOffset? Time { get; set; }
     
         /// <summary>

@@ -13,7 +13,7 @@ namespace Microsoft.Graph
     /// The type DriveItemsCollectionRequestBuilder.
     /// </summary>
     public partial class DriveItemsCollectionRequestBuilder : BaseRequestBuilder, IDriveItemsCollectionRequestBuilder
-    {  
+    {
         /// <summary>
         /// Constructs a new DriveItemsCollectionRequestBuilder.
         /// </summary>
@@ -57,5 +57,7 @@ namespace Microsoft.Graph
                 return new DriveItemRequestBuilder(this.AppendSegmentToRequestUrl(id), this.Client);
             }
         }
+
+        
     }
 }

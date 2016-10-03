@@ -12,57 +12,53 @@ namespace Microsoft.Graph
     using System.IO;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The type DriveItemCopyRequest.
     /// </summary>
     public partial class DriveItemCopyRequest : BaseRequest, IDriveItemCopyRequest
     {
-    
         /// <summary>
         /// Constructs a new DriveItemCopyRequest.
         /// </summary>
         public DriveItemCopyRequest(
             string requestUrl,
             IBaseClient client,
-            IEnumerable<Option> options,
-            string name = null,
-            ItemReference parentReference = null)
+            IEnumerable<Option> options)
             : base(requestUrl, client, options)
         {
-            this.Method = "POST";
             this.ContentType = "application/json";
             this.RequestBody = new DriveItemCopyRequestBody();
-            this.RequestBody.Name = name;
-            this.RequestBody.ParentReference = parentReference;
         }
-    
+
         /// <summary>
         /// Gets the request body.
         /// </summary>
         public DriveItemCopyRequestBody RequestBody { get; private set; }
-    
+
         /// <summary>
         /// Issues the POST request.
         /// </summary>
-        public Task<DriveItem> PostAsync()
+        public System.Threading.Tasks.Task<DriveItem> PostAsync()
         {
             return this.PostAsync(CancellationToken.None);
         }
-        
+
         /// <summary>
         /// Issues the POST request.
         /// </summary>
-        /// /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
-        /// <returns>TheDriveItem</returns>
-        public Task<DriveItem> PostAsync(CancellationToken cancellationToken)
+        /// <param name=""cancellationToken"">The <see cref=""CancellationToken""/> for the request.</param>
+        /// <returns>The task to await for async call.</returns>
+        public System.Threading.Tasks.Task<DriveItem> PostAsync(
+            CancellationToken cancellationToken)
         {
-    
+            this.Method = "POST";
             return this.SendAsync<DriveItem>(this.RequestBody, cancellationToken);
-    
         }
-    
+
+
+
+
         /// <summary>
         /// Adds the specified expand value to the request.
         /// </summary>
@@ -84,6 +80,5 @@ namespace Microsoft.Graph
             this.QueryOptions.Add(new QueryOption("$select", value));
             return this;
         }
-    
     }
 }

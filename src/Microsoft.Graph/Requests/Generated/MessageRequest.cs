@@ -12,7 +12,6 @@ namespace Microsoft.Graph
     using System.IO;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The type MessageRequest.
@@ -34,25 +33,25 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Creates the specified Message using PUT.
+        /// Creates the specified Message using POST.
         /// </summary>
         /// <param name="messageToCreate">The Message to create.</param>
         /// <returns>The created Message.</returns>
-        public Task<Message> CreateAsync(Message messageToCreate)
+        public System.Threading.Tasks.Task<Message> CreateAsync(Message messageToCreate)
         {
             return this.CreateAsync(messageToCreate, CancellationToken.None);
         }
 
         /// <summary>
-        /// Creates the specified Message using PUT.
+        /// Creates the specified Message using POST.
         /// </summary>
         /// <param name="messageToCreate">The Message to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created Message.</returns>
-        public async Task<Message> CreateAsync(Message messageToCreate, CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Message> CreateAsync(Message messageToCreate, CancellationToken cancellationToken)
         {
             this.ContentType = "application/json";
-            this.Method = "PUT";
+            this.Method = "POST";
             var newEntity = await this.SendAsync<Message>(messageToCreate, cancellationToken).ConfigureAwait(false);
             this.InitializeCollectionProperties(newEntity);
             return newEntity;
@@ -62,7 +61,7 @@ namespace Microsoft.Graph
         /// Deletes the specified Message.
         /// </summary>
         /// <returns>The task to await.</returns>
-        public Task DeleteAsync()
+        public System.Threading.Tasks.Task DeleteAsync()
         {
             return this.DeleteAsync(CancellationToken.None);
         }
@@ -72,7 +71,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await.</returns>
-        public async Task DeleteAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken)
         {
             this.Method = "DELETE";
             await this.SendAsync<Message>(null, cancellationToken).ConfigureAwait(false);
@@ -82,7 +81,7 @@ namespace Microsoft.Graph
         /// Gets the specified Message.
         /// </summary>
         /// <returns>The Message.</returns>
-        public Task<Message> GetAsync()
+        public System.Threading.Tasks.Task<Message> GetAsync()
         {
             return this.GetAsync(CancellationToken.None);
         }
@@ -92,7 +91,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The Message.</returns>
-        public async Task<Message> GetAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Message> GetAsync(CancellationToken cancellationToken)
         {
             this.Method = "GET";
             var retrievedEntity = await this.SendAsync<Message>(null, cancellationToken).ConfigureAwait(false);
@@ -105,7 +104,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="messageToUpdate">The Message to update.</param>
         /// <returns>The updated Message.</returns>
-        public Task<Message> UpdateAsync(Message messageToUpdate)
+        public System.Threading.Tasks.Task<Message> UpdateAsync(Message messageToUpdate)
         {
             return this.UpdateAsync(messageToUpdate, CancellationToken.None);
         }
@@ -116,7 +115,7 @@ namespace Microsoft.Graph
         /// <param name="messageToUpdate">The Message to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The updated Message.</returns>
-        public async Task<Message> UpdateAsync(Message messageToUpdate, CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Message> UpdateAsync(Message messageToUpdate, CancellationToken cancellationToken)
         {
             this.ContentType = "application/json";
             this.Method = "PATCH";
@@ -153,10 +152,26 @@ namespace Microsoft.Graph
         /// <param name="messageToInitialize">The <see cref="Message"/> with the collection properties to initialize.</param>
         private void InitializeCollectionProperties(Message messageToInitialize)
         {
-        
+
             if (messageToInitialize != null && messageToInitialize.AdditionalData != null)
             {
-        
+
+                if (messageToInitialize.Extensions != null && messageToInitialize.Extensions.CurrentPage != null)
+                {
+                    messageToInitialize.Extensions.AdditionalData = messageToInitialize.AdditionalData;
+
+                    object nextPageLink;
+                    messageToInitialize.AdditionalData.TryGetValue("extensions@odata.nextLink", out nextPageLink);
+                    var nextPageLinkString = nextPageLink as string;
+
+                    if (!string.IsNullOrEmpty(nextPageLinkString))
+                    {
+                        messageToInitialize.Extensions.InitializeNextPageRequest(
+                            this.Client,
+                            nextPageLinkString);
+                    }
+                }
+
                 if (messageToInitialize.Attachments != null && messageToInitialize.Attachments.CurrentPage != null)
                 {
                     messageToInitialize.Attachments.AdditionalData = messageToInitialize.AdditionalData;
@@ -172,10 +187,10 @@ namespace Microsoft.Graph
                             nextPageLinkString);
                     }
                 }
-        
+
             }
 
-        
+
         }
     }
 }

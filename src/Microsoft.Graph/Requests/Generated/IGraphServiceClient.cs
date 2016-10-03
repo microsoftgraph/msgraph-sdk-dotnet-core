@@ -7,6 +7,7 @@
 
 namespace Microsoft.Graph
 {
+
     /// <summary>
     /// The interface IGraphServiceClient.
     /// </summary>
@@ -57,6 +58,11 @@ namespace Microsoft.Graph
         /// Gets the GraphServiceDrives request builder.
         /// </summary>
         IGraphServiceDrivesCollectionRequestBuilder Drives { get; }
+    
+        /// <summary>
+        /// Gets the GraphServiceWorkbooks request builder.
+        /// </summary>
+        IGraphServiceWorkbooksCollectionRequestBuilder Workbooks { get; }
     
         /// <summary>
         /// Gets the GraphServiceSubscriptions request builder.

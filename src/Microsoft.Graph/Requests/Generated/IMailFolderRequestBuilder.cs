@@ -9,6 +9,7 @@ namespace Microsoft.Graph
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
 
     /// <summary>
     /// The interface IMailFolderRequestBuilder.
@@ -27,7 +28,7 @@ namespace Microsoft.Graph
         /// <param name="options">The query and header options for the request.</param>
         /// <returns>The built request.</returns>
         new IMailFolderRequest Request(IEnumerable<Option> options);
-        
+    
         /// <summary>
         /// Gets the request builder for Messages.
         /// </summary>
@@ -39,20 +40,20 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IMailFolderChildFoldersCollectionRequestBuilder"/>.</returns>
         IMailFolderChildFoldersCollectionRequestBuilder ChildFolders { get; }
-        
+    
         /// <summary>
         /// Gets the request builder for MailFolderCopy.
         /// </summary>
         /// <returns>The <see cref="IMailFolderCopyRequestBuilder"/>.</returns>
         IMailFolderCopyRequestBuilder Copy(
-            string destinationId = null);
+            string DestinationId = null);
 
         /// <summary>
         /// Gets the request builder for MailFolderMove.
         /// </summary>
         /// <returns>The <see cref="IMailFolderMoveRequestBuilder"/>.</returns>
         IMailFolderMoveRequestBuilder Move(
-            string destinationId = null);
+            string DestinationId = null);
     
     }
 }

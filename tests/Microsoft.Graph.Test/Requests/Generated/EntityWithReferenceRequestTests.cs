@@ -7,6 +7,7 @@ namespace Microsoft.Graph.Test.Requests.Generated
     using System;
     using System.IO;
     using System.Net.Http;
+    using System.Threading;
     using System.Threading.Tasks;
 
     using Microsoft.Graph;
@@ -51,7 +52,9 @@ namespace Microsoft.Graph.Test.Requests.Generated
                     provider => provider.SendAsync(
                         It.Is<HttpRequestMessage>(
                             request => request.RequestUri.ToString().StartsWith(requestUrl)
-                                && request.Method == HttpMethod.Get)))
+                                && request.Method == HttpMethod.Get),
+                        HttpCompletionOption.ResponseContentRead,
+                        CancellationToken.None))
                     .Returns(Task.FromResult(httpResponseMessage));
 
                 var expectedManager = new User();
@@ -66,6 +69,7 @@ namespace Microsoft.Graph.Test.Requests.Generated
             }
         }
 
+#if false // This test can no longer run at this time since the Graph does not have a $ref navigation that allows expand.
         /// <summary>
         /// Tests the Expand() method on the request for an entity with a $ref navigation.
         /// </summary>
@@ -82,7 +86,9 @@ namespace Microsoft.Graph.Test.Requests.Generated
             Assert.AreEqual("$expand", managerRequest.QueryOptions[0].Name, "Unexpected query option name.");
             Assert.AreEqual("value", managerRequest.QueryOptions[0].Value, "Unexpected query option value.");
         }
+#endif
 
+#if false // This test can no longer run at this time since the Graph does not have a $ref navigation that allows select.
         /// <summary>
         /// Tests the Select() method on the request for an entity with a $ref navigation.
         /// </summary>
@@ -99,5 +105,6 @@ namespace Microsoft.Graph.Test.Requests.Generated
             Assert.AreEqual("$select", managerRequest.QueryOptions[0].Name, "Unexpected query option name.");
             Assert.AreEqual("value", managerRequest.QueryOptions[0].Value, "Unexpected query option value.");
         }
+#endif
     }
 }

@@ -11,7 +11,6 @@ namespace Microsoft.Graph
     using System.IO;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The interface IMessageRequest.
@@ -23,46 +22,46 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="messageToCreate">The Message to create.</param>
         /// <returns>The created Message.</returns>
-        Task<Message> CreateAsync(Message messageToCreate);        /// <summary>
+        System.Threading.Tasks.Task<Message> CreateAsync(Message messageToCreate);        /// <summary>
         /// Creates the specified Message using PUT.
         /// </summary>
         /// <param name="messageToCreate">The Message to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created Message.</returns>
-        Task<Message> CreateAsync(Message messageToCreate, CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<Message> CreateAsync(Message messageToCreate, CancellationToken cancellationToken);
 
         /// <summary>
         /// Deletes the specified Message.
         /// </summary>
         /// <returns>The task to await.</returns>
-        Task DeleteAsync();
+        System.Threading.Tasks.Task DeleteAsync();
 
         /// <summary>
         /// Deletes the specified Message.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await.</returns>
-        Task DeleteAsync(CancellationToken cancellationToken);
+        System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken);
 
         /// <summary>
         /// Gets the specified Message.
         /// </summary>
         /// <returns>The Message.</returns>
-        Task<Message> GetAsync();
+        System.Threading.Tasks.Task<Message> GetAsync();
 
         /// <summary>
         /// Gets the specified Message.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The Message.</returns>
-        Task<Message> GetAsync(CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<Message> GetAsync(CancellationToken cancellationToken);
 
         /// <summary>
         /// Updates the specified Message using PATCH.
         /// </summary>
         /// <param name="messageToUpdate">The Message to update.</param>
         /// <returns>The updated Message.</returns>
-        Task<Message> UpdateAsync(Message messageToUpdate);
+        System.Threading.Tasks.Task<Message> UpdateAsync(Message messageToUpdate);
 
         /// <summary>
         /// Updates the specified Message using PATCH.
@@ -70,7 +69,7 @@ namespace Microsoft.Graph
         /// <param name="messageToUpdate">The Message to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The updated Message.</returns>
-        Task<Message> UpdateAsync(Message messageToUpdate, CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<Message> UpdateAsync(Message messageToUpdate, CancellationToken cancellationToken);
 
         /// <summary>
         /// Adds the specified expand value to the request.
@@ -85,5 +84,6 @@ namespace Microsoft.Graph
         /// <param name="value">The select value.</param>
         /// <returns>The request object to send.</returns>
         IMessageRequest Select(string value);
+
     }
 }

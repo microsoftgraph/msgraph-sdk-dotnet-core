@@ -11,13 +11,12 @@ namespace Microsoft.Graph
     using System.Collections.Generic;
     using System.IO;
     using System.Runtime.Serialization;
-
     using Newtonsoft.Json;
 
     /// <summary>
     /// The type Folder.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     [JsonConverter(typeof(DerivedTypeConverter))]
     public partial class Folder
     {
@@ -25,7 +24,7 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets or sets childCount.
         /// </summary>
-        [DataMember(Name = "childCount", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "childCount", Required = Required.Default)]
         public Int32? ChildCount { get; set; }
     
         /// <summary>

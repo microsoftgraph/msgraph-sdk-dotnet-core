@@ -11,13 +11,12 @@ namespace Microsoft.Graph
     using System.Collections.Generic;
     using System.IO;
     using System.Runtime.Serialization;
-
     using Newtonsoft.Json;
 
     /// <summary>
     /// The type RemoteItem.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     [JsonConverter(typeof(DerivedTypeConverter))]
     public partial class RemoteItem
     {
@@ -25,43 +24,43 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets or sets file.
         /// </summary>
-        [DataMember(Name = "file", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "file", Required = Required.Default)]
         public File File { get; set; }
     
         /// <summary>
         /// Gets or sets fileSystemInfo.
         /// </summary>
-        [DataMember(Name = "fileSystemInfo", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "fileSystemInfo", Required = Required.Default)]
         public FileSystemInfo FileSystemInfo { get; set; }
     
         /// <summary>
         /// Gets or sets folder.
         /// </summary>
-        [DataMember(Name = "folder", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "folder", Required = Required.Default)]
         public Folder Folder { get; set; }
     
         /// <summary>
         /// Gets or sets id.
         /// </summary>
-        [DataMember(Name = "id", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "id", Required = Required.Default)]
         public string Id { get; set; }
     
         /// <summary>
         /// Gets or sets name.
         /// </summary>
-        [DataMember(Name = "name", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "name", Required = Required.Default)]
         public string Name { get; set; }
     
         /// <summary>
         /// Gets or sets parentReference.
         /// </summary>
-        [DataMember(Name = "parentReference", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "parentReference", Required = Required.Default)]
         public ItemReference ParentReference { get; set; }
     
         /// <summary>
         /// Gets or sets size.
         /// </summary>
-        [DataMember(Name = "size", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "size", Required = Required.Default)]
         public Int64? Size { get; set; }
     
         /// <summary>

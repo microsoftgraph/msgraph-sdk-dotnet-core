@@ -9,14 +9,20 @@ namespace Microsoft.Graph
 {
     using System;
     using System.Collections.Generic;
-    using System.Text;
+    using System.IO;
 
     /// <summary>
     /// The type UserAssignLicenseRequestBuilder.
     /// </summary>
-    public partial class UserAssignLicenseRequestBuilder : BaseRequestBuilder, IUserAssignLicenseRequestBuilder
+    public partial class UserAssignLicenseRequestBuilder : BaseActionMethodRequestBuilder<IUserAssignLicenseRequest>, IUserAssignLicenseRequestBuilder
     {
-    
+        /// <summary>
+        /// Constructs a new <see cref="UserAssignLicenseRequestBuilder"/>.
+        /// </summary>
+        /// <param name="requestUrl">The URL for the request.</param>
+        /// <param name="client">The <see cref="IBaseClient"/> for handling requests.</param>
+        /// <param name="addLicenses">A addLicenses parameter for the OData method call.</param>
+        /// <param name="removeLicenses">A removeLicenses parameter for the OData method call.</param>
         public UserAssignLicenseRequestBuilder(
             string requestUrl,
             IBaseClient client,
@@ -24,59 +30,31 @@ namespace Microsoft.Graph
             IEnumerable<Guid> removeLicenses)
             : base(requestUrl, client)
         {
-            
-            this.AddLicenses = addLicenses;
-            this.RemoveLicenses = removeLicenses;
-
+            this.SetParameter("addLicenses", addLicenses, false);
+            this.SetParameter("removeLicenses", removeLicenses, false);
         }
-    
+
         /// <summary>
-        /// Gets the value of AddLicenses.
+        /// A method used by the base class to construct a request class instance.
         /// </summary>
-        public IEnumerable<AssignedLicense> AddLicenses { get; set; }
-    
-        /// <summary>
-        /// Gets the value of RemoveLicenses.
-        /// </summary>
-        public IEnumerable<Guid> RemoveLicenses { get; set; }
-    
-        /// <summary>
-        /// Builds the request.
-        /// </summary>
+        /// <param name="functionUrl">The request URL to </param>
         /// <param name="options">The query and header options for the request.</param>
-        /// <returns>The built request.</returns>
-        public IUserAssignLicenseRequest Request(IEnumerable<Option> options = null)
+        /// <returns>An instance of a specific request class.</returns>
+        protected override IUserAssignLicenseRequest CreateRequest(string functionUrl, IEnumerable<Option> options)
         {
-        
-            if (this.AddLicenses == null)
+            var request = new UserAssignLicenseRequest(functionUrl, this.Client, options);
+
+            if (this.HasParameter("addLicenses"))
             {
-                throw new ServiceException(
-                    new Error
-                    {
-                        Code = "invalidRequest",
-                        Message = "addLicenses is a required parameter for this method request.",
-                    });
+                request.RequestBody.AddLicenses = this.GetParameter<IEnumerable<AssignedLicense>>("addLicenses");
             }
 
-            if (this.RemoveLicenses == null)
+            if (this.HasParameter("removeLicenses"))
             {
-                throw new ServiceException(
-                    new Error
-                    {
-                        Code = "invalidRequest",
-                        Message = "removeLicenses is a required parameter for this method request.",
-                    });
+                request.RequestBody.RemoveLicenses = this.GetParameter<IEnumerable<Guid>>("removeLicenses");
             }
-                
-            return new UserAssignLicenseRequest(
-                this.RequestUrl,
-                this.Client,
-                options,
-                this.AddLicenses,
-                this.RemoveLicenses);
-        
+
+            return request;
         }
-
     }
 }
-

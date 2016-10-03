@@ -45,7 +45,7 @@ namespace Microsoft.Graph
         {
             return new UserDirectReportsCollectionWithReferencesRequest(this.RequestUrl, this.Client, options);
         }
-        
+
         /// <summary>
         /// Gets an <see cref="IDirectoryObjectWithReferenceRequestBuilder"/> for the specified UserDirectoryObject.
         /// </summary>

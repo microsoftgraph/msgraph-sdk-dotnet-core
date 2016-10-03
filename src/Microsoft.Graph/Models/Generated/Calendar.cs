@@ -11,44 +11,43 @@ namespace Microsoft.Graph
     using System.Collections.Generic;
     using System.IO;
     using System.Runtime.Serialization;
-
     using Newtonsoft.Json;
 
     /// <summary>
     /// The type Calendar.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class Calendar : Entity
     {
     
         /// <summary>
         /// Gets or sets name.
         /// </summary>
-        [DataMember(Name = "name", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "name", Required = Required.Default)]
         public string Name { get; set; }
     
         /// <summary>
         /// Gets or sets color.
         /// </summary>
-        [DataMember(Name = "color", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "color", Required = Required.Default)]
         public CalendarColor? Color { get; set; }
     
         /// <summary>
         /// Gets or sets change key.
         /// </summary>
-        [DataMember(Name = "changeKey", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "changeKey", Required = Required.Default)]
         public string ChangeKey { get; set; }
     
         /// <summary>
         /// Gets or sets events.
         /// </summary>
-        [DataMember(Name = "events", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "events", Required = Required.Default)]
         public ICalendarEventsCollectionPage Events { get; set; }
     
         /// <summary>
         /// Gets or sets calendar view.
         /// </summary>
-        [DataMember(Name = "calendarView", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "calendarView", Required = Required.Default)]
         public ICalendarCalendarViewCollectionPage CalendarView { get; set; }
     
     }

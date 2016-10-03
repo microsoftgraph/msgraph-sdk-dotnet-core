@@ -11,13 +11,12 @@ namespace Microsoft.Graph
     using System.Collections.Generic;
     using System.IO;
     using System.Runtime.Serialization;
-
     using Newtonsoft.Json;
 
     /// <summary>
     /// The type Attachment.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class Attachment : Entity
     {
     
@@ -29,31 +28,31 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets or sets last modified date time.
         /// </summary>
-        [DataMember(Name = "lastModifiedDateTime", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "lastModifiedDateTime", Required = Required.Default)]
         public DateTimeOffset? LastModifiedDateTime { get; set; }
     
         /// <summary>
         /// Gets or sets name.
         /// </summary>
-        [DataMember(Name = "name", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "name", Required = Required.Default)]
         public string Name { get; set; }
     
         /// <summary>
         /// Gets or sets content type.
         /// </summary>
-        [DataMember(Name = "contentType", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "contentType", Required = Required.Default)]
         public string ContentType { get; set; }
     
         /// <summary>
         /// Gets or sets size.
         /// </summary>
-        [DataMember(Name = "size", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "size", Required = Required.Default)]
         public Int32? Size { get; set; }
     
         /// <summary>
         /// Gets or sets is inline.
         /// </summary>
-        [DataMember(Name = "isInline", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "isInline", Required = Required.Default)]
         public bool? IsInline { get; set; }
     
     }

@@ -11,13 +11,12 @@ namespace Microsoft.Graph
     using System.Collections.Generic;
     using System.IO;
     using System.Runtime.Serialization;
-
     using Newtonsoft.Json;
 
     /// <summary>
     /// The type ProvisionedPlan.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     [JsonConverter(typeof(DerivedTypeConverter))]
     public partial class ProvisionedPlan
     {
@@ -25,19 +24,19 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets or sets capabilityStatus.
         /// </summary>
-        [DataMember(Name = "capabilityStatus", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "capabilityStatus", Required = Required.Default)]
         public string CapabilityStatus { get; set; }
     
         /// <summary>
         /// Gets or sets provisioningStatus.
         /// </summary>
-        [DataMember(Name = "provisioningStatus", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "provisioningStatus", Required = Required.Default)]
         public string ProvisioningStatus { get; set; }
     
         /// <summary>
         /// Gets or sets service.
         /// </summary>
-        [DataMember(Name = "service", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "service", Required = Required.Default)]
         public string Service { get; set; }
     
         /// <summary>

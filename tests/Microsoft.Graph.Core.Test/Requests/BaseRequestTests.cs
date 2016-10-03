@@ -84,7 +84,7 @@ namespace Microsoft.Graph.Core.Test.Requests
 
             var expectedVersion = typeof(BaseRequest).GetTypeInfo().Assembly.GetName().Version;
             Assert.AreEqual(
-                string.Format("graph-dotnet-{0}.{1}.{2}", expectedVersion.Major, expectedVersion.Minor, expectedVersion.Build),
+                string.Format("Graph-dotnet-{0}.{1}.{2}", expectedVersion.Major, expectedVersion.Minor, expectedVersion.Build),
                 httpRequestMessage.Headers.GetValues(CoreConstants.Headers.SdkVersionHeaderName).First(), "Unexpected request stats header.");
         }
 
@@ -104,7 +104,7 @@ namespace Microsoft.Graph.Core.Test.Requests
 
             var expectedVersion = typeof(BaseRequest).GetTypeInfo().Assembly.GetName().Version;
             Assert.AreEqual(
-                string.Format("graph-dotnet-{0}.{1}.{2}", expectedVersion.Major, expectedVersion.Minor, expectedVersion.Build),
+                string.Format("Graph-dotnet-{0}.{1}.{2}", expectedVersion.Major, expectedVersion.Minor, expectedVersion.Build),
                 httpRequestMessage.Headers.GetValues(CoreConstants.Headers.SdkVersionHeaderName).First(), "Unexpected request stats header.");
         }
 
@@ -143,7 +143,9 @@ namespace Microsoft.Graph.Core.Test.Requests
                         It.Is<HttpRequestMessage>(
                             request =>
                                 string.Equals(request.Content.Headers.ContentType.ToString(), "application/json")
-                               && request.RequestUri.ToString().Equals(requestUrl))))
+                               && request.RequestUri.ToString().Equals(requestUrl)),
+                        HttpCompletionOption.ResponseContentRead,
+                        CancellationToken.None))
                         .Returns(Task.FromResult(httpResponseMessage));
 
                 var expectedResponseItem = new DerivedTypeClass { Id = "id" };
@@ -201,8 +203,10 @@ namespace Microsoft.Graph.Core.Test.Requests
                         It.Is<HttpRequestMessage>(
                             request =>
                                 string.Equals(request.Content.Headers.ContentType.ToString(), "application/json")
-                               && request.RequestUri.ToString().Equals(requestUrl))))
-                        .Returns(Task.FromResult(httpResponseMessage));
+                               && request.RequestUri.ToString().Equals(requestUrl)),
+                        HttpCompletionOption.ResponseContentRead,
+                        CancellationToken.None))
+                    .Returns(Task.FromResult(httpResponseMessage));
                 
                 this.serializer.Setup(
                     serializer => serializer.SerializeObject(It.IsAny<string>()))
@@ -229,8 +233,10 @@ namespace Microsoft.Graph.Core.Test.Requests
                         It.Is<HttpRequestMessage>(
                             request =>
                                 string.Equals(request.Content.Headers.ContentType.ToString(), "application/json")
-                               && request.RequestUri.ToString().Equals(requestUrl))))
-                        .Returns(Task.FromResult(httpResponseMessage));
+                               && request.RequestUri.ToString().Equals(requestUrl)),
+                        HttpCompletionOption.ResponseContentRead,
+                        CancellationToken.None))
+                    .Returns(Task.FromResult(httpResponseMessage));
 
                 this.serializer.Setup(
                     serializer => serializer.SerializeObject(It.IsAny<string>()))
@@ -281,7 +287,9 @@ namespace Microsoft.Graph.Core.Test.Requests
                     provider => provider.SendAsync(
                         It.Is<HttpRequestMessage>(
                             request => request.RequestUri.ToString().StartsWith(requestUrl)
-                                && request.Method == HttpMethod.Put)))
+                                && request.Method == HttpMethod.Put),
+                        HttpCompletionOption.ResponseContentRead,
+                        CancellationToken.None))
                     .Returns(Task.FromResult(httpResponseMessage));
 
                 using (var returnedResponseStream = await baseRequest.SendStreamRequestAsync(requestStream, CancellationToken.None))

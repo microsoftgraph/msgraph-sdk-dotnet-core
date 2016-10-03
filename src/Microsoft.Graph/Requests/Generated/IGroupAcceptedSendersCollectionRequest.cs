@@ -11,7 +11,6 @@ namespace Microsoft.Graph
     using System.Collections.Generic;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The interface IGroupAcceptedSendersCollectionRequest.
@@ -24,7 +23,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="directoryObject">The DirectoryObject to add.</param>
         /// <returns>The created DirectoryObject.</returns>
-        Task<DirectoryObject> AddAsync(DirectoryObject directoryObject);
+        System.Threading.Tasks.Task<DirectoryObject> AddAsync(DirectoryObject directoryObject);
 
         /// <summary>
         /// Adds the specified DirectoryObject to the collection via POST.
@@ -32,19 +31,19 @@ namespace Microsoft.Graph
         /// <param name="directoryObject">The DirectoryObject to add.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created DirectoryObject.</returns>
-        Task<DirectoryObject> AddAsync(DirectoryObject directoryObject, CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<DirectoryObject> AddAsync(DirectoryObject directoryObject, CancellationToken cancellationToken);
         /// <summary>
         /// Gets the collection page.
         /// </summary>
         /// <returns>The collection page.</returns>
-        Task<IGroupAcceptedSendersCollectionPage> GetAsync();
-        
+        System.Threading.Tasks.Task<IGroupAcceptedSendersCollectionPage> GetAsync();
+
         /// <summary>
         /// Gets the collection page.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The collection page.</returns>
-        Task<IGroupAcceptedSendersCollectionPage> GetAsync(CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<IGroupAcceptedSendersCollectionPage> GetAsync(CancellationToken cancellationToken);
 
         /// <summary>
         /// Adds the specified expand value to the request.
@@ -66,7 +65,7 @@ namespace Microsoft.Graph
         /// <param name="value">The top value.</param>
         /// <returns>The request object to send.</returns>
         IGroupAcceptedSendersCollectionRequest Top(int value);
-        
+
         /// <summary>
         /// Adds the specified filter value to the request.
         /// </summary>

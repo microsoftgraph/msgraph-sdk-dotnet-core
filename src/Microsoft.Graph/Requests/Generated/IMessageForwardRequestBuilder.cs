@@ -9,23 +9,13 @@ namespace Microsoft.Graph
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
 
     /// <summary>
     /// The interface IMessageForwardRequestBuilder.
     /// </summary>
     public partial interface IMessageForwardRequestBuilder
     {
-    
-        /// <summary>
-        /// Gets the Comment.
-        /// </summary>
-        string Comment { get; }
-    
-        /// <summary>
-        /// Gets the ToRecipients.
-        /// </summary>
-        IEnumerable<Recipient> ToRecipients { get; }
-    
         /// <summary>
         /// Builds the request.
         /// </summary>

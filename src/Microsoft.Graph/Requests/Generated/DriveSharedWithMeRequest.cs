@@ -12,14 +12,12 @@ namespace Microsoft.Graph
     using System.IO;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The type DriveSharedWithMeRequest.
     /// </summary>
     public partial class DriveSharedWithMeRequest : BaseRequest, IDriveSharedWithMeRequest
     {
-    
         /// <summary>
         /// Constructs a new DriveSharedWithMeRequest.
         /// </summary>
@@ -29,32 +27,32 @@ namespace Microsoft.Graph
             IEnumerable<Option> options)
             : base(requestUrl, client, options)
         {
-            this.Method = "GET";
         }
-    
+
         /// <summary>
         /// Issues the GET request.
         /// </summary>
-        public Task<IDriveSharedWithMeCollectionPage> GetAsync()
+        public System.Threading.Tasks.Task<IDriveSharedWithMeCollectionPage> GetAsync()
         {
             return this.GetAsync(CancellationToken.None);
         }
-        
+
         /// <summary>
         /// Issues the GET request.
         /// </summary>
-        /// /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
-        /// <returns>TheIDriveSharedWithMeCollectionPage</returns>
-        public async Task<IDriveSharedWithMeCollectionPage> GetAsync(CancellationToken cancellationToken)
+        /// <param name=""cancellationToken"">The <see cref=""CancellationToken""/> for the request.</param>
+        /// <returns>The task to await for async call.</returns>
+        public async System.Threading.Tasks.Task<IDriveSharedWithMeCollectionPage> GetAsync(
+            CancellationToken cancellationToken)
         {
-    
+            this.Method = "GET";
             var response = await this.SendAsync<DriveSharedWithMeCollectionResponse>(null, cancellationToken).ConfigureAwait(false);
             if (response != null && response.Value != null && response.Value.CurrentPage != null)
             {
                 if (response.AdditionalData != null)
                 {
                     response.Value.AdditionalData = response.AdditionalData;
-                    
+
                     object nextPageLink;
                     response.AdditionalData.TryGetValue("@odata.nextLink", out nextPageLink);
 
@@ -72,9 +70,9 @@ namespace Microsoft.Graph
             }
 
             return null;
-    
         }
-    
+
+
         /// <summary>
         /// Adds the specified expand value to the request.
         /// </summary>
@@ -96,7 +94,7 @@ namespace Microsoft.Graph
             this.QueryOptions.Add(new QueryOption("$select", value));
             return this;
         }
-    
+
         /// <summary>
         /// Adds the specified top value to the request.
         /// </summary>
@@ -107,7 +105,7 @@ namespace Microsoft.Graph
             this.QueryOptions.Add(new QueryOption("$top", value.ToString()));
             return this;
         }
-		
+
         /// <summary>
         /// Adds the specified filter value to the request.
         /// </summary>
@@ -140,6 +138,5 @@ namespace Microsoft.Graph
             this.QueryOptions.Add(new QueryOption("$orderby", value));
             return this;
         }
-    
     }
 }

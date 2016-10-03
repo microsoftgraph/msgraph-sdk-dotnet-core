@@ -9,6 +9,7 @@ namespace Microsoft.Graph
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
 
     /// <summary>
     /// The type CalendarRequestBuilder.
@@ -46,7 +47,7 @@ namespace Microsoft.Graph
         {
             return new CalendarRequest(this.RequestUrl, this.Client, options);
         }
-        
+    
         /// <summary>
         /// Gets the request builder for Events.
         /// </summary>

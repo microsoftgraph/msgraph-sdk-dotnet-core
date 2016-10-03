@@ -11,38 +11,37 @@ namespace Microsoft.Graph
     using System.Collections.Generic;
     using System.IO;
     using System.Runtime.Serialization;
-
     using Newtonsoft.Json;
 
     /// <summary>
     /// The type Calendar Group.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class CalendarGroup : Entity
     {
     
         /// <summary>
         /// Gets or sets name.
         /// </summary>
-        [DataMember(Name = "name", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "name", Required = Required.Default)]
         public string Name { get; set; }
     
         /// <summary>
         /// Gets or sets class id.
         /// </summary>
-        [DataMember(Name = "classId", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "classId", Required = Required.Default)]
         public Guid? ClassId { get; set; }
     
         /// <summary>
         /// Gets or sets change key.
         /// </summary>
-        [DataMember(Name = "changeKey", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "changeKey", Required = Required.Default)]
         public string ChangeKey { get; set; }
     
         /// <summary>
         /// Gets or sets calendars.
         /// </summary>
-        [DataMember(Name = "calendars", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "calendars", Required = Required.Default)]
         public ICalendarGroupCalendarsCollectionPage Calendars { get; set; }
     
     }

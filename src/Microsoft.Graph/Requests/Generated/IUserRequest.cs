@@ -11,7 +11,6 @@ namespace Microsoft.Graph
     using System.IO;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The interface IUserRequest.
@@ -23,46 +22,46 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="userToCreate">The User to create.</param>
         /// <returns>The created User.</returns>
-        Task<User> CreateAsync(User userToCreate);        /// <summary>
+        System.Threading.Tasks.Task<User> CreateAsync(User userToCreate);        /// <summary>
         /// Creates the specified User using PUT.
         /// </summary>
         /// <param name="userToCreate">The User to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created User.</returns>
-        Task<User> CreateAsync(User userToCreate, CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<User> CreateAsync(User userToCreate, CancellationToken cancellationToken);
 
         /// <summary>
         /// Deletes the specified User.
         /// </summary>
         /// <returns>The task to await.</returns>
-        Task DeleteAsync();
+        System.Threading.Tasks.Task DeleteAsync();
 
         /// <summary>
         /// Deletes the specified User.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await.</returns>
-        Task DeleteAsync(CancellationToken cancellationToken);
+        System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken);
 
         /// <summary>
         /// Gets the specified User.
         /// </summary>
         /// <returns>The User.</returns>
-        Task<User> GetAsync();
+        System.Threading.Tasks.Task<User> GetAsync();
 
         /// <summary>
         /// Gets the specified User.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The User.</returns>
-        Task<User> GetAsync(CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<User> GetAsync(CancellationToken cancellationToken);
 
         /// <summary>
         /// Updates the specified User using PATCH.
         /// </summary>
         /// <param name="userToUpdate">The User to update.</param>
         /// <returns>The updated User.</returns>
-        Task<User> UpdateAsync(User userToUpdate);
+        System.Threading.Tasks.Task<User> UpdateAsync(User userToUpdate);
 
         /// <summary>
         /// Updates the specified User using PATCH.
@@ -70,7 +69,7 @@ namespace Microsoft.Graph
         /// <param name="userToUpdate">The User to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The updated User.</returns>
-        Task<User> UpdateAsync(User userToUpdate, CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<User> UpdateAsync(User userToUpdate, CancellationToken cancellationToken);
 
         /// <summary>
         /// Adds the specified expand value to the request.
@@ -85,5 +84,6 @@ namespace Microsoft.Graph
         /// <param name="value">The select value.</param>
         /// <returns>The request object to send.</returns>
         IUserRequest Select(string value);
+
     }
 }

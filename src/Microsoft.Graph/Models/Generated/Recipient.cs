@@ -11,13 +11,12 @@ namespace Microsoft.Graph
     using System.Collections.Generic;
     using System.IO;
     using System.Runtime.Serialization;
-
     using Newtonsoft.Json;
 
     /// <summary>
     /// The type Recipient.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     [JsonConverter(typeof(DerivedTypeConverter))]
     public partial class Recipient
     {
@@ -25,7 +24,7 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets or sets emailAddress.
         /// </summary>
-        [DataMember(Name = "emailAddress", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "emailAddress", Required = Required.Default)]
         public EmailAddress EmailAddress { get; set; }
     
         /// <summary>

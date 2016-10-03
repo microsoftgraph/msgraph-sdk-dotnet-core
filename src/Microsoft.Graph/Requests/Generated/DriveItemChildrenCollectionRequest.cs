@@ -11,7 +11,6 @@ namespace Microsoft.Graph
     using System.Collections.Generic;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The type DriveItemChildrenCollectionRequest.
@@ -37,7 +36,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="driveItem">The DriveItem to add.</param>
         /// <returns>The created DriveItem.</returns>
-        public Task<DriveItem> AddAsync(DriveItem driveItem)
+        public System.Threading.Tasks.Task<DriveItem> AddAsync(DriveItem driveItem)
         {
             return this.AddAsync(driveItem, CancellationToken.None);
         }
@@ -48,28 +47,28 @@ namespace Microsoft.Graph
         /// <param name="driveItem">The DriveItem to add.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created DriveItem.</returns>
-        public Task<DriveItem> AddAsync(DriveItem driveItem, CancellationToken cancellationToken)
+        public System.Threading.Tasks.Task<DriveItem> AddAsync(DriveItem driveItem, CancellationToken cancellationToken)
         {
             this.ContentType = "application/json";
             this.Method = "POST";
             return this.SendAsync<DriveItem>(driveItem, cancellationToken);
         }
-  
+
         /// <summary>
         /// Gets the collection page.
         /// </summary>
         /// <returns>The collection page.</returns>
-        public Task<IDriveItemChildrenCollectionPage> GetAsync()
+        public System.Threading.Tasks.Task<IDriveItemChildrenCollectionPage> GetAsync()
         {
             return this.GetAsync(CancellationToken.None);
         }
-        
+
         /// <summary>
         /// Gets the collection page.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The collection page.</returns>
-        public async Task<IDriveItemChildrenCollectionPage> GetAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<IDriveItemChildrenCollectionPage> GetAsync(CancellationToken cancellationToken)
         {
             this.Method = "GET";
             var response = await this.SendAsync<DriveItemChildrenCollectionResponse>(null, cancellationToken).ConfigureAwait(false);
@@ -88,7 +87,7 @@ namespace Microsoft.Graph
                             this.Client,
                             nextPageLinkString);
                     }
-                    
+
                     // Copy the additional data collection to the page itself so that information is not lost
                     response.Value.AdditionalData = response.AdditionalData;
                 }
@@ -131,7 +130,7 @@ namespace Microsoft.Graph
             this.QueryOptions.Add(new QueryOption("$top", value.ToString()));
             return this;
         }
-        
+
         /// <summary>
         /// Adds the specified filter value to the request.
         /// </summary>

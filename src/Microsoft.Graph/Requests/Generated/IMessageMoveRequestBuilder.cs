@@ -9,18 +9,13 @@ namespace Microsoft.Graph
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
 
     /// <summary>
     /// The interface IMessageMoveRequestBuilder.
     /// </summary>
     public partial interface IMessageMoveRequestBuilder
     {
-    
-        /// <summary>
-        /// Gets the DestinationId.
-        /// </summary>
-        string DestinationId { get; }
-    
         /// <summary>
         /// Builds the request.
         /// </summary>

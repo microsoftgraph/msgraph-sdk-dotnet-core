@@ -11,7 +11,6 @@ namespace Microsoft.Graph
     using System.Collections.Generic;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The interface IMailFolderMessagesCollectionRequest.
@@ -24,7 +23,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="message">The Message to add.</param>
         /// <returns>The created Message.</returns>
-        Task<Message> AddAsync(Message message);
+        System.Threading.Tasks.Task<Message> AddAsync(Message message);
 
         /// <summary>
         /// Adds the specified Message to the collection via POST.
@@ -32,19 +31,19 @@ namespace Microsoft.Graph
         /// <param name="message">The Message to add.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created Message.</returns>
-        Task<Message> AddAsync(Message message, CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<Message> AddAsync(Message message, CancellationToken cancellationToken);
         /// <summary>
         /// Gets the collection page.
         /// </summary>
         /// <returns>The collection page.</returns>
-        Task<IMailFolderMessagesCollectionPage> GetAsync();
-        
+        System.Threading.Tasks.Task<IMailFolderMessagesCollectionPage> GetAsync();
+
         /// <summary>
         /// Gets the collection page.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The collection page.</returns>
-        Task<IMailFolderMessagesCollectionPage> GetAsync(CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<IMailFolderMessagesCollectionPage> GetAsync(CancellationToken cancellationToken);
 
         /// <summary>
         /// Adds the specified expand value to the request.
@@ -66,7 +65,7 @@ namespace Microsoft.Graph
         /// <param name="value">The top value.</param>
         /// <returns>The request object to send.</returns>
         IMailFolderMessagesCollectionRequest Top(int value);
-        
+
         /// <summary>
         /// Adds the specified filter value to the request.
         /// </summary>

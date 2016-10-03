@@ -11,50 +11,49 @@ namespace Microsoft.Graph
     using System.Collections.Generic;
     using System.IO;
     using System.Runtime.Serialization;
-
     using Newtonsoft.Json;
 
     /// <summary>
     /// The type Permission.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class Permission : Entity
     {
     
         /// <summary>
         /// Gets or sets granted to.
         /// </summary>
-        [DataMember(Name = "grantedTo", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "grantedTo", Required = Required.Default)]
         public IdentitySet GrantedTo { get; set; }
     
         /// <summary>
         /// Gets or sets invitation.
         /// </summary>
-        [DataMember(Name = "invitation", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "invitation", Required = Required.Default)]
         public SharingInvitation Invitation { get; set; }
     
         /// <summary>
         /// Gets or sets inherited from.
         /// </summary>
-        [DataMember(Name = "inheritedFrom", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "inheritedFrom", Required = Required.Default)]
         public ItemReference InheritedFrom { get; set; }
     
         /// <summary>
         /// Gets or sets link.
         /// </summary>
-        [DataMember(Name = "link", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "link", Required = Required.Default)]
         public SharingLink Link { get; set; }
     
         /// <summary>
         /// Gets or sets roles.
         /// </summary>
-        [DataMember(Name = "roles", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "roles", Required = Required.Default)]
         public IEnumerable<string> Roles { get; set; }
     
         /// <summary>
         /// Gets or sets share id.
         /// </summary>
-        [DataMember(Name = "shareId", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "shareId", Required = Required.Default)]
         public string ShareId { get; set; }
     
     }

@@ -9,18 +9,13 @@ namespace Microsoft.Graph
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
 
     /// <summary>
     /// The interface IDirectoryObjectCheckMemberGroupsRequestBuilder.
     /// </summary>
     public partial interface IDirectoryObjectCheckMemberGroupsRequestBuilder
     {
-    
-        /// <summary>
-        /// Gets the GroupIds.
-        /// </summary>
-        IEnumerable<string> GroupIds { get; }
-    
         /// <summary>
         /// Builds the request.
         /// </summary>

@@ -1,14 +1,14 @@
-﻿using System.Resources;
-using System.Reflection;
+﻿using System.Reflection;
+using System.Resources;
 using System.Runtime.CompilerServices;
 
-// General Information about an assembly is controlled through the following 
+// General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Microsoft.Graph")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Microsoft Graph Client Library")]
+[assembly: AssemblyDescription("This package includes the client libraries for connecting your app to the Microsoft Graph. Microsoft Graph enables your app to interact with data entities and their relationships from many Microsoft cloud services with a unified developer experience. Learn more about Microsoft Graph at http://graph.microsoft.io.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Microsoft Corporation")]
 [assembly: AssemblyProduct("Microsoft.Graph")]
 [assembly: AssemblyCopyright("Copyright © Microsoft Corporation")]
 [assembly: AssemblyTrademark("")]
@@ -18,15 +18,14 @@ using System.Runtime.CompilerServices;
 // Version information for an assembly consists of the following four values:
 //
 //      Major Version
-//      Minor Version 
+//      Minor Version
 //      Build Number
 //      Revision
 //
-// You can specify all the values or you can default the Build and Revision Numbers 
+// You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
-// [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0")]
-[assembly: AssemblyFileVersion("1.0.0")]
+[assembly: AssemblyVersion("1.1.1")]
+[assembly: AssemblyFileVersion("1.1.1.0")]
 
 #if DEBUG
 [assembly: InternalsVisibleTo("Microsoft.Graph.Test")]

@@ -9,64 +9,52 @@ namespace Microsoft.Graph
 {
     using System;
     using System.Collections.Generic;
-    using System.Text;
+    using System.IO;
 
     /// <summary>
     /// The type UserSendMailRequestBuilder.
     /// </summary>
-    public partial class UserSendMailRequestBuilder : BaseRequestBuilder, IUserSendMailRequestBuilder
+    public partial class UserSendMailRequestBuilder : BaseActionMethodRequestBuilder<IUserSendMailRequest>, IUserSendMailRequestBuilder
     {
-    
+        /// <summary>
+        /// Constructs a new <see cref="UserSendMailRequestBuilder"/>.
+        /// </summary>
+        /// <param name="requestUrl">The URL for the request.</param>
+        /// <param name="client">The <see cref="IBaseClient"/> for handling requests.</param>
+        /// <param name="Message">A Message parameter for the OData method call.</param>
+        /// <param name="SaveToSentItems">A SaveToSentItems parameter for the OData method call.</param>
         public UserSendMailRequestBuilder(
             string requestUrl,
             IBaseClient client,
-            Message message,
-            bool? saveToSentItems = null)
+            Message Message,
+            bool? SaveToSentItems)
             : base(requestUrl, client)
         {
-            
-            this.Message = message;
-            this.SaveToSentItems = saveToSentItems;
-
+            this.SetParameter("message", Message, false);
+            this.SetParameter("saveToSentItems", SaveToSentItems, true);
         }
-    
+
         /// <summary>
-        /// Gets the value of Message.
+        /// A method used by the base class to construct a request class instance.
         /// </summary>
-        public Message Message { get; set; }
-    
-        /// <summary>
-        /// Gets the value of SaveToSentItems.
-        /// </summary>
-        public bool? SaveToSentItems { get; set; }
-    
-        /// <summary>
-        /// Builds the request.
-        /// </summary>
+        /// <param name="functionUrl">The request URL to </param>
         /// <param name="options">The query and header options for the request.</param>
-        /// <returns>The built request.</returns>
-        public IUserSendMailRequest Request(IEnumerable<Option> options = null)
+        /// <returns>An instance of a specific request class.</returns>
+        protected override IUserSendMailRequest CreateRequest(string functionUrl, IEnumerable<Option> options)
         {
-        
-            if (this.Message == null)
-            {
-                throw new ServiceException(
-                    new Error
-                    {
-                        Code = "invalidRequest",
-                        Message = "message is a required parameter for this method request.",
-                    });
-            }
-                
-            return new UserSendMailRequest(
-                this.RequestUrl,
-                this.Client,
-                options,
-                this.Message,
-                this.SaveToSentItems);
-        
-        }
+            var request = new UserSendMailRequest(functionUrl, this.Client, options);
 
+            if (this.HasParameter("message"))
+            {
+                request.RequestBody.Message = this.GetParameter<Message>("message");
+            }
+
+            if (this.HasParameter("saveToSentItems"))
+            {
+                request.RequestBody.SaveToSentItems = this.GetParameter<bool?>("saveToSentItems");
+            }
+
+            return request;
+        }
     }
 }
-

@@ -13,7 +13,7 @@ namespace Microsoft.Graph
     /// The type GraphServiceDirectoryRolesCollectionRequestBuilder.
     /// </summary>
     public partial class GraphServiceDirectoryRolesCollectionRequestBuilder : BaseRequestBuilder, IGraphServiceDirectoryRolesCollectionRequestBuilder
-    {  
+    {
         /// <summary>
         /// Constructs a new GraphServiceDirectoryRolesCollectionRequestBuilder.
         /// </summary>
@@ -57,5 +57,7 @@ namespace Microsoft.Graph
                 return new DirectoryRoleRequestBuilder(this.AppendSegmentToRequestUrl(id), this.Client);
             }
         }
+
+        
     }
 }

@@ -12,7 +12,6 @@ namespace Microsoft.Graph
     using System.IO;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The type UserRequest.
@@ -34,25 +33,25 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Creates the specified User using PUT.
+        /// Creates the specified User using POST.
         /// </summary>
         /// <param name="userToCreate">The User to create.</param>
         /// <returns>The created User.</returns>
-        public Task<User> CreateAsync(User userToCreate)
+        public System.Threading.Tasks.Task<User> CreateAsync(User userToCreate)
         {
             return this.CreateAsync(userToCreate, CancellationToken.None);
         }
 
         /// <summary>
-        /// Creates the specified User using PUT.
+        /// Creates the specified User using POST.
         /// </summary>
         /// <param name="userToCreate">The User to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created User.</returns>
-        public async Task<User> CreateAsync(User userToCreate, CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<User> CreateAsync(User userToCreate, CancellationToken cancellationToken)
         {
             this.ContentType = "application/json";
-            this.Method = "PUT";
+            this.Method = "POST";
             var newEntity = await this.SendAsync<User>(userToCreate, cancellationToken).ConfigureAwait(false);
             this.InitializeCollectionProperties(newEntity);
             return newEntity;
@@ -62,7 +61,7 @@ namespace Microsoft.Graph
         /// Deletes the specified User.
         /// </summary>
         /// <returns>The task to await.</returns>
-        public Task DeleteAsync()
+        public System.Threading.Tasks.Task DeleteAsync()
         {
             return this.DeleteAsync(CancellationToken.None);
         }
@@ -72,7 +71,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await.</returns>
-        public async Task DeleteAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken)
         {
             this.Method = "DELETE";
             await this.SendAsync<User>(null, cancellationToken).ConfigureAwait(false);
@@ -82,7 +81,7 @@ namespace Microsoft.Graph
         /// Gets the specified User.
         /// </summary>
         /// <returns>The User.</returns>
-        public Task<User> GetAsync()
+        public System.Threading.Tasks.Task<User> GetAsync()
         {
             return this.GetAsync(CancellationToken.None);
         }
@@ -92,7 +91,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The User.</returns>
-        public async Task<User> GetAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<User> GetAsync(CancellationToken cancellationToken)
         {
             this.Method = "GET";
             var retrievedEntity = await this.SendAsync<User>(null, cancellationToken).ConfigureAwait(false);
@@ -105,7 +104,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="userToUpdate">The User to update.</param>
         /// <returns>The updated User.</returns>
-        public Task<User> UpdateAsync(User userToUpdate)
+        public System.Threading.Tasks.Task<User> UpdateAsync(User userToUpdate)
         {
             return this.UpdateAsync(userToUpdate, CancellationToken.None);
         }
@@ -116,7 +115,7 @@ namespace Microsoft.Graph
         /// <param name="userToUpdate">The User to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The updated User.</returns>
-        public async Task<User> UpdateAsync(User userToUpdate, CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<User> UpdateAsync(User userToUpdate, CancellationToken cancellationToken)
         {
             this.ContentType = "application/json";
             this.Method = "PATCH";
@@ -153,10 +152,10 @@ namespace Microsoft.Graph
         /// <param name="userToInitialize">The <see cref="User"/> with the collection properties to initialize.</param>
         private void InitializeCollectionProperties(User userToInitialize)
         {
-        
+
             if (userToInitialize != null && userToInitialize.AdditionalData != null)
             {
-        
+
                 if (userToInitialize.OwnedDevices != null && userToInitialize.OwnedDevices.CurrentPage != null)
                 {
                     userToInitialize.OwnedDevices.AdditionalData = userToInitialize.AdditionalData;
@@ -172,7 +171,7 @@ namespace Microsoft.Graph
                             nextPageLinkString);
                     }
                 }
-        
+
                 if (userToInitialize.RegisteredDevices != null && userToInitialize.RegisteredDevices.CurrentPage != null)
                 {
                     userToInitialize.RegisteredDevices.AdditionalData = userToInitialize.AdditionalData;
@@ -188,7 +187,7 @@ namespace Microsoft.Graph
                             nextPageLinkString);
                     }
                 }
-        
+
                 if (userToInitialize.DirectReports != null && userToInitialize.DirectReports.CurrentPage != null)
                 {
                     userToInitialize.DirectReports.AdditionalData = userToInitialize.AdditionalData;
@@ -204,7 +203,7 @@ namespace Microsoft.Graph
                             nextPageLinkString);
                     }
                 }
-        
+
                 if (userToInitialize.MemberOf != null && userToInitialize.MemberOf.CurrentPage != null)
                 {
                     userToInitialize.MemberOf.AdditionalData = userToInitialize.AdditionalData;
@@ -220,7 +219,7 @@ namespace Microsoft.Graph
                             nextPageLinkString);
                     }
                 }
-        
+
                 if (userToInitialize.CreatedObjects != null && userToInitialize.CreatedObjects.CurrentPage != null)
                 {
                     userToInitialize.CreatedObjects.AdditionalData = userToInitialize.AdditionalData;
@@ -236,7 +235,7 @@ namespace Microsoft.Graph
                             nextPageLinkString);
                     }
                 }
-        
+
                 if (userToInitialize.OwnedObjects != null && userToInitialize.OwnedObjects.CurrentPage != null)
                 {
                     userToInitialize.OwnedObjects.AdditionalData = userToInitialize.AdditionalData;
@@ -252,7 +251,7 @@ namespace Microsoft.Graph
                             nextPageLinkString);
                     }
                 }
-        
+
                 if (userToInitialize.Messages != null && userToInitialize.Messages.CurrentPage != null)
                 {
                     userToInitialize.Messages.AdditionalData = userToInitialize.AdditionalData;
@@ -268,7 +267,7 @@ namespace Microsoft.Graph
                             nextPageLinkString);
                     }
                 }
-        
+
                 if (userToInitialize.MailFolders != null && userToInitialize.MailFolders.CurrentPage != null)
                 {
                     userToInitialize.MailFolders.AdditionalData = userToInitialize.AdditionalData;
@@ -284,7 +283,7 @@ namespace Microsoft.Graph
                             nextPageLinkString);
                     }
                 }
-        
+
                 if (userToInitialize.Calendars != null && userToInitialize.Calendars.CurrentPage != null)
                 {
                     userToInitialize.Calendars.AdditionalData = userToInitialize.AdditionalData;
@@ -300,7 +299,7 @@ namespace Microsoft.Graph
                             nextPageLinkString);
                     }
                 }
-        
+
                 if (userToInitialize.CalendarGroups != null && userToInitialize.CalendarGroups.CurrentPage != null)
                 {
                     userToInitialize.CalendarGroups.AdditionalData = userToInitialize.AdditionalData;
@@ -316,7 +315,7 @@ namespace Microsoft.Graph
                             nextPageLinkString);
                     }
                 }
-        
+
                 if (userToInitialize.CalendarView != null && userToInitialize.CalendarView.CurrentPage != null)
                 {
                     userToInitialize.CalendarView.AdditionalData = userToInitialize.AdditionalData;
@@ -332,7 +331,7 @@ namespace Microsoft.Graph
                             nextPageLinkString);
                     }
                 }
-        
+
                 if (userToInitialize.Events != null && userToInitialize.Events.CurrentPage != null)
                 {
                     userToInitialize.Events.AdditionalData = userToInitialize.AdditionalData;
@@ -348,7 +347,7 @@ namespace Microsoft.Graph
                             nextPageLinkString);
                     }
                 }
-        
+
                 if (userToInitialize.Contacts != null && userToInitialize.Contacts.CurrentPage != null)
                 {
                     userToInitialize.Contacts.AdditionalData = userToInitialize.AdditionalData;
@@ -364,7 +363,7 @@ namespace Microsoft.Graph
                             nextPageLinkString);
                     }
                 }
-        
+
                 if (userToInitialize.ContactFolders != null && userToInitialize.ContactFolders.CurrentPage != null)
                 {
                     userToInitialize.ContactFolders.AdditionalData = userToInitialize.AdditionalData;
@@ -380,10 +379,10 @@ namespace Microsoft.Graph
                             nextPageLinkString);
                     }
                 }
-        
+
             }
 
-        
+
         }
     }
 }

@@ -9,6 +9,7 @@ namespace Microsoft.Graph
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
 
     /// <summary>
     /// The interface IPostRequestBuilder.
@@ -27,7 +28,13 @@ namespace Microsoft.Graph
         /// <param name="options">The query and header options for the request.</param>
         /// <returns>The built request.</returns>
         new IPostRequest Request(IEnumerable<Option> options);
-        
+    
+        /// <summary>
+        /// Gets the request builder for Extensions.
+        /// </summary>
+        /// <returns>The <see cref="IPostExtensionsCollectionRequestBuilder"/>.</returns>
+        IPostExtensionsCollectionRequestBuilder Extensions { get; }
+
         /// <summary>
         /// Gets the request builder for InReplyTo.
         /// </summary>
@@ -39,21 +46,21 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IPostAttachmentsCollectionRequestBuilder"/>.</returns>
         IPostAttachmentsCollectionRequestBuilder Attachments { get; }
-        
+    
         /// <summary>
         /// Gets the request builder for PostForward.
         /// </summary>
         /// <returns>The <see cref="IPostForwardRequestBuilder"/>.</returns>
         IPostForwardRequestBuilder Forward(
-            IEnumerable<Recipient> toRecipients,
-            string comment = null);
+            IEnumerable<Recipient> ToRecipients,
+            string Comment = null);
 
         /// <summary>
         /// Gets the request builder for PostReply.
         /// </summary>
         /// <returns>The <see cref="IPostReplyRequestBuilder"/>.</returns>
         IPostReplyRequestBuilder Reply(
-            Post post);
+            Post Post);
     
     }
 }

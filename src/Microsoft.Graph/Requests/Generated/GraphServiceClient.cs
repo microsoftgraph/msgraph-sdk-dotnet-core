@@ -7,6 +7,7 @@
 
 namespace Microsoft.Graph
 {
+
     /// <summary>
     /// The type GraphServiceClient.
     /// </summary>
@@ -27,7 +28,7 @@ namespace Microsoft.Graph
         /// <summary>
         /// Instantiates a new GraphServiceClient.
         /// </summary>
-        /// <param name="baseUrl">The base service URL. For example, "https://graph.microsoft.com/v1.0."</param>
+        /// <param name="baseUrl">The base service URL. For example, "https://graph.microsoft.com/v1.0".</param>
         /// <param name="authenticationProvider">The <see cref="IAuthenticationProvider"/> for authenticating request messages.</param>
         /// <param name="httpProvider">The <see cref="IHttpProvider"/> for sending requests.</param>
         public GraphServiceClient(
@@ -134,6 +135,17 @@ namespace Microsoft.Graph
             get
             {
                 return new GraphServiceDrivesCollectionRequestBuilder(this.BaseUrl + "/drives", this);
+            }
+        }
+    
+        /// <summary>
+        /// Gets the GraphServiceWorkbooks request builder.
+        /// </summary>
+        public IGraphServiceWorkbooksCollectionRequestBuilder Workbooks
+        {
+            get
+            {
+                return new GraphServiceWorkbooksCollectionRequestBuilder(this.BaseUrl + "/workbooks", this);
             }
         }
     

@@ -11,13 +11,12 @@ namespace Microsoft.Graph
     using System.Collections.Generic;
     using System.IO;
     using System.Runtime.Serialization;
-
     using Newtonsoft.Json;
 
     /// <summary>
     /// The type AssignedLicense.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     [JsonConverter(typeof(DerivedTypeConverter))]
     public partial class AssignedLicense
     {
@@ -25,13 +24,13 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets or sets disabledPlans.
         /// </summary>
-        [DataMember(Name = "disabledPlans", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "disabledPlans", Required = Required.Default)]
         public IEnumerable<Guid> DisabledPlans { get; set; }
     
         /// <summary>
         /// Gets or sets skuId.
         /// </summary>
-        [DataMember(Name = "skuId", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "skuId", Required = Required.Default)]
         public Guid? SkuId { get; set; }
     
         /// <summary>

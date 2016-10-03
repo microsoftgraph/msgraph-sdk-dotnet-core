@@ -12,7 +12,6 @@ namespace Microsoft.Graph
     using System.IO;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The type MailFolderRequest.
@@ -34,25 +33,25 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Creates the specified MailFolder using PUT.
+        /// Creates the specified MailFolder using POST.
         /// </summary>
         /// <param name="mailFolderToCreate">The MailFolder to create.</param>
         /// <returns>The created MailFolder.</returns>
-        public Task<MailFolder> CreateAsync(MailFolder mailFolderToCreate)
+        public System.Threading.Tasks.Task<MailFolder> CreateAsync(MailFolder mailFolderToCreate)
         {
             return this.CreateAsync(mailFolderToCreate, CancellationToken.None);
         }
 
         /// <summary>
-        /// Creates the specified MailFolder using PUT.
+        /// Creates the specified MailFolder using POST.
         /// </summary>
         /// <param name="mailFolderToCreate">The MailFolder to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created MailFolder.</returns>
-        public async Task<MailFolder> CreateAsync(MailFolder mailFolderToCreate, CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<MailFolder> CreateAsync(MailFolder mailFolderToCreate, CancellationToken cancellationToken)
         {
             this.ContentType = "application/json";
-            this.Method = "PUT";
+            this.Method = "POST";
             var newEntity = await this.SendAsync<MailFolder>(mailFolderToCreate, cancellationToken).ConfigureAwait(false);
             this.InitializeCollectionProperties(newEntity);
             return newEntity;
@@ -62,7 +61,7 @@ namespace Microsoft.Graph
         /// Deletes the specified MailFolder.
         /// </summary>
         /// <returns>The task to await.</returns>
-        public Task DeleteAsync()
+        public System.Threading.Tasks.Task DeleteAsync()
         {
             return this.DeleteAsync(CancellationToken.None);
         }
@@ -72,7 +71,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await.</returns>
-        public async Task DeleteAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken)
         {
             this.Method = "DELETE";
             await this.SendAsync<MailFolder>(null, cancellationToken).ConfigureAwait(false);
@@ -82,7 +81,7 @@ namespace Microsoft.Graph
         /// Gets the specified MailFolder.
         /// </summary>
         /// <returns>The MailFolder.</returns>
-        public Task<MailFolder> GetAsync()
+        public System.Threading.Tasks.Task<MailFolder> GetAsync()
         {
             return this.GetAsync(CancellationToken.None);
         }
@@ -92,7 +91,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The MailFolder.</returns>
-        public async Task<MailFolder> GetAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<MailFolder> GetAsync(CancellationToken cancellationToken)
         {
             this.Method = "GET";
             var retrievedEntity = await this.SendAsync<MailFolder>(null, cancellationToken).ConfigureAwait(false);
@@ -105,7 +104,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="mailFolderToUpdate">The MailFolder to update.</param>
         /// <returns>The updated MailFolder.</returns>
-        public Task<MailFolder> UpdateAsync(MailFolder mailFolderToUpdate)
+        public System.Threading.Tasks.Task<MailFolder> UpdateAsync(MailFolder mailFolderToUpdate)
         {
             return this.UpdateAsync(mailFolderToUpdate, CancellationToken.None);
         }
@@ -116,7 +115,7 @@ namespace Microsoft.Graph
         /// <param name="mailFolderToUpdate">The MailFolder to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The updated MailFolder.</returns>
-        public async Task<MailFolder> UpdateAsync(MailFolder mailFolderToUpdate, CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<MailFolder> UpdateAsync(MailFolder mailFolderToUpdate, CancellationToken cancellationToken)
         {
             this.ContentType = "application/json";
             this.Method = "PATCH";
@@ -153,10 +152,10 @@ namespace Microsoft.Graph
         /// <param name="mailFolderToInitialize">The <see cref="MailFolder"/> with the collection properties to initialize.</param>
         private void InitializeCollectionProperties(MailFolder mailFolderToInitialize)
         {
-        
+
             if (mailFolderToInitialize != null && mailFolderToInitialize.AdditionalData != null)
             {
-        
+
                 if (mailFolderToInitialize.Messages != null && mailFolderToInitialize.Messages.CurrentPage != null)
                 {
                     mailFolderToInitialize.Messages.AdditionalData = mailFolderToInitialize.AdditionalData;
@@ -172,7 +171,7 @@ namespace Microsoft.Graph
                             nextPageLinkString);
                     }
                 }
-        
+
                 if (mailFolderToInitialize.ChildFolders != null && mailFolderToInitialize.ChildFolders.CurrentPage != null)
                 {
                     mailFolderToInitialize.ChildFolders.AdditionalData = mailFolderToInitialize.AdditionalData;
@@ -188,10 +187,10 @@ namespace Microsoft.Graph
                             nextPageLinkString);
                     }
                 }
-        
+
             }
 
-        
+
         }
     }
 }

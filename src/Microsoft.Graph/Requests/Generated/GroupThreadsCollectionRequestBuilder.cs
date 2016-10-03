@@ -13,7 +13,7 @@ namespace Microsoft.Graph
     /// The type GroupThreadsCollectionRequestBuilder.
     /// </summary>
     public partial class GroupThreadsCollectionRequestBuilder : BaseRequestBuilder, IGroupThreadsCollectionRequestBuilder
-    {  
+    {
         /// <summary>
         /// Constructs a new GroupThreadsCollectionRequestBuilder.
         /// </summary>
@@ -57,5 +57,7 @@ namespace Microsoft.Graph
                 return new ConversationThreadRequestBuilder(this.AppendSegmentToRequestUrl(id), this.Client);
             }
         }
+
+        
     }
 }

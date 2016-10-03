@@ -9,6 +9,7 @@ namespace Microsoft.Graph
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
 
     /// <summary>
     /// The interface IDirectoryObjectRequestBuilder.
@@ -27,7 +28,7 @@ namespace Microsoft.Graph
         /// <param name="options">The query and header options for the request.</param>
         /// <returns>The built request.</returns>
         new IDirectoryObjectRequest Request(IEnumerable<Option> options);
-        
+    
         /// <summary>
         /// Gets the request builder for DirectoryObjectCheckMemberGroups.
         /// </summary>

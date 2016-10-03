@@ -10,7 +10,6 @@ namespace Microsoft.Graph
     using System.Collections.Generic;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The type UserReferenceRequest.
@@ -30,12 +29,12 @@ namespace Microsoft.Graph
             : base(requestUrl, client, options)
         {
         }
-        
+
         /// <summary>
         /// Deletes the specified User reference.
         /// </summary>
         /// <returns>The task to await.</returns>
-        public Task DeleteAsync()
+        public System.Threading.Tasks.Task DeleteAsync()
         {
             return this.DeleteAsync(CancellationToken.None);
         }
@@ -45,10 +44,37 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await.</returns>
-        public async Task DeleteAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken)
         {
             this.Method = "DELETE";
             await this.SendAsync<User>(null, cancellationToken).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Puts the specified User reference.
+        /// </summary>
+        /// <param name="id">The User reference to update.</param>
+        /// <returns>The task to await.</returns>
+        public System.Threading.Tasks.Task PutAsync(string id)
+        {
+            return this.PutAsync(id, CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Puts the specified User reference.
+        /// </summary>
+        /// <param name="id">The User reference to update.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The task to await.</returns>
+        public async System.Threading.Tasks.Task PutAsync(string id, CancellationToken cancellationToken)
+        {
+            var baseUrl = this.Client.BaseUrl;
+            var objectUri = string.Format(@"{0}/users/{1}", baseUrl, id);
+            var payload = new Newtonsoft.Json.Linq.JObject(
+                            new Newtonsoft.Json.Linq.JProperty("@odata.id", objectUri));
+            this.Method = "PUT";
+            this.ContentType = "application/json";
+            await this.SendAsync(payload.ToString(), cancellationToken).ConfigureAwait(false);
         }
     }
 }

@@ -12,7 +12,6 @@ namespace Microsoft.Graph
     using System.IO;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The type FileAttachmentRequest.
@@ -34,25 +33,25 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Creates the specified FileAttachment using PUT.
+        /// Creates the specified FileAttachment using POST.
         /// </summary>
         /// <param name="fileAttachmentToCreate">The FileAttachment to create.</param>
         /// <returns>The created FileAttachment.</returns>
-        public Task<FileAttachment> CreateAsync(FileAttachment fileAttachmentToCreate)
+        public System.Threading.Tasks.Task<FileAttachment> CreateAsync(FileAttachment fileAttachmentToCreate)
         {
             return this.CreateAsync(fileAttachmentToCreate, CancellationToken.None);
         }
 
         /// <summary>
-        /// Creates the specified FileAttachment using PUT.
+        /// Creates the specified FileAttachment using POST.
         /// </summary>
         /// <param name="fileAttachmentToCreate">The FileAttachment to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created FileAttachment.</returns>
-        public async Task<FileAttachment> CreateAsync(FileAttachment fileAttachmentToCreate, CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<FileAttachment> CreateAsync(FileAttachment fileAttachmentToCreate, CancellationToken cancellationToken)
         {
             this.ContentType = "application/json";
-            this.Method = "PUT";
+            this.Method = "POST";
             var newEntity = await this.SendAsync<FileAttachment>(fileAttachmentToCreate, cancellationToken).ConfigureAwait(false);
             this.InitializeCollectionProperties(newEntity);
             return newEntity;
@@ -62,7 +61,7 @@ namespace Microsoft.Graph
         /// Deletes the specified FileAttachment.
         /// </summary>
         /// <returns>The task to await.</returns>
-        public Task DeleteAsync()
+        public System.Threading.Tasks.Task DeleteAsync()
         {
             return this.DeleteAsync(CancellationToken.None);
         }
@@ -72,7 +71,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await.</returns>
-        public async Task DeleteAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken)
         {
             this.Method = "DELETE";
             await this.SendAsync<FileAttachment>(null, cancellationToken).ConfigureAwait(false);
@@ -82,7 +81,7 @@ namespace Microsoft.Graph
         /// Gets the specified FileAttachment.
         /// </summary>
         /// <returns>The FileAttachment.</returns>
-        public Task<FileAttachment> GetAsync()
+        public System.Threading.Tasks.Task<FileAttachment> GetAsync()
         {
             return this.GetAsync(CancellationToken.None);
         }
@@ -92,7 +91,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The FileAttachment.</returns>
-        public async Task<FileAttachment> GetAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<FileAttachment> GetAsync(CancellationToken cancellationToken)
         {
             this.Method = "GET";
             var retrievedEntity = await this.SendAsync<FileAttachment>(null, cancellationToken).ConfigureAwait(false);
@@ -105,7 +104,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="fileAttachmentToUpdate">The FileAttachment to update.</param>
         /// <returns>The updated FileAttachment.</returns>
-        public Task<FileAttachment> UpdateAsync(FileAttachment fileAttachmentToUpdate)
+        public System.Threading.Tasks.Task<FileAttachment> UpdateAsync(FileAttachment fileAttachmentToUpdate)
         {
             return this.UpdateAsync(fileAttachmentToUpdate, CancellationToken.None);
         }
@@ -116,7 +115,7 @@ namespace Microsoft.Graph
         /// <param name="fileAttachmentToUpdate">The FileAttachment to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The updated FileAttachment.</returns>
-        public async Task<FileAttachment> UpdateAsync(FileAttachment fileAttachmentToUpdate, CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<FileAttachment> UpdateAsync(FileAttachment fileAttachmentToUpdate, CancellationToken cancellationToken)
         {
             this.ContentType = "application/json";
             this.Method = "PATCH";
@@ -153,7 +152,7 @@ namespace Microsoft.Graph
         /// <param name="fileAttachmentToInitialize">The <see cref="FileAttachment"/> with the collection properties to initialize.</param>
         private void InitializeCollectionProperties(FileAttachment fileAttachmentToInitialize)
         {
-        
+
         }
     }
 }

@@ -12,7 +12,6 @@ namespace Microsoft.Graph
     using System.IO;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The type ContactFolderRequest.
@@ -34,25 +33,25 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Creates the specified ContactFolder using PUT.
+        /// Creates the specified ContactFolder using POST.
         /// </summary>
         /// <param name="contactFolderToCreate">The ContactFolder to create.</param>
         /// <returns>The created ContactFolder.</returns>
-        public Task<ContactFolder> CreateAsync(ContactFolder contactFolderToCreate)
+        public System.Threading.Tasks.Task<ContactFolder> CreateAsync(ContactFolder contactFolderToCreate)
         {
             return this.CreateAsync(contactFolderToCreate, CancellationToken.None);
         }
 
         /// <summary>
-        /// Creates the specified ContactFolder using PUT.
+        /// Creates the specified ContactFolder using POST.
         /// </summary>
         /// <param name="contactFolderToCreate">The ContactFolder to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created ContactFolder.</returns>
-        public async Task<ContactFolder> CreateAsync(ContactFolder contactFolderToCreate, CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<ContactFolder> CreateAsync(ContactFolder contactFolderToCreate, CancellationToken cancellationToken)
         {
             this.ContentType = "application/json";
-            this.Method = "PUT";
+            this.Method = "POST";
             var newEntity = await this.SendAsync<ContactFolder>(contactFolderToCreate, cancellationToken).ConfigureAwait(false);
             this.InitializeCollectionProperties(newEntity);
             return newEntity;
@@ -62,7 +61,7 @@ namespace Microsoft.Graph
         /// Deletes the specified ContactFolder.
         /// </summary>
         /// <returns>The task to await.</returns>
-        public Task DeleteAsync()
+        public System.Threading.Tasks.Task DeleteAsync()
         {
             return this.DeleteAsync(CancellationToken.None);
         }
@@ -72,7 +71,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await.</returns>
-        public async Task DeleteAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken)
         {
             this.Method = "DELETE";
             await this.SendAsync<ContactFolder>(null, cancellationToken).ConfigureAwait(false);
@@ -82,7 +81,7 @@ namespace Microsoft.Graph
         /// Gets the specified ContactFolder.
         /// </summary>
         /// <returns>The ContactFolder.</returns>
-        public Task<ContactFolder> GetAsync()
+        public System.Threading.Tasks.Task<ContactFolder> GetAsync()
         {
             return this.GetAsync(CancellationToken.None);
         }
@@ -92,7 +91,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The ContactFolder.</returns>
-        public async Task<ContactFolder> GetAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<ContactFolder> GetAsync(CancellationToken cancellationToken)
         {
             this.Method = "GET";
             var retrievedEntity = await this.SendAsync<ContactFolder>(null, cancellationToken).ConfigureAwait(false);
@@ -105,7 +104,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="contactFolderToUpdate">The ContactFolder to update.</param>
         /// <returns>The updated ContactFolder.</returns>
-        public Task<ContactFolder> UpdateAsync(ContactFolder contactFolderToUpdate)
+        public System.Threading.Tasks.Task<ContactFolder> UpdateAsync(ContactFolder contactFolderToUpdate)
         {
             return this.UpdateAsync(contactFolderToUpdate, CancellationToken.None);
         }
@@ -116,7 +115,7 @@ namespace Microsoft.Graph
         /// <param name="contactFolderToUpdate">The ContactFolder to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The updated ContactFolder.</returns>
-        public async Task<ContactFolder> UpdateAsync(ContactFolder contactFolderToUpdate, CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<ContactFolder> UpdateAsync(ContactFolder contactFolderToUpdate, CancellationToken cancellationToken)
         {
             this.ContentType = "application/json";
             this.Method = "PATCH";
@@ -153,10 +152,10 @@ namespace Microsoft.Graph
         /// <param name="contactFolderToInitialize">The <see cref="ContactFolder"/> with the collection properties to initialize.</param>
         private void InitializeCollectionProperties(ContactFolder contactFolderToInitialize)
         {
-        
+
             if (contactFolderToInitialize != null && contactFolderToInitialize.AdditionalData != null)
             {
-        
+
                 if (contactFolderToInitialize.Contacts != null && contactFolderToInitialize.Contacts.CurrentPage != null)
                 {
                     contactFolderToInitialize.Contacts.AdditionalData = contactFolderToInitialize.AdditionalData;
@@ -172,7 +171,7 @@ namespace Microsoft.Graph
                             nextPageLinkString);
                     }
                 }
-        
+
                 if (contactFolderToInitialize.ChildFolders != null && contactFolderToInitialize.ChildFolders.CurrentPage != null)
                 {
                     contactFolderToInitialize.ChildFolders.AdditionalData = contactFolderToInitialize.AdditionalData;
@@ -188,10 +187,10 @@ namespace Microsoft.Graph
                             nextPageLinkString);
                     }
                 }
-        
+
             }
 
-        
+
         }
     }
 }

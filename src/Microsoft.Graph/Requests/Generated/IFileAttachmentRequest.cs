@@ -11,7 +11,6 @@ namespace Microsoft.Graph
     using System.IO;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The interface IFileAttachmentRequest.
@@ -23,46 +22,46 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="fileAttachmentToCreate">The FileAttachment to create.</param>
         /// <returns>The created FileAttachment.</returns>
-        Task<FileAttachment> CreateAsync(FileAttachment fileAttachmentToCreate);        /// <summary>
+        System.Threading.Tasks.Task<FileAttachment> CreateAsync(FileAttachment fileAttachmentToCreate);        /// <summary>
         /// Creates the specified FileAttachment using PUT.
         /// </summary>
         /// <param name="fileAttachmentToCreate">The FileAttachment to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created FileAttachment.</returns>
-        Task<FileAttachment> CreateAsync(FileAttachment fileAttachmentToCreate, CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<FileAttachment> CreateAsync(FileAttachment fileAttachmentToCreate, CancellationToken cancellationToken);
 
         /// <summary>
         /// Deletes the specified FileAttachment.
         /// </summary>
         /// <returns>The task to await.</returns>
-        Task DeleteAsync();
+        System.Threading.Tasks.Task DeleteAsync();
 
         /// <summary>
         /// Deletes the specified FileAttachment.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await.</returns>
-        Task DeleteAsync(CancellationToken cancellationToken);
+        System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken);
 
         /// <summary>
         /// Gets the specified FileAttachment.
         /// </summary>
         /// <returns>The FileAttachment.</returns>
-        Task<FileAttachment> GetAsync();
+        System.Threading.Tasks.Task<FileAttachment> GetAsync();
 
         /// <summary>
         /// Gets the specified FileAttachment.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The FileAttachment.</returns>
-        Task<FileAttachment> GetAsync(CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<FileAttachment> GetAsync(CancellationToken cancellationToken);
 
         /// <summary>
         /// Updates the specified FileAttachment using PATCH.
         /// </summary>
         /// <param name="fileAttachmentToUpdate">The FileAttachment to update.</param>
         /// <returns>The updated FileAttachment.</returns>
-        Task<FileAttachment> UpdateAsync(FileAttachment fileAttachmentToUpdate);
+        System.Threading.Tasks.Task<FileAttachment> UpdateAsync(FileAttachment fileAttachmentToUpdate);
 
         /// <summary>
         /// Updates the specified FileAttachment using PATCH.
@@ -70,7 +69,7 @@ namespace Microsoft.Graph
         /// <param name="fileAttachmentToUpdate">The FileAttachment to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The updated FileAttachment.</returns>
-        Task<FileAttachment> UpdateAsync(FileAttachment fileAttachmentToUpdate, CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<FileAttachment> UpdateAsync(FileAttachment fileAttachmentToUpdate, CancellationToken cancellationToken);
 
         /// <summary>
         /// Adds the specified expand value to the request.
@@ -85,5 +84,6 @@ namespace Microsoft.Graph
         /// <param name="value">The select value.</param>
         /// <returns>The request object to send.</returns>
         IFileAttachmentRequest Select(string value);
+
     }
 }

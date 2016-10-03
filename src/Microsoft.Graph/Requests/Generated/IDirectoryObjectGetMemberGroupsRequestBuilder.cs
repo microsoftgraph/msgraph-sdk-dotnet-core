@@ -9,18 +9,13 @@ namespace Microsoft.Graph
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
 
     /// <summary>
     /// The interface IDirectoryObjectGetMemberGroupsRequestBuilder.
     /// </summary>
     public partial interface IDirectoryObjectGetMemberGroupsRequestBuilder
     {
-    
-        /// <summary>
-        /// Gets the SecurityEnabledOnly.
-        /// </summary>
-        bool? SecurityEnabledOnly { get; }
-    
         /// <summary>
         /// Builds the request.
         /// </summary>

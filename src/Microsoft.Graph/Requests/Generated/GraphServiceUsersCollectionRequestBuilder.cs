@@ -13,7 +13,7 @@ namespace Microsoft.Graph
     /// The type GraphServiceUsersCollectionRequestBuilder.
     /// </summary>
     public partial class GraphServiceUsersCollectionRequestBuilder : BaseRequestBuilder, IGraphServiceUsersCollectionRequestBuilder
-    {  
+    {
         /// <summary>
         /// Constructs a new GraphServiceUsersCollectionRequestBuilder.
         /// </summary>
@@ -57,5 +57,7 @@ namespace Microsoft.Graph
                 return new UserRequestBuilder(this.AppendSegmentToRequestUrl(id), this.Client);
             }
         }
+
+        
     }
 }

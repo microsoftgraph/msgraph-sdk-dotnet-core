@@ -13,7 +13,7 @@ namespace Microsoft.Graph
     /// The type GroupRejectedSendersCollectionRequestBuilder.
     /// </summary>
     public partial class GroupRejectedSendersCollectionRequestBuilder : BaseRequestBuilder, IGroupRejectedSendersCollectionRequestBuilder
-    {  
+    {
         /// <summary>
         /// Constructs a new GroupRejectedSendersCollectionRequestBuilder.
         /// </summary>
@@ -57,5 +57,7 @@ namespace Microsoft.Graph
                 return new DirectoryObjectRequestBuilder(this.AppendSegmentToRequestUrl(id), this.Client);
             }
         }
+
+        
     }
 }

@@ -11,7 +11,6 @@ namespace Microsoft.Graph
     using System.Collections.Generic;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The interface ICalendarGroupCalendarsCollectionRequest.
@@ -24,7 +23,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="calendar">The Calendar to add.</param>
         /// <returns>The created Calendar.</returns>
-        Task<Calendar> AddAsync(Calendar calendar);
+        System.Threading.Tasks.Task<Calendar> AddAsync(Calendar calendar);
 
         /// <summary>
         /// Adds the specified Calendar to the collection via POST.
@@ -32,19 +31,19 @@ namespace Microsoft.Graph
         /// <param name="calendar">The Calendar to add.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created Calendar.</returns>
-        Task<Calendar> AddAsync(Calendar calendar, CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<Calendar> AddAsync(Calendar calendar, CancellationToken cancellationToken);
         /// <summary>
         /// Gets the collection page.
         /// </summary>
         /// <returns>The collection page.</returns>
-        Task<ICalendarGroupCalendarsCollectionPage> GetAsync();
-        
+        System.Threading.Tasks.Task<ICalendarGroupCalendarsCollectionPage> GetAsync();
+
         /// <summary>
         /// Gets the collection page.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The collection page.</returns>
-        Task<ICalendarGroupCalendarsCollectionPage> GetAsync(CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<ICalendarGroupCalendarsCollectionPage> GetAsync(CancellationToken cancellationToken);
 
         /// <summary>
         /// Adds the specified expand value to the request.
@@ -66,7 +65,7 @@ namespace Microsoft.Graph
         /// <param name="value">The top value.</param>
         /// <returns>The request object to send.</returns>
         ICalendarGroupCalendarsCollectionRequest Top(int value);
-        
+
         /// <summary>
         /// Adds the specified filter value to the request.
         /// </summary>

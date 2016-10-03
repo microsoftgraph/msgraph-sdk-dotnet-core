@@ -10,7 +10,6 @@ namespace Microsoft.Graph
     using System;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The interface IDirectoryObjectReferenceRequest.
@@ -21,13 +20,26 @@ namespace Microsoft.Graph
         /// Deletes the specified DirectoryObject reference.
         /// </summary>
         /// <returns>The task to await.</returns>
-        Task DeleteAsync();
+        System.Threading.Tasks.Task DeleteAsync();
 
         /// <summary>
         /// Deletes the specified DirectoryObject reference.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await.</returns>
-        Task DeleteAsync(CancellationToken cancellationToken);
+        System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Puts the specified DirectoryObject reference.
+        /// </summary>
+        /// <returns>The task to await.</returns>
+        System.Threading.Tasks.Task PutAsync(string id);
+
+        /// <summary>
+        /// Puts the specified DirectoryObject reference.
+        /// </summary>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The task to await.</returns>
+        System.Threading.Tasks.Task PutAsync(string id, CancellationToken cancellationToken);
     }
 }

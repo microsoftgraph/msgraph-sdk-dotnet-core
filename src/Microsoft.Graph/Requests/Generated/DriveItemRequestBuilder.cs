@@ -9,6 +9,7 @@ namespace Microsoft.Graph
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
 
     /// <summary>
     /// The type DriveItemRequestBuilder.
@@ -46,7 +47,7 @@ namespace Microsoft.Graph
         {
             return new DriveItemRequest(this.RequestUrl, this.Client, options);
         }
-        
+    
         /// <summary>
         /// Gets the request builder for CreatedByUser.
         /// </summary>
@@ -56,6 +57,18 @@ namespace Microsoft.Graph
             get
             {
                 return new UserWithReferenceRequestBuilder(this.AppendSegmentToRequestUrl("createdByUser"), this.Client);
+            }
+        }
+
+        /// <summary>
+        /// Gets the request builder for Workbook.
+        /// </summary>
+        /// <returns>The <see cref="IWorkbookRequestBuilder"/>.</returns>
+        public IWorkbookRequestBuilder Workbook
+        {
+            get
+            {
+                return new WorkbookRequestBuilder(this.AppendSegmentToRequestUrl("workbook"), this.Client);
             }
         }
 
@@ -118,7 +131,7 @@ namespace Microsoft.Graph
                 return new DriveItemContentRequestBuilder(this.AppendSegmentToRequestUrl("content"), this.Client);
             }
         }
-        
+    
         /// <summary>
         /// Gets the request builder for DriveItemCreateLink.
         /// </summary>
@@ -160,6 +173,19 @@ namespace Microsoft.Graph
                 this.AppendSegmentToRequestUrl("microsoft.graph.search"),
                 this.Client,
                 q);
+        }
+
+        /// <summary>
+        /// Gets the request builder for DriveItemDelta.
+        /// </summary>
+        /// <returns>The <see cref="IDriveItemDeltaRequestBuilder"/>.</returns>
+        public IDriveItemDeltaRequestBuilder Delta(
+            string token = null)
+        {
+            return new DriveItemDeltaRequestBuilder(
+                this.AppendSegmentToRequestUrl("microsoft.graph.delta"),
+                this.Client,
+                token);
         }
 
         /// <summary>

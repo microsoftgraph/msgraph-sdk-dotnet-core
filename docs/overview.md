@@ -18,7 +18,7 @@ To begin making requests with the library, you will need to initialize a **Graph
 
 ### GraphServiceClientConstructor
 
-| Parameter                                      | Required?      | Default vaule                                    |
+| Parameter                                      | Required?      | Default Value                                    |
 |:-----------------------------------------------|:---------------|:-------------------------------------------------|
 |`string` baseUrl                                | No             | https://graph.microsoft.com/currentServiceVersion|
 |`IAuthenticationProvider` authenticationProvider| Yes            | n/a                                              |

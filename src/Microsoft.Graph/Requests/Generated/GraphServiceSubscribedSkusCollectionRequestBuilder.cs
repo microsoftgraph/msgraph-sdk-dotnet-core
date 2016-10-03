@@ -13,7 +13,7 @@ namespace Microsoft.Graph
     /// The type GraphServiceSubscribedSkusCollectionRequestBuilder.
     /// </summary>
     public partial class GraphServiceSubscribedSkusCollectionRequestBuilder : BaseRequestBuilder, IGraphServiceSubscribedSkusCollectionRequestBuilder
-    {  
+    {
         /// <summary>
         /// Constructs a new GraphServiceSubscribedSkusCollectionRequestBuilder.
         /// </summary>
@@ -57,5 +57,7 @@ namespace Microsoft.Graph
                 return new SubscribedSkuRequestBuilder(this.AppendSegmentToRequestUrl(id), this.Client);
             }
         }
+
+        
     }
 }

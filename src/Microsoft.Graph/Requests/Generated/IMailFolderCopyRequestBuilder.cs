@@ -9,18 +9,13 @@ namespace Microsoft.Graph
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
 
     /// <summary>
     /// The interface IMailFolderCopyRequestBuilder.
     /// </summary>
     public partial interface IMailFolderCopyRequestBuilder
     {
-    
-        /// <summary>
-        /// Gets the DestinationId.
-        /// </summary>
-        string DestinationId { get; }
-    
         /// <summary>
         /// Builds the request.
         /// </summary>

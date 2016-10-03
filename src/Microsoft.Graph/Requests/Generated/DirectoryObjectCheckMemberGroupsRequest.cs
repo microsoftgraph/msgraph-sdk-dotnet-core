@@ -12,58 +12,54 @@ namespace Microsoft.Graph
     using System.IO;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The type DirectoryObjectCheckMemberGroupsRequest.
     /// </summary>
     public partial class DirectoryObjectCheckMemberGroupsRequest : BaseRequest, IDirectoryObjectCheckMemberGroupsRequest
     {
-    
         /// <summary>
         /// Constructs a new DirectoryObjectCheckMemberGroupsRequest.
         /// </summary>
         public DirectoryObjectCheckMemberGroupsRequest(
             string requestUrl,
             IBaseClient client,
-            IEnumerable<Option> options,
-            IEnumerable<string> groupIds = null)
+            IEnumerable<Option> options)
             : base(requestUrl, client, options)
         {
-            this.Method = "POST";
             this.ContentType = "application/json";
             this.RequestBody = new DirectoryObjectCheckMemberGroupsRequestBody();
-            this.RequestBody.GroupIds = groupIds;
         }
-    
+
         /// <summary>
         /// Gets the request body.
         /// </summary>
         public DirectoryObjectCheckMemberGroupsRequestBody RequestBody { get; private set; }
-    
+
         /// <summary>
         /// Issues the POST request.
         /// </summary>
-        public Task<IDirectoryObjectCheckMemberGroupsCollectionPage> PostAsync()
+        public System.Threading.Tasks.Task<IDirectoryObjectCheckMemberGroupsCollectionPage> PostAsync()
         {
             return this.PostAsync(CancellationToken.None);
         }
-        
+
         /// <summary>
         /// Issues the POST request.
         /// </summary>
-        /// /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
-        /// <returns>TheIDirectoryObjectCheckMemberGroupsCollectionPage</returns>
-        public async Task<IDirectoryObjectCheckMemberGroupsCollectionPage> PostAsync(CancellationToken cancellationToken)
+        /// <param name=""cancellationToken"">The <see cref=""CancellationToken""/> for the request.</param>
+        /// <returns>The task to await for async call.</returns>
+        public async System.Threading.Tasks.Task<IDirectoryObjectCheckMemberGroupsCollectionPage> PostAsync(
+            CancellationToken cancellationToken)
         {
-    
+            this.Method = "POST";
             var response = await this.SendAsync<DirectoryObjectCheckMemberGroupsCollectionResponse>(this.RequestBody, cancellationToken).ConfigureAwait(false);
             if (response != null && response.Value != null && response.Value.CurrentPage != null)
             {
                 if (response.AdditionalData != null)
                 {
                     response.Value.AdditionalData = response.AdditionalData;
-                    
+
                     object nextPageLink;
                     response.AdditionalData.TryGetValue("@odata.nextLink", out nextPageLink);
 
@@ -81,9 +77,11 @@ namespace Microsoft.Graph
             }
 
             return null;
-    
         }
-    
+
+
+
+
         /// <summary>
         /// Adds the specified expand value to the request.
         /// </summary>
@@ -105,7 +103,7 @@ namespace Microsoft.Graph
             this.QueryOptions.Add(new QueryOption("$select", value));
             return this;
         }
-    
+
         /// <summary>
         /// Adds the specified top value to the request.
         /// </summary>
@@ -116,7 +114,7 @@ namespace Microsoft.Graph
             this.QueryOptions.Add(new QueryOption("$top", value.ToString()));
             return this;
         }
-		
+
         /// <summary>
         /// Adds the specified filter value to the request.
         /// </summary>
@@ -149,6 +147,5 @@ namespace Microsoft.Graph
             this.QueryOptions.Add(new QueryOption("$orderby", value));
             return this;
         }
-    
     }
 }

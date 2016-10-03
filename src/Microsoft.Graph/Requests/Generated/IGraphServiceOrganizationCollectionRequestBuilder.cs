@@ -33,5 +33,7 @@ namespace Microsoft.Graph
         /// <param name="id">The ID for the Organization.</param>
         /// <returns>The <see cref="IOrganizationRequestBuilder"/>.</returns>
         IOrganizationRequestBuilder this[string id] { get; }
+
+        
     }
 }

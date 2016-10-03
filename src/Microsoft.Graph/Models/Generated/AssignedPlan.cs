@@ -11,13 +11,12 @@ namespace Microsoft.Graph
     using System.Collections.Generic;
     using System.IO;
     using System.Runtime.Serialization;
-
     using Newtonsoft.Json;
 
     /// <summary>
     /// The type AssignedPlan.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     [JsonConverter(typeof(DerivedTypeConverter))]
     public partial class AssignedPlan
     {
@@ -25,25 +24,25 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets or sets assignedDateTime.
         /// </summary>
-        [DataMember(Name = "assignedDateTime", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "assignedDateTime", Required = Required.Default)]
         public DateTimeOffset? AssignedDateTime { get; set; }
     
         /// <summary>
         /// Gets or sets capabilityStatus.
         /// </summary>
-        [DataMember(Name = "capabilityStatus", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "capabilityStatus", Required = Required.Default)]
         public string CapabilityStatus { get; set; }
     
         /// <summary>
         /// Gets or sets service.
         /// </summary>
-        [DataMember(Name = "service", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "service", Required = Required.Default)]
         public string Service { get; set; }
     
         /// <summary>
         /// Gets or sets servicePlanId.
         /// </summary>
-        [DataMember(Name = "servicePlanId", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "servicePlanId", Required = Required.Default)]
         public Guid? ServicePlanId { get; set; }
     
         /// <summary>

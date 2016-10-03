@@ -12,7 +12,6 @@ namespace Microsoft.Graph
     using System.IO;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The type ProfilePhotoRequest.
@@ -34,25 +33,25 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Creates the specified ProfilePhoto using PUT.
+        /// Creates the specified ProfilePhoto using POST.
         /// </summary>
         /// <param name="profilePhotoToCreate">The ProfilePhoto to create.</param>
         /// <returns>The created ProfilePhoto.</returns>
-        public Task<ProfilePhoto> CreateAsync(ProfilePhoto profilePhotoToCreate)
+        public System.Threading.Tasks.Task<ProfilePhoto> CreateAsync(ProfilePhoto profilePhotoToCreate)
         {
             return this.CreateAsync(profilePhotoToCreate, CancellationToken.None);
         }
 
         /// <summary>
-        /// Creates the specified ProfilePhoto using PUT.
+        /// Creates the specified ProfilePhoto using POST.
         /// </summary>
         /// <param name="profilePhotoToCreate">The ProfilePhoto to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created ProfilePhoto.</returns>
-        public async Task<ProfilePhoto> CreateAsync(ProfilePhoto profilePhotoToCreate, CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<ProfilePhoto> CreateAsync(ProfilePhoto profilePhotoToCreate, CancellationToken cancellationToken)
         {
             this.ContentType = "application/json";
-            this.Method = "PUT";
+            this.Method = "POST";
             var newEntity = await this.SendAsync<ProfilePhoto>(profilePhotoToCreate, cancellationToken).ConfigureAwait(false);
             this.InitializeCollectionProperties(newEntity);
             return newEntity;
@@ -62,7 +61,7 @@ namespace Microsoft.Graph
         /// Deletes the specified ProfilePhoto.
         /// </summary>
         /// <returns>The task to await.</returns>
-        public Task DeleteAsync()
+        public System.Threading.Tasks.Task DeleteAsync()
         {
             return this.DeleteAsync(CancellationToken.None);
         }
@@ -72,7 +71,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await.</returns>
-        public async Task DeleteAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken)
         {
             this.Method = "DELETE";
             await this.SendAsync<ProfilePhoto>(null, cancellationToken).ConfigureAwait(false);
@@ -82,7 +81,7 @@ namespace Microsoft.Graph
         /// Gets the specified ProfilePhoto.
         /// </summary>
         /// <returns>The ProfilePhoto.</returns>
-        public Task<ProfilePhoto> GetAsync()
+        public System.Threading.Tasks.Task<ProfilePhoto> GetAsync()
         {
             return this.GetAsync(CancellationToken.None);
         }
@@ -92,7 +91,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The ProfilePhoto.</returns>
-        public async Task<ProfilePhoto> GetAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<ProfilePhoto> GetAsync(CancellationToken cancellationToken)
         {
             this.Method = "GET";
             var retrievedEntity = await this.SendAsync<ProfilePhoto>(null, cancellationToken).ConfigureAwait(false);
@@ -105,7 +104,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="profilePhotoToUpdate">The ProfilePhoto to update.</param>
         /// <returns>The updated ProfilePhoto.</returns>
-        public Task<ProfilePhoto> UpdateAsync(ProfilePhoto profilePhotoToUpdate)
+        public System.Threading.Tasks.Task<ProfilePhoto> UpdateAsync(ProfilePhoto profilePhotoToUpdate)
         {
             return this.UpdateAsync(profilePhotoToUpdate, CancellationToken.None);
         }
@@ -116,7 +115,7 @@ namespace Microsoft.Graph
         /// <param name="profilePhotoToUpdate">The ProfilePhoto to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The updated ProfilePhoto.</returns>
-        public async Task<ProfilePhoto> UpdateAsync(ProfilePhoto profilePhotoToUpdate, CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<ProfilePhoto> UpdateAsync(ProfilePhoto profilePhotoToUpdate, CancellationToken cancellationToken)
         {
             this.ContentType = "application/json";
             this.Method = "PATCH";
@@ -153,7 +152,7 @@ namespace Microsoft.Graph
         /// <param name="profilePhotoToInitialize">The <see cref="ProfilePhoto"/> with the collection properties to initialize.</param>
         private void InitializeCollectionProperties(ProfilePhoto profilePhotoToInitialize)
         {
-        
+
         }
     }
 }

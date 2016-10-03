@@ -11,13 +11,12 @@ namespace Microsoft.Graph
     using System.Collections.Generic;
     using System.IO;
     using System.Runtime.Serialization;
-
     using Newtonsoft.Json;
 
     /// <summary>
     /// The type File.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     [JsonConverter(typeof(DerivedTypeConverter))]
     public partial class File
     {
@@ -25,13 +24,13 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets or sets hashes.
         /// </summary>
-        [DataMember(Name = "hashes", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "hashes", Required = Required.Default)]
         public Hashes Hashes { get; set; }
     
         /// <summary>
         /// Gets or sets mimeType.
         /// </summary>
-        [DataMember(Name = "mimeType", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "mimeType", Required = Required.Default)]
         public string MimeType { get; set; }
     
         /// <summary>

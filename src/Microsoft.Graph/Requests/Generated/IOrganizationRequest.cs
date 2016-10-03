@@ -11,7 +11,6 @@ namespace Microsoft.Graph
     using System.IO;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The interface IOrganizationRequest.
@@ -23,46 +22,46 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="organizationToCreate">The Organization to create.</param>
         /// <returns>The created Organization.</returns>
-        Task<Organization> CreateAsync(Organization organizationToCreate);        /// <summary>
+        System.Threading.Tasks.Task<Organization> CreateAsync(Organization organizationToCreate);        /// <summary>
         /// Creates the specified Organization using PUT.
         /// </summary>
         /// <param name="organizationToCreate">The Organization to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created Organization.</returns>
-        Task<Organization> CreateAsync(Organization organizationToCreate, CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<Organization> CreateAsync(Organization organizationToCreate, CancellationToken cancellationToken);
 
         /// <summary>
         /// Deletes the specified Organization.
         /// </summary>
         /// <returns>The task to await.</returns>
-        Task DeleteAsync();
+        System.Threading.Tasks.Task DeleteAsync();
 
         /// <summary>
         /// Deletes the specified Organization.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await.</returns>
-        Task DeleteAsync(CancellationToken cancellationToken);
+        System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken);
 
         /// <summary>
         /// Gets the specified Organization.
         /// </summary>
         /// <returns>The Organization.</returns>
-        Task<Organization> GetAsync();
+        System.Threading.Tasks.Task<Organization> GetAsync();
 
         /// <summary>
         /// Gets the specified Organization.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The Organization.</returns>
-        Task<Organization> GetAsync(CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<Organization> GetAsync(CancellationToken cancellationToken);
 
         /// <summary>
         /// Updates the specified Organization using PATCH.
         /// </summary>
         /// <param name="organizationToUpdate">The Organization to update.</param>
         /// <returns>The updated Organization.</returns>
-        Task<Organization> UpdateAsync(Organization organizationToUpdate);
+        System.Threading.Tasks.Task<Organization> UpdateAsync(Organization organizationToUpdate);
 
         /// <summary>
         /// Updates the specified Organization using PATCH.
@@ -70,7 +69,7 @@ namespace Microsoft.Graph
         /// <param name="organizationToUpdate">The Organization to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The updated Organization.</returns>
-        Task<Organization> UpdateAsync(Organization organizationToUpdate, CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<Organization> UpdateAsync(Organization organizationToUpdate, CancellationToken cancellationToken);
 
         /// <summary>
         /// Adds the specified expand value to the request.
@@ -85,5 +84,6 @@ namespace Microsoft.Graph
         /// <param name="value">The select value.</param>
         /// <returns>The request object to send.</returns>
         IOrganizationRequest Select(string value);
+
     }
 }

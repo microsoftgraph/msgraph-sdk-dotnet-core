@@ -12,7 +12,6 @@ namespace Microsoft.Graph
     using System.IO;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The type ContactRequest.
@@ -34,25 +33,25 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Creates the specified Contact using PUT.
+        /// Creates the specified Contact using POST.
         /// </summary>
         /// <param name="contactToCreate">The Contact to create.</param>
         /// <returns>The created Contact.</returns>
-        public Task<Contact> CreateAsync(Contact contactToCreate)
+        public System.Threading.Tasks.Task<Contact> CreateAsync(Contact contactToCreate)
         {
             return this.CreateAsync(contactToCreate, CancellationToken.None);
         }
 
         /// <summary>
-        /// Creates the specified Contact using PUT.
+        /// Creates the specified Contact using POST.
         /// </summary>
         /// <param name="contactToCreate">The Contact to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created Contact.</returns>
-        public async Task<Contact> CreateAsync(Contact contactToCreate, CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Contact> CreateAsync(Contact contactToCreate, CancellationToken cancellationToken)
         {
             this.ContentType = "application/json";
-            this.Method = "PUT";
+            this.Method = "POST";
             var newEntity = await this.SendAsync<Contact>(contactToCreate, cancellationToken).ConfigureAwait(false);
             this.InitializeCollectionProperties(newEntity);
             return newEntity;
@@ -62,7 +61,7 @@ namespace Microsoft.Graph
         /// Deletes the specified Contact.
         /// </summary>
         /// <returns>The task to await.</returns>
-        public Task DeleteAsync()
+        public System.Threading.Tasks.Task DeleteAsync()
         {
             return this.DeleteAsync(CancellationToken.None);
         }
@@ -72,7 +71,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await.</returns>
-        public async Task DeleteAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken)
         {
             this.Method = "DELETE";
             await this.SendAsync<Contact>(null, cancellationToken).ConfigureAwait(false);
@@ -82,7 +81,7 @@ namespace Microsoft.Graph
         /// Gets the specified Contact.
         /// </summary>
         /// <returns>The Contact.</returns>
-        public Task<Contact> GetAsync()
+        public System.Threading.Tasks.Task<Contact> GetAsync()
         {
             return this.GetAsync(CancellationToken.None);
         }
@@ -92,7 +91,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The Contact.</returns>
-        public async Task<Contact> GetAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Contact> GetAsync(CancellationToken cancellationToken)
         {
             this.Method = "GET";
             var retrievedEntity = await this.SendAsync<Contact>(null, cancellationToken).ConfigureAwait(false);
@@ -105,7 +104,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="contactToUpdate">The Contact to update.</param>
         /// <returns>The updated Contact.</returns>
-        public Task<Contact> UpdateAsync(Contact contactToUpdate)
+        public System.Threading.Tasks.Task<Contact> UpdateAsync(Contact contactToUpdate)
         {
             return this.UpdateAsync(contactToUpdate, CancellationToken.None);
         }
@@ -116,7 +115,7 @@ namespace Microsoft.Graph
         /// <param name="contactToUpdate">The Contact to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The updated Contact.</returns>
-        public async Task<Contact> UpdateAsync(Contact contactToUpdate, CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Contact> UpdateAsync(Contact contactToUpdate, CancellationToken cancellationToken)
         {
             this.ContentType = "application/json";
             this.Method = "PATCH";
@@ -153,7 +152,29 @@ namespace Microsoft.Graph
         /// <param name="contactToInitialize">The <see cref="Contact"/> with the collection properties to initialize.</param>
         private void InitializeCollectionProperties(Contact contactToInitialize)
         {
-        
+
+            if (contactToInitialize != null && contactToInitialize.AdditionalData != null)
+            {
+
+                if (contactToInitialize.Extensions != null && contactToInitialize.Extensions.CurrentPage != null)
+                {
+                    contactToInitialize.Extensions.AdditionalData = contactToInitialize.AdditionalData;
+
+                    object nextPageLink;
+                    contactToInitialize.AdditionalData.TryGetValue("extensions@odata.nextLink", out nextPageLink);
+                    var nextPageLinkString = nextPageLink as string;
+
+                    if (!string.IsNullOrEmpty(nextPageLinkString))
+                    {
+                        contactToInitialize.Extensions.InitializeNextPageRequest(
+                            this.Client,
+                            nextPageLinkString);
+                    }
+                }
+
+            }
+
+
         }
     }
 }

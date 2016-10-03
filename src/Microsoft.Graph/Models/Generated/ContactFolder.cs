@@ -11,38 +11,37 @@ namespace Microsoft.Graph
     using System.Collections.Generic;
     using System.IO;
     using System.Runtime.Serialization;
-
     using Newtonsoft.Json;
 
     /// <summary>
     /// The type Contact Folder.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class ContactFolder : Entity
     {
     
         /// <summary>
         /// Gets or sets parent folder id.
         /// </summary>
-        [DataMember(Name = "parentFolderId", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "parentFolderId", Required = Required.Default)]
         public string ParentFolderId { get; set; }
     
         /// <summary>
         /// Gets or sets display name.
         /// </summary>
-        [DataMember(Name = "displayName", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "displayName", Required = Required.Default)]
         public string DisplayName { get; set; }
     
         /// <summary>
         /// Gets or sets contacts.
         /// </summary>
-        [DataMember(Name = "contacts", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "contacts", Required = Required.Default)]
         public IContactFolderContactsCollectionPage Contacts { get; set; }
     
         /// <summary>
         /// Gets or sets child folders.
         /// </summary>
-        [DataMember(Name = "childFolders", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "childFolders", Required = Required.Default)]
         public IContactFolderChildFoldersCollectionPage ChildFolders { get; set; }
     
     }

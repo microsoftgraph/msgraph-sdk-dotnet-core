@@ -11,13 +11,12 @@ namespace Microsoft.Graph
     using System.Collections.Generic;
     using System.IO;
     using System.Runtime.Serialization;
-
     using Newtonsoft.Json;
 
     /// <summary>
     /// The type AlternativeSecurityId.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     [JsonConverter(typeof(DerivedTypeConverter))]
     public partial class AlternativeSecurityId
     {
@@ -25,19 +24,19 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets or sets type.
         /// </summary>
-        [DataMember(Name = "type", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "type", Required = Required.Default)]
         public Int32? Type { get; set; }
     
         /// <summary>
         /// Gets or sets identityProvider.
         /// </summary>
-        [DataMember(Name = "identityProvider", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "identityProvider", Required = Required.Default)]
         public string IdentityProvider { get; set; }
     
         /// <summary>
         /// Gets or sets key.
         /// </summary>
-        [DataMember(Name = "key", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "key", Required = Required.Default)]
         public byte[] Key { get; set; }
     
         /// <summary>

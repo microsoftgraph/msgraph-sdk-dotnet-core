@@ -11,194 +11,199 @@ namespace Microsoft.Graph
     using System.Collections.Generic;
     using System.IO;
     using System.Runtime.Serialization;
-
     using Newtonsoft.Json;
 
     /// <summary>
     /// The type Event.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class Event : OutlookItem
     {
     
         /// <summary>
         /// Gets or sets original start time zone.
         /// </summary>
-        [DataMember(Name = "originalStartTimeZone", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "originalStartTimeZone", Required = Required.Default)]
         public string OriginalStartTimeZone { get; set; }
     
         /// <summary>
         /// Gets or sets original end time zone.
         /// </summary>
-        [DataMember(Name = "originalEndTimeZone", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "originalEndTimeZone", Required = Required.Default)]
         public string OriginalEndTimeZone { get; set; }
     
         /// <summary>
         /// Gets or sets response status.
         /// </summary>
-        [DataMember(Name = "responseStatus", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "responseStatus", Required = Required.Default)]
         public ResponseStatus ResponseStatus { get; set; }
     
         /// <summary>
         /// Gets or sets i cal uid.
         /// </summary>
-        [DataMember(Name = "iCalUId", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "iCalUId", Required = Required.Default)]
         public string ICalUId { get; set; }
     
         /// <summary>
         /// Gets or sets reminder minutes before start.
         /// </summary>
-        [DataMember(Name = "reminderMinutesBeforeStart", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "reminderMinutesBeforeStart", Required = Required.Default)]
         public Int32? ReminderMinutesBeforeStart { get; set; }
     
         /// <summary>
         /// Gets or sets is reminder on.
         /// </summary>
-        [DataMember(Name = "isReminderOn", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "isReminderOn", Required = Required.Default)]
         public bool? IsReminderOn { get; set; }
     
         /// <summary>
         /// Gets or sets has attachments.
         /// </summary>
-        [DataMember(Name = "hasAttachments", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "hasAttachments", Required = Required.Default)]
         public bool? HasAttachments { get; set; }
     
         /// <summary>
         /// Gets or sets subject.
         /// </summary>
-        [DataMember(Name = "subject", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "subject", Required = Required.Default)]
         public string Subject { get; set; }
     
         /// <summary>
         /// Gets or sets body.
         /// </summary>
-        [DataMember(Name = "body", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "body", Required = Required.Default)]
         public ItemBody Body { get; set; }
     
         /// <summary>
         /// Gets or sets body preview.
         /// </summary>
-        [DataMember(Name = "bodyPreview", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "bodyPreview", Required = Required.Default)]
         public string BodyPreview { get; set; }
     
         /// <summary>
         /// Gets or sets importance.
         /// </summary>
-        [DataMember(Name = "importance", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "importance", Required = Required.Default)]
         public Importance? Importance { get; set; }
     
         /// <summary>
         /// Gets or sets sensitivity.
         /// </summary>
-        [DataMember(Name = "sensitivity", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "sensitivity", Required = Required.Default)]
         public Sensitivity? Sensitivity { get; set; }
     
         /// <summary>
         /// Gets or sets start.
         /// </summary>
-        [DataMember(Name = "start", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "start", Required = Required.Default)]
         public DateTimeTimeZone Start { get; set; }
     
         /// <summary>
         /// Gets or sets original start.
         /// </summary>
-        [DataMember(Name = "originalStart", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "originalStart", Required = Required.Default)]
         public DateTimeOffset? OriginalStart { get; set; }
     
         /// <summary>
         /// Gets or sets end.
         /// </summary>
-        [DataMember(Name = "end", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "end", Required = Required.Default)]
         public DateTimeTimeZone End { get; set; }
     
         /// <summary>
         /// Gets or sets location.
         /// </summary>
-        [DataMember(Name = "location", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "location", Required = Required.Default)]
         public Location Location { get; set; }
     
         /// <summary>
         /// Gets or sets is all day.
         /// </summary>
-        [DataMember(Name = "isAllDay", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "isAllDay", Required = Required.Default)]
         public bool? IsAllDay { get; set; }
     
         /// <summary>
         /// Gets or sets is cancelled.
         /// </summary>
-        [DataMember(Name = "isCancelled", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "isCancelled", Required = Required.Default)]
         public bool? IsCancelled { get; set; }
     
         /// <summary>
         /// Gets or sets is organizer.
         /// </summary>
-        [DataMember(Name = "isOrganizer", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "isOrganizer", Required = Required.Default)]
         public bool? IsOrganizer { get; set; }
     
         /// <summary>
         /// Gets or sets recurrence.
         /// </summary>
-        [DataMember(Name = "recurrence", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "recurrence", Required = Required.Default)]
         public PatternedRecurrence Recurrence { get; set; }
     
         /// <summary>
         /// Gets or sets response requested.
         /// </summary>
-        [DataMember(Name = "responseRequested", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "responseRequested", Required = Required.Default)]
         public bool? ResponseRequested { get; set; }
     
         /// <summary>
         /// Gets or sets series master id.
         /// </summary>
-        [DataMember(Name = "seriesMasterId", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "seriesMasterId", Required = Required.Default)]
         public string SeriesMasterId { get; set; }
     
         /// <summary>
         /// Gets or sets show as.
         /// </summary>
-        [DataMember(Name = "showAs", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "showAs", Required = Required.Default)]
         public FreeBusyStatus? ShowAs { get; set; }
     
         /// <summary>
         /// Gets or sets type.
         /// </summary>
-        [DataMember(Name = "type", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "type", Required = Required.Default)]
         public EventType? Type { get; set; }
     
         /// <summary>
         /// Gets or sets attendees.
         /// </summary>
-        [DataMember(Name = "attendees", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "attendees", Required = Required.Default)]
         public IEnumerable<Attendee> Attendees { get; set; }
     
         /// <summary>
         /// Gets or sets organizer.
         /// </summary>
-        [DataMember(Name = "organizer", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "organizer", Required = Required.Default)]
         public Recipient Organizer { get; set; }
     
         /// <summary>
         /// Gets or sets web link.
         /// </summary>
-        [DataMember(Name = "webLink", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "webLink", Required = Required.Default)]
         public string WebLink { get; set; }
     
         /// <summary>
         /// Gets or sets calendar.
         /// </summary>
-        [DataMember(Name = "calendar", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "calendar", Required = Required.Default)]
         public Calendar Calendar { get; set; }
     
         /// <summary>
         /// Gets or sets instances.
         /// </summary>
-        [DataMember(Name = "instances", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "instances", Required = Required.Default)]
         public IEventInstancesCollectionPage Instances { get; set; }
+    
+        /// <summary>
+        /// Gets or sets extensions.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "extensions", Required = Required.Default)]
+        public IEventExtensionsCollectionPage Extensions { get; set; }
     
         /// <summary>
         /// Gets or sets attachments.
         /// </summary>
-        [DataMember(Name = "attachments", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "attachments", Required = Required.Default)]
         public IEventAttachmentsCollectionPage Attachments { get; set; }
     
     }

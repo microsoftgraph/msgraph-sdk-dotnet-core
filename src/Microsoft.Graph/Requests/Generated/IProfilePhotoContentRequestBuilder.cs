@@ -17,7 +17,8 @@ namespace Microsoft.Graph
         /// <summary>
         /// Builds the request.
         /// </summary>
+        /// <param name="options">The query and header options for the request.</param>
         /// <returns>The built request.</returns>
-        IProfilePhotoContentRequest Request();
+        IProfilePhotoContentRequest Request(IEnumerable<Option> options = null);
     }
 }

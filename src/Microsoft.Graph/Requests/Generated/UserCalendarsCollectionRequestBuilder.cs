@@ -13,7 +13,7 @@ namespace Microsoft.Graph
     /// The type UserCalendarsCollectionRequestBuilder.
     /// </summary>
     public partial class UserCalendarsCollectionRequestBuilder : BaseRequestBuilder, IUserCalendarsCollectionRequestBuilder
-    {  
+    {
         /// <summary>
         /// Constructs a new UserCalendarsCollectionRequestBuilder.
         /// </summary>
@@ -57,5 +57,7 @@ namespace Microsoft.Graph
                 return new CalendarRequestBuilder(this.AppendSegmentToRequestUrl(id), this.Client);
             }
         }
+
+        
     }
 }

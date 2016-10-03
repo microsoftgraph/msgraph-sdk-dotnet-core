@@ -9,13 +9,13 @@ namespace Microsoft.Graph
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
 
     /// <summary>
     /// The interface IDriveRecentRequestBuilder.
     /// </summary>
     public partial interface IDriveRecentRequestBuilder
     {
-    
         /// <summary>
         /// Builds the request.
         /// </summary>

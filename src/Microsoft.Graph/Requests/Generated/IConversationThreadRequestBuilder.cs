@@ -9,6 +9,7 @@ namespace Microsoft.Graph
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
 
     /// <summary>
     /// The interface IConversationThreadRequestBuilder.
@@ -27,19 +28,19 @@ namespace Microsoft.Graph
         /// <param name="options">The query and header options for the request.</param>
         /// <returns>The built request.</returns>
         new IConversationThreadRequest Request(IEnumerable<Option> options);
-        
+    
         /// <summary>
         /// Gets the request builder for Posts.
         /// </summary>
         /// <returns>The <see cref="IConversationThreadPostsCollectionRequestBuilder"/>.</returns>
         IConversationThreadPostsCollectionRequestBuilder Posts { get; }
-        
+    
         /// <summary>
         /// Gets the request builder for ConversationThreadReply.
         /// </summary>
         /// <returns>The <see cref="IConversationThreadReplyRequestBuilder"/>.</returns>
         IConversationThreadReplyRequestBuilder Reply(
-            Post post);
+            Post Post);
     
     }
 }

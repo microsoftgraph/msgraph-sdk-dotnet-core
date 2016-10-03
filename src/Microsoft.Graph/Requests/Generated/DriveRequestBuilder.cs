@@ -9,6 +9,7 @@ namespace Microsoft.Graph
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
 
     /// <summary>
     /// The type DriveRequestBuilder.
@@ -46,7 +47,7 @@ namespace Microsoft.Graph
         {
             return new DriveRequest(this.RequestUrl, this.Client, options);
         }
-        
+    
         /// <summary>
         /// Gets the request builder for Items.
         /// </summary>
@@ -82,7 +83,7 @@ namespace Microsoft.Graph
                 return new DriveItemRequestBuilder(this.AppendSegmentToRequestUrl("root"), this.Client);
             }
         }
-        
+    
         /// <summary>
         /// Gets the request builder for DriveRecent.
         /// </summary>

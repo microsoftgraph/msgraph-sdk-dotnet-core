@@ -11,7 +11,6 @@ namespace Microsoft.Graph
     using System.IO;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The interface IGroupRequest.
@@ -23,46 +22,46 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="groupToCreate">The Group to create.</param>
         /// <returns>The created Group.</returns>
-        Task<Group> CreateAsync(Group groupToCreate);        /// <summary>
+        System.Threading.Tasks.Task<Group> CreateAsync(Group groupToCreate);        /// <summary>
         /// Creates the specified Group using PUT.
         /// </summary>
         /// <param name="groupToCreate">The Group to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created Group.</returns>
-        Task<Group> CreateAsync(Group groupToCreate, CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<Group> CreateAsync(Group groupToCreate, CancellationToken cancellationToken);
 
         /// <summary>
         /// Deletes the specified Group.
         /// </summary>
         /// <returns>The task to await.</returns>
-        Task DeleteAsync();
+        System.Threading.Tasks.Task DeleteAsync();
 
         /// <summary>
         /// Deletes the specified Group.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await.</returns>
-        Task DeleteAsync(CancellationToken cancellationToken);
+        System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken);
 
         /// <summary>
         /// Gets the specified Group.
         /// </summary>
         /// <returns>The Group.</returns>
-        Task<Group> GetAsync();
+        System.Threading.Tasks.Task<Group> GetAsync();
 
         /// <summary>
         /// Gets the specified Group.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The Group.</returns>
-        Task<Group> GetAsync(CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<Group> GetAsync(CancellationToken cancellationToken);
 
         /// <summary>
         /// Updates the specified Group using PATCH.
         /// </summary>
         /// <param name="groupToUpdate">The Group to update.</param>
         /// <returns>The updated Group.</returns>
-        Task<Group> UpdateAsync(Group groupToUpdate);
+        System.Threading.Tasks.Task<Group> UpdateAsync(Group groupToUpdate);
 
         /// <summary>
         /// Updates the specified Group using PATCH.
@@ -70,7 +69,7 @@ namespace Microsoft.Graph
         /// <param name="groupToUpdate">The Group to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The updated Group.</returns>
-        Task<Group> UpdateAsync(Group groupToUpdate, CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<Group> UpdateAsync(Group groupToUpdate, CancellationToken cancellationToken);
 
         /// <summary>
         /// Adds the specified expand value to the request.
@@ -85,5 +84,6 @@ namespace Microsoft.Graph
         /// <param name="value">The select value.</param>
         /// <returns>The request object to send.</returns>
         IGroupRequest Select(string value);
+
     }
 }

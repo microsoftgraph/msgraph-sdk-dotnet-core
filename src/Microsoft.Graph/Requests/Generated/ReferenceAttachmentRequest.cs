@@ -12,7 +12,6 @@ namespace Microsoft.Graph
     using System.IO;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The type ReferenceAttachmentRequest.
@@ -34,25 +33,25 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Creates the specified ReferenceAttachment using PUT.
+        /// Creates the specified ReferenceAttachment using POST.
         /// </summary>
         /// <param name="referenceAttachmentToCreate">The ReferenceAttachment to create.</param>
         /// <returns>The created ReferenceAttachment.</returns>
-        public Task<ReferenceAttachment> CreateAsync(ReferenceAttachment referenceAttachmentToCreate)
+        public System.Threading.Tasks.Task<ReferenceAttachment> CreateAsync(ReferenceAttachment referenceAttachmentToCreate)
         {
             return this.CreateAsync(referenceAttachmentToCreate, CancellationToken.None);
         }
 
         /// <summary>
-        /// Creates the specified ReferenceAttachment using PUT.
+        /// Creates the specified ReferenceAttachment using POST.
         /// </summary>
         /// <param name="referenceAttachmentToCreate">The ReferenceAttachment to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created ReferenceAttachment.</returns>
-        public async Task<ReferenceAttachment> CreateAsync(ReferenceAttachment referenceAttachmentToCreate, CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<ReferenceAttachment> CreateAsync(ReferenceAttachment referenceAttachmentToCreate, CancellationToken cancellationToken)
         {
             this.ContentType = "application/json";
-            this.Method = "PUT";
+            this.Method = "POST";
             var newEntity = await this.SendAsync<ReferenceAttachment>(referenceAttachmentToCreate, cancellationToken).ConfigureAwait(false);
             this.InitializeCollectionProperties(newEntity);
             return newEntity;
@@ -62,7 +61,7 @@ namespace Microsoft.Graph
         /// Deletes the specified ReferenceAttachment.
         /// </summary>
         /// <returns>The task to await.</returns>
-        public Task DeleteAsync()
+        public System.Threading.Tasks.Task DeleteAsync()
         {
             return this.DeleteAsync(CancellationToken.None);
         }
@@ -72,7 +71,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await.</returns>
-        public async Task DeleteAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken)
         {
             this.Method = "DELETE";
             await this.SendAsync<ReferenceAttachment>(null, cancellationToken).ConfigureAwait(false);
@@ -82,7 +81,7 @@ namespace Microsoft.Graph
         /// Gets the specified ReferenceAttachment.
         /// </summary>
         /// <returns>The ReferenceAttachment.</returns>
-        public Task<ReferenceAttachment> GetAsync()
+        public System.Threading.Tasks.Task<ReferenceAttachment> GetAsync()
         {
             return this.GetAsync(CancellationToken.None);
         }
@@ -92,7 +91,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The ReferenceAttachment.</returns>
-        public async Task<ReferenceAttachment> GetAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<ReferenceAttachment> GetAsync(CancellationToken cancellationToken)
         {
             this.Method = "GET";
             var retrievedEntity = await this.SendAsync<ReferenceAttachment>(null, cancellationToken).ConfigureAwait(false);
@@ -105,7 +104,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="referenceAttachmentToUpdate">The ReferenceAttachment to update.</param>
         /// <returns>The updated ReferenceAttachment.</returns>
-        public Task<ReferenceAttachment> UpdateAsync(ReferenceAttachment referenceAttachmentToUpdate)
+        public System.Threading.Tasks.Task<ReferenceAttachment> UpdateAsync(ReferenceAttachment referenceAttachmentToUpdate)
         {
             return this.UpdateAsync(referenceAttachmentToUpdate, CancellationToken.None);
         }
@@ -116,7 +115,7 @@ namespace Microsoft.Graph
         /// <param name="referenceAttachmentToUpdate">The ReferenceAttachment to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The updated ReferenceAttachment.</returns>
-        public async Task<ReferenceAttachment> UpdateAsync(ReferenceAttachment referenceAttachmentToUpdate, CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<ReferenceAttachment> UpdateAsync(ReferenceAttachment referenceAttachmentToUpdate, CancellationToken cancellationToken)
         {
             this.ContentType = "application/json";
             this.Method = "PATCH";
@@ -153,7 +152,7 @@ namespace Microsoft.Graph
         /// <param name="referenceAttachmentToInitialize">The <see cref="ReferenceAttachment"/> with the collection properties to initialize.</param>
         private void InitializeCollectionProperties(ReferenceAttachment referenceAttachmentToInitialize)
         {
-        
+
         }
     }
 }

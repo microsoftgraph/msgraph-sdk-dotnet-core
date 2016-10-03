@@ -13,7 +13,7 @@ namespace Microsoft.Graph
     /// The type CalendarEventsCollectionRequestBuilder.
     /// </summary>
     public partial class CalendarEventsCollectionRequestBuilder : BaseRequestBuilder, ICalendarEventsCollectionRequestBuilder
-    {  
+    {
         /// <summary>
         /// Constructs a new CalendarEventsCollectionRequestBuilder.
         /// </summary>
@@ -57,5 +57,7 @@ namespace Microsoft.Graph
                 return new EventRequestBuilder(this.AppendSegmentToRequestUrl(id), this.Client);
             }
         }
+
+        
     }
 }

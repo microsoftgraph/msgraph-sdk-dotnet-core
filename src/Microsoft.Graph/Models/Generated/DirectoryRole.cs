@@ -11,38 +11,37 @@ namespace Microsoft.Graph
     using System.Collections.Generic;
     using System.IO;
     using System.Runtime.Serialization;
-
     using Newtonsoft.Json;
 
     /// <summary>
     /// The type Directory Role.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class DirectoryRole : DirectoryObject
     {
     
         /// <summary>
         /// Gets or sets description.
         /// </summary>
-        [DataMember(Name = "description", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "description", Required = Required.Default)]
         public string Description { get; set; }
     
         /// <summary>
         /// Gets or sets display name.
         /// </summary>
-        [DataMember(Name = "displayName", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "displayName", Required = Required.Default)]
         public string DisplayName { get; set; }
     
         /// <summary>
         /// Gets or sets role template id.
         /// </summary>
-        [DataMember(Name = "roleTemplateId", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "roleTemplateId", Required = Required.Default)]
         public string RoleTemplateId { get; set; }
     
         /// <summary>
         /// Gets or sets members.
         /// </summary>
-        [DataMember(Name = "members", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "members", Required = Required.Default)]
         public IDirectoryRoleMembersCollectionWithReferencesPage Members { get; set; }
     
     }

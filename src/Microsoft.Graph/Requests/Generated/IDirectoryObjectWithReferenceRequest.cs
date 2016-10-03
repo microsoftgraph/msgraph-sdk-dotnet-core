@@ -11,7 +11,6 @@ namespace Microsoft.Graph
     using System.IO;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The interface IDirectoryObjectWithReferenceRequest.
@@ -22,14 +21,14 @@ namespace Microsoft.Graph
         /// Gets the specified DirectoryObject.
         /// </summary>
         /// <returns>The DirectoryObject.</returns>
-        Task<DirectoryObject> GetAsync();
+        System.Threading.Tasks.Task<DirectoryObject> GetAsync();
 
         /// <summary>
         /// Gets the specified DirectoryObject.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The DirectoryObject.</returns>
-        Task<DirectoryObject> GetAsync(CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<DirectoryObject> GetAsync(CancellationToken cancellationToken);
 
         /// <summary>
         /// Adds the specified expand value to the request.
@@ -44,5 +43,6 @@ namespace Microsoft.Graph
         /// <param name="value">The select value.</param>
         /// <returns>The request object to send.</returns>
         IDirectoryObjectWithReferenceRequest Select(string value);
+
     }
 }

@@ -12,7 +12,6 @@ namespace Microsoft.Graph
     using System.IO;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The type ThumbnailRequest.
@@ -34,25 +33,25 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Creates the specified Thumbnail using PUT.
+        /// Creates the specified Thumbnail using POST.
         /// </summary>
         /// <param name="thumbnailToCreate">The Thumbnail to create.</param>
         /// <returns>The created Thumbnail.</returns>
-        public Task<Thumbnail> CreateAsync(Thumbnail thumbnailToCreate)
+        public System.Threading.Tasks.Task<Thumbnail> CreateAsync(Thumbnail thumbnailToCreate)
         {
             return this.CreateAsync(thumbnailToCreate, CancellationToken.None);
         }
 
         /// <summary>
-        /// Creates the specified Thumbnail using PUT.
+        /// Creates the specified Thumbnail using POST.
         /// </summary>
         /// <param name="thumbnailToCreate">The Thumbnail to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created Thumbnail.</returns>
-        public async Task<Thumbnail> CreateAsync(Thumbnail thumbnailToCreate, CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Thumbnail> CreateAsync(Thumbnail thumbnailToCreate, CancellationToken cancellationToken)
         {
             this.ContentType = "application/json";
-            this.Method = "PUT";
+            this.Method = "POST";
             var newEntity = await this.SendAsync<Thumbnail>(thumbnailToCreate, cancellationToken).ConfigureAwait(false);
             this.InitializeCollectionProperties(newEntity);
             return newEntity;
@@ -62,7 +61,7 @@ namespace Microsoft.Graph
         /// Deletes the specified Thumbnail.
         /// </summary>
         /// <returns>The task to await.</returns>
-        public Task DeleteAsync()
+        public System.Threading.Tasks.Task DeleteAsync()
         {
             return this.DeleteAsync(CancellationToken.None);
         }
@@ -72,7 +71,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await.</returns>
-        public async Task DeleteAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken)
         {
             this.Method = "DELETE";
             await this.SendAsync<Thumbnail>(null, cancellationToken).ConfigureAwait(false);
@@ -82,7 +81,7 @@ namespace Microsoft.Graph
         /// Gets the specified Thumbnail.
         /// </summary>
         /// <returns>The Thumbnail.</returns>
-        public Task<Thumbnail> GetAsync()
+        public System.Threading.Tasks.Task<Thumbnail> GetAsync()
         {
             return this.GetAsync(CancellationToken.None);
         }
@@ -92,7 +91,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The Thumbnail.</returns>
-        public async Task<Thumbnail> GetAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Thumbnail> GetAsync(CancellationToken cancellationToken)
         {
             this.Method = "GET";
             var retrievedEntity = await this.SendAsync<Thumbnail>(null, cancellationToken).ConfigureAwait(false);
@@ -105,7 +104,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="thumbnailToUpdate">The Thumbnail to update.</param>
         /// <returns>The updated Thumbnail.</returns>
-        public Task<Thumbnail> UpdateAsync(Thumbnail thumbnailToUpdate)
+        public System.Threading.Tasks.Task<Thumbnail> UpdateAsync(Thumbnail thumbnailToUpdate)
         {
             return this.UpdateAsync(thumbnailToUpdate, CancellationToken.None);
         }
@@ -116,7 +115,7 @@ namespace Microsoft.Graph
         /// <param name="thumbnailToUpdate">The Thumbnail to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The updated Thumbnail.</returns>
-        public async Task<Thumbnail> UpdateAsync(Thumbnail thumbnailToUpdate, CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Thumbnail> UpdateAsync(Thumbnail thumbnailToUpdate, CancellationToken cancellationToken)
         {
             this.ContentType = "application/json";
             this.Method = "PATCH";
@@ -153,7 +152,7 @@ namespace Microsoft.Graph
         /// <param name="thumbnailToInitialize">The <see cref="Thumbnail"/> with the collection properties to initialize.</param>
         private void InitializeCollectionProperties(Thumbnail thumbnailToInitialize)
         {
-        
+
         }
     }
 }

@@ -11,116 +11,115 @@ namespace Microsoft.Graph
     using System.Collections.Generic;
     using System.IO;
     using System.Runtime.Serialization;
-
     using Newtonsoft.Json;
 
     /// <summary>
     /// The type Device.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class Device : DirectoryObject
     {
     
         /// <summary>
         /// Gets or sets account enabled.
         /// </summary>
-        [DataMember(Name = "accountEnabled", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "accountEnabled", Required = Required.Default)]
         public bool? AccountEnabled { get; set; }
     
         /// <summary>
         /// Gets or sets alternative security ids.
         /// </summary>
-        [DataMember(Name = "alternativeSecurityIds", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "alternativeSecurityIds", Required = Required.Default)]
         public IEnumerable<AlternativeSecurityId> AlternativeSecurityIds { get; set; }
     
         /// <summary>
         /// Gets or sets approximate last sign in date time.
         /// </summary>
-        [DataMember(Name = "approximateLastSignInDateTime", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "approximateLastSignInDateTime", Required = Required.Default)]
         public DateTimeOffset? ApproximateLastSignInDateTime { get; set; }
     
         /// <summary>
         /// Gets or sets device id.
         /// </summary>
-        [DataMember(Name = "deviceId", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "deviceId", Required = Required.Default)]
         public string DeviceId { get; set; }
     
         /// <summary>
         /// Gets or sets device metadata.
         /// </summary>
-        [DataMember(Name = "deviceMetadata", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "deviceMetadata", Required = Required.Default)]
         public string DeviceMetadata { get; set; }
     
         /// <summary>
         /// Gets or sets device version.
         /// </summary>
-        [DataMember(Name = "deviceVersion", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "deviceVersion", Required = Required.Default)]
         public Int32? DeviceVersion { get; set; }
     
         /// <summary>
         /// Gets or sets display name.
         /// </summary>
-        [DataMember(Name = "displayName", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "displayName", Required = Required.Default)]
         public string DisplayName { get; set; }
     
         /// <summary>
         /// Gets or sets is compliant.
         /// </summary>
-        [DataMember(Name = "isCompliant", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "isCompliant", Required = Required.Default)]
         public bool? IsCompliant { get; set; }
     
         /// <summary>
         /// Gets or sets is managed.
         /// </summary>
-        [DataMember(Name = "isManaged", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "isManaged", Required = Required.Default)]
         public bool? IsManaged { get; set; }
     
         /// <summary>
         /// Gets or sets on premises last sync date time.
         /// </summary>
-        [DataMember(Name = "onPremisesLastSyncDateTime", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "onPremisesLastSyncDateTime", Required = Required.Default)]
         public DateTimeOffset? OnPremisesLastSyncDateTime { get; set; }
     
         /// <summary>
         /// Gets or sets on premises sync enabled.
         /// </summary>
-        [DataMember(Name = "onPremisesSyncEnabled", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "onPremisesSyncEnabled", Required = Required.Default)]
         public bool? OnPremisesSyncEnabled { get; set; }
     
         /// <summary>
         /// Gets or sets operating system.
         /// </summary>
-        [DataMember(Name = "operatingSystem", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "operatingSystem", Required = Required.Default)]
         public string OperatingSystem { get; set; }
     
         /// <summary>
         /// Gets or sets operating system version.
         /// </summary>
-        [DataMember(Name = "operatingSystemVersion", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "operatingSystemVersion", Required = Required.Default)]
         public string OperatingSystemVersion { get; set; }
     
         /// <summary>
         /// Gets or sets physical ids.
         /// </summary>
-        [DataMember(Name = "physicalIds", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "physicalIds", Required = Required.Default)]
         public IEnumerable<string> PhysicalIds { get; set; }
     
         /// <summary>
         /// Gets or sets trust type.
         /// </summary>
-        [DataMember(Name = "trustType", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "trustType", Required = Required.Default)]
         public string TrustType { get; set; }
     
         /// <summary>
         /// Gets or sets registered owners.
         /// </summary>
-        [DataMember(Name = "registeredOwners", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "registeredOwners", Required = Required.Default)]
         public IDeviceRegisteredOwnersCollectionWithReferencesPage RegisteredOwners { get; set; }
     
         /// <summary>
         /// Gets or sets registered users.
         /// </summary>
-        [DataMember(Name = "registeredUsers", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "registeredUsers", Required = Required.Default)]
         public IDeviceRegisteredUsersCollectionWithReferencesPage RegisteredUsers { get; set; }
     
     }

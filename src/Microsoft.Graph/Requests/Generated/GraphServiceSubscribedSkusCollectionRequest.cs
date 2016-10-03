@@ -11,7 +11,6 @@ namespace Microsoft.Graph
     using System.Collections.Generic;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The type GraphServiceSubscribedSkusCollectionRequest.
@@ -37,7 +36,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="subscribedSku">The SubscribedSku to add.</param>
         /// <returns>The created SubscribedSku.</returns>
-        public Task<SubscribedSku> AddAsync(SubscribedSku subscribedSku)
+        public System.Threading.Tasks.Task<SubscribedSku> AddAsync(SubscribedSku subscribedSku)
         {
             return this.AddAsync(subscribedSku, CancellationToken.None);
         }
@@ -48,28 +47,28 @@ namespace Microsoft.Graph
         /// <param name="subscribedSku">The SubscribedSku to add.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created SubscribedSku.</returns>
-        public Task<SubscribedSku> AddAsync(SubscribedSku subscribedSku, CancellationToken cancellationToken)
+        public System.Threading.Tasks.Task<SubscribedSku> AddAsync(SubscribedSku subscribedSku, CancellationToken cancellationToken)
         {
             this.ContentType = "application/json";
             this.Method = "POST";
             return this.SendAsync<SubscribedSku>(subscribedSku, cancellationToken);
         }
-  
+
         /// <summary>
         /// Gets the collection page.
         /// </summary>
         /// <returns>The collection page.</returns>
-        public Task<IGraphServiceSubscribedSkusCollectionPage> GetAsync()
+        public System.Threading.Tasks.Task<IGraphServiceSubscribedSkusCollectionPage> GetAsync()
         {
             return this.GetAsync(CancellationToken.None);
         }
-        
+
         /// <summary>
         /// Gets the collection page.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The collection page.</returns>
-        public async Task<IGraphServiceSubscribedSkusCollectionPage> GetAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<IGraphServiceSubscribedSkusCollectionPage> GetAsync(CancellationToken cancellationToken)
         {
             this.Method = "GET";
             var response = await this.SendAsync<GraphServiceSubscribedSkusCollectionResponse>(null, cancellationToken).ConfigureAwait(false);
@@ -88,7 +87,7 @@ namespace Microsoft.Graph
                             this.Client,
                             nextPageLinkString);
                     }
-                    
+
                     // Copy the additional data collection to the page itself so that information is not lost
                     response.Value.AdditionalData = response.AdditionalData;
                 }
@@ -131,7 +130,7 @@ namespace Microsoft.Graph
             this.QueryOptions.Add(new QueryOption("$top", value.ToString()));
             return this;
         }
-        
+
         /// <summary>
         /// Adds the specified filter value to the request.
         /// </summary>

@@ -13,7 +13,7 @@ namespace Microsoft.Graph
     /// The type UserMessagesCollectionRequestBuilder.
     /// </summary>
     public partial class UserMessagesCollectionRequestBuilder : BaseRequestBuilder, IUserMessagesCollectionRequestBuilder
-    {  
+    {
         /// <summary>
         /// Constructs a new UserMessagesCollectionRequestBuilder.
         /// </summary>
@@ -57,5 +57,7 @@ namespace Microsoft.Graph
                 return new MessageRequestBuilder(this.AppendSegmentToRequestUrl(id), this.Client);
             }
         }
+
+        
     }
 }

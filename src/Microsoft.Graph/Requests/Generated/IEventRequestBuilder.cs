@@ -9,6 +9,7 @@ namespace Microsoft.Graph
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
 
     /// <summary>
     /// The interface IEventRequestBuilder.
@@ -27,7 +28,7 @@ namespace Microsoft.Graph
         /// <param name="options">The query and header options for the request.</param>
         /// <returns>The built request.</returns>
         new IEventRequest Request(IEnumerable<Option> options);
-        
+    
         /// <summary>
         /// Gets the request builder for Calendar.
         /// </summary>
@@ -41,41 +42,47 @@ namespace Microsoft.Graph
         IEventInstancesCollectionRequestBuilder Instances { get; }
 
         /// <summary>
+        /// Gets the request builder for Extensions.
+        /// </summary>
+        /// <returns>The <see cref="IEventExtensionsCollectionRequestBuilder"/>.</returns>
+        IEventExtensionsCollectionRequestBuilder Extensions { get; }
+
+        /// <summary>
         /// Gets the request builder for Attachments.
         /// </summary>
         /// <returns>The <see cref="IEventAttachmentsCollectionRequestBuilder"/>.</returns>
         IEventAttachmentsCollectionRequestBuilder Attachments { get; }
-        
+    
         /// <summary>
         /// Gets the request builder for EventAccept.
         /// </summary>
         /// <returns>The <see cref="IEventAcceptRequestBuilder"/>.</returns>
         IEventAcceptRequestBuilder Accept(
-            string comment = null,
-            bool? sendResponse = null);
+            string Comment = null,
+            bool? SendResponse = null);
 
         /// <summary>
         /// Gets the request builder for EventDecline.
         /// </summary>
         /// <returns>The <see cref="IEventDeclineRequestBuilder"/>.</returns>
         IEventDeclineRequestBuilder Decline(
-            string comment = null,
-            bool? sendResponse = null);
+            string Comment = null,
+            bool? SendResponse = null);
 
         /// <summary>
         /// Gets the request builder for EventTentativelyAccept.
         /// </summary>
         /// <returns>The <see cref="IEventTentativelyAcceptRequestBuilder"/>.</returns>
         IEventTentativelyAcceptRequestBuilder TentativelyAccept(
-            string comment = null,
-            bool? sendResponse = null);
+            string Comment = null,
+            bool? SendResponse = null);
 
         /// <summary>
         /// Gets the request builder for EventSnoozeReminder.
         /// </summary>
         /// <returns>The <see cref="IEventSnoozeReminderRequestBuilder"/>.</returns>
         IEventSnoozeReminderRequestBuilder SnoozeReminder(
-            DateTimeTimeZone newReminderTime);
+            DateTimeTimeZone NewReminderTime);
 
         /// <summary>
         /// Gets the request builder for EventDismissReminder.

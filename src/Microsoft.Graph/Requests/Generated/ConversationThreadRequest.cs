@@ -12,7 +12,6 @@ namespace Microsoft.Graph
     using System.IO;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The type ConversationThreadRequest.
@@ -34,25 +33,25 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Creates the specified ConversationThread using PUT.
+        /// Creates the specified ConversationThread using POST.
         /// </summary>
         /// <param name="conversationThreadToCreate">The ConversationThread to create.</param>
         /// <returns>The created ConversationThread.</returns>
-        public Task<ConversationThread> CreateAsync(ConversationThread conversationThreadToCreate)
+        public System.Threading.Tasks.Task<ConversationThread> CreateAsync(ConversationThread conversationThreadToCreate)
         {
             return this.CreateAsync(conversationThreadToCreate, CancellationToken.None);
         }
 
         /// <summary>
-        /// Creates the specified ConversationThread using PUT.
+        /// Creates the specified ConversationThread using POST.
         /// </summary>
         /// <param name="conversationThreadToCreate">The ConversationThread to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created ConversationThread.</returns>
-        public async Task<ConversationThread> CreateAsync(ConversationThread conversationThreadToCreate, CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<ConversationThread> CreateAsync(ConversationThread conversationThreadToCreate, CancellationToken cancellationToken)
         {
             this.ContentType = "application/json";
-            this.Method = "PUT";
+            this.Method = "POST";
             var newEntity = await this.SendAsync<ConversationThread>(conversationThreadToCreate, cancellationToken).ConfigureAwait(false);
             this.InitializeCollectionProperties(newEntity);
             return newEntity;
@@ -62,7 +61,7 @@ namespace Microsoft.Graph
         /// Deletes the specified ConversationThread.
         /// </summary>
         /// <returns>The task to await.</returns>
-        public Task DeleteAsync()
+        public System.Threading.Tasks.Task DeleteAsync()
         {
             return this.DeleteAsync(CancellationToken.None);
         }
@@ -72,7 +71,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await.</returns>
-        public async Task DeleteAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken)
         {
             this.Method = "DELETE";
             await this.SendAsync<ConversationThread>(null, cancellationToken).ConfigureAwait(false);
@@ -82,7 +81,7 @@ namespace Microsoft.Graph
         /// Gets the specified ConversationThread.
         /// </summary>
         /// <returns>The ConversationThread.</returns>
-        public Task<ConversationThread> GetAsync()
+        public System.Threading.Tasks.Task<ConversationThread> GetAsync()
         {
             return this.GetAsync(CancellationToken.None);
         }
@@ -92,7 +91,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The ConversationThread.</returns>
-        public async Task<ConversationThread> GetAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<ConversationThread> GetAsync(CancellationToken cancellationToken)
         {
             this.Method = "GET";
             var retrievedEntity = await this.SendAsync<ConversationThread>(null, cancellationToken).ConfigureAwait(false);
@@ -105,7 +104,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="conversationThreadToUpdate">The ConversationThread to update.</param>
         /// <returns>The updated ConversationThread.</returns>
-        public Task<ConversationThread> UpdateAsync(ConversationThread conversationThreadToUpdate)
+        public System.Threading.Tasks.Task<ConversationThread> UpdateAsync(ConversationThread conversationThreadToUpdate)
         {
             return this.UpdateAsync(conversationThreadToUpdate, CancellationToken.None);
         }
@@ -116,7 +115,7 @@ namespace Microsoft.Graph
         /// <param name="conversationThreadToUpdate">The ConversationThread to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The updated ConversationThread.</returns>
-        public async Task<ConversationThread> UpdateAsync(ConversationThread conversationThreadToUpdate, CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<ConversationThread> UpdateAsync(ConversationThread conversationThreadToUpdate, CancellationToken cancellationToken)
         {
             this.ContentType = "application/json";
             this.Method = "PATCH";
@@ -153,10 +152,10 @@ namespace Microsoft.Graph
         /// <param name="conversationThreadToInitialize">The <see cref="ConversationThread"/> with the collection properties to initialize.</param>
         private void InitializeCollectionProperties(ConversationThread conversationThreadToInitialize)
         {
-        
+
             if (conversationThreadToInitialize != null && conversationThreadToInitialize.AdditionalData != null)
             {
-        
+
                 if (conversationThreadToInitialize.Posts != null && conversationThreadToInitialize.Posts.CurrentPage != null)
                 {
                     conversationThreadToInitialize.Posts.AdditionalData = conversationThreadToInitialize.AdditionalData;
@@ -172,10 +171,10 @@ namespace Microsoft.Graph
                             nextPageLinkString);
                     }
                 }
-        
+
             }
 
-        
+
         }
     }
 }

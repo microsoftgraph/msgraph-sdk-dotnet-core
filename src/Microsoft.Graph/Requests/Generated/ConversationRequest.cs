@@ -12,7 +12,6 @@ namespace Microsoft.Graph
     using System.IO;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The type ConversationRequest.
@@ -34,25 +33,25 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Creates the specified Conversation using PUT.
+        /// Creates the specified Conversation using POST.
         /// </summary>
         /// <param name="conversationToCreate">The Conversation to create.</param>
         /// <returns>The created Conversation.</returns>
-        public Task<Conversation> CreateAsync(Conversation conversationToCreate)
+        public System.Threading.Tasks.Task<Conversation> CreateAsync(Conversation conversationToCreate)
         {
             return this.CreateAsync(conversationToCreate, CancellationToken.None);
         }
 
         /// <summary>
-        /// Creates the specified Conversation using PUT.
+        /// Creates the specified Conversation using POST.
         /// </summary>
         /// <param name="conversationToCreate">The Conversation to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created Conversation.</returns>
-        public async Task<Conversation> CreateAsync(Conversation conversationToCreate, CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Conversation> CreateAsync(Conversation conversationToCreate, CancellationToken cancellationToken)
         {
             this.ContentType = "application/json";
-            this.Method = "PUT";
+            this.Method = "POST";
             var newEntity = await this.SendAsync<Conversation>(conversationToCreate, cancellationToken).ConfigureAwait(false);
             this.InitializeCollectionProperties(newEntity);
             return newEntity;
@@ -62,7 +61,7 @@ namespace Microsoft.Graph
         /// Deletes the specified Conversation.
         /// </summary>
         /// <returns>The task to await.</returns>
-        public Task DeleteAsync()
+        public System.Threading.Tasks.Task DeleteAsync()
         {
             return this.DeleteAsync(CancellationToken.None);
         }
@@ -72,7 +71,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await.</returns>
-        public async Task DeleteAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken)
         {
             this.Method = "DELETE";
             await this.SendAsync<Conversation>(null, cancellationToken).ConfigureAwait(false);
@@ -82,7 +81,7 @@ namespace Microsoft.Graph
         /// Gets the specified Conversation.
         /// </summary>
         /// <returns>The Conversation.</returns>
-        public Task<Conversation> GetAsync()
+        public System.Threading.Tasks.Task<Conversation> GetAsync()
         {
             return this.GetAsync(CancellationToken.None);
         }
@@ -92,7 +91,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The Conversation.</returns>
-        public async Task<Conversation> GetAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Conversation> GetAsync(CancellationToken cancellationToken)
         {
             this.Method = "GET";
             var retrievedEntity = await this.SendAsync<Conversation>(null, cancellationToken).ConfigureAwait(false);
@@ -105,7 +104,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="conversationToUpdate">The Conversation to update.</param>
         /// <returns>The updated Conversation.</returns>
-        public Task<Conversation> UpdateAsync(Conversation conversationToUpdate)
+        public System.Threading.Tasks.Task<Conversation> UpdateAsync(Conversation conversationToUpdate)
         {
             return this.UpdateAsync(conversationToUpdate, CancellationToken.None);
         }
@@ -116,7 +115,7 @@ namespace Microsoft.Graph
         /// <param name="conversationToUpdate">The Conversation to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The updated Conversation.</returns>
-        public async Task<Conversation> UpdateAsync(Conversation conversationToUpdate, CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Conversation> UpdateAsync(Conversation conversationToUpdate, CancellationToken cancellationToken)
         {
             this.ContentType = "application/json";
             this.Method = "PATCH";
@@ -153,10 +152,10 @@ namespace Microsoft.Graph
         /// <param name="conversationToInitialize">The <see cref="Conversation"/> with the collection properties to initialize.</param>
         private void InitializeCollectionProperties(Conversation conversationToInitialize)
         {
-        
+
             if (conversationToInitialize != null && conversationToInitialize.AdditionalData != null)
             {
-        
+
                 if (conversationToInitialize.Threads != null && conversationToInitialize.Threads.CurrentPage != null)
                 {
                     conversationToInitialize.Threads.AdditionalData = conversationToInitialize.AdditionalData;
@@ -172,10 +171,10 @@ namespace Microsoft.Graph
                             nextPageLinkString);
                     }
                 }
-        
+
             }
 
-        
+
         }
     }
 }

@@ -9,23 +9,13 @@ namespace Microsoft.Graph
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
 
     /// <summary>
     /// The interface IDriveItemCopyRequestBuilder.
     /// </summary>
     public partial interface IDriveItemCopyRequestBuilder
     {
-    
-        /// <summary>
-        /// Gets the Name.
-        /// </summary>
-        string Name { get; }
-    
-        /// <summary>
-        /// Gets the ParentReference.
-        /// </summary>
-        ItemReference ParentReference { get; }
-    
         /// <summary>
         /// Builds the request.
         /// </summary>

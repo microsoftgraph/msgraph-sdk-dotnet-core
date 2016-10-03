@@ -9,54 +9,52 @@ namespace Microsoft.Graph
 {
     using System;
     using System.Collections.Generic;
-    using System.Text;
+    using System.IO;
 
     /// <summary>
     /// The type MessageForwardRequestBuilder.
     /// </summary>
-    public partial class MessageForwardRequestBuilder : BaseRequestBuilder, IMessageForwardRequestBuilder
+    public partial class MessageForwardRequestBuilder : BaseActionMethodRequestBuilder<IMessageForwardRequest>, IMessageForwardRequestBuilder
     {
-    
+        /// <summary>
+        /// Constructs a new <see cref="MessageForwardRequestBuilder"/>.
+        /// </summary>
+        /// <param name="requestUrl">The URL for the request.</param>
+        /// <param name="client">The <see cref="IBaseClient"/> for handling requests.</param>
+        /// <param name="Comment">A Comment parameter for the OData method call.</param>
+        /// <param name="ToRecipients">A ToRecipients parameter for the OData method call.</param>
         public MessageForwardRequestBuilder(
             string requestUrl,
             IBaseClient client,
-            string comment = null,
-            IEnumerable<Recipient> toRecipients = null)
+            string Comment,
+            IEnumerable<Recipient> ToRecipients)
             : base(requestUrl, client)
         {
-            
-            this.Comment = comment;
-            this.ToRecipients = toRecipients;
-
+            this.SetParameter("comment", Comment, true);
+            this.SetParameter("toRecipients", ToRecipients, true);
         }
-    
+
         /// <summary>
-        /// Gets the value of Comment.
+        /// A method used by the base class to construct a request class instance.
         /// </summary>
-        public string Comment { get; set; }
-    
-        /// <summary>
-        /// Gets the value of ToRecipients.
-        /// </summary>
-        public IEnumerable<Recipient> ToRecipients { get; set; }
-    
-        /// <summary>
-        /// Builds the request.
-        /// </summary>
+        /// <param name="functionUrl">The request URL to </param>
         /// <param name="options">The query and header options for the request.</param>
-        /// <returns>The built request.</returns>
-        public IMessageForwardRequest Request(IEnumerable<Option> options = null)
+        /// <returns>An instance of a specific request class.</returns>
+        protected override IMessageForwardRequest CreateRequest(string functionUrl, IEnumerable<Option> options)
         {
-                
-            return new MessageForwardRequest(
-                this.RequestUrl,
-                this.Client,
-                options,
-                this.Comment,
-                this.ToRecipients);
-        
-        }
+            var request = new MessageForwardRequest(functionUrl, this.Client, options);
 
+            if (this.HasParameter("comment"))
+            {
+                request.RequestBody.Comment = this.GetParameter<string>("comment");
+            }
+
+            if (this.HasParameter("toRecipients"))
+            {
+                request.RequestBody.ToRecipients = this.GetParameter<IEnumerable<Recipient>>("toRecipients");
+            }
+
+            return request;
+        }
     }
 }
-

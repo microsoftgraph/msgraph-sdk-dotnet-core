@@ -9,54 +9,52 @@ namespace Microsoft.Graph
 {
     using System;
     using System.Collections.Generic;
-    using System.Text;
+    using System.IO;
 
     /// <summary>
     /// The type UserChangePasswordRequestBuilder.
     /// </summary>
-    public partial class UserChangePasswordRequestBuilder : BaseRequestBuilder, IUserChangePasswordRequestBuilder
+    public partial class UserChangePasswordRequestBuilder : BaseActionMethodRequestBuilder<IUserChangePasswordRequest>, IUserChangePasswordRequestBuilder
     {
-    
+        /// <summary>
+        /// Constructs a new <see cref="UserChangePasswordRequestBuilder"/>.
+        /// </summary>
+        /// <param name="requestUrl">The URL for the request.</param>
+        /// <param name="client">The <see cref="IBaseClient"/> for handling requests.</param>
+        /// <param name="currentPassword">A currentPassword parameter for the OData method call.</param>
+        /// <param name="newPassword">A newPassword parameter for the OData method call.</param>
         public UserChangePasswordRequestBuilder(
             string requestUrl,
             IBaseClient client,
-            string currentPassword = null,
-            string newPassword = null)
+            string currentPassword,
+            string newPassword)
             : base(requestUrl, client)
         {
-            
-            this.CurrentPassword = currentPassword;
-            this.NewPassword = newPassword;
-
+            this.SetParameter("currentPassword", currentPassword, true);
+            this.SetParameter("newPassword", newPassword, true);
         }
-    
+
         /// <summary>
-        /// Gets the value of CurrentPassword.
+        /// A method used by the base class to construct a request class instance.
         /// </summary>
-        public string CurrentPassword { get; set; }
-    
-        /// <summary>
-        /// Gets the value of NewPassword.
-        /// </summary>
-        public string NewPassword { get; set; }
-    
-        /// <summary>
-        /// Builds the request.
-        /// </summary>
+        /// <param name="functionUrl">The request URL to </param>
         /// <param name="options">The query and header options for the request.</param>
-        /// <returns>The built request.</returns>
-        public IUserChangePasswordRequest Request(IEnumerable<Option> options = null)
+        /// <returns>An instance of a specific request class.</returns>
+        protected override IUserChangePasswordRequest CreateRequest(string functionUrl, IEnumerable<Option> options)
         {
-                
-            return new UserChangePasswordRequest(
-                this.RequestUrl,
-                this.Client,
-                options,
-                this.CurrentPassword,
-                this.NewPassword);
-        
-        }
+            var request = new UserChangePasswordRequest(functionUrl, this.Client, options);
 
+            if (this.HasParameter("currentPassword"))
+            {
+                request.RequestBody.CurrentPassword = this.GetParameter<string>("currentPassword");
+            }
+
+            if (this.HasParameter("newPassword"))
+            {
+                request.RequestBody.NewPassword = this.GetParameter<string>("newPassword");
+            }
+
+            return request;
+        }
     }
 }
-

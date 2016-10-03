@@ -9,6 +9,7 @@ namespace Microsoft.Graph
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
 
     /// <summary>
     /// The type ConversationThreadRequestBuilder.
@@ -46,7 +47,7 @@ namespace Microsoft.Graph
         {
             return new ConversationThreadRequest(this.RequestUrl, this.Client, options);
         }
-        
+    
         /// <summary>
         /// Gets the request builder for Posts.
         /// </summary>
@@ -58,18 +59,18 @@ namespace Microsoft.Graph
                 return new ConversationThreadPostsCollectionRequestBuilder(this.AppendSegmentToRequestUrl("posts"), this.Client);
             }
         }
-        
+    
         /// <summary>
         /// Gets the request builder for ConversationThreadReply.
         /// </summary>
         /// <returns>The <see cref="IConversationThreadReplyRequestBuilder"/>.</returns>
         public IConversationThreadReplyRequestBuilder Reply(
-            Post post)
+            Post Post)
         {
             return new ConversationThreadReplyRequestBuilder(
                 this.AppendSegmentToRequestUrl("microsoft.graph.reply"),
                 this.Client,
-                post);
+                Post);
         }
     
     }

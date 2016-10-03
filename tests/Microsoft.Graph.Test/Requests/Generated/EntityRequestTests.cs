@@ -9,6 +9,7 @@ namespace Microsoft.Graph.Test.Requests.Generated
     using System.IO;
     using System.Net;
     using System.Net.Http;
+    using System.Threading;
     using System.Threading.Tasks;
 
     using Microsoft.Graph;
@@ -31,7 +32,9 @@ namespace Microsoft.Graph.Test.Requests.Generated
                 this.httpProvider.Setup(
                     provider => provider.SendAsync(
                         It.Is<HttpRequestMessage>(
-                            request => request.RequestUri.ToString().Equals(requestUrl))))
+                            request => request.RequestUri.ToString().Equals(requestUrl)),
+                        HttpCompletionOption.ResponseContentRead,
+                        CancellationToken.None))
                     .Returns(Task.FromResult<HttpResponseMessage>(httpResponseMessage));
 
                 var expectedChildrenPage = new DriveItemChildrenCollectionPage
@@ -66,12 +69,6 @@ namespace Microsoft.Graph.Test.Requests.Generated
         }
 
         [TestMethod]
-        public async Task CreateAsync()
-        {
-            await this.RequestWithItemInBody(false);
-        }
-
-        [TestMethod]
         public async Task DeleteAsync()
         {
             using (var httpResponseMessage = new HttpResponseMessage(HttpStatusCode.NoContent))
@@ -82,7 +79,9 @@ namespace Microsoft.Graph.Test.Requests.Generated
                         It.Is<HttpRequestMessage>(
                             request =>
                                 request.Method == HttpMethod.Delete
-                                && request.RequestUri.ToString().Equals(requestUrl))))
+                                && request.RequestUri.ToString().Equals(requestUrl)),
+                        HttpCompletionOption.ResponseContentRead,
+                        CancellationToken.None))
                     .Returns(Task.FromResult(httpResponseMessage));
 
                 await this.graphServiceClient.Me.Drive.Items["id"].Request().DeleteAsync();
@@ -131,7 +130,9 @@ namespace Microsoft.Graph.Test.Requests.Generated
                                 request =>
                                     string.Equals(request.Method.ToString().ToUpperInvariant(), "PATCH")
                                     && string.Equals(request.Content.Headers.ContentType.ToString(), "application/json")
-                                    && request.RequestUri.ToString().Equals(requestUrl))))
+                                    && request.RequestUri.ToString().Equals(requestUrl)),
+                            HttpCompletionOption.ResponseContentRead,
+                            CancellationToken.None))
                         .Returns(Task.FromResult(httpResponseMessage));
 
                 var contactToUpdate = new Contact { Id = "id" };
@@ -166,7 +167,9 @@ namespace Microsoft.Graph.Test.Requests.Generated
                                 request =>
                                     string.Equals(request.Method.ToString().ToUpperInvariant(), isUpdate ? "PATCH" : "PUT")
                                     && string.Equals(request.Content.Headers.ContentType.ToString(), "application/json")
-                                    && request.RequestUri.ToString().Equals(requestUrl))))
+                                    && request.RequestUri.ToString().Equals(requestUrl)),
+                            HttpCompletionOption.ResponseContentRead,
+                            CancellationToken.None))
                         .Returns(Task.FromResult(httpResponseMessage));
 
                 this.serializer.Setup(serializer => serializer.SerializeObject(It.IsAny<DriveItem>())).Returns("body");

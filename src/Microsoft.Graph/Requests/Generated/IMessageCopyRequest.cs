@@ -12,31 +12,37 @@ namespace Microsoft.Graph
     using System.IO;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
-    
+
     /// <summary>
     /// The interface IMessageCopyRequest.
     /// </summary>
     public partial interface IMessageCopyRequest : IBaseRequest
     {
-    
+
         /// <summary>
         /// Gets the request body.
         /// </summary>
         MessageCopyRequestBody RequestBody { get; }
-        
-        /// <summary>
-        /// Issues the POST request.
-        /// </summary>
-        Task<Message> PostAsync();
+
 
         /// <summary>
         /// Issues the POST request.
         /// </summary>
-        /// /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
-        /// <returns>TheMessage</returns>
-        Task<Message> PostAsync(CancellationToken cancellationToken);
-            
+        System.Threading.Tasks.Task<Message> PostAsync();
+
+        /// <summary>
+        /// Issues the POST request.
+        /// </summary>
+        /// <param name=""cancellationToken"">The <see cref=""CancellationToken""/> for the request.</param>
+        /// <returns>The task to await for async call.</returns>
+        System.Threading.Tasks.Task<Message> PostAsync(
+            CancellationToken cancellationToken);
+        
+
+
+
+
+
         /// <summary>
         /// Adds the specified expand value to the request.
         /// </summary>
@@ -50,6 +56,5 @@ namespace Microsoft.Graph
         /// <param name="value">The select value.</param>
         /// <returns>The request object to send.</returns>
         IMessageCopyRequest Select(string value);
-    
     }
 }

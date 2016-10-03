@@ -9,28 +9,28 @@
 namespace Microsoft.Graph
 {
     using Newtonsoft.Json;
-    
+
     /// <summary>
     /// The enum RecurrenceRangeType.
     /// </summary>
     [JsonConverter(typeof(EnumConverter))]
     public enum RecurrenceRangeType
     {
-        
+    
         /// <summary>
         /// end Date
         /// </summary>
         EndDate,
-        
+    
         /// <summary>
         /// no End
         /// </summary>
         NoEnd,
-        
+    
         /// <summary>
         /// numbered
         /// </summary>
         Numbered,
-        
+    
     }
 }

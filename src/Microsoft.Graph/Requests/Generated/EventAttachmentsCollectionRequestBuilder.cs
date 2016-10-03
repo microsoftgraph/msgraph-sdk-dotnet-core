@@ -13,7 +13,7 @@ namespace Microsoft.Graph
     /// The type EventAttachmentsCollectionRequestBuilder.
     /// </summary>
     public partial class EventAttachmentsCollectionRequestBuilder : BaseRequestBuilder, IEventAttachmentsCollectionRequestBuilder
-    {  
+    {
         /// <summary>
         /// Constructs a new EventAttachmentsCollectionRequestBuilder.
         /// </summary>
@@ -57,5 +57,7 @@ namespace Microsoft.Graph
                 return new AttachmentRequestBuilder(this.AppendSegmentToRequestUrl(id), this.Client);
             }
         }
+
+        
     }
 }

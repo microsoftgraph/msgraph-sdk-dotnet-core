@@ -11,7 +11,6 @@ namespace Microsoft.Graph
     using System.Collections.Generic;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The type DriveItemThumbnailsCollectionRequest.
@@ -31,22 +30,45 @@ namespace Microsoft.Graph
             : base(requestUrl, client, options)
         {
         }
-          
+        
+        /// <summary>
+        /// Adds the specified ThumbnailSet to the collection via POST.
+        /// </summary>
+        /// <param name="thumbnailSet">The ThumbnailSet to add.</param>
+        /// <returns>The created ThumbnailSet.</returns>
+        public System.Threading.Tasks.Task<ThumbnailSet> AddAsync(ThumbnailSet thumbnailSet)
+        {
+            return this.AddAsync(thumbnailSet, CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Adds the specified ThumbnailSet to the collection via POST.
+        /// </summary>
+        /// <param name="thumbnailSet">The ThumbnailSet to add.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The created ThumbnailSet.</returns>
+        public System.Threading.Tasks.Task<ThumbnailSet> AddAsync(ThumbnailSet thumbnailSet, CancellationToken cancellationToken)
+        {
+            this.ContentType = "application/json";
+            this.Method = "POST";
+            return this.SendAsync<ThumbnailSet>(thumbnailSet, cancellationToken);
+        }
+
         /// <summary>
         /// Gets the collection page.
         /// </summary>
         /// <returns>The collection page.</returns>
-        public Task<IDriveItemThumbnailsCollectionPage> GetAsync()
+        public System.Threading.Tasks.Task<IDriveItemThumbnailsCollectionPage> GetAsync()
         {
             return this.GetAsync(CancellationToken.None);
         }
-        
+
         /// <summary>
         /// Gets the collection page.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The collection page.</returns>
-        public async Task<IDriveItemThumbnailsCollectionPage> GetAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<IDriveItemThumbnailsCollectionPage> GetAsync(CancellationToken cancellationToken)
         {
             this.Method = "GET";
             var response = await this.SendAsync<DriveItemThumbnailsCollectionResponse>(null, cancellationToken).ConfigureAwait(false);
@@ -65,7 +87,7 @@ namespace Microsoft.Graph
                             this.Client,
                             nextPageLinkString);
                     }
-                    
+
                     // Copy the additional data collection to the page itself so that information is not lost
                     response.Value.AdditionalData = response.AdditionalData;
                 }
@@ -108,7 +130,7 @@ namespace Microsoft.Graph
             this.QueryOptions.Add(new QueryOption("$top", value.ToString()));
             return this;
         }
-        
+
         /// <summary>
         /// Adds the specified filter value to the request.
         /// </summary>

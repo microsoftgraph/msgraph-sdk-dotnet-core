@@ -11,13 +11,12 @@ namespace Microsoft.Graph
     using System.Collections.Generic;
     using System.IO;
     using System.Runtime.Serialization;
-
     using Newtonsoft.Json;
 
     /// <summary>
     /// The type Video.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     [JsonConverter(typeof(DerivedTypeConverter))]
     public partial class Video
     {
@@ -25,25 +24,25 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets or sets bitrate.
         /// </summary>
-        [DataMember(Name = "bitrate", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "bitrate", Required = Required.Default)]
         public Int32? Bitrate { get; set; }
     
         /// <summary>
         /// Gets or sets duration.
         /// </summary>
-        [DataMember(Name = "duration", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "duration", Required = Required.Default)]
         public Int64? Duration { get; set; }
     
         /// <summary>
         /// Gets or sets height.
         /// </summary>
-        [DataMember(Name = "height", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "height", Required = Required.Default)]
         public Int32? Height { get; set; }
     
         /// <summary>
         /// Gets or sets width.
         /// </summary>
-        [DataMember(Name = "width", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "width", Required = Required.Default)]
         public Int32? Width { get; set; }
     
         /// <summary>

@@ -13,7 +13,7 @@ namespace Microsoft.Graph
     /// The type GroupEventsCollectionRequestBuilder.
     /// </summary>
     public partial class GroupEventsCollectionRequestBuilder : BaseRequestBuilder, IGroupEventsCollectionRequestBuilder
-    {  
+    {
         /// <summary>
         /// Constructs a new GroupEventsCollectionRequestBuilder.
         /// </summary>
@@ -57,5 +57,7 @@ namespace Microsoft.Graph
                 return new EventRequestBuilder(this.AppendSegmentToRequestUrl(id), this.Client);
             }
         }
+
+        
     }
 }

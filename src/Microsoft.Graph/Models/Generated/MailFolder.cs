@@ -11,56 +11,55 @@ namespace Microsoft.Graph
     using System.Collections.Generic;
     using System.IO;
     using System.Runtime.Serialization;
-
     using Newtonsoft.Json;
 
     /// <summary>
     /// The type Mail Folder.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class MailFolder : Entity
     {
     
         /// <summary>
         /// Gets or sets display name.
         /// </summary>
-        [DataMember(Name = "displayName", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "displayName", Required = Required.Default)]
         public string DisplayName { get; set; }
     
         /// <summary>
         /// Gets or sets parent folder id.
         /// </summary>
-        [DataMember(Name = "parentFolderId", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "parentFolderId", Required = Required.Default)]
         public string ParentFolderId { get; set; }
     
         /// <summary>
         /// Gets or sets child folder count.
         /// </summary>
-        [DataMember(Name = "childFolderCount", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "childFolderCount", Required = Required.Default)]
         public Int32? ChildFolderCount { get; set; }
     
         /// <summary>
         /// Gets or sets unread item count.
         /// </summary>
-        [DataMember(Name = "unreadItemCount", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "unreadItemCount", Required = Required.Default)]
         public Int32? UnreadItemCount { get; set; }
     
         /// <summary>
         /// Gets or sets total item count.
         /// </summary>
-        [DataMember(Name = "totalItemCount", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "totalItemCount", Required = Required.Default)]
         public Int32? TotalItemCount { get; set; }
     
         /// <summary>
         /// Gets or sets messages.
         /// </summary>
-        [DataMember(Name = "messages", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "messages", Required = Required.Default)]
         public IMailFolderMessagesCollectionPage Messages { get; set; }
     
         /// <summary>
         /// Gets or sets child folders.
         /// </summary>
-        [DataMember(Name = "childFolders", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "childFolders", Required = Required.Default)]
         public IMailFolderChildFoldersCollectionPage ChildFolders { get; set; }
     
     }

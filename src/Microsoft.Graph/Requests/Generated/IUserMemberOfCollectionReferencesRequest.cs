@@ -11,7 +11,6 @@ namespace Microsoft.Graph
     using System.Collections.Generic;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The interface IUserMemberOfCollectionReferencesRequest.
@@ -21,12 +20,12 @@ namespace Microsoft.Graph
         
 
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
-        Task AddAsync(DirectoryObject directoryObject);
+        System.Threading.Tasks.Task AddAsync(DirectoryObject directoryObject);
 
         /// <summary>
         /// Adds the specified DirectoryObject to the collection via POST.
         /// </summary>
         /// <param name="directoryObject">The DirectoryObject to add.</param>
-        Task AddAsync(DirectoryObject directoryObject, CancellationToken cancellationToken);
+        System.Threading.Tasks.Task AddAsync(DirectoryObject directoryObject, CancellationToken cancellationToken);
     }
 }

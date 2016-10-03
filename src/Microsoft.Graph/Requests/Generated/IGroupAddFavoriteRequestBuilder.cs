@@ -9,13 +9,13 @@ namespace Microsoft.Graph
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
 
     /// <summary>
     /// The interface IGroupAddFavoriteRequestBuilder.
     /// </summary>
     public partial interface IGroupAddFavoriteRequestBuilder
     {
-    
         /// <summary>
         /// Builds the request.
         /// </summary>

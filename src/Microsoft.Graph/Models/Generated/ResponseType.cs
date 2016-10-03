@@ -9,43 +9,43 @@
 namespace Microsoft.Graph
 {
     using Newtonsoft.Json;
-    
+
     /// <summary>
     /// The enum ResponseType.
     /// </summary>
     [JsonConverter(typeof(EnumConverter))]
     public enum ResponseType
     {
-        
+    
         /// <summary>
         /// none
         /// </summary>
         None,
-        
+    
         /// <summary>
         /// organizer
         /// </summary>
         Organizer,
-        
+    
         /// <summary>
         /// tentatively Accepted
         /// </summary>
         TentativelyAccepted,
-        
+    
         /// <summary>
         /// accepted
         /// </summary>
         Accepted,
-        
+    
         /// <summary>
         /// declined
         /// </summary>
         Declined,
-        
+    
         /// <summary>
         /// not Responded
         /// </summary>
         NotResponded,
-        
+    
     }
 }

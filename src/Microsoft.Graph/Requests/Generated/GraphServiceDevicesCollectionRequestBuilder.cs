@@ -13,7 +13,7 @@ namespace Microsoft.Graph
     /// The type GraphServiceDevicesCollectionRequestBuilder.
     /// </summary>
     public partial class GraphServiceDevicesCollectionRequestBuilder : BaseRequestBuilder, IGraphServiceDevicesCollectionRequestBuilder
-    {  
+    {
         /// <summary>
         /// Constructs a new GraphServiceDevicesCollectionRequestBuilder.
         /// </summary>
@@ -57,5 +57,7 @@ namespace Microsoft.Graph
                 return new DeviceRequestBuilder(this.AppendSegmentToRequestUrl(id), this.Client);
             }
         }
+
+        
     }
 }

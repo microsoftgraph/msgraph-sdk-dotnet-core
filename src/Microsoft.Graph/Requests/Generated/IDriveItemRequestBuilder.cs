@@ -9,6 +9,7 @@ namespace Microsoft.Graph
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
 
     /// <summary>
     /// The interface IDriveItemRequestBuilder.
@@ -27,12 +28,18 @@ namespace Microsoft.Graph
         /// <param name="options">The query and header options for the request.</param>
         /// <returns>The built request.</returns>
         new IDriveItemRequest Request(IEnumerable<Option> options);
-        
+    
         /// <summary>
         /// Gets the request builder for CreatedByUser.
         /// </summary>
         /// <returns>The <see cref="IUserWithReferenceRequestBuilder"/>.</returns>
         IUserWithReferenceRequestBuilder CreatedByUser { get; }
+
+        /// <summary>
+        /// Gets the request builder for Workbook.
+        /// </summary>
+        /// <returns>The <see cref="IWorkbookRequestBuilder"/>.</returns>
+        IWorkbookRequestBuilder Workbook { get; }
 
         /// <summary>
         /// Gets the request builder for LastModifiedByUser.
@@ -63,7 +70,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IDriveItemContentRequestBuilder"/>.</returns>
         IDriveItemContentRequestBuilder Content { get; }
-        
+    
         /// <summary>
         /// Gets the request builder for DriveItemCreateLink.
         /// </summary>
@@ -86,6 +93,13 @@ namespace Microsoft.Graph
         /// <returns>The <see cref="IDriveItemSearchRequestBuilder"/>.</returns>
         IDriveItemSearchRequestBuilder Search(
             string q = null);
+
+        /// <summary>
+        /// Gets the request builder for DriveItemDelta.
+        /// </summary>
+        /// <returns>The <see cref="IDriveItemDeltaRequestBuilder"/>.</returns>
+        IDriveItemDeltaRequestBuilder Delta(
+            string token = null);
 
         /// <summary>
         /// Gets the request builder for DriveItemDelta.

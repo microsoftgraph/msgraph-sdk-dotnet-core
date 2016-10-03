@@ -9,33 +9,33 @@
 namespace Microsoft.Graph
 {
     using Newtonsoft.Json;
-    
+
     /// <summary>
     /// The enum EventType.
     /// </summary>
     [JsonConverter(typeof(EnumConverter))]
     public enum EventType
     {
-        
+    
         /// <summary>
         /// single Instance
         /// </summary>
         SingleInstance,
-        
+    
         /// <summary>
         /// occurrence
         /// </summary>
         Occurrence,
-        
+    
         /// <summary>
         /// exception
         /// </summary>
         Exception,
-        
+    
         /// <summary>
         /// series Master
         /// </summary>
         SeriesMaster,
-        
+    
     }
 }

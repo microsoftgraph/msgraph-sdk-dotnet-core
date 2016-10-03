@@ -11,7 +11,6 @@ namespace Microsoft.Graph
     using System.IO;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The interface IOutlookItemRequest.
@@ -23,46 +22,46 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="outlookItemToCreate">The OutlookItem to create.</param>
         /// <returns>The created OutlookItem.</returns>
-        Task<OutlookItem> CreateAsync(OutlookItem outlookItemToCreate);        /// <summary>
+        System.Threading.Tasks.Task<OutlookItem> CreateAsync(OutlookItem outlookItemToCreate);        /// <summary>
         /// Creates the specified OutlookItem using PUT.
         /// </summary>
         /// <param name="outlookItemToCreate">The OutlookItem to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created OutlookItem.</returns>
-        Task<OutlookItem> CreateAsync(OutlookItem outlookItemToCreate, CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<OutlookItem> CreateAsync(OutlookItem outlookItemToCreate, CancellationToken cancellationToken);
 
         /// <summary>
         /// Deletes the specified OutlookItem.
         /// </summary>
         /// <returns>The task to await.</returns>
-        Task DeleteAsync();
+        System.Threading.Tasks.Task DeleteAsync();
 
         /// <summary>
         /// Deletes the specified OutlookItem.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await.</returns>
-        Task DeleteAsync(CancellationToken cancellationToken);
+        System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken);
 
         /// <summary>
         /// Gets the specified OutlookItem.
         /// </summary>
         /// <returns>The OutlookItem.</returns>
-        Task<OutlookItem> GetAsync();
+        System.Threading.Tasks.Task<OutlookItem> GetAsync();
 
         /// <summary>
         /// Gets the specified OutlookItem.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The OutlookItem.</returns>
-        Task<OutlookItem> GetAsync(CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<OutlookItem> GetAsync(CancellationToken cancellationToken);
 
         /// <summary>
         /// Updates the specified OutlookItem using PATCH.
         /// </summary>
         /// <param name="outlookItemToUpdate">The OutlookItem to update.</param>
         /// <returns>The updated OutlookItem.</returns>
-        Task<OutlookItem> UpdateAsync(OutlookItem outlookItemToUpdate);
+        System.Threading.Tasks.Task<OutlookItem> UpdateAsync(OutlookItem outlookItemToUpdate);
 
         /// <summary>
         /// Updates the specified OutlookItem using PATCH.
@@ -70,7 +69,7 @@ namespace Microsoft.Graph
         /// <param name="outlookItemToUpdate">The OutlookItem to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The updated OutlookItem.</returns>
-        Task<OutlookItem> UpdateAsync(OutlookItem outlookItemToUpdate, CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<OutlookItem> UpdateAsync(OutlookItem outlookItemToUpdate, CancellationToken cancellationToken);
 
         /// <summary>
         /// Adds the specified expand value to the request.
@@ -85,5 +84,6 @@ namespace Microsoft.Graph
         /// <param name="value">The select value.</param>
         /// <returns>The request object to send.</returns>
         IOutlookItemRequest Select(string value);
+
     }
 }

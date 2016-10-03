@@ -9,36 +9,51 @@ namespace Microsoft.Graph
 {
     using System;
     using System.Collections.Generic;
-    using System.Text;
+    using System.IO;
 
     /// <summary>
     /// The type DriveItemDeltaRequestBuilder.
     /// </summary>
-    public partial class DriveItemDeltaRequestBuilder : BaseRequestBuilder, IDriveItemDeltaRequestBuilder
+    public partial class DriveItemDeltaRequestBuilder : BaseFunctionMethodRequestBuilder<IDriveItemDeltaRequest>, IDriveItemDeltaRequestBuilder
     {
-    
+        /// <summary>
+        /// Constructs a new <see cref="DriveItemDeltaRequestBuilder"/>.
+        /// </summary>
+        /// <param name="requestUrl">The URL for the request.</param>
+        /// <param name="client">The <see cref="IBaseClient"/> for handling requests.</param>
+        /// <param name="token">A token parameter for the OData method call.</param>
+        public DriveItemDeltaRequestBuilder(
+            string requestUrl,
+            IBaseClient client,
+            string token)
+            : base(requestUrl, client)
+        {
+            this.SetParameter("token", token, true);
+        }
+
+        /// <summary>
+        /// Constructs a new <see cref="DriveItemDeltaRequestBuilder"/>.
+        /// </summary>
+        /// <param name="requestUrl">The URL for the request.</param>
+        /// <param name="client">The <see cref="IBaseClient"/> for handling requests.</param>
         public DriveItemDeltaRequestBuilder(
             string requestUrl,
             IBaseClient client)
             : base(requestUrl, client)
         {
         }
-    
-        /// <summary>
-        /// Builds the request.
-        /// </summary>
-        /// <param name="options">The query and header options for the request.</param>
-        /// <returns>The built request.</returns>
-        public IDriveItemDeltaRequest Request(IEnumerable<Option> options = null)
-        {
-                
-            return new DriveItemDeltaRequest(
-                this.RequestUrl,
-                this.Client,
-                options);
-        
-        }
 
+        /// <summary>
+        /// A method used by the base class to construct a request class instance.
+        /// </summary>
+        /// <param name="functionUrl">The request URL to </param>
+        /// <param name="options">The query and header options for the request.</param>
+        /// <returns>An instance of a specific request class.</returns>
+        protected override IDriveItemDeltaRequest CreateRequest(string functionUrl, IEnumerable<Option> options)
+        {
+            var request = new DriveItemDeltaRequest(functionUrl, this.Client, options);
+
+            return request;
+        }
     }
 }
-

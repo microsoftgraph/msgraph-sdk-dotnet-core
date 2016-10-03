@@ -13,6 +13,7 @@ namespace Microsoft.Graph.Core.Test.Serialization
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using TestModels;
     using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
 
     [TestClass]
     public class SerializerTests
@@ -398,6 +399,62 @@ namespace Microsoft.Graph.Core.Test.Serialization
                 DerivedTypeConverter.TypeMappingCache[dateTestClassTypeString],
                 "Unexpected type cached for {0}",
                 dateTestClassTypeString);
+        }
+
+        [TestMethod]
+        public void SerializeDeserializeJson()
+        {
+            var expectedSerializedString = "{\"data\":{\"int\":42,\"float\":3.14,\"str\":\"dude\",\"bool\":true,\"null\":null,\"arr\":[\"sweet\",2.82,43,false]}}";
+
+            JArray arr = new JArray();
+            arr.Add("sweet");
+            arr.Add(2.82);
+            arr.Add(43);
+            arr.Add(false);
+
+            JObject obj = new JObject();
+            obj["int"] = 42;
+            obj["float"] = 3.14;
+            obj["str"] = "dude";
+            obj["bool"] = true;
+            obj["null"] = null;
+            obj["arr"] = arr;
+
+            ClassWithJson jsCls = new ClassWithJson();
+            jsCls.Data = obj;
+
+            var s = this.serializer.SerializeObject(jsCls);
+            Assert.AreEqual(s, expectedSerializedString);
+
+            var parsedObj = this.serializer.DeserializeObject<ClassWithJson>(s);
+            var jsObj = parsedObj.Data;
+
+            Assert.AreEqual(jsObj.Type, JTokenType.Object);
+            Assert.AreEqual(jsObj["int"].Type, JTokenType.Integer);
+            Assert.AreEqual(jsObj["float"].Type, JTokenType.Float);
+            Assert.AreEqual(jsObj["str"].Type, JTokenType.String);
+            Assert.AreEqual(jsObj["bool"].Type, JTokenType.Boolean);
+            Assert.AreEqual(jsObj["null"].Type, JTokenType.Null);
+            Assert.AreEqual(jsObj["arr"].Type, JTokenType.Array);
+
+            Assert.AreEqual(jsObj["int"], 42);
+            Assert.AreEqual(jsObj["float"], 3.14);
+            Assert.AreEqual(jsObj["str"], "dude");
+            Assert.AreEqual(jsObj["bool"], true);
+            Assert.AreEqual((jsObj["null"] as JValue).Value, null);
+
+            var jsArr = jsObj["arr"] as JArray;
+            Assert.IsNotNull(jsArr);
+            Assert.AreEqual(jsArr.Count, 4);
+            Assert.AreEqual(jsArr[0].Type, JTokenType.String);
+            Assert.AreEqual(jsArr[1].Type, JTokenType.Float);
+            Assert.AreEqual(jsArr[2].Type, JTokenType.Integer);
+            Assert.AreEqual(jsArr[3].Type, JTokenType.Boolean);
+
+            Assert.AreEqual(jsArr[0], "sweet");
+            Assert.AreEqual(jsArr[1], 2.82);
+            Assert.AreEqual(jsArr[2], 43);
+            Assert.AreEqual(jsArr[3], false);
         }
     }
 }

@@ -8,7 +8,7 @@
 namespace Microsoft.Graph
 {
     using System;
-    
+
     /// <summary>
     /// The type UserCreatedObjectsCollectionWithReferencesPage.
     /// </summary>

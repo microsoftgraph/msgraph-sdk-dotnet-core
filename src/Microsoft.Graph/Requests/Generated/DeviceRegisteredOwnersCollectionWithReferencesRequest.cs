@@ -11,7 +11,6 @@ namespace Microsoft.Graph
     using System.Collections.Generic;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The type DeviceRegisteredOwnersCollectionWithReferencesRequest.
@@ -36,17 +35,17 @@ namespace Microsoft.Graph
         /// Gets the collection page.
         /// </summary>
         /// <returns>The collection page.</returns>
-        public Task<IDeviceRegisteredOwnersCollectionWithReferencesPage> GetAsync()
+        public System.Threading.Tasks.Task<IDeviceRegisteredOwnersCollectionWithReferencesPage> GetAsync()
         {
             return this.GetAsync(CancellationToken.None);
         }
-        
+
         /// <summary>
         /// Gets the collection page.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The collection page.</returns>
-        public async Task<IDeviceRegisteredOwnersCollectionWithReferencesPage> GetAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<IDeviceRegisteredOwnersCollectionWithReferencesPage> GetAsync(CancellationToken cancellationToken)
         {
             this.Method = "GET";
             var response = await this.SendAsync<DeviceRegisteredOwnersCollectionWithReferencesResponse>(null, cancellationToken).ConfigureAwait(false);
@@ -65,7 +64,7 @@ namespace Microsoft.Graph
                             this.Client,
                             nextPageLinkString);
                     }
-                    
+
                     // Copy the additional data collection to the page itself so that information is not lost
                     response.Value.AdditionalData = response.AdditionalData;
                 }

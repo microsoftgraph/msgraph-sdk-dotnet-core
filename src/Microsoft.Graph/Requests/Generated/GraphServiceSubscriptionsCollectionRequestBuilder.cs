@@ -13,7 +13,7 @@ namespace Microsoft.Graph
     /// The type GraphServiceSubscriptionsCollectionRequestBuilder.
     /// </summary>
     public partial class GraphServiceSubscriptionsCollectionRequestBuilder : BaseRequestBuilder, IGraphServiceSubscriptionsCollectionRequestBuilder
-    {  
+    {
         /// <summary>
         /// Constructs a new GraphServiceSubscriptionsCollectionRequestBuilder.
         /// </summary>
@@ -57,5 +57,7 @@ namespace Microsoft.Graph
                 return new SubscriptionRequestBuilder(this.AppendSegmentToRequestUrl(id), this.Client);
             }
         }
+
+        
     }
 }

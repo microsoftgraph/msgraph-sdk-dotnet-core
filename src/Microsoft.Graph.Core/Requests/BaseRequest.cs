@@ -42,7 +42,7 @@ namespace Microsoft.Graph
             this.RequestUrl = this.InitializeUrl(requestUrl);
 
             this.sdkVersionHeaderName = CoreConstants.Headers.SdkVersionHeaderName;
-            this.SdkVersionHeaderPrefix = "graph";
+            this.SdkVersionHeaderPrefix = "Graph";
 
             if (options != null)
             {
@@ -210,7 +210,7 @@ namespace Microsoft.Graph
                     }
                 }
 
-                return await this.Client.HttpProvider.SendAsync(request).ConfigureAwait(false);
+                return await this.Client.HttpProvider.SendAsync(request, completionOption, cancellationToken).ConfigureAwait(false);
             }
         }
 

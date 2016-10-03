@@ -9,56 +9,44 @@ namespace Microsoft.Graph
 {
     using System;
     using System.Collections.Generic;
-    using System.Text;
+    using System.IO;
 
     /// <summary>
     /// The type EventSnoozeReminderRequestBuilder.
     /// </summary>
-    public partial class EventSnoozeReminderRequestBuilder : BaseRequestBuilder, IEventSnoozeReminderRequestBuilder
+    public partial class EventSnoozeReminderRequestBuilder : BaseActionMethodRequestBuilder<IEventSnoozeReminderRequest>, IEventSnoozeReminderRequestBuilder
     {
-    
+        /// <summary>
+        /// Constructs a new <see cref="EventSnoozeReminderRequestBuilder"/>.
+        /// </summary>
+        /// <param name="requestUrl">The URL for the request.</param>
+        /// <param name="client">The <see cref="IBaseClient"/> for handling requests.</param>
+        /// <param name="NewReminderTime">A NewReminderTime parameter for the OData method call.</param>
         public EventSnoozeReminderRequestBuilder(
             string requestUrl,
             IBaseClient client,
-            DateTimeTimeZone newReminderTime)
+            DateTimeTimeZone NewReminderTime)
             : base(requestUrl, client)
         {
-            
-            this.NewReminderTime = newReminderTime;
-
+            this.SetParameter("newReminderTime", NewReminderTime, false);
         }
-    
+
         /// <summary>
-        /// Gets the value of NewReminderTime.
+        /// A method used by the base class to construct a request class instance.
         /// </summary>
-        public DateTimeTimeZone NewReminderTime { get; set; }
-    
-        /// <summary>
-        /// Builds the request.
-        /// </summary>
+        /// <param name="functionUrl">The request URL to </param>
         /// <param name="options">The query and header options for the request.</param>
-        /// <returns>The built request.</returns>
-        public IEventSnoozeReminderRequest Request(IEnumerable<Option> options = null)
+        /// <returns>An instance of a specific request class.</returns>
+        protected override IEventSnoozeReminderRequest CreateRequest(string functionUrl, IEnumerable<Option> options)
         {
-        
-            if (this.NewReminderTime == null)
-            {
-                throw new ServiceException(
-                    new Error
-                    {
-                        Code = "invalidRequest",
-                        Message = "newReminderTime is a required parameter for this method request.",
-                    });
-            }
-                
-            return new EventSnoozeReminderRequest(
-                this.RequestUrl,
-                this.Client,
-                options,
-                this.NewReminderTime);
-        
-        }
+            var request = new EventSnoozeReminderRequest(functionUrl, this.Client, options);
 
+            if (this.HasParameter("newReminderTime"))
+            {
+                request.RequestBody.NewReminderTime = this.GetParameter<DateTimeTimeZone>("newReminderTime");
+            }
+
+            return request;
+        }
     }
 }
-

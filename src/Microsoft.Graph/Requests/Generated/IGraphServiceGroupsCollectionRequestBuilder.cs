@@ -33,5 +33,7 @@ namespace Microsoft.Graph
         /// <param name="id">The ID for the Group.</param>
         /// <returns>The <see cref="IGroupRequestBuilder"/>.</returns>
         IGroupRequestBuilder this[string id] { get; }
+
+        
     }
 }

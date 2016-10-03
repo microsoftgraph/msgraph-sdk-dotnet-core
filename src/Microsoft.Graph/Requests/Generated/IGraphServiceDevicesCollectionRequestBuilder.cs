@@ -33,5 +33,7 @@ namespace Microsoft.Graph
         /// <param name="id">The ID for the Device.</param>
         /// <returns>The <see cref="IDeviceRequestBuilder"/>.</returns>
         IDeviceRequestBuilder this[string id] { get; }
+
+        
     }
 }

@@ -11,7 +11,6 @@ namespace Microsoft.Graph
     using System.IO;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The interface IDirectoryRoleRequest.
@@ -23,46 +22,46 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="directoryRoleToCreate">The DirectoryRole to create.</param>
         /// <returns>The created DirectoryRole.</returns>
-        Task<DirectoryRole> CreateAsync(DirectoryRole directoryRoleToCreate);        /// <summary>
+        System.Threading.Tasks.Task<DirectoryRole> CreateAsync(DirectoryRole directoryRoleToCreate);        /// <summary>
         /// Creates the specified DirectoryRole using PUT.
         /// </summary>
         /// <param name="directoryRoleToCreate">The DirectoryRole to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created DirectoryRole.</returns>
-        Task<DirectoryRole> CreateAsync(DirectoryRole directoryRoleToCreate, CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<DirectoryRole> CreateAsync(DirectoryRole directoryRoleToCreate, CancellationToken cancellationToken);
 
         /// <summary>
         /// Deletes the specified DirectoryRole.
         /// </summary>
         /// <returns>The task to await.</returns>
-        Task DeleteAsync();
+        System.Threading.Tasks.Task DeleteAsync();
 
         /// <summary>
         /// Deletes the specified DirectoryRole.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await.</returns>
-        Task DeleteAsync(CancellationToken cancellationToken);
+        System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken);
 
         /// <summary>
         /// Gets the specified DirectoryRole.
         /// </summary>
         /// <returns>The DirectoryRole.</returns>
-        Task<DirectoryRole> GetAsync();
+        System.Threading.Tasks.Task<DirectoryRole> GetAsync();
 
         /// <summary>
         /// Gets the specified DirectoryRole.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The DirectoryRole.</returns>
-        Task<DirectoryRole> GetAsync(CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<DirectoryRole> GetAsync(CancellationToken cancellationToken);
 
         /// <summary>
         /// Updates the specified DirectoryRole using PATCH.
         /// </summary>
         /// <param name="directoryRoleToUpdate">The DirectoryRole to update.</param>
         /// <returns>The updated DirectoryRole.</returns>
-        Task<DirectoryRole> UpdateAsync(DirectoryRole directoryRoleToUpdate);
+        System.Threading.Tasks.Task<DirectoryRole> UpdateAsync(DirectoryRole directoryRoleToUpdate);
 
         /// <summary>
         /// Updates the specified DirectoryRole using PATCH.
@@ -70,7 +69,7 @@ namespace Microsoft.Graph
         /// <param name="directoryRoleToUpdate">The DirectoryRole to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The updated DirectoryRole.</returns>
-        Task<DirectoryRole> UpdateAsync(DirectoryRole directoryRoleToUpdate, CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<DirectoryRole> UpdateAsync(DirectoryRole directoryRoleToUpdate, CancellationToken cancellationToken);
 
         /// <summary>
         /// Adds the specified expand value to the request.
@@ -85,5 +84,6 @@ namespace Microsoft.Graph
         /// <param name="value">The select value.</param>
         /// <returns>The request object to send.</returns>
         IDirectoryRoleRequest Select(string value);
+
     }
 }

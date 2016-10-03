@@ -11,7 +11,6 @@ namespace Microsoft.Graph
     using System.IO;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The interface ICalendarRequest.
@@ -23,46 +22,46 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="calendarToCreate">The Calendar to create.</param>
         /// <returns>The created Calendar.</returns>
-        Task<Calendar> CreateAsync(Calendar calendarToCreate);        /// <summary>
+        System.Threading.Tasks.Task<Calendar> CreateAsync(Calendar calendarToCreate);        /// <summary>
         /// Creates the specified Calendar using PUT.
         /// </summary>
         /// <param name="calendarToCreate">The Calendar to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created Calendar.</returns>
-        Task<Calendar> CreateAsync(Calendar calendarToCreate, CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<Calendar> CreateAsync(Calendar calendarToCreate, CancellationToken cancellationToken);
 
         /// <summary>
         /// Deletes the specified Calendar.
         /// </summary>
         /// <returns>The task to await.</returns>
-        Task DeleteAsync();
+        System.Threading.Tasks.Task DeleteAsync();
 
         /// <summary>
         /// Deletes the specified Calendar.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await.</returns>
-        Task DeleteAsync(CancellationToken cancellationToken);
+        System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken);
 
         /// <summary>
         /// Gets the specified Calendar.
         /// </summary>
         /// <returns>The Calendar.</returns>
-        Task<Calendar> GetAsync();
+        System.Threading.Tasks.Task<Calendar> GetAsync();
 
         /// <summary>
         /// Gets the specified Calendar.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The Calendar.</returns>
-        Task<Calendar> GetAsync(CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<Calendar> GetAsync(CancellationToken cancellationToken);
 
         /// <summary>
         /// Updates the specified Calendar using PATCH.
         /// </summary>
         /// <param name="calendarToUpdate">The Calendar to update.</param>
         /// <returns>The updated Calendar.</returns>
-        Task<Calendar> UpdateAsync(Calendar calendarToUpdate);
+        System.Threading.Tasks.Task<Calendar> UpdateAsync(Calendar calendarToUpdate);
 
         /// <summary>
         /// Updates the specified Calendar using PATCH.
@@ -70,7 +69,7 @@ namespace Microsoft.Graph
         /// <param name="calendarToUpdate">The Calendar to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The updated Calendar.</returns>
-        Task<Calendar> UpdateAsync(Calendar calendarToUpdate, CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<Calendar> UpdateAsync(Calendar calendarToUpdate, CancellationToken cancellationToken);
 
         /// <summary>
         /// Adds the specified expand value to the request.
@@ -85,5 +84,6 @@ namespace Microsoft.Graph
         /// <param name="value">The select value.</param>
         /// <returns>The request object to send.</returns>
         ICalendarRequest Select(string value);
+
     }
 }

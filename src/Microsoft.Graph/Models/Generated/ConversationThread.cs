@@ -11,68 +11,67 @@ namespace Microsoft.Graph
     using System.Collections.Generic;
     using System.IO;
     using System.Runtime.Serialization;
-
     using Newtonsoft.Json;
 
     /// <summary>
     /// The type Conversation Thread.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class ConversationThread : Entity
     {
     
         /// <summary>
         /// Gets or sets to recipients.
         /// </summary>
-        [DataMember(Name = "toRecipients", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "toRecipients", Required = Required.Default)]
         public IEnumerable<Recipient> ToRecipients { get; set; }
     
         /// <summary>
         /// Gets or sets topic.
         /// </summary>
-        [DataMember(Name = "topic", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "topic", Required = Required.Default)]
         public string Topic { get; set; }
     
         /// <summary>
         /// Gets or sets has attachments.
         /// </summary>
-        [DataMember(Name = "hasAttachments", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "hasAttachments", Required = Required.Default)]
         public bool? HasAttachments { get; set; }
     
         /// <summary>
         /// Gets or sets last delivered date time.
         /// </summary>
-        [DataMember(Name = "lastDeliveredDateTime", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "lastDeliveredDateTime", Required = Required.Default)]
         public DateTimeOffset? LastDeliveredDateTime { get; set; }
     
         /// <summary>
         /// Gets or sets unique senders.
         /// </summary>
-        [DataMember(Name = "uniqueSenders", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "uniqueSenders", Required = Required.Default)]
         public IEnumerable<string> UniqueSenders { get; set; }
     
         /// <summary>
         /// Gets or sets cc recipients.
         /// </summary>
-        [DataMember(Name = "ccRecipients", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "ccRecipients", Required = Required.Default)]
         public IEnumerable<Recipient> CcRecipients { get; set; }
     
         /// <summary>
         /// Gets or sets preview.
         /// </summary>
-        [DataMember(Name = "preview", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "preview", Required = Required.Default)]
         public string Preview { get; set; }
     
         /// <summary>
         /// Gets or sets is locked.
         /// </summary>
-        [DataMember(Name = "isLocked", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "isLocked", Required = Required.Default)]
         public bool? IsLocked { get; set; }
     
         /// <summary>
         /// Gets or sets posts.
         /// </summary>
-        [DataMember(Name = "posts", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "posts", Required = Required.Default)]
         public IConversationThreadPostsCollectionPage Posts { get; set; }
     
     }

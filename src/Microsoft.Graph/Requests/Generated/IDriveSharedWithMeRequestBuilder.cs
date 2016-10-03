@@ -9,13 +9,13 @@ namespace Microsoft.Graph
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
 
     /// <summary>
     /// The interface IDriveSharedWithMeRequestBuilder.
     /// </summary>
     public partial interface IDriveSharedWithMeRequestBuilder
     {
-    
         /// <summary>
         /// Builds the request.
         /// </summary>

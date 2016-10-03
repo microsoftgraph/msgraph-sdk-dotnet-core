@@ -7,6 +7,7 @@ namespace Microsoft.Graph.Test.Requests.Generated
     using System;
     using System.IO;
     using System.Net.Http;
+    using System.Threading;
     using System.Threading.Tasks;
 
     using Microsoft.Graph;
@@ -50,7 +51,9 @@ namespace Microsoft.Graph.Test.Requests.Generated
                         It.Is<HttpRequestMessage>(
                             request => request.RequestUri.ToString().Equals(requestUrl)
                                 && request.Method == HttpMethod.Post
-                                && string.Equals(request.Content.Headers.ContentType.ToString(), "application/json"))))
+                                && string.Equals(request.Content.Headers.ContentType.ToString(), "application/json")),
+                        HttpCompletionOption.ResponseContentRead,
+                        CancellationToken.None))
                     .Returns(Task.FromResult(httpResponseMessage));
 
                 var userToCreate = new User { Id = "id" };
@@ -93,6 +96,7 @@ namespace Microsoft.Graph.Test.Requests.Generated
             }
         }
 
+#if false // This test can no longer run at this time since the Graph does not have a $ref navigation that allows expand.
         /// <summary>
         /// Tests the Expand() method on the request for an entity collection that has a $ref navigation.
         /// </summary>
@@ -109,7 +113,9 @@ namespace Microsoft.Graph.Test.Requests.Generated
             Assert.AreEqual("$expand", groupMembersRequest.QueryOptions[0].Name, "Unexpected query option name.");
             Assert.AreEqual("value", groupMembersRequest.QueryOptions[0].Value, "Unexpected query option value.");
         }
+#endif
 
+#if false // This test can no longer run at this time since the Graph does not have a $ref navigation that allows select.
         /// <summary>
         /// Tests the Select() method on the request for an entity collection that has a $ref navigation.
         /// </summary>
@@ -126,6 +132,7 @@ namespace Microsoft.Graph.Test.Requests.Generated
             Assert.AreEqual("$select", groupMembersRequest.QueryOptions[0].Name, "Unexpected query option name.");
             Assert.AreEqual("value", groupMembersRequest.QueryOptions[0].Value, "Unexpected query option value.");
         }
+#endif
 
         /// <summary>
         /// Tests the Top() method on the request for an entity collection that has a $ref navigation.
@@ -144,6 +151,7 @@ namespace Microsoft.Graph.Test.Requests.Generated
             Assert.AreEqual("1", groupMembersRequest.QueryOptions[0].Value, "Unexpected query option value.");
         }
 
+#if false // This test can no longer run at this time since the Graph does not have a $ref navigation that allows filter.
         /// <summary>
         /// Tests the Filter() method on the request for an entity collection that has a $ref navigation.
         /// </summary>
@@ -160,7 +168,9 @@ namespace Microsoft.Graph.Test.Requests.Generated
             Assert.AreEqual("$filter", groupMembersRequest.QueryOptions[0].Name, "Unexpected query option name.");
             Assert.AreEqual("value", groupMembersRequest.QueryOptions[0].Value, "Unexpected query option value.");
         }
+#endif
 
+#if false // This test can no longer run at this time since the Graph does not have a $ref navigation that allows skip.
         /// <summary>
         /// Tests the Skip() method on the request for an entity collection that has a $ref navigation.
         /// </summary>
@@ -177,6 +187,7 @@ namespace Microsoft.Graph.Test.Requests.Generated
             Assert.AreEqual("$skip", groupMembersRequest.QueryOptions[0].Name, "Unexpected query option name.");
             Assert.AreEqual("1", groupMembersRequest.QueryOptions[0].Value, "Unexpected query option value.");
         }
+#endif
 
         /// <summary>
         /// Tests the OrderBy() method on the request for an entity collection that has a $ref navigation.

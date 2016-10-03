@@ -32,7 +32,7 @@ supported authentication portals:
 * [Microsoft Azure Active Directory](https://manage.windowsazure.com): Register
   a new application in your tenant's Active Directory to support work or school
   users for your tenant or multiple tenants.
-  
+
 ### 2. Authenticate for the Microsoft Graph service
 
 The Microsoft Graph .NET Client Library does not include any default authentication implementations.
@@ -88,6 +88,11 @@ The following sample applications are also available:
 * [Collections](docs/collections.md)
 * [Errors](docs/errors.md)
 * [Microsoft Graph API](https://graph.microsoft.io)
+* [Release notes](https://github.com/microsoftgraph/msgraph-sdk-dotnet/releases/tag/1.1.0)
+
+## Notes
+
+Install NewtonSoft.Json first if you want to use a version greater than NewtonSoft.Json 6.0.1. For example, you'll need to install NewtonSoft.Json 9.0.1 first if you want to use this to library while targeting .Net Core with standard1.0.
 
 ## Issues
 

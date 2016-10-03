@@ -13,7 +13,7 @@ namespace Microsoft.Graph
     /// The type ContactFolderContactsCollectionRequestBuilder.
     /// </summary>
     public partial class ContactFolderContactsCollectionRequestBuilder : BaseRequestBuilder, IContactFolderContactsCollectionRequestBuilder
-    {  
+    {
         /// <summary>
         /// Constructs a new ContactFolderContactsCollectionRequestBuilder.
         /// </summary>
@@ -57,5 +57,7 @@ namespace Microsoft.Graph
                 return new ContactRequestBuilder(this.AppendSegmentToRequestUrl(id), this.Client);
             }
         }
+
+        
     }
 }

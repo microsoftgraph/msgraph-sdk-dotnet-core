@@ -12,7 +12,6 @@ namespace Microsoft.Graph
     using System.IO;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The type EntityRequest.
@@ -34,25 +33,25 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Creates the specified Entity using PUT.
+        /// Creates the specified Entity using POST.
         /// </summary>
         /// <param name="entityToCreate">The Entity to create.</param>
         /// <returns>The created Entity.</returns>
-        public Task<Entity> CreateAsync(Entity entityToCreate)
+        public System.Threading.Tasks.Task<Entity> CreateAsync(Entity entityToCreate)
         {
             return this.CreateAsync(entityToCreate, CancellationToken.None);
         }
 
         /// <summary>
-        /// Creates the specified Entity using PUT.
+        /// Creates the specified Entity using POST.
         /// </summary>
         /// <param name="entityToCreate">The Entity to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created Entity.</returns>
-        public async Task<Entity> CreateAsync(Entity entityToCreate, CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Entity> CreateAsync(Entity entityToCreate, CancellationToken cancellationToken)
         {
             this.ContentType = "application/json";
-            this.Method = "PUT";
+            this.Method = "POST";
             var newEntity = await this.SendAsync<Entity>(entityToCreate, cancellationToken).ConfigureAwait(false);
             this.InitializeCollectionProperties(newEntity);
             return newEntity;
@@ -62,7 +61,7 @@ namespace Microsoft.Graph
         /// Deletes the specified Entity.
         /// </summary>
         /// <returns>The task to await.</returns>
-        public Task DeleteAsync()
+        public System.Threading.Tasks.Task DeleteAsync()
         {
             return this.DeleteAsync(CancellationToken.None);
         }
@@ -72,7 +71,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await.</returns>
-        public async Task DeleteAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken)
         {
             this.Method = "DELETE";
             await this.SendAsync<Entity>(null, cancellationToken).ConfigureAwait(false);
@@ -82,7 +81,7 @@ namespace Microsoft.Graph
         /// Gets the specified Entity.
         /// </summary>
         /// <returns>The Entity.</returns>
-        public Task<Entity> GetAsync()
+        public System.Threading.Tasks.Task<Entity> GetAsync()
         {
             return this.GetAsync(CancellationToken.None);
         }
@@ -92,7 +91,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The Entity.</returns>
-        public async Task<Entity> GetAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Entity> GetAsync(CancellationToken cancellationToken)
         {
             this.Method = "GET";
             var retrievedEntity = await this.SendAsync<Entity>(null, cancellationToken).ConfigureAwait(false);
@@ -105,7 +104,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="entityToUpdate">The Entity to update.</param>
         /// <returns>The updated Entity.</returns>
-        public Task<Entity> UpdateAsync(Entity entityToUpdate)
+        public System.Threading.Tasks.Task<Entity> UpdateAsync(Entity entityToUpdate)
         {
             return this.UpdateAsync(entityToUpdate, CancellationToken.None);
         }
@@ -116,7 +115,7 @@ namespace Microsoft.Graph
         /// <param name="entityToUpdate">The Entity to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The updated Entity.</returns>
-        public async Task<Entity> UpdateAsync(Entity entityToUpdate, CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Entity> UpdateAsync(Entity entityToUpdate, CancellationToken cancellationToken)
         {
             this.ContentType = "application/json";
             this.Method = "PATCH";
@@ -153,7 +152,7 @@ namespace Microsoft.Graph
         /// <param name="entityToInitialize">The <see cref="Entity"/> with the collection properties to initialize.</param>
         private void InitializeCollectionProperties(Entity entityToInitialize)
         {
-        
+
         }
     }
 }

@@ -11,13 +11,12 @@ namespace Microsoft.Graph
     using System.Collections.Generic;
     using System.IO;
     using System.Runtime.Serialization;
-
     using Newtonsoft.Json;
 
     /// <summary>
     /// The type SearchResult.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     [JsonConverter(typeof(DerivedTypeConverter))]
     public partial class SearchResult
     {
@@ -25,7 +24,7 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets or sets onClickTelemetryUrl.
         /// </summary>
-        [DataMember(Name = "onClickTelemetryUrl", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "onClickTelemetryUrl", Required = Required.Default)]
         public string OnClickTelemetryUrl { get; set; }
     
         /// <summary>

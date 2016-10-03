@@ -12,7 +12,6 @@ namespace Microsoft.Graph
     using System.IO;
     using System.Net.Http;
     using System.Threading;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// The type CalendarGroupRequest.
@@ -34,25 +33,25 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Creates the specified CalendarGroup using PUT.
+        /// Creates the specified CalendarGroup using POST.
         /// </summary>
         /// <param name="calendarGroupToCreate">The CalendarGroup to create.</param>
         /// <returns>The created CalendarGroup.</returns>
-        public Task<CalendarGroup> CreateAsync(CalendarGroup calendarGroupToCreate)
+        public System.Threading.Tasks.Task<CalendarGroup> CreateAsync(CalendarGroup calendarGroupToCreate)
         {
             return this.CreateAsync(calendarGroupToCreate, CancellationToken.None);
         }
 
         /// <summary>
-        /// Creates the specified CalendarGroup using PUT.
+        /// Creates the specified CalendarGroup using POST.
         /// </summary>
         /// <param name="calendarGroupToCreate">The CalendarGroup to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created CalendarGroup.</returns>
-        public async Task<CalendarGroup> CreateAsync(CalendarGroup calendarGroupToCreate, CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<CalendarGroup> CreateAsync(CalendarGroup calendarGroupToCreate, CancellationToken cancellationToken)
         {
             this.ContentType = "application/json";
-            this.Method = "PUT";
+            this.Method = "POST";
             var newEntity = await this.SendAsync<CalendarGroup>(calendarGroupToCreate, cancellationToken).ConfigureAwait(false);
             this.InitializeCollectionProperties(newEntity);
             return newEntity;
@@ -62,7 +61,7 @@ namespace Microsoft.Graph
         /// Deletes the specified CalendarGroup.
         /// </summary>
         /// <returns>The task to await.</returns>
-        public Task DeleteAsync()
+        public System.Threading.Tasks.Task DeleteAsync()
         {
             return this.DeleteAsync(CancellationToken.None);
         }
@@ -72,7 +71,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await.</returns>
-        public async Task DeleteAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken)
         {
             this.Method = "DELETE";
             await this.SendAsync<CalendarGroup>(null, cancellationToken).ConfigureAwait(false);
@@ -82,7 +81,7 @@ namespace Microsoft.Graph
         /// Gets the specified CalendarGroup.
         /// </summary>
         /// <returns>The CalendarGroup.</returns>
-        public Task<CalendarGroup> GetAsync()
+        public System.Threading.Tasks.Task<CalendarGroup> GetAsync()
         {
             return this.GetAsync(CancellationToken.None);
         }
@@ -92,7 +91,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The CalendarGroup.</returns>
-        public async Task<CalendarGroup> GetAsync(CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<CalendarGroup> GetAsync(CancellationToken cancellationToken)
         {
             this.Method = "GET";
             var retrievedEntity = await this.SendAsync<CalendarGroup>(null, cancellationToken).ConfigureAwait(false);
@@ -105,7 +104,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="calendarGroupToUpdate">The CalendarGroup to update.</param>
         /// <returns>The updated CalendarGroup.</returns>
-        public Task<CalendarGroup> UpdateAsync(CalendarGroup calendarGroupToUpdate)
+        public System.Threading.Tasks.Task<CalendarGroup> UpdateAsync(CalendarGroup calendarGroupToUpdate)
         {
             return this.UpdateAsync(calendarGroupToUpdate, CancellationToken.None);
         }
@@ -116,7 +115,7 @@ namespace Microsoft.Graph
         /// <param name="calendarGroupToUpdate">The CalendarGroup to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The updated CalendarGroup.</returns>
-        public async Task<CalendarGroup> UpdateAsync(CalendarGroup calendarGroupToUpdate, CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<CalendarGroup> UpdateAsync(CalendarGroup calendarGroupToUpdate, CancellationToken cancellationToken)
         {
             this.ContentType = "application/json";
             this.Method = "PATCH";
@@ -153,10 +152,10 @@ namespace Microsoft.Graph
         /// <param name="calendarGroupToInitialize">The <see cref="CalendarGroup"/> with the collection properties to initialize.</param>
         private void InitializeCollectionProperties(CalendarGroup calendarGroupToInitialize)
         {
-        
+
             if (calendarGroupToInitialize != null && calendarGroupToInitialize.AdditionalData != null)
             {
-        
+
                 if (calendarGroupToInitialize.Calendars != null && calendarGroupToInitialize.Calendars.CurrentPage != null)
                 {
                     calendarGroupToInitialize.Calendars.AdditionalData = calendarGroupToInitialize.AdditionalData;
@@ -172,10 +171,10 @@ namespace Microsoft.Graph
                             nextPageLinkString);
                     }
                 }
-        
+
             }
 
-        
+
         }
     }
 }
