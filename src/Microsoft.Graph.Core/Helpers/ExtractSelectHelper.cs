@@ -74,7 +74,7 @@ namespace Microsoft.Graph
                 // Should already be validated above, but doesn't hurt to be sure.
                 var members = from m in newExpression.Arguments.OfType<MemberExpression>()
                     where m.Expression is ParameterExpression && m.Member.DeclaringType.GetTypeInfo().IsAssignableFrom(typeof(T).GetTypeInfo())
-                    select StringHelper.ConvertIdentifierToLowerCamelCase(m.Member.Name);
+                    select GetMemberWireName(m.Member);
                 return string.Join(",", members);
             }
             error = "Unrecognized lambda expression.";
@@ -88,7 +88,17 @@ namespace Microsoft.Graph
                 error = $"Anonymous type in lambda expression may only be initialized with direct members of type {typeof (T).Name}";
                 return null;
             }
-            return StringHelper.ConvertIdentifierToLowerCamelCase(memberExpression.Member.Name);
+            return GetMemberWireName(memberExpression.Member);
+        }
+
+        private static string GetMemberWireName(MemberInfo member)
+        {
+            var jsonProperty = member.GetCustomAttribute<Newtonsoft.Json.JsonPropertyAttribute>();
+            if (jsonProperty != null && !string.IsNullOrWhiteSpace(jsonProperty.PropertyName))
+            {
+                return jsonProperty.PropertyName;
+            }
+            return StringHelper.ConvertIdentifierToLowerCamelCase(member.Name);
         }
     }
 }
