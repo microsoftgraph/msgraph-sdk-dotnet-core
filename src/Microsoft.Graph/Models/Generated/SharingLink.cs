@@ -34,6 +34,12 @@ namespace Microsoft.Graph
         public string Type { get; set; }
     
         /// <summary>
+        /// Gets or sets scope.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "scope", Required = Required.Default)]
+        public string Scope { get; set; }
+    
+        /// <summary>
         /// Gets or sets webUrl.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "webUrl", Required = Required.Default)]

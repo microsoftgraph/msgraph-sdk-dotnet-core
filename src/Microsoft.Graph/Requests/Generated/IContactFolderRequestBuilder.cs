@@ -40,6 +40,18 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IContactFolderChildFoldersCollectionRequestBuilder"/>.</returns>
         IContactFolderChildFoldersCollectionRequestBuilder ChildFolders { get; }
+
+        /// <summary>
+        /// Gets the request builder for SingleValueExtendedProperties.
+        /// </summary>
+        /// <returns>The <see cref="IContactFolderSingleValueExtendedPropertiesCollectionRequestBuilder"/>.</returns>
+        IContactFolderSingleValueExtendedPropertiesCollectionRequestBuilder SingleValueExtendedProperties { get; }
+
+        /// <summary>
+        /// Gets the request builder for MultiValueExtendedProperties.
+        /// </summary>
+        /// <returns>The <see cref="IContactFolderMultiValueExtendedPropertiesCollectionRequestBuilder"/>.</returns>
+        IContactFolderMultiValueExtendedPropertiesCollectionRequestBuilder MultiValueExtendedProperties { get; }
     
     }
 }

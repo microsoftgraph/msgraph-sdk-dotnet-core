@@ -60,6 +60,11 @@ namespace Microsoft.Graph
         IGraphServiceDrivesCollectionRequestBuilder Drives { get; }
     
         /// <summary>
+        /// Gets the GraphServiceShares request builder.
+        /// </summary>
+        IGraphServiceSharesCollectionRequestBuilder Shares { get; }
+    
+        /// <summary>
         /// Gets the GraphServiceWorkbooks request builder.
         /// </summary>
         IGraphServiceWorkbooksCollectionRequestBuilder Workbooks { get; }

@@ -172,6 +172,38 @@ namespace Microsoft.Graph
                     }
                 }
 
+                if (contactToInitialize.SingleValueExtendedProperties != null && contactToInitialize.SingleValueExtendedProperties.CurrentPage != null)
+                {
+                    contactToInitialize.SingleValueExtendedProperties.AdditionalData = contactToInitialize.AdditionalData;
+
+                    object nextPageLink;
+                    contactToInitialize.AdditionalData.TryGetValue("singleValueExtendedProperties@odata.nextLink", out nextPageLink);
+                    var nextPageLinkString = nextPageLink as string;
+
+                    if (!string.IsNullOrEmpty(nextPageLinkString))
+                    {
+                        contactToInitialize.SingleValueExtendedProperties.InitializeNextPageRequest(
+                            this.Client,
+                            nextPageLinkString);
+                    }
+                }
+
+                if (contactToInitialize.MultiValueExtendedProperties != null && contactToInitialize.MultiValueExtendedProperties.CurrentPage != null)
+                {
+                    contactToInitialize.MultiValueExtendedProperties.AdditionalData = contactToInitialize.AdditionalData;
+
+                    object nextPageLink;
+                    contactToInitialize.AdditionalData.TryGetValue("multiValueExtendedProperties@odata.nextLink", out nextPageLink);
+                    var nextPageLinkString = nextPageLink as string;
+
+                    if (!string.IsNullOrEmpty(nextPageLinkString))
+                    {
+                        contactToInitialize.MultiValueExtendedProperties.InitializeNextPageRequest(
+                            this.Client,
+                            nextPageLinkString);
+                    }
+                }
+
             }
 
 

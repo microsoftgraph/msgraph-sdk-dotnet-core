@@ -156,22 +156,6 @@ namespace Microsoft.Graph
             if (driveItemToInitialize != null && driveItemToInitialize.AdditionalData != null)
             {
 
-                if (driveItemToInitialize.Permissions != null && driveItemToInitialize.Permissions.CurrentPage != null)
-                {
-                    driveItemToInitialize.Permissions.AdditionalData = driveItemToInitialize.AdditionalData;
-
-                    object nextPageLink;
-                    driveItemToInitialize.AdditionalData.TryGetValue("permissions@odata.nextLink", out nextPageLink);
-                    var nextPageLinkString = nextPageLink as string;
-
-                    if (!string.IsNullOrEmpty(nextPageLinkString))
-                    {
-                        driveItemToInitialize.Permissions.InitializeNextPageRequest(
-                            this.Client,
-                            nextPageLinkString);
-                    }
-                }
-
                 if (driveItemToInitialize.Children != null && driveItemToInitialize.Children.CurrentPage != null)
                 {
                     driveItemToInitialize.Children.AdditionalData = driveItemToInitialize.AdditionalData;
@@ -183,6 +167,22 @@ namespace Microsoft.Graph
                     if (!string.IsNullOrEmpty(nextPageLinkString))
                     {
                         driveItemToInitialize.Children.InitializeNextPageRequest(
+                            this.Client,
+                            nextPageLinkString);
+                    }
+                }
+
+                if (driveItemToInitialize.Permissions != null && driveItemToInitialize.Permissions.CurrentPage != null)
+                {
+                    driveItemToInitialize.Permissions.AdditionalData = driveItemToInitialize.AdditionalData;
+
+                    object nextPageLink;
+                    driveItemToInitialize.AdditionalData.TryGetValue("permissions@odata.nextLink", out nextPageLink);
+                    var nextPageLinkString = nextPageLink as string;
+
+                    if (!string.IsNullOrEmpty(nextPageLinkString))
+                    {
+                        driveItemToInitialize.Permissions.InitializeNextPageRequest(
                             this.Client,
                             nextPageLinkString);
                     }

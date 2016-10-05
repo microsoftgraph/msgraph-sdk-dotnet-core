@@ -139,6 +139,17 @@ namespace Microsoft.Graph
         }
     
         /// <summary>
+        /// Gets the GraphServiceShares request builder.
+        /// </summary>
+        public IGraphServiceSharesCollectionRequestBuilder Shares
+        {
+            get
+            {
+                return new GraphServiceSharesCollectionRequestBuilder(this.BaseUrl + "/shares", this);
+            }
+        }
+    
+        /// <summary>
         /// Gets the GraphServiceWorkbooks request builder.
         /// </summary>
         public IGraphServiceWorkbooksCollectionRequestBuilder Workbooks

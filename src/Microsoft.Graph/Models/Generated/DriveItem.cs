@@ -21,12 +21,6 @@ namespace Microsoft.Graph
     {
     
         /// <summary>
-        /// Gets or sets content.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "content", Required = Required.Default)]
-        public Stream Content { get; set; }
-    
-        /// <summary>
         /// Gets or sets created by.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "createdBy", Required = Required.Default)]
@@ -37,12 +31,6 @@ namespace Microsoft.Graph
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "createdDateTime", Required = Required.Default)]
         public DateTimeOffset? CreatedDateTime { get; set; }
-    
-        /// <summary>
-        /// Gets or sets c tag.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "cTag", Required = Required.Default)]
-        public string CTag { get; set; }
     
         /// <summary>
         /// Gets or sets description.
@@ -75,24 +63,6 @@ namespace Microsoft.Graph
         public string Name { get; set; }
     
         /// <summary>
-        /// Gets or sets parent reference.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "parentReference", Required = Required.Default)]
-        public ItemReference ParentReference { get; set; }
-    
-        /// <summary>
-        /// Gets or sets size.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "size", Required = Required.Default)]
-        public Int64? Size { get; set; }
-    
-        /// <summary>
-        /// Gets or sets web dav url.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "webDavUrl", Required = Required.Default)]
-        public string WebDavUrl { get; set; }
-    
-        /// <summary>
         /// Gets or sets web url.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "webUrl", Required = Required.Default)]
@@ -103,6 +73,18 @@ namespace Microsoft.Graph
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "audio", Required = Required.Default)]
         public Audio Audio { get; set; }
+    
+        /// <summary>
+        /// Gets or sets content.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "content", Required = Required.Default)]
+        public Stream Content { get; set; }
+    
+        /// <summary>
+        /// Gets or sets c tag.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "cTag", Required = Required.Default)]
+        public string CTag { get; set; }
     
         /// <summary>
         /// Gets or sets deleted.
@@ -141,6 +123,18 @@ namespace Microsoft.Graph
         public GeoCoordinates Location { get; set; }
     
         /// <summary>
+        /// Gets or sets package.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "package", Required = Required.Default)]
+        public Package Package { get; set; }
+    
+        /// <summary>
+        /// Gets or sets parent reference.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "parentReference", Required = Required.Default)]
+        public ItemReference ParentReference { get; set; }
+    
+        /// <summary>
         /// Gets or sets photo.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "photo", Required = Required.Default)]
@@ -151,6 +145,12 @@ namespace Microsoft.Graph
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "remoteItem", Required = Required.Default)]
         public RemoteItem RemoteItem { get; set; }
+    
+        /// <summary>
+        /// Gets or sets root.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "root", Required = Required.Default)]
+        public Root Root { get; set; }
     
         /// <summary>
         /// Gets or sets search result.
@@ -165,6 +165,18 @@ namespace Microsoft.Graph
         public Shared Shared { get; set; }
     
         /// <summary>
+        /// Gets or sets sharepoint ids.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "sharepointIds", Required = Required.Default)]
+        public SharepointIds SharepointIds { get; set; }
+    
+        /// <summary>
+        /// Gets or sets size.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "size", Required = Required.Default)]
+        public Int64? Size { get; set; }
+    
+        /// <summary>
         /// Gets or sets special folder.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "specialFolder", Required = Required.Default)]
@@ -177,10 +189,10 @@ namespace Microsoft.Graph
         public Video Video { get; set; }
     
         /// <summary>
-        /// Gets or sets package.
+        /// Gets or sets web dav url.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "package", Required = Required.Default)]
-        public Package Package { get; set; }
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "webDavUrl", Required = Required.Default)]
+        public string WebDavUrl { get; set; }
     
         /// <summary>
         /// Gets or sets created by user.
@@ -201,16 +213,16 @@ namespace Microsoft.Graph
         public User LastModifiedByUser { get; set; }
     
         /// <summary>
-        /// Gets or sets permissions.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "permissions", Required = Required.Default)]
-        public IDriveItemPermissionsCollectionPage Permissions { get; set; }
-    
-        /// <summary>
         /// Gets or sets children.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "children", Required = Required.Default)]
         public IDriveItemChildrenCollectionPage Children { get; set; }
+    
+        /// <summary>
+        /// Gets or sets permissions.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "permissions", Required = Required.Default)]
+        public IDriveItemPermissionsCollectionPage Permissions { get; set; }
     
         /// <summary>
         /// Gets or sets thumbnails.

@@ -207,6 +207,12 @@ namespace Microsoft.Graph
         public string UserType { get; set; }
     
         /// <summary>
+        /// Gets or sets mailbox settings.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "mailboxSettings", Required = Required.Default)]
+        public MailboxSettings MailboxSettings { get; set; }
+    
+        /// <summary>
         /// Gets or sets about me.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "aboutMe", Required = Required.Default)]
@@ -379,6 +385,12 @@ namespace Microsoft.Graph
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "drive", Required = Required.Default)]
         public Drive Drive { get; set; }
+    
+        /// <summary>
+        /// Gets or sets drives.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "drives", Required = Required.Default)]
+        public IUserDrivesCollectionPage Drives { get; set; }
     
     }
 }

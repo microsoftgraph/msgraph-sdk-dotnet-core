@@ -85,18 +85,6 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Gets the request builder for Permissions.
-        /// </summary>
-        /// <returns>The <see cref="IDriveItemPermissionsCollectionRequestBuilder"/>.</returns>
-        public IDriveItemPermissionsCollectionRequestBuilder Permissions
-        {
-            get
-            {
-                return new DriveItemPermissionsCollectionRequestBuilder(this.AppendSegmentToRequestUrl("permissions"), this.Client);
-            }
-        }
-
-        /// <summary>
         /// Gets the request builder for Children.
         /// </summary>
         /// <returns>The <see cref="IDriveItemChildrenCollectionRequestBuilder"/>.</returns>
@@ -105,6 +93,18 @@ namespace Microsoft.Graph
             get
             {
                 return new DriveItemChildrenCollectionRequestBuilder(this.AppendSegmentToRequestUrl("children"), this.Client);
+            }
+        }
+
+        /// <summary>
+        /// Gets the request builder for Permissions.
+        /// </summary>
+        /// <returns>The <see cref="IDriveItemPermissionsCollectionRequestBuilder"/>.</returns>
+        public IDriveItemPermissionsCollectionRequestBuilder Permissions
+        {
+            get
+            {
+                return new DriveItemPermissionsCollectionRequestBuilder(this.AppendSegmentToRequestUrl("permissions"), this.Client);
             }
         }
 
@@ -148,6 +148,40 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
+        /// Gets the request builder for DriveItemCreateUploadSession.
+        /// </summary>
+        /// <returns>The <see cref="IDriveItemCreateUploadSessionRequestBuilder"/>.</returns>
+        public IDriveItemCreateUploadSessionRequestBuilder CreateUploadSession(
+            DriveItemUploadableProperties item = null)
+        {
+            return new DriveItemCreateUploadSessionRequestBuilder(
+                this.AppendSegmentToRequestUrl("microsoft.graph.createUploadSession"),
+                this.Client,
+                item);
+        }
+
+        /// <summary>
+        /// Gets the request builder for DriveItemInvite.
+        /// </summary>
+        /// <returns>The <see cref="IDriveItemInviteRequestBuilder"/>.</returns>
+        public IDriveItemInviteRequestBuilder Invite(
+            IEnumerable<DriveRecipient> recipients,
+            bool? requireSignIn = null,
+            IEnumerable<string> roles = null,
+            bool? sendInvitation = null,
+            string message = null)
+        {
+            return new DriveItemInviteRequestBuilder(
+                this.AppendSegmentToRequestUrl("microsoft.graph.invite"),
+                this.Client,
+                recipients,
+                requireSignIn,
+                roles,
+                sendInvitation,
+                message);
+        }
+
+        /// <summary>
         /// Gets the request builder for DriveItemCopy.
         /// </summary>
         /// <returns>The <see cref="IDriveItemCopyRequestBuilder"/>.</returns>
@@ -179,6 +213,17 @@ namespace Microsoft.Graph
         /// Gets the request builder for DriveItemDelta.
         /// </summary>
         /// <returns>The <see cref="IDriveItemDeltaRequestBuilder"/>.</returns>
+        public IDriveItemDeltaRequestBuilder Delta()
+        {
+            return new DriveItemDeltaRequestBuilder(
+                this.AppendSegmentToRequestUrl("microsoft.graph.delta"),
+                this.Client);
+        }
+
+        /// <summary>
+        /// Gets the request builder for DriveItemDelta.
+        /// </summary>
+        /// <returns>The <see cref="IDriveItemDeltaRequestBuilder"/>.</returns>
         public IDriveItemDeltaRequestBuilder Delta(
             string token = null)
         {
@@ -186,17 +231,6 @@ namespace Microsoft.Graph
                 this.AppendSegmentToRequestUrl("microsoft.graph.delta"),
                 this.Client,
                 token);
-        }
-
-        /// <summary>
-        /// Gets the request builder for DriveItemDelta.
-        /// </summary>
-        /// <returns>The <see cref="IDriveItemDeltaRequestBuilder"/>.</returns>
-        public IDriveItemDeltaRequestBuilder Delta()
-        {
-            return new DriveItemDeltaRequestBuilder(
-                this.AppendSegmentToRequestUrl("microsoft.graph.delta"),
-                this.Client);
         }
     
     }
