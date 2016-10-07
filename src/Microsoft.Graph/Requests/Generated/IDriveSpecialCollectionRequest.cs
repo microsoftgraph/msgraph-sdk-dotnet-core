@@ -11,6 +11,7 @@ namespace Microsoft.Graph
     using System.Collections.Generic;
     using System.Net.Http;
     using System.Threading;
+    using System.Linq.Expressions;
 
     /// <summary>
     /// The interface IDriveSpecialCollectionRequest.
@@ -53,11 +54,25 @@ namespace Microsoft.Graph
         IDriveSpecialCollectionRequest Expand(string value);
 
         /// <summary>
+        /// Adds the specified expand value to the request.
+        /// </summary>
+        /// <param name="expandExpression">The expression from which to calculate the expand value.</param>
+        /// <returns>The request object to send.</returns>
+        IDriveSpecialCollectionRequest Expand(Expression<Func<DriveItem, object>> expandExpression);
+
+        /// <summary>
         /// Adds the specified select value to the request.
         /// </summary>
         /// <param name="value">The select value.</param>
         /// <returns>The request object to send.</returns>
         IDriveSpecialCollectionRequest Select(string value);
+
+        /// <summary>
+        /// Adds the specified select value to the request.
+        /// </summary>
+        /// <param name="selectExpression">The expression from which to calculate the select value.</param>
+        /// <returns>The request object to send.</returns>
+        IDriveSpecialCollectionRequest Select(Expression<Func<DriveItem, object>> selectExpression);
 
         /// <summary>
         /// Adds the specified top value to the request.
