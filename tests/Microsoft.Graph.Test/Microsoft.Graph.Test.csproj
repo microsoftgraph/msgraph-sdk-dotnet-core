@@ -132,6 +132,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Requests\Functional\Resources\hamilton.PNG" />
+    <Content Include="Requests\Functional\Resources\textfile.txt" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
