@@ -122,5 +122,29 @@ namespace Microsoft.Graph.Test.Requests.Functional
                 Assert.Fail("Something happened, check out a trace. Error code: {0}", e.Error.Code);
             }
         }
+
+
+        [TestMethod]
+        public async Task MailNextPageRequest()
+        {
+            try
+            {
+                var messages = new List<Message>();
+
+                var messagePage = await graphClient.Me.Messages.Request().GetAsync();
+
+                messages.AddRange(messagePage.CurrentPage);
+
+                while (messagePage.NextPageRequest != null)
+                {
+                    messagePage = await messagePage.NextPageRequest.GetAsync();
+                    messages.AddRange(messagePage.CurrentPage);
+                }
+            }
+            catch (Microsoft.Graph.ServiceException e)
+            {
+                Assert.Fail("Something happened, check out a trace. Error code: {0}", e.Error.Code);
+            }
+        }
     }
 }

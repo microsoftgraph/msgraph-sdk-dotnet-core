@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Microsoft.Graph.Test.Requests.Functional
 {
-    //[Ignore]
+    [Ignore]
     [TestClass]
     public class OneDriveTests : GraphTestBase
     {
@@ -17,8 +17,6 @@ namespace Microsoft.Graph.Test.Requests.Functional
         {
             try
             {
-                
-
                 System.Drawing.ImageConverter converter = new System.Drawing.ImageConverter();
                 var buff = (byte[])converter.ConvertTo(Microsoft.Graph.Test.Properties.Resources.hamilton, typeof(byte[]));
                 using (System.IO.MemoryStream ms = new System.IO.MemoryStream(buff))
@@ -31,13 +29,12 @@ namespace Microsoft.Graph.Test.Requests.Functional
                     //props.FileSystemInfo.CreatedDateTime = System.DateTimeOffset.Now;
                     //props.FileSystemInfo.LastModifiedDateTime = System.DateTimeOffset.Now;
 
-
-                    // Get the provider. This one done with the id of root
+                    // Get the provider. 
                     // POST /v1.0/drive/items/01KGPRHTV6Y2GOVW7725BZO354PWSELRRZ:/_hamiltion.png:/microsoft.graph.createUploadSession
-                    // The CreateUploadSesssion action doesn't seem to support the options s    tated in the metadata.
+                    // The CreateUploadSesssion action doesn't seem to support the options stated in the metadata.
                     var uploadSession = await graphClient.Drive.Items["01KGPRHTV6Y2GOVW7725BZO354PWSELRRZ"].ItemWithPath("_hamilton.png").CreateUploadSession().Request().PostAsync();
 
-                    var maxChunkSize = 320 * 1024; // 320 KB
+                    var maxChunkSize = 320 * 1024; // 320 KB - Change this to your chunk size. 5MB is the default.
                     var provider = new ChunkedUploadProvider(uploadSession, graphClient, ms, maxChunkSize);
 
                     // Setup the chunk request necessities
@@ -67,8 +64,6 @@ namespace Microsoft.Graph.Test.Requests.Functional
                         // ...
                     }
                 }
-
-                
             }
             catch (Microsoft.Graph.ServiceException e)
             {
@@ -77,5 +72,29 @@ namespace Microsoft.Graph.Test.Requests.Functional
         }
 
 
+        [TestMethod]
+        public async Task OneDriveNextPageRequest()
+        {
+            try
+            {
+                var driveItems = new List<DriveItem>();
+
+                var driveItemsPage = await graphClient.Me.Drive.Root.Children.Request().Top(4).GetAsync();
+
+                Assert.IsNotNull(driveItemsPage, "Expected that a page of OneDrive items is deserialized into an object.");
+
+                driveItems.AddRange(driveItemsPage.CurrentPage);
+
+                while (driveItemsPage.NextPageRequest != null)
+                {
+                    driveItemsPage = await driveItemsPage.NextPageRequest.GetAsync();
+                    driveItems.AddRange(driveItemsPage.CurrentPage);
+                }
+            }
+            catch (Microsoft.Graph.ServiceException e)
+            {
+                Assert.Fail("Something happened, check out a trace. Error code: {0}", e.Error.Code);
+            }
+        }
     }
 }
