@@ -1,1 +1,3 @@
-﻿Content in textfile.txt
+﻿Content in textfile.txt.
+
+Be happy for this moment. This moment is your life. - Omar Khayyam
