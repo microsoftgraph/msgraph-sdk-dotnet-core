@@ -96,5 +96,180 @@ namespace Microsoft.Graph.Test.Requests.Functional
                 Assert.Fail("Something happened, check out a trace. Error code: {0}", e.Error.Code);
             }
         }
+
+        // http://graph.microsoft.io/en-us/docs/api-reference/v1.0/api/item_downloadcontent
+        [TestMethod]
+        public async Task OneDriveGetContent()
+        {
+            try
+            {
+                var driveItems = await graphClient.Me.Drive.Root.Children.Request().GetAsync();
+
+                foreach (var item in driveItems)
+                {
+                    // Let's download the first file we get in the response.
+                    if (item.File != null)
+                    {
+                        var driveItemContent = await graphClient.Me.Drive.Items[item.Id].Content.Request().GetAsync();
+                        Assert.IsNotNull(driveItemContent, "Expected to find a file.");
+                        Assert.IsInstanceOfType(driveItemContent, typeof(Stream));
+                        return;
+                    }
+                }
+            }
+            catch (Microsoft.Graph.ServiceException e)
+            {
+                Assert.Fail("Something happened, check out a trace. Error code: {0}", e.Error.Code);
+            }
+        }
+
+
+        [TestMethod]
+        public async Task OneDriveGetSetPermissions()
+        {
+            try
+            {
+                var driveItems = await graphClient.Me.Drive
+                                                     .Root
+                                                     .Children
+                                                     .Request()
+                                                     .GetAsync();
+
+                foreach (var item in driveItems)
+                {
+                    // Let's get the first file in the response and expand the permissions set on it.
+                    if (item.File != null)
+                    {
+                        // Get the permissions on the first file in the response.
+                        var driveItem = await graphClient.Me.Drive
+                                                            .Items[item.Id]
+                                                            .Request()
+                                                            .Expand("permissions")
+                                                            .GetAsync();
+                        Assert.IsNotNull(driveItem, "Expected to find a file.");
+
+                        // Set permissions
+                        var perm = new Permission();
+                        perm.Roles = new List<string>() { "write"};
+                        if (driveItem.Permissions.Count > 0)
+                        {
+                            var headerOptions = new List<HeaderOption>()
+                            {
+                                new HeaderOption("if-match", driveItem.CTag)
+                            };
+
+                            var permission = await graphClient.Me.Drive
+                                                                 .Items[driveItem.Id]
+                                                                 .Permissions[driveItem.Permissions[0].Id]
+                                                                 .Request(headerOptions)
+                                                                 .UpdateAsync(perm);
+                        }
+                        break;
+                    }
+                }
+            }
+            catch (Microsoft.Graph.ServiceException e)
+            {
+                Assert.Fail("Something happened, check out a trace. Error code: {0}", e.Error.Code);
+            }
+        }
+
+        [TestMethod]
+        public async Task OneDriveSearchFile()
+        {
+            // Note: can't upload an item and immediately search for it. Seems like search index doesn't get immediately updated.
+            // Tried applying a delay of 30sec and it made no difference.
+            try
+            {
+                // http://graph.microsoft.io/en-us/docs/api-reference/v1.0/api/item_search
+                var driveItems = await graphClient.Me.Drive.Search("employee services").Request().GetAsync();
+
+                // Expecting two results.
+                Assert.AreEqual(2, driveItems.Count, "Expected 2 search results.");
+                
+            }
+            catch (Microsoft.Graph.ServiceException e)
+            {
+                Assert.Fail("Something happened, check out a trace. Error code: {0}", e.Error.Code);
+            }
+        }
+
+        // Assumption: test tenant has a file name that starts with 'Timesheet'.
+        [TestMethod]
+        public async Task OneDriveCreateSharingLink()
+        {
+            try
+            {
+                var itemToShare = await graphClient.Me.Drive.Root
+                                                            .Children
+                                                            .Request()
+                                                            .Filter("startswith(name,'Timesheet')")
+                                                            .GetAsync();
+
+                StringAssert.StartsWith(itemToShare[0].Name, "Timesheet");
+
+                var permission = await graphClient.Me.Drive.Root
+                                                           .ItemWithPath(itemToShare[0].Name)
+                                                           .CreateLink("edit", "organization")
+                                                           .Request()
+                                                           .PostAsync();
+
+                Assert.AreEqual("organization", permission.Link.Scope, "Expected organization scope for sharing link");
+                Assert.AreEqual("edit", permission.Link.Type, "Expected edit type for sharing link");
+                Assert.IsNotNull(permission.Link.WebUrl, "Expected a sharing URL for the sharing link");
+
+            }
+            catch (Microsoft.Graph.ServiceException e)
+            {
+                Assert.Fail("Something happened, check out a trace. Error code: {0}", e.Error.Code);
+            }
+        }
+
+        // Assumption: test tenant has a file name that starts with 'Timesheet'.
+        // Assumption: there is a user with an email alias of alexd and a display name of Alex Darrow in the test tenant.
+        [TestMethod]
+        public async Task OneDriveInvite()
+        {
+            try
+            {
+                // Get the item to share with another user.
+                var itemToShare = await graphClient.Me.Drive.Root
+                                                            .Children
+                                                            .Request()
+                                                            .Filter("startswith(name,'Timesheet')")
+                                                            .GetAsync();
+
+                StringAssert.StartsWith(itemToShare[0].Name, "Timesheet");
+
+                var me = await graphClient.Me.Request().GetAsync();
+                var domain = me.Mail.Split('@')[1];
+
+                var recipients = new List<DriveRecipient>()
+                {
+                    new DriveRecipient()
+                    {
+                        Email = $"alexd@{domain}"
+                    }
+                };
+
+                var roles = new List<string>() 
+                {
+                    "write"
+                };
+
+                var inviteCollection = await graphClient.Me.Drive
+                                                           .Root
+                                                           .ItemWithPath(itemToShare[0].Name)
+                                                           .Invite(recipients, true, roles, true, "Checkout the Invite feature!")
+                                                           .Request()
+                                                           .PostAsync();
+
+                Assert.AreEqual("Alex Darrow", inviteCollection[0].GrantedTo.User.DisplayName);
+            }
+            catch (Microsoft.Graph.ServiceException e)
+            {
+                Assert.Fail("Something happened, check out a trace. Error code: {0}", e.Error.Code);
+            }
+        }
     }
 }
