@@ -129,7 +129,7 @@ namespace Microsoft.Graph
             {
                 if (response.Content != null)
                 {
-                    var responseString = await response.Content.ReadAsStringAsync();
+                    var responseString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                     return this.Client.HttpProvider.Serializer.DeserializeObject<T>(responseString);
                 }
 
