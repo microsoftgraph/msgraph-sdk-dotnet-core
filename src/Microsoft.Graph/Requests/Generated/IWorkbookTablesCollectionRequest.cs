@@ -11,6 +11,7 @@ namespace Microsoft.Graph
     using System.Collections.Generic;
     using System.Net.Http;
     using System.Threading;
+    using System.Linq.Expressions;
 
     /// <summary>
     /// The interface IWorkbookTablesCollectionRequest.
@@ -53,11 +54,25 @@ namespace Microsoft.Graph
         IWorkbookTablesCollectionRequest Expand(string value);
 
         /// <summary>
+        /// Adds the specified expand value to the request.
+        /// </summary>
+        /// <param name="expandExpression">The expression from which to calculate the expand value.</param>
+        /// <returns>The request object to send.</returns>
+        IWorkbookTablesCollectionRequest Expand(Expression<Func<WorkbookTable, object>> expandExpression);
+
+        /// <summary>
         /// Adds the specified select value to the request.
         /// </summary>
         /// <param name="value">The select value.</param>
         /// <returns>The request object to send.</returns>
         IWorkbookTablesCollectionRequest Select(string value);
+
+        /// <summary>
+        /// Adds the specified select value to the request.
+        /// </summary>
+        /// <param name="selectExpression">The expression from which to calculate the select value.</param>
+        /// <returns>The request object to send.</returns>
+        IWorkbookTablesCollectionRequest Select(Expression<Func<WorkbookTable, object>> selectExpression);
 
         /// <summary>
         /// Adds the specified top value to the request.

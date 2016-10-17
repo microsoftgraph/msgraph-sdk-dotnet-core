@@ -11,6 +11,7 @@ namespace Microsoft.Graph
     using System.IO;
     using System.Net.Http;
     using System.Threading;
+    using System.Linq.Expressions;
 
     /// <summary>
     /// The interface IWorkbookTableColumnRequest.
@@ -79,11 +80,25 @@ namespace Microsoft.Graph
         IWorkbookTableColumnRequest Expand(string value);
 
         /// <summary>
+        /// Adds the specified expand value to the request.
+        /// </summary>
+        /// <param name="expandExpression">The expression from which to calculate the expand value.</param>
+        /// <returns>The request object to send.</returns>
+        IWorkbookTableColumnRequest Expand(Expression<Func<WorkbookTableColumn, object>> expandExpression);
+
+        /// <summary>
         /// Adds the specified select value to the request.
         /// </summary>
         /// <param name="value">The select value.</param>
         /// <returns>The request object to send.</returns>
         IWorkbookTableColumnRequest Select(string value);
+
+        /// <summary>
+        /// Adds the specified select value to the request.
+        /// </summary>
+        /// <param name="selectExpression">The expression from which to calculate the select value.</param>
+        /// <returns>The request object to send.</returns>
+        IWorkbookTableColumnRequest Select(Expression<Func<WorkbookTableColumn, object>> selectExpression);
 
     }
 }
