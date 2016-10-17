@@ -80,7 +80,15 @@ var rootItem = await graphClient.Me.Drive.Root.Request().GetAsync();
 For a general overview of how the SDK is designed, see [overview](docs/overview.md).
 
 The following sample applications are also available:
-* [Microsoft Graph UWP Connect Library](https://github.com/OfficeDev/Microsoft-Graph-UWP-Connect-Library) - Windows Universal app
+* [Microsoft Graph UWP Connect Sample](https://github.com/microsoftgraph/uwp-csharp-connect-sample)
+* [Microsoft Graph UWP Snippets Sample](https://github.com/microsoftgraph/uwp-csharp-snippets-sample)
+* [Microsoft Graph MeetingBot sample for UWP](https://github.com/microsoftgraph/uwp-csharp-meetingbot-sample)
+* [Microsoft Graph Connect Sample for ASP.NET 4.6](https://github.com/microsoftgraph/aspnet-connect-sample)
+* [Microsoft Graph Snippets Sample for ASP.NET 4.6](https://github.com/microsoftgraph/aspnet-snippets-sample)
+* [Microsoft Graph SDK Snippets Library for Xamarin.Forms](https://github.com/microsoftgraph/xamarin-csharp-snippets-sample)
+* [Microsoft Graph Connect Sample for Xamarin Forms](https://github.com/microsoftgraph/xamarin-csharp-connect-sample)
+* [Microsoft Graph Meeting Manager Sample for Xamarin.Forms](https://github.com/microsoftgraph/xamarin-csharp-meetingmanager-sample)
+* [Microsoft Graph Property Manager Sample for Xamarin Native](https://github.com/microsoftgraph/xamarin-csharp-propertymanager-sample)
 
 ## Documentation and resources
 
