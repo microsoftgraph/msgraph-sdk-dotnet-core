@@ -24,7 +24,7 @@
       * drive items have new properties: content, cTag, package, parentReference, root, sharePointIds, size, webDavUrl, and permissions.
       * upload large files to OneDrive in chunks.
       * search OneDrive files.
-      * send OneDrive file sharing information to other people.
+      * send OneDrive file sharing invite to other people.
 
       Bug fixes
 
