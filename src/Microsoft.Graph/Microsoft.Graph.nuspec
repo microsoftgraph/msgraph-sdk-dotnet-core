@@ -25,6 +25,7 @@
       * upload large files to OneDrive in chunks.
       * search OneDrive files.
       * send OneDrive file sharing invite to other people.
+      * LINQ enabled on select and expand query parameters.
 
       Bug fixes
 
