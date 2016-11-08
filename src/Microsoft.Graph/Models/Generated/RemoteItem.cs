@@ -22,6 +22,18 @@ namespace Microsoft.Graph
     {
     
         /// <summary>
+        /// Gets or sets createdBy.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "createdBy", Required = Required.Default)]
+        public IdentitySet CreatedBy { get; set; }
+    
+        /// <summary>
+        /// Gets or sets createdDateTime.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "createdDateTime", Required = Required.Default)]
+        public DateTimeOffset? CreatedDateTime { get; set; }
+    
+        /// <summary>
         /// Gets or sets file.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "file", Required = Required.Default)]
@@ -46,10 +58,28 @@ namespace Microsoft.Graph
         public string Id { get; set; }
     
         /// <summary>
+        /// Gets or sets lastModifiedBy.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "lastModifiedBy", Required = Required.Default)]
+        public IdentitySet LastModifiedBy { get; set; }
+    
+        /// <summary>
+        /// Gets or sets lastModifiedDateTime.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "lastModifiedDateTime", Required = Required.Default)]
+        public DateTimeOffset? LastModifiedDateTime { get; set; }
+    
+        /// <summary>
         /// Gets or sets name.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "name", Required = Required.Default)]
         public string Name { get; set; }
+    
+        /// <summary>
+        /// Gets or sets package.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "package", Required = Required.Default)]
+        public Package Package { get; set; }
     
         /// <summary>
         /// Gets or sets parentReference.
@@ -58,10 +88,34 @@ namespace Microsoft.Graph
         public ItemReference ParentReference { get; set; }
     
         /// <summary>
+        /// Gets or sets sharepointIds.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "sharepointIds", Required = Required.Default)]
+        public SharepointIds SharepointIds { get; set; }
+    
+        /// <summary>
         /// Gets or sets size.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "size", Required = Required.Default)]
         public Int64? Size { get; set; }
+    
+        /// <summary>
+        /// Gets or sets specialFolder.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "specialFolder", Required = Required.Default)]
+        public SpecialFolder SpecialFolder { get; set; }
+    
+        /// <summary>
+        /// Gets or sets webDavUrl.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "webDavUrl", Required = Required.Default)]
+        public string WebDavUrl { get; set; }
+    
+        /// <summary>
+        /// Gets or sets webUrl.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "webUrl", Required = Required.Default)]
+        public string WebUrl { get; set; }
     
         /// <summary>
         /// Gets or sets additional data.

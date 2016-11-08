@@ -34,6 +34,12 @@ namespace Microsoft.Graph
         public string MimeType { get; set; }
     
         /// <summary>
+        /// Gets or sets processingMetadata.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "processingMetadata", Required = Required.Default)]
+        public bool? ProcessingMetadata { get; set; }
+    
+        /// <summary>
         /// Gets or sets additional data.
         /// </summary>
         [JsonExtensionData(ReadData = true)]

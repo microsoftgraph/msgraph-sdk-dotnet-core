@@ -12,28 +12,25 @@
     <copyright>Copyright (c) Microsoft Corporation</copyright>
     <projectUrl>https://graph.microsoft.io</projectUrl>
     <licenseUrl>http://aka.ms/devservicesagreement</licenseUrl>
-    <releaseNotes>## September 2016 Release Summary (version 1.1.1)
+    <releaseNotes>
+      November 2016 Release Summary (version 1.2.0)
 
-We've got a new addition to the .Net Microsoft Graph client API family. Excel files stored in OneDrive can now be accessed from .Net applications. We've refactored the base classes to be included in the Microsoft.Graph.Core assembly so that custom clients can target specific workloads. Here are the changes made with this release.
+      New features
 
-* Excel REST API support
-* Refactor base classes to Microsoft.Graph.Core
-* Nuspec updated to target Xamarin
-* Bug fixes
+      * Get a user's mailbox settings and drives.
+      * Extended properties on calendars, events, messages, contacts, posts, contact folders, and mail folders.
+      * OnlineMeetingUrl on event entities.
+      * Attachments on messages.
+      * New properties on drive items: content, cTag, package, parentReference, root, sharePointIds, size, webDavUrl, and permissions.
+      * Upload large files to OneDrive in chunks.
+      * Search OneDrive files.
+      * Send OneDrive file sharing invite to other people.
+      * LINQ enabled on select and expand query parameters.
 
-## Excel REST API
-The Excel REST API provides many new opportunities to enhance your workflow around Excel spreadsheets. There are hundreds of new APIs that support accessing Excel features. 
+      Bug fixes
 
-## Refactor base classes to Microsoft.Graph.Core
-This will support workload specific client libraries.  
-
-## Nuspec updated to target Xamarin
-
-## Bug fixes
-
-* Add support for updating user references. For example, you can now update a user's manager.
-* Updated to use NewtonSoft 9.0.1 from 6.0.2. Tested. Set allowed package version range to greater than or equal to 9 and less than 10.
-* Updated the data contracts to only use NewtonSoft.</releaseNotes>
+      * Added missing configureAwait(false) in BaseRequest.cs to address potential deadlock scenario.
+    </releaseNotes>
     <tags>Microsoft Office365 Graph GraphServiceClient Outlook OneDrive AzureAD GraphAPI Productivity SharePoint SDK</tags>
     <dependencies>
       <dependency id="Newtonsoft.Json" version="[6.0.1,10)"  />

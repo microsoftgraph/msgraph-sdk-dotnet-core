@@ -159,16 +159,28 @@ namespace Microsoft.Graph
         public InferenceClassificationType? InferenceClassification { get; set; }
     
         /// <summary>
+        /// Gets or sets attachments.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "attachments", Required = Required.Default)]
+        public IMessageAttachmentsCollectionPage Attachments { get; set; }
+    
+        /// <summary>
         /// Gets or sets extensions.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "extensions", Required = Required.Default)]
         public IMessageExtensionsCollectionPage Extensions { get; set; }
     
         /// <summary>
-        /// Gets or sets attachments.
+        /// Gets or sets single value extended properties.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "attachments", Required = Required.Default)]
-        public IMessageAttachmentsCollectionPage Attachments { get; set; }
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "singleValueExtendedProperties", Required = Required.Default)]
+        public IMessageSingleValueExtendedPropertiesCollectionPage SingleValueExtendedProperties { get; set; }
+    
+        /// <summary>
+        /// Gets or sets multi value extended properties.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "multiValueExtendedProperties", Required = Required.Default)]
+        public IMessageMultiValueExtendedPropertiesCollectionPage MultiValueExtendedProperties { get; set; }
     
     }
 }

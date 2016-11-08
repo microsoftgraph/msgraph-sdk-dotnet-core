@@ -61,6 +61,30 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
+        /// Gets the request builder for SingleValueExtendedProperties.
+        /// </summary>
+        /// <returns>The <see cref="IContactSingleValueExtendedPropertiesCollectionRequestBuilder"/>.</returns>
+        public IContactSingleValueExtendedPropertiesCollectionRequestBuilder SingleValueExtendedProperties
+        {
+            get
+            {
+                return new ContactSingleValueExtendedPropertiesCollectionRequestBuilder(this.AppendSegmentToRequestUrl("singleValueExtendedProperties"), this.Client);
+            }
+        }
+
+        /// <summary>
+        /// Gets the request builder for MultiValueExtendedProperties.
+        /// </summary>
+        /// <returns>The <see cref="IContactMultiValueExtendedPropertiesCollectionRequestBuilder"/>.</returns>
+        public IContactMultiValueExtendedPropertiesCollectionRequestBuilder MultiValueExtendedProperties
+        {
+            get
+            {
+                return new ContactMultiValueExtendedPropertiesCollectionRequestBuilder(this.AppendSegmentToRequestUrl("multiValueExtendedProperties"), this.Client);
+            }
+        }
+
+        /// <summary>
         /// Gets the request builder for Photo.
         /// </summary>
         /// <returns>The <see cref="IProfilePhotoRequestBuilder"/>.</returns>

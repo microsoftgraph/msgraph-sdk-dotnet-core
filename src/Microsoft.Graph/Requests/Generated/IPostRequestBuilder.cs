@@ -46,6 +46,18 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IPostAttachmentsCollectionRequestBuilder"/>.</returns>
         IPostAttachmentsCollectionRequestBuilder Attachments { get; }
+
+        /// <summary>
+        /// Gets the request builder for SingleValueExtendedProperties.
+        /// </summary>
+        /// <returns>The <see cref="IPostSingleValueExtendedPropertiesCollectionRequestBuilder"/>.</returns>
+        IPostSingleValueExtendedPropertiesCollectionRequestBuilder SingleValueExtendedProperties { get; }
+
+        /// <summary>
+        /// Gets the request builder for MultiValueExtendedProperties.
+        /// </summary>
+        /// <returns>The <see cref="IPostMultiValueExtendedPropertiesCollectionRequestBuilder"/>.</returns>
+        IPostMultiValueExtendedPropertiesCollectionRequestBuilder MultiValueExtendedProperties { get; }
     
         /// <summary>
         /// Gets the request builder for PostForward.

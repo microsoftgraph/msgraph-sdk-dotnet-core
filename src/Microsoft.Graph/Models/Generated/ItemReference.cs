@@ -34,10 +34,22 @@ namespace Microsoft.Graph
         public string Id { get; set; }
     
         /// <summary>
+        /// Gets or sets name.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "name", Required = Required.Default)]
+        public string Name { get; set; }
+    
+        /// <summary>
         /// Gets or sets path.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "path", Required = Required.Default)]
         public string Path { get; set; }
+    
+        /// <summary>
+        /// Gets or sets shareId.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "shareId", Required = Required.Default)]
+        public string ShareId { get; set; }
     
         /// <summary>
         /// Gets or sets additional data.

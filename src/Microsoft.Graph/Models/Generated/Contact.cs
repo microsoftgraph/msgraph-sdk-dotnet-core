@@ -225,6 +225,18 @@ namespace Microsoft.Graph
         public IContactExtensionsCollectionPage Extensions { get; set; }
     
         /// <summary>
+        /// Gets or sets single value extended properties.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "singleValueExtendedProperties", Required = Required.Default)]
+        public IContactSingleValueExtendedPropertiesCollectionPage SingleValueExtendedProperties { get; set; }
+    
+        /// <summary>
+        /// Gets or sets multi value extended properties.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "multiValueExtendedProperties", Required = Required.Default)]
+        public IContactMultiValueExtendedPropertiesCollectionPage MultiValueExtendedProperties { get; set; }
+    
+        /// <summary>
         /// Gets or sets photo.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "photo", Required = Required.Default)]

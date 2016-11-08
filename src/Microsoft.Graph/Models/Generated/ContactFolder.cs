@@ -44,6 +44,18 @@ namespace Microsoft.Graph
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "childFolders", Required = Required.Default)]
         public IContactFolderChildFoldersCollectionPage ChildFolders { get; set; }
     
+        /// <summary>
+        /// Gets or sets single value extended properties.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "singleValueExtendedProperties", Required = Required.Default)]
+        public IContactFolderSingleValueExtendedPropertiesCollectionPage SingleValueExtendedProperties { get; set; }
+    
+        /// <summary>
+        /// Gets or sets multi value extended properties.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "multiValueExtendedProperties", Required = Required.Default)]
+        public IContactFolderMultiValueExtendedPropertiesCollectionPage MultiValueExtendedProperties { get; set; }
+    
     }
 }
 

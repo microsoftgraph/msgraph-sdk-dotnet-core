@@ -36,6 +36,18 @@ namespace Microsoft.Graph
         IContactExtensionsCollectionRequestBuilder Extensions { get; }
 
         /// <summary>
+        /// Gets the request builder for SingleValueExtendedProperties.
+        /// </summary>
+        /// <returns>The <see cref="IContactSingleValueExtendedPropertiesCollectionRequestBuilder"/>.</returns>
+        IContactSingleValueExtendedPropertiesCollectionRequestBuilder SingleValueExtendedProperties { get; }
+
+        /// <summary>
+        /// Gets the request builder for MultiValueExtendedProperties.
+        /// </summary>
+        /// <returns>The <see cref="IContactMultiValueExtendedPropertiesCollectionRequestBuilder"/>.</returns>
+        IContactMultiValueExtendedPropertiesCollectionRequestBuilder MultiValueExtendedProperties { get; }
+
+        /// <summary>
         /// Gets the request builder for Photo.
         /// </summary>
         /// <returns>The <see cref="IProfilePhotoRequestBuilder"/>.</returns>

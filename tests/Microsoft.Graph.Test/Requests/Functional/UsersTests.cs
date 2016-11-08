@@ -13,6 +13,141 @@ namespace Microsoft.Graph.Test.Requests.Functional
     [TestClass]
     public class UsersTests : GraphTestBase
     {
+        // Currently (10/5/2016), you can only set the mailboxsettings directly on the property, 
+        // not with a patched user. Opened issue against service API.
+        [TestMethod]
+        public async Task UserGetSetAutomaticReply()
+        {
+            try
+            {
+                var query = new List<Option>()
+                {
+                    new QueryOption("$select", "mailboxsettings")
+                };
+
+                var user = await graphClient.Me.Request(query).GetAsync();
+
+                await graphClient.Me.Request().UpdateAsync(user);
+            }
+            catch (Microsoft.Graph.ServiceException e)
+            {
+                Assert.Inconclusive("The service doesn't yet support PATCH on entity with mailboxsettings: {0}", e.Error.Code);
+            }
+
+            /* Notes
+             * 
+             * GET https://graph.microsoft.com/v1.0/me?$select=mailboxsettings 
+             * 
+             * RESPONSE
+             * 
+             * {
+                    "@odata.context": "https://graph.microsoft.com/v1.0/$metadata#users(mailboxSettings)/$entity",
+                    "id": "c8616fa2-6a9e-4196-9912-e7fbea37fbd1@d0b7ccde-8426-4e94-a77b-a53e1bcd66c6",
+                    "mailboxSettings": {
+                        "automaticRepliesSetting": {
+                            "status": "alwaysEnabled",
+                            "externalAudience": "all",
+                            "scheduledStartDateTime": {
+                                "dateTime": "2016-09-30T21:00:00.0000000",
+                                "timeZone": "UTC"
+                            },
+                            "scheduledEndDateTime": {
+                                "dateTime": "2016-10-01T21:00:00.0000000",
+                                "timeZone": "UTC"
+                            },
+                            "internalReplyMessage": "<html>\n<body>\nI am currently on vacation.\n</body>\n</html>\n",
+                            "externalReplyMessage": ""
+                        },
+                        "timeZone": "Pacific Standard Time",
+                        "language": {
+                            "locale": "en-US",
+                            "displayName": "English (United States)"
+                        }
+                    }
+                }
+             * GET https://graph.microsoft.com/v1.0/me/mailboxsettings
+             * 
+             * RESPONSE
+             * 
+             * {
+                    "@odata.context": "https://graph.microsoft.com/v1.0/$metadata#users('c8616fa2-6a9e-4196-9912-e7fbea37fbd1')/mailboxSettings",
+                    "automaticRepliesSetting": {
+                        "status": "alwaysEnabled",
+                        "externalAudience": "all",
+                        "scheduledStartDateTime": {
+                            "dateTime": "2016-09-30T21:00:00.0000000",
+                            "timeZone": "UTC"
+                        },
+                        "scheduledEndDateTime": {
+                            "dateTime": "2016-10-01T21:00:00.0000000",
+                            "timeZone": "UTC"
+                        },
+                        "internalReplyMessage": "<html>\n<body>\nI am currently on vacation. Sorry :(\n</body>\n</html>\n",
+                        "externalReplyMessage": ""
+                    },
+                    "timeZone": "Pacific Standard Time",
+                    "language": {
+                        "locale": "en-US",
+                        "displayName": "English (United States)"
+                    }
+                }
+             * This PATCH is successful
+             * PATCH https://graph.microsoft.com/v1.0/me/mailboxsettings
+             * 
+             * {
+                    "@odata.context": "https://graph.microsoft.com/v1.0/$metadata#users('c8616fa2-6a9e-4196-9912-e7fbea37fbd1')/mailboxSettings",
+                    "automaticRepliesSetting": {
+                        "status": "alwaysEnabled",
+                        "externalAudience": "all",
+                        "scheduledStartDateTime": {
+                            "dateTime": "2016-09-30T21:00:00.0000000",
+                            "timeZone": "UTC"
+                        },
+                        "scheduledEndDateTime": {
+                            "dateTime": "2016-10-01T21:00:00.0000000",
+                            "timeZone": "UTC"
+                        },
+                        "internalReplyMessage": "<html>\n<body>\nI am currently on vacation. Sorry :(\n</body>\n</html>\n",
+                        "externalReplyMessage": ""
+                    },
+                    "timeZone": "Pacific Standard Time",
+                    "language": {
+                        "locale": "en-US"
+                    }
+                }
+             * This PATCH is unsuccessful
+             * PATCH https://graph.microsoft.com/v1.0/me
+             * 
+             * {
+             *      "id": "c8616fa2-6a9e-4196-9912-e7fbea37fbd1@d0b7ccde-8426-4e94-a77b-a53e1bcd66c6",
+                    "@odata.context": "https://graph.microsoft.com/v1.0/$metadata#users(mailboxSettings)/$entity"
+                    "mailboxSettings": {
+                        "automaticRepliesSetting": {
+                            "status": "alwaysEnabled",
+                            "externalAudience": "all",
+                            "scheduledStartDateTime": {
+                                "dateTime": "10/03/2016 07:00:00",
+                                "timeZone": "UTC"
+                            },
+                            "scheduledEndDateTime": {
+                                "dateTime": "10/04/2016 07:00:00",
+                                "timeZone": "UTC"
+                            },
+                            "internalReplyMessage": "<html>\n<body>\nI am currently on vacation. Sorry :(\n</body>\n</html>\n",
+                            "externalReplyMessage": ""
+                        },
+                        "timeZone": "Pacific Standard Time",
+                        "language": {
+                            "locale": "en-US",
+                            "displayName": "English (United States)"
+                        }
+                    },
+                }
+             */
+
+
+        }
+
         // Filter on displayname
         // https://github.com/microsoftgraph/msgraph-sdk-dotnet/issues/41
         [TestMethod]

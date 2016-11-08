@@ -10,38 +10,40 @@ namespace Microsoft.Graph.Test.Requests.Functional
     [TestClass]
     public class ContactTests : GraphTestBase
     {
-        // OData URL convention test to make sure we handle 'sub-query option' on expanded navigation properties.
-        // OData URL conventions 5.1.2 System Query Option $expand
+        // 
+        // http://graph.microsoft.io/en-us/docs/api-reference/v1.0/api/singlevaluelegacyextendedproperty_post_singlevalueextendedproperties
         [TestMethod]
-        public async Task ContactsExpandExtensionsPaging()
+        public async Task ContactsSetGetSingleExtendedProperty()
         {
             try
             {
-                IUserContactsCollectionPage page = await graphClient.Me.Contacts.Request().Expand($"extensions($filter=Id eq 'Microsoft.OutlookServices.OpenTypeExtension.Com.Contoso.Mainer')").GetAsync();
+                var contact = new Contact();
+                contact.GivenName = "_Tom" + Guid.NewGuid().ToString();
 
-                // When expanding extensions, a filter must be provided to specify which extensions to expand. For example $expand=Extensions($filter=Id eq 'Com.Insightly.CRMOpportunity').
-                while (page.NextPageRequest != null)
-                {
-                    page = await page.NextPageRequest.GetAsync();
-                }
-            }
-            catch (Microsoft.Graph.ServiceException e)
-            {
-                Assert.Fail("Something happened, check out a trace. Error code: {0}", e.Error.Code);
-            }
-        }
+                var customProperty = new SingleValueLegacyExtendedProperty();
+                var namespaceGuid = "f5939744-0f22-4f03-b33c-f18a8acfa20b";
+                var mapiPropertyType = "String";
+                var propertyName = "CustomProperty";
+                var propertyId = $"{mapiPropertyType} {{{namespaceGuid}}} Name {propertyName}";
+                customProperty.Id = propertyId;
+                customProperty.Value = "My custom property value";
 
-        [TestMethod]
-        public async Task GetContactsPaging()
-        {
-            try
-            {
-                IUserContactsCollectionPage page = await graphClient.Me.Contacts.Request().GetAsync();
+                var extendedValueCollection = new ContactSingleValueExtendedPropertiesCollectionPage();
+                extendedValueCollection.Add(customProperty);
 
-                while (page.NextPageRequest != null)
-                {
-                    page = await page.NextPageRequest.GetAsync();
-                }
+                contact.SingleValueExtendedProperties = extendedValueCollection;
+
+                // This results in a call to the service. It adds a contact with the extended property set on it.
+                var partiallySyncdContact = await graphClient.Me.Contacts.Request().AddAsync(contact);
+
+                Assert.IsNotNull(partiallySyncdContact.Id, "The ID property is not set on the contact.");
+
+                // This results in a call to the service. It gets the contact with the extended property.
+                // http://graph.microsoft.io/en-us/docs/api-reference/v1.0/api/singlevaluelegacyextendedproperty_get
+                var syncdContact = await graphClient.Me.Contacts[partiallySyncdContact.Id].Request().Expand($"singleValueExtendedProperties($filter=id eq '{propertyId}')").GetAsync();
+
+                Assert.IsNotNull(syncdContact.SingleValueExtendedProperties, "The expected extended property was not set on the contact");
+
             }
             catch (Microsoft.Graph.ServiceException e)
             {

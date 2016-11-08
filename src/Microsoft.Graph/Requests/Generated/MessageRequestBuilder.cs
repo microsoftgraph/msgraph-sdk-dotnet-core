@@ -49,6 +49,18 @@ namespace Microsoft.Graph
         }
     
         /// <summary>
+        /// Gets the request builder for Attachments.
+        /// </summary>
+        /// <returns>The <see cref="IMessageAttachmentsCollectionRequestBuilder"/>.</returns>
+        public IMessageAttachmentsCollectionRequestBuilder Attachments
+        {
+            get
+            {
+                return new MessageAttachmentsCollectionRequestBuilder(this.AppendSegmentToRequestUrl("attachments"), this.Client);
+            }
+        }
+
+        /// <summary>
         /// Gets the request builder for Extensions.
         /// </summary>
         /// <returns>The <see cref="IMessageExtensionsCollectionRequestBuilder"/>.</returns>
@@ -61,14 +73,26 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Gets the request builder for Attachments.
+        /// Gets the request builder for SingleValueExtendedProperties.
         /// </summary>
-        /// <returns>The <see cref="IMessageAttachmentsCollectionRequestBuilder"/>.</returns>
-        public IMessageAttachmentsCollectionRequestBuilder Attachments
+        /// <returns>The <see cref="IMessageSingleValueExtendedPropertiesCollectionRequestBuilder"/>.</returns>
+        public IMessageSingleValueExtendedPropertiesCollectionRequestBuilder SingleValueExtendedProperties
         {
             get
             {
-                return new MessageAttachmentsCollectionRequestBuilder(this.AppendSegmentToRequestUrl("attachments"), this.Client);
+                return new MessageSingleValueExtendedPropertiesCollectionRequestBuilder(this.AppendSegmentToRequestUrl("singleValueExtendedProperties"), this.Client);
+            }
+        }
+
+        /// <summary>
+        /// Gets the request builder for MultiValueExtendedProperties.
+        /// </summary>
+        /// <returns>The <see cref="IMessageMultiValueExtendedPropertiesCollectionRequestBuilder"/>.</returns>
+        public IMessageMultiValueExtendedPropertiesCollectionRequestBuilder MultiValueExtendedProperties
+        {
+            get
+            {
+                return new MessageMultiValueExtendedPropertiesCollectionRequestBuilder(this.AppendSegmentToRequestUrl("multiValueExtendedProperties"), this.Client);
             }
         }
     

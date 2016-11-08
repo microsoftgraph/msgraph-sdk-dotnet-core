@@ -183,6 +183,12 @@ namespace Microsoft.Graph
         public string WebLink { get; set; }
     
         /// <summary>
+        /// Gets or sets online meeting url.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "onlineMeetingUrl", Required = Required.Default)]
+        public string OnlineMeetingUrl { get; set; }
+    
+        /// <summary>
         /// Gets or sets calendar.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "calendar", Required = Required.Default)]
@@ -205,6 +211,18 @@ namespace Microsoft.Graph
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "attachments", Required = Required.Default)]
         public IEventAttachmentsCollectionPage Attachments { get; set; }
+    
+        /// <summary>
+        /// Gets or sets single value extended properties.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "singleValueExtendedProperties", Required = Required.Default)]
+        public IEventSingleValueExtendedPropertiesCollectionPage SingleValueExtendedProperties { get; set; }
+    
+        /// <summary>
+        /// Gets or sets multi value extended properties.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "multiValueExtendedProperties", Required = Required.Default)]
+        public IEventMultiValueExtendedPropertiesCollectionPage MultiValueExtendedProperties { get; set; }
     
     }
 }

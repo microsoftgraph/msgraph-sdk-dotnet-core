@@ -34,6 +34,12 @@ namespace Microsoft.Graph
         public string Sha1Hash { get; set; }
     
         /// <summary>
+        /// Gets or sets quickXorHash.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "quickXorHash", Required = Required.Default)]
+        public string QuickXorHash { get; set; }
+    
+        /// <summary>
         /// Gets or sets additional data.
         /// </summary>
         [JsonExtensionData(ReadData = true)]

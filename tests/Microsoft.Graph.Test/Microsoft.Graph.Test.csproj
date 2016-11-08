@@ -87,9 +87,11 @@
     <Compile Include="Requests\Extensions\UserRequestBuilderExtensionsTests.cs" />
     <Compile Include="Requests\Extensions\DriveSpecialCollectionRequestBuilderExtensionsTests.cs" />
     <Compile Include="Requests\Extensions\MailFolderMessagesCollectionRequestBuilderExtensionsTests.cs" />
+    <Compile Include="Requests\Functional\ContactTests.cs" />
+    <Compile Include="Requests\Functional\EventTests.cs" />
     <Compile Include="Requests\Functional\GraphTestBase.cs" />
     <Compile Include="Requests\Functional\MailTests.cs" />
-    <Compile Include="Requests\Functional\ContactTests.cs" />
+    <Compile Include="Requests\Functional\OneDriveTests.cs" />
     <Compile Include="Requests\Functional\UsersTests.cs" />
     <Compile Include="Requests\Generated\EntityWithReferenceRequestTests.cs" />
     <Compile Include="Requests\Generated\EntityReferenceRequestTests.cs" />
@@ -131,6 +133,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Requests\Functional\Resources\hamilton.PNG" />
+    <Content Include="Requests\Functional\Resources\textfile.txt" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
