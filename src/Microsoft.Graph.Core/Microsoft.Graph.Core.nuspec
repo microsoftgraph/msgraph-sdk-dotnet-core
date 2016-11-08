@@ -12,6 +12,18 @@
     <copyright>Copyright (c) Microsoft Corporation</copyright>
     <projectUrl>https://graph.microsoft.io</projectUrl>
     <licenseUrl>http://aka.ms/devservicesagreement</licenseUrl>
+    <releaseNotes>
+      November 2016 Release Summary (version 1.3.0)
+
+      New features
+
+      * Added LINQ support for $select and $expand query options.
+
+      Bug fixes
+
+      * Fixed an issue in BaseRequest.cs so that query options can support a sub-query option.
+      * Added missing configureAwait(false) in BaseRequest.cs to address potential deadlock scenario.
+    </releaseNotes>
     <tags>Microsoft Office365 Graph GraphServiceClient Outlook OneDrive AzureAD GraphAPI Productivity SharePoint SDK</tags>
     <dependencies>
       <dependency id="Newtonsoft.Json" version="[6.0.1,10)"  />
