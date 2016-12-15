@@ -93,7 +93,7 @@ namespace Microsoft.Graph
         public virtual async Task<UploadSession> UpdateSessionStatusAsync()
         {
             var request = new UploadSessionRequest(this.Session, this.client, null);
-            var newSession = await request.GetAsync();
+            var newSession = await request.GetAsync().ConfigureAwait(false);
 
             var newRangesRemaining = this.GetRangesRemaining(newSession);
 
@@ -110,7 +110,7 @@ namespace Microsoft.Graph
         public async Task DeleteSession()
         {
             var request = new UploadSessionRequest(this.Session, this.client, null);
-            await request.DeleteAsync();
+            await request.DeleteAsync().ConfigureAwait(false);
         }
 
         /// <summary>
@@ -130,7 +130,7 @@ namespace Microsoft.Graph
 
                 foreach (var request in chunkRequests)
                 {
-                    var result = await this.GetChunkRequestResponseAsync(request, readBuffer, trackedExceptions);
+                    var result = await this.GetChunkRequestResponseAsync(request, readBuffer, trackedExceptions).ConfigureAwait(false);
 
                     if (result.UploadSucceeded)
                     {
@@ -138,7 +138,7 @@ namespace Microsoft.Graph
                     }
                 }
 
-                await this.UpdateSessionStatusAsync();
+                await this.UpdateSessionStatusAsync().ConfigureAwait(false);
                 uploadTries += 1;
                 if (uploadTries < maxTries)
                 {
