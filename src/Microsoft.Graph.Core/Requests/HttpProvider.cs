@@ -150,11 +150,11 @@ namespace Microsoft.Graph
             HttpCompletionOption completionOption,
             CancellationToken cancellationToken)
         {
-            var response = await this.SendRequestAsync(request, completionOption, cancellationToken);
+            var response = await this.SendRequestAsync(request, completionOption, cancellationToken).ConfigureAwait(false);
 
             if (this.IsRedirect(response.StatusCode))
             {
-                response = await this.HandleRedirect(response, completionOption, cancellationToken);
+                response = await this.HandleRedirect(response, completionOption, cancellationToken).ConfigureAwait(false);
 
                 if (response == null)
                 {
@@ -171,7 +171,7 @@ namespace Microsoft.Graph
             {
                 using (response)
                 {
-                    var errorResponse = await this.ConvertErrorResponseAsync(response);
+                    var errorResponse = await this.ConvertErrorResponseAsync(response).ConfigureAwait(false);
                     Error error = null;
                     
                     if (errorResponse == null || errorResponse.Error == null)
@@ -231,7 +231,7 @@ namespace Microsoft.Graph
                     redirectRequest.Headers.Add(header.Key, header.Value);
                 }
 
-                var response = await this.SendRequestAsync(redirectRequest, completionOption, cancellationToken);
+                var response = await this.SendRequestAsync(redirectRequest, completionOption, cancellationToken).ConfigureAwait(false);
 
                 if (this.IsRedirect(response.StatusCode))
                 {
@@ -245,7 +245,7 @@ namespace Microsoft.Graph
                             });
                     }
 
-                    return await this.HandleRedirect(response, completionOption, cancellationToken, redirectCount);
+                    return await this.HandleRedirect(response, completionOption, cancellationToken, redirectCount).ConfigureAwait(false);
                 }
 
                 return response;
@@ -259,7 +259,7 @@ namespace Microsoft.Graph
         {
             try
             {
-                return await this.httpClient.SendAsync(request, completionOption, cancellationToken);
+                return await this.httpClient.SendAsync(request, completionOption, cancellationToken).ConfigureAwait(false);
             }
             catch (TaskCanceledException exception)
             {
@@ -292,7 +292,7 @@ namespace Microsoft.Graph
         {
             try
             {
-                using (var responseStream = await response.Content.ReadAsStreamAsync())
+                using (var responseStream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false))
                 {
                     return this.Serializer.DeserializeObject<ErrorResponse>(responseStream);
                 }

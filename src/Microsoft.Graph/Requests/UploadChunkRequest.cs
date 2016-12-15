@@ -76,7 +76,7 @@ namespace Microsoft.Graph
             {
                 if (response.Content != null)
                 {
-                    var responseString = await response.Content.ReadAsStringAsync();
+                    var responseString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
                     if (response.StatusCode == HttpStatusCode.Created || response.StatusCode == HttpStatusCode.OK)
                     {
