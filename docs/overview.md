@@ -50,7 +50,7 @@ Microsoft Graph service resource are represented by property bag model classes o
 
 These classes are used for serializing and deserializing the resources in requests to the service. They do not contain any logic to issue requests.
 
-The resource modle classes are generated based on the $metadata description of the service.
+The resource model classes are generated based on the $metadata description of the service.
 
 ## Requests
 
