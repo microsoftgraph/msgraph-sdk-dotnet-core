@@ -97,6 +97,34 @@ namespace Microsoft.Graph.Test.Requests.Functional
             }
         }
 
+        // Addressing https://github.com/microsoftgraph/MSGraph-SDK-Code-Generator/issues/71
+        //[TestMethod]
+        //public async Task OneDriveNextPageRequestRootItemWithPath()
+        //{
+        //    try
+        //    {
+        //        // This calls contains the correct URL structure: 
+        //        var path = "Community Service";
+        //        var driveItemsPage = await graphClient.Me.Drive.Root.ItemWithPath(path).Children.Request().Top(1).GetAsync(); // DriveItemChildrenCollectionRequest.GetAsync()
+        //        // https://graph.microsoft.com/v1.0/me/drive/root:/Community%20Service:/children?$top=1
+        //        // BUG: the nextLink returned by the service is incorrect.
+
+        //        // Assert that path is being added to the request URL.
+        //        StringAssert.Contains(driveItemsPage.NextPageRequest.RequestUrl, path, $"The path, '{path}' was not appended to the request URL.");
+
+        //        // This call does not issue the correct URL. Notice that ":/Community%20Service:" segment is missing.
+        //        driveItemsPage = await driveItemsPage.NextPageRequest.GetAsync();
+        //        // Actual nextLink value used to populate the NextPageRequest URL
+        //        // https://graph.microsoft.com/v1.0/me/drive/root/children?$top=1&$skiptoken=Paged%3dTRUE%26p_SortBehavior%3d0%26p_FileRef%3dpersonal%252fgarthf%255fmod810997%255fonmicrosoft%255fcom%252fDocuments%252fCommunity%2520Service%252fBook%252exlsx%26p_ID%3d390%26RootFolder%3d%252fpersonal%252fgarthf%255fmod810997%255fonmicrosoft%255fcom%252fDocuments%252fCommunity%2520Service
+        //        // Expected nextLink value used to populate the NextPageRequest URL
+        //        // https://graph.microsoft.com/v1.0/me/drive/root:/Community%20Service:/children?$top=1&$skiptoken=Paged%3dTRUE%26p_SortBehavior%3d0%26p_FileRef%3dpersonal%252fgarthf%255fmod810997%255fonmicrosoft%255fcom%252fDocuments%252fCommunity%2520Service%252fBook%252exlsx%26p_ID%3d390%26RootFolder%3d%252fpersonal%252fgarthf%255fmod810997%255fonmicrosoft%255fcom%252fDocuments%252fCommunity%2520Service
+        //    }
+        //    catch (Microsoft.Graph.ServiceException e)
+        //    {
+        //        Assert.Fail("Something happened, check out a trace. Error code: {0}", e.Error.Code);
+        //    }
+        //}
+
         // http://graph.microsoft.io/en-us/docs/api-reference/v1.0/api/item_downloadcontent
         [TestMethod]
         public async Task OneDriveGetContent()
