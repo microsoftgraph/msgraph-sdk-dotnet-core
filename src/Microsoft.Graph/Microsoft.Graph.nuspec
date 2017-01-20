@@ -13,23 +13,11 @@
     <projectUrl>https://graph.microsoft.io</projectUrl>
     <licenseUrl>http://aka.ms/devservicesagreement</licenseUrl>
     <releaseNotes>
-      November 2016 Release Summary (version 1.2.0)
-
-      New features
-
-      * Get a user's mailbox settings and drives.
-      * Extended properties on calendars, events, messages, contacts, posts, contact folders, and mail folders.
-      * OnlineMeetingUrl on event entities.
-      * Attachments on messages.
-      * New properties on drive items: content, cTag, package, parentReference, root, sharePointIds, size, webDavUrl, and permissions.
-      * Upload large files to OneDrive in chunks.
-      * Search OneDrive files.
-      * Send OneDrive file sharing invite to other people.
-      * LINQ enabled on select and expand query parameters.
+      January 2017 Release Summary (version 1.2.1)
 
       Bug fixes
 
-      * Added missing configureAwait(false) in BaseRequest.cs to address potential deadlock scenario.
+      * Removed access token from resumable uploads as it is ignored by OneDrive for Business and causes an error for OneDrive for Consumer. 
     </releaseNotes>
     <tags>Microsoft Office365 Graph GraphServiceClient Outlook OneDrive AzureAD GraphAPI Productivity SharePoint SDK</tags>
     <dependencies>

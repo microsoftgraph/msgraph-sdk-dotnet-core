@@ -22,16 +22,18 @@ namespace Microsoft.Graph.Test.Requests.Functional
                 using (System.IO.MemoryStream ms = new System.IO.MemoryStream(buff))
                 {
                     // Describe the file to upload. Pass into CreateUploadSession, when the service works as expected.
-                    //var props = new DriveItemUploadableProperties();
+                    var props = new DriveItemUploadableProperties();
                     //props.Name = "_hamilton.png";
                     //props.Description = "This is a pictureof Mr. Hamilton.";
                     //props.FileSystemInfo = new FileSystemInfo();
                     //props.FileSystemInfo.CreatedDateTime = System.DateTimeOffset.Now;
                     //props.FileSystemInfo.LastModifiedDateTime = System.DateTimeOffset.Now;
+                    props.AdditionalData = new Dictionary<string, object>();
+                    props.AdditionalData.Add("@microsoft.graph.conflictBehavior", "rename");
 
                     // Get the provider. 
                     // POST /v1.0/drive/items/01KGPRHTV6Y2GOVW7725BZO354PWSELRRZ:/_hamiltion.png:/microsoft.graph.createUploadSession
-                    // The CreateUploadSesssion action doesn't seem to support the options stated in the metadata.
+                    // The CreateUploadSesssion action doesn't seem to support the options stated in the metadata. This issue has been filed.
                     var uploadSession = await graphClient.Drive.Items["01KGPRHTV6Y2GOVW7725BZO354PWSELRRZ"].ItemWithPath("_hamilton.png").CreateUploadSession().Request().PostAsync();
 
                     var maxChunkSize = 320 * 1024; // 320 KB - Change this to your chunk size. 5MB is the default.
