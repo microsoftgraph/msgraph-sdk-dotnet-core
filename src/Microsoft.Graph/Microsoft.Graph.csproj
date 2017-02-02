@@ -62,14 +62,15 @@
     <Compile Include="Requests\UploadSessionRequest.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Microsoft.Graph.nuspec" />
+    <None Include="Microsoft.Graph.project.json" />
+    <None Include="project.json" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Microsoft.Graph.Core\Microsoft.Graph.Core.csproj">
       <Project>{9f04608c-d845-4445-83b1-e6d4eee38cbc}</Project>
       <Name>Microsoft.Graph.Core</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Microsoft.Graph.nuspec" />
-    <None Include="project.json" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

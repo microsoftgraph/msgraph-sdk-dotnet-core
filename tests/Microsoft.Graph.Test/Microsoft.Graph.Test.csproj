@@ -135,6 +135,9 @@
     <Content Include="Requests\Functional\Resources\hamilton.PNG" />
     <Content Include="Requests\Functional\Resources\textfile.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

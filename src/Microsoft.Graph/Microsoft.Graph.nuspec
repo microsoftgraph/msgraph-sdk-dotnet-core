@@ -43,5 +43,6 @@
     <file src="bin\release\Microsoft.Graph.dll" target="lib\Xamarin.iOS10" />
     <file src="bin\release\Microsoft.Graph.dll" target="lib\MonoAndroid10" />
     <file src="bin\release\Microsoft.Graph.dll" target="lib\MonoTouch10" />
+    <file src="bin\release\Microsoft.Graph.dll" target="\lib\netstandard1.1" />
   </files>
 </package>
