@@ -51,7 +51,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
             var name = "name";
 
             var stringToDeserialize = string.Format(
-                "{{\"id\":\"{0}\", \"@odata.type\":\"#microsoft.graph.core.test.testModels.derivedTypeClass\", \"name\":\"{1}\"}}",
+                "{{\"id\":\"{0}\", \"@odata.type\":\"#microsoft.graph.dotnetCore.core.test.testModels.derivedTypeClass\", \"name\":\"{1}\"}}",
                 id,
                 name);
 
@@ -340,8 +340,8 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
             DerivedTypeConverter.TypeMappingCache.Clear();
 
             var id = "id";
-            var derivedTypeClassTypeString = "microsoft.graph.core.test.testModels.derivedTypeClass";
-            var dateTestClassTypeString = "microsoft.graph.core.test.testModels.dateTestClass";
+            var derivedTypeClassTypeString = "microsoft.graph.dotnetCore.core.test.testModels.derivedTypeClass";
+            var dateTestClassTypeString = "microsoft.graph.dotnetCore.core.test.testModels.dateTestClass";
 
             var deserializeExistingTypeString = string.Format(
                 "{{\"id\":\"{0}\", \"@odata.type\":\"#{1}\"}}",
