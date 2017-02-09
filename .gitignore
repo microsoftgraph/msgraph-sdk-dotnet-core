@@ -8,6 +8,7 @@ TestResults/*
 
 # UWP project files
 project.lock.json
+project.fragment.lock.json
 *StoreKey.pfx
 Package.StoreAssociation.xml
 

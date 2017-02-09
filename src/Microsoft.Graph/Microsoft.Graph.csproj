@@ -62,7 +62,6 @@
     <Compile Include="Requests\UploadSessionRequest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Microsoft.Graph.nuspec" />
     <None Include="Microsoft.Graph.project.json" />
     <None Include="project.json" />
   </ItemGroup>

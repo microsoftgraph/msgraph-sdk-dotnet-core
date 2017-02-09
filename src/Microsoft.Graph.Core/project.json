@@ -1,5 +1,10 @@
 {
+  "name": "Microsoft.Graph.Core",
   "version": "1.3.0",
+  "description": "Microsoft Graph Core Client Library implements core functionality used by Microsoft Graph Client Libraries.",
+  "copyright": "Copyright (c) Microsoft Corporation",
+  "title": "Microsoft Graph Core Client Library",
+  "authors": [ "$author$" ],
   "supports": {},
   "dependencies": {
     "Microsoft.NETCore.Portable.Compatibility": "1.0.1",
@@ -8,5 +13,14 @@
   },
   "frameworks": {
     "netstandard1.1": {}
+  },
+  "packOptions": {
+    "summary": "Microsoft Graph Core Client Library implements core functionality used by Microsoft Graph Client Libraries.",
+    "tags": [ "Microsoft Office365", "Graph", "GraphServiceClient", "Outlook", "OneDrive", "AzureAD", "GraphAPI", "Productivity", "SharePoint", "SDK" ],
+    "owners": [ "$author$" ],
+    "releaseNotes": "November 2016 Release Summary (version 1.3.0)\n\nNew features\n\n* Added LINQ support for $select and $expand query options.\n\nBug fixes\n\n* Fixed an issue in BaseRequest.cs so that query options can support a sub-query option.\n* Added missing configureAwait(false) in BaseRequest.cs to address potential deadlock scenario.",
+    "projectUrl": "https://graph.microsoft.io",
+    "licenseUrl": "http://aka.ms/devservicesagreement",
+    "requireLicenseAcceptance": true
   }
 }
