@@ -1,6 +1,6 @@
 ﻿{
   "name": "Microsoft.Graph",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "Microsoft Graph Client Library allows you to call Office 365, Azure AD and other Microsoft services through a single unified developer experience.",
   "copyright": "Copyright (c) Microsoft Corporation",
   "title": "Microsoft Graph Client Library",
@@ -23,7 +23,7 @@
     "summary": "Microsoft Graph Client Library allows you to call Office 365, Azure AD and other Microsoft services through a single unified developer experience.",
     "tags": [ "Microsoft Office365", "Graph", "GraphServiceClient", "Outlook", "OneDrive", "AzureAD", "GraphAPI", "Productivity", "SharePoint", "SDK" ],
     "owners": [ "$author$" ],
-    "releaseNotes": "November 2016 Release Summary (version 1.2.0)\n\nNew features\n\n* Get a user's mailbox settings and drives.\n* Extended properties on calendars, events, messages, contacts, posts, contact folders, and mail folders.\n* OnlineMeetingUrl on event entities.\nAttachments on messages.\n* New properties on drive items: content, cTag, package, parentReference, root, sharePointIds, size, webDavUrl, and permissions.\n* Upload large files to OneDrive in chunks.\n* Search OneDrive files.\n* Send OneDrive file sharing invite to other people.\n* LINQ enabled on select and expand query parameters.\n\nBug fixes\n\n* Added missing configureAwait(false) in BaseRequest.cs to address potential deadlock scenario.",
+    "releaseNotes": "February 2017 Release Summary (version 1.3.0)\n\nNew features\n\n* Updated library to target .NETStandard 1.1",
     "projectUrl": "https://graph.microsoft.io",
     "licenseUrl": "http://aka.ms/devservicesagreement",
     "requireLicenseAcceptance": true
