@@ -7,6 +7,7 @@
 
 namespace Microsoft.Graph
 {
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -15,20 +16,20 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type WorkbookTableAddRequestBody.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class WorkbookTableAddRequestBody
     {
     
         /// <summary>
         /// Gets or sets Address.
         /// </summary>
-        [DataMember(Name = "address", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "address", Required = Required.Default)]
         public string Address { get; set; }
     
         /// <summary>
         /// Gets or sets HasHeaders.
         /// </summary>
-        [DataMember(Name = "hasHeaders", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "hasHeaders", Required = Required.Default)]
         public bool HasHeaders { get; set; }
     
     }

@@ -7,6 +7,7 @@
 
 namespace Microsoft.Graph
 {
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -15,20 +16,20 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type DriveItemCreateLinkRequestBody.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class DriveItemCreateLinkRequestBody
     {
     
         /// <summary>
         /// Gets or sets Type.
         /// </summary>
-        [DataMember(Name = "type", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "type", Required = Required.Default)]
         public string Type { get; set; }
     
         /// <summary>
         /// Gets or sets Scope.
         /// </summary>
-        [DataMember(Name = "scope", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "scope", Required = Required.Default)]
         public string Scope { get; set; }
     
     }

@@ -7,6 +7,7 @@
 
 namespace Microsoft.Graph
 {
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -15,14 +16,14 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type WorkbookFunctionsCountBlankRequestBody.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class WorkbookFunctionsCountBlankRequestBody
     {
     
         /// <summary>
         /// Gets or sets Range.
         /// </summary>
-        [DataMember(Name = "range", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "range", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken Range { get; set; }
     
     }

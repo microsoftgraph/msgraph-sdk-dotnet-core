@@ -7,6 +7,7 @@
 
 namespace Microsoft.Graph
 {
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -15,32 +16,32 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type WorkbookFunctionsWorkDay_IntlRequestBody.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class WorkbookFunctionsWorkDay_IntlRequestBody
     {
     
         /// <summary>
         /// Gets or sets StartDate.
         /// </summary>
-        [DataMember(Name = "startDate", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "startDate", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken StartDate { get; set; }
     
         /// <summary>
         /// Gets or sets Days.
         /// </summary>
-        [DataMember(Name = "days", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "days", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken Days { get; set; }
     
         /// <summary>
         /// Gets or sets Weekend.
         /// </summary>
-        [DataMember(Name = "weekend", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "weekend", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken Weekend { get; set; }
     
         /// <summary>
         /// Gets or sets Holidays.
         /// </summary>
-        [DataMember(Name = "holidays", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "holidays", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken Holidays { get; set; }
     
     }

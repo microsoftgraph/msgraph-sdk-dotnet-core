@@ -7,6 +7,7 @@
 
 namespace Microsoft.Graph
 {
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -15,26 +16,26 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type WorkbookFunctionsMatchRequestBody.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class WorkbookFunctionsMatchRequestBody
     {
     
         /// <summary>
         /// Gets or sets LookupValue.
         /// </summary>
-        [DataMember(Name = "lookupValue", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "lookupValue", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken LookupValue { get; set; }
     
         /// <summary>
         /// Gets or sets LookupArray.
         /// </summary>
-        [DataMember(Name = "lookupArray", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "lookupArray", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken LookupArray { get; set; }
     
         /// <summary>
         /// Gets or sets MatchType.
         /// </summary>
-        [DataMember(Name = "matchType", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "matchType", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken MatchType { get; set; }
     
     }

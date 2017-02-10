@@ -7,6 +7,7 @@
 
 namespace Microsoft.Graph
 {
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -15,14 +16,14 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type DirectoryObjectGetMemberObjectsRequestBody.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class DirectoryObjectGetMemberObjectsRequestBody
     {
     
         /// <summary>
         /// Gets or sets SecurityEnabledOnly.
         /// </summary>
-        [DataMember(Name = "securityEnabledOnly", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "securityEnabledOnly", Required = Required.Default)]
         public bool? SecurityEnabledOnly { get; set; }
     
     }

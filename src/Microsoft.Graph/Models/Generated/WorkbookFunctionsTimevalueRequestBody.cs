@@ -7,6 +7,7 @@
 
 namespace Microsoft.Graph
 {
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -15,14 +16,14 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type WorkbookFunctionsTimevalueRequestBody.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class WorkbookFunctionsTimevalueRequestBody
     {
     
         /// <summary>
         /// Gets or sets TimeText.
         /// </summary>
-        [DataMember(Name = "timeText", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "timeText", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken TimeText { get; set; }
     
     }

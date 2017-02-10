@@ -7,6 +7,7 @@
 
 namespace Microsoft.Graph
 {
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -15,14 +16,14 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type WorkbookFilterApplyTopPercentFilterRequestBody.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class WorkbookFilterApplyTopPercentFilterRequestBody
     {
     
         /// <summary>
         /// Gets or sets Percent.
         /// </summary>
-        [DataMember(Name = "percent", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "percent", Required = Required.Default)]
         public Int32 Percent { get; set; }
     
     }

@@ -7,6 +7,7 @@
 
 namespace Microsoft.Graph
 {
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -15,14 +16,14 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type WorkbookFilterApplyIconFilterRequestBody.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class WorkbookFilterApplyIconFilterRequestBody
     {
     
         /// <summary>
         /// Gets or sets Icon.
         /// </summary>
-        [DataMember(Name = "icon", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "icon", Required = Required.Default)]
         public WorkbookIcon Icon { get; set; }
     
     }

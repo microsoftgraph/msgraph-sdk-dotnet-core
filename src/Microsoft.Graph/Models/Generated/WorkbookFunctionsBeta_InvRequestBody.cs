@@ -7,6 +7,7 @@
 
 namespace Microsoft.Graph
 {
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -15,38 +16,38 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type WorkbookFunctionsBeta_InvRequestBody.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class WorkbookFunctionsBeta_InvRequestBody
     {
     
         /// <summary>
         /// Gets or sets Probability.
         /// </summary>
-        [DataMember(Name = "probability", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "probability", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken Probability { get; set; }
     
         /// <summary>
         /// Gets or sets Alpha.
         /// </summary>
-        [DataMember(Name = "alpha", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "alpha", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken Alpha { get; set; }
     
         /// <summary>
         /// Gets or sets Beta.
         /// </summary>
-        [DataMember(Name = "beta", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "beta", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken Beta { get; set; }
     
         /// <summary>
         /// Gets or sets A.
         /// </summary>
-        [DataMember(Name = "A", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "A", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken A { get; set; }
     
         /// <summary>
         /// Gets or sets B.
         /// </summary>
-        [DataMember(Name = "B", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "B", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken B { get; set; }
     
     }

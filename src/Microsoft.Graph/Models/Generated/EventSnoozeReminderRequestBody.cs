@@ -7,6 +7,7 @@
 
 namespace Microsoft.Graph
 {
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -15,14 +16,14 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type EventSnoozeReminderRequestBody.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class EventSnoozeReminderRequestBody
     {
     
         /// <summary>
         /// Gets or sets NewReminderTime.
         /// </summary>
-        [DataMember(Name = "NewReminderTime", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "NewReminderTime", Required = Required.Default)]
         public DateTimeTimeZone NewReminderTime { get; set; }
     
     }

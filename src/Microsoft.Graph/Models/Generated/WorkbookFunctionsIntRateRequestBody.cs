@@ -7,6 +7,7 @@
 
 namespace Microsoft.Graph
 {
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -15,38 +16,38 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type WorkbookFunctionsIntRateRequestBody.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class WorkbookFunctionsIntRateRequestBody
     {
     
         /// <summary>
         /// Gets or sets Settlement.
         /// </summary>
-        [DataMember(Name = "settlement", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "settlement", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken Settlement { get; set; }
     
         /// <summary>
         /// Gets or sets Maturity.
         /// </summary>
-        [DataMember(Name = "maturity", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "maturity", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken Maturity { get; set; }
     
         /// <summary>
         /// Gets or sets Investment.
         /// </summary>
-        [DataMember(Name = "investment", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "investment", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken Investment { get; set; }
     
         /// <summary>
         /// Gets or sets Redemption.
         /// </summary>
-        [DataMember(Name = "redemption", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "redemption", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken Redemption { get; set; }
     
         /// <summary>
         /// Gets or sets Basis.
         /// </summary>
-        [DataMember(Name = "basis", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "basis", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken Basis { get; set; }
     
     }

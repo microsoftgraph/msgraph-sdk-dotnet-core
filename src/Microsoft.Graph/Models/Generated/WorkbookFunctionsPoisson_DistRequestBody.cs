@@ -7,6 +7,7 @@
 
 namespace Microsoft.Graph
 {
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -15,26 +16,26 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type WorkbookFunctionsPoisson_DistRequestBody.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class WorkbookFunctionsPoisson_DistRequestBody
     {
     
         /// <summary>
         /// Gets or sets X.
         /// </summary>
-        [DataMember(Name = "x", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "x", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken X { get; set; }
     
         /// <summary>
         /// Gets or sets Mean.
         /// </summary>
-        [DataMember(Name = "mean", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "mean", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken Mean { get; set; }
     
         /// <summary>
         /// Gets or sets Cumulative.
         /// </summary>
-        [DataMember(Name = "cumulative", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "cumulative", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken Cumulative { get; set; }
     
     }

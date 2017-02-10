@@ -7,6 +7,7 @@
 
 namespace Microsoft.Graph
 {
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -15,26 +16,26 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type WorkbookFunctionsIfRequestBody.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class WorkbookFunctionsIfRequestBody
     {
     
         /// <summary>
         /// Gets or sets LogicalTest.
         /// </summary>
-        [DataMember(Name = "logicalTest", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "logicalTest", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken LogicalTest { get; set; }
     
         /// <summary>
         /// Gets or sets ValueIfTrue.
         /// </summary>
-        [DataMember(Name = "valueIfTrue", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "valueIfTrue", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken ValueIfTrue { get; set; }
     
         /// <summary>
         /// Gets or sets ValueIfFalse.
         /// </summary>
-        [DataMember(Name = "valueIfFalse", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "valueIfFalse", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken ValueIfFalse { get; set; }
     
     }

@@ -7,6 +7,7 @@
 
 namespace Microsoft.Graph
 {
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -15,26 +16,26 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type WorkbookFunctionsComplexRequestBody.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class WorkbookFunctionsComplexRequestBody
     {
     
         /// <summary>
         /// Gets or sets RealNum.
         /// </summary>
-        [DataMember(Name = "realNum", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "realNum", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken RealNum { get; set; }
     
         /// <summary>
         /// Gets or sets INum.
         /// </summary>
-        [DataMember(Name = "iNum", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "iNum", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken INum { get; set; }
     
         /// <summary>
         /// Gets or sets Suffix.
         /// </summary>
-        [DataMember(Name = "suffix", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "suffix", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken Suffix { get; set; }
     
     }

@@ -7,6 +7,7 @@
 
 namespace Microsoft.Graph
 {
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -15,38 +16,38 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type WorkbookFunctionsDdbRequestBody.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class WorkbookFunctionsDdbRequestBody
     {
     
         /// <summary>
         /// Gets or sets Cost.
         /// </summary>
-        [DataMember(Name = "cost", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "cost", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken Cost { get; set; }
     
         /// <summary>
         /// Gets or sets Salvage.
         /// </summary>
-        [DataMember(Name = "salvage", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "salvage", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken Salvage { get; set; }
     
         /// <summary>
         /// Gets or sets Life.
         /// </summary>
-        [DataMember(Name = "life", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "life", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken Life { get; set; }
     
         /// <summary>
         /// Gets or sets Period.
         /// </summary>
-        [DataMember(Name = "period", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "period", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken Period { get; set; }
     
         /// <summary>
         /// Gets or sets Factor.
         /// </summary>
-        [DataMember(Name = "factor", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "factor", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken Factor { get; set; }
     
     }

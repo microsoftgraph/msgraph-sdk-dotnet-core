@@ -7,6 +7,7 @@
 
 namespace Microsoft.Graph
 {
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -15,14 +16,14 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type DirectoryObjectCheckMemberGroupsRequestBody.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class DirectoryObjectCheckMemberGroupsRequestBody
     {
     
         /// <summary>
         /// Gets or sets GroupIds.
         /// </summary>
-        [DataMember(Name = "groupIds", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "groupIds", Required = Required.Default)]
         public IEnumerable<string> GroupIds { get; set; }
     
     }

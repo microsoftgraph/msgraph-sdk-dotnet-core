@@ -7,6 +7,7 @@
 
 namespace Microsoft.Graph
 {
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -15,26 +16,26 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type WorkbookFunctionsTimeRequestBody.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class WorkbookFunctionsTimeRequestBody
     {
     
         /// <summary>
         /// Gets or sets Hour.
         /// </summary>
-        [DataMember(Name = "hour", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "hour", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken Hour { get; set; }
     
         /// <summary>
         /// Gets or sets Minute.
         /// </summary>
-        [DataMember(Name = "minute", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "minute", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken Minute { get; set; }
     
         /// <summary>
         /// Gets or sets Second.
         /// </summary>
-        [DataMember(Name = "second", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "second", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken Second { get; set; }
     
     }

@@ -7,6 +7,7 @@
 
 namespace Microsoft.Graph
 {
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -15,32 +16,32 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type WorkbookFunctionsCoupDaysNcRequestBody.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class WorkbookFunctionsCoupDaysNcRequestBody
     {
     
         /// <summary>
         /// Gets or sets Settlement.
         /// </summary>
-        [DataMember(Name = "settlement", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "settlement", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken Settlement { get; set; }
     
         /// <summary>
         /// Gets or sets Maturity.
         /// </summary>
-        [DataMember(Name = "maturity", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "maturity", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken Maturity { get; set; }
     
         /// <summary>
         /// Gets or sets Frequency.
         /// </summary>
-        [DataMember(Name = "frequency", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "frequency", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken Frequency { get; set; }
     
         /// <summary>
         /// Gets or sets Basis.
         /// </summary>
-        [DataMember(Name = "basis", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "basis", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken Basis { get; set; }
     
     }

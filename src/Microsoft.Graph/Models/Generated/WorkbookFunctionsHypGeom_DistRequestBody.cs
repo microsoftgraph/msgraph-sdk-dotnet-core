@@ -7,6 +7,7 @@
 
 namespace Microsoft.Graph
 {
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -15,38 +16,38 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type WorkbookFunctionsHypGeom_DistRequestBody.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class WorkbookFunctionsHypGeom_DistRequestBody
     {
     
         /// <summary>
         /// Gets or sets SampleS.
         /// </summary>
-        [DataMember(Name = "sampleS", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "sampleS", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken SampleS { get; set; }
     
         /// <summary>
         /// Gets or sets NumberSample.
         /// </summary>
-        [DataMember(Name = "numberSample", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "numberSample", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken NumberSample { get; set; }
     
         /// <summary>
         /// Gets or sets PopulationS.
         /// </summary>
-        [DataMember(Name = "populationS", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "populationS", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken PopulationS { get; set; }
     
         /// <summary>
         /// Gets or sets NumberPop.
         /// </summary>
-        [DataMember(Name = "numberPop", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "numberPop", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken NumberPop { get; set; }
     
         /// <summary>
         /// Gets or sets Cumulative.
         /// </summary>
-        [DataMember(Name = "cumulative", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "cumulative", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken Cumulative { get; set; }
     
     }

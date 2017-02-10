@@ -7,6 +7,7 @@
 
 namespace Microsoft.Graph
 {
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -15,26 +16,26 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type WorkbookFunctionsXirrRequestBody.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class WorkbookFunctionsXirrRequestBody
     {
     
         /// <summary>
         /// Gets or sets Values.
         /// </summary>
-        [DataMember(Name = "values", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "values", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken Values { get; set; }
     
         /// <summary>
         /// Gets or sets Dates.
         /// </summary>
-        [DataMember(Name = "dates", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "dates", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken Dates { get; set; }
     
         /// <summary>
         /// Gets or sets Guess.
         /// </summary>
-        [DataMember(Name = "guess", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "guess", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken Guess { get; set; }
     
     }

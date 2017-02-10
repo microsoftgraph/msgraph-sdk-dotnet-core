@@ -7,6 +7,7 @@
 
 namespace Microsoft.Graph
 {
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -15,26 +16,26 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type WorkbookTableSortApplyRequestBody.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class WorkbookTableSortApplyRequestBody
     {
     
         /// <summary>
         /// Gets or sets Fields.
         /// </summary>
-        [DataMember(Name = "fields", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "fields", Required = Required.Default)]
         public IEnumerable<WorkbookSortField> Fields { get; set; }
     
         /// <summary>
         /// Gets or sets MatchCase.
         /// </summary>
-        [DataMember(Name = "matchCase", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "matchCase", Required = Required.Default)]
         public bool MatchCase { get; set; }
     
         /// <summary>
         /// Gets or sets Method.
         /// </summary>
-        [DataMember(Name = "method", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "method", Required = Required.Default)]
         public string Method { get; set; }
     
     }

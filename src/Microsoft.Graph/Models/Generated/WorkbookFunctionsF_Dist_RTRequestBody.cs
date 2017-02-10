@@ -7,6 +7,7 @@
 
 namespace Microsoft.Graph
 {
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -15,26 +16,26 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type WorkbookFunctionsF_Dist_RTRequestBody.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class WorkbookFunctionsF_Dist_RTRequestBody
     {
     
         /// <summary>
         /// Gets or sets X.
         /// </summary>
-        [DataMember(Name = "x", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "x", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken X { get; set; }
     
         /// <summary>
         /// Gets or sets DegFreedom1.
         /// </summary>
-        [DataMember(Name = "degFreedom1", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "degFreedom1", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken DegFreedom1 { get; set; }
     
         /// <summary>
         /// Gets or sets DegFreedom2.
         /// </summary>
-        [DataMember(Name = "degFreedom2", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "degFreedom2", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken DegFreedom2 { get; set; }
     
     }

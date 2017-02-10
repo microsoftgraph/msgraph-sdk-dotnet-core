@@ -7,6 +7,7 @@
 
 namespace Microsoft.Graph
 {
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -15,20 +16,20 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type UserSendMailRequestBody.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class UserSendMailRequestBody
     {
     
         /// <summary>
         /// Gets or sets Message.
         /// </summary>
-        [DataMember(Name = "Message", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "Message", Required = Required.Default)]
         public Message Message { get; set; }
     
         /// <summary>
         /// Gets or sets SaveToSentItems.
         /// </summary>
-        [DataMember(Name = "SaveToSentItems", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "SaveToSentItems", Required = Required.Default)]
         public bool? SaveToSentItems { get; set; }
     
     }
