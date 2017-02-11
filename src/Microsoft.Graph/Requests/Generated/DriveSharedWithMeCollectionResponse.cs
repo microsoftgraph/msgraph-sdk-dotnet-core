@@ -14,13 +14,13 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type DriveSharedWithMeCollectionResponse.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public class DriveSharedWithMeCollectionResponse
     {
         /// <summary>
         /// Gets or sets the <see cref="IDriveSharedWithMeCollectionPage"/> value.
         /// </summary>
-        [DataMember(Name = "value", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName ="value", Required = Required.Default)]
         public IDriveSharedWithMeCollectionPage Value { get; set; }
         
         /// <summary>

@@ -13,13 +13,14 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type GraphServiceDirectoryRoleTemplatesCollectionResponse.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
+    [JsonConverter(typeof(DerivedTypeConverter))]
     public class GraphServiceDirectoryRoleTemplatesCollectionResponse
     {
         /// <summary>
         /// Gets or sets the <see cref="IGraphServiceDirectoryRoleTemplatesCollectionPage"/> value.
         /// </summary>
-        [DataMember(Name = "value", EmitDefaultValue = false, IsRequired = false)]
+		[JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName ="value", Required = Required.Default)]
         public IGraphServiceDirectoryRoleTemplatesCollectionPage Value { get; set; }
 
         /// <summary>

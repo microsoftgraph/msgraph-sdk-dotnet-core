@@ -13,13 +13,13 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type DirectoryRoleMembersCollectionWithReferencesResponse.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public class DirectoryRoleMembersCollectionWithReferencesResponse
     {
         /// <summary>
         /// Gets or sets the <see cref="IDirectoryRoleMembersCollectionWithReferencesPage"/> value.
         /// </summary>
-        [DataMember(Name = "value", EmitDefaultValue = false, IsRequired = false)]
+		[JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName ="value", Required = Required.Default)]
         public IDirectoryRoleMembersCollectionWithReferencesPage Value { get; set; }
 
         /// <summary>

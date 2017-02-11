@@ -4,12 +4,13 @@
 
 namespace Microsoft.Graph
 {
+    using Newtonsoft.Json;
     using System.Runtime.Serialization;
 
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public class ReferenceRequestBody
     {
-        [DataMember(Name = "@odata.id", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "@odata.id", Required = Required.Default)]
         public string ODataId { get; set; }
     }
 }

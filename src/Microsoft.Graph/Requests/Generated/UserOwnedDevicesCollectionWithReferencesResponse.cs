@@ -13,13 +13,13 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type UserOwnedDevicesCollectionWithReferencesResponse.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public class UserOwnedDevicesCollectionWithReferencesResponse
     {
         /// <summary>
         /// Gets or sets the <see cref="IUserOwnedDevicesCollectionWithReferencesPage"/> value.
         /// </summary>
-        [DataMember(Name = "value", EmitDefaultValue = false, IsRequired = false)]
+		[JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName ="value", Required = Required.Default)]
         public IUserOwnedDevicesCollectionWithReferencesPage Value { get; set; }
 
         /// <summary>

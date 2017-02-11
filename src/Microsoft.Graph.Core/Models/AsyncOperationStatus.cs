@@ -12,27 +12,27 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type AsyncOperationStatus.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     [JsonConverter(typeof(DerivedTypeConverter))]
     public partial class AsyncOperationStatus
     {
-    
+
         /// <summary>
         /// Gets or sets operation.
         /// </summary>
-        [DataMember(Name = "operation", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "operation", Required = Required.Default)]
         public string Operation { get; set; }
-    
+
         /// <summary>
         /// Gets or sets percentageComplete.
         /// </summary>
-        [DataMember(Name = "percentageComplete", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "percentageComplete", Required = Required.Default)]
         public double? PercentageComplete { get; set; }
-    
+
         /// <summary>
         /// Gets or sets status.
         /// </summary>
-        [DataMember(Name = "status", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "status", Required = Required.Default)]
         public string Status { get; set; }
     
         /// <summary>

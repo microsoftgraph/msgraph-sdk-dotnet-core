@@ -13,13 +13,13 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type UserDirectReportsCollectionWithReferencesResponse.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public class UserDirectReportsCollectionWithReferencesResponse
     {
         /// <summary>
         /// Gets or sets the <see cref="IUserDirectReportsCollectionWithReferencesPage"/> value.
         /// </summary>
-        [DataMember(Name = "value", EmitDefaultValue = false, IsRequired = false)]
+		[JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName ="value", Required = Required.Default)]
         public IUserDirectReportsCollectionWithReferencesPage Value { get; set; }
 
         /// <summary>

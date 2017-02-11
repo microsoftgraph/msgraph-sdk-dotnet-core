@@ -12,19 +12,19 @@ namespace Microsoft.Graph.Core.Test.TestModels
     /// A property bag class for testing derived type deserialization.
     /// </summary>
     [JsonConverter(typeof(DerivedTypeConverter))]
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public class DerivedTypeClass : AbstractEntityType
     {
         /// <summary>
         /// Gets or sets enumType.
         /// </summary>
-        [DataMember(Name = "enumType", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "enumType", Required = Required.Default)]
         public EnumType? EnumType { get; set; }
 
         /// <summary>
         /// Gets or sets id.
         /// </summary>
-        [DataMember(Name = "name", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "name", Required = Required.Default)]
         public string Name { get; set; }
     }
 }

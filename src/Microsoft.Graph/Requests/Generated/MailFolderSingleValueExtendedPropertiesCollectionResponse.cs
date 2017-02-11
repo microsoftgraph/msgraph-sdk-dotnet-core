@@ -13,13 +13,13 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type MailFolderSingleValueExtendedPropertiesCollectionResponse.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public class MailFolderSingleValueExtendedPropertiesCollectionResponse
     {
         /// <summary>
         /// Gets or sets the <see cref="IMailFolderSingleValueExtendedPropertiesCollectionPage"/> value.
         /// </summary>
-        [DataMember(Name = "value", EmitDefaultValue = false, IsRequired = false)]
+		[JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName ="value", Required = Required.Default)]
         public IMailFolderSingleValueExtendedPropertiesCollectionPage Value { get; set; }
 
         /// <summary>

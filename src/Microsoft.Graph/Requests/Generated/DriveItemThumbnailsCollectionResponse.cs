@@ -13,13 +13,13 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type DriveItemThumbnailsCollectionResponse.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public class DriveItemThumbnailsCollectionResponse
     {
         /// <summary>
         /// Gets or sets the <see cref="IDriveItemThumbnailsCollectionPage"/> value.
         /// </summary>
-        [DataMember(Name = "value", EmitDefaultValue = false, IsRequired = false)]
+		[JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName ="value", Required = Required.Default)]
         public IDriveItemThumbnailsCollectionPage Value { get; set; }
 
         /// <summary>

@@ -13,13 +13,13 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type MessageSingleValueExtendedPropertiesCollectionResponse.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public class MessageSingleValueExtendedPropertiesCollectionResponse
     {
         /// <summary>
         /// Gets or sets the <see cref="IMessageSingleValueExtendedPropertiesCollectionPage"/> value.
         /// </summary>
-        [DataMember(Name = "value", EmitDefaultValue = false, IsRequired = false)]
+		[JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName ="value", Required = Required.Default)]
         public IMessageSingleValueExtendedPropertiesCollectionPage Value { get; set; }
 
         /// <summary>
