@@ -9,13 +9,6 @@
       },
       "runtime": {
         "bin/Debug/Microsoft.Graph.Core.dll": {}
-      },
-      "contentFiles": {
-        "bin/Debug/Microsoft.Graph.Core.pdb": {
-          "buildAction": "None",
-          "codeLanguage": "any",
-          "copyToOutput": true
-        }
       }
     }
   }

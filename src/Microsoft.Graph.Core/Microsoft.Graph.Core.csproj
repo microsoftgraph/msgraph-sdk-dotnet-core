@@ -79,7 +79,6 @@
     <Compile Include="Serialization\Serializer.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Microsoft.Graph.Core.nuspec" />
     <None Include="project.json" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
