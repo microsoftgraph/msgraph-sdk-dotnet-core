@@ -22,16 +22,18 @@ namespace Microsoft.Graph.Test.Requests.Functional
                 using (System.IO.MemoryStream ms = new System.IO.MemoryStream(buff))
                 {
                     // Describe the file to upload. Pass into CreateUploadSession, when the service works as expected.
-                    //var props = new DriveItemUploadableProperties();
+                    var props = new DriveItemUploadableProperties();
                     //props.Name = "_hamilton.png";
                     //props.Description = "This is a pictureof Mr. Hamilton.";
                     //props.FileSystemInfo = new FileSystemInfo();
                     //props.FileSystemInfo.CreatedDateTime = System.DateTimeOffset.Now;
                     //props.FileSystemInfo.LastModifiedDateTime = System.DateTimeOffset.Now;
+                    props.AdditionalData = new Dictionary<string, object>();
+                    props.AdditionalData.Add("@microsoft.graph.conflictBehavior", "rename");
 
                     // Get the provider. 
                     // POST /v1.0/drive/items/01KGPRHTV6Y2GOVW7725BZO354PWSELRRZ:/_hamiltion.png:/microsoft.graph.createUploadSession
-                    // The CreateUploadSesssion action doesn't seem to support the options stated in the metadata.
+                    // The CreateUploadSesssion action doesn't seem to support the options stated in the metadata. This issue has been filed.
                     var uploadSession = await graphClient.Drive.Items["01KGPRHTV6Y2GOVW7725BZO354PWSELRRZ"].ItemWithPath("_hamilton.png").CreateUploadSession().Request().PostAsync();
 
                     var maxChunkSize = 320 * 1024; // 320 KB - Change this to your chunk size. 5MB is the default.
@@ -96,6 +98,34 @@ namespace Microsoft.Graph.Test.Requests.Functional
                 Assert.Fail("Something happened, check out a trace. Error code: {0}", e.Error.Code);
             }
         }
+
+        // Addressing https://github.com/microsoftgraph/MSGraph-SDK-Code-Generator/issues/71
+        //[TestMethod]
+        //public async Task OneDriveNextPageRequestRootItemWithPath()
+        //{
+        //    try
+        //    {
+        //        // This calls contains the correct URL structure: 
+        //        var path = "Community Service";
+        //        var driveItemsPage = await graphClient.Me.Drive.Root.ItemWithPath(path).Children.Request().Top(1).GetAsync(); // DriveItemChildrenCollectionRequest.GetAsync()
+        //        // https://graph.microsoft.com/v1.0/me/drive/root:/Community%20Service:/children?$top=1
+        //        // BUG: the nextLink returned by the service is incorrect.
+
+        //        // Assert that path is being added to the request URL.
+        //        StringAssert.Contains(driveItemsPage.NextPageRequest.RequestUrl, path, $"The path, '{path}' was not appended to the request URL.");
+
+        //        // This call does not issue the correct URL. Notice that ":/Community%20Service:" segment is missing.
+        //        driveItemsPage = await driveItemsPage.NextPageRequest.GetAsync();
+        //        // Actual nextLink value used to populate the NextPageRequest URL
+        //        // https://graph.microsoft.com/v1.0/me/drive/root/children?$top=1&$skiptoken=Paged%3dTRUE%26p_SortBehavior%3d0%26p_FileRef%3dpersonal%252fgarthf%255fmod810997%255fonmicrosoft%255fcom%252fDocuments%252fCommunity%2520Service%252fBook%252exlsx%26p_ID%3d390%26RootFolder%3d%252fpersonal%252fgarthf%255fmod810997%255fonmicrosoft%255fcom%252fDocuments%252fCommunity%2520Service
+        //        // Expected nextLink value used to populate the NextPageRequest URL
+        //        // https://graph.microsoft.com/v1.0/me/drive/root:/Community%20Service:/children?$top=1&$skiptoken=Paged%3dTRUE%26p_SortBehavior%3d0%26p_FileRef%3dpersonal%252fgarthf%255fmod810997%255fonmicrosoft%255fcom%252fDocuments%252fCommunity%2520Service%252fBook%252exlsx%26p_ID%3d390%26RootFolder%3d%252fpersonal%252fgarthf%255fmod810997%255fonmicrosoft%255fcom%252fDocuments%252fCommunity%2520Service
+        //    }
+        //    catch (Microsoft.Graph.ServiceException e)
+        //    {
+        //        Assert.Fail("Something happened, check out a trace. Error code: {0}", e.Error.Code);
+        //    }
+        //}
 
         // http://graph.microsoft.io/en-us/docs/api-reference/v1.0/api/item_downloadcontent
         [TestMethod]
