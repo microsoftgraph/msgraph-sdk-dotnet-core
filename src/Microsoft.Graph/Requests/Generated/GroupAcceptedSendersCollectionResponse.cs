@@ -13,13 +13,13 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type GroupAcceptedSendersCollectionResponse.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public class GroupAcceptedSendersCollectionResponse
     {
         /// <summary>
         /// Gets or sets the <see cref="IGroupAcceptedSendersCollectionPage"/> value.
         /// </summary>
-        [DataMember(Name = "value", EmitDefaultValue = false, IsRequired = false)]
+		[JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName ="value", Required = Required.Default)]
         public IGroupAcceptedSendersCollectionPage Value { get; set; }
 
         /// <summary>

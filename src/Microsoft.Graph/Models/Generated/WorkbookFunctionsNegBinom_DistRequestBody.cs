@@ -7,6 +7,7 @@
 
 namespace Microsoft.Graph
 {
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -15,32 +16,32 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type WorkbookFunctionsNegBinom_DistRequestBody.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class WorkbookFunctionsNegBinom_DistRequestBody
     {
     
         /// <summary>
         /// Gets or sets NumberF.
         /// </summary>
-        [DataMember(Name = "numberF", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "numberF", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken NumberF { get; set; }
     
         /// <summary>
         /// Gets or sets NumberS.
         /// </summary>
-        [DataMember(Name = "numberS", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "numberS", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken NumberS { get; set; }
     
         /// <summary>
         /// Gets or sets ProbabilityS.
         /// </summary>
-        [DataMember(Name = "probabilityS", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "probabilityS", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken ProbabilityS { get; set; }
     
         /// <summary>
         /// Gets or sets Cumulative.
         /// </summary>
-        [DataMember(Name = "cumulative", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "cumulative", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken Cumulative { get; set; }
     
     }

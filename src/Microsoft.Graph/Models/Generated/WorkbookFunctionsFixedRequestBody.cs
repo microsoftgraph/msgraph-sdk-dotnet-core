@@ -7,6 +7,7 @@
 
 namespace Microsoft.Graph
 {
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -15,26 +16,26 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type WorkbookFunctionsFixedRequestBody.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class WorkbookFunctionsFixedRequestBody
     {
     
         /// <summary>
         /// Gets or sets Number.
         /// </summary>
-        [DataMember(Name = "number", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "number", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken Number { get; set; }
     
         /// <summary>
         /// Gets or sets Decimals.
         /// </summary>
-        [DataMember(Name = "decimals", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "decimals", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken Decimals { get; set; }
     
         /// <summary>
         /// Gets or sets NoCommas.
         /// </summary>
-        [DataMember(Name = "noCommas", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "noCommas", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken NoCommas { get; set; }
     
     }

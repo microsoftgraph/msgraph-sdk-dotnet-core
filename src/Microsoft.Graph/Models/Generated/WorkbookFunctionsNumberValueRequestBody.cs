@@ -7,6 +7,7 @@
 
 namespace Microsoft.Graph
 {
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -15,26 +16,26 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type WorkbookFunctionsNumberValueRequestBody.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class WorkbookFunctionsNumberValueRequestBody
     {
     
         /// <summary>
         /// Gets or sets Text.
         /// </summary>
-        [DataMember(Name = "text", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "text", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken Text { get; set; }
     
         /// <summary>
         /// Gets or sets DecimalSeparator.
         /// </summary>
-        [DataMember(Name = "decimalSeparator", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "decimalSeparator", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken DecimalSeparator { get; set; }
     
         /// <summary>
         /// Gets or sets GroupSeparator.
         /// </summary>
-        [DataMember(Name = "groupSeparator", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "groupSeparator", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken GroupSeparator { get; set; }
     
     }

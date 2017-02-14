@@ -7,6 +7,7 @@
 
 namespace Microsoft.Graph
 {
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -15,14 +16,14 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type WorkbookFunctionsFisherInvRequestBody.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class WorkbookFunctionsFisherInvRequestBody
     {
     
         /// <summary>
         /// Gets or sets Y.
         /// </summary>
-        [DataMember(Name = "y", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "y", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken Y { get; set; }
     
     }

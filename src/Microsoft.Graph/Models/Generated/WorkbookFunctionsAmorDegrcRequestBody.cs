@@ -7,6 +7,7 @@
 
 namespace Microsoft.Graph
 {
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -15,50 +16,50 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type WorkbookFunctionsAmorDegrcRequestBody.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class WorkbookFunctionsAmorDegrcRequestBody
     {
     
         /// <summary>
         /// Gets or sets Cost.
         /// </summary>
-        [DataMember(Name = "cost", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "cost", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken Cost { get; set; }
     
         /// <summary>
         /// Gets or sets DatePurchased.
         /// </summary>
-        [DataMember(Name = "datePurchased", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "datePurchased", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken DatePurchased { get; set; }
     
         /// <summary>
         /// Gets or sets FirstPeriod.
         /// </summary>
-        [DataMember(Name = "firstPeriod", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "firstPeriod", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken FirstPeriod { get; set; }
     
         /// <summary>
         /// Gets or sets Salvage.
         /// </summary>
-        [DataMember(Name = "salvage", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "salvage", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken Salvage { get; set; }
     
         /// <summary>
         /// Gets or sets Period.
         /// </summary>
-        [DataMember(Name = "period", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "period", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken Period { get; set; }
     
         /// <summary>
         /// Gets or sets Rate.
         /// </summary>
-        [DataMember(Name = "rate", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "rate", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken Rate { get; set; }
     
         /// <summary>
         /// Gets or sets Basis.
         /// </summary>
-        [DataMember(Name = "basis", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "basis", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken Basis { get; set; }
     
     }

@@ -7,6 +7,7 @@
 
 namespace Microsoft.Graph
 {
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -15,26 +16,26 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type WorkbookFunctionsConfidence_TRequestBody.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class WorkbookFunctionsConfidence_TRequestBody
     {
     
         /// <summary>
         /// Gets or sets Alpha.
         /// </summary>
-        [DataMember(Name = "alpha", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "alpha", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken Alpha { get; set; }
     
         /// <summary>
         /// Gets or sets StandardDev.
         /// </summary>
-        [DataMember(Name = "standardDev", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "standardDev", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken StandardDev { get; set; }
     
         /// <summary>
         /// Gets or sets Size.
         /// </summary>
-        [DataMember(Name = "size", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "size", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken Size { get; set; }
     
     }

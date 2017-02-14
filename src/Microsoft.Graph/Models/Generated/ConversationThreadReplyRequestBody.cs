@@ -7,6 +7,7 @@
 
 namespace Microsoft.Graph
 {
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -15,14 +16,14 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type ConversationThreadReplyRequestBody.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class ConversationThreadReplyRequestBody
     {
     
         /// <summary>
         /// Gets or sets Post.
         /// </summary>
-        [DataMember(Name = "Post", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "Post", Required = Required.Default)]
         public Post Post { get; set; }
     
     }

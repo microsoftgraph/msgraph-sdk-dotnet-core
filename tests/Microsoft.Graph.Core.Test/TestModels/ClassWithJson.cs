@@ -13,7 +13,7 @@ namespace Microsoft.Graph.Core.Test.TestModels
     /// <summary>
     /// A property bag class with no default constructor for unit testing purposes.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public class ClassWithJson
     {
         public ClassWithJson()
@@ -23,7 +23,7 @@ namespace Microsoft.Graph.Core.Test.TestModels
         /// <summary>
         /// Gets or sets id.
         /// </summary>
-        [DataMember(Name = "data", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "data", Required = Required.Default)]
         public JToken Data { get; set; }
 
         /// <summary>

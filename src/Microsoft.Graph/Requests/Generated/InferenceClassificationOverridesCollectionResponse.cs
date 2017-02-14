@@ -13,13 +13,13 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type InferenceClassificationOverridesCollectionResponse.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public class InferenceClassificationOverridesCollectionResponse
     {
         /// <summary>
         /// Gets or sets the <see cref="IInferenceClassificationOverridesCollectionPage"/> value.
         /// </summary>
-        [DataMember(Name = "value", EmitDefaultValue = false, IsRequired = false)]
+		[JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName ="value", Required = Required.Default)]
         public IInferenceClassificationOverridesCollectionPage Value { get; set; }
 
         /// <summary>

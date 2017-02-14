@@ -13,13 +13,13 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type ContactFolderContactsCollectionResponse.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public class ContactFolderContactsCollectionResponse
     {
         /// <summary>
         /// Gets or sets the <see cref="IContactFolderContactsCollectionPage"/> value.
         /// </summary>
-        [DataMember(Name = "value", EmitDefaultValue = false, IsRequired = false)]
+		[JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName ="value", Required = Required.Default)]
         public IContactFolderContactsCollectionPage Value { get; set; }
 
         /// <summary>

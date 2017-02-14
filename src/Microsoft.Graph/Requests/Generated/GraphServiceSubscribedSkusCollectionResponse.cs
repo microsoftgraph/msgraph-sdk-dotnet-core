@@ -13,13 +13,14 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type GraphServiceSubscribedSkusCollectionResponse.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
+    [JsonConverter(typeof(DerivedTypeConverter))]
     public class GraphServiceSubscribedSkusCollectionResponse
     {
         /// <summary>
         /// Gets or sets the <see cref="IGraphServiceSubscribedSkusCollectionPage"/> value.
         /// </summary>
-        [DataMember(Name = "value", EmitDefaultValue = false, IsRequired = false)]
+		[JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName ="value", Required = Required.Default)]
         public IGraphServiceSubscribedSkusCollectionPage Value { get; set; }
 
         /// <summary>

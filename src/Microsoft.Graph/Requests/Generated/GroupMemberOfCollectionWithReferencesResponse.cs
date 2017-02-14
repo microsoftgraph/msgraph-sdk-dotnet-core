@@ -13,13 +13,13 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type GroupMemberOfCollectionWithReferencesResponse.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public class GroupMemberOfCollectionWithReferencesResponse
     {
         /// <summary>
         /// Gets or sets the <see cref="IGroupMemberOfCollectionWithReferencesPage"/> value.
         /// </summary>
-        [DataMember(Name = "value", EmitDefaultValue = false, IsRequired = false)]
+		[JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName ="value", Required = Required.Default)]
         public IGroupMemberOfCollectionWithReferencesPage Value { get; set; }
 
         /// <summary>

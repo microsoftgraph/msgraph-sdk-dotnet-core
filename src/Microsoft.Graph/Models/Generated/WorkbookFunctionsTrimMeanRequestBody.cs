@@ -7,6 +7,7 @@
 
 namespace Microsoft.Graph
 {
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -15,20 +16,20 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type WorkbookFunctionsTrimMeanRequestBody.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class WorkbookFunctionsTrimMeanRequestBody
     {
     
         /// <summary>
         /// Gets or sets Array.
         /// </summary>
-        [DataMember(Name = "array", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "array", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken Array { get; set; }
     
         /// <summary>
         /// Gets or sets Percent.
         /// </summary>
-        [DataMember(Name = "percent", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "percent", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken Percent { get; set; }
     
     }

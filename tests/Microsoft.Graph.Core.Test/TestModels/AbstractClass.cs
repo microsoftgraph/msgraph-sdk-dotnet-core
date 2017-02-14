@@ -13,7 +13,7 @@ namespace Microsoft.Graph.Core.Test.TestModels
     /// A property bag class with no default constructor for unit testing purposes.
     /// </summary>
     [JsonConverter(typeof(DerivedTypeConverter))]
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public abstract class AbstractClass
     {
         protected AbstractClass()
@@ -24,7 +24,7 @@ namespace Microsoft.Graph.Core.Test.TestModels
         /// <summary>
         /// Gets or sets id.
         /// </summary>
-        [DataMember(Name = "id", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "id", Required = Required.Default)]
         public string Id { get; set; }
 
         /// <summary>

@@ -7,6 +7,7 @@
 
 namespace Microsoft.Graph
 {
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -15,20 +16,20 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type WorkbookFunctionsRandBetweenRequestBody.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class WorkbookFunctionsRandBetweenRequestBody
     {
     
         /// <summary>
         /// Gets or sets Bottom.
         /// </summary>
-        [DataMember(Name = "bottom", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "bottom", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken Bottom { get; set; }
     
         /// <summary>
         /// Gets or sets Top.
         /// </summary>
-        [DataMember(Name = "top", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "top", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken Top { get; set; }
     
     }

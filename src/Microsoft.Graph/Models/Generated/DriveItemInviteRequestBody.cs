@@ -7,6 +7,7 @@
 
 namespace Microsoft.Graph
 {
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -15,38 +16,38 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type DriveItemInviteRequestBody.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class DriveItemInviteRequestBody
     {
     
         /// <summary>
         /// Gets or sets RequireSignIn.
         /// </summary>
-        [DataMember(Name = "requireSignIn", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "requireSignIn", Required = Required.Default)]
         public bool? RequireSignIn { get; set; }
     
         /// <summary>
         /// Gets or sets Roles.
         /// </summary>
-        [DataMember(Name = "roles", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "roles", Required = Required.Default)]
         public IEnumerable<string> Roles { get; set; }
     
         /// <summary>
         /// Gets or sets SendInvitation.
         /// </summary>
-        [DataMember(Name = "sendInvitation", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "sendInvitation", Required = Required.Default)]
         public bool? SendInvitation { get; set; }
     
         /// <summary>
         /// Gets or sets Message.
         /// </summary>
-        [DataMember(Name = "message", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "message", Required = Required.Default)]
         public string Message { get; set; }
     
         /// <summary>
         /// Gets or sets Recipients.
         /// </summary>
-        [DataMember(Name = "recipients", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "recipients", Required = Required.Default)]
         public IEnumerable<DriveRecipient> Recipients { get; set; }
     
     }

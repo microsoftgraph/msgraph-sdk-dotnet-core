@@ -13,13 +13,13 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type WorkbookWorksheetChartsCollectionResponse.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public class WorkbookWorksheetChartsCollectionResponse
     {
         /// <summary>
         /// Gets or sets the <see cref="IWorkbookWorksheetChartsCollectionPage"/> value.
         /// </summary>
-        [DataMember(Name = "value", EmitDefaultValue = false, IsRequired = false)]
+		[JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName ="value", Required = Required.Default)]
         public IWorkbookWorksheetChartsCollectionPage Value { get; set; }
 
         /// <summary>

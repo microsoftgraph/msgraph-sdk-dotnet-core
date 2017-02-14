@@ -13,23 +13,23 @@ namespace Microsoft.Graph.Core.Test.TestModels
     /// Test class for testing serialization of Date.
     /// </summary>
     [JsonConverter(typeof(DerivedTypeConverter))]
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public class DateTestClass
     {
         /// <summary>
         /// Gets or sets nullableDate.
         /// </summary>
-        [DataMember(Name = "nullableDate", EmitDefaultValue = true, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "nullableDate", Required = Required.Default)]
         public Date NullableDate { get; set; }
 
         /// <summary>
         /// Gets or sets dateCollection.
         /// </summary>
-        [DataMember(Name = "dateCollection", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "dateCollection", Required = Required.Default)]
         public IEnumerable<Date> DateCollection { get; set; }
 
         [JsonConverter(typeof(DateConverter))]
-        [DataMember(Name = "invalidType", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "invalidType", Required = Required.Default)]
         public int? InvalidType { get; set; }
     }
 }

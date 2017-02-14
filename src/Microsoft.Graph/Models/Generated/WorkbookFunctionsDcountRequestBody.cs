@@ -7,6 +7,7 @@
 
 namespace Microsoft.Graph
 {
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -15,26 +16,26 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type WorkbookFunctionsDcountRequestBody.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class WorkbookFunctionsDcountRequestBody
     {
     
         /// <summary>
         /// Gets or sets Database.
         /// </summary>
-        [DataMember(Name = "database", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "database", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken Database { get; set; }
     
         /// <summary>
         /// Gets or sets Field.
         /// </summary>
-        [DataMember(Name = "field", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "field", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken Field { get; set; }
     
         /// <summary>
         /// Gets or sets Criteria.
         /// </summary>
-        [DataMember(Name = "criteria", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "criteria", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken Criteria { get; set; }
     
     }

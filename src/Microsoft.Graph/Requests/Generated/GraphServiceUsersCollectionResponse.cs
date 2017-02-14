@@ -13,13 +13,14 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type GraphServiceUsersCollectionResponse.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
+    [JsonConverter(typeof(DerivedTypeConverter))]
     public class GraphServiceUsersCollectionResponse
     {
         /// <summary>
         /// Gets or sets the <see cref="IGraphServiceUsersCollectionPage"/> value.
         /// </summary>
-        [DataMember(Name = "value", EmitDefaultValue = false, IsRequired = false)]
+		[JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName ="value", Required = Required.Default)]
         public IGraphServiceUsersCollectionPage Value { get; set; }
 
         /// <summary>

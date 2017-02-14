@@ -13,13 +13,13 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type EventMultiValueExtendedPropertiesCollectionResponse.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public class EventMultiValueExtendedPropertiesCollectionResponse
     {
         /// <summary>
         /// Gets or sets the <see cref="IEventMultiValueExtendedPropertiesCollectionPage"/> value.
         /// </summary>
-        [DataMember(Name = "value", EmitDefaultValue = false, IsRequired = false)]
+		[JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName ="value", Required = Required.Default)]
         public IEventMultiValueExtendedPropertiesCollectionPage Value { get; set; }
 
         /// <summary>

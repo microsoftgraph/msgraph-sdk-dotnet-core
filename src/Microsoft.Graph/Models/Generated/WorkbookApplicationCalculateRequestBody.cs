@@ -7,6 +7,7 @@
 
 namespace Microsoft.Graph
 {
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -15,14 +16,14 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type WorkbookApplicationCalculateRequestBody.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class WorkbookApplicationCalculateRequestBody
     {
     
         /// <summary>
         /// Gets or sets CalculationType.
         /// </summary>
-        [DataMember(Name = "calculationType", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "calculationType", Required = Required.Default)]
         public string CalculationType { get; set; }
     
     }

@@ -7,6 +7,7 @@
 
 namespace Microsoft.Graph
 {
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -15,14 +16,14 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type WorkbookProcessQueryRequestBody.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class WorkbookProcessQueryRequestBody
     {
     
         /// <summary>
         /// Gets or sets Input.
         /// </summary>
-        [DataMember(Name = "input", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "input", Required = Required.Default)]
         public Stream Input { get; set; }
     
     }

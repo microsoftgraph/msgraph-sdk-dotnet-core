@@ -7,6 +7,7 @@
 
 namespace Microsoft.Graph
 {
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -15,20 +16,20 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type WorkbookFunctionsDollarDeRequestBody.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class WorkbookFunctionsDollarDeRequestBody
     {
     
         /// <summary>
         /// Gets or sets FractionalDollar.
         /// </summary>
-        [DataMember(Name = "fractionalDollar", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "fractionalDollar", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken FractionalDollar { get; set; }
     
         /// <summary>
         /// Gets or sets Fraction.
         /// </summary>
-        [DataMember(Name = "fraction", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "fraction", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken Fraction { get; set; }
     
     }

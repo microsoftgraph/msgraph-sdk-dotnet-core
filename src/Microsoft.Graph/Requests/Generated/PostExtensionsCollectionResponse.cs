@@ -13,13 +13,13 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type PostExtensionsCollectionResponse.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public class PostExtensionsCollectionResponse
     {
         /// <summary>
         /// Gets or sets the <see cref="IPostExtensionsCollectionPage"/> value.
         /// </summary>
-        [DataMember(Name = "value", EmitDefaultValue = false, IsRequired = false)]
+		[JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName ="value", Required = Required.Default)]
         public IPostExtensionsCollectionPage Value { get; set; }
 
         /// <summary>

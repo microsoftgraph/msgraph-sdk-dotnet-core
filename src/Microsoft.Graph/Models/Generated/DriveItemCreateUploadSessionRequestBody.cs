@@ -7,6 +7,7 @@
 
 namespace Microsoft.Graph
 {
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -15,14 +16,14 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type DriveItemCreateUploadSessionRequestBody.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class DriveItemCreateUploadSessionRequestBody
     {
     
         /// <summary>
         /// Gets or sets Item.
         /// </summary>
-        [DataMember(Name = "item", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "item", Required = Required.Default)]
         public DriveItemUploadableProperties Item { get; set; }
     
     }

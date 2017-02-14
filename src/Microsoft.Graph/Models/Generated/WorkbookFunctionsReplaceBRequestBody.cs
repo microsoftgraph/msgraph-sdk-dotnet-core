@@ -7,6 +7,7 @@
 
 namespace Microsoft.Graph
 {
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -15,32 +16,32 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type WorkbookFunctionsReplaceBRequestBody.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class WorkbookFunctionsReplaceBRequestBody
     {
     
         /// <summary>
         /// Gets or sets OldText.
         /// </summary>
-        [DataMember(Name = "oldText", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "oldText", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken OldText { get; set; }
     
         /// <summary>
         /// Gets or sets StartNum.
         /// </summary>
-        [DataMember(Name = "startNum", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "startNum", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken StartNum { get; set; }
     
         /// <summary>
         /// Gets or sets NumBytes.
         /// </summary>
-        [DataMember(Name = "numBytes", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "numBytes", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken NumBytes { get; set; }
     
         /// <summary>
         /// Gets or sets NewText.
         /// </summary>
-        [DataMember(Name = "newText", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "newText", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken NewText { get; set; }
     
     }

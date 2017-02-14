@@ -7,6 +7,7 @@
 
 namespace Microsoft.Graph
 {
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -15,26 +16,26 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type WorkbookFunctionsRank_AvgRequestBody.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class WorkbookFunctionsRank_AvgRequestBody
     {
     
         /// <summary>
         /// Gets or sets Number.
         /// </summary>
-        [DataMember(Name = "number", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "number", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken Number { get; set; }
     
         /// <summary>
         /// Gets or sets Ref.
         /// </summary>
-        [DataMember(Name = "ref", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "ref", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken Ref { get; set; }
     
         /// <summary>
         /// Gets or sets Order.
         /// </summary>
-        [DataMember(Name = "order", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "order", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken Order { get; set; }
     
     }

@@ -7,6 +7,7 @@
 
 namespace Microsoft.Graph
 {
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -15,20 +16,20 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type WorkbookFunctionsHyperlinkRequestBody.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class WorkbookFunctionsHyperlinkRequestBody
     {
     
         /// <summary>
         /// Gets or sets LinkLocation.
         /// </summary>
-        [DataMember(Name = "linkLocation", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "linkLocation", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken LinkLocation { get; set; }
     
         /// <summary>
         /// Gets or sets FriendlyName.
         /// </summary>
-        [DataMember(Name = "friendlyName", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "friendlyName", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken FriendlyName { get; set; }
     
     }

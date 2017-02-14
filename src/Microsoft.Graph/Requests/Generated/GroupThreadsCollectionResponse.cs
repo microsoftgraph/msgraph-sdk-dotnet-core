@@ -13,13 +13,13 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type GroupThreadsCollectionResponse.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public class GroupThreadsCollectionResponse
     {
         /// <summary>
         /// Gets or sets the <see cref="IGroupThreadsCollectionPage"/> value.
         /// </summary>
-        [DataMember(Name = "value", EmitDefaultValue = false, IsRequired = false)]
+		[JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName ="value", Required = Required.Default)]
         public IGroupThreadsCollectionPage Value { get; set; }
 
         /// <summary>

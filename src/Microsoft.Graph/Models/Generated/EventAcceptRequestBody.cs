@@ -7,6 +7,7 @@
 
 namespace Microsoft.Graph
 {
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -15,20 +16,20 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type EventAcceptRequestBody.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class EventAcceptRequestBody
     {
     
         /// <summary>
         /// Gets or sets Comment.
         /// </summary>
-        [DataMember(Name = "Comment", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "Comment", Required = Required.Default)]
         public string Comment { get; set; }
     
         /// <summary>
         /// Gets or sets SendResponse.
         /// </summary>
-        [DataMember(Name = "SendResponse", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "SendResponse", Required = Required.Default)]
         public bool? SendResponse { get; set; }
     
     }

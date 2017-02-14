@@ -7,6 +7,7 @@
 
 namespace Microsoft.Graph
 {
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -15,14 +16,14 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type WorkbookWorksheetProtectionProtectRequestBody.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class WorkbookWorksheetProtectionProtectRequestBody
     {
     
         /// <summary>
         /// Gets or sets Options.
         /// </summary>
-        [DataMember(Name = "options", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "options", Required = Required.Default)]
         public WorkbookWorksheetProtectionOptions Options { get; set; }
     
     }

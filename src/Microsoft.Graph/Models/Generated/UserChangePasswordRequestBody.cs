@@ -7,6 +7,7 @@
 
 namespace Microsoft.Graph
 {
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -15,20 +16,20 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type UserChangePasswordRequestBody.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class UserChangePasswordRequestBody
     {
     
         /// <summary>
         /// Gets or sets CurrentPassword.
         /// </summary>
-        [DataMember(Name = "currentPassword", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "currentPassword", Required = Required.Default)]
         public string CurrentPassword { get; set; }
     
         /// <summary>
         /// Gets or sets NewPassword.
         /// </summary>
-        [DataMember(Name = "newPassword", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "newPassword", Required = Required.Default)]
         public string NewPassword { get; set; }
     
     }

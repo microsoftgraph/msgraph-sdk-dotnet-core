@@ -7,6 +7,7 @@
 
 namespace Microsoft.Graph
 {
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -15,26 +16,26 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type WorkbookFunctionsDateRequestBody.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class WorkbookFunctionsDateRequestBody
     {
     
         /// <summary>
         /// Gets or sets Year.
         /// </summary>
-        [DataMember(Name = "year", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "year", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken Year { get; set; }
     
         /// <summary>
         /// Gets or sets Month.
         /// </summary>
-        [DataMember(Name = "month", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "month", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken Month { get; set; }
     
         /// <summary>
         /// Gets or sets Day.
         /// </summary>
-        [DataMember(Name = "day", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "day", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken Day { get; set; }
     
     }

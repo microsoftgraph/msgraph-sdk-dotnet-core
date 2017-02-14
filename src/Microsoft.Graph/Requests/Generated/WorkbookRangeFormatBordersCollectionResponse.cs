@@ -13,13 +13,13 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type WorkbookRangeFormatBordersCollectionResponse.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public class WorkbookRangeFormatBordersCollectionResponse
     {
         /// <summary>
         /// Gets or sets the <see cref="IWorkbookRangeFormatBordersCollectionPage"/> value.
         /// </summary>
-        [DataMember(Name = "value", EmitDefaultValue = false, IsRequired = false)]
+		[JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName ="value", Required = Required.Default)]
         public IWorkbookRangeFormatBordersCollectionPage Value { get; set; }
 
         /// <summary>

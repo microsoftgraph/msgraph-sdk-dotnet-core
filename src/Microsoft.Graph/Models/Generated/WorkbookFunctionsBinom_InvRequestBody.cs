@@ -7,6 +7,7 @@
 
 namespace Microsoft.Graph
 {
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -15,26 +16,26 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type WorkbookFunctionsBinom_InvRequestBody.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class WorkbookFunctionsBinom_InvRequestBody
     {
     
         /// <summary>
         /// Gets or sets Trials.
         /// </summary>
-        [DataMember(Name = "trials", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "trials", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken Trials { get; set; }
     
         /// <summary>
         /// Gets or sets ProbabilityS.
         /// </summary>
-        [DataMember(Name = "probabilityS", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "probabilityS", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken ProbabilityS { get; set; }
     
         /// <summary>
         /// Gets or sets Alpha.
         /// </summary>
-        [DataMember(Name = "alpha", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "alpha", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken Alpha { get; set; }
     
     }

@@ -13,13 +13,13 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type EventAttachmentsCollectionResponse.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public class EventAttachmentsCollectionResponse
     {
         /// <summary>
         /// Gets or sets the <see cref="IEventAttachmentsCollectionPage"/> value.
         /// </summary>
-        [DataMember(Name = "value", EmitDefaultValue = false, IsRequired = false)]
+		[JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName ="value", Required = Required.Default)]
         public IEventAttachmentsCollectionPage Value { get; set; }
 
         /// <summary>

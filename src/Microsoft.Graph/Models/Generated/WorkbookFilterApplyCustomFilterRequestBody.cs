@@ -7,6 +7,7 @@
 
 namespace Microsoft.Graph
 {
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -15,26 +16,26 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type WorkbookFilterApplyCustomFilterRequestBody.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class WorkbookFilterApplyCustomFilterRequestBody
     {
     
         /// <summary>
         /// Gets or sets Criteria1.
         /// </summary>
-        [DataMember(Name = "criteria1", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "criteria1", Required = Required.Default)]
         public string Criteria1 { get; set; }
     
         /// <summary>
         /// Gets or sets Criteria2.
         /// </summary>
-        [DataMember(Name = "criteria2", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "criteria2", Required = Required.Default)]
         public string Criteria2 { get; set; }
     
         /// <summary>
         /// Gets or sets Oper.
         /// </summary>
-        [DataMember(Name = "oper", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "oper", Required = Required.Default)]
         public string Oper { get; set; }
     
     }

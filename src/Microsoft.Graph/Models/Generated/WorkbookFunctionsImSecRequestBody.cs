@@ -7,6 +7,7 @@
 
 namespace Microsoft.Graph
 {
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -15,14 +16,14 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type WorkbookFunctionsImSecRequestBody.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class WorkbookFunctionsImSecRequestBody
     {
     
         /// <summary>
         /// Gets or sets Inumber.
         /// </summary>
-        [DataMember(Name = "inumber", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "inumber", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken Inumber { get; set; }
     
     }

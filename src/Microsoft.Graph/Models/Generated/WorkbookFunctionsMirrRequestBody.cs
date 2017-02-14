@@ -7,6 +7,7 @@
 
 namespace Microsoft.Graph
 {
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -15,26 +16,26 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type WorkbookFunctionsMirrRequestBody.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class WorkbookFunctionsMirrRequestBody
     {
     
         /// <summary>
         /// Gets or sets Values.
         /// </summary>
-        [DataMember(Name = "values", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "values", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken Values { get; set; }
     
         /// <summary>
         /// Gets or sets FinanceRate.
         /// </summary>
-        [DataMember(Name = "financeRate", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "financeRate", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken FinanceRate { get; set; }
     
         /// <summary>
         /// Gets or sets ReinvestRate.
         /// </summary>
-        [DataMember(Name = "reinvestRate", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "reinvestRate", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken ReinvestRate { get; set; }
     
     }

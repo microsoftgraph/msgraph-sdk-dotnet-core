@@ -7,6 +7,7 @@
 
 namespace Microsoft.Graph
 {
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -15,26 +16,26 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type WorkbookFunctionsLookupRequestBody.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class WorkbookFunctionsLookupRequestBody
     {
     
         /// <summary>
         /// Gets or sets LookupValue.
         /// </summary>
-        [DataMember(Name = "lookupValue", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "lookupValue", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken LookupValue { get; set; }
     
         /// <summary>
         /// Gets or sets LookupVector.
         /// </summary>
-        [DataMember(Name = "lookupVector", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "lookupVector", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken LookupVector { get; set; }
     
         /// <summary>
         /// Gets or sets ResultVector.
         /// </summary>
-        [DataMember(Name = "resultVector", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "resultVector", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken ResultVector { get; set; }
     
     }

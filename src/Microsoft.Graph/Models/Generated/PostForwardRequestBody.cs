@@ -7,6 +7,7 @@
 
 namespace Microsoft.Graph
 {
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -15,20 +16,20 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type PostForwardRequestBody.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class PostForwardRequestBody
     {
     
         /// <summary>
         /// Gets or sets Comment.
         /// </summary>
-        [DataMember(Name = "Comment", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "Comment", Required = Required.Default)]
         public string Comment { get; set; }
     
         /// <summary>
         /// Gets or sets ToRecipients.
         /// </summary>
-        [DataMember(Name = "ToRecipients", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "ToRecipients", Required = Required.Default)]
         public IEnumerable<Recipient> ToRecipients { get; set; }
     
     }

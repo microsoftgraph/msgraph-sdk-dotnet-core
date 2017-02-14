@@ -7,6 +7,7 @@
 
 namespace Microsoft.Graph
 {
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -15,26 +16,26 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type WorkbookFunctionsZ_TestRequestBody.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class WorkbookFunctionsZ_TestRequestBody
     {
     
         /// <summary>
         /// Gets or sets Array.
         /// </summary>
-        [DataMember(Name = "array", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "array", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken Array { get; set; }
     
         /// <summary>
         /// Gets or sets X.
         /// </summary>
-        [DataMember(Name = "x", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "x", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken X { get; set; }
     
         /// <summary>
         /// Gets or sets Sigma.
         /// </summary>
-        [DataMember(Name = "sigma", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "sigma", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken Sigma { get; set; }
     
     }

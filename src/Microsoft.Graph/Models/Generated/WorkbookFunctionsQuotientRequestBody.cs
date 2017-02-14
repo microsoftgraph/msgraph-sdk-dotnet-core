@@ -7,6 +7,7 @@
 
 namespace Microsoft.Graph
 {
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -15,20 +16,20 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type WorkbookFunctionsQuotientRequestBody.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class WorkbookFunctionsQuotientRequestBody
     {
     
         /// <summary>
         /// Gets or sets Numerator.
         /// </summary>
-        [DataMember(Name = "numerator", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "numerator", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken Numerator { get; set; }
     
         /// <summary>
         /// Gets or sets Denominator.
         /// </summary>
-        [DataMember(Name = "denominator", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "denominator", Required = Required.Default)]
         public Newtonsoft.Json.Linq.JToken Denominator { get; set; }
     
     }
