@@ -1,0 +1,4 @@
+{
+  "projects": [ "src", "tests" ],
+  "sdk": {}
+}
