@@ -203,8 +203,15 @@ namespace Microsoft.Graph
                             error.ThrowSite = throwsiteValues.FirstOrDefault();
                         }
                     }
+                    
+                    throw new ServiceException(error)
+                    {
+                        // Pass through the response headers to the ServiceException.
+                        ResponseHeaders = response.Headers,
 
-                    throw new ServiceException(error);
+                        // Pass through the HTTP status code.
+                        StatusCode = response.StatusCode
+                    };
                 }
             }
 
