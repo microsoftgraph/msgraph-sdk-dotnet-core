@@ -7,16 +7,19 @@
   "authors": [ "Microsoft" ],
   "supports": {},
   "dependencies": {
-    "NETStandard.Library": "1.6.0",
-    "Newtonsoft.Json": "9.0.1"
+    "Newtonsoft.Json": "9.0.1",
+    "Microsoft.Graph.Core": {
+      "target": "project"
+    }
   },
   "frameworks": {
     "netstandard1.1": {
       "dependencies": {
-        "Microsoft.Graph.Core": {
-          "target": "project"
-        }
+        "NETStandard.Library": "1.6.0"
       }
+    },
+    "net45": {
+      "dependencies": {}
     }
   },
   "packOptions": {
