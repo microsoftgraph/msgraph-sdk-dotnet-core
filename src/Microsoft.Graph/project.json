@@ -1,0 +1,34 @@
+﻿{
+  "name": "Microsoft.Graph",
+  "version": "1.3.0",
+  "description": "Microsoft Graph Client Library allows you to call Office 365, Azure AD and other Microsoft services through a single unified developer experience.",
+  "copyright": "Copyright (c) Microsoft Corporation",
+  "title": "Microsoft Graph Client Library",
+  "authors": [ "Microsoft" ],
+  "supports": {},
+  "dependencies": {
+    "Newtonsoft.Json": "9.0.1",
+    "Microsoft.Graph.Core": {
+      "target": "project"
+    }
+  },
+  "frameworks": {
+    "netstandard1.1": {
+      "dependencies": {
+        "NETStandard.Library": "1.6.0"
+      }
+    },
+    "net45": {
+      "dependencies": {}
+    }
+  },
+  "packOptions": {
+    "summary": "Microsoft Graph Client Library allows you to call Office 365, Azure AD and other Microsoft services through a single unified developer experience.",
+    "tags": [ "Microsoft Office365", "Graph", "GraphServiceClient", "Outlook", "OneDrive", "AzureAD", "GraphAPI", "Productivity", "SharePoint", "SDK" ],
+    "owners": [ "Microsoft" ],
+    "releaseNotes": "February 2017 Release Summary (version 1.3.0)\n\nNew features\n\n* Updated library to target .NETStandard 1.1",
+    "projectUrl": "https://graph.microsoft.io",
+    "licenseUrl": "http://aka.ms/devservicesagreement",
+    "requireLicenseAcceptance": true
+  }
+}

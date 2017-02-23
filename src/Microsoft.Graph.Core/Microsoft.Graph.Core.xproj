@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0.25420" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">14.0.25420</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(VSToolsPath)\DotNet\Microsoft.DotNet.Props" Condition="'$(VSToolsPath)' != ''" />
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{9F04608C-D845-4445-83B1-E6D4EEE38CBC}</ProjectGuid>
+    <RootNamespace>Microsoft.Graph.Core</RootNamespace>
+    <BaseIntermediateOutputPath Condition="'$(BaseIntermediateOutputPath)'=='' ">.\obj</BaseIntermediateOutputPath>
+    <OutputPath Condition="'$(OutputPath)'=='' ">.\bin\</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Authentication\DelegateAuthenticationProvider.cs" />
+    <Compile Include="Authentication\IAuthenticationProvider.cs" />
+    <Compile Include="CoreConstants.cs" />
+    <Compile Include="Exceptions\Error.cs" />
+    <Compile Include="Exceptions\ErrorConstants.cs" />
+    <Compile Include="Exceptions\ErrorResponse.cs" />
+    <Compile Include="Exceptions\ServiceException.cs" />
+    <Compile Include="Helpers\ExtractSelectHelper.cs" />
+    <Compile Include="Helpers\StringHelper.cs" />
+    <Compile Include="Helpers\UrlHelper.cs" />
+    <Compile Include="Models\AsyncOperationStatus.cs" />
+    <Compile Include="Models\CollectionPage.cs" />
+    <Compile Include="Models\Date.cs" />
+    <Compile Include="Models\ICollectionPage.cs" />
+    <Compile Include="Models\ReferenceRequestBody.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Requests\AsyncMonitor.cs" />
+    <Compile Include="Requests\BaseClient.cs" />
+    <Compile Include="Requests\BaseActionMethodRequestBuilder.cs" />
+    <Compile Include="Requests\BaseRequest.cs" />
+    <Compile Include="Requests\BaseFunctionMethodRequestBuilder.cs" />
+    <Compile Include="Requests\BaseRequestBuilder.cs" />
+    <Compile Include="Requests\HttpProvider.cs" />
+    <Compile Include="Requests\IAsyncMonitor.cs" />
+    <Compile Include="Requests\IBaseClient.cs" />
+    <Compile Include="Requests\IBaseRequest.cs" />
+    <Compile Include="Requests\IBaseRequestBuilder.cs" />
+    <Compile Include="Requests\IHttpProvider.cs" />
+    <Compile Include="Requests\Options\HeaderOption.cs" />
+    <Compile Include="Requests\Options\Option.cs" />
+    <Compile Include="Requests\Options\QueryOption.cs" />
+    <Compile Include="Serialization\DateConverter.cs" />
+    <Compile Include="Serialization\DerivedTypeConverter.cs" />
+    <Compile Include="Serialization\EnumConverter.cs" />
+    <Compile Include="Serialization\InterfaceConverter.cs" />
+    <Compile Include="Serialization\ISerializer.cs" />
+    <Compile Include="Serialization\Serializer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="project.json" />
+  </ItemGroup>
+  <PropertyGroup>
+    <SchemaVersion>2.0</SchemaVersion>
+  </PropertyGroup>
+  <Import Project="$(VSToolsPath)\DotNet\Microsoft.DotNet.targets" Condition="'$(VSToolsPath)' != ''" />
+</Project>

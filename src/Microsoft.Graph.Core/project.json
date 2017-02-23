@@ -1,0 +1,48 @@
+﻿{
+  "name": "Microsoft.Graph.Core",
+  "version": "1.4.0",
+  "description": "Microsoft Graph Core Client Library implements core functionality used by Microsoft Graph Client Libraries.",
+  "copyright": "Copyright (c) Microsoft Corporation",
+  "title": "Microsoft Graph Core Client Library",
+  "authors": [
+    "Microsoft"
+  ],
+  "supports": {},
+  "dependencies": {
+    "Newtonsoft.Json": "9.0.1"
+  },
+  "frameworks": {
+    "netstandard1.1": {
+      "dependencies": {
+        "NETStandard.Library": "1.6.0"
+      }
+    },
+    "net45": {
+      "frameworkAssemblies": {
+        "System.Net.Http": ""
+      }
+    }
+  },
+  "packOptions": {
+    "summary": "Microsoft Graph Core Client Library implements core functionality used by Microsoft Graph Client Libraries.",
+    "tags": [
+      "Microsoft Office365",
+      "Graph",
+      "GraphServiceClient",
+      "Outlook",
+      "OneDrive",
+      "AzureAD",
+      "GraphAPI",
+      "Productivity",
+      "SharePoint",
+      "SDK"
+    ],
+    "owners": [
+      "Microsoft"
+    ],
+    "releaseNotes": "February 2017 Release Summary (version 1.4.0)\n\nNew features\n\n* Updated library to target .NETStandard 1.1",
+    "projectUrl": "https://graph.microsoft.io",
+    "licenseUrl": "http://aka.ms/devservicesagreement",
+    "requireLicenseAcceptance": true
+  }
+}
