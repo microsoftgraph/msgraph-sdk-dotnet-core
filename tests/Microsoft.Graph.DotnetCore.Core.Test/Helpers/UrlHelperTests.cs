@@ -29,7 +29,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Helpers
 
             var queryValues = UrlHelper.GetQueryOptions(uri);
 
-            Assert.Equal(0, queryValues.Count);
+            Assert.Equal(1, queryValues.Count);
         }
 
         [Fact]
