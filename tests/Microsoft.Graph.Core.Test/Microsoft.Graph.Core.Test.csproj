@@ -91,6 +91,7 @@
     <Compile Include="Requests\RequestTestBase.cs" />
     <Compile Include="Serialization\DateConverterTests.cs" />
     <Compile Include="Serialization\SerializerTests.cs" />
+    <Compile Include="Serialization\TimeOfDayConverterTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
