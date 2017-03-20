@@ -15,7 +15,7 @@ namespace Microsoft.Graph.DotnetCore.Test.Requests.Functional
     {
         // http://graph.microsoft.io/en-us/docs/api-reference/v1.0/api/singlevaluelegacyextendedproperty_post_singlevalueextendedproperties
         [Fact(Skip = "No CI set up for functional tests")]
-        public async Task ContactsSetGetSingleExtendedProperty()
+        public async System.Threading.Tasks.Task ContactsSetGetSingleExtendedProperty()
         {
             try
             {

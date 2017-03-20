@@ -38,7 +38,7 @@ namespace Microsoft.Graph.DotnetCore.Test.Requests.Generated
         /// Tests the GetAsync() method on an entity collection request.
         /// </summary>
         [Fact]
-        public async Task GetAsync()
+        public async System.Threading.Tasks.Task GetAsync()
         {
             using (var httpResponseMessage = new HttpResponseMessage())
             using (var responseStream = new MemoryStream())
@@ -59,7 +59,7 @@ namespace Microsoft.Graph.DotnetCore.Test.Requests.Generated
                                 && request.Method == HttpMethod.Get),
                         HttpCompletionOption.ResponseContentRead,
                         CancellationToken.None))
-                    .Returns(Task.FromResult(httpResponseMessage));
+                    .Returns(System.Threading.Tasks.Task.FromResult(httpResponseMessage));
 
                 var calendarsCollectionPage = new UserCalendarsCollectionPage
                 {
@@ -98,7 +98,7 @@ namespace Microsoft.Graph.DotnetCore.Test.Requests.Generated
         /// Tests the AddAsync() method on an entity collection request.
         /// </summary>
         [Fact]
-        public async Task AddAsync()
+        public async System.Threading.Tasks.Task AddAsync()
         {
             using (var httpResponseMessage = new HttpResponseMessage())
             using (var responseStream = new MemoryStream())
@@ -115,7 +115,7 @@ namespace Microsoft.Graph.DotnetCore.Test.Requests.Generated
                                 && request.Method == HttpMethod.Post),
                         HttpCompletionOption.ResponseContentRead,
                         CancellationToken.None))
-                    .Returns(Task.FromResult(httpResponseMessage));
+                    .Returns(System.Threading.Tasks.Task.FromResult(httpResponseMessage));
 
                 var addedCalendar = new Calendar();
 
@@ -137,7 +137,7 @@ namespace Microsoft.Graph.DotnetCore.Test.Requests.Generated
         /// Tests that the AddAsync() method on an abstract entity collection request includes @odata.type.
         /// </summary>
         [Fact]
-        public async Task AddAsync_AbstractEntityContainsODataType()
+        public async System.Threading.Tasks.Task AddAsync_AbstractEntityContainsODataType()
         {
             using (var httpResponseMessage = new HttpResponseMessage())
             using (var responseStream = new MemoryStream())
@@ -154,7 +154,7 @@ namespace Microsoft.Graph.DotnetCore.Test.Requests.Generated
                                 && request.Method == HttpMethod.Post),
                         HttpCompletionOption.ResponseContentRead,
                         CancellationToken.None))
-                    .Returns(Task.FromResult(httpResponseMessage));
+                    .Returns(System.Threading.Tasks.Task.FromResult(httpResponseMessage));
 
                 var attachmentToAdd = new FileAttachment();
 

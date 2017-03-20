@@ -16,7 +16,7 @@ namespace Microsoft.Graph.Test.Requests.Functional
         // Currently (10/5/2016), you can only set the mailboxsettings directly on the property, 
         // not with a patched user. Opened issue against service API.
         [TestMethod]
-        public async Task UserGetSetAutomaticReply()
+        public async System.Threading.Tasks.Task UserGetSetAutomaticReply()
         {
             try
             {
@@ -151,7 +151,7 @@ namespace Microsoft.Graph.Test.Requests.Functional
         // Filter on displayname
         // https://github.com/microsoftgraph/msgraph-sdk-dotnet/issues/41
         [TestMethod]
-        public async Task UserFilterStartsWith()
+        public async System.Threading.Tasks.Task UserFilterStartsWith()
         {
             try
             {
@@ -169,7 +169,7 @@ namespace Microsoft.Graph.Test.Requests.Functional
 
         // Get the test user's photo.
         [TestMethod]
-        public async Task UserGetPhoto()
+        public async System.Threading.Tasks.Task UserGetPhoto()
         {
             try
             {
@@ -195,7 +195,7 @@ namespace Microsoft.Graph.Test.Requests.Functional
 
         // Update the test user's photo
         [TestMethod]
-        public async Task UserUpdatePhoto()
+        public async System.Threading.Tasks.Task UserUpdatePhoto()
         {
             try
             {
@@ -217,7 +217,7 @@ namespace Microsoft.Graph.Test.Requests.Functional
 
         // Get the test user.
         [TestMethod]
-        public async Task UserGetUser()
+        public async System.Threading.Tasks.Task UserGetUser()
         {
             try
             {
@@ -231,7 +231,7 @@ namespace Microsoft.Graph.Test.Requests.Functional
         }
 
         [TestMethod]
-        public async Task UserGetManager()
+        public async System.Threading.Tasks.Task UserGetManager()
         {
             try
             {
@@ -251,7 +251,7 @@ namespace Microsoft.Graph.Test.Requests.Functional
         // http://graph.microsoft.io/en-us/docs/api-reference/v1.0/api/user_post_manager
         // We are getting and setting the user's manager.
         [TestMethod]
-        public async Task UserUpdateManager()
+        public async System.Threading.Tasks.Task UserUpdateManager()
         {
             try
             {
@@ -267,7 +267,7 @@ namespace Microsoft.Graph.Test.Requests.Functional
         }
 
         [TestMethod]
-        public async Task UserAssignLicense()
+        public async System.Threading.Tasks.Task UserAssignLicense()
         {
             try
             {
@@ -287,7 +287,7 @@ namespace Microsoft.Graph.Test.Requests.Functional
         /// Tests the get member groups action with a set parameter.
         /// </summary>
         [TestMethod]
-        public async Task UserGetMemberGroups_SecurityEnabledOnly_ValueSet()
+        public async System.Threading.Tasks.Task UserGetMemberGroups_SecurityEnabledOnly_ValueSet()
         {
             try
             {
@@ -312,7 +312,7 @@ namespace Microsoft.Graph.Test.Requests.Functional
         /// Tests the get member groups action without a set parameter, default is null.
         /// </summary>
         [TestMethod]
-        public async Task UserGetMemberGroups_SecurityEnabledOnly_ValueNotSet()
+        public async System.Threading.Tasks.Task UserGetMemberGroups_SecurityEnabledOnly_ValueNotSet()
         {
             try
             {
@@ -330,7 +330,7 @@ namespace Microsoft.Graph.Test.Requests.Functional
 
         [TestMethod]
         // Addressing https://github.com/microsoftgraph/msgraph-sdk-dotnet/issues/28
-        public async Task UpdateUser()
+        public async System.Threading.Tasks.Task UpdateUser()
         {
             try
             {

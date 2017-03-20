@@ -16,7 +16,7 @@ namespace Microsoft.Graph.DotnetCore.Test.Requests.Functional
         // https://github.com/OneDrive/onedrive-sdk-csharp/blob/master/docs/chunked-uploads.md
         // https://dev.onedrive.com/items/upload_large_files.htm
         //[Fact(Skip ="incomplete")]
-        //public async Task OneDriveUploadLargeFile()
+        //public async System.Threading.Tasks.Task OneDriveUploadLargeFile()
         //{
         // try
         // {
@@ -76,7 +76,7 @@ namespace Microsoft.Graph.DotnetCore.Test.Requests.Functional
 
 
         [Fact(Skip = "No CI set up for functional tests")]
-        public async Task OneDriveNextPageRequest()
+        public async System.Threading.Tasks.Task OneDriveNextPageRequest()
         {
             try
             {
@@ -102,7 +102,7 @@ namespace Microsoft.Graph.DotnetCore.Test.Requests.Functional
 
         // http://graph.microsoft.io/en-us/docs/api-reference/v1.0/api/item_downloadcontent
         [Fact(Skip = "No CI set up for functional tests")]
-        public async Task OneDriveGetContent()
+        public async System.Threading.Tasks.Task OneDriveGetContent()
         {
             try
             {
@@ -128,7 +128,7 @@ namespace Microsoft.Graph.DotnetCore.Test.Requests.Functional
 
 
         [Fact(Skip = "No CI set up for functional tests")]
-        public async Task OneDriveGetSetPermissions()
+        public async System.Threading.Tasks.Task OneDriveGetSetPermissions()
         {
             try
             {
@@ -178,7 +178,7 @@ namespace Microsoft.Graph.DotnetCore.Test.Requests.Functional
         }
 
         [Fact(Skip = "No CI set up for functional tests")]
-        public async Task OneDriveSearchFile()
+        public async System.Threading.Tasks.Task OneDriveSearchFile()
         {
             // Note: can't upload an item and immediately search for it. Seems like search index doesn't get immediately updated.
             // Tried applying a delay of 30sec and it made no difference.
@@ -199,7 +199,7 @@ namespace Microsoft.Graph.DotnetCore.Test.Requests.Functional
 
         // Assumption: test tenant has a file name that starts with 'Timesheet'.
         [Fact(Skip = "No CI set up for functional tests")]
-        public async Task OneDriveCreateSharingLink()
+        public async System.Threading.Tasks.Task OneDriveCreateSharingLink()
         {
             try
             {
@@ -230,7 +230,7 @@ namespace Microsoft.Graph.DotnetCore.Test.Requests.Functional
         // Assumption: test tenant has a file name that starts with 'Timesheet'.
         // Assumption: there is a user with an email alias of alexd and a display name of Alex Darrow in the test tenant.
         [Fact(Skip = "No CI set up for functional tests")]
-        public async Task OneDriveInvite()
+        public async System.Threading.Tasks.Task OneDriveInvite()
         {
             try
             {

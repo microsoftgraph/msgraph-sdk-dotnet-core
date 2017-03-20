@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace Microsoft.Graph.Test.Requests.Functional
 {
-    [Ignore]
+    //[Ignore]
     [TestClass]
     public class OneDriveTests : GraphTestBase
     {
         // https://github.com/OneDrive/onedrive-sdk-csharp/blob/master/docs/chunked-uploads.md
         // https://dev.onedrive.com/items/upload_large_files.htm
         [TestMethod]
-        public async Task OneDriveUploadLargeFile()
+        public async System.Threading.Tasks.Task OneDriveUploadLargeFile()
         {
             try
             {
@@ -73,7 +73,7 @@ namespace Microsoft.Graph.Test.Requests.Functional
 
 
         [TestMethod]
-        public async Task OneDriveNextPageRequest()
+        public async System.Threading.Tasks.Task OneDriveNextPageRequest()
         {
             try
             {
@@ -99,7 +99,7 @@ namespace Microsoft.Graph.Test.Requests.Functional
 
         // http://graph.microsoft.io/en-us/docs/api-reference/v1.0/api/item_downloadcontent
         [TestMethod]
-        public async Task OneDriveGetContent()
+        public async System.Threading.Tasks.Task OneDriveGetContent()
         {
             try
             {
@@ -125,7 +125,7 @@ namespace Microsoft.Graph.Test.Requests.Functional
 
 
         [TestMethod]
-        public async Task OneDriveGetSetPermissions()
+        public async System.Threading.Tasks.Task OneDriveGetSetPermissions()
         {
             try
             {
@@ -175,7 +175,7 @@ namespace Microsoft.Graph.Test.Requests.Functional
         }
 
         [TestMethod]
-        public async Task OneDriveSearchFile()
+        public async System.Threading.Tasks.Task OneDriveSearchFile()
         {
             // Note: can't upload an item and immediately search for it. Seems like search index doesn't get immediately updated.
             // Tried applying a delay of 30sec and it made no difference.
@@ -196,7 +196,7 @@ namespace Microsoft.Graph.Test.Requests.Functional
 
         // Assumption: test tenant has a file name that starts with 'Timesheet'.
         [TestMethod]
-        public async Task OneDriveCreateSharingLink()
+        public async System.Threading.Tasks.Task OneDriveCreateSharingLink()
         {
             try
             {
@@ -228,7 +228,7 @@ namespace Microsoft.Graph.Test.Requests.Functional
         // Assumption: test tenant has a file name that starts with 'Timesheet'.
         // Assumption: there is a user with an email alias of alexd and a display name of Alex Darrow in the test tenant.
         [TestMethod]
-        public async Task OneDriveInvite()
+        public async System.Threading.Tasks.Task OneDriveInvite()
         {
             try
             {

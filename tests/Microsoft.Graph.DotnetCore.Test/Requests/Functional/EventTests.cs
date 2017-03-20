@@ -13,7 +13,7 @@ namespace Microsoft.Graph.DotnetCore.Test.Requests.Functional
     public class EventTests : GraphTestBase
     {
         [Fact(Skip = "No CI set up for functional tests")]
-        public async Task EventGetCalendarView()
+        public async System.Threading.Tasks.Task EventGetCalendarView()
         {
             try
             {

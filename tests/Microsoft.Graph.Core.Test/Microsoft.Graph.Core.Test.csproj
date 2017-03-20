@@ -69,6 +69,7 @@
     <Compile Include="Mocks\MockProgress.cs" />
     <Compile Include="Requests\AsyncMonitorTests.cs" />
     <Compile Include="Requests\BaseRequestBuilderTests.cs" />
+    <Compile Include="Serialization\DurationConverterTests.cs" />
     <Compile Include="TestModels\AbstractEntityType.cs" />
     <Compile Include="TestModels\ClassWithJson.cs" />
     <Compile Include="TestModels\CustomRequest.cs" />
@@ -91,6 +92,7 @@
     <Compile Include="Requests\RequestTestBase.cs" />
     <Compile Include="Serialization\DateConverterTests.cs" />
     <Compile Include="Serialization\SerializerTests.cs" />
+    <Compile Include="Serialization\TimeOfDayConverterTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\Microsoft.Graph.Core\Microsoft.Graph.Core.csproj">

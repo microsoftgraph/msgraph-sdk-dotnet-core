@@ -38,7 +38,7 @@ namespace Microsoft.Graph.Test.Requests.Generated
         /// Tests the AddAsync() method on the $ref navigation of an entity collection.
         /// </summary>
         [TestMethod]
-        public async Task AddAsync()
+        public async System.Threading.Tasks.Task AddAsync()
         {
             using (var httpResponseMessage = new HttpResponseMessage())
             using (var responseStream = new MemoryStream())
@@ -54,7 +54,7 @@ namespace Microsoft.Graph.Test.Requests.Generated
                                 && string.Equals(request.Content.Headers.ContentType.ToString(), "application/json")),
                         HttpCompletionOption.ResponseContentRead,
                         CancellationToken.None))
-                    .Returns(Task.FromResult(httpResponseMessage));
+                    .Returns(System.Threading.Tasks.Task.FromResult(httpResponseMessage));
 
                 var userToCreate = new User { Id = "id" };
 
@@ -76,7 +76,7 @@ namespace Microsoft.Graph.Test.Requests.Generated
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(ServiceException))]
-        public async Task AddAsync_IdRequired()
+        public async System.Threading.Tasks.Task AddAsync_IdRequired()
         {
             var userToCreate = new User();
 

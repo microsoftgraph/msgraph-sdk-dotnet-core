@@ -20,7 +20,7 @@ namespace Microsoft.Graph.Test.Requests.Generated
     public class EntityRequestTests : RequestTestBase
     {
         [TestMethod]
-        public async Task GetAsync_InitializeCollectionProperties()
+        public async System.Threading.Tasks.Task GetAsync_InitializeCollectionProperties()
         {
             using (var httpResponseMessage = new HttpResponseMessage())
             using (var responseStream = new MemoryStream())
@@ -35,7 +35,7 @@ namespace Microsoft.Graph.Test.Requests.Generated
                             request => request.RequestUri.ToString().Equals(requestUrl)),
                         HttpCompletionOption.ResponseContentRead,
                         CancellationToken.None))
-                    .Returns(Task.FromResult<HttpResponseMessage>(httpResponseMessage));
+                    .Returns(System.Threading.Tasks.Task.FromResult<HttpResponseMessage>(httpResponseMessage));
 
                 var expectedChildrenPage = new DriveItemChildrenCollectionPage
                 {
@@ -69,7 +69,7 @@ namespace Microsoft.Graph.Test.Requests.Generated
         }
 
         [TestMethod]
-        public async Task DeleteAsync()
+        public async System.Threading.Tasks.Task DeleteAsync()
         {
             using (var httpResponseMessage = new HttpResponseMessage(HttpStatusCode.NoContent))
             {
@@ -82,7 +82,7 @@ namespace Microsoft.Graph.Test.Requests.Generated
                                 && request.RequestUri.ToString().Equals(requestUrl)),
                         HttpCompletionOption.ResponseContentRead,
                         CancellationToken.None))
-                    .Returns(Task.FromResult(httpResponseMessage));
+                    .Returns(System.Threading.Tasks.Task.FromResult(httpResponseMessage));
 
                 await this.graphServiceClient.Me.Drive.Items["id"].Request().DeleteAsync();
             }
@@ -115,7 +115,7 @@ namespace Microsoft.Graph.Test.Requests.Generated
         }
 
         [TestMethod]
-        public async Task UpdateAsync_EntityWithNoCollecitonProperties()
+        public async System.Threading.Tasks.Task UpdateAsync_EntityWithNoCollecitonProperties()
         {
             using (var httpResponseMessage = new HttpResponseMessage())
             using (var responseStream = new MemoryStream())
@@ -133,7 +133,7 @@ namespace Microsoft.Graph.Test.Requests.Generated
                                     && request.RequestUri.ToString().Equals(requestUrl)),
                             HttpCompletionOption.ResponseContentRead,
                             CancellationToken.None))
-                        .Returns(Task.FromResult(httpResponseMessage));
+                        .Returns(System.Threading.Tasks.Task.FromResult(httpResponseMessage));
 
                 var contactToUpdate = new Contact { Id = "id" };
 
@@ -147,12 +147,12 @@ namespace Microsoft.Graph.Test.Requests.Generated
         }
 
         [TestMethod]
-        public async Task UpdateAsync()
+        public async System.Threading.Tasks.Task UpdateAsync()
         {
             await this.RequestWithItemInBody(true);
         }
         
-        private async Task RequestWithItemInBody(bool isUpdate)
+        private async System.Threading.Tasks.Task RequestWithItemInBody(bool isUpdate)
         {
             using (var httpResponseMessage = new HttpResponseMessage())
             using (var responseStream = new MemoryStream())
@@ -170,7 +170,7 @@ namespace Microsoft.Graph.Test.Requests.Generated
                                     && request.RequestUri.ToString().Equals(requestUrl)),
                             HttpCompletionOption.ResponseContentRead,
                             CancellationToken.None))
-                        .Returns(Task.FromResult(httpResponseMessage));
+                        .Returns(System.Threading.Tasks.Task.FromResult(httpResponseMessage));
 
                 this.serializer.Setup(serializer => serializer.SerializeObject(It.IsAny<DriveItem>())).Returns("body");
                 this.serializer.Setup(serializer => serializer.DeserializeObject<DriveItem>(It.IsAny<string>())).Returns(new DriveItem { Id = "id" });

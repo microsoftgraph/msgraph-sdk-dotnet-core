@@ -28,7 +28,7 @@ namespace Microsoft.Graph.DotnetCore.Test.Requests.Generated
         }
 
         [Fact]
-        public async Task GetAsync()
+        public async System.Threading.Tasks.Task GetAsync()
         {
             using (var httpResponseMessage = new HttpResponseMessage())
             using (var responseStream = new MemoryStream())
@@ -44,7 +44,7 @@ namespace Microsoft.Graph.DotnetCore.Test.Requests.Generated
                                 && request.Method == HttpMethod.Get),
                         HttpCompletionOption.ResponseContentRead,
                         CancellationToken.None))
-                    .Returns(Task.FromResult(httpResponseMessage));
+                    .Returns(System.Threading.Tasks.Task.FromResult(httpResponseMessage));
 
                 using (var returnedResponseStream = await this.graphServiceClient.Me.Photo.Content.Request().GetAsync())
                 {
@@ -54,7 +54,7 @@ namespace Microsoft.Graph.DotnetCore.Test.Requests.Generated
         }
 
         [Fact]
-        public async Task PutAsync()
+        public async System.Threading.Tasks.Task PutAsync()
         {
             using (var requestStream = new MemoryStream())
             using (var httpResponseMessage = new HttpResponseMessage())
@@ -71,7 +71,7 @@ namespace Microsoft.Graph.DotnetCore.Test.Requests.Generated
                                 && request.Method == HttpMethod.Put),
                         HttpCompletionOption.ResponseContentRead,
                         CancellationToken.None))
-                    .Returns(Task.FromResult(httpResponseMessage));
+                    .Returns(System.Threading.Tasks.Task.FromResult(httpResponseMessage));
 
                 using (var returnedResponseStream = await this.graphServiceClient.Me.Photo.Content.Request().PutAsync(requestStream))
                 {

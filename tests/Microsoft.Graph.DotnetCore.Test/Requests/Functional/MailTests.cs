@@ -15,7 +15,7 @@ namespace Microsoft.Graph.DotnetCore.Test.Requests.Functional
     public class MailTests : GraphTestBase
     {
 
-        public async Task<Message> createEmail(string emailBody)
+        public async System.Threading.Tasks.Task<Message> createEmail(string emailBody)
         {
             // Get the test user.
             var me = await graphClient.Me.Request().GetAsync();
@@ -43,7 +43,7 @@ namespace Microsoft.Graph.DotnetCore.Test.Requests.Functional
 
         // Tests the SendMail action.
         [Fact(Skip = "No CI set up for functional tests")]
-        public async Task MailSendMail()
+        public async System.Threading.Tasks.Task MailSendMail()
         {
             try
             {
@@ -70,7 +70,7 @@ namespace Microsoft.Graph.DotnetCore.Test.Requests.Functional
 
         //// Test that we can set an attachment on a mail, send it, and then retrieve it.
         //[Fact]
-        //public async Task MailSendMailWithFileAttachment()
+        //public async System.Threading.Tasks.Task MailSendMailWithFileAttachment()
         //{
         //    try
         //    {
@@ -93,7 +93,7 @@ namespace Microsoft.Graph.DotnetCore.Test.Requests.Functional
         //}
 
         [Fact(Skip = "No CI set up for functional tests")]
-        public async Task MailGetMailWithFileAttachment()
+        public async System.Threading.Tasks.Task MailGetMailWithFileAttachment()
         {
             try
             {
@@ -128,7 +128,7 @@ namespace Microsoft.Graph.DotnetCore.Test.Requests.Functional
 
 
         [Fact(Skip = "No CI set up for functional tests")]
-        public async Task MailNextPageRequest()
+        public async System.Threading.Tasks.Task MailNextPageRequest()
         {
             try
             {

@@ -39,7 +39,7 @@ namespace Microsoft.Graph.Test.Requests.Generated
         /// Tests the DeleteAsync() method on an entity's $ref navigation.
         /// </summary>
         [TestMethod]
-        public async Task DeleteAsync()
+        public async System.Threading.Tasks.Task DeleteAsync()
         {
             using (var httpResponseMessage = new HttpResponseMessage())
             using (var responseStream = new MemoryStream())
@@ -54,7 +54,7 @@ namespace Microsoft.Graph.Test.Requests.Generated
                                 && request.Method == HttpMethod.Delete),
                         HttpCompletionOption.ResponseContentRead,
                         CancellationToken.None))
-                    .Returns(Task.FromResult(httpResponseMessage));
+                    .Returns(System.Threading.Tasks.Task.FromResult(httpResponseMessage));
 
                 await this.graphServiceClient.Groups["groupId"].Members["memberId"].Reference.Request().DeleteAsync();
             }

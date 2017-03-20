@@ -29,7 +29,7 @@ namespace Microsoft.Graph.Test.Requests.Generated
         }
 
         [TestMethod]
-        public async Task ThumbnailContentStreamRequest_GetAsync()
+        public async System.Threading.Tasks.Task ThumbnailContentStreamRequest_GetAsync()
         {
             using (var httpResponseMessage = new HttpResponseMessage())
             using (var stringContent = new StringContent("body"))
@@ -44,7 +44,7 @@ namespace Microsoft.Graph.Test.Requests.Generated
                                 && request.Method == HttpMethod.Get),
                         HttpCompletionOption.ResponseContentRead,
                         CancellationToken.None))
-                    .Returns(Task.FromResult(httpResponseMessage));
+                    .Returns(System.Threading.Tasks.Task.FromResult(httpResponseMessage));
 
                 using (var response = await this.graphServiceClient.Me.Drive.Items["id"].Thumbnails["0"]["id"].Content.Request().GetAsync())
                 {
@@ -60,7 +60,7 @@ namespace Microsoft.Graph.Test.Requests.Generated
         }
 
         [TestMethod]
-        public async Task ThumbnailContentStreamRequest_PutAsync()
+        public async System.Threading.Tasks.Task ThumbnailContentStreamRequest_PutAsync()
         {
             using (var requestStream = new MemoryStream())
             using (var httpResponseMessage = new HttpResponseMessage())
@@ -77,7 +77,7 @@ namespace Microsoft.Graph.Test.Requests.Generated
                                 && request.Method == HttpMethod.Put),
                         HttpCompletionOption.ResponseContentRead,
                         CancellationToken.None))
-                    .Returns(Task.FromResult(httpResponseMessage));
+                    .Returns(System.Threading.Tasks.Task.FromResult(httpResponseMessage));
 
                 var expectedThumbnail = new Thumbnail { Url = "https://localhost" };
 
