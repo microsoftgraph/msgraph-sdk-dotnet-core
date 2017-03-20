@@ -10,9 +10,7 @@ namespace Microsoft.Graph.Test.Requests.Functional
     [TestClass]
     public class MailTests : GraphTestBase
     {
-
-        
-        public async Task<Message> createEmail(string emailBody)
+        public async System.Threading.Tasks.Task<Message> createEmail(string emailBody)
         {
             // Get the test user.
             var me = await graphClient.Me.Request().GetAsync();
@@ -40,7 +38,7 @@ namespace Microsoft.Graph.Test.Requests.Functional
 
         // Tests the SendMail action.
         [TestMethod]
-        public async Task MailSendMail()
+        public async System.Threading.Tasks.Task MailSendMail()
         {
             try
             {
@@ -67,7 +65,7 @@ namespace Microsoft.Graph.Test.Requests.Functional
 
         // Test that we can set an attachment on a mail, send it, and then retrieve it.
         [TestMethod]
-        public async Task MailSendMailWithFileAttachment()
+        public async System.Threading.Tasks.Task MailSendMailWithFileAttachment()
         {
             try
             {
@@ -90,7 +88,7 @@ namespace Microsoft.Graph.Test.Requests.Functional
         }
 
         [TestMethod]
-        public async Task MailGetMailWithFileAttachment()
+        public async System.Threading.Tasks.Task MailGetMailWithFileAttachment()
         {
             try
             {
@@ -125,7 +123,7 @@ namespace Microsoft.Graph.Test.Requests.Functional
 
 
         [TestMethod]
-        public async Task MailNextPageRequest()
+        public async System.Threading.Tasks.Task MailNextPageRequest()
         {
             try
             {

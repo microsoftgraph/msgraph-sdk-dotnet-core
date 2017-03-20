@@ -107,10 +107,10 @@ namespace Microsoft.Graph
         /// Delete the session.
         /// </summary>
         /// <returns>Once returned task is complete, the session has been deleted.</returns>
-        public async Task DeleteSession()
+        public async Task<UploadSession> DeleteSession()
         {
             var request = new UploadSessionRequest(this.Session, this.client, null);
-            await request.DeleteAsync().ConfigureAwait(false);
+            return await request.DeleteAsync().ConfigureAwait(false);
         }
 
         /// <summary>
@@ -143,7 +143,7 @@ namespace Microsoft.Graph
                 if (uploadTries < maxTries)
                 {
                     // Exponential backoff in case of failures.
-                    await Task.Delay(2000 * uploadTries * uploadTries).ConfigureAwait(false);
+                    await System.Threading.Tasks.Task.Delay(2000 * uploadTries * uploadTries).ConfigureAwait(false);
                 }
             }
 

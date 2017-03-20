@@ -10,7 +10,7 @@ namespace Microsoft.Graph.Test.Requests.Functional
     public class EventTests : GraphTestBase
     {
         [TestMethod]
-        public async Task EventGetCalendarView()
+        public async System.Threading.Tasks.Task EventGetCalendarView()
         {
             try
             {
