@@ -22,7 +22,7 @@ namespace Microsoft.Graph.DotnetCore.Test.Requests.Functional
         private string fileId;
 
         [Fact(Skip = "No CI set up for functional tests")]
-        public async Task OneDriveCreateDeleteExcelWorkbook()
+        public async System.Threading.Tasks.Task OneDriveCreateDeleteExcelWorkbook()
         {
             try
             {
@@ -37,7 +37,7 @@ namespace Microsoft.Graph.DotnetCore.Test.Requests.Functional
             }
         }
 
-        public async Task OneDriveSearchForTestFile(string fileName = "_excelTestResource.xlsx")
+        public async System.Threading.Tasks.Task OneDriveSearchForTestFile(string fileName = "_excelTestResource.xlsx")
         {
             try
             {
@@ -60,7 +60,7 @@ namespace Microsoft.Graph.DotnetCore.Test.Requests.Functional
             }
         }
 
-        public async Task<string> OneDriveCreateTestFile(string fileName)
+        public async System.Threading.Tasks.Task<string> OneDriveCreateTestFile(string fileName)
         {
             try
             {
@@ -93,7 +93,7 @@ namespace Microsoft.Graph.DotnetCore.Test.Requests.Functional
             return "";
         }
 
-        public async Task OneDriveUploadTestFileContent(string fileId)
+        public async System.Threading.Tasks.Task OneDriveUploadTestFileContent(string fileId)
         {
             //try
             //{
@@ -114,7 +114,7 @@ namespace Microsoft.Graph.DotnetCore.Test.Requests.Functional
             //}
         }
 
-        public async Task OneDriveDeleteTestFile(string fileId, int delayInMilliseconds = 0)
+        public async System.Threading.Tasks.Task OneDriveDeleteTestFile(string fileId, int delayInMilliseconds = 0)
         {
             try
             {
@@ -132,7 +132,7 @@ namespace Microsoft.Graph.DotnetCore.Test.Requests.Functional
                 // you PATCH/POST/PUT to the workbook before you DELETE in test.
                 if (delayInMilliseconds > 0)
                 {
-                    await Task.Delay(delayInMilliseconds);
+                    await System.Threading.Tasks.Task.Delay(delayInMilliseconds);
                 }
 
                 // Delete the workbook.
@@ -149,7 +149,7 @@ namespace Microsoft.Graph.DotnetCore.Test.Requests.Functional
         }
 
         [Fact(Skip = "No CI set up for functional tests")]
-        public async Task ExcelGetUpdateRange()
+        public async System.Threading.Tasks.Task ExcelGetUpdateRange()
         {
             try
             {
@@ -194,7 +194,7 @@ namespace Microsoft.Graph.DotnetCore.Test.Requests.Functional
         }
 
         [Fact(Skip = "No CI set up for functional tests")]
-        public async Task ExcelChangeNumberFormat()
+        public async System.Threading.Tasks.Task ExcelChangeNumberFormat()
         {
             try
             {
@@ -229,7 +229,7 @@ namespace Microsoft.Graph.DotnetCore.Test.Requests.Functional
         }
 
         [Fact(Skip = "No CI set up for functional tests")]
-        public async Task ExcelAbsFunc()
+        public async System.Threading.Tasks.Task ExcelAbsFunc()
         {
             try
             {
@@ -253,7 +253,7 @@ namespace Microsoft.Graph.DotnetCore.Test.Requests.Functional
         }
 
         [Fact(Skip = "No CI set up for functional tests")]
-        public async Task ExcelSetFormula()
+        public async System.Threading.Tasks.Task ExcelSetFormula()
         {
             try
             {
@@ -286,7 +286,7 @@ namespace Microsoft.Graph.DotnetCore.Test.Requests.Functional
         }
 
         [Fact(Skip = "No CI set up for functional tests")]
-        public async Task ExcelAddTableUsedRange()
+        public async System.Threading.Tasks.Task ExcelAddTableUsedRange()
         {
             try
             {
@@ -331,7 +331,7 @@ namespace Microsoft.Graph.DotnetCore.Test.Requests.Functional
         }
 
         [Fact(Skip = "No CI set up for functional tests")]
-        public async Task ExcelAddRowToTable()
+        public async System.Threading.Tasks.Task ExcelAddRowToTable()
         {
             try
             {
@@ -364,7 +364,7 @@ namespace Microsoft.Graph.DotnetCore.Test.Requests.Functional
         }
 
         [Fact(Skip = "No CI set up for functional tests")]
-        public async Task ExcelSortTableOnFirstColumnValue()
+        public async System.Threading.Tasks.Task ExcelSortTableOnFirstColumnValue()
         {
             try
             {
@@ -397,7 +397,7 @@ namespace Microsoft.Graph.DotnetCore.Test.Requests.Functional
         }
 
         [Fact(Skip = "No CI set up for functional tests")]
-        public async Task ExcelFilterTableValues()
+        public async System.Threading.Tasks.Task ExcelFilterTableValues()
         {
             try
             {
@@ -423,7 +423,7 @@ namespace Microsoft.Graph.DotnetCore.Test.Requests.Functional
         }
 
         [Fact(Skip = "No CI set up for functional tests")]
-        public async Task ExcelCreateChartFromTable()
+        public async System.Threading.Tasks.Task ExcelCreateChartFromTable()
         {
             try
             {
@@ -456,7 +456,7 @@ namespace Microsoft.Graph.DotnetCore.Test.Requests.Functional
         }
 
         [Fact(Skip = "No CI set up for functional tests")]
-        public async Task ExcelProtectWorksheet()
+        public async System.Threading.Tasks.Task ExcelProtectWorksheet()
         {
             string excelFileId = "";
 
@@ -511,7 +511,7 @@ namespace Microsoft.Graph.DotnetCore.Test.Requests.Functional
             }
         }
 
-        //public async Task ExcelTestTemplate()
+        //public async System.Threading.Tasks.Task ExcelTestTemplate()
         //{
         //    // Before you add a test, setup your test resource in /Resources/excelTestResource.xlsx. Add test data to a new sheet.
         //    try

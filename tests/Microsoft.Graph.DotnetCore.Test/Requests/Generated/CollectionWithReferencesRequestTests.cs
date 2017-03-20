@@ -38,7 +38,7 @@ namespace Microsoft.Graph.DotnetCore.Test.Requests.Generated
         /// Tests the GetAsync() method on the request for an entity collection that has a $ref navigation.
         /// </summary>
         [Fact]
-        public async Task GetAsync()
+        public async System.Threading.Tasks.Task GetAsync()
         {
             using (var httpResponseMessage = new HttpResponseMessage())
             using (var responseStream = new MemoryStream())
@@ -59,7 +59,7 @@ namespace Microsoft.Graph.DotnetCore.Test.Requests.Generated
                                 && request.Method == HttpMethod.Get),
                         HttpCompletionOption.ResponseContentRead,
                         CancellationToken.None))
-                    .Returns(Task.FromResult(httpResponseMessage));
+                    .Returns(System.Threading.Tasks.Task.FromResult(httpResponseMessage));
 
                 var membersCollectionPage = new GroupMembersCollectionWithReferencesPage
                 {

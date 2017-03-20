@@ -38,7 +38,7 @@ namespace Microsoft.Graph.DotnetCore.Test.Requests.Generated
         /// Tests the AddAsync() method on the $ref navigation of an entity collection.
         /// </summary>
         [Fact]
-        public async Task AddAsync()
+        public async System.Threading.Tasks.Task AddAsync()
         {
             using (var httpResponseMessage = new HttpResponseMessage())
             using (var responseStream = new MemoryStream())
@@ -54,7 +54,7 @@ namespace Microsoft.Graph.DotnetCore.Test.Requests.Generated
                                 && string.Equals(request.Content.Headers.ContentType.ToString(), "application/json")),
                         HttpCompletionOption.ResponseContentRead,
                         CancellationToken.None))
-                    .Returns(Task.FromResult(httpResponseMessage));
+                    .Returns(System.Threading.Tasks.Task.FromResult(httpResponseMessage));
 
                 var userToCreate = new User { Id = "id" };
 
@@ -75,7 +75,7 @@ namespace Microsoft.Graph.DotnetCore.Test.Requests.Generated
         /// Tests the AddAsync() method on the $ref navigation of an entity collection errors if ID isn't set on the supplied directoryObject.
         /// </summary>
         [Fact]
-        public async Task AddAsync_IdRequired()
+        public async System.Threading.Tasks.Task AddAsync_IdRequired()
         {
             var userToCreate = new User();
 

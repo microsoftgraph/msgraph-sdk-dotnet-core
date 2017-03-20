@@ -127,7 +127,7 @@ namespace Microsoft.Graph.DotnetCore.Test.Requests.Generated
         /// Tests the GetAsync() method for a function that returns a collection (reminderView).
         /// </summary>
         [Fact]
-        public async Task CollectionReturnType_GetAsync()
+        public async System.Threading.Tasks.Task CollectionReturnType_GetAsync()
         {
             using (var httpResponseMessage = new HttpResponseMessage())
             using (var responseStream = new MemoryStream())
@@ -149,7 +149,7 @@ namespace Microsoft.Graph.DotnetCore.Test.Requests.Generated
                                 && request.Method == HttpMethod.Get),
                         HttpCompletionOption.ResponseContentRead,
                         CancellationToken.None))
-                    .Returns(Task.FromResult(httpResponseMessage));
+                    .Returns(System.Threading.Tasks.Task.FromResult(httpResponseMessage));
 
                 var userReminderViewCollectionPage = new UserReminderViewCollectionPage
                 {
