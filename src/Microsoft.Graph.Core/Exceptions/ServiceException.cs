@@ -5,7 +5,6 @@
 namespace Microsoft.Graph
 {
     using System;
-    using System.Collections.Generic;
 
     public class ServiceException : Exception
     {
@@ -16,11 +15,6 @@ namespace Microsoft.Graph
         }
 
         public Error Error { get; private set; }
-
-        // ResponseHeaders and StatusCode exposed as pass-through.
-        public System.Net.Http.Headers.HttpResponseHeaders ResponseHeaders { get; internal set; }
-
-        public System.Net.HttpStatusCode StatusCode { get; internal set; } 
 
         public bool IsMatch(string errorCode)
         {
