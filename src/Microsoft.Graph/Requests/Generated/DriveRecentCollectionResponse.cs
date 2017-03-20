@@ -14,13 +14,13 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type DriveRecentCollectionResponse.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public class DriveRecentCollectionResponse
     {
         /// <summary>
         /// Gets or sets the <see cref="IDriveRecentCollectionPage"/> value.
         /// </summary>
-        [DataMember(Name = "value", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName ="value", Required = Required.Default)]
         public IDriveRecentCollectionPage Value { get; set; }
         
         /// <summary>

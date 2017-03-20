@@ -14,13 +14,13 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type UserReminderViewCollectionResponse.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public class UserReminderViewCollectionResponse
     {
         /// <summary>
         /// Gets or sets the <see cref="IUserReminderViewCollectionPage"/> value.
         /// </summary>
-        [DataMember(Name = "value", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName ="value", Required = Required.Default)]
         public IUserReminderViewCollectionPage Value { get; set; }
         
         /// <summary>

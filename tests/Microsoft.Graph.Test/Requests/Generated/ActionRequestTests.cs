@@ -37,7 +37,6 @@ namespace Microsoft.Graph.Test.Requests.Generated
             var assignLicenseRequest = assignLicenseRequestBuilder.Request() as UserAssignLicenseRequest;
             Assert.IsNotNull(assignLicenseRequest, "Unexpected request.");
             Assert.AreEqual(new Uri(expectedRequestUrl), new Uri(assignLicenseRequest.RequestUrl), "Unexpected request URL.");
-            Assert.AreEqual("POST", assignLicenseRequest.Method, "Unexpected HTTP method.");
             Assert.AreEqual(addLicenses, assignLicenseRequest.RequestBody.AddLicenses, "Unexpected value for AddLicenses in request body.");
             Assert.AreEqual(removeLicenses, assignLicenseRequest.RequestBody.RemoveLicenses, "Unexpected value for RemoveLicenses in request body.");
         }
@@ -58,7 +57,6 @@ namespace Microsoft.Graph.Test.Requests.Generated
             var getMemberGroupsRequest = getMemberGroupsRequestBuilder.Request() as DirectoryObjectGetMemberGroupsRequest;
             Assert.IsNotNull(getMemberGroupsRequest, "Unexpected request.");
             Assert.AreEqual(new Uri(expectedRequestUrl), new Uri(getMemberGroupsRequest.RequestUrl), "Unexpected request URL.");
-            Assert.AreEqual("POST", getMemberGroupsRequest.Method, "Unexpected HTTP method.");
             Assert.IsNull(getMemberGroupsRequest.RequestBody.SecurityEnabledOnly, "Unexpected value for SecurityEnabledOnly in request body.");
         }
 
@@ -78,8 +76,27 @@ namespace Microsoft.Graph.Test.Requests.Generated
             var getMemberGroupsRequest = getMemberGroupsRequestBuilder.Request() as DirectoryObjectGetMemberGroupsRequest;
             Assert.IsNotNull(getMemberGroupsRequest, "Unexpected request.");
             Assert.AreEqual(new Uri(expectedRequestUrl), new Uri(getMemberGroupsRequest.RequestUrl), "Unexpected request URL.");
-            Assert.AreEqual("POST", getMemberGroupsRequest.Method, "Unexpected HTTP method.");
             Assert.IsTrue(getMemberGroupsRequest.RequestBody.SecurityEnabledOnly.Value, "Unexpected value for SecurityEnabledOnly in request body.");
+        }
+
+        /// <summary>
+        /// Tests building a request for an action that takes in no parameters (send).
+        /// </summary>
+        [TestMethod]
+        public void NoParameters()
+        {
+            var messageId = "messageId";
+
+            var expectedRequestUrl = string.Format("{0}/me/mailFolders/Drafts/messages/{1}/microsoft.graph.send", this.graphBaseUrl, messageId);
+
+            var sendRequestBuilder = this.graphServiceClient.Me.MailFolders.Drafts.Messages[messageId].Send() as MessageSendRequestBuilder;
+
+            Assert.IsNotNull(sendRequestBuilder, "Unexpected request builder.");
+            Assert.AreEqual(expectedRequestUrl, sendRequestBuilder.RequestUrl, "Unexpected request builder URL.");
+
+            var sendRequest = sendRequestBuilder.Request() as MessageSendRequest;
+            Assert.IsNotNull(sendRequest, "Unexpected request.");
+            Assert.AreEqual(new Uri(expectedRequestUrl), new Uri(sendRequest.RequestUrl), "Unexpected request URL.");
         }
 
         /// <summary>
@@ -130,27 +147,6 @@ namespace Microsoft.Graph.Test.Requests.Generated
 
                 throw;
             }
-        }
-
-        /// <summary>
-        /// Tests building a request for an action that takes in no parameters (send).
-        /// </summary>
-        [TestMethod]
-        public void NoParameters()
-        {
-            var messageId = "messageId";
-            
-            var expectedRequestUrl = string.Format("{0}/me/mailFolders/Drafts/messages/{1}/microsoft.graph.send", this.graphBaseUrl, messageId);
-            
-            var sendRequestBuilder = this.graphServiceClient.Me.MailFolders.Drafts.Messages[messageId].Send() as MessageSendRequestBuilder;
-
-            Assert.IsNotNull(sendRequestBuilder, "Unexpected request builder.");
-            Assert.AreEqual(expectedRequestUrl, sendRequestBuilder.RequestUrl, "Unexpected request builder URL.");
-
-            var sendRequest = sendRequestBuilder.Request() as MessageSendRequest;
-            Assert.IsNotNull(sendRequest, "Unexpected request.");
-            Assert.AreEqual(new Uri(expectedRequestUrl), new Uri(sendRequest.RequestUrl), "Unexpected request URL.");
-            Assert.AreEqual("POST", sendRequest.Method, "Unexpected HTTP method.");
         }
 
         /// <summary>

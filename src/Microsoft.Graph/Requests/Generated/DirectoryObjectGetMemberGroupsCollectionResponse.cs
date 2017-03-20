@@ -14,13 +14,13 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type DirectoryObjectGetMemberGroupsCollectionResponse.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public class DirectoryObjectGetMemberGroupsCollectionResponse
     {
         /// <summary>
         /// Gets or sets the <see cref="IDirectoryObjectGetMemberGroupsCollectionPage"/> value.
         /// </summary>
-        [DataMember(Name = "value", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName ="value", Required = Required.Default)]
         public IDirectoryObjectGetMemberGroupsCollectionPage Value { get; set; }
         
         /// <summary>

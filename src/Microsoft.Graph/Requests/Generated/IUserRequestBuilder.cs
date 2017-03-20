@@ -142,6 +142,12 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IDriveRequestBuilder"/>.</returns>
         IDriveRequestBuilder Drive { get; }
+
+        /// <summary>
+        /// Gets the request builder for Drives.
+        /// </summary>
+        /// <returns>The <see cref="IUserDrivesCollectionRequestBuilder"/>.</returns>
+        IUserDrivesCollectionRequestBuilder Drives { get; }
     
         /// <summary>
         /// Gets the request builder for UserAssignLicense.

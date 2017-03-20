@@ -276,7 +276,7 @@ namespace Microsoft.Graph.Core.Test.Serialization
             var now = DateTimeOffset.UtcNow;
             var tomorrow = now.AddDays(1);
 
-            var expectedSerializedString = string.Format("{{\"nullableDate\":null,\"dateCollection\":[\"{0}\",\"{1}\"]}}", now.ToString("yyyy-MM-dd"), tomorrow.ToString("yyyy-MM-dd"));
+            var expectedSerializedString = string.Format("{{\"dateCollection\":[\"{0}\",\"{1}\"]}}", now.ToString("yyyy-MM-dd"), tomorrow.ToString("yyyy-MM-dd"));
 
             var recurrence = new DateTestClass
             {
@@ -293,7 +293,7 @@ namespace Microsoft.Graph.Core.Test.Serialization
         {
             var now = DateTimeOffset.UtcNow;
 
-            var expectedSerializedString = "{\"nullableDate\":null}";
+            var expectedSerializedString = "{}";
 
             var recurrence = new DateTestClass();
 

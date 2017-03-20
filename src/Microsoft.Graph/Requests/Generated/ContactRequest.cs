@@ -12,6 +12,7 @@ namespace Microsoft.Graph
     using System.IO;
     using System.Net.Http;
     using System.Threading;
+    using System.Linq.Expressions;
 
     /// <summary>
     /// The type ContactRequest.
@@ -33,7 +34,7 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Creates the specified Contact using PUT.
+        /// Creates the specified Contact using POST.
         /// </summary>
         /// <param name="contactToCreate">The Contact to create.</param>
         /// <returns>The created Contact.</returns>
@@ -43,7 +44,7 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Creates the specified Contact using PUT.
+        /// Creates the specified Contact using POST.
         /// </summary>
         /// <param name="contactToCreate">The Contact to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
@@ -51,7 +52,7 @@ namespace Microsoft.Graph
         public async System.Threading.Tasks.Task<Contact> CreateAsync(Contact contactToCreate, CancellationToken cancellationToken)
         {
             this.ContentType = "application/json";
-            this.Method = "PUT";
+            this.Method = "POST";
             var newEntity = await this.SendAsync<Contact>(contactToCreate, cancellationToken).ConfigureAwait(false);
             this.InitializeCollectionProperties(newEntity);
             return newEntity;
@@ -136,6 +137,30 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
+        /// Adds the specified expand value to the request.
+        /// </summary>
+        /// <param name="expandExpression">The expression from which to calculate the expand value.</param>
+        /// <returns>The request object to send.</returns>
+        public IContactRequest Expand(Expression<Func<Contact, object>> expandExpression)
+        {
+		    if (expandExpression == null)
+            {
+                throw new ArgumentNullException(nameof(expandExpression));
+            }
+            string error;
+            string value = ExpressionExtractHelper.ExtractMembers(expandExpression, out error);
+            if (value == null)
+            {
+                throw new ArgumentException(error, nameof(expandExpression));
+            }
+            else
+            {
+                this.QueryOptions.Add(new QueryOption("$expand", value));
+            }
+            return this;
+        }
+
+        /// <summary>
         /// Adds the specified select value to the request.
         /// </summary>
         /// <param name="value">The select value.</param>
@@ -143,6 +168,30 @@ namespace Microsoft.Graph
         public IContactRequest Select(string value)
         {
             this.QueryOptions.Add(new QueryOption("$select", value));
+            return this;
+        }
+
+        /// <summary>
+        /// Adds the specified select value to the request.
+        /// </summary>
+        /// <param name="selectExpression">The expression from which to calculate the select value.</param>
+        /// <returns>The request object to send.</returns>
+        public IContactRequest Select(Expression<Func<Contact, object>> selectExpression)
+        {
+            if (selectExpression == null)
+            {
+                throw new ArgumentNullException(nameof(selectExpression));
+            }
+            string error;
+            string value = ExpressionExtractHelper.ExtractMembers(selectExpression, out error);
+            if (value == null)
+            {
+                throw new ArgumentException(error, nameof(selectExpression));
+            }
+            else
+            {
+                this.QueryOptions.Add(new QueryOption("$select", value));
+            }
             return this;
         }
 
@@ -167,6 +216,38 @@ namespace Microsoft.Graph
                     if (!string.IsNullOrEmpty(nextPageLinkString))
                     {
                         contactToInitialize.Extensions.InitializeNextPageRequest(
+                            this.Client,
+                            nextPageLinkString);
+                    }
+                }
+
+                if (contactToInitialize.SingleValueExtendedProperties != null && contactToInitialize.SingleValueExtendedProperties.CurrentPage != null)
+                {
+                    contactToInitialize.SingleValueExtendedProperties.AdditionalData = contactToInitialize.AdditionalData;
+
+                    object nextPageLink;
+                    contactToInitialize.AdditionalData.TryGetValue("singleValueExtendedProperties@odata.nextLink", out nextPageLink);
+                    var nextPageLinkString = nextPageLink as string;
+
+                    if (!string.IsNullOrEmpty(nextPageLinkString))
+                    {
+                        contactToInitialize.SingleValueExtendedProperties.InitializeNextPageRequest(
+                            this.Client,
+                            nextPageLinkString);
+                    }
+                }
+
+                if (contactToInitialize.MultiValueExtendedProperties != null && contactToInitialize.MultiValueExtendedProperties.CurrentPage != null)
+                {
+                    contactToInitialize.MultiValueExtendedProperties.AdditionalData = contactToInitialize.AdditionalData;
+
+                    object nextPageLink;
+                    contactToInitialize.AdditionalData.TryGetValue("multiValueExtendedProperties@odata.nextLink", out nextPageLink);
+                    var nextPageLinkString = nextPageLink as string;
+
+                    if (!string.IsNullOrEmpty(nextPageLinkString))
+                    {
+                        contactToInitialize.MultiValueExtendedProperties.InitializeNextPageRequest(
                             this.Client,
                             nextPageLinkString);
                     }

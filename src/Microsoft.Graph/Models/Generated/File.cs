@@ -16,7 +16,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type File.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     [JsonConverter(typeof(DerivedTypeConverter))]
     public partial class File
     {
@@ -24,14 +24,20 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets or sets hashes.
         /// </summary>
-        [DataMember(Name = "hashes", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "hashes", Required = Required.Default)]
         public Hashes Hashes { get; set; }
     
         /// <summary>
         /// Gets or sets mimeType.
         /// </summary>
-        [DataMember(Name = "mimeType", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "mimeType", Required = Required.Default)]
         public string MimeType { get; set; }
+    
+        /// <summary>
+        /// Gets or sets processingMetadata.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "processingMetadata", Required = Required.Default)]
+        public bool? ProcessingMetadata { get; set; }
     
         /// <summary>
         /// Gets or sets additional data.

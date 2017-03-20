@@ -12,6 +12,7 @@ namespace Microsoft.Graph
     using System.IO;
     using System.Net.Http;
     using System.Threading;
+    using System.Linq.Expressions;
 
     /// <summary>
     /// The type InferenceClassificationRequest.
@@ -33,7 +34,7 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Creates the specified InferenceClassification using PUT.
+        /// Creates the specified InferenceClassification using POST.
         /// </summary>
         /// <param name="inferenceClassificationToCreate">The InferenceClassification to create.</param>
         /// <returns>The created InferenceClassification.</returns>
@@ -43,7 +44,7 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Creates the specified InferenceClassification using PUT.
+        /// Creates the specified InferenceClassification using POST.
         /// </summary>
         /// <param name="inferenceClassificationToCreate">The InferenceClassification to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
@@ -51,7 +52,7 @@ namespace Microsoft.Graph
         public async System.Threading.Tasks.Task<InferenceClassification> CreateAsync(InferenceClassification inferenceClassificationToCreate, CancellationToken cancellationToken)
         {
             this.ContentType = "application/json";
-            this.Method = "PUT";
+            this.Method = "POST";
             var newEntity = await this.SendAsync<InferenceClassification>(inferenceClassificationToCreate, cancellationToken).ConfigureAwait(false);
             this.InitializeCollectionProperties(newEntity);
             return newEntity;
@@ -136,6 +137,30 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
+        /// Adds the specified expand value to the request.
+        /// </summary>
+        /// <param name="expandExpression">The expression from which to calculate the expand value.</param>
+        /// <returns>The request object to send.</returns>
+        public IInferenceClassificationRequest Expand(Expression<Func<InferenceClassification, object>> expandExpression)
+        {
+		    if (expandExpression == null)
+            {
+                throw new ArgumentNullException(nameof(expandExpression));
+            }
+            string error;
+            string value = ExpressionExtractHelper.ExtractMembers(expandExpression, out error);
+            if (value == null)
+            {
+                throw new ArgumentException(error, nameof(expandExpression));
+            }
+            else
+            {
+                this.QueryOptions.Add(new QueryOption("$expand", value));
+            }
+            return this;
+        }
+
+        /// <summary>
         /// Adds the specified select value to the request.
         /// </summary>
         /// <param name="value">The select value.</param>
@@ -143,6 +168,30 @@ namespace Microsoft.Graph
         public IInferenceClassificationRequest Select(string value)
         {
             this.QueryOptions.Add(new QueryOption("$select", value));
+            return this;
+        }
+
+        /// <summary>
+        /// Adds the specified select value to the request.
+        /// </summary>
+        /// <param name="selectExpression">The expression from which to calculate the select value.</param>
+        /// <returns>The request object to send.</returns>
+        public IInferenceClassificationRequest Select(Expression<Func<InferenceClassification, object>> selectExpression)
+        {
+            if (selectExpression == null)
+            {
+                throw new ArgumentNullException(nameof(selectExpression));
+            }
+            string error;
+            string value = ExpressionExtractHelper.ExtractMembers(selectExpression, out error);
+            if (value == null)
+            {
+                throw new ArgumentException(error, nameof(selectExpression));
+            }
+            else
+            {
+                this.QueryOptions.Add(new QueryOption("$select", value));
+            }
             return this;
         }
 

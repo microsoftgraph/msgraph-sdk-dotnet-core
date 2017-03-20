@@ -33,5 +33,7 @@ namespace Microsoft.Graph
         /// <param name="id">The ID for the ContactFolder.</param>
         /// <returns>The <see cref="IContactFolderRequestBuilder"/>.</returns>
         IContactFolderRequestBuilder this[string id] { get; }
+
+        
     }
 }

@@ -28,5 +28,18 @@ namespace Microsoft.Graph
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await.</returns>
         System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Puts the specified User reference.
+        /// </summary>
+        /// <returns>The task to await.</returns>
+        System.Threading.Tasks.Task PutAsync(string id);
+
+        /// <summary>
+        /// Puts the specified User reference.
+        /// </summary>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The task to await.</returns>
+        System.Threading.Tasks.Task PutAsync(string id, CancellationToken cancellationToken);
     }
 }

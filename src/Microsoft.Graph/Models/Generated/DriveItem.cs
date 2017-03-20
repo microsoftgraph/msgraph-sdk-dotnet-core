@@ -16,200 +16,218 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type Drive Item.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class DriveItem : Entity
     {
     
         /// <summary>
-        /// Gets or sets content.
-        /// </summary>
-        [DataMember(Name = "content", EmitDefaultValue = false, IsRequired = false)]
-        public Stream Content { get; set; }
-    
-        /// <summary>
         /// Gets or sets created by.
         /// </summary>
-        [DataMember(Name = "createdBy", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "createdBy", Required = Required.Default)]
         public IdentitySet CreatedBy { get; set; }
     
         /// <summary>
         /// Gets or sets created date time.
         /// </summary>
-        [DataMember(Name = "createdDateTime", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "createdDateTime", Required = Required.Default)]
         public DateTimeOffset? CreatedDateTime { get; set; }
-    
-        /// <summary>
-        /// Gets or sets c tag.
-        /// </summary>
-        [DataMember(Name = "cTag", EmitDefaultValue = false, IsRequired = false)]
-        public string CTag { get; set; }
     
         /// <summary>
         /// Gets or sets description.
         /// </summary>
-        [DataMember(Name = "description", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "description", Required = Required.Default)]
         public string Description { get; set; }
     
         /// <summary>
         /// Gets or sets e tag.
         /// </summary>
-        [DataMember(Name = "eTag", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "eTag", Required = Required.Default)]
         public string ETag { get; set; }
     
         /// <summary>
         /// Gets or sets last modified by.
         /// </summary>
-        [DataMember(Name = "lastModifiedBy", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "lastModifiedBy", Required = Required.Default)]
         public IdentitySet LastModifiedBy { get; set; }
     
         /// <summary>
         /// Gets or sets last modified date time.
         /// </summary>
-        [DataMember(Name = "lastModifiedDateTime", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "lastModifiedDateTime", Required = Required.Default)]
         public DateTimeOffset? LastModifiedDateTime { get; set; }
     
         /// <summary>
         /// Gets or sets name.
         /// </summary>
-        [DataMember(Name = "name", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "name", Required = Required.Default)]
         public string Name { get; set; }
-    
-        /// <summary>
-        /// Gets or sets parent reference.
-        /// </summary>
-        [DataMember(Name = "parentReference", EmitDefaultValue = false, IsRequired = false)]
-        public ItemReference ParentReference { get; set; }
-    
-        /// <summary>
-        /// Gets or sets size.
-        /// </summary>
-        [DataMember(Name = "size", EmitDefaultValue = false, IsRequired = false)]
-        public Int64? Size { get; set; }
-    
-        /// <summary>
-        /// Gets or sets web dav url.
-        /// </summary>
-        [DataMember(Name = "webDavUrl", EmitDefaultValue = false, IsRequired = false)]
-        public string WebDavUrl { get; set; }
     
         /// <summary>
         /// Gets or sets web url.
         /// </summary>
-        [DataMember(Name = "webUrl", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "webUrl", Required = Required.Default)]
         public string WebUrl { get; set; }
     
         /// <summary>
         /// Gets or sets audio.
         /// </summary>
-        [DataMember(Name = "audio", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "audio", Required = Required.Default)]
         public Audio Audio { get; set; }
+    
+        /// <summary>
+        /// Gets or sets content.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "content", Required = Required.Default)]
+        public Stream Content { get; set; }
+    
+        /// <summary>
+        /// Gets or sets c tag.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "cTag", Required = Required.Default)]
+        public string CTag { get; set; }
     
         /// <summary>
         /// Gets or sets deleted.
         /// </summary>
-        [DataMember(Name = "deleted", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "deleted", Required = Required.Default)]
         public Deleted Deleted { get; set; }
     
         /// <summary>
         /// Gets or sets file.
         /// </summary>
-        [DataMember(Name = "file", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "file", Required = Required.Default)]
         public File File { get; set; }
     
         /// <summary>
         /// Gets or sets file system info.
         /// </summary>
-        [DataMember(Name = "fileSystemInfo", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "fileSystemInfo", Required = Required.Default)]
         public FileSystemInfo FileSystemInfo { get; set; }
     
         /// <summary>
         /// Gets or sets folder.
         /// </summary>
-        [DataMember(Name = "folder", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "folder", Required = Required.Default)]
         public Folder Folder { get; set; }
     
         /// <summary>
         /// Gets or sets image.
         /// </summary>
-        [DataMember(Name = "image", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "image", Required = Required.Default)]
         public Image Image { get; set; }
     
         /// <summary>
         /// Gets or sets location.
         /// </summary>
-        [DataMember(Name = "location", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "location", Required = Required.Default)]
         public GeoCoordinates Location { get; set; }
+    
+        /// <summary>
+        /// Gets or sets package.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "package", Required = Required.Default)]
+        public Package Package { get; set; }
+    
+        /// <summary>
+        /// Gets or sets parent reference.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "parentReference", Required = Required.Default)]
+        public ItemReference ParentReference { get; set; }
     
         /// <summary>
         /// Gets or sets photo.
         /// </summary>
-        [DataMember(Name = "photo", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "photo", Required = Required.Default)]
         public Photo Photo { get; set; }
     
         /// <summary>
         /// Gets or sets remote item.
         /// </summary>
-        [DataMember(Name = "remoteItem", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "remoteItem", Required = Required.Default)]
         public RemoteItem RemoteItem { get; set; }
+    
+        /// <summary>
+        /// Gets or sets root.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "root", Required = Required.Default)]
+        public Root Root { get; set; }
     
         /// <summary>
         /// Gets or sets search result.
         /// </summary>
-        [DataMember(Name = "searchResult", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "searchResult", Required = Required.Default)]
         public SearchResult SearchResult { get; set; }
     
         /// <summary>
         /// Gets or sets shared.
         /// </summary>
-        [DataMember(Name = "shared", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "shared", Required = Required.Default)]
         public Shared Shared { get; set; }
+    
+        /// <summary>
+        /// Gets or sets sharepoint ids.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "sharepointIds", Required = Required.Default)]
+        public SharepointIds SharepointIds { get; set; }
+    
+        /// <summary>
+        /// Gets or sets size.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "size", Required = Required.Default)]
+        public Int64? Size { get; set; }
     
         /// <summary>
         /// Gets or sets special folder.
         /// </summary>
-        [DataMember(Name = "specialFolder", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "specialFolder", Required = Required.Default)]
         public SpecialFolder SpecialFolder { get; set; }
     
         /// <summary>
         /// Gets or sets video.
         /// </summary>
-        [DataMember(Name = "video", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "video", Required = Required.Default)]
         public Video Video { get; set; }
     
         /// <summary>
-        /// Gets or sets package.
+        /// Gets or sets web dav url.
         /// </summary>
-        [DataMember(Name = "package", EmitDefaultValue = false, IsRequired = false)]
-        public Package Package { get; set; }
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "webDavUrl", Required = Required.Default)]
+        public string WebDavUrl { get; set; }
     
         /// <summary>
         /// Gets or sets created by user.
         /// </summary>
-        [DataMember(Name = "createdByUser", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "createdByUser", Required = Required.Default)]
         public User CreatedByUser { get; set; }
+    
+        /// <summary>
+        /// Gets or sets workbook.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "workbook", Required = Required.Default)]
+        public Workbook Workbook { get; set; }
     
         /// <summary>
         /// Gets or sets last modified by user.
         /// </summary>
-        [DataMember(Name = "lastModifiedByUser", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "lastModifiedByUser", Required = Required.Default)]
         public User LastModifiedByUser { get; set; }
-    
-        /// <summary>
-        /// Gets or sets permissions.
-        /// </summary>
-        [DataMember(Name = "permissions", EmitDefaultValue = false, IsRequired = false)]
-        public IDriveItemPermissionsCollectionPage Permissions { get; set; }
     
         /// <summary>
         /// Gets or sets children.
         /// </summary>
-        [DataMember(Name = "children", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "children", Required = Required.Default)]
         public IDriveItemChildrenCollectionPage Children { get; set; }
+    
+        /// <summary>
+        /// Gets or sets permissions.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "permissions", Required = Required.Default)]
+        public IDriveItemPermissionsCollectionPage Permissions { get; set; }
     
         /// <summary>
         /// Gets or sets thumbnails.
         /// </summary>
-        [DataMember(Name = "thumbnails", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "thumbnails", Required = Required.Default)]
         public IDriveItemThumbnailsCollectionPage Thumbnails { get; set; }
     
     }

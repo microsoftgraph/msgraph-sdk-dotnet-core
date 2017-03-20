@@ -57,5 +57,7 @@ namespace Microsoft.Graph
                 return new DirectoryRoleRequestBuilder(this.AppendSegmentToRequestUrl(id), this.Client);
             }
         }
+
+        
     }
 }

@@ -14,8 +14,20 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type DriveItemDeltaRequestBuilder.
     /// </summary>
-    public partial class DriveItemDeltaRequestBuilder : BaseGetMethodRequestBuilder<IDriveItemDeltaRequest>, IDriveItemDeltaRequestBuilder
+    public partial class DriveItemDeltaRequestBuilder : BaseFunctionMethodRequestBuilder<IDriveItemDeltaRequest>, IDriveItemDeltaRequestBuilder
     {
+        /// <summary>
+        /// Constructs a new <see cref="DriveItemDeltaRequestBuilder"/>.
+        /// </summary>
+        /// <param name="requestUrl">The URL for the request.</param>
+        /// <param name="client">The <see cref="IBaseClient"/> for handling requests.</param>
+        public DriveItemDeltaRequestBuilder(
+            string requestUrl,
+            IBaseClient client)
+            : base(requestUrl, client)
+        {
+        }
+
         /// <summary>
         /// Constructs a new <see cref="DriveItemDeltaRequestBuilder"/>.
         /// </summary>
@@ -29,18 +41,6 @@ namespace Microsoft.Graph
             : base(requestUrl, client)
         {
             this.SetParameter("token", token, true);
-        }
-
-        /// <summary>
-        /// Constructs a new <see cref="DriveItemDeltaRequestBuilder"/>.
-        /// </summary>
-        /// <param name="requestUrl">The URL for the request.</param>
-        /// <param name="client">The <see cref="IBaseClient"/> for handling requests.</param>
-        public DriveItemDeltaRequestBuilder(
-            string requestUrl,
-            IBaseClient client)
-            : base(requestUrl, client)
-        {
         }
 
         /// <summary>

@@ -16,7 +16,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type SharingLink.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     [JsonConverter(typeof(DerivedTypeConverter))]
     public partial class SharingLink
     {
@@ -24,19 +24,25 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets or sets application.
         /// </summary>
-        [DataMember(Name = "application", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "application", Required = Required.Default)]
         public Identity Application { get; set; }
     
         /// <summary>
         /// Gets or sets type.
         /// </summary>
-        [DataMember(Name = "type", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "type", Required = Required.Default)]
         public string Type { get; set; }
+    
+        /// <summary>
+        /// Gets or sets scope.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "scope", Required = Required.Default)]
+        public string Scope { get; set; }
     
         /// <summary>
         /// Gets or sets webUrl.
         /// </summary>
-        [DataMember(Name = "webUrl", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "webUrl", Required = Required.Default)]
         public string WebUrl { get; set; }
     
         /// <summary>

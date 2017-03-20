@@ -57,5 +57,7 @@ namespace Microsoft.Graph
                 return new SubscriptionRequestBuilder(this.AppendSegmentToRequestUrl(id), this.Client);
             }
         }
+
+        
     }
 }

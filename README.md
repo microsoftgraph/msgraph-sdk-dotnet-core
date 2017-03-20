@@ -1,6 +1,7 @@
 # Microsoft Graph .NET Client Library
 
 [![Build status](https://ci.appveyor.com/api/projects/status/3av5qjyletkwf6h8/branch/master?svg=true)](https://ci.appveyor.com/project/OneDrive/msgraph-sdk-dotnet/branch/master)
+[![NuGet Version](https://buildstats.info/nuget/Microsoft.Graph)](https://www.nuget.org/packages/Microsoft.Graph/)
 
 Integrate the [Microsoft Graph API](https://graph.microsoft.io) into your .NET
 project!
@@ -32,7 +33,7 @@ supported authentication portals:
 * [Microsoft Azure Active Directory](https://manage.windowsazure.com): Register
   a new application in your tenant's Active Directory to support work or school
   users for your tenant or multiple tenants.
-  
+
 ### 2. Authenticate for the Microsoft Graph service
 
 The Microsoft Graph .NET Client Library does not include any default authentication implementations.
@@ -80,7 +81,15 @@ var rootItem = await graphClient.Me.Drive.Root.Request().GetAsync();
 For a general overview of how the SDK is designed, see [overview](docs/overview.md).
 
 The following sample applications are also available:
-* [Microsoft Graph UWP Connect Library](https://github.com/OfficeDev/Microsoft-Graph-UWP-Connect-Library) - Windows Universal app
+* [Microsoft Graph UWP Connect Sample](https://github.com/microsoftgraph/uwp-csharp-connect-sample)
+* [Microsoft Graph UWP Snippets Sample](https://github.com/microsoftgraph/uwp-csharp-snippets-sample)
+* [Microsoft Graph MeetingBot sample for UWP](https://github.com/microsoftgraph/uwp-csharp-meetingbot-sample)
+* [Microsoft Graph Connect Sample for ASP.NET 4.6](https://github.com/microsoftgraph/aspnet-connect-sample)
+* [Microsoft Graph Snippets Sample for ASP.NET 4.6](https://github.com/microsoftgraph/aspnet-snippets-sample)
+* [Microsoft Graph SDK Snippets Library for Xamarin.Forms](https://github.com/microsoftgraph/xamarin-csharp-snippets-sample)
+* [Microsoft Graph Connect Sample for Xamarin Forms](https://github.com/microsoftgraph/xamarin-csharp-connect-sample)
+* [Microsoft Graph Meeting Manager Sample for Xamarin.Forms](https://github.com/microsoftgraph/xamarin-csharp-meetingmanager-sample)
+* [Microsoft Graph Property Manager Sample for Xamarin Native](https://github.com/microsoftgraph/xamarin-csharp-propertymanager-sample)
 
 ## Documentation and resources
 
@@ -88,6 +97,11 @@ The following sample applications are also available:
 * [Collections](docs/collections.md)
 * [Errors](docs/errors.md)
 * [Microsoft Graph API](https://graph.microsoft.io)
+* [Release notes](https://github.com/microsoftgraph/msgraph-sdk-dotnet/releases)
+
+## Notes
+
+Install NewtonSoft.Json first if you want to use a version greater than NewtonSoft.Json 6.0.1. For example, you'll need to install NewtonSoft.Json 9.0.1 first if you want to use this to library while targeting .Net Core with standard1.0.
 
 ## Issues
 

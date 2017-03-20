@@ -16,7 +16,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type SearchResult.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     [JsonConverter(typeof(DerivedTypeConverter))]
     public partial class SearchResult
     {
@@ -24,7 +24,7 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets or sets onClickTelemetryUrl.
         /// </summary>
-        [DataMember(Name = "onClickTelemetryUrl", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "onClickTelemetryUrl", Required = Required.Default)]
         public string OnClickTelemetryUrl { get; set; }
     
         /// <summary>

@@ -13,13 +13,13 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type DeviceRegisteredOwnersCollectionWithReferencesResponse.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public class DeviceRegisteredOwnersCollectionWithReferencesResponse
     {
         /// <summary>
         /// Gets or sets the <see cref="IDeviceRegisteredOwnersCollectionWithReferencesPage"/> value.
         /// </summary>
-        [DataMember(Name = "value", EmitDefaultValue = false, IsRequired = false)]
+		[JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName ="value", Required = Required.Default)]
         public IDeviceRegisteredOwnersCollectionWithReferencesPage Value { get; set; }
 
         /// <summary>

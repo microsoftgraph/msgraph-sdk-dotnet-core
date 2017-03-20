@@ -16,14 +16,14 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type Item Attachment.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class ItemAttachment : Attachment
     {
     
         /// <summary>
         /// Gets or sets item.
         /// </summary>
-        [DataMember(Name = "item", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "item", Required = Required.Default)]
         public OutlookItem Item { get; set; }
     
     }

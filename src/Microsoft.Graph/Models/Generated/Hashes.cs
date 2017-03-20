@@ -16,7 +16,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type Hashes.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     [JsonConverter(typeof(DerivedTypeConverter))]
     public partial class Hashes
     {
@@ -24,14 +24,20 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets or sets crc32Hash.
         /// </summary>
-        [DataMember(Name = "crc32Hash", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "crc32Hash", Required = Required.Default)]
         public string Crc32Hash { get; set; }
     
         /// <summary>
         /// Gets or sets sha1Hash.
         /// </summary>
-        [DataMember(Name = "sha1Hash", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "sha1Hash", Required = Required.Default)]
         public string Sha1Hash { get; set; }
+    
+        /// <summary>
+        /// Gets or sets quickXorHash.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "quickXorHash", Required = Required.Default)]
+        public string QuickXorHash { get; set; }
     
         /// <summary>
         /// Gets or sets additional data.

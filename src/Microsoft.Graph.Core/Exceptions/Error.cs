@@ -10,19 +10,19 @@ namespace Microsoft.Graph
     using System.Text;
     using Newtonsoft.Json;
 
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public class Error
     {
-        [DataMember(Name = "code", IsRequired = false, EmitDefaultValue = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "code", Required = Required.Default)]
         public string Code { get; set; }
 
-        [DataMember(Name = "innererror", IsRequired = false, EmitDefaultValue = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "innererror", Required = Required.Default)]
         public Error InnerError { get; set; }
 
-        [DataMember(Name = "message", IsRequired = false, EmitDefaultValue = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "message", Required = Required.Default)]
         public string Message { get; set; }
 
-        [DataMember(Name = "throwSite", IsRequired = false, EmitDefaultValue = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "throwSite", Required = Required.Default)]
         public string ThrowSite { get; set; }
 
         [JsonExtensionData(ReadData = true)]

@@ -11,6 +11,7 @@ namespace Microsoft.Graph
     using System.Collections.Generic;
     using System.Net.Http;
     using System.Threading;
+    using System.Linq.Expressions;
 
     /// <summary>
     /// The interface IGraphServiceDevicesCollectionRequest.
@@ -46,11 +47,53 @@ namespace Microsoft.Graph
         System.Threading.Tasks.Task<IGraphServiceDevicesCollectionPage> GetAsync(CancellationToken cancellationToken);
 
         /// <summary>
+        /// Adds the specified expand value to the request.
+        /// </summary>
+        /// <param name="value">The expand value.</param>
+        /// <returns>The request object to send.</returns>
+        IGraphServiceDevicesCollectionRequest Expand(string value);
+
+        /// <summary>
+        /// Adds the specified expand value to the request.
+        /// </summary>
+        /// <param name="expandExpression">The expression from which to calculate the expand value.</param>
+        /// <returns>The request object to send.</returns>
+        IGraphServiceDevicesCollectionRequest Expand(Expression<Func<Device, object>> expandExpression);
+
+        /// <summary>
+        /// Adds the specified select value to the request.
+        /// </summary>
+        /// <param name="value">The select value.</param>
+        /// <returns>The request object to send.</returns>
+        IGraphServiceDevicesCollectionRequest Select(string value);
+
+        /// <summary>
+        /// Adds the specified select value to the request.
+        /// </summary>
+        /// <param name="selectExpression">The expression from which to calculate the select value.</param>
+        /// <returns>The request object to send.</returns>
+        IGraphServiceDevicesCollectionRequest Select(Expression<Func<Device, object>> selectExpression);
+
+        /// <summary>
         /// Adds the specified top value to the request.
         /// </summary>
         /// <param name="value">The top value.</param>
         /// <returns>The request object to send.</returns>
         IGraphServiceDevicesCollectionRequest Top(int value);
+
+        /// <summary>
+        /// Adds the specified filter value to the request.
+        /// </summary>
+        /// <param name="value">The filter value.</param>
+        /// <returns>The request object to send.</returns>
+        IGraphServiceDevicesCollectionRequest Filter(string value);
+
+        /// <summary>
+        /// Adds the specified skip value to the request.
+        /// </summary>
+        /// <param name="value">The skip value.</param>
+        /// <returns>The request object to send.</returns>
+        IGraphServiceDevicesCollectionRequest Skip(int value);
 
         /// <summary>
         /// Adds the specified orderby value to the request.

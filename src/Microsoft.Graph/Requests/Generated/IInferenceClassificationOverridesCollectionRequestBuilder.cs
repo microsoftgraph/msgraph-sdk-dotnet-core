@@ -33,5 +33,7 @@ namespace Microsoft.Graph
         /// <param name="id">The ID for the InferenceClassificationOverride.</param>
         /// <returns>The <see cref="IInferenceClassificationOverrideRequestBuilder"/>.</returns>
         IInferenceClassificationOverrideRequestBuilder this[string id] { get; }
+
+        
     }
 }

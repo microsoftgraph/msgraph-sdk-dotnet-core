@@ -16,26 +16,26 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type File Attachment.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class FileAttachment : Attachment
     {
     
         /// <summary>
         /// Gets or sets content id.
         /// </summary>
-        [DataMember(Name = "contentId", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "contentId", Required = Required.Default)]
         public string ContentId { get; set; }
     
         /// <summary>
         /// Gets or sets content location.
         /// </summary>
-        [DataMember(Name = "contentLocation", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "contentLocation", Required = Required.Default)]
         public string ContentLocation { get; set; }
     
         /// <summary>
         /// Gets or sets content bytes.
         /// </summary>
-        [DataMember(Name = "contentBytes", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "contentBytes", Required = Required.Default)]
         public byte[] ContentBytes { get; set; }
     
     }

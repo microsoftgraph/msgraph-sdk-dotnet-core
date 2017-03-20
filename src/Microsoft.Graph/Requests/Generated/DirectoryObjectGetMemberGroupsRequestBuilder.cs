@@ -14,7 +14,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type DirectoryObjectGetMemberGroupsRequestBuilder.
     /// </summary>
-    public partial class DirectoryObjectGetMemberGroupsRequestBuilder : BasePostMethodRequestBuilder<IDirectoryObjectGetMemberGroupsRequest>, IDirectoryObjectGetMemberGroupsRequestBuilder
+    public partial class DirectoryObjectGetMemberGroupsRequestBuilder : BaseActionMethodRequestBuilder<IDirectoryObjectGetMemberGroupsRequest>, IDirectoryObjectGetMemberGroupsRequestBuilder
     {
         /// <summary>
         /// Constructs a new <see cref="DirectoryObjectGetMemberGroupsRequestBuilder"/>.

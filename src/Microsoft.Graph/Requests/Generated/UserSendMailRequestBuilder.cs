@@ -14,7 +14,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type UserSendMailRequestBuilder.
     /// </summary>
-    public partial class UserSendMailRequestBuilder : BasePostMethodRequestBuilder<IUserSendMailRequest>, IUserSendMailRequestBuilder
+    public partial class UserSendMailRequestBuilder : BaseActionMethodRequestBuilder<IUserSendMailRequest>, IUserSendMailRequestBuilder
     {
         /// <summary>
         /// Constructs a new <see cref="UserSendMailRequestBuilder"/>.

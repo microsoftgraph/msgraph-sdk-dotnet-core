@@ -14,7 +14,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type DriveItemCopyRequestBuilder.
     /// </summary>
-    public partial class DriveItemCopyRequestBuilder : BasePostMethodRequestBuilder<IDriveItemCopyRequest>, IDriveItemCopyRequestBuilder
+    public partial class DriveItemCopyRequestBuilder : BaseActionMethodRequestBuilder<IDriveItemCopyRequest>, IDriveItemCopyRequestBuilder
     {
         /// <summary>
         /// Constructs a new <see cref="DriveItemCopyRequestBuilder"/>.

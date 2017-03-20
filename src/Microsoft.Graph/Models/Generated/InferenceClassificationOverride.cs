@@ -16,20 +16,20 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type Inference Classification Override.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class InferenceClassificationOverride : Entity
     {
     
         /// <summary>
         /// Gets or sets classify as.
         /// </summary>
-        [DataMember(Name = "classifyAs", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "classifyAs", Required = Required.Default)]
         public InferenceClassificationType? ClassifyAs { get; set; }
     
         /// <summary>
         /// Gets or sets sender email address.
         /// </summary>
-        [DataMember(Name = "senderEmailAddress", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "senderEmailAddress", Required = Required.Default)]
         public EmailAddress SenderEmailAddress { get; set; }
     
     }

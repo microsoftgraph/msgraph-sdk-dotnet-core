@@ -14,7 +14,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type MessageMoveRequestBuilder.
     /// </summary>
-    public partial class MessageMoveRequestBuilder : BasePostMethodRequestBuilder<IMessageMoveRequest>, IMessageMoveRequestBuilder
+    public partial class MessageMoveRequestBuilder : BaseActionMethodRequestBuilder<IMessageMoveRequest>, IMessageMoveRequestBuilder
     {
         /// <summary>
         /// Constructs a new <see cref="MessageMoveRequestBuilder"/>.

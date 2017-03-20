@@ -11,6 +11,7 @@ namespace Microsoft.Graph
     using System.Collections.Generic;
     using System.Net.Http;
     using System.Threading;
+    using System.Linq.Expressions;
 
     /// <summary>
     /// The type GraphServiceDirectoryRolesCollectionRequest.
@@ -96,6 +97,109 @@ namespace Microsoft.Graph
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// Adds the specified expand value to the request.
+        /// </summary>
+        /// <param name="value">The expand value.</param>
+        /// <returns>The request object to send.</returns>
+        public IGraphServiceDirectoryRolesCollectionRequest Expand(string value)
+        {
+            this.QueryOptions.Add(new QueryOption("$expand", value));
+            return this;
+        }
+
+        /// <summary>
+        /// Adds the specified expand value to the request.
+        /// </summary>
+        /// <param name="expandExpression">The expression from which to calculate the expand value.</param>
+        /// <returns>The request object to send.</returns>
+        public IGraphServiceDirectoryRolesCollectionRequest Expand(Expression<Func<DirectoryRole, object>> expandExpression)
+        {
+            if (expandExpression == null)
+            {
+                throw new ArgumentNullException(nameof(expandExpression));
+            }
+            string error;
+            string value = ExpressionExtractHelper.ExtractMembers(expandExpression, out error);
+            if (value == null)
+            {
+                throw new ArgumentException(error, nameof(expandExpression));
+            }
+            else
+            {
+                this.QueryOptions.Add(new QueryOption("$expand", value));
+            }
+            return this;
+        }
+
+        /// <summary>
+        /// Adds the specified select value to the request.
+        /// </summary>
+        /// <param name="value">The select value.</param>
+        /// <returns>The request object to send.</returns>
+        public IGraphServiceDirectoryRolesCollectionRequest Select(string value)
+        {
+            this.QueryOptions.Add(new QueryOption("$select", value));
+            return this;
+        }
+
+        /// <summary>
+        /// Adds the specified select value to the request.
+        /// </summary>
+        /// <param name="selectExpression">The expression from which to calculate the select value.</param>
+        /// <returns>The request object to send.</returns>
+        public IGraphServiceDirectoryRolesCollectionRequest Select(Expression<Func<DirectoryRole, object>> selectExpression)
+        {
+            if (selectExpression == null)
+            {
+                throw new ArgumentNullException(nameof(selectExpression));
+            }
+            string error;
+            string value = ExpressionExtractHelper.ExtractMembers(selectExpression, out error);
+            if (value == null)
+            {
+                throw new ArgumentException(error, nameof(selectExpression));
+            }
+            else
+            {
+                this.QueryOptions.Add(new QueryOption("$select", value));
+            }
+            return this;
+        }
+
+        /// <summary>
+        /// Adds the specified top value to the request.
+        /// </summary>
+        /// <param name="value">The top value.</param>
+        /// <returns>The request object to send.</returns>
+        public IGraphServiceDirectoryRolesCollectionRequest Top(int value)
+        {
+            this.QueryOptions.Add(new QueryOption("$top", value.ToString()));
+            return this;
+        }
+
+        /// <summary>
+        /// Adds the specified filter value to the request.
+        /// </summary>
+        /// <param name="value">The filter value.</param>
+        /// <returns>The request object to send.</returns>
+        public IGraphServiceDirectoryRolesCollectionRequest Filter(string value)
+        {
+            this.QueryOptions.Add(new QueryOption("$filter", value));
+            return this;
+        }
+
+        /// <summary>
+        /// Adds the specified skip value to the request.
+        /// </summary>
+        /// <param name="value">The skip value.</param>
+        /// <returns>The request object to send.</returns>
+        public IGraphServiceDirectoryRolesCollectionRequest Skip(int value)
+        {
+            this.QueryOptions.Add(new QueryOption("$skip", value.ToString()));
+            return this;
         }
 
         /// <summary>

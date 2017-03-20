@@ -36,22 +36,28 @@ namespace Microsoft.Graph
         IUserWithReferenceRequestBuilder CreatedByUser { get; }
 
         /// <summary>
+        /// Gets the request builder for Workbook.
+        /// </summary>
+        /// <returns>The <see cref="IWorkbookRequestBuilder"/>.</returns>
+        IWorkbookRequestBuilder Workbook { get; }
+
+        /// <summary>
         /// Gets the request builder for LastModifiedByUser.
         /// </summary>
         /// <returns>The <see cref="IUserWithReferenceRequestBuilder"/>.</returns>
         IUserWithReferenceRequestBuilder LastModifiedByUser { get; }
 
         /// <summary>
-        /// Gets the request builder for Permissions.
-        /// </summary>
-        /// <returns>The <see cref="IDriveItemPermissionsCollectionRequestBuilder"/>.</returns>
-        IDriveItemPermissionsCollectionRequestBuilder Permissions { get; }
-
-        /// <summary>
         /// Gets the request builder for Children.
         /// </summary>
         /// <returns>The <see cref="IDriveItemChildrenCollectionRequestBuilder"/>.</returns>
         IDriveItemChildrenCollectionRequestBuilder Children { get; }
+
+        /// <summary>
+        /// Gets the request builder for Permissions.
+        /// </summary>
+        /// <returns>The <see cref="IDriveItemPermissionsCollectionRequestBuilder"/>.</returns>
+        IDriveItemPermissionsCollectionRequestBuilder Permissions { get; }
 
         /// <summary>
         /// Gets the request builder for Thumbnails.
@@ -74,6 +80,24 @@ namespace Microsoft.Graph
             string scope = null);
 
         /// <summary>
+        /// Gets the request builder for DriveItemCreateUploadSession.
+        /// </summary>
+        /// <returns>The <see cref="IDriveItemCreateUploadSessionRequestBuilder"/>.</returns>
+        IDriveItemCreateUploadSessionRequestBuilder CreateUploadSession(
+            DriveItemUploadableProperties item = null);
+
+        /// <summary>
+        /// Gets the request builder for DriveItemInvite.
+        /// </summary>
+        /// <returns>The <see cref="IDriveItemInviteRequestBuilder"/>.</returns>
+        IDriveItemInviteRequestBuilder Invite(
+            IEnumerable<DriveRecipient> recipients,
+            bool? requireSignIn = null,
+            IEnumerable<string> roles = null,
+            bool? sendInvitation = null,
+            string message = null);
+
+        /// <summary>
         /// Gets the request builder for DriveItemCopy.
         /// </summary>
         /// <returns>The <see cref="IDriveItemCopyRequestBuilder"/>.</returns>
@@ -92,14 +116,14 @@ namespace Microsoft.Graph
         /// Gets the request builder for DriveItemDelta.
         /// </summary>
         /// <returns>The <see cref="IDriveItemDeltaRequestBuilder"/>.</returns>
-        IDriveItemDeltaRequestBuilder Delta(
-            string token = null);
+        IDriveItemDeltaRequestBuilder Delta();
 
         /// <summary>
         /// Gets the request builder for DriveItemDelta.
         /// </summary>
         /// <returns>The <see cref="IDriveItemDeltaRequestBuilder"/>.</returns>
-        IDriveItemDeltaRequestBuilder Delta();
+        IDriveItemDeltaRequestBuilder Delta(
+            string token = null);
     
     }
 }

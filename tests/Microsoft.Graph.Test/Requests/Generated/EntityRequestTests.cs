@@ -69,12 +69,6 @@ namespace Microsoft.Graph.Test.Requests.Generated
         }
 
         [TestMethod]
-        public async Task CreateAsync()
-        {
-            await this.RequestWithItemInBody(false);
-        }
-
-        [TestMethod]
         public async Task DeleteAsync()
         {
             using (var httpResponseMessage = new HttpResponseMessage(HttpStatusCode.NoContent))

@@ -13,13 +13,13 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type CalendarGroupCalendarsCollectionResponse.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public class CalendarGroupCalendarsCollectionResponse
     {
         /// <summary>
         /// Gets or sets the <see cref="ICalendarGroupCalendarsCollectionPage"/> value.
         /// </summary>
-        [DataMember(Name = "value", EmitDefaultValue = false, IsRequired = false)]
+		[JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName ="value", Required = Required.Default)]
         public ICalendarGroupCalendarsCollectionPage Value { get; set; }
 
         /// <summary>

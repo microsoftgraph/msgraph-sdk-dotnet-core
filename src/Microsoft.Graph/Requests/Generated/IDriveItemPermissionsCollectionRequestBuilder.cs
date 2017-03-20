@@ -33,5 +33,7 @@ namespace Microsoft.Graph
         /// <param name="id">The ID for the Permission.</param>
         /// <returns>The <see cref="IPermissionRequestBuilder"/>.</returns>
         IPermissionRequestBuilder this[string id] { get; }
+
+        
     }
 }

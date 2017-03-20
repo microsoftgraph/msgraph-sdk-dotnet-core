@@ -12,6 +12,7 @@ namespace Microsoft.Graph
     using System.IO;
     using System.Net.Http;
     using System.Threading;
+    using System.Linq.Expressions;
 
     /// <summary>
     /// The type DirectoryRoleRequest.
@@ -33,7 +34,7 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Creates the specified DirectoryRole using PUT.
+        /// Creates the specified DirectoryRole using POST.
         /// </summary>
         /// <param name="directoryRoleToCreate">The DirectoryRole to create.</param>
         /// <returns>The created DirectoryRole.</returns>
@@ -43,7 +44,7 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Creates the specified DirectoryRole using PUT.
+        /// Creates the specified DirectoryRole using POST.
         /// </summary>
         /// <param name="directoryRoleToCreate">The DirectoryRole to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
@@ -51,7 +52,7 @@ namespace Microsoft.Graph
         public async System.Threading.Tasks.Task<DirectoryRole> CreateAsync(DirectoryRole directoryRoleToCreate, CancellationToken cancellationToken)
         {
             this.ContentType = "application/json";
-            this.Method = "PUT";
+            this.Method = "POST";
             var newEntity = await this.SendAsync<DirectoryRole>(directoryRoleToCreate, cancellationToken).ConfigureAwait(false);
             this.InitializeCollectionProperties(newEntity);
             return newEntity;
@@ -122,6 +123,76 @@ namespace Microsoft.Graph
             var updatedEntity = await this.SendAsync<DirectoryRole>(directoryRoleToUpdate, cancellationToken).ConfigureAwait(false);
             this.InitializeCollectionProperties(updatedEntity);
             return updatedEntity;
+        }
+
+        /// <summary>
+        /// Adds the specified expand value to the request.
+        /// </summary>
+        /// <param name="value">The expand value.</param>
+        /// <returns>The request object to send.</returns>
+        public IDirectoryRoleRequest Expand(string value)
+        {
+            this.QueryOptions.Add(new QueryOption("$expand", value));
+            return this;
+        }
+
+        /// <summary>
+        /// Adds the specified expand value to the request.
+        /// </summary>
+        /// <param name="expandExpression">The expression from which to calculate the expand value.</param>
+        /// <returns>The request object to send.</returns>
+        public IDirectoryRoleRequest Expand(Expression<Func<DirectoryRole, object>> expandExpression)
+        {
+		    if (expandExpression == null)
+            {
+                throw new ArgumentNullException(nameof(expandExpression));
+            }
+            string error;
+            string value = ExpressionExtractHelper.ExtractMembers(expandExpression, out error);
+            if (value == null)
+            {
+                throw new ArgumentException(error, nameof(expandExpression));
+            }
+            else
+            {
+                this.QueryOptions.Add(new QueryOption("$expand", value));
+            }
+            return this;
+        }
+
+        /// <summary>
+        /// Adds the specified select value to the request.
+        /// </summary>
+        /// <param name="value">The select value.</param>
+        /// <returns>The request object to send.</returns>
+        public IDirectoryRoleRequest Select(string value)
+        {
+            this.QueryOptions.Add(new QueryOption("$select", value));
+            return this;
+        }
+
+        /// <summary>
+        /// Adds the specified select value to the request.
+        /// </summary>
+        /// <param name="selectExpression">The expression from which to calculate the select value.</param>
+        /// <returns>The request object to send.</returns>
+        public IDirectoryRoleRequest Select(Expression<Func<DirectoryRole, object>> selectExpression)
+        {
+            if (selectExpression == null)
+            {
+                throw new ArgumentNullException(nameof(selectExpression));
+            }
+            string error;
+            string value = ExpressionExtractHelper.ExtractMembers(selectExpression, out error);
+            if (value == null)
+            {
+                throw new ArgumentException(error, nameof(selectExpression));
+            }
+            else
+            {
+                this.QueryOptions.Add(new QueryOption("$select", value));
+            }
+            return this;
         }
 
         /// <summary>

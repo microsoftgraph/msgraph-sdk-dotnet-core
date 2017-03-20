@@ -275,6 +275,18 @@ namespace Microsoft.Graph
                 return new DriveRequestBuilder(this.AppendSegmentToRequestUrl("drive"), this.Client);
             }
         }
+
+        /// <summary>
+        /// Gets the request builder for Drives.
+        /// </summary>
+        /// <returns>The <see cref="IUserDrivesCollectionRequestBuilder"/>.</returns>
+        public IUserDrivesCollectionRequestBuilder Drives
+        {
+            get
+            {
+                return new UserDrivesCollectionRequestBuilder(this.AppendSegmentToRequestUrl("drives"), this.Client);
+            }
+        }
     
         /// <summary>
         /// Gets the request builder for UserAssignLicense.

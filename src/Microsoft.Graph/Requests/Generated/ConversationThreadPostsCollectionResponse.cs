@@ -13,13 +13,13 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type ConversationThreadPostsCollectionResponse.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public class ConversationThreadPostsCollectionResponse
     {
         /// <summary>
         /// Gets or sets the <see cref="IConversationThreadPostsCollectionPage"/> value.
         /// </summary>
-        [DataMember(Name = "value", EmitDefaultValue = false, IsRequired = false)]
+		[JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName ="value", Required = Required.Default)]
         public IConversationThreadPostsCollectionPage Value { get; set; }
 
         /// <summary>

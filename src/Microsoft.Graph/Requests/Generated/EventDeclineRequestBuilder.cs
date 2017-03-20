@@ -14,7 +14,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type EventDeclineRequestBuilder.
     /// </summary>
-    public partial class EventDeclineRequestBuilder : BasePostMethodRequestBuilder<IEventDeclineRequest>, IEventDeclineRequestBuilder
+    public partial class EventDeclineRequestBuilder : BaseActionMethodRequestBuilder<IEventDeclineRequest>, IEventDeclineRequestBuilder
     {
         /// <summary>
         /// Constructs a new <see cref="EventDeclineRequestBuilder"/>.

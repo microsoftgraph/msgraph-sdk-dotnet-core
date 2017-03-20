@@ -8,10 +8,10 @@ namespace Microsoft.Graph
     using System.Runtime.Serialization;
     using Newtonsoft.Json;
 
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public class ErrorResponse
     {
-        [DataMember(Name = "error")]
+        [JsonProperty(PropertyName = "error")]
         public Error Error { get; set; }
 
         [JsonExtensionData(ReadData = true)]

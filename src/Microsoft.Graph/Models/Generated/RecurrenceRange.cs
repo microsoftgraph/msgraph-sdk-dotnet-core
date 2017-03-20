@@ -16,7 +16,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type RecurrenceRange.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     [JsonConverter(typeof(DerivedTypeConverter))]
     public partial class RecurrenceRange
     {
@@ -24,31 +24,31 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets or sets type.
         /// </summary>
-        [DataMember(Name = "type", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "type", Required = Required.Default)]
         public RecurrenceRangeType? Type { get; set; }
     
         /// <summary>
         /// Gets or sets startDate.
         /// </summary>
-        [DataMember(Name = "startDate", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "startDate", Required = Required.Default)]
         public Date StartDate { get; set; }
     
         /// <summary>
         /// Gets or sets endDate.
         /// </summary>
-        [DataMember(Name = "endDate", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "endDate", Required = Required.Default)]
         public Date EndDate { get; set; }
     
         /// <summary>
         /// Gets or sets recurrenceTimeZone.
         /// </summary>
-        [DataMember(Name = "recurrenceTimeZone", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "recurrenceTimeZone", Required = Required.Default)]
         public string RecurrenceTimeZone { get; set; }
     
         /// <summary>
         /// Gets or sets numberOfOccurrences.
         /// </summary>
-        [DataMember(Name = "numberOfOccurrences", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "numberOfOccurrences", Required = Required.Default)]
         public Int32? NumberOfOccurrences { get; set; }
     
         /// <summary>

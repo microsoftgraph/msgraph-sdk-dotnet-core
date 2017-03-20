@@ -41,5 +41,19 @@ namespace Microsoft.Graph
 
             return typeString;
         }
+
+        /// <summary>
+        /// Converts the identifier string to lower camel case.
+        /// </summary>
+        /// <param name="identifierString">The identifier string.</param>
+        /// <returns>The converted string.</returns>
+        public static string ConvertIdentifierToLowerCamelCase(string identifierString)
+        {
+            if (!string.IsNullOrEmpty(identifierString))
+            {
+                return string.Concat(identifierString.Substring(0, 1).ToLowerInvariant(), identifierString.Substring(1));
+            }
+            return identifierString;
+        }
     }
 }

@@ -48,6 +48,13 @@ namespace Microsoft.Graph
         IDriveItemRequestBuilder Root { get; }
     
         /// <summary>
+        /// Gets the request builder for DriveSearch.
+        /// </summary>
+        /// <returns>The <see cref="IDriveSearchRequestBuilder"/>.</returns>
+        IDriveSearchRequestBuilder Search(
+            string q = null);
+
+        /// <summary>
         /// Gets the request builder for DriveRecent.
         /// </summary>
         /// <returns>The <see cref="IDriveRecentRequestBuilder"/>.</returns>

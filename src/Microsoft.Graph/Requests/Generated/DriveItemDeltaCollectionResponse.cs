@@ -14,13 +14,13 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type DriveItemDeltaCollectionResponse.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public class DriveItemDeltaCollectionResponse
     {
         /// <summary>
         /// Gets or sets the <see cref="IDriveItemDeltaCollectionPage"/> value.
         /// </summary>
-        [DataMember(Name = "value", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName ="value", Required = Required.Default)]
         public IDriveItemDeltaCollectionPage Value { get; set; }
         
         /// <summary>

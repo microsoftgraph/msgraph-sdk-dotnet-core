@@ -27,7 +27,6 @@ namespace Microsoft.Graph
             IEnumerable<Option> options)
             : base(requestUrl, client, options)
         {
-            this.Method = "POST";
             this.ContentType = "application/json";
             this.RequestBody = new PostForwardRequestBody();
         }
@@ -53,8 +52,12 @@ namespace Microsoft.Graph
         public System.Threading.Tasks.Task PostAsync(
             CancellationToken cancellationToken)
         {
+            this.Method = "POST";
             return this.SendAsync(this.RequestBody, cancellationToken);
         }
+
+
+
 
         /// <summary>
         /// Adds the specified expand value to the request.

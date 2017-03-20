@@ -40,6 +40,18 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="ICalendarCalendarViewCollectionRequestBuilder"/>.</returns>
         ICalendarCalendarViewCollectionRequestBuilder CalendarView { get; }
+
+        /// <summary>
+        /// Gets the request builder for SingleValueExtendedProperties.
+        /// </summary>
+        /// <returns>The <see cref="ICalendarSingleValueExtendedPropertiesCollectionRequestBuilder"/>.</returns>
+        ICalendarSingleValueExtendedPropertiesCollectionRequestBuilder SingleValueExtendedProperties { get; }
+
+        /// <summary>
+        /// Gets the request builder for MultiValueExtendedProperties.
+        /// </summary>
+        /// <returns>The <see cref="ICalendarMultiValueExtendedPropertiesCollectionRequestBuilder"/>.</returns>
+        ICalendarMultiValueExtendedPropertiesCollectionRequestBuilder MultiValueExtendedProperties { get; }
     
     }
 }

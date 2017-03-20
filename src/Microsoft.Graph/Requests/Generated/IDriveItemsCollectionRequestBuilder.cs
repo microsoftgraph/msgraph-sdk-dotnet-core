@@ -33,5 +33,7 @@ namespace Microsoft.Graph
         /// <param name="id">The ID for the DriveItem.</param>
         /// <returns>The <see cref="IDriveItemRequestBuilder"/>.</returns>
         IDriveItemRequestBuilder this[string id] { get; }
+
+        
     }
 }

@@ -30,16 +30,28 @@ namespace Microsoft.Graph
         new IMessageRequest Request(IEnumerable<Option> options);
     
         /// <summary>
+        /// Gets the request builder for Attachments.
+        /// </summary>
+        /// <returns>The <see cref="IMessageAttachmentsCollectionRequestBuilder"/>.</returns>
+        IMessageAttachmentsCollectionRequestBuilder Attachments { get; }
+
+        /// <summary>
         /// Gets the request builder for Extensions.
         /// </summary>
         /// <returns>The <see cref="IMessageExtensionsCollectionRequestBuilder"/>.</returns>
         IMessageExtensionsCollectionRequestBuilder Extensions { get; }
 
         /// <summary>
-        /// Gets the request builder for Attachments.
+        /// Gets the request builder for SingleValueExtendedProperties.
         /// </summary>
-        /// <returns>The <see cref="IMessageAttachmentsCollectionRequestBuilder"/>.</returns>
-        IMessageAttachmentsCollectionRequestBuilder Attachments { get; }
+        /// <returns>The <see cref="IMessageSingleValueExtendedPropertiesCollectionRequestBuilder"/>.</returns>
+        IMessageSingleValueExtendedPropertiesCollectionRequestBuilder SingleValueExtendedProperties { get; }
+
+        /// <summary>
+        /// Gets the request builder for MultiValueExtendedProperties.
+        /// </summary>
+        /// <returns>The <see cref="IMessageMultiValueExtendedPropertiesCollectionRequestBuilder"/>.</returns>
+        IMessageMultiValueExtendedPropertiesCollectionRequestBuilder MultiValueExtendedProperties { get; }
     
         /// <summary>
         /// Gets the request builder for MessageCopy.

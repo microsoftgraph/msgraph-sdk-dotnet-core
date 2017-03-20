@@ -7,6 +7,7 @@
 
 namespace Microsoft.Graph
 {
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -15,20 +16,20 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type UserAssignLicenseRequestBody.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public partial class UserAssignLicenseRequestBody
     {
     
         /// <summary>
         /// Gets or sets AddLicenses.
         /// </summary>
-        [DataMember(Name = "addLicenses", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "addLicenses", Required = Required.Default)]
         public IEnumerable<AssignedLicense> AddLicenses { get; set; }
     
         /// <summary>
         /// Gets or sets RemoveLicenses.
         /// </summary>
-        [DataMember(Name = "removeLicenses", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "removeLicenses", Required = Required.Default)]
         public IEnumerable<Guid> RemoveLicenses { get; set; }
     
     }

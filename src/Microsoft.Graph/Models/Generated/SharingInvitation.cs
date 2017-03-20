@@ -16,7 +16,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type SharingInvitation.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     [JsonConverter(typeof(DerivedTypeConverter))]
     public partial class SharingInvitation
     {
@@ -24,25 +24,25 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets or sets email.
         /// </summary>
-        [DataMember(Name = "email", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "email", Required = Required.Default)]
         public string Email { get; set; }
     
         /// <summary>
         /// Gets or sets invitedBy.
         /// </summary>
-        [DataMember(Name = "invitedBy", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "invitedBy", Required = Required.Default)]
         public IdentitySet InvitedBy { get; set; }
     
         /// <summary>
         /// Gets or sets redeemedBy.
         /// </summary>
-        [DataMember(Name = "redeemedBy", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "redeemedBy", Required = Required.Default)]
         public string RedeemedBy { get; set; }
     
         /// <summary>
         /// Gets or sets signInRequired.
         /// </summary>
-        [DataMember(Name = "signInRequired", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "signInRequired", Required = Required.Default)]
         public bool? SignInRequired { get; set; }
     
         /// <summary>

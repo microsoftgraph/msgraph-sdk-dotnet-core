@@ -85,6 +85,19 @@ namespace Microsoft.Graph
         }
     
         /// <summary>
+        /// Gets the request builder for DriveSearch.
+        /// </summary>
+        /// <returns>The <see cref="IDriveSearchRequestBuilder"/>.</returns>
+        public IDriveSearchRequestBuilder Search(
+            string q = null)
+        {
+            return new DriveSearchRequestBuilder(
+                this.AppendSegmentToRequestUrl("microsoft.graph.search"),
+                this.Client,
+                q);
+        }
+
+        /// <summary>
         /// Gets the request builder for DriveRecent.
         /// </summary>
         /// <returns>The <see cref="IDriveRecentRequestBuilder"/>.</returns>

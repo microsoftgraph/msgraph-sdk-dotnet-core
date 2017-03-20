@@ -33,5 +33,7 @@ namespace Microsoft.Graph
         /// <param name="id">The ID for the Event.</param>
         /// <returns>The <see cref="IEventRequestBuilder"/>.</returns>
         IEventRequestBuilder this[string id] { get; }
+
+        
     }
 }

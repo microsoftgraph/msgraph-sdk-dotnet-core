@@ -5,12 +5,12 @@ using System.Runtime.CompilerServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Microsoft.Graph.Core")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Microsoft Graph Core Client Library")]
+[assembly: AssemblyDescription("This package includes the core client libraries for connecting your app to the Microsoft Graph. Microsoft Graph enables your app to interact with data entities and their relationships from many Microsoft cloud services with a unified developer experience. Learn more about Microsoft Graph at http://graph.microsoft.io.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Microsoft Corporation")]
 [assembly: AssemblyProduct("Microsoft.Graph.Core")]
-[assembly: AssemblyCopyright("Copyright ©  2016")]
+[assembly: AssemblyCopyright("Copyright © Microsoft Corporation")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: NeutralResourcesLanguage("en")]
@@ -24,9 +24,8 @@ using System.Runtime.CompilerServices;
 //
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
-// [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.1.0.0")]
-[assembly: AssemblyFileVersion("1.1.0.0")]
+[assembly: AssemblyVersion("1.3.0")]
+[assembly: AssemblyFileVersion("1.3.0.0")]
 
 #if DEBUG
 [assembly: InternalsVisibleTo("Microsoft.Graph.Core.Test")]

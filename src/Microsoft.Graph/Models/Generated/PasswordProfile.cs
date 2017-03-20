@@ -16,7 +16,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type PasswordProfile.
     /// </summary>
-    [DataContract]
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     [JsonConverter(typeof(DerivedTypeConverter))]
     public partial class PasswordProfile
     {
@@ -24,13 +24,13 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets or sets password.
         /// </summary>
-        [DataMember(Name = "password", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "password", Required = Required.Default)]
         public string Password { get; set; }
     
         /// <summary>
         /// Gets or sets forceChangePasswordNextSignIn.
         /// </summary>
-        [DataMember(Name = "forceChangePasswordNextSignIn", EmitDefaultValue = false, IsRequired = false)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "forceChangePasswordNextSignIn", Required = Required.Default)]
         public bool? ForceChangePasswordNextSignIn { get; set; }
     
         /// <summary>
