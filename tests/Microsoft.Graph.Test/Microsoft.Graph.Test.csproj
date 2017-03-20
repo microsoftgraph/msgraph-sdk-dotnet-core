@@ -40,13 +40,13 @@
     <AssemblyOriginatorKeyFile>..\..\build\35MSSharedLib1024.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Graph, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\src\Microsoft.Graph\bin\Debug\net45\Microsoft.Graph.dll</HintPath>
+    <Reference Include="Microsoft.Identity.Client, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Identity.Client.1.0.304142221-alpha\lib\net45\Microsoft.Identity.Client.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.Graph.Core, Version=1.3.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\src\Microsoft.Graph\bin\Debug\net45\Microsoft.Graph.Core.dll</HintPath>
+    <Reference Include="Microsoft.Identity.Client.Platform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Identity.Client.1.0.304142221-alpha\lib\net45\Microsoft.Identity.Client.Platform.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Moq, Version=4.2.1510.2205, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Moq.4.2.1510.2205\lib\net40\Moq.dll</HintPath>
@@ -108,6 +108,14 @@
     <Compile Include="Requests\Functional\ExcelTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Microsoft.Graph.Core\Microsoft.Graph.Core.csproj">
+      <Project>{9f04608c-d845-4445-83b1-e6d4eee38cbc}</Project>
+      <Name>Microsoft.Graph.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\Microsoft.Graph\Microsoft.Graph.csproj">
+      <Project>{660FA73B-987D-4085-A230-1B04F7EAEFBC}</Project>
+      <Name>Microsoft.Graph</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Microsoft.Graph.Core.Test\Microsoft.Graph.Core.Test.csproj">
       <Project>{5169edad-1e05-42a5-a241-d6fa78a02c5c}</Project>
       <Name>Microsoft.Graph.Core.Test</Name>
@@ -126,9 +134,6 @@
   <ItemGroup>
     <Content Include="Requests\Functional\Resources\hamilton.PNG" />
     <Content Include="Requests\Functional\Resources\textfile.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
