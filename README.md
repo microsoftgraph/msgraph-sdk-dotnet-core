@@ -6,12 +6,7 @@
 Integrate the [Microsoft Graph API](https://graph.microsoft.io) into your .NET
 project!
 
-The Microsoft Graph .NET Client Library is built as a Portable Class Library targeting profile 111.
-This targets the following frameworks:
-
-* .NET 4.5
-* .NET for Windows Store apps
-* Windows Phone 8.1 and higher
+The Microsoft Graph .NET Client Library targets .NetStandard 1.1 and .Net Framework 4.5.
 
 ## Installation via NuGet
 
