@@ -10,7 +10,7 @@ namespace Microsoft.Graph.Test.Requests.Functional
     [TestClass]
     public class ErrorTests : GraphTestBase
     {
-        //[Ignore] // Setup Fiddler autoresponder 
+        [Ignore] // Setup Fiddler autoresponder 
         [TestMethod]
         public async Task ErrorThrottlingError()
         {
