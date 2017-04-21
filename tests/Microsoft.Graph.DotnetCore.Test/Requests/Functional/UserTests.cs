@@ -15,19 +15,20 @@ namespace Microsoft.Graph.DotnetCore.Test.Requests.Functional
     {
 
 
-        [Fact(Skip = "No CI set up for functional tests - add email addresses to run this test.")]
+        //[Fact(Skip = "No CI set up for functional tests - add email addresses to run this test.")]
+        [Fact]
         public async System.Threading.Tasks.Task UserGetMailtipsTestEnumFlags()
         {
             try
             {
                 var emailAddresses = new List<string>();
-                emailAddresses.Add("11111@aaaaaaa.onmicrosoft.com");
-                emailAddresses.Add("22222@aaaaaaa.onmicrosoft.com");
-                emailAddresses.Add("33333@aaaaaaa.onmicrosoft.com");
+                emailAddresses.Add("katiej@MOD810997.onmicrosoft.com");
+                emailAddresses.Add("garretv@MOD810997.onmicrosoft.com");
+                emailAddresses.Add("annew@MOD810997.onmicrosoft.com");
 
-                var mailTipsCollectionPage = await graphClient.Me.GetMailTips(emailAddresses, MailTipsType.AutomaticReplies | 
-                                                                                              MailTipsType.CustomMailTip | 
-                                                                                              MailTipsType.MaxMessageSize | 
+                var mailTipsCollectionPage = await graphClient.Me.GetMailTips(emailAddresses, MailTipsType.AutomaticReplies |
+                                                                                              MailTipsType.CustomMailTip |
+                                                                                              MailTipsType.MaxMessageSize |
                                                                                               MailTipsType.RecipientScope |
                                                                                               MailTipsType.TotalMemberCount).Request().PostAsync();
 
@@ -37,11 +38,10 @@ namespace Microsoft.Graph.DotnetCore.Test.Requests.Functional
                     Assert.NotNull(mt.EmailAddress);
                 }
             }
-            catch (Microsoft.Graph.ServiceException e)
+            catch (Exception e)
             {
-                Assert.True(false, "Something happened, check out a trace. Error code: " + e.Error.Code);
+                Assert.True(false, "Something happened, check out a trace. Error code: " + e.Message);
             }
         }
-
     }
 }
