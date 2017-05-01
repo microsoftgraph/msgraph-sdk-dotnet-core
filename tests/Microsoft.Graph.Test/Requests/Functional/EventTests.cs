@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Microsoft.Graph.Test.Requests.Functional
 {
-    //[Ignore]
+    [Ignore]
     [TestClass]
     public class EventTests : GraphTestBase
     {

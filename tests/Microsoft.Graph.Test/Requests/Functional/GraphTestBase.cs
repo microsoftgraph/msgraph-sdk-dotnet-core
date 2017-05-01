@@ -49,7 +49,7 @@ namespace Microsoft.Graph.Test.Requests.Functional
                 try
                 {
                     graphClient = new GraphServiceClient(
-                        "https://graph.microsoft.com/beta",
+                        "https://graph.microsoft.com/stagingv1.0",
                         new DelegateAuthenticationProvider(
                             async (requestMessage) =>
                             {
