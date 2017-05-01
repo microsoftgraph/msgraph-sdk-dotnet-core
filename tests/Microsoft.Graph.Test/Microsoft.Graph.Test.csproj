@@ -52,9 +52,8 @@
       <HintPath>..\..\packages\Moq.4.2.1510.2205\lib\net40\Moq.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Newtonsoft.Json.6.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
@@ -92,6 +91,8 @@
     <Compile Include="Requests\Functional\GraphTestBase.cs" />
     <Compile Include="Requests\Functional\MailTests.cs" />
     <Compile Include="Requests\Functional\OneDriveTests.cs" />
+    <Compile Include="Requests\Functional\PlannerTests.cs" />
+    <Compile Include="Requests\Functional\DeltaQueryTests.cs" />
     <Compile Include="Requests\Functional\UsersTests.cs" />
     <Compile Include="Requests\Generated\EntityWithReferenceRequestTests.cs" />
     <Compile Include="Requests\Generated\EntityReferenceRequestTests.cs" />
@@ -122,7 +123,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Requests\Functional\Resources\excelTestResource.xlsx" />
   </ItemGroup>
   <ItemGroup>
