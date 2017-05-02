@@ -75,20 +75,22 @@ namespace Microsoft.Graph.Test.Requests.Functional
             PlannerTask plannerTaskOnClient = new PlannerTask();
             plannerTaskOnClient.PlanId = plannerPlan.Id;
             plannerTaskOnClient.Title = "New task title";
+            plannerTaskOnClient.Assignments = new PlannerAssignments();
+            plannerTaskOnClient.Assignments.AddAssignee("me");
 
             try
             {
                 PlannerTask plannerTaskOnService = await graphClient.Planner.Tasks.Request().AddAsync(plannerTaskOnClient);
 
                 Assert.IsNotNull(plannerTaskOnService);
-                Assert.Equals(plannerTaskOnClient.Title, plannerTaskOnService.Title);
+                Assert.AreEqual(plannerTaskOnClient.Title, plannerTaskOnService.Title);
+                Assert.AreEqual(1, plannerTaskOnService.Assignments.Count);
             }
             catch (Microsoft.Graph.ServiceException e)
             {
                 Assert.Fail("Something happened, check out a trace. Error code: {0}", e.Error.Code);
             }
         }
-
 
 
 
