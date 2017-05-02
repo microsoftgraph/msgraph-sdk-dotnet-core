@@ -6,10 +6,68 @@ using System.Threading.Tasks;
 
 namespace Microsoft.Graph.Test.Requests.Functional
 {
-    [Ignore]
+    //[Ignore]
     [TestClass]
     public class DeltaQueryTests : GraphTestBase
     {
+        [TestMethod]
+        public async System.Threading.Tasks.Task DeltaLinkDriveItem()
+        {
+            try
+            {
+                // Get our first delta page.
+                var driveItemDeltaCollectionPage = await graphClient.Me.Drive.Root.Delta().Request().GetAsync();
+
+                // Go through all of the delta pages so that we can get the delta link on the last page.
+                while (driveItemDeltaCollectionPage.NextPageRequest != null)
+                {
+                    driveItemDeltaCollectionPage = await driveItemDeltaCollectionPage.NextPageRequest.GetAsync();
+                }
+
+                // At this point we're up to date. driveItemDeltaCollectionPage now has a deltalink.  
+                object deltaLink;
+
+                // Now let's use the deltalink to make sure there aren't any changes. There shouldn't be.
+                if (driveItemDeltaCollectionPage.AdditionalData.TryGetValue("@odata.deltaLink", out deltaLink))
+                {
+                    driveItemDeltaCollectionPage.InitializeNextPageRequest(graphClient, deltaLink.ToString());
+                    driveItemDeltaCollectionPage = await driveItemDeltaCollectionPage.NextPageRequest.GetAsync();
+                }
+                Assert.IsNotNull(deltaLink, "We did not get a deltalink back as expected.");
+                Assert.AreEqual(driveItemDeltaCollectionPage.Count, 0, "We received an unexpected change.");
+
+                // Create file to change.
+                var excelTest = new ExcelTests();
+                var fileId = await excelTest.OneDriveCreateTestFile("_testDeltaLinkFile.xlsx");
+
+
+                // Now let's use the deltalink to make sure there aren't any changes. 
+                if (driveItemDeltaCollectionPage.AdditionalData.TryGetValue("@odata.deltaLink", out deltaLink))
+                {
+                    driveItemDeltaCollectionPage.InitializeNextPageRequest(graphClient, deltaLink.ToString());
+                    driveItemDeltaCollectionPage = await driveItemDeltaCollectionPage.NextPageRequest.GetAsync();
+                }
+
+                // We expect two changes, one new item, and the root folder will have a change.
+                Assert.AreEqual(driveItemDeltaCollectionPage.Count, 2, "We didn't receive the expected change.");
+
+
+                // Delete the file
+                await excelTest.OneDriveDeleteTestFile(fileId, 5000);
+
+            }
+            catch (Microsoft.Graph.ServiceException e)
+            {
+                Assert.Inconclusive("Error code: {0}", e.Error.Code);
+            }
+
+            catch (Exception e)
+            {
+                Assert.Inconclusive("Error code: {0}", e.Message);
+            }
+        }
+
+
         //[TestMethod]
         //public async System.Threading.Tasks.Task UserDeltaLink()
         //{
@@ -17,7 +75,7 @@ namespace Microsoft.Graph.Test.Requests.Functional
         //    {
         //        // Get our first delta page.
         //        var userDeltaCollectionPage = await graphClient.Users.Delta().Request().GetAsync();
-                
+
         //        // Go through all of the delta pages so that we can get the delta link on the last page.
         //        while (userDeltaCollectionPage.NextPageRequest != null)
         //        {
