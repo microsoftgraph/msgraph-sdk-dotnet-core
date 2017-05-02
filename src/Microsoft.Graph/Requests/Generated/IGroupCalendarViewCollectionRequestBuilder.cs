@@ -35,10 +35,6 @@ namespace Microsoft.Graph
         /// <returns>The <see cref="IEventRequestBuilder"/>.</returns>
         IEventRequestBuilder this[string id] { get; }
 
-        /// <summary>
-        /// Gets the request builder for EventDelta.
-        /// </summary>
-        /// <returns>The <see cref="IEventDeltaRequestBuilder"/>.</returns>
-        IEventDeltaRequestBuilder Delta();
+        
     }
 }

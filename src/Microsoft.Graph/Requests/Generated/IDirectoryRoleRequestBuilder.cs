@@ -35,12 +35,6 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IDirectoryRoleMembersCollectionWithReferencesRequestBuilder"/>.</returns>
         IDirectoryRoleMembersCollectionWithReferencesRequestBuilder Members { get; }
-
-        /// <summary>
-        /// Gets the request builder for ScopedAdministrators.
-        /// </summary>
-        /// <returns>The <see cref="IDirectoryRoleScopedAdministratorsCollectionRequestBuilder"/>.</returns>
-        IDirectoryRoleScopedAdministratorsCollectionRequestBuilder ScopedAdministrators { get; }
     
     }
 }

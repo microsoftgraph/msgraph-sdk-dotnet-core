@@ -21,18 +21,6 @@ namespace Microsoft.Graph
     public partial class SharePoint : Entity
     {
     
-        /// <summary>
-        /// Gets or sets site.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "site", Required = Newtonsoft.Json.Required.Default)]
-        public Site Site { get; set; }
-    
-        /// <summary>
-        /// Gets or sets sites.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "sites", Required = Newtonsoft.Json.Required.Default)]
-        public ISharePointSitesCollectionPage Sites { get; set; }
-    
     }
 }
 

@@ -15,7 +15,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The interface ISiteRequestBuilder.
     /// </summary>
-    public partial interface ISiteRequestBuilder : IBaseItemRequestBuilder
+    public partial interface ISiteRequestBuilder : IEntityRequestBuilder
     {
         /// <summary>
         /// Builds the request.
@@ -29,36 +29,6 @@ namespace Microsoft.Graph
         /// <param name="options">The query and header options for the request.</param>
         /// <returns>The built request.</returns>
         new ISiteRequest Request(IEnumerable<Option> options);
-    
-        /// <summary>
-        /// Gets the request builder for Drive.
-        /// </summary>
-        /// <returns>The <see cref="IDriveRequestBuilder"/>.</returns>
-        IDriveRequestBuilder Drive { get; }
-
-        /// <summary>
-        /// Gets the request builder for Drives.
-        /// </summary>
-        /// <returns>The <see cref="ISiteDrivesCollectionRequestBuilder"/>.</returns>
-        ISiteDrivesCollectionRequestBuilder Drives { get; }
-
-        /// <summary>
-        /// Gets the request builder for Items.
-        /// </summary>
-        /// <returns>The <see cref="ISiteItemsCollectionRequestBuilder"/>.</returns>
-        ISiteItemsCollectionRequestBuilder Items { get; }
-
-        /// <summary>
-        /// Gets the request builder for Lists.
-        /// </summary>
-        /// <returns>The <see cref="ISiteListsCollectionRequestBuilder"/>.</returns>
-        ISiteListsCollectionRequestBuilder Lists { get; }
-
-        /// <summary>
-        /// Gets the request builder for Sites.
-        /// </summary>
-        /// <returns>The <see cref="ISiteSitesCollectionRequestBuilder"/>.</returns>
-        ISiteSitesCollectionRequestBuilder Sites { get; }
     
     }
 }

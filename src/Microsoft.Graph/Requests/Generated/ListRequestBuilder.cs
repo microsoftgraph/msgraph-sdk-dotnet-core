@@ -15,7 +15,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type ListRequestBuilder.
     /// </summary>
-    public partial class ListRequestBuilder : BaseItemRequestBuilder, IListRequestBuilder
+    public partial class ListRequestBuilder : EntityRequestBuilder, IListRequestBuilder
     {
 
         /// <summary>
@@ -47,30 +47,6 @@ namespace Microsoft.Graph
         public new IListRequest Request(IEnumerable<Option> options)
         {
             return new ListRequest(this.RequestUrl, this.Client, options);
-        }
-    
-        /// <summary>
-        /// Gets the request builder for Drive.
-        /// </summary>
-        /// <returns>The <see cref="IDriveRequestBuilder"/>.</returns>
-        public IDriveRequestBuilder Drive
-        {
-            get
-            {
-                return new DriveRequestBuilder(this.AppendSegmentToRequestUrl("drive"), this.Client);
-            }
-        }
-
-        /// <summary>
-        /// Gets the request builder for Items.
-        /// </summary>
-        /// <returns>The <see cref="IListItemsCollectionRequestBuilder"/>.</returns>
-        public IListItemsCollectionRequestBuilder Items
-        {
-            get
-            {
-                return new ListItemsCollectionRequestBuilder(this.AppendSegmentToRequestUrl("items"), this.Client);
-            }
         }
     
     }

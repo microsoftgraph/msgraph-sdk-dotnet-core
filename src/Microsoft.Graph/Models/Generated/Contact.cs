@@ -112,12 +112,6 @@ namespace Microsoft.Graph
         public IEnumerable<EmailAddress> EmailAddresses { get; set; }
     
         /// <summary>
-        /// Gets or sets websites.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "websites", Required = Newtonsoft.Json.Required.Default)]
-        public IEnumerable<Website> Websites { get; set; }
-    
-        /// <summary>
         /// Gets or sets im addresses.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "imAddresses", Required = Newtonsoft.Json.Required.Default)]
@@ -154,6 +148,12 @@ namespace Microsoft.Graph
         public string Profession { get; set; }
     
         /// <summary>
+        /// Gets or sets business home page.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "businessHomePage", Required = Newtonsoft.Json.Required.Default)]
+        public string BusinessHomePage { get; set; }
+    
+        /// <summary>
         /// Gets or sets assistant name.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "assistantName", Required = Newtonsoft.Json.Required.Default)]
@@ -166,16 +166,40 @@ namespace Microsoft.Graph
         public string Manager { get; set; }
     
         /// <summary>
-        /// Gets or sets phones.
+        /// Gets or sets home phones.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "phones", Required = Newtonsoft.Json.Required.Default)]
-        public IEnumerable<Phone> Phones { get; set; }
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "homePhones", Required = Newtonsoft.Json.Required.Default)]
+        public IEnumerable<string> HomePhones { get; set; }
     
         /// <summary>
-        /// Gets or sets postal addresses.
+        /// Gets or sets mobile phone.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "postalAddresses", Required = Newtonsoft.Json.Required.Default)]
-        public IEnumerable<PhysicalAddress> PostalAddresses { get; set; }
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "mobilePhone", Required = Newtonsoft.Json.Required.Default)]
+        public string MobilePhone { get; set; }
+    
+        /// <summary>
+        /// Gets or sets business phones.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "businessPhones", Required = Newtonsoft.Json.Required.Default)]
+        public IEnumerable<string> BusinessPhones { get; set; }
+    
+        /// <summary>
+        /// Gets or sets home address.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "homeAddress", Required = Newtonsoft.Json.Required.Default)]
+        public PhysicalAddress HomeAddress { get; set; }
+    
+        /// <summary>
+        /// Gets or sets business address.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "businessAddress", Required = Newtonsoft.Json.Required.Default)]
+        public PhysicalAddress BusinessAddress { get; set; }
+    
+        /// <summary>
+        /// Gets or sets other address.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "otherAddress", Required = Newtonsoft.Json.Required.Default)]
+        public PhysicalAddress OtherAddress { get; set; }
     
         /// <summary>
         /// Gets or sets spouse name.
@@ -194,30 +218,6 @@ namespace Microsoft.Graph
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "children", Required = Newtonsoft.Json.Required.Default)]
         public IEnumerable<string> Children { get; set; }
-    
-        /// <summary>
-        /// Gets or sets wedding anniversary.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "weddingAnniversary", Required = Newtonsoft.Json.Required.Default)]
-        public Date WeddingAnniversary { get; set; }
-    
-        /// <summary>
-        /// Gets or sets gender.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "gender", Required = Newtonsoft.Json.Required.Default)]
-        public string Gender { get; set; }
-    
-        /// <summary>
-        /// Gets or sets is favorite.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "isFavorite", Required = Newtonsoft.Json.Required.Default)]
-        public bool? IsFavorite { get; set; }
-    
-        /// <summary>
-        /// Gets or sets flag.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "flag", Required = Newtonsoft.Json.Required.Default)]
-        public FollowupFlag Flag { get; set; }
     
         /// <summary>
         /// Gets or sets extensions.

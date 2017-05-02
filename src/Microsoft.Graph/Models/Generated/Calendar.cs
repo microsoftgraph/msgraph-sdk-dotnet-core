@@ -34,52 +34,10 @@ namespace Microsoft.Graph
         public CalendarColor? Color { get; set; }
     
         /// <summary>
-        /// Gets or sets is default calendar.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "isDefaultCalendar", Required = Newtonsoft.Json.Required.Default)]
-        public bool? IsDefaultCalendar { get; set; }
-    
-        /// <summary>
         /// Gets or sets change key.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "changeKey", Required = Newtonsoft.Json.Required.Default)]
         public string ChangeKey { get; set; }
-    
-        /// <summary>
-        /// Gets or sets can share.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "canShare", Required = Newtonsoft.Json.Required.Default)]
-        public bool? CanShare { get; set; }
-    
-        /// <summary>
-        /// Gets or sets can view private items.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "canViewPrivateItems", Required = Newtonsoft.Json.Required.Default)]
-        public bool? CanViewPrivateItems { get; set; }
-    
-        /// <summary>
-        /// Gets or sets is shared.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "isShared", Required = Newtonsoft.Json.Required.Default)]
-        public bool? IsShared { get; set; }
-    
-        /// <summary>
-        /// Gets or sets is shared with me.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "isSharedWithMe", Required = Newtonsoft.Json.Required.Default)]
-        public bool? IsSharedWithMe { get; set; }
-    
-        /// <summary>
-        /// Gets or sets can edit.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "canEdit", Required = Newtonsoft.Json.Required.Default)]
-        public bool? CanEdit { get; set; }
-    
-        /// <summary>
-        /// Gets or sets owner.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "owner", Required = Newtonsoft.Json.Required.Default)]
-        public EmailAddress Owner { get; set; }
     
         /// <summary>
         /// Gets or sets events.

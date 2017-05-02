@@ -118,12 +118,6 @@ namespace Microsoft.Graph
         public string ConversationId { get; set; }
     
         /// <summary>
-        /// Gets or sets conversation index.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "conversationIndex", Required = Newtonsoft.Json.Required.Default)]
-        public byte[] ConversationIndex { get; set; }
-    
-        /// <summary>
         /// Gets or sets unique body.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "uniqueBody", Required = Newtonsoft.Json.Required.Default)]
@@ -160,34 +154,10 @@ namespace Microsoft.Graph
         public string WebLink { get; set; }
     
         /// <summary>
-        /// Gets or sets mentions preview.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "mentionsPreview", Required = Newtonsoft.Json.Required.Default)]
-        public MentionsPreview MentionsPreview { get; set; }
-    
-        /// <summary>
         /// Gets or sets inference classification.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "inferenceClassification", Required = Newtonsoft.Json.Required.Default)]
         public InferenceClassificationType? InferenceClassification { get; set; }
-    
-        /// <summary>
-        /// Gets or sets unsubscribe data.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "unsubscribeData", Required = Newtonsoft.Json.Required.Default)]
-        public IEnumerable<string> UnsubscribeData { get; set; }
-    
-        /// <summary>
-        /// Gets or sets unsubscribe enabled.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "unsubscribeEnabled", Required = Newtonsoft.Json.Required.Default)]
-        public bool? UnsubscribeEnabled { get; set; }
-    
-        /// <summary>
-        /// Gets or sets flag.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "flag", Required = Newtonsoft.Json.Required.Default)]
-        public FollowupFlag Flag { get; set; }
     
         /// <summary>
         /// Gets or sets attachments.
@@ -212,12 +182,6 @@ namespace Microsoft.Graph
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "multiValueExtendedProperties", Required = Newtonsoft.Json.Required.Default)]
         public IMessageMultiValueExtendedPropertiesCollectionPage MultiValueExtendedProperties { get; set; }
-    
-        /// <summary>
-        /// Gets or sets mentions.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "mentions", Required = Newtonsoft.Json.Required.Default)]
-        public IMessageMentionsCollectionPage Mentions { get; set; }
     
     }
 }

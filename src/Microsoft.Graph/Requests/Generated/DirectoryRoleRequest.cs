@@ -222,22 +222,6 @@ namespace Microsoft.Graph
                     }
                 }
 
-                if (directoryRoleToInitialize.ScopedAdministrators != null && directoryRoleToInitialize.ScopedAdministrators.CurrentPage != null)
-                {
-                    directoryRoleToInitialize.ScopedAdministrators.AdditionalData = directoryRoleToInitialize.AdditionalData;
-
-                    object nextPageLink;
-                    directoryRoleToInitialize.AdditionalData.TryGetValue("scopedAdministrators@odata.nextLink", out nextPageLink);
-                    var nextPageLinkString = nextPageLink as string;
-
-                    if (!string.IsNullOrEmpty(nextPageLinkString))
-                    {
-                        directoryRoleToInitialize.ScopedAdministrators.InitializeNextPageRequest(
-                            this.Client,
-                            nextPageLinkString);
-                    }
-                }
-
             }
 
 

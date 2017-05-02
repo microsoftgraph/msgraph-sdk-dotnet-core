@@ -49,42 +49,5 @@ namespace Microsoft.Graph
             return new SharePointRequest(this.RequestUrl, this.Client, options);
         }
     
-        /// <summary>
-        /// Gets the request builder for Site.
-        /// </summary>
-        /// <returns>The <see cref="ISiteRequestBuilder"/>.</returns>
-        public ISiteRequestBuilder Site
-        {
-            get
-            {
-                return new SiteRequestBuilder(this.AppendSegmentToRequestUrl("site"), this.Client);
-            }
-        }
-
-        /// <summary>
-        /// Gets the request builder for Sites.
-        /// </summary>
-        /// <returns>The <see cref="ISharePointSitesCollectionRequestBuilder"/>.</returns>
-        public ISharePointSitesCollectionRequestBuilder Sites
-        {
-            get
-            {
-                return new SharePointSitesCollectionRequestBuilder(this.AppendSegmentToRequestUrl("sites"), this.Client);
-            }
-        }
-    
-        /// <summary>
-        /// Gets the request builder for SharePointGetByPath.
-        /// </summary>
-        /// <returns>The <see cref="ISharePointGetByPathRequestBuilder"/>.</returns>
-        public ISharePointGetByPathRequestBuilder GetByPath(
-            string path = null)
-        {
-            return new SharePointGetByPathRequestBuilder(
-                this.AppendSegmentToRequestUrl("microsoft.graph.getByPath"),
-                this.Client,
-                path);
-        }
-    
     }
 }

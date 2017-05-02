@@ -59,19 +59,6 @@ namespace Microsoft.Graph
             }
         }
 
-        /// <summary>
-        /// Gets the request builder for DirectoryObjectGetByIds.
-        /// </summary>
-        /// <returns>The <see cref="IDirectoryObjectGetByIdsRequestBuilder"/>.</returns>
-        public IDirectoryObjectGetByIdsRequestBuilder GetByIds(
-            IEnumerable<string> ids,
-            IEnumerable<string> types = null)
-        {
-            return new DirectoryObjectGetByIdsRequestBuilder(
-                this.AppendSegmentToRequestUrl("microsoft.graph.getByIds"),
-                this.Client,
-                ids,
-                types);
-        }
+        
     }
 }

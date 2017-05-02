@@ -98,42 +98,6 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Gets the request builder for Settings.
-        /// </summary>
-        /// <returns>The <see cref="IGroupSettingsCollectionRequestBuilder"/>.</returns>
-        public IGroupSettingsCollectionRequestBuilder Settings
-        {
-            get
-            {
-                return new GroupSettingsCollectionRequestBuilder(this.AppendSegmentToRequestUrl("settings"), this.Client);
-            }
-        }
-
-        /// <summary>
-        /// Gets the request builder for Endpoints.
-        /// </summary>
-        /// <returns>The <see cref="IGroupEndpointsCollectionRequestBuilder"/>.</returns>
-        public IGroupEndpointsCollectionRequestBuilder Endpoints
-        {
-            get
-            {
-                return new GroupEndpointsCollectionRequestBuilder(this.AppendSegmentToRequestUrl("endpoints"), this.Client);
-            }
-        }
-
-        /// <summary>
-        /// Gets the request builder for Extensions.
-        /// </summary>
-        /// <returns>The <see cref="IGroupExtensionsCollectionRequestBuilder"/>.</returns>
-        public IGroupExtensionsCollectionRequestBuilder Extensions
-        {
-            get
-            {
-                return new GroupExtensionsCollectionRequestBuilder(this.AppendSegmentToRequestUrl("extensions"), this.Client);
-            }
-        }
-
-        /// <summary>
         /// Gets the request builder for Threads.
         /// </summary>
         /// <returns>The <see cref="IGroupThreadsCollectionRequestBuilder"/>.</returns>
@@ -206,18 +170,6 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Gets the request builder for Photos.
-        /// </summary>
-        /// <returns>The <see cref="IGroupPhotosCollectionRequestBuilder"/>.</returns>
-        public IGroupPhotosCollectionRequestBuilder Photos
-        {
-            get
-            {
-                return new GroupPhotosCollectionRequestBuilder(this.AppendSegmentToRequestUrl("photos"), this.Client);
-            }
-        }
-
-        /// <summary>
         /// Gets the request builder for AcceptedSenders.
         /// </summary>
         /// <returns>The <see cref="IGroupAcceptedSendersCollectionRequestBuilder"/>.</returns>
@@ -254,30 +206,6 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Gets the request builder for Sharepoint.
-        /// </summary>
-        /// <returns>The <see cref="ISharePointRequestBuilder"/>.</returns>
-        public ISharePointRequestBuilder Sharepoint
-        {
-            get
-            {
-                return new SharePointRequestBuilder(this.AppendSegmentToRequestUrl("sharepoint"), this.Client);
-            }
-        }
-
-        /// <summary>
-        /// Gets the request builder for Plans.
-        /// </summary>
-        /// <returns>The <see cref="IGroupPlansCollectionWithReferencesRequestBuilder"/>.</returns>
-        public IGroupPlansCollectionWithReferencesRequestBuilder Plans
-        {
-            get
-            {
-                return new GroupPlansCollectionWithReferencesRequestBuilder(this.AppendSegmentToRequestUrl("plans"), this.Client);
-            }
-        }
-
-        /// <summary>
         /// Gets the request builder for Planner.
         /// </summary>
         /// <returns>The <see cref="IPlannerGroupRequestBuilder"/>.</returns>
@@ -288,30 +216,7 @@ namespace Microsoft.Graph
                 return new PlannerGroupRequestBuilder(this.AppendSegmentToRequestUrl("planner"), this.Client);
             }
         }
-
-        /// <summary>
-        /// Gets the request builder for Notes.
-        /// </summary>
-        /// <returns>The <see cref="INotesRequestBuilder"/>.</returns>
-        public INotesRequestBuilder Notes
-        {
-            get
-            {
-                return new NotesRequestBuilder(this.AppendSegmentToRequestUrl("notes"), this.Client);
-            }
-        }
     
-        /// <summary>
-        /// Gets the request builder for GroupRenew.
-        /// </summary>
-        /// <returns>The <see cref="IGroupRenewRequestBuilder"/>.</returns>
-        public IGroupRenewRequestBuilder Renew()
-        {
-            return new GroupRenewRequestBuilder(
-                this.AppendSegmentToRequestUrl("microsoft.graph.renew"),
-                this.Client);
-        }
-
         /// <summary>
         /// Gets the request builder for GroupSubscribeByMail.
         /// </summary>

@@ -87,17 +87,6 @@ namespace Microsoft.Graph
                 this.Client,
                 securityEnabledOnly);
         }
-
-        /// <summary>
-        /// Gets the request builder for DirectoryObjectRestore.
-        /// </summary>
-        /// <returns>The <see cref="IDirectoryObjectRestoreRequestBuilder"/>.</returns>
-        public IDirectoryObjectRestoreRequestBuilder Restore()
-        {
-            return new DirectoryObjectRestoreRequestBuilder(
-                this.AppendSegmentToRequestUrl("microsoft.graph.restore"),
-                this.Client);
-        }
     
     }
 }

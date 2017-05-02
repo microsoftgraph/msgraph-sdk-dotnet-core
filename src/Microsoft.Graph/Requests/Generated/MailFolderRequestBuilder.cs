@@ -74,18 +74,6 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Gets the request builder for UserConfigurations.
-        /// </summary>
-        /// <returns>The <see cref="IMailFolderUserConfigurationsCollectionRequestBuilder"/>.</returns>
-        public IMailFolderUserConfigurationsCollectionRequestBuilder UserConfigurations
-        {
-            get
-            {
-                return new MailFolderUserConfigurationsCollectionRequestBuilder(this.AppendSegmentToRequestUrl("userConfigurations"), this.Client);
-            }
-        }
-
-        /// <summary>
         /// Gets the request builder for SingleValueExtendedProperties.
         /// </summary>
         /// <returns>The <see cref="IMailFolderSingleValueExtendedPropertiesCollectionRequestBuilder"/>.</returns>

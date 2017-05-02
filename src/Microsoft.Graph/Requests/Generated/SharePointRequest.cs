@@ -203,28 +203,6 @@ namespace Microsoft.Graph
         private void InitializeCollectionProperties(SharePoint sharePointToInitialize)
         {
 
-            if (sharePointToInitialize != null && sharePointToInitialize.AdditionalData != null)
-            {
-
-                if (sharePointToInitialize.Sites != null && sharePointToInitialize.Sites.CurrentPage != null)
-                {
-                    sharePointToInitialize.Sites.AdditionalData = sharePointToInitialize.AdditionalData;
-
-                    object nextPageLink;
-                    sharePointToInitialize.AdditionalData.TryGetValue("sites@odata.nextLink", out nextPageLink);
-                    var nextPageLinkString = nextPageLink as string;
-
-                    if (!string.IsNullOrEmpty(nextPageLinkString))
-                    {
-                        sharePointToInitialize.Sites.InitializeNextPageRequest(
-                            this.Client,
-                            nextPageLinkString);
-                    }
-                }
-
-            }
-
-
         }
     }
 }

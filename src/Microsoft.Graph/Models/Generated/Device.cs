@@ -123,12 +123,6 @@ namespace Microsoft.Graph
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "registeredUsers", Required = Newtonsoft.Json.Required.Default)]
         public IDeviceRegisteredUsersCollectionWithReferencesPage RegisteredUsers { get; set; }
     
-        /// <summary>
-        /// Gets or sets extensions.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "extensions", Required = Newtonsoft.Json.Required.Default)]
-        public IDeviceExtensionsCollectionPage Extensions { get; set; }
-    
     }
 }
 

@@ -31,16 +31,16 @@ namespace Microsoft.Graph
         new IDriveItemRequest Request(IEnumerable<Option> options);
     
         /// <summary>
-        /// Gets the request builder for Workbook.
-        /// </summary>
-        /// <returns>The <see cref="IWorkbookRequestBuilder"/>.</returns>
-        IWorkbookRequestBuilder Workbook { get; }
-
-        /// <summary>
         /// Gets the request builder for CreatedByUser.
         /// </summary>
         /// <returns>The <see cref="IUserWithReferenceRequestBuilder"/>.</returns>
         IUserWithReferenceRequestBuilder CreatedByUser { get; }
+
+        /// <summary>
+        /// Gets the request builder for Workbook.
+        /// </summary>
+        /// <returns>The <see cref="IWorkbookRequestBuilder"/>.</returns>
+        IWorkbookRequestBuilder Workbook { get; }
 
         /// <summary>
         /// Gets the request builder for LastModifiedByUser.

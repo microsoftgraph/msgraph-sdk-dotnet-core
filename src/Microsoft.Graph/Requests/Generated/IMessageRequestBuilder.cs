@@ -53,12 +53,6 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IMessageMultiValueExtendedPropertiesCollectionRequestBuilder"/>.</returns>
         IMessageMultiValueExtendedPropertiesCollectionRequestBuilder MultiValueExtendedProperties { get; }
-
-        /// <summary>
-        /// Gets the request builder for Mentions.
-        /// </summary>
-        /// <returns>The <see cref="IMessageMentionsCollectionRequestBuilder"/>.</returns>
-        IMessageMentionsCollectionRequestBuilder Mentions { get; }
     
         /// <summary>
         /// Gets the request builder for MessageCopy.
@@ -78,33 +72,25 @@ namespace Microsoft.Graph
         /// Gets the request builder for MessageCreateReply.
         /// </summary>
         /// <returns>The <see cref="IMessageCreateReplyRequestBuilder"/>.</returns>
-        IMessageCreateReplyRequestBuilder CreateReply(
-            Message Message = null,
-            string Comment = null);
+        IMessageCreateReplyRequestBuilder CreateReply();
 
         /// <summary>
         /// Gets the request builder for MessageCreateReplyAll.
         /// </summary>
         /// <returns>The <see cref="IMessageCreateReplyAllRequestBuilder"/>.</returns>
-        IMessageCreateReplyAllRequestBuilder CreateReplyAll(
-            Message Message = null,
-            string Comment = null);
+        IMessageCreateReplyAllRequestBuilder CreateReplyAll();
 
         /// <summary>
         /// Gets the request builder for MessageCreateForward.
         /// </summary>
         /// <returns>The <see cref="IMessageCreateForwardRequestBuilder"/>.</returns>
-        IMessageCreateForwardRequestBuilder CreateForward(
-            Message Message = null,
-            string Comment = null,
-            IEnumerable<Recipient> ToRecipients = null);
+        IMessageCreateForwardRequestBuilder CreateForward();
 
         /// <summary>
         /// Gets the request builder for MessageReply.
         /// </summary>
         /// <returns>The <see cref="IMessageReplyRequestBuilder"/>.</returns>
         IMessageReplyRequestBuilder Reply(
-            Message Message = null,
             string Comment = null);
 
         /// <summary>
@@ -112,7 +98,6 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IMessageReplyAllRequestBuilder"/>.</returns>
         IMessageReplyAllRequestBuilder ReplyAll(
-            Message Message = null,
             string Comment = null);
 
         /// <summary>
@@ -120,7 +105,6 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IMessageForwardRequestBuilder"/>.</returns>
         IMessageForwardRequestBuilder Forward(
-            Message Message = null,
             string Comment = null,
             IEnumerable<Recipient> ToRecipients = null);
 
@@ -129,12 +113,6 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IMessageSendRequestBuilder"/>.</returns>
         IMessageSendRequestBuilder Send();
-
-        /// <summary>
-        /// Gets the request builder for MessageUnsubscribe.
-        /// </summary>
-        /// <returns>The <see cref="IMessageUnsubscribeRequestBuilder"/>.</returns>
-        IMessageUnsubscribeRequestBuilder Unsubscribe();
     
     }
 }

@@ -35,10 +35,6 @@ namespace Microsoft.Graph
         /// <returns>The <see cref="IMessageRequestBuilder"/>.</returns>
         IMessageRequestBuilder this[string id] { get; }
 
-        /// <summary>
-        /// Gets the request builder for MessageDelta.
-        /// </summary>
-        /// <returns>The <see cref="IMessageDeltaRequestBuilder"/>.</returns>
-        IMessageDeltaRequestBuilder Delta();
+        
     }
 }

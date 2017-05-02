@@ -203,60 +203,6 @@ namespace Microsoft.Graph
         private void InitializeCollectionProperties(Organization organizationToInitialize)
         {
 
-            if (organizationToInitialize != null && organizationToInitialize.AdditionalData != null)
-            {
-
-                if (organizationToInitialize.Extensions != null && organizationToInitialize.Extensions.CurrentPage != null)
-                {
-                    organizationToInitialize.Extensions.AdditionalData = organizationToInitialize.AdditionalData;
-
-                    object nextPageLink;
-                    organizationToInitialize.AdditionalData.TryGetValue("extensions@odata.nextLink", out nextPageLink);
-                    var nextPageLinkString = nextPageLink as string;
-
-                    if (!string.IsNullOrEmpty(nextPageLinkString))
-                    {
-                        organizationToInitialize.Extensions.InitializeNextPageRequest(
-                            this.Client,
-                            nextPageLinkString);
-                    }
-                }
-
-                if (organizationToInitialize.DepOnboardingSettings != null && organizationToInitialize.DepOnboardingSettings.CurrentPage != null)
-                {
-                    organizationToInitialize.DepOnboardingSettings.AdditionalData = organizationToInitialize.AdditionalData;
-
-                    object nextPageLink;
-                    organizationToInitialize.AdditionalData.TryGetValue("depOnboardingSettings@odata.nextLink", out nextPageLink);
-                    var nextPageLinkString = nextPageLink as string;
-
-                    if (!string.IsNullOrEmpty(nextPageLinkString))
-                    {
-                        organizationToInitialize.DepOnboardingSettings.InitializeNextPageRequest(
-                            this.Client,
-                            nextPageLinkString);
-                    }
-                }
-
-                if (organizationToInitialize.AppleVolumePurchaseProgramTokens != null && organizationToInitialize.AppleVolumePurchaseProgramTokens.CurrentPage != null)
-                {
-                    organizationToInitialize.AppleVolumePurchaseProgramTokens.AdditionalData = organizationToInitialize.AdditionalData;
-
-                    object nextPageLink;
-                    organizationToInitialize.AdditionalData.TryGetValue("appleVolumePurchaseProgramTokens@odata.nextLink", out nextPageLink);
-                    var nextPageLinkString = nextPageLink as string;
-
-                    if (!string.IsNullOrEmpty(nextPageLinkString))
-                    {
-                        organizationToInitialize.AppleVolumePurchaseProgramTokens.InitializeNextPageRequest(
-                            this.Client,
-                            nextPageLinkString);
-                    }
-                }
-
-            }
-
-
         }
     }
 }

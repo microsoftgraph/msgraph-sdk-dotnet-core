@@ -22,18 +22,6 @@ namespace Microsoft.Graph
     {
     
         /// <summary>
-        /// Gets or sets classification.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "classification", Required = Newtonsoft.Json.Required.Default)]
-        public string Classification { get; set; }
-    
-        /// <summary>
-        /// Gets or sets created date time.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "createdDateTime", Required = Newtonsoft.Json.Required.Default)]
-        public DateTimeOffset? CreatedDateTime { get; set; }
-    
-        /// <summary>
         /// Gets or sets description.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "description", Required = Newtonsoft.Json.Required.Default)]
@@ -70,18 +58,6 @@ namespace Microsoft.Graph
         public string MailNickname { get; set; }
     
         /// <summary>
-        /// Gets or sets membership rule.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "membershipRule", Required = Newtonsoft.Json.Required.Default)]
-        public string MembershipRule { get; set; }
-    
-        /// <summary>
-        /// Gets or sets membership rule processing state.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "membershipRuleProcessingState", Required = Newtonsoft.Json.Required.Default)]
-        public string MembershipRuleProcessingState { get; set; }
-    
-        /// <summary>
         /// Gets or sets on premises last sync date time.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "onPremisesLastSyncDateTime", Required = Newtonsoft.Json.Required.Default)]
@@ -100,22 +76,10 @@ namespace Microsoft.Graph
         public bool? OnPremisesSyncEnabled { get; set; }
     
         /// <summary>
-        /// Gets or sets preferred language.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "preferredLanguage", Required = Newtonsoft.Json.Required.Default)]
-        public string PreferredLanguage { get; set; }
-    
-        /// <summary>
         /// Gets or sets proxy addresses.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "proxyAddresses", Required = Newtonsoft.Json.Required.Default)]
         public IEnumerable<string> ProxyAddresses { get; set; }
-    
-        /// <summary>
-        /// Gets or sets renewed date time.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "renewedDateTime", Required = Newtonsoft.Json.Required.Default)]
-        public DateTimeOffset? RenewedDateTime { get; set; }
     
         /// <summary>
         /// Gets or sets security enabled.
@@ -124,22 +88,10 @@ namespace Microsoft.Graph
         public bool? SecurityEnabled { get; set; }
     
         /// <summary>
-        /// Gets or sets theme.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "theme", Required = Newtonsoft.Json.Required.Default)]
-        public string Theme { get; set; }
-    
-        /// <summary>
         /// Gets or sets visibility.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "visibility", Required = Newtonsoft.Json.Required.Default)]
         public string Visibility { get; set; }
-    
-        /// <summary>
-        /// Gets or sets access type.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "accessType", Required = Newtonsoft.Json.Required.Default)]
-        public GroupAccessType? AccessType { get; set; }
     
         /// <summary>
         /// Gets or sets allow external senders.
@@ -152,12 +104,6 @@ namespace Microsoft.Graph
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "autoSubscribeNewMembers", Required = Newtonsoft.Json.Required.Default)]
         public bool? AutoSubscribeNewMembers { get; set; }
-    
-        /// <summary>
-        /// Gets or sets is favorite.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "isFavorite", Required = Newtonsoft.Json.Required.Default)]
-        public bool? IsFavorite { get; set; }
     
         /// <summary>
         /// Gets or sets is subscribed by mail.
@@ -196,24 +142,6 @@ namespace Microsoft.Graph
         public IGroupOwnersCollectionWithReferencesPage Owners { get; set; }
     
         /// <summary>
-        /// Gets or sets settings.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "settings", Required = Newtonsoft.Json.Required.Default)]
-        public IGroupSettingsCollectionPage Settings { get; set; }
-    
-        /// <summary>
-        /// Gets or sets endpoints.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "endpoints", Required = Newtonsoft.Json.Required.Default)]
-        public IGroupEndpointsCollectionPage Endpoints { get; set; }
-    
-        /// <summary>
-        /// Gets or sets extensions.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "extensions", Required = Newtonsoft.Json.Required.Default)]
-        public IGroupExtensionsCollectionPage Extensions { get; set; }
-    
-        /// <summary>
         /// Gets or sets threads.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "threads", Required = Newtonsoft.Json.Required.Default)]
@@ -250,12 +178,6 @@ namespace Microsoft.Graph
         public ProfilePhoto Photo { get; set; }
     
         /// <summary>
-        /// Gets or sets photos.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "photos", Required = Newtonsoft.Json.Required.Default)]
-        public IGroupPhotosCollectionPage Photos { get; set; }
-    
-        /// <summary>
         /// Gets or sets accepted senders.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "acceptedSenders", Required = Newtonsoft.Json.Required.Default)]
@@ -274,28 +196,10 @@ namespace Microsoft.Graph
         public Drive Drive { get; set; }
     
         /// <summary>
-        /// Gets or sets sharepoint.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "sharepoint", Required = Newtonsoft.Json.Required.Default)]
-        public SharePoint Sharepoint { get; set; }
-    
-        /// <summary>
-        /// Gets or sets plans.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "plans", Required = Newtonsoft.Json.Required.Default)]
-        public IGroupPlansCollectionWithReferencesPage Plans { get; set; }
-    
-        /// <summary>
         /// Gets or sets planner.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "planner", Required = Newtonsoft.Json.Required.Default)]
         public PlannerGroup Planner { get; set; }
-    
-        /// <summary>
-        /// Gets or sets notes.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "notes", Required = Newtonsoft.Json.Required.Default)]
-        public Notes Notes { get; set; }
     
     }
 }

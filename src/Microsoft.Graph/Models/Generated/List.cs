@@ -18,32 +18,8 @@ namespace Microsoft.Graph
     /// The type List.
     /// </summary>
     [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
-    public partial class List : BaseItem
+    public partial class List : Entity
     {
-    
-        /// <summary>
-        /// Gets or sets fields.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "fields", Required = Newtonsoft.Json.Required.Default)]
-        public IEnumerable<FieldDefinition> Fields { get; set; }
-    
-        /// <summary>
-        /// Gets or sets list.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "list", Required = Newtonsoft.Json.Required.Default)]
-        public ListInfo ListInfo { get; set; }
-    
-        /// <summary>
-        /// Gets or sets drive.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "drive", Required = Newtonsoft.Json.Required.Default)]
-        public Drive Drive { get; set; }
-    
-        /// <summary>
-        /// Gets or sets items.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "items", Required = Newtonsoft.Json.Required.Default)]
-        public IListItemsCollectionPage Items { get; set; }
     
     }
 }

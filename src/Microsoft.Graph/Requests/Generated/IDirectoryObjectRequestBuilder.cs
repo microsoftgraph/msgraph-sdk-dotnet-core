@@ -50,12 +50,6 @@ namespace Microsoft.Graph
         /// <returns>The <see cref="IDirectoryObjectGetMemberObjectsRequestBuilder"/>.</returns>
         IDirectoryObjectGetMemberObjectsRequestBuilder GetMemberObjects(
             bool? securityEnabledOnly = null);
-
-        /// <summary>
-        /// Gets the request builder for DirectoryObjectRestore.
-        /// </summary>
-        /// <returns>The <see cref="IDirectoryObjectRestoreRequestBuilder"/>.</returns>
-        IDirectoryObjectRestoreRequestBuilder Restore();
     
     }
 }

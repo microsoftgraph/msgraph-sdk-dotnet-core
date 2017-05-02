@@ -129,66 +129,6 @@ namespace Microsoft.Graph
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "verifiedDomains", Required = Newtonsoft.Json.Required.Default)]
         public IEnumerable<VerifiedDomain> VerifiedDomains { get; set; }
     
-        /// <summary>
-        /// Gets or sets apple push notification certificate setting.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "applePushNotificationCertificateSetting", Required = Newtonsoft.Json.Required.Default)]
-        public ApplePushNotificationCertificateSetting ApplePushNotificationCertificateSetting { get; set; }
-    
-        /// <summary>
-        /// Gets or sets mobile device management authority.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "mobileDeviceManagementAuthority", Required = Newtonsoft.Json.Required.Default)]
-        public MdmAuthority? MobileDeviceManagementAuthority { get; set; }
-    
-        /// <summary>
-        /// Gets or sets default device enrollment restrictions.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "defaultDeviceEnrollmentRestrictions", Required = Newtonsoft.Json.Required.Default)]
-        public DefaultDeviceEnrollmentRestrictions DefaultDeviceEnrollmentRestrictions { get; set; }
-    
-        /// <summary>
-        /// Gets or sets default device enrollment windows hello for business settings.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "defaultDeviceEnrollmentWindowsHelloForBusinessSettings", Required = Newtonsoft.Json.Required.Default)]
-        public DefaultDeviceEnrollmentWindowsHelloForBusinessSettings DefaultDeviceEnrollmentWindowsHelloForBusinessSettings { get; set; }
-    
-        /// <summary>
-        /// Gets or sets default device enrollment limit.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "defaultDeviceEnrollmentLimit", Required = Newtonsoft.Json.Required.Default)]
-        public Int32? DefaultDeviceEnrollmentLimit { get; set; }
-    
-        /// <summary>
-        /// Gets or sets intune brand.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "intuneBrand", Required = Newtonsoft.Json.Required.Default)]
-        public IntuneBrand IntuneBrand { get; set; }
-    
-        /// <summary>
-        /// Gets or sets certificate connector setting.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "certificateConnectorSetting", Required = Newtonsoft.Json.Required.Default)]
-        public CertificateConnectorSetting CertificateConnectorSetting { get; set; }
-    
-        /// <summary>
-        /// Gets or sets extensions.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "extensions", Required = Newtonsoft.Json.Required.Default)]
-        public IOrganizationExtensionsCollectionPage Extensions { get; set; }
-    
-        /// <summary>
-        /// Gets or sets dep onboarding settings.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "depOnboardingSettings", Required = Newtonsoft.Json.Required.Default)]
-        public IOrganizationDepOnboardingSettingsCollectionPage DepOnboardingSettings { get; set; }
-    
-        /// <summary>
-        /// Gets or sets apple volume purchase program tokens.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "appleVolumePurchaseProgramTokens", Required = Newtonsoft.Json.Required.Default)]
-        public IOrganizationAppleVolumePurchaseProgramTokensCollectionPage AppleVolumePurchaseProgramTokens { get; set; }
-    
     }
 }
 
