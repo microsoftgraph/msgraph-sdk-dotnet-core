@@ -16,32 +16,31 @@ namespace Microsoft.Graph.DotnetCore.Test.Requests.Functional
 
 
         //[Fact(Skip = "No CI set up for functional tests - add email addresses to run this test.")]
-        [Fact]
-        public async System.Threading.Tasks.Task UserGetMailtipsTestEnumFlags()
-        {
-            try
-            {
-                var emailAddresses = new List<string>();
-                emailAddresses.Add("katiej@MOD810997.onmicrosoft.com");
-                emailAddresses.Add("garretv@MOD810997.onmicrosoft.com");
-                emailAddresses.Add("annew@MOD810997.onmicrosoft.com");
+        //public async System.Threading.Tasks.Task UserGetMailtipsTestEnumFlags()
+        //{
+        //    try
+        //    {
+        //        var emailAddresses = new List<string>();
+        //        emailAddresses.Add("katiej@MOD810997.onmicrosoft.com");
+        //        emailAddresses.Add("garretv@MOD810997.onmicrosoft.com");
+        //        emailAddresses.Add("annew@MOD810997.onmicrosoft.com");
 
-                var mailTipsCollectionPage = await graphClient.Me.GetMailTips(emailAddresses, MailTipsType.AutomaticReplies |
-                                                                                              MailTipsType.CustomMailTip |
-                                                                                              MailTipsType.MaxMessageSize |
-                                                                                              MailTipsType.RecipientScope |
-                                                                                              MailTipsType.TotalMemberCount).Request().PostAsync();
+        //        var mailTipsCollectionPage = await graphClient.Me.GetMailTips(emailAddresses, MailTipsType.AutomaticReplies |
+        //                                                                                      MailTipsType.CustomMailTip |
+        //                                                                                      MailTipsType.MaxMessageSize |
+        //                                                                                      MailTipsType.RecipientScope |
+        //                                                                                      MailTipsType.TotalMemberCount).Request().PostAsync();
 
-                foreach (var mt in mailTipsCollectionPage)
-                {
-                    // All of the supplied users should have an email address.
-                    Assert.NotNull(mt.EmailAddress);
-                }
-            }
-            catch (Exception e)
-            {
-                Assert.True(false, "Something happened, check out a trace. Error code: " + e.Message);
-            }
-        }
+        //        foreach (var mt in mailTipsCollectionPage)
+        //        {
+        //            // All of the supplied users should have an email address.
+        //            Assert.NotNull(mt.EmailAddress);
+        //        }
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        Assert.True(false, "Something happened, check out a trace. Error code: " + e.Message);
+        //    }
+        //}
     }
 }
