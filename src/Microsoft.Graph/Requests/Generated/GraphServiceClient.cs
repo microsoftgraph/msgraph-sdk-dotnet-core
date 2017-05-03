@@ -22,14 +22,14 @@ namespace Microsoft.Graph
         public GraphServiceClient(
             IAuthenticationProvider authenticationProvider,
             IHttpProvider httpProvider = null)
-            : this("https://graph.microsoft.com/stagingv1.0", authenticationProvider, httpProvider)
+            : this("https://graph.microsoft.com/v1.0", authenticationProvider, httpProvider)
         {
         }
 
         /// <summary>
         /// Instantiates a new GraphServiceClient.
         /// </summary>
-        /// <param name="baseUrl">The base service URL. For example, "https://graph.microsoft.com/stagingv1.0".</param>
+        /// <param name="baseUrl">The base service URL. For example, "https://graph.microsoft.com/v1.0".</param>
         /// <param name="authenticationProvider">The <see cref="IAuthenticationProvider"/> for authenticating request messages.</param>
         /// <param name="httpProvider">The <see cref="IHttpProvider"/> for sending requests.</param>
         public GraphServiceClient(
