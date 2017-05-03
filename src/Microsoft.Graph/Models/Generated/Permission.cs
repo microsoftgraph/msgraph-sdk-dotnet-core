@@ -28,16 +28,16 @@ namespace Microsoft.Graph
         public IdentitySet GrantedTo { get; set; }
     
         /// <summary>
-        /// Gets or sets invitation.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "invitation", Required = Newtonsoft.Json.Required.Default)]
-        public SharingInvitation Invitation { get; set; }
-    
-        /// <summary>
         /// Gets or sets inherited from.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "inheritedFrom", Required = Newtonsoft.Json.Required.Default)]
         public ItemReference InheritedFrom { get; set; }
+    
+        /// <summary>
+        /// Gets or sets invitation.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "invitation", Required = Newtonsoft.Json.Required.Default)]
+        public SharingInvitation Invitation { get; set; }
     
         /// <summary>
         /// Gets or sets link.

@@ -23,12 +23,6 @@ namespace Microsoft.Graph
     {
     
         /// <summary>
-        /// Gets or sets uploadUrl.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "uploadUrl", Required = Newtonsoft.Json.Required.Default)]
-        public string UploadUrl { get; set; }
-    
-        /// <summary>
         /// Gets or sets expirationDateTime.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "expirationDateTime", Required = Newtonsoft.Json.Required.Default)]
@@ -39,6 +33,12 @@ namespace Microsoft.Graph
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "nextExpectedRanges", Required = Newtonsoft.Json.Required.Default)]
         public IEnumerable<string> NextExpectedRanges { get; set; }
+    
+        /// <summary>
+        /// Gets or sets uploadUrl.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "uploadUrl", Required = Newtonsoft.Json.Required.Default)]
+        public string UploadUrl { get; set; }
     
         /// <summary>
         /// Gets or sets additional data.

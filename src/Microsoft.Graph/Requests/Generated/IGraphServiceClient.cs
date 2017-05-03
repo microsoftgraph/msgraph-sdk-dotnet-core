@@ -26,6 +26,16 @@ namespace Microsoft.Graph
         IGraphServiceDevicesCollectionRequestBuilder Devices { get; }
     
         /// <summary>
+        /// Gets the GraphServiceDomains request builder.
+        /// </summary>
+        IGraphServiceDomainsCollectionRequestBuilder Domains { get; }
+    
+        /// <summary>
+        /// Gets the GraphServiceDomainDnsRecords request builder.
+        /// </summary>
+        IGraphServiceDomainDnsRecordsCollectionRequestBuilder DomainDnsRecords { get; }
+    
+        /// <summary>
         /// Gets the GraphServiceGroups request builder.
         /// </summary>
         IGraphServiceGroupsCollectionRequestBuilder Groups { get; }
@@ -56,6 +66,11 @@ namespace Microsoft.Graph
         IGraphServiceUsersCollectionRequestBuilder Users { get; }
     
         /// <summary>
+        /// Gets the GraphServiceContracts request builder.
+        /// </summary>
+        IGraphServiceContractsCollectionRequestBuilder Contracts { get; }
+    
+        /// <summary>
         /// Gets the GraphServiceDrives request builder.
         /// </summary>
         IGraphServiceDrivesCollectionRequestBuilder Drives { get; }
@@ -64,6 +79,11 @@ namespace Microsoft.Graph
         /// Gets the GraphServiceShares request builder.
         /// </summary>
         IGraphServiceSharesCollectionRequestBuilder Shares { get; }
+    
+        /// <summary>
+        /// Gets the GraphServiceSites request builder.
+        /// </summary>
+        IGraphServiceSitesCollectionRequestBuilder Sites { get; }
     
         /// <summary>
         /// Gets the GraphServiceWorkbooks request builder.

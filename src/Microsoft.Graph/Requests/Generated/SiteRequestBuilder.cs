@@ -15,7 +15,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type SiteRequestBuilder.
     /// </summary>
-    public partial class SiteRequestBuilder : EntityRequestBuilder, ISiteRequestBuilder
+    public partial class SiteRequestBuilder : BaseItemRequestBuilder, ISiteRequestBuilder
     {
 
         /// <summary>
@@ -47,6 +47,55 @@ namespace Microsoft.Graph
         public new ISiteRequest Request(IEnumerable<Option> options)
         {
             return new SiteRequest(this.RequestUrl, this.Client, options);
+        }
+    
+        /// <summary>
+        /// Gets the request builder for Drive.
+        /// </summary>
+        /// <returns>The <see cref="IDriveRequestBuilder"/>.</returns>
+        public IDriveRequestBuilder Drive
+        {
+            get
+            {
+                return new DriveRequestBuilder(this.AppendSegmentToRequestUrl("drive"), this.Client);
+            }
+        }
+
+        /// <summary>
+        /// Gets the request builder for Drives.
+        /// </summary>
+        /// <returns>The <see cref="ISiteDrivesCollectionRequestBuilder"/>.</returns>
+        public ISiteDrivesCollectionRequestBuilder Drives
+        {
+            get
+            {
+                return new SiteDrivesCollectionRequestBuilder(this.AppendSegmentToRequestUrl("drives"), this.Client);
+            }
+        }
+
+        /// <summary>
+        /// Gets the request builder for Sites.
+        /// </summary>
+        /// <returns>The <see cref="ISiteSitesCollectionRequestBuilder"/>.</returns>
+        public ISiteSitesCollectionRequestBuilder Sites
+        {
+            get
+            {
+                return new SiteSitesCollectionRequestBuilder(this.AppendSegmentToRequestUrl("sites"), this.Client);
+            }
+        }
+    
+        /// <summary>
+        /// Gets the request builder for SiteGetByPath.
+        /// </summary>
+        /// <returns>The <see cref="ISiteGetByPathRequestBuilder"/>.</returns>
+        public ISiteGetByPathRequestBuilder GetByPath(
+            string path = null)
+        {
+            return new SiteGetByPathRequestBuilder(
+                this.AppendSegmentToRequestUrl("microsoft.graph.getByPath"),
+                this.Client,
+                path);
         }
     
     }

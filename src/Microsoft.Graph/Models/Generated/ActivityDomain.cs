@@ -33,5 +33,10 @@ namespace Microsoft.Graph
         /// </summary>
         Personal = 2,
 	
+        /// <summary>
+        /// unrestricted
+        /// </summary>
+        Unrestricted = 3,
+	
     }
 }

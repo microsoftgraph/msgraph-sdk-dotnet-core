@@ -89,6 +89,12 @@ namespace Microsoft.Graph
         public ItemReference ParentReference { get; set; }
     
         /// <summary>
+        /// Gets or sets shared.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "shared", Required = Newtonsoft.Json.Required.Default)]
+        public Shared Shared { get; set; }
+    
+        /// <summary>
         /// Gets or sets sharepointIds.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "sharepointIds", Required = Newtonsoft.Json.Required.Default)]

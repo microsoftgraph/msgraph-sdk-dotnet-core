@@ -23,16 +23,16 @@ namespace Microsoft.Graph
     {
     
         /// <summary>
-        /// Gets or sets email.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "email", Required = Newtonsoft.Json.Required.Default)]
-        public string Email { get; set; }
-    
-        /// <summary>
         /// Gets or sets alias.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "alias", Required = Newtonsoft.Json.Required.Default)]
         public string Alias { get; set; }
+    
+        /// <summary>
+        /// Gets or sets email.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "email", Required = Newtonsoft.Json.Required.Default)]
+        public string Email { get; set; }
     
         /// <summary>
         /// Gets or sets objectId.

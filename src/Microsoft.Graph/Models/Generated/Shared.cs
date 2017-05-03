@@ -35,6 +35,18 @@ namespace Microsoft.Graph
         public string Scope { get; set; }
     
         /// <summary>
+        /// Gets or sets sharedBy.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "sharedBy", Required = Newtonsoft.Json.Required.Default)]
+        public IdentitySet SharedBy { get; set; }
+    
+        /// <summary>
+        /// Gets or sets sharedDateTime.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "sharedDateTime", Required = Newtonsoft.Json.Required.Default)]
+        public DateTimeOffset? SharedDateTime { get; set; }
+    
+        /// <summary>
         /// Gets or sets additional data.
         /// </summary>
         [JsonExtensionData(ReadData = true)]

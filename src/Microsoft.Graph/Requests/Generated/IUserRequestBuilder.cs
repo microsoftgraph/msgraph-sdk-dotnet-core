@@ -73,6 +73,12 @@ namespace Microsoft.Graph
         IUserOwnedObjectsCollectionWithReferencesRequestBuilder OwnedObjects { get; }
 
         /// <summary>
+        /// Gets the request builder for LicenseDetails.
+        /// </summary>
+        /// <returns>The <see cref="IUserLicenseDetailsCollectionRequestBuilder"/>.</returns>
+        IUserLicenseDetailsCollectionRequestBuilder LicenseDetails { get; }
+
+        /// <summary>
         /// Gets the request builder for Messages.
         /// </summary>
         /// <returns>The <see cref="IUserMessagesCollectionRequestBuilder"/>.</returns>
@@ -137,6 +143,12 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IProfilePhotoRequestBuilder"/>.</returns>
         IProfilePhotoRequestBuilder Photo { get; }
+
+        /// <summary>
+        /// Gets the request builder for Photos.
+        /// </summary>
+        /// <returns>The <see cref="IUserPhotosCollectionRequestBuilder"/>.</returns>
+        IUserPhotosCollectionRequestBuilder Photos { get; }
 
         /// <summary>
         /// Gets the request builder for Drive.

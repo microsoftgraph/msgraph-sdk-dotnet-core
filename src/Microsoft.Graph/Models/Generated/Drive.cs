@@ -18,7 +18,7 @@ namespace Microsoft.Graph
     /// The type Drive.
     /// </summary>
     [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
-    public partial class Drive : Entity
+    public partial class Drive : BaseItem
     {
     
         /// <summary>
@@ -40,22 +40,28 @@ namespace Microsoft.Graph
         public Quota Quota { get; set; }
     
         /// <summary>
+        /// Gets or sets share point ids.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "sharePointIds", Required = Newtonsoft.Json.Required.Default)]
+        public SharepointIds SharePointIds { get; set; }
+    
+        /// <summary>
         /// Gets or sets items.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "items", Required = Newtonsoft.Json.Required.Default)]
         public IDriveItemsCollectionPage Items { get; set; }
     
         /// <summary>
-        /// Gets or sets special.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "special", Required = Newtonsoft.Json.Required.Default)]
-        public IDriveSpecialCollectionPage Special { get; set; }
-    
-        /// <summary>
         /// Gets or sets root.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "root", Required = Newtonsoft.Json.Required.Default)]
         public DriveItem Root { get; set; }
+    
+        /// <summary>
+        /// Gets or sets special.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "special", Required = Newtonsoft.Json.Required.Default)]
+        public IDriveSpecialCollectionPage Special { get; set; }
     
     }
 }

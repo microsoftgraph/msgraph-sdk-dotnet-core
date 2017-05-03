@@ -18,56 +18,8 @@ namespace Microsoft.Graph
     /// The type Drive Item.
     /// </summary>
     [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
-    public partial class DriveItem : Entity
+    public partial class DriveItem : BaseItem
     {
-    
-        /// <summary>
-        /// Gets or sets created by.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "createdBy", Required = Newtonsoft.Json.Required.Default)]
-        public IdentitySet CreatedBy { get; set; }
-    
-        /// <summary>
-        /// Gets or sets created date time.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "createdDateTime", Required = Newtonsoft.Json.Required.Default)]
-        public DateTimeOffset? CreatedDateTime { get; set; }
-    
-        /// <summary>
-        /// Gets or sets description.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "description", Required = Newtonsoft.Json.Required.Default)]
-        public string Description { get; set; }
-    
-        /// <summary>
-        /// Gets or sets e tag.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "eTag", Required = Newtonsoft.Json.Required.Default)]
-        public string ETag { get; set; }
-    
-        /// <summary>
-        /// Gets or sets last modified by.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "lastModifiedBy", Required = Newtonsoft.Json.Required.Default)]
-        public IdentitySet LastModifiedBy { get; set; }
-    
-        /// <summary>
-        /// Gets or sets last modified date time.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "lastModifiedDateTime", Required = Newtonsoft.Json.Required.Default)]
-        public DateTimeOffset? LastModifiedDateTime { get; set; }
-    
-        /// <summary>
-        /// Gets or sets name.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "name", Required = Newtonsoft.Json.Required.Default)]
-        public string Name { get; set; }
-    
-        /// <summary>
-        /// Gets or sets web url.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "webUrl", Required = Newtonsoft.Json.Required.Default)]
-        public string WebUrl { get; set; }
     
         /// <summary>
         /// Gets or sets audio.
@@ -130,12 +82,6 @@ namespace Microsoft.Graph
         public Package Package { get; set; }
     
         /// <summary>
-        /// Gets or sets parent reference.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "parentReference", Required = Newtonsoft.Json.Required.Default)]
-        public ItemReference ParentReference { get; set; }
-    
-        /// <summary>
         /// Gets or sets photo.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "photo", Required = Newtonsoft.Json.Required.Default)]
@@ -196,24 +142,6 @@ namespace Microsoft.Graph
         public string WebDavUrl { get; set; }
     
         /// <summary>
-        /// Gets or sets created by user.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "createdByUser", Required = Newtonsoft.Json.Required.Default)]
-        public User CreatedByUser { get; set; }
-    
-        /// <summary>
-        /// Gets or sets workbook.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "workbook", Required = Newtonsoft.Json.Required.Default)]
-        public Workbook Workbook { get; set; }
-    
-        /// <summary>
-        /// Gets or sets last modified by user.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "lastModifiedByUser", Required = Newtonsoft.Json.Required.Default)]
-        public User LastModifiedByUser { get; set; }
-    
-        /// <summary>
         /// Gets or sets children.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "children", Required = Newtonsoft.Json.Required.Default)]
@@ -230,6 +158,12 @@ namespace Microsoft.Graph
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "thumbnails", Required = Newtonsoft.Json.Required.Default)]
         public IDriveItemThumbnailsCollectionPage Thumbnails { get; set; }
+    
+        /// <summary>
+        /// Gets or sets workbook.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "workbook", Required = Newtonsoft.Json.Required.Default)]
+        public Workbook Workbook { get; set; }
     
     }
 }

@@ -170,6 +170,18 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
+        /// Gets the request builder for Photos.
+        /// </summary>
+        /// <returns>The <see cref="IGroupPhotosCollectionRequestBuilder"/>.</returns>
+        public IGroupPhotosCollectionRequestBuilder Photos
+        {
+            get
+            {
+                return new GroupPhotosCollectionRequestBuilder(this.AppendSegmentToRequestUrl("photos"), this.Client);
+            }
+        }
+
+        /// <summary>
         /// Gets the request builder for AcceptedSenders.
         /// </summary>
         /// <returns>The <see cref="IGroupAcceptedSendersCollectionRequestBuilder"/>.</returns>
@@ -202,6 +214,30 @@ namespace Microsoft.Graph
             get
             {
                 return new DriveRequestBuilder(this.AppendSegmentToRequestUrl("drive"), this.Client);
+            }
+        }
+
+        /// <summary>
+        /// Gets the request builder for Drives.
+        /// </summary>
+        /// <returns>The <see cref="IGroupDrivesCollectionRequestBuilder"/>.</returns>
+        public IGroupDrivesCollectionRequestBuilder Drives
+        {
+            get
+            {
+                return new GroupDrivesCollectionRequestBuilder(this.AppendSegmentToRequestUrl("drives"), this.Client);
+            }
+        }
+
+        /// <summary>
+        /// Gets the request builder for Sites.
+        /// </summary>
+        /// <returns>The <see cref="IGroupSitesCollectionRequestBuilder"/>.</returns>
+        public IGroupSitesCollectionRequestBuilder Sites
+        {
+            get
+            {
+                return new GroupSitesCollectionRequestBuilder(this.AppendSegmentToRequestUrl("sites"), this.Client);
             }
         }
 

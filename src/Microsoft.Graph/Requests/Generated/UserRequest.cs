@@ -302,6 +302,22 @@ namespace Microsoft.Graph
                     }
                 }
 
+                if (userToInitialize.LicenseDetails != null && userToInitialize.LicenseDetails.CurrentPage != null)
+                {
+                    userToInitialize.LicenseDetails.AdditionalData = userToInitialize.AdditionalData;
+
+                    object nextPageLink;
+                    userToInitialize.AdditionalData.TryGetValue("licenseDetails@odata.nextLink", out nextPageLink);
+                    var nextPageLinkString = nextPageLink as string;
+
+                    if (!string.IsNullOrEmpty(nextPageLinkString))
+                    {
+                        userToInitialize.LicenseDetails.InitializeNextPageRequest(
+                            this.Client,
+                            nextPageLinkString);
+                    }
+                }
+
                 if (userToInitialize.Messages != null && userToInitialize.Messages.CurrentPage != null)
                 {
                     userToInitialize.Messages.AdditionalData = userToInitialize.AdditionalData;
@@ -425,6 +441,22 @@ namespace Microsoft.Graph
                     if (!string.IsNullOrEmpty(nextPageLinkString))
                     {
                         userToInitialize.ContactFolders.InitializeNextPageRequest(
+                            this.Client,
+                            nextPageLinkString);
+                    }
+                }
+
+                if (userToInitialize.Photos != null && userToInitialize.Photos.CurrentPage != null)
+                {
+                    userToInitialize.Photos.AdditionalData = userToInitialize.AdditionalData;
+
+                    object nextPageLink;
+                    userToInitialize.AdditionalData.TryGetValue("photos@odata.nextLink", out nextPageLink);
+                    var nextPageLinkString = nextPageLink as string;
+
+                    if (!string.IsNullOrEmpty(nextPageLinkString))
+                    {
+                        userToInitialize.Photos.InitializeNextPageRequest(
                             this.Client,
                             nextPageLinkString);
                     }

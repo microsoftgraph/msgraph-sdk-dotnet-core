@@ -35,6 +35,10 @@ namespace Microsoft.Graph
         /// <returns>The <see cref="IGroupRequestBuilder"/>.</returns>
         IGroupRequestBuilder this[string id] { get; }
 
-        
+        /// <summary>
+        /// Gets the request builder for GroupDelta.
+        /// </summary>
+        /// <returns>The <see cref="IGroupDeltaRequestBuilder"/>.</returns>
+        IGroupDeltaRequestBuilder Delta();
     }
 }

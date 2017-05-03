@@ -63,6 +63,28 @@ namespace Microsoft.Graph
         }
     
         /// <summary>
+        /// Gets the GraphServiceDomains request builder.
+        /// </summary>
+        public IGraphServiceDomainsCollectionRequestBuilder Domains
+        {
+            get
+            {
+                return new GraphServiceDomainsCollectionRequestBuilder(this.BaseUrl + "/domains", this);
+            }
+        }
+    
+        /// <summary>
+        /// Gets the GraphServiceDomainDnsRecords request builder.
+        /// </summary>
+        public IGraphServiceDomainDnsRecordsCollectionRequestBuilder DomainDnsRecords
+        {
+            get
+            {
+                return new GraphServiceDomainDnsRecordsCollectionRequestBuilder(this.BaseUrl + "/domainDnsRecords", this);
+            }
+        }
+    
+        /// <summary>
         /// Gets the GraphServiceGroups request builder.
         /// </summary>
         public IGraphServiceGroupsCollectionRequestBuilder Groups
@@ -129,6 +151,17 @@ namespace Microsoft.Graph
         }
     
         /// <summary>
+        /// Gets the GraphServiceContracts request builder.
+        /// </summary>
+        public IGraphServiceContractsCollectionRequestBuilder Contracts
+        {
+            get
+            {
+                return new GraphServiceContractsCollectionRequestBuilder(this.BaseUrl + "/contracts", this);
+            }
+        }
+    
+        /// <summary>
         /// Gets the GraphServiceDrives request builder.
         /// </summary>
         public IGraphServiceDrivesCollectionRequestBuilder Drives
@@ -147,6 +180,17 @@ namespace Microsoft.Graph
             get
             {
                 return new GraphServiceSharesCollectionRequestBuilder(this.BaseUrl + "/shares", this);
+            }
+        }
+    
+        /// <summary>
+        /// Gets the GraphServiceSites request builder.
+        /// </summary>
+        public IGraphServiceSitesCollectionRequestBuilder Sites
+        {
+            get
+            {
+                return new GraphServiceSitesCollectionRequestBuilder(this.BaseUrl + "/sites", this);
             }
         }
     

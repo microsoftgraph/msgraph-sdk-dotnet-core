@@ -15,7 +15,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type SharedDriveItemRequestBuilder.
     /// </summary>
-    public partial class SharedDriveItemRequestBuilder : EntityRequestBuilder, ISharedDriveItemRequestBuilder
+    public partial class SharedDriveItemRequestBuilder : BaseItemRequestBuilder, ISharedDriveItemRequestBuilder
     {
 
         /// <summary>
@@ -50,14 +50,14 @@ namespace Microsoft.Graph
         }
     
         /// <summary>
-        /// Gets the request builder for Root.
+        /// Gets the request builder for DriveItem.
         /// </summary>
         /// <returns>The <see cref="IDriveItemRequestBuilder"/>.</returns>
-        public IDriveItemRequestBuilder Root
+        public IDriveItemRequestBuilder DriveItem
         {
             get
             {
-                return new DriveItemRequestBuilder(this.AppendSegmentToRequestUrl("root"), this.Client);
+                return new DriveItemRequestBuilder(this.AppendSegmentToRequestUrl("driveItem"), this.Client);
             }
         }
 
@@ -70,6 +70,30 @@ namespace Microsoft.Graph
             get
             {
                 return new SharedDriveItemItemsCollectionRequestBuilder(this.AppendSegmentToRequestUrl("items"), this.Client);
+            }
+        }
+
+        /// <summary>
+        /// Gets the request builder for Root.
+        /// </summary>
+        /// <returns>The <see cref="IDriveItemRequestBuilder"/>.</returns>
+        public IDriveItemRequestBuilder Root
+        {
+            get
+            {
+                return new DriveItemRequestBuilder(this.AppendSegmentToRequestUrl("root"), this.Client);
+            }
+        }
+
+        /// <summary>
+        /// Gets the request builder for Site.
+        /// </summary>
+        /// <returns>The <see cref="ISiteRequestBuilder"/>.</returns>
+        public ISiteRequestBuilder Site
+        {
+            get
+            {
+                return new SiteRequestBuilder(this.AppendSegmentToRequestUrl("site"), this.Client);
             }
         }
     

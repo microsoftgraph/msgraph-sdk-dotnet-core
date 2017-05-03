@@ -15,7 +15,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The interface ISharedDriveItemRequestBuilder.
     /// </summary>
-    public partial interface ISharedDriveItemRequestBuilder : IEntityRequestBuilder
+    public partial interface ISharedDriveItemRequestBuilder : IBaseItemRequestBuilder
     {
         /// <summary>
         /// Builds the request.
@@ -31,16 +31,28 @@ namespace Microsoft.Graph
         new ISharedDriveItemRequest Request(IEnumerable<Option> options);
     
         /// <summary>
-        /// Gets the request builder for Root.
+        /// Gets the request builder for DriveItem.
         /// </summary>
         /// <returns>The <see cref="IDriveItemRequestBuilder"/>.</returns>
-        IDriveItemRequestBuilder Root { get; }
+        IDriveItemRequestBuilder DriveItem { get; }
 
         /// <summary>
         /// Gets the request builder for Items.
         /// </summary>
         /// <returns>The <see cref="ISharedDriveItemItemsCollectionRequestBuilder"/>.</returns>
         ISharedDriveItemItemsCollectionRequestBuilder Items { get; }
+
+        /// <summary>
+        /// Gets the request builder for Root.
+        /// </summary>
+        /// <returns>The <see cref="IDriveItemRequestBuilder"/>.</returns>
+        IDriveItemRequestBuilder Root { get; }
+
+        /// <summary>
+        /// Gets the request builder for Site.
+        /// </summary>
+        /// <returns>The <see cref="ISiteRequestBuilder"/>.</returns>
+        ISiteRequestBuilder Site { get; }
     
     }
 }

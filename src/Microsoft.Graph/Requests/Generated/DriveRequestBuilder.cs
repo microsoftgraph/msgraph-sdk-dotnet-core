@@ -15,7 +15,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type DriveRequestBuilder.
     /// </summary>
-    public partial class DriveRequestBuilder : EntityRequestBuilder, IDriveRequestBuilder
+    public partial class DriveRequestBuilder : BaseItemRequestBuilder, IDriveRequestBuilder
     {
 
         /// <summary>
@@ -62,18 +62,6 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Gets the request builder for Special.
-        /// </summary>
-        /// <returns>The <see cref="IDriveSpecialCollectionRequestBuilder"/>.</returns>
-        public IDriveSpecialCollectionRequestBuilder Special
-        {
-            get
-            {
-                return new DriveSpecialCollectionRequestBuilder(this.AppendSegmentToRequestUrl("special"), this.Client);
-            }
-        }
-
-        /// <summary>
         /// Gets the request builder for Root.
         /// </summary>
         /// <returns>The <see cref="IDriveItemRequestBuilder"/>.</returns>
@@ -84,7 +72,30 @@ namespace Microsoft.Graph
                 return new DriveItemRequestBuilder(this.AppendSegmentToRequestUrl("root"), this.Client);
             }
         }
+
+        /// <summary>
+        /// Gets the request builder for Special.
+        /// </summary>
+        /// <returns>The <see cref="IDriveSpecialCollectionRequestBuilder"/>.</returns>
+        public IDriveSpecialCollectionRequestBuilder Special
+        {
+            get
+            {
+                return new DriveSpecialCollectionRequestBuilder(this.AppendSegmentToRequestUrl("special"), this.Client);
+            }
+        }
     
+        /// <summary>
+        /// Gets the request builder for DriveRecent.
+        /// </summary>
+        /// <returns>The <see cref="IDriveRecentRequestBuilder"/>.</returns>
+        public IDriveRecentRequestBuilder Recent()
+        {
+            return new DriveRecentRequestBuilder(
+                this.AppendSegmentToRequestUrl("microsoft.graph.recent"),
+                this.Client);
+        }
+
         /// <summary>
         /// Gets the request builder for DriveSearch.
         /// </summary>
@@ -96,17 +107,6 @@ namespace Microsoft.Graph
                 this.AppendSegmentToRequestUrl("microsoft.graph.search"),
                 this.Client,
                 q);
-        }
-
-        /// <summary>
-        /// Gets the request builder for DriveRecent.
-        /// </summary>
-        /// <returns>The <see cref="IDriveRecentRequestBuilder"/>.</returns>
-        public IDriveRecentRequestBuilder Recent()
-        {
-            return new DriveRecentRequestBuilder(
-                this.AppendSegmentToRequestUrl("microsoft.graph.recent"),
-                this.Client);
         }
 
         /// <summary>

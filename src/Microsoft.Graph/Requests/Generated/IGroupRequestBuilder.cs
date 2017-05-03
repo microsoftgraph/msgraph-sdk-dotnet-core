@@ -91,6 +91,12 @@ namespace Microsoft.Graph
         IProfilePhotoRequestBuilder Photo { get; }
 
         /// <summary>
+        /// Gets the request builder for Photos.
+        /// </summary>
+        /// <returns>The <see cref="IGroupPhotosCollectionRequestBuilder"/>.</returns>
+        IGroupPhotosCollectionRequestBuilder Photos { get; }
+
+        /// <summary>
         /// Gets the request builder for AcceptedSenders.
         /// </summary>
         /// <returns>The <see cref="IGroupAcceptedSendersCollectionRequestBuilder"/>.</returns>
@@ -107,6 +113,18 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IDriveRequestBuilder"/>.</returns>
         IDriveRequestBuilder Drive { get; }
+
+        /// <summary>
+        /// Gets the request builder for Drives.
+        /// </summary>
+        /// <returns>The <see cref="IGroupDrivesCollectionRequestBuilder"/>.</returns>
+        IGroupDrivesCollectionRequestBuilder Drives { get; }
+
+        /// <summary>
+        /// Gets the request builder for Sites.
+        /// </summary>
+        /// <returns>The <see cref="IGroupSitesCollectionRequestBuilder"/>.</returns>
+        IGroupSitesCollectionRequestBuilder Sites { get; }
 
         /// <summary>
         /// Gets the request builder for Planner.

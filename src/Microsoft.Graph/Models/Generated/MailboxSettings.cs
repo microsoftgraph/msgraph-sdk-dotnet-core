@@ -29,6 +29,12 @@ namespace Microsoft.Graph
         public AutomaticRepliesSetting AutomaticRepliesSetting { get; set; }
     
         /// <summary>
+        /// Gets or sets archiveFolder.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "archiveFolder", Required = Newtonsoft.Json.Required.Default)]
+        public string ArchiveFolder { get; set; }
+    
+        /// <summary>
         /// Gets or sets timeZone.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "timeZone", Required = Newtonsoft.Json.Required.Default)]

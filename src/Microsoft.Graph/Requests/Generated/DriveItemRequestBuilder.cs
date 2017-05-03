@@ -15,7 +15,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type DriveItemRequestBuilder.
     /// </summary>
-    public partial class DriveItemRequestBuilder : EntityRequestBuilder, IDriveItemRequestBuilder
+    public partial class DriveItemRequestBuilder : BaseItemRequestBuilder, IDriveItemRequestBuilder
     {
 
         /// <summary>
@@ -49,42 +49,6 @@ namespace Microsoft.Graph
             return new DriveItemRequest(this.RequestUrl, this.Client, options);
         }
     
-        /// <summary>
-        /// Gets the request builder for CreatedByUser.
-        /// </summary>
-        /// <returns>The <see cref="IUserWithReferenceRequestBuilder"/>.</returns>
-        public IUserWithReferenceRequestBuilder CreatedByUser
-        {
-            get
-            {
-                return new UserWithReferenceRequestBuilder(this.AppendSegmentToRequestUrl("createdByUser"), this.Client);
-            }
-        }
-
-        /// <summary>
-        /// Gets the request builder for Workbook.
-        /// </summary>
-        /// <returns>The <see cref="IWorkbookRequestBuilder"/>.</returns>
-        public IWorkbookRequestBuilder Workbook
-        {
-            get
-            {
-                return new WorkbookRequestBuilder(this.AppendSegmentToRequestUrl("workbook"), this.Client);
-            }
-        }
-
-        /// <summary>
-        /// Gets the request builder for LastModifiedByUser.
-        /// </summary>
-        /// <returns>The <see cref="IUserWithReferenceRequestBuilder"/>.</returns>
-        public IUserWithReferenceRequestBuilder LastModifiedByUser
-        {
-            get
-            {
-                return new UserWithReferenceRequestBuilder(this.AppendSegmentToRequestUrl("lastModifiedByUser"), this.Client);
-            }
-        }
-
         /// <summary>
         /// Gets the request builder for Children.
         /// </summary>
@@ -120,6 +84,18 @@ namespace Microsoft.Graph
                 return new DriveItemThumbnailsCollectionRequestBuilder(this.AppendSegmentToRequestUrl("thumbnails"), this.Client);
             }
         }
+
+        /// <summary>
+        /// Gets the request builder for Workbook.
+        /// </summary>
+        /// <returns>The <see cref="IWorkbookRequestBuilder"/>.</returns>
+        public IWorkbookRequestBuilder Workbook
+        {
+            get
+            {
+                return new WorkbookRequestBuilder(this.AppendSegmentToRequestUrl("workbook"), this.Client);
+            }
+        }
     
         /// <summary>
         /// Gets the request builder for Content.
@@ -134,18 +110,33 @@ namespace Microsoft.Graph
         }
     
         /// <summary>
+        /// Gets the request builder for DriveItemCopy.
+        /// </summary>
+        /// <returns>The <see cref="IDriveItemCopyRequestBuilder"/>.</returns>
+        public IDriveItemCopyRequestBuilder Copy(
+            string name = null,
+            ItemReference parentReference = null)
+        {
+            return new DriveItemCopyRequestBuilder(
+                this.AppendSegmentToRequestUrl("microsoft.graph.copy"),
+                this.Client,
+                name,
+                parentReference);
+        }
+
+        /// <summary>
         /// Gets the request builder for DriveItemCreateLink.
         /// </summary>
         /// <returns>The <see cref="IDriveItemCreateLinkRequestBuilder"/>.</returns>
         public IDriveItemCreateLinkRequestBuilder CreateLink(
-            string type,
-            string scope = null)
+            string scope = null,
+            string type = null)
         {
             return new DriveItemCreateLinkRequestBuilder(
                 this.AppendSegmentToRequestUrl("microsoft.graph.createLink"),
                 this.Client,
-                type,
-                scope);
+                scope,
+                type);
         }
 
         /// <summary>
@@ -166,48 +157,33 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IDriveItemInviteRequestBuilder"/>.</returns>
         public IDriveItemInviteRequestBuilder Invite(
-            IEnumerable<DriveRecipient> recipients,
+            string message = null,
+            IEnumerable<DriveRecipient> recipients = null,
             bool? requireSignIn = null,
             IEnumerable<string> roles = null,
-            bool? sendInvitation = null,
-            string message = null)
+            bool? sendInvitation = null)
         {
             return new DriveItemInviteRequestBuilder(
                 this.AppendSegmentToRequestUrl("microsoft.graph.invite"),
                 this.Client,
+                message,
                 recipients,
                 requireSignIn,
                 roles,
-                sendInvitation,
-                message);
+                sendInvitation);
         }
 
         /// <summary>
-        /// Gets the request builder for DriveItemCopy.
+        /// Gets the request builder for DriveItemDelta.
         /// </summary>
-        /// <returns>The <see cref="IDriveItemCopyRequestBuilder"/>.</returns>
-        public IDriveItemCopyRequestBuilder Copy(
-            string name = null,
-            ItemReference parentReference = null)
+        /// <returns>The <see cref="IDriveItemDeltaRequestBuilder"/>.</returns>
+        public IDriveItemDeltaRequestBuilder Delta(
+            string token = null)
         {
-            return new DriveItemCopyRequestBuilder(
-                this.AppendSegmentToRequestUrl("microsoft.graph.copy"),
+            return new DriveItemDeltaRequestBuilder(
+                this.AppendSegmentToRequestUrl("microsoft.graph.delta"),
                 this.Client,
-                name,
-                parentReference);
-        }
-
-        /// <summary>
-        /// Gets the request builder for DriveItemSearch.
-        /// </summary>
-        /// <returns>The <see cref="IDriveItemSearchRequestBuilder"/>.</returns>
-        public IDriveItemSearchRequestBuilder Search(
-            string q = null)
-        {
-            return new DriveItemSearchRequestBuilder(
-                this.AppendSegmentToRequestUrl("microsoft.graph.search"),
-                this.Client,
-                q);
+                token);
         }
 
         /// <summary>
@@ -222,16 +198,16 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Gets the request builder for DriveItemDelta.
+        /// Gets the request builder for DriveItemSearch.
         /// </summary>
-        /// <returns>The <see cref="IDriveItemDeltaRequestBuilder"/>.</returns>
-        public IDriveItemDeltaRequestBuilder Delta(
-            string token = null)
+        /// <returns>The <see cref="IDriveItemSearchRequestBuilder"/>.</returns>
+        public IDriveItemSearchRequestBuilder Search(
+            string q = null)
         {
-            return new DriveItemDeltaRequestBuilder(
-                this.AppendSegmentToRequestUrl("microsoft.graph.delta"),
+            return new DriveItemSearchRequestBuilder(
+                this.AppendSegmentToRequestUrl("microsoft.graph.search"),
                 this.Client,
-                token);
+                q);
         }
     
     }

@@ -15,7 +15,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The interface IDriveRequestBuilder.
     /// </summary>
-    public partial interface IDriveRequestBuilder : IEntityRequestBuilder
+    public partial interface IDriveRequestBuilder : IBaseItemRequestBuilder
     {
         /// <summary>
         /// Builds the request.
@@ -37,29 +37,29 @@ namespace Microsoft.Graph
         IDriveItemsCollectionRequestBuilder Items { get; }
 
         /// <summary>
-        /// Gets the request builder for Special.
-        /// </summary>
-        /// <returns>The <see cref="IDriveSpecialCollectionRequestBuilder"/>.</returns>
-        IDriveSpecialCollectionRequestBuilder Special { get; }
-
-        /// <summary>
         /// Gets the request builder for Root.
         /// </summary>
         /// <returns>The <see cref="IDriveItemRequestBuilder"/>.</returns>
         IDriveItemRequestBuilder Root { get; }
+
+        /// <summary>
+        /// Gets the request builder for Special.
+        /// </summary>
+        /// <returns>The <see cref="IDriveSpecialCollectionRequestBuilder"/>.</returns>
+        IDriveSpecialCollectionRequestBuilder Special { get; }
     
+        /// <summary>
+        /// Gets the request builder for DriveRecent.
+        /// </summary>
+        /// <returns>The <see cref="IDriveRecentRequestBuilder"/>.</returns>
+        IDriveRecentRequestBuilder Recent();
+
         /// <summary>
         /// Gets the request builder for DriveSearch.
         /// </summary>
         /// <returns>The <see cref="IDriveSearchRequestBuilder"/>.</returns>
         IDriveSearchRequestBuilder Search(
             string q = null);
-
-        /// <summary>
-        /// Gets the request builder for DriveRecent.
-        /// </summary>
-        /// <returns>The <see cref="IDriveRecentRequestBuilder"/>.</returns>
-        IDriveRecentRequestBuilder Recent();
 
         /// <summary>
         /// Gets the request builder for DriveSharedWithMe.

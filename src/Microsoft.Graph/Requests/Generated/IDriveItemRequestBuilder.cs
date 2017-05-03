@@ -15,7 +15,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The interface IDriveItemRequestBuilder.
     /// </summary>
-    public partial interface IDriveItemRequestBuilder : IEntityRequestBuilder
+    public partial interface IDriveItemRequestBuilder : IBaseItemRequestBuilder
     {
         /// <summary>
         /// Builds the request.
@@ -30,24 +30,6 @@ namespace Microsoft.Graph
         /// <returns>The built request.</returns>
         new IDriveItemRequest Request(IEnumerable<Option> options);
     
-        /// <summary>
-        /// Gets the request builder for CreatedByUser.
-        /// </summary>
-        /// <returns>The <see cref="IUserWithReferenceRequestBuilder"/>.</returns>
-        IUserWithReferenceRequestBuilder CreatedByUser { get; }
-
-        /// <summary>
-        /// Gets the request builder for Workbook.
-        /// </summary>
-        /// <returns>The <see cref="IWorkbookRequestBuilder"/>.</returns>
-        IWorkbookRequestBuilder Workbook { get; }
-
-        /// <summary>
-        /// Gets the request builder for LastModifiedByUser.
-        /// </summary>
-        /// <returns>The <see cref="IUserWithReferenceRequestBuilder"/>.</returns>
-        IUserWithReferenceRequestBuilder LastModifiedByUser { get; }
-
         /// <summary>
         /// Gets the request builder for Children.
         /// </summary>
@@ -65,6 +47,12 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IDriveItemThumbnailsCollectionRequestBuilder"/>.</returns>
         IDriveItemThumbnailsCollectionRequestBuilder Thumbnails { get; }
+
+        /// <summary>
+        /// Gets the request builder for Workbook.
+        /// </summary>
+        /// <returns>The <see cref="IWorkbookRequestBuilder"/>.</returns>
+        IWorkbookRequestBuilder Workbook { get; }
     
         /// <summary>
         /// Gets the request builder for Content.
@@ -73,12 +61,20 @@ namespace Microsoft.Graph
         IDriveItemContentRequestBuilder Content { get; }
     
         /// <summary>
+        /// Gets the request builder for DriveItemCopy.
+        /// </summary>
+        /// <returns>The <see cref="IDriveItemCopyRequestBuilder"/>.</returns>
+        IDriveItemCopyRequestBuilder Copy(
+            string name = null,
+            ItemReference parentReference = null);
+
+        /// <summary>
         /// Gets the request builder for DriveItemCreateLink.
         /// </summary>
         /// <returns>The <see cref="IDriveItemCreateLinkRequestBuilder"/>.</returns>
         IDriveItemCreateLinkRequestBuilder CreateLink(
-            string type,
-            string scope = null);
+            string scope = null,
+            string type = null);
 
         /// <summary>
         /// Gets the request builder for DriveItemCreateUploadSession.
@@ -92,26 +88,18 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IDriveItemInviteRequestBuilder"/>.</returns>
         IDriveItemInviteRequestBuilder Invite(
-            IEnumerable<DriveRecipient> recipients,
+            string message = null,
+            IEnumerable<DriveRecipient> recipients = null,
             bool? requireSignIn = null,
             IEnumerable<string> roles = null,
-            bool? sendInvitation = null,
-            string message = null);
+            bool? sendInvitation = null);
 
         /// <summary>
-        /// Gets the request builder for DriveItemCopy.
+        /// Gets the request builder for DriveItemDelta.
         /// </summary>
-        /// <returns>The <see cref="IDriveItemCopyRequestBuilder"/>.</returns>
-        IDriveItemCopyRequestBuilder Copy(
-            string name = null,
-            ItemReference parentReference = null);
-
-        /// <summary>
-        /// Gets the request builder for DriveItemSearch.
-        /// </summary>
-        /// <returns>The <see cref="IDriveItemSearchRequestBuilder"/>.</returns>
-        IDriveItemSearchRequestBuilder Search(
-            string q = null);
+        /// <returns>The <see cref="IDriveItemDeltaRequestBuilder"/>.</returns>
+        IDriveItemDeltaRequestBuilder Delta(
+            string token = null);
 
         /// <summary>
         /// Gets the request builder for DriveItemDelta.
@@ -120,11 +108,11 @@ namespace Microsoft.Graph
         IDriveItemDeltaRequestBuilder Delta();
 
         /// <summary>
-        /// Gets the request builder for DriveItemDelta.
+        /// Gets the request builder for DriveItemSearch.
         /// </summary>
-        /// <returns>The <see cref="IDriveItemDeltaRequestBuilder"/>.</returns>
-        IDriveItemDeltaRequestBuilder Delta(
-            string token = null);
+        /// <returns>The <see cref="IDriveItemSearchRequestBuilder"/>.</returns>
+        IDriveItemSearchRequestBuilder Search(
+            string q = null);
     
     }
 }

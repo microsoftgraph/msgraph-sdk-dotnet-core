@@ -29,16 +29,16 @@ namespace Microsoft.Graph
         public string Crc32Hash { get; set; }
     
         /// <summary>
-        /// Gets or sets sha1Hash.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "sha1Hash", Required = Newtonsoft.Json.Required.Default)]
-        public string Sha1Hash { get; set; }
-    
-        /// <summary>
         /// Gets or sets quickXorHash.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "quickXorHash", Required = Newtonsoft.Json.Required.Default)]
         public string QuickXorHash { get; set; }
+    
+        /// <summary>
+        /// Gets or sets sha1Hash.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "sha1Hash", Required = Newtonsoft.Json.Required.Default)]
+        public string Sha1Hash { get; set; }
     
         /// <summary>
         /// Gets or sets additional data.

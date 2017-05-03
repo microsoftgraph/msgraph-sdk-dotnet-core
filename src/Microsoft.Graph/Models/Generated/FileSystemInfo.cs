@@ -29,6 +29,12 @@ namespace Microsoft.Graph
         public DateTimeOffset? CreatedDateTime { get; set; }
     
         /// <summary>
+        /// Gets or sets lastAccessedDateTime.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "lastAccessedDateTime", Required = Newtonsoft.Json.Required.Default)]
+        public DateTimeOffset? LastAccessedDateTime { get; set; }
+    
+        /// <summary>
         /// Gets or sets lastModifiedDateTime.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "lastModifiedDateTime", Required = Newtonsoft.Json.Required.Default)]

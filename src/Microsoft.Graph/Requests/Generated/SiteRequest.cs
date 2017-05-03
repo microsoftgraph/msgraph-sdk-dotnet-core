@@ -203,6 +203,44 @@ namespace Microsoft.Graph
         private void InitializeCollectionProperties(Site siteToInitialize)
         {
 
+            if (siteToInitialize != null && siteToInitialize.AdditionalData != null)
+            {
+
+                if (siteToInitialize.Drives != null && siteToInitialize.Drives.CurrentPage != null)
+                {
+                    siteToInitialize.Drives.AdditionalData = siteToInitialize.AdditionalData;
+
+                    object nextPageLink;
+                    siteToInitialize.AdditionalData.TryGetValue("drives@odata.nextLink", out nextPageLink);
+                    var nextPageLinkString = nextPageLink as string;
+
+                    if (!string.IsNullOrEmpty(nextPageLinkString))
+                    {
+                        siteToInitialize.Drives.InitializeNextPageRequest(
+                            this.Client,
+                            nextPageLinkString);
+                    }
+                }
+
+                if (siteToInitialize.Sites != null && siteToInitialize.Sites.CurrentPage != null)
+                {
+                    siteToInitialize.Sites.AdditionalData = siteToInitialize.AdditionalData;
+
+                    object nextPageLink;
+                    siteToInitialize.AdditionalData.TryGetValue("sites@odata.nextLink", out nextPageLink);
+                    var nextPageLinkString = nextPageLink as string;
+
+                    if (!string.IsNullOrEmpty(nextPageLinkString))
+                    {
+                        siteToInitialize.Sites.InitializeNextPageRequest(
+                            this.Client,
+                            nextPageLinkString);
+                    }
+                }
+
+            }
+
+
         }
     }
 }

@@ -178,6 +178,12 @@ namespace Microsoft.Graph
         public ProfilePhoto Photo { get; set; }
     
         /// <summary>
+        /// Gets or sets photos.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "photos", Required = Newtonsoft.Json.Required.Default)]
+        public IGroupPhotosCollectionPage Photos { get; set; }
+    
+        /// <summary>
         /// Gets or sets accepted senders.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "acceptedSenders", Required = Newtonsoft.Json.Required.Default)]
@@ -194,6 +200,18 @@ namespace Microsoft.Graph
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "drive", Required = Newtonsoft.Json.Required.Default)]
         public Drive Drive { get; set; }
+    
+        /// <summary>
+        /// Gets or sets drives.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "drives", Required = Newtonsoft.Json.Required.Default)]
+        public IGroupDrivesCollectionPage Drives { get; set; }
+    
+        /// <summary>
+        /// Gets or sets sites.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "sites", Required = Newtonsoft.Json.Required.Default)]
+        public IGroupSitesCollectionPage Sites { get; set; }
     
         /// <summary>
         /// Gets or sets planner.

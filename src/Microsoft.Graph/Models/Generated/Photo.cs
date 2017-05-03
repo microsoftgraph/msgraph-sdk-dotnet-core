@@ -47,28 +47,28 @@ namespace Microsoft.Graph
         public double? ExposureNumerator { get; set; }
     
         /// <summary>
-        /// Gets or sets focalLength.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "focalLength", Required = Newtonsoft.Json.Required.Default)]
-        public double? FocalLength { get; set; }
-    
-        /// <summary>
         /// Gets or sets fNumber.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "fNumber", Required = Newtonsoft.Json.Required.Default)]
         public double? FNumber { get; set; }
     
         /// <summary>
-        /// Gets or sets takenDateTime.
+        /// Gets or sets focalLength.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "takenDateTime", Required = Newtonsoft.Json.Required.Default)]
-        public DateTimeOffset? TakenDateTime { get; set; }
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "focalLength", Required = Newtonsoft.Json.Required.Default)]
+        public double? FocalLength { get; set; }
     
         /// <summary>
         /// Gets or sets iso.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "iso", Required = Newtonsoft.Json.Required.Default)]
         public Int32? Iso { get; set; }
+    
+        /// <summary>
+        /// Gets or sets takenDateTime.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "takenDateTime", Required = Newtonsoft.Json.Required.Default)]
+        public DateTimeOffset? TakenDateTime { get; set; }
     
         /// <summary>
         /// Gets or sets additional data.

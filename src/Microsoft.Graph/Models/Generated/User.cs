@@ -82,6 +82,12 @@ namespace Microsoft.Graph
         public string GivenName { get; set; }
     
         /// <summary>
+        /// Gets or sets im addresses.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "imAddresses", Required = Newtonsoft.Json.Required.Default)]
+        public IEnumerable<string> ImAddresses { get; set; }
+    
+        /// <summary>
         /// Gets or sets job title.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "jobTitle", Required = Newtonsoft.Json.Required.Default)]
@@ -316,6 +322,12 @@ namespace Microsoft.Graph
         public IUserOwnedObjectsCollectionWithReferencesPage OwnedObjects { get; set; }
     
         /// <summary>
+        /// Gets or sets license details.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "licenseDetails", Required = Newtonsoft.Json.Required.Default)]
+        public IUserLicenseDetailsCollectionPage LicenseDetails { get; set; }
+    
+        /// <summary>
         /// Gets or sets messages.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "messages", Required = Newtonsoft.Json.Required.Default)]
@@ -380,6 +392,12 @@ namespace Microsoft.Graph
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "photo", Required = Newtonsoft.Json.Required.Default)]
         public ProfilePhoto Photo { get; set; }
+    
+        /// <summary>
+        /// Gets or sets photos.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "photos", Required = Newtonsoft.Json.Required.Default)]
+        public IUserPhotosCollectionPage Photos { get; set; }
     
         /// <summary>
         /// Gets or sets drive.

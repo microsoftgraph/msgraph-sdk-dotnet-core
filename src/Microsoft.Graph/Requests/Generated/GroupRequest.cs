@@ -318,6 +318,22 @@ namespace Microsoft.Graph
                     }
                 }
 
+                if (groupToInitialize.Photos != null && groupToInitialize.Photos.CurrentPage != null)
+                {
+                    groupToInitialize.Photos.AdditionalData = groupToInitialize.AdditionalData;
+
+                    object nextPageLink;
+                    groupToInitialize.AdditionalData.TryGetValue("photos@odata.nextLink", out nextPageLink);
+                    var nextPageLinkString = nextPageLink as string;
+
+                    if (!string.IsNullOrEmpty(nextPageLinkString))
+                    {
+                        groupToInitialize.Photos.InitializeNextPageRequest(
+                            this.Client,
+                            nextPageLinkString);
+                    }
+                }
+
                 if (groupToInitialize.AcceptedSenders != null && groupToInitialize.AcceptedSenders.CurrentPage != null)
                 {
                     groupToInitialize.AcceptedSenders.AdditionalData = groupToInitialize.AdditionalData;
@@ -345,6 +361,38 @@ namespace Microsoft.Graph
                     if (!string.IsNullOrEmpty(nextPageLinkString))
                     {
                         groupToInitialize.RejectedSenders.InitializeNextPageRequest(
+                            this.Client,
+                            nextPageLinkString);
+                    }
+                }
+
+                if (groupToInitialize.Drives != null && groupToInitialize.Drives.CurrentPage != null)
+                {
+                    groupToInitialize.Drives.AdditionalData = groupToInitialize.AdditionalData;
+
+                    object nextPageLink;
+                    groupToInitialize.AdditionalData.TryGetValue("drives@odata.nextLink", out nextPageLink);
+                    var nextPageLinkString = nextPageLink as string;
+
+                    if (!string.IsNullOrEmpty(nextPageLinkString))
+                    {
+                        groupToInitialize.Drives.InitializeNextPageRequest(
+                            this.Client,
+                            nextPageLinkString);
+                    }
+                }
+
+                if (groupToInitialize.Sites != null && groupToInitialize.Sites.CurrentPage != null)
+                {
+                    groupToInitialize.Sites.AdditionalData = groupToInitialize.AdditionalData;
+
+                    object nextPageLink;
+                    groupToInitialize.AdditionalData.TryGetValue("sites@odata.nextLink", out nextPageLink);
+                    var nextPageLinkString = nextPageLink as string;
+
+                    if (!string.IsNullOrEmpty(nextPageLinkString))
+                    {
+                        groupToInitialize.Sites.InitializeNextPageRequest(
                             this.Client,
                             nextPageLinkString);
                     }

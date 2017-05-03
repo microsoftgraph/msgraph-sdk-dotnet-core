@@ -35,6 +35,12 @@ namespace Microsoft.Graph
         public Int32? Height { get; set; }
     
         /// <summary>
+        /// Gets or sets sourceItemId.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "sourceItemId", Required = Newtonsoft.Json.Required.Default)]
+        public string SourceItemId { get; set; }
+    
+        /// <summary>
         /// Gets or sets url.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "url", Required = Newtonsoft.Json.Required.Default)]

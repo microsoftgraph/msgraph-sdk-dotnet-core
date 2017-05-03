@@ -59,6 +59,15 @@ namespace Microsoft.Graph
             }
         }
 
-        
+        /// <summary>
+        /// Gets the request builder for UserDelta.
+        /// </summary>
+        /// <returns>The <see cref="IUserDeltaRequestBuilder"/>.</returns>
+        public IUserDeltaRequestBuilder Delta()
+        {
+            return new UserDeltaRequestBuilder(
+                this.AppendSegmentToRequestUrl("microsoft.graph.delta"),
+                this.Client);
+        }
     }
 }

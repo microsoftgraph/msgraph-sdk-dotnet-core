@@ -22,17 +22,17 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="requestUrl">The URL for the request.</param>
         /// <param name="client">The <see cref="IBaseClient"/> for handling requests.</param>
-        /// <param name="type">A type parameter for the OData method call.</param>
         /// <param name="scope">A scope parameter for the OData method call.</param>
+        /// <param name="type">A type parameter for the OData method call.</param>
         public DriveItemCreateLinkRequestBuilder(
             string requestUrl,
             IBaseClient client,
-            string type,
-            string scope)
+            string scope,
+            string type)
             : base(requestUrl, client)
         {
-            this.SetParameter("type", type, false);
             this.SetParameter("scope", scope, true);
+            this.SetParameter("type", type, true);
         }
 
         /// <summary>
@@ -45,14 +45,14 @@ namespace Microsoft.Graph
         {
             var request = new DriveItemCreateLinkRequest(functionUrl, this.Client, options);
 
-            if (this.HasParameter("type"))
-            {
-                request.RequestBody.Type = this.GetParameter<string>("type");
-            }
-
             if (this.HasParameter("scope"))
             {
                 request.RequestBody.Scope = this.GetParameter<string>("scope");
+            }
+
+            if (this.HasParameter("type"))
+            {
+                request.RequestBody.Type = this.GetParameter<string>("type");
             }
 
             return request;

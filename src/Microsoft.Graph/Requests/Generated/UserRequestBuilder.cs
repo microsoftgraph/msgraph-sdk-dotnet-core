@@ -134,6 +134,18 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
+        /// Gets the request builder for LicenseDetails.
+        /// </summary>
+        /// <returns>The <see cref="IUserLicenseDetailsCollectionRequestBuilder"/>.</returns>
+        public IUserLicenseDetailsCollectionRequestBuilder LicenseDetails
+        {
+            get
+            {
+                return new UserLicenseDetailsCollectionRequestBuilder(this.AppendSegmentToRequestUrl("licenseDetails"), this.Client);
+            }
+        }
+
+        /// <summary>
         /// Gets the request builder for Messages.
         /// </summary>
         /// <returns>The <see cref="IUserMessagesCollectionRequestBuilder"/>.</returns>
@@ -262,6 +274,18 @@ namespace Microsoft.Graph
             get
             {
                 return new ProfilePhotoRequestBuilder(this.AppendSegmentToRequestUrl("photo"), this.Client);
+            }
+        }
+
+        /// <summary>
+        /// Gets the request builder for Photos.
+        /// </summary>
+        /// <returns>The <see cref="IUserPhotosCollectionRequestBuilder"/>.</returns>
+        public IUserPhotosCollectionRequestBuilder Photos
+        {
+            get
+            {
+                return new UserPhotosCollectionRequestBuilder(this.AppendSegmentToRequestUrl("photos"), this.Client);
             }
         }
 

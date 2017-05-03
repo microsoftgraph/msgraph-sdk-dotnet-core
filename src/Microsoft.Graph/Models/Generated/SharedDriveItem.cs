@@ -18,7 +18,7 @@ namespace Microsoft.Graph
     /// The type Shared Drive Item.
     /// </summary>
     [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
-    public partial class SharedDriveItem : Entity
+    public partial class SharedDriveItem : BaseItem
     {
     
         /// <summary>
@@ -34,16 +34,28 @@ namespace Microsoft.Graph
         public IdentitySet Owner { get; set; }
     
         /// <summary>
-        /// Gets or sets root.
+        /// Gets or sets drive item.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "root", Required = Newtonsoft.Json.Required.Default)]
-        public DriveItem Root { get; set; }
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "driveItem", Required = Newtonsoft.Json.Required.Default)]
+        public DriveItem DriveItem { get; set; }
     
         /// <summary>
         /// Gets or sets items.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "items", Required = Newtonsoft.Json.Required.Default)]
         public ISharedDriveItemItemsCollectionPage Items { get; set; }
+    
+        /// <summary>
+        /// Gets or sets root.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "root", Required = Newtonsoft.Json.Required.Default)]
+        public DriveItem Root { get; set; }
+    
+        /// <summary>
+        /// Gets or sets site.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "site", Required = Newtonsoft.Json.Required.Default)]
+        public Site Site { get; set; }
     
     }
 }

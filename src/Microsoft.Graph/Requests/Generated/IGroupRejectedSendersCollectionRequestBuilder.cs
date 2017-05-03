@@ -35,6 +35,12 @@ namespace Microsoft.Graph
         /// <returns>The <see cref="IDirectoryObjectRequestBuilder"/>.</returns>
         IDirectoryObjectRequestBuilder this[string id] { get; }
 
-        
+        /// <summary>
+        /// Gets the request builder for DirectoryObjectGetByIds.
+        /// </summary>
+        /// <returns>The <see cref="IDirectoryObjectGetByIdsRequestBuilder"/>.</returns>
+        IDirectoryObjectGetByIdsRequestBuilder GetByIds(
+            IEnumerable<string> ids,
+            IEnumerable<string> types = null);
     }
 }
