@@ -8,9 +8,15 @@ namespace Microsoft.Graph
     using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Runtime.Serialization;
 
     public partial class PlannerAssignments : IEnumerable<KeyValuePair<string, PlannerAssignment>>
     {
+        public PlannerAssignments()
+        {
+            this.AdditionalData = new Dictionary<string, object>();
+        }
+
         public IEnumerable<string> Assignees => this.AdditionalData.Where(kvp => kvp.Value is PlannerAssignment).Select(kvp => kvp.Key);
 
         public int Count => this.Assignees.Count();
@@ -67,6 +73,12 @@ namespace Microsoft.Graph
         IEnumerator IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();
+        }
+
+        [OnDeserialized]
+        internal void DeserializeAssignments(StreamingContext context)
+        {
+            this.AdditionalData.ConvertComplexTypeProperties<PlannerAssignment>(PlannerAssignment.ODataTypeName);
         }
     }
 }

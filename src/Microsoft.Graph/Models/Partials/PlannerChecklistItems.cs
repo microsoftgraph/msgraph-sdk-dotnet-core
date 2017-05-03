@@ -8,9 +8,15 @@ namespace Microsoft.Graph
     using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Runtime.Serialization;
 
     public partial class PlannerChecklistItems : IEnumerable<KeyValuePair<string, PlannerChecklistItem>>
     {
+        public PlannerChecklistItems()
+        {
+            this.AdditionalData = new Dictionary<string, object>();
+        }
+
         public PlannerChecklistItem this[string checklistItemId]
         {
             get
@@ -39,7 +45,7 @@ namespace Microsoft.Graph
             }
         }
 
-        public void AddReference(string title)
+        public PlannerChecklistItem AddChecklistItem(string title)
         {
             if (string.IsNullOrEmpty(title))
             {
@@ -52,6 +58,8 @@ namespace Microsoft.Graph
             var newChecklistItemId = Guid.NewGuid().ToString();
 
             this.AdditionalData.Add(newChecklistItemId, plannerChecklistItem);
+
+            return plannerChecklistItem;
         }
 
         public IEnumerator<KeyValuePair<string, PlannerChecklistItem>> GetEnumerator()
@@ -65,6 +73,12 @@ namespace Microsoft.Graph
         IEnumerator IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();
+        }
+
+        [OnDeserialized]
+        internal void DeserializeChecklist(StreamingContext context)
+        {
+            this.AdditionalData.ConvertComplexTypeProperties<PlannerChecklistItem>(PlannerChecklistItem.ODataTypeName);
         }
     }
 }

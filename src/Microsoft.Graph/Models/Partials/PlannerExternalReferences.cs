@@ -8,10 +8,16 @@ namespace Microsoft.Graph
     using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Runtime.Serialization;
 
     public partial class PlannerExternalReferences : IEnumerable<KeyValuePair<string, PlannerExternalReference>>
     {
         private static readonly string[,] Conversions = new string[,] { { "%", "%25" }, { "@", "%40" }, { ".", "%2E" }, { ":", "%3A" } };
+
+        public PlannerExternalReferences()
+        {
+            this.AdditionalData = new Dictionary<string, object>();
+        }
 
         public PlannerExternalReference this[string url]
         {
@@ -41,7 +47,7 @@ namespace Microsoft.Graph
             }
         }
 
-        public void AddReference(string url, string alias)
+        public PlannerExternalReference AddReference(string url, string alias)
         {
             if (string.IsNullOrEmpty(url))
             {
@@ -58,6 +64,8 @@ namespace Microsoft.Graph
             plannerExternalReference.Alias = alias;
 
             this.AdditionalData.Add(Encode(url), plannerExternalReference);
+
+            return plannerExternalReference;
         }
 
         public IEnumerator<KeyValuePair<string, PlannerExternalReference>> GetEnumerator()
@@ -71,6 +79,12 @@ namespace Microsoft.Graph
         IEnumerator IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();
+        }
+
+        [OnDeserialized]
+        internal void DeserializeReferences(StreamingContext context)
+        {
+            this.AdditionalData.ConvertComplexTypeProperties<PlannerExternalReference>(PlannerExternalReference.ODataTypeName);
         }
 
         private static string Encode(string propertyName)

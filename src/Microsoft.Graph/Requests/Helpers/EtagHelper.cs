@@ -43,7 +43,7 @@ namespace Microsoft.Graph
 
             if (!string.IsNullOrEmpty(etag))
             {
-                request.Headers.Add(new HeaderOption("If-Match", etag));
+                request.Header("If-Match", etag);
             }
 
             return request;

@@ -23,7 +23,7 @@ namespace Microsoft.Graph.Test.Requests.Functional
             }
             catch (Microsoft.Graph.ServiceException e)
             {
-                Assert.Fail("Something happened, check out a trace. Error code: {0}", e.Error.Code);
+                Assert.Fail("Something happened, check out a trace. Error: {0}", e.Error);
             }
         }
 
@@ -40,7 +40,7 @@ namespace Microsoft.Graph.Test.Requests.Functional
             }
             catch (Microsoft.Graph.ServiceException e)
             {
-                Assert.Fail("Tried to get a PlannerPlan and failed. Error code: {0}", e.Error.Code);
+                Assert.Fail("Tried to get a PlannerPlan and failed. Error: {0}", e.Error);
             }
             return null;
         }
@@ -61,7 +61,7 @@ namespace Microsoft.Graph.Test.Requests.Functional
             }
             catch (Microsoft.Graph.ServiceException e)
             {
-                Assert.Fail("Something happened, check out a trace. Error code: {0}", e.Error.Code);
+                Assert.Fail("Something happened, check out a trace. Error: {0}", e.Error);
             }
         }
 
@@ -78,18 +78,36 @@ namespace Microsoft.Graph.Test.Requests.Functional
             plannerTaskOnClient.Assignments = new PlannerAssignments();
             plannerTaskOnClient.Assignments.AddAssignee("me");
 
-            try
-            {
-                PlannerTask plannerTaskOnService = await graphClient.Planner.Tasks.Request().AddAsync(plannerTaskOnClient);
+            PlannerTask plannerTaskOnService = await graphClient.Planner.Tasks.Request().AddAsync(plannerTaskOnClient);
 
-                Assert.IsNotNull(plannerTaskOnService);
-                Assert.AreEqual(plannerTaskOnClient.Title, plannerTaskOnService.Title);
-                Assert.AreEqual(1, plannerTaskOnService.Assignments.Count);
-            }
-            catch (Microsoft.Graph.ServiceException e)
-            {
-                Assert.Fail("Something happened, check out a trace. Error code: {0}", e.Error.Code);
-            }
+            Assert.IsNotNull(plannerTaskOnService);
+            Assert.AreEqual(plannerTaskOnClient.Title, plannerTaskOnService.Title);
+            Assert.AreEqual(1, plannerTaskOnService.Assignments.Count);
+
+            PlannerTask forUpdateTask = new PlannerTask();
+            forUpdateTask.AppliedCategories = new PlannerAppliedCategories();
+            forUpdateTask.AppliedCategories.Category3 = true;
+            forUpdateTask.DueDateTime = DateTimeOffset.UtcNow.AddDays(3);
+
+            string etag = plannerTaskOnService.GetEtag();
+
+            PlannerTask afterUpdateTask = await graphClient.Planner.Tasks[plannerTaskOnService.Id].Request().IfMatch(etag).ReturnRepresentation().UpdateAsync(forUpdateTask);
+
+            PlannerTaskDetails taskDetails = await graphClient.Planner.Tasks[plannerTaskOnService.Id].Details.Request().GetAsync();
+
+            PlannerTaskDetails forUpdateDetails = new PlannerTaskDetails();
+            forUpdateDetails.Checklist = new PlannerChecklistItems();
+            forUpdateDetails.Checklist.AddChecklistItem("Do something");
+            forUpdateDetails.Checklist.AddChecklistItem("Do something else");
+
+            forUpdateDetails.References = new PlannerExternalReferences();
+            forUpdateDetails.References.AddReference("http://developer.microsoft.com", "Developer resources");
+
+            etag = taskDetails.GetEtag();
+            await graphClient.Planner.Tasks[plannerTaskOnService.Id].Details.Request().IfMatch(etag).ReturnRepresentation().UpdateAsync(forUpdateDetails);
+
+            etag = afterUpdateTask.GetEtag();
+            await graphClient.Planner.Tasks[plannerTaskOnService.Id].Request().IfMatch(etag).DeleteAsync();
         }
 
 
