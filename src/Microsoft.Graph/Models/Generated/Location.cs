@@ -41,18 +41,6 @@ namespace Microsoft.Graph
         public PhysicalAddress Address { get; set; }
     
         /// <summary>
-        /// Gets or sets coordinates.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "coordinates", Required = Newtonsoft.Json.Required.Default)]
-        public OutlookGeoCoordinates Coordinates { get; set; }
-    
-        /// <summary>
-        /// Gets or sets locationUri.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "locationUri", Required = Newtonsoft.Json.Required.Default)]
-        public string LocationUri { get; set; }
-    
-        /// <summary>
         /// Gets or sets additional data.
         /// </summary>
         [JsonExtensionData(ReadData = true)]

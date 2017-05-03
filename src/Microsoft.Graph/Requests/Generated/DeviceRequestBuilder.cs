@@ -72,18 +72,6 @@ namespace Microsoft.Graph
                 return new DeviceRegisteredUsersCollectionWithReferencesRequestBuilder(this.AppendSegmentToRequestUrl("registeredUsers"), this.Client);
             }
         }
-
-        /// <summary>
-        /// Gets the request builder for Extensions.
-        /// </summary>
-        /// <returns>The <see cref="IDeviceExtensionsCollectionRequestBuilder"/>.</returns>
-        public IDeviceExtensionsCollectionRequestBuilder Extensions
-        {
-            get
-            {
-                return new DeviceExtensionsCollectionRequestBuilder(this.AppendSegmentToRequestUrl("extensions"), this.Client);
-            }
-        }
     
     }
 }

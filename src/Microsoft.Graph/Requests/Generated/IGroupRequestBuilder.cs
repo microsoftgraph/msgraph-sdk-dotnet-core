@@ -55,24 +55,6 @@ namespace Microsoft.Graph
         IGroupOwnersCollectionWithReferencesRequestBuilder Owners { get; }
 
         /// <summary>
-        /// Gets the request builder for Settings.
-        /// </summary>
-        /// <returns>The <see cref="IGroupSettingsCollectionRequestBuilder"/>.</returns>
-        IGroupSettingsCollectionRequestBuilder Settings { get; }
-
-        /// <summary>
-        /// Gets the request builder for Endpoints.
-        /// </summary>
-        /// <returns>The <see cref="IGroupEndpointsCollectionRequestBuilder"/>.</returns>
-        IGroupEndpointsCollectionRequestBuilder Endpoints { get; }
-
-        /// <summary>
-        /// Gets the request builder for Extensions.
-        /// </summary>
-        /// <returns>The <see cref="IGroupExtensionsCollectionRequestBuilder"/>.</returns>
-        IGroupExtensionsCollectionRequestBuilder Extensions { get; }
-
-        /// <summary>
         /// Gets the request builder for Threads.
         /// </summary>
         /// <returns>The <see cref="IGroupThreadsCollectionRequestBuilder"/>.</returns>
@@ -109,12 +91,6 @@ namespace Microsoft.Graph
         IProfilePhotoRequestBuilder Photo { get; }
 
         /// <summary>
-        /// Gets the request builder for Photos.
-        /// </summary>
-        /// <returns>The <see cref="IGroupPhotosCollectionRequestBuilder"/>.</returns>
-        IGroupPhotosCollectionRequestBuilder Photos { get; }
-
-        /// <summary>
         /// Gets the request builder for AcceptedSenders.
         /// </summary>
         /// <returns>The <see cref="IGroupAcceptedSendersCollectionRequestBuilder"/>.</returns>
@@ -133,35 +109,11 @@ namespace Microsoft.Graph
         IDriveRequestBuilder Drive { get; }
 
         /// <summary>
-        /// Gets the request builder for Sharepoint.
-        /// </summary>
-        /// <returns>The <see cref="ISharePointRequestBuilder"/>.</returns>
-        ISharePointRequestBuilder Sharepoint { get; }
-
-        /// <summary>
-        /// Gets the request builder for Plans.
-        /// </summary>
-        /// <returns>The <see cref="IGroupPlansCollectionWithReferencesRequestBuilder"/>.</returns>
-        IGroupPlansCollectionWithReferencesRequestBuilder Plans { get; }
-
-        /// <summary>
         /// Gets the request builder for Planner.
         /// </summary>
         /// <returns>The <see cref="IPlannerGroupRequestBuilder"/>.</returns>
         IPlannerGroupRequestBuilder Planner { get; }
-
-        /// <summary>
-        /// Gets the request builder for Notes.
-        /// </summary>
-        /// <returns>The <see cref="INotesRequestBuilder"/>.</returns>
-        INotesRequestBuilder Notes { get; }
     
-        /// <summary>
-        /// Gets the request builder for GroupRenew.
-        /// </summary>
-        /// <returns>The <see cref="IGroupRenewRequestBuilder"/>.</returns>
-        IGroupRenewRequestBuilder Renew();
-
         /// <summary>
         /// Gets the request builder for GroupSubscribeByMail.
         /// </summary>

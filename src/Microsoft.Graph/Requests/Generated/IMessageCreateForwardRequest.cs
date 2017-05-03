@@ -20,11 +20,6 @@ namespace Microsoft.Graph
     public partial interface IMessageCreateForwardRequest : IBaseRequest
     {
 
-        /// <summary>
-        /// Gets the request body.
-        /// </summary>
-        MessageCreateForwardRequestBody RequestBody { get; }
-
 
         /// <summary>
         /// Issues the POST request.

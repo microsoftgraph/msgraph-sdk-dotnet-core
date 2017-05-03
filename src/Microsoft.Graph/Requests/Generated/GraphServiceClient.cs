@@ -52,50 +52,6 @@ namespace Microsoft.Graph
         }
     
         /// <summary>
-        /// Gets the GraphServiceApplications request builder.
-        /// </summary>
-        public IGraphServiceApplicationsCollectionRequestBuilder Applications
-        {
-            get
-            {
-                return new GraphServiceApplicationsCollectionRequestBuilder(this.BaseUrl + "/applications", this);
-            }
-        }
-    
-        /// <summary>
-        /// Gets the GraphServiceAdministrativeUnits request builder.
-        /// </summary>
-        public IGraphServiceAdministrativeUnitsCollectionRequestBuilder AdministrativeUnits
-        {
-            get
-            {
-                return new GraphServiceAdministrativeUnitsCollectionRequestBuilder(this.BaseUrl + "/administrativeUnits", this);
-            }
-        }
-    
-        /// <summary>
-        /// Gets the GraphServiceAppRoleAssignments request builder.
-        /// </summary>
-        public IGraphServiceAppRoleAssignmentsCollectionRequestBuilder AppRoleAssignments
-        {
-            get
-            {
-                return new GraphServiceAppRoleAssignmentsCollectionRequestBuilder(this.BaseUrl + "/appRoleAssignments", this);
-            }
-        }
-    
-        /// <summary>
-        /// Gets the GraphServiceContacts request builder.
-        /// </summary>
-        public IGraphServiceContactsCollectionRequestBuilder Contacts
-        {
-            get
-            {
-                return new GraphServiceContactsCollectionRequestBuilder(this.BaseUrl + "/contacts", this);
-            }
-        }
-    
-        /// <summary>
         /// Gets the GraphServiceDevices request builder.
         /// </summary>
         public IGraphServiceDevicesCollectionRequestBuilder Devices
@@ -103,28 +59,6 @@ namespace Microsoft.Graph
             get
             {
                 return new GraphServiceDevicesCollectionRequestBuilder(this.BaseUrl + "/devices", this);
-            }
-        }
-    
-        /// <summary>
-        /// Gets the GraphServiceDomains request builder.
-        /// </summary>
-        public IGraphServiceDomainsCollectionRequestBuilder Domains
-        {
-            get
-            {
-                return new GraphServiceDomainsCollectionRequestBuilder(this.BaseUrl + "/domains", this);
-            }
-        }
-    
-        /// <summary>
-        /// Gets the GraphServiceDomainDnsRecords request builder.
-        /// </summary>
-        public IGraphServiceDomainDnsRecordsCollectionRequestBuilder DomainDnsRecords
-        {
-            get
-            {
-                return new GraphServiceDomainDnsRecordsCollectionRequestBuilder(this.BaseUrl + "/domainDnsRecords", this);
             }
         }
     
@@ -162,17 +96,6 @@ namespace Microsoft.Graph
         }
     
         /// <summary>
-        /// Gets the GraphServiceDirectorySettingTemplates request builder.
-        /// </summary>
-        public IGraphServiceDirectorySettingTemplatesCollectionRequestBuilder DirectorySettingTemplates
-        {
-            get
-            {
-                return new GraphServiceDirectorySettingTemplatesCollectionRequestBuilder(this.BaseUrl + "/directorySettingTemplates", this);
-            }
-        }
-    
-        /// <summary>
         /// Gets the GraphServiceOrganization request builder.
         /// </summary>
         public IGraphServiceOrganizationCollectionRequestBuilder Organization
@@ -180,50 +103,6 @@ namespace Microsoft.Graph
             get
             {
                 return new GraphServiceOrganizationCollectionRequestBuilder(this.BaseUrl + "/organization", this);
-            }
-        }
-    
-        /// <summary>
-        /// Gets the GraphServiceOauth2PermissionGrants request builder.
-        /// </summary>
-        public IGraphServiceOauth2PermissionGrantsCollectionRequestBuilder Oauth2PermissionGrants
-        {
-            get
-            {
-                return new GraphServiceOauth2PermissionGrantsCollectionRequestBuilder(this.BaseUrl + "/oauth2PermissionGrants", this);
-            }
-        }
-    
-        /// <summary>
-        /// Gets the GraphServiceScopedRoleMemberships request builder.
-        /// </summary>
-        public IGraphServiceScopedRoleMembershipsCollectionRequestBuilder ScopedRoleMemberships
-        {
-            get
-            {
-                return new GraphServiceScopedRoleMembershipsCollectionRequestBuilder(this.BaseUrl + "/scopedRoleMemberships", this);
-            }
-        }
-    
-        /// <summary>
-        /// Gets the GraphServiceServicePrincipals request builder.
-        /// </summary>
-        public IGraphServiceServicePrincipalsCollectionRequestBuilder ServicePrincipals
-        {
-            get
-            {
-                return new GraphServiceServicePrincipalsCollectionRequestBuilder(this.BaseUrl + "/servicePrincipals", this);
-            }
-        }
-    
-        /// <summary>
-        /// Gets the GraphServiceSettings request builder.
-        /// </summary>
-        public IGraphServiceSettingsCollectionRequestBuilder Settings
-        {
-            get
-            {
-                return new GraphServiceSettingsCollectionRequestBuilder(this.BaseUrl + "/settings", this);
             }
         }
     
@@ -250,50 +129,6 @@ namespace Microsoft.Graph
         }
     
         /// <summary>
-        /// Gets the GraphServicePolicies request builder.
-        /// </summary>
-        public IGraphServicePoliciesCollectionRequestBuilder Policies
-        {
-            get
-            {
-                return new GraphServicePoliciesCollectionRequestBuilder(this.BaseUrl + "/policies", this);
-            }
-        }
-    
-        /// <summary>
-        /// Gets the GraphServiceContracts request builder.
-        /// </summary>
-        public IGraphServiceContractsCollectionRequestBuilder Contracts
-        {
-            get
-            {
-                return new GraphServiceContractsCollectionRequestBuilder(this.BaseUrl + "/contracts", this);
-            }
-        }
-    
-        /// <summary>
-        /// Gets the GraphServiceSchemaExtensions request builder.
-        /// </summary>
-        public IGraphServiceSchemaExtensionsCollectionRequestBuilder SchemaExtensions
-        {
-            get
-            {
-                return new GraphServiceSchemaExtensionsCollectionRequestBuilder(this.BaseUrl + "/schemaExtensions", this);
-            }
-        }
-    
-        /// <summary>
-        /// Gets the GraphServiceWorkbooks request builder.
-        /// </summary>
-        public IGraphServiceWorkbooksCollectionRequestBuilder Workbooks
-        {
-            get
-            {
-                return new GraphServiceWorkbooksCollectionRequestBuilder(this.BaseUrl + "/workbooks", this);
-            }
-        }
-    
-        /// <summary>
         /// Gets the GraphServiceDrives request builder.
         /// </summary>
         public IGraphServiceDrivesCollectionRequestBuilder Drives
@@ -316,35 +151,13 @@ namespace Microsoft.Graph
         }
     
         /// <summary>
-        /// Gets the GraphServiceTasks request builder.
+        /// Gets the GraphServiceWorkbooks request builder.
         /// </summary>
-        public IGraphServiceTasksCollectionRequestBuilder Tasks
+        public IGraphServiceWorkbooksCollectionRequestBuilder Workbooks
         {
             get
             {
-                return new GraphServiceTasksCollectionRequestBuilder(this.BaseUrl + "/tasks", this);
-            }
-        }
-    
-        /// <summary>
-        /// Gets the GraphServicePlans request builder.
-        /// </summary>
-        public IGraphServicePlansCollectionRequestBuilder Plans
-        {
-            get
-            {
-                return new GraphServicePlansCollectionRequestBuilder(this.BaseUrl + "/plans", this);
-            }
-        }
-    
-        /// <summary>
-        /// Gets the GraphServiceBuckets request builder.
-        /// </summary>
-        public IGraphServiceBucketsCollectionRequestBuilder Buckets
-        {
-            get
-            {
-                return new GraphServiceBucketsCollectionRequestBuilder(this.BaseUrl + "/buckets", this);
+                return new GraphServiceWorkbooksCollectionRequestBuilder(this.BaseUrl + "/workbooks", this);
             }
         }
     
@@ -360,149 +173,6 @@ namespace Microsoft.Graph
         }
     
         /// <summary>
-        /// Gets the GraphServiceIdentityRiskEvents request builder.
-        /// </summary>
-        public IGraphServiceIdentityRiskEventsCollectionRequestBuilder IdentityRiskEvents
-        {
-            get
-            {
-                return new GraphServiceIdentityRiskEventsCollectionRequestBuilder(this.BaseUrl + "/identityRiskEvents", this);
-            }
-        }
-    
-        /// <summary>
-        /// Gets the GraphServiceImpossibleTravelRiskEvents request builder.
-        /// </summary>
-        public IGraphServiceImpossibleTravelRiskEventsCollectionRequestBuilder ImpossibleTravelRiskEvents
-        {
-            get
-            {
-                return new GraphServiceImpossibleTravelRiskEventsCollectionRequestBuilder(this.BaseUrl + "/impossibleTravelRiskEvents", this);
-            }
-        }
-    
-        /// <summary>
-        /// Gets the GraphServiceLeakedCredentialsRiskEvents request builder.
-        /// </summary>
-        public IGraphServiceLeakedCredentialsRiskEventsCollectionRequestBuilder LeakedCredentialsRiskEvents
-        {
-            get
-            {
-                return new GraphServiceLeakedCredentialsRiskEventsCollectionRequestBuilder(this.BaseUrl + "/leakedCredentialsRiskEvents", this);
-            }
-        }
-    
-        /// <summary>
-        /// Gets the GraphServiceAnonymousIpRiskEvents request builder.
-        /// </summary>
-        public IGraphServiceAnonymousIpRiskEventsCollectionRequestBuilder AnonymousIpRiskEvents
-        {
-            get
-            {
-                return new GraphServiceAnonymousIpRiskEventsCollectionRequestBuilder(this.BaseUrl + "/anonymousIpRiskEvents", this);
-            }
-        }
-    
-        /// <summary>
-        /// Gets the GraphServiceSuspiciousIpRiskEvents request builder.
-        /// </summary>
-        public IGraphServiceSuspiciousIpRiskEventsCollectionRequestBuilder SuspiciousIpRiskEvents
-        {
-            get
-            {
-                return new GraphServiceSuspiciousIpRiskEventsCollectionRequestBuilder(this.BaseUrl + "/suspiciousIpRiskEvents", this);
-            }
-        }
-    
-        /// <summary>
-        /// Gets the GraphServiceUnfamiliarLocationRiskEvents request builder.
-        /// </summary>
-        public IGraphServiceUnfamiliarLocationRiskEventsCollectionRequestBuilder UnfamiliarLocationRiskEvents
-        {
-            get
-            {
-                return new GraphServiceUnfamiliarLocationRiskEventsCollectionRequestBuilder(this.BaseUrl + "/unfamiliarLocationRiskEvents", this);
-            }
-        }
-    
-        /// <summary>
-        /// Gets the GraphServiceMalwareRiskEvents request builder.
-        /// </summary>
-        public IGraphServiceMalwareRiskEventsCollectionRequestBuilder MalwareRiskEvents
-        {
-            get
-            {
-                return new GraphServiceMalwareRiskEventsCollectionRequestBuilder(this.BaseUrl + "/malwareRiskEvents", this);
-            }
-        }
-    
-        /// <summary>
-        /// Gets the GraphServicePrivilegedRoles request builder.
-        /// </summary>
-        public IGraphServicePrivilegedRolesCollectionRequestBuilder PrivilegedRoles
-        {
-            get
-            {
-                return new GraphServicePrivilegedRolesCollectionRequestBuilder(this.BaseUrl + "/privilegedRoles", this);
-            }
-        }
-    
-        /// <summary>
-        /// Gets the GraphServicePrivilegedRoleAssignments request builder.
-        /// </summary>
-        public IGraphServicePrivilegedRoleAssignmentsCollectionRequestBuilder PrivilegedRoleAssignments
-        {
-            get
-            {
-                return new GraphServicePrivilegedRoleAssignmentsCollectionRequestBuilder(this.BaseUrl + "/privilegedRoleAssignments", this);
-            }
-        }
-    
-        /// <summary>
-        /// Gets the GraphServicePrivilegedOperationEvents request builder.
-        /// </summary>
-        public IGraphServicePrivilegedOperationEventsCollectionRequestBuilder PrivilegedOperationEvents
-        {
-            get
-            {
-                return new GraphServicePrivilegedOperationEventsCollectionRequestBuilder(this.BaseUrl + "/privilegedOperationEvents", this);
-            }
-        }
-    
-        /// <summary>
-        /// Gets the GraphServicePrivilegedSignupStatus request builder.
-        /// </summary>
-        public IGraphServicePrivilegedSignupStatusCollectionRequestBuilder PrivilegedSignupStatus
-        {
-            get
-            {
-                return new GraphServicePrivilegedSignupStatusCollectionRequestBuilder(this.BaseUrl + "/privilegedSignupStatus", this);
-            }
-        }
-    
-        /// <summary>
-        /// Gets the GraphServiceConnectors request builder.
-        /// </summary>
-        public IGraphServiceConnectorsCollectionRequestBuilder Connectors
-        {
-            get
-            {
-                return new GraphServiceConnectorsCollectionRequestBuilder(this.BaseUrl + "/connectors", this);
-            }
-        }
-    
-        /// <summary>
-        /// Gets the GraphServiceConnectorGroups request builder.
-        /// </summary>
-        public IGraphServiceConnectorGroupsCollectionRequestBuilder ConnectorGroups
-        {
-            get
-            {
-                return new GraphServiceConnectorGroupsCollectionRequestBuilder(this.BaseUrl + "/connectorGroups", this);
-            }
-        }
-    
-        /// <summary>
         /// Gets the GraphServiceInvitations request builder.
         /// </summary>
         public IGraphServiceInvitationsCollectionRequestBuilder Invitations
@@ -510,226 +180,6 @@ namespace Microsoft.Graph
             get
             {
                 return new GraphServiceInvitationsCollectionRequestBuilder(this.BaseUrl + "/invitations", this);
-            }
-        }
-    
-        /// <summary>
-        /// Gets the GraphServiceIosMobileAppConfigurations request builder.
-        /// </summary>
-        public IGraphServiceIosMobileAppConfigurationsCollectionRequestBuilder IosMobileAppConfigurations
-        {
-            get
-            {
-                return new GraphServiceIosMobileAppConfigurationsCollectionRequestBuilder(this.BaseUrl + "/iosMobileAppConfigurations", this);
-            }
-        }
-    
-        /// <summary>
-        /// Gets the GraphServiceMobileAppGroupAssignments request builder.
-        /// </summary>
-        public IGraphServiceMobileAppGroupAssignmentsCollectionRequestBuilder MobileAppGroupAssignments
-        {
-            get
-            {
-                return new GraphServiceMobileAppGroupAssignmentsCollectionRequestBuilder(this.BaseUrl + "/mobileAppGroupAssignments", this);
-            }
-        }
-    
-        /// <summary>
-        /// Gets the GraphServiceAppProvisioningConfigurationGroupAssignments request builder.
-        /// </summary>
-        public IGraphServiceAppProvisioningConfigurationGroupAssignmentsCollectionRequestBuilder AppProvisioningConfigurationGroupAssignments
-        {
-            get
-            {
-                return new GraphServiceAppProvisioningConfigurationGroupAssignmentsCollectionRequestBuilder(this.BaseUrl + "/appProvisioningConfigurationGroupAssignments", this);
-            }
-        }
-    
-        /// <summary>
-        /// Gets the GraphServiceMobileApps request builder.
-        /// </summary>
-        public IGraphServiceMobileAppsCollectionRequestBuilder MobileApps
-        {
-            get
-            {
-                return new GraphServiceMobileAppsCollectionRequestBuilder(this.BaseUrl + "/mobileApps", this);
-            }
-        }
-    
-        /// <summary>
-        /// Gets the GraphServiceAppConfigurationGroupAssignments request builder.
-        /// </summary>
-        public IGraphServiceAppConfigurationGroupAssignmentsCollectionRequestBuilder AppConfigurationGroupAssignments
-        {
-            get
-            {
-                return new GraphServiceAppConfigurationGroupAssignmentsCollectionRequestBuilder(this.BaseUrl + "/appConfigurationGroupAssignments", this);
-            }
-        }
-    
-        /// <summary>
-        /// Gets the GraphServiceTermsAndConditions request builder.
-        /// </summary>
-        public IGraphServiceTermsAndConditionsCollectionRequestBuilder TermsAndConditions
-        {
-            get
-            {
-                return new GraphServiceTermsAndConditionsCollectionRequestBuilder(this.BaseUrl + "/termsAndConditions", this);
-            }
-        }
-    
-        /// <summary>
-        /// Gets the GraphServiceImportedDeviceIdentityResults request builder.
-        /// </summary>
-        public IGraphServiceImportedDeviceIdentityResultsCollectionRequestBuilder ImportedDeviceIdentityResults
-        {
-            get
-            {
-                return new GraphServiceImportedDeviceIdentityResultsCollectionRequestBuilder(this.BaseUrl + "/importedDeviceIdentityResults", this);
-            }
-        }
-    
-        /// <summary>
-        /// Gets the GraphServiceImportedAppleDeviceIdentityResults request builder.
-        /// </summary>
-        public IGraphServiceImportedAppleDeviceIdentityResultsCollectionRequestBuilder ImportedAppleDeviceIdentityResults
-        {
-            get
-            {
-                return new GraphServiceImportedAppleDeviceIdentityResultsCollectionRequestBuilder(this.BaseUrl + "/importedAppleDeviceIdentityResults", this);
-            }
-        }
-    
-        /// <summary>
-        /// Gets the GraphServiceManagedDevices request builder.
-        /// </summary>
-        public IGraphServiceManagedDevicesCollectionRequestBuilder ManagedDevices
-        {
-            get
-            {
-                return new GraphServiceManagedDevicesCollectionRequestBuilder(this.BaseUrl + "/managedDevices", this);
-            }
-        }
-    
-        /// <summary>
-        /// Gets the GraphServiceDetectedapps request builder.
-        /// </summary>
-        public IGraphServiceDetectedappsCollectionRequestBuilder Detectedapps
-        {
-            get
-            {
-                return new GraphServiceDetectedappsCollectionRequestBuilder(this.BaseUrl + "/detectedapps", this);
-            }
-        }
-    
-        /// <summary>
-        /// Gets the GraphServiceCloudPkiSubscriptions request builder.
-        /// </summary>
-        public IGraphServiceCloudPkiSubscriptionsCollectionRequestBuilder CloudPkiSubscriptions
-        {
-            get
-            {
-                return new GraphServiceCloudPkiSubscriptionsCollectionRequestBuilder(this.BaseUrl + "/cloudPkiSubscriptions", this);
-            }
-        }
-    
-        /// <summary>
-        /// Gets the GraphServiceDeviceConfigurationGroupAssignment request builder.
-        /// </summary>
-        public IGraphServiceDeviceConfigurationGroupAssignmentCollectionRequestBuilder DeviceConfigurationGroupAssignment
-        {
-            get
-            {
-                return new GraphServiceDeviceConfigurationGroupAssignmentCollectionRequestBuilder(this.BaseUrl + "/deviceConfigurationGroupAssignment", this);
-            }
-        }
-    
-        /// <summary>
-        /// Gets the GraphServiceDeviceConfigurationAssignments request builder.
-        /// </summary>
-        public IGraphServiceDeviceConfigurationAssignmentsCollectionRequestBuilder DeviceConfigurationAssignments
-        {
-            get
-            {
-                return new GraphServiceDeviceConfigurationAssignmentsCollectionRequestBuilder(this.BaseUrl + "/deviceConfigurationAssignments", this);
-            }
-        }
-    
-        /// <summary>
-        /// Gets the GraphServiceDeviceCompliancePolicyGroupAssignment request builder.
-        /// </summary>
-        public IGraphServiceDeviceCompliancePolicyGroupAssignmentCollectionRequestBuilder DeviceCompliancePolicyGroupAssignment
-        {
-            get
-            {
-                return new GraphServiceDeviceCompliancePolicyGroupAssignmentCollectionRequestBuilder(this.BaseUrl + "/deviceCompliancePolicyGroupAssignment", this);
-            }
-        }
-    
-        /// <summary>
-        /// Gets the GraphServiceDeviceCompliancePolicyAssignments request builder.
-        /// </summary>
-        public IGraphServiceDeviceCompliancePolicyAssignmentsCollectionRequestBuilder DeviceCompliancePolicyAssignments
-        {
-            get
-            {
-                return new GraphServiceDeviceCompliancePolicyAssignmentsCollectionRequestBuilder(this.BaseUrl + "/deviceCompliancePolicyAssignments", this);
-            }
-        }
-    
-        /// <summary>
-        /// Gets the GraphServiceDeviceComplianceScheduledActionForRule request builder.
-        /// </summary>
-        public IGraphServiceDeviceComplianceScheduledActionForRuleCollectionRequestBuilder DeviceComplianceScheduledActionForRule
-        {
-            get
-            {
-                return new GraphServiceDeviceComplianceScheduledActionForRuleCollectionRequestBuilder(this.BaseUrl + "/deviceComplianceScheduledActionForRule", this);
-            }
-        }
-    
-        /// <summary>
-        /// Gets the GraphServiceManagedAppPolicies request builder.
-        /// </summary>
-        public IGraphServiceManagedAppPoliciesCollectionRequestBuilder ManagedAppPolicies
-        {
-            get
-            {
-                return new GraphServiceManagedAppPoliciesCollectionRequestBuilder(this.BaseUrl + "/managedAppPolicies", this);
-            }
-        }
-    
-        /// <summary>
-        /// Gets the GraphServiceManagedAppRegistrations request builder.
-        /// </summary>
-        public IGraphServiceManagedAppRegistrationsCollectionRequestBuilder ManagedAppRegistrations
-        {
-            get
-            {
-                return new GraphServiceManagedAppRegistrationsCollectionRequestBuilder(this.BaseUrl + "/managedAppRegistrations", this);
-            }
-        }
-    
-        /// <summary>
-        /// Gets the GraphServiceManagedAppStatuses request builder.
-        /// </summary>
-        public IGraphServiceManagedAppStatusesCollectionRequestBuilder ManagedAppStatuses
-        {
-            get
-            {
-                return new GraphServiceManagedAppStatusesCollectionRequestBuilder(this.BaseUrl + "/managedAppStatuses", this);
-            }
-        }
-    
-        /// <summary>
-        /// Gets the GraphServiceLocalizedNotificationMessages request builder.
-        /// </summary>
-        public IGraphServiceLocalizedNotificationMessagesCollectionRequestBuilder LocalizedNotificationMessages
-        {
-            get
-            {
-                return new GraphServiceLocalizedNotificationMessagesCollectionRequestBuilder(this.BaseUrl + "/localizedNotificationMessages", this);
             }
         }
     
@@ -745,17 +195,6 @@ namespace Microsoft.Graph
         }
     
         /// <summary>
-        /// Gets the GraphServiceDirectory request builder.
-        /// </summary>
-        public IDirectoryRequestBuilder Directory
-        {
-            get
-            {
-                return new DirectoryRequestBuilder(this.BaseUrl + "/directory", this);
-            }
-        }
-    
-        /// <summary>
         /// Gets the GraphServiceDrive request builder.
         /// </summary>
         public IDriveRequestBuilder Drive
@@ -767,17 +206,6 @@ namespace Microsoft.Graph
         }
     
         /// <summary>
-        /// Gets the GraphServiceSharePoint request builder.
-        /// </summary>
-        public ISharePointRequestBuilder SharePoint
-        {
-            get
-            {
-                return new SharePointRequestBuilder(this.BaseUrl + "/sharePoint", this);
-            }
-        }
-    
-        /// <summary>
         /// Gets the GraphServicePlanner request builder.
         /// </summary>
         public IPlannerRequestBuilder Planner
@@ -785,50 +213,6 @@ namespace Microsoft.Graph
             get
             {
                 return new PlannerRequestBuilder(this.BaseUrl + "/planner", this);
-            }
-        }
-    
-        /// <summary>
-        /// Gets the GraphServiceDeviceManagement request builder.
-        /// </summary>
-        public IDeviceManagementRequestBuilder DeviceManagement
-        {
-            get
-            {
-                return new DeviceManagementRequestBuilder(this.BaseUrl + "/deviceManagement", this);
-            }
-        }
-    
-        /// <summary>
-        /// Gets the GraphServiceDeviceAppManagement request builder.
-        /// </summary>
-        public IDeviceAppManagementRequestBuilder DeviceAppManagement
-        {
-            get
-            {
-                return new DeviceAppManagementRequestBuilder(this.BaseUrl + "/deviceAppManagement", this);
-            }
-        }
-    
-        /// <summary>
-        /// Gets the GraphServiceManagedDeviceOverview request builder.
-        /// </summary>
-        public IManagedDeviceOverviewRequestBuilder ManagedDeviceOverview
-        {
-            get
-            {
-                return new ManagedDeviceOverviewRequestBuilder(this.BaseUrl + "/managedDeviceOverview", this);
-            }
-        }
-    
-        /// <summary>
-        /// Gets the GraphServiceReports request builder.
-        /// </summary>
-        public IReportRootRequestBuilder Reports
-        {
-            get
-            {
-                return new ReportRootRequestBuilder(this.BaseUrl + "/reports", this);
             }
         }
     

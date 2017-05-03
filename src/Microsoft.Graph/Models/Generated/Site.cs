@@ -18,62 +18,8 @@ namespace Microsoft.Graph
     /// The type Site.
     /// </summary>
     [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
-    public partial class Site : BaseItem
+    public partial class Site : Entity
     {
-    
-        /// <summary>
-        /// Gets or sets root.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "root", Required = Newtonsoft.Json.Required.Default)]
-        public Root Root { get; set; }
-    
-        /// <summary>
-        /// Gets or sets site collection.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "siteCollection", Required = Newtonsoft.Json.Required.Default)]
-        public SiteCollection SiteCollection { get; set; }
-    
-        /// <summary>
-        /// Gets or sets site collection id.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "siteCollectionId", Required = Newtonsoft.Json.Required.Default)]
-        public Guid? SiteCollectionId { get; set; }
-    
-        /// <summary>
-        /// Gets or sets site id.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "siteId", Required = Newtonsoft.Json.Required.Default)]
-        public Guid? SiteId { get; set; }
-    
-        /// <summary>
-        /// Gets or sets drive.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "drive", Required = Newtonsoft.Json.Required.Default)]
-        public Drive Drive { get; set; }
-    
-        /// <summary>
-        /// Gets or sets drives.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "drives", Required = Newtonsoft.Json.Required.Default)]
-        public ISiteDrivesCollectionPage Drives { get; set; }
-    
-        /// <summary>
-        /// Gets or sets items.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "items", Required = Newtonsoft.Json.Required.Default)]
-        public ISiteItemsCollectionPage Items { get; set; }
-    
-        /// <summary>
-        /// Gets or sets lists.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "lists", Required = Newtonsoft.Json.Required.Default)]
-        public ISiteListsCollectionPage Lists { get; set; }
-    
-        /// <summary>
-        /// Gets or sets sites.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "sites", Required = Newtonsoft.Json.Required.Default)]
-        public ISiteSitesCollectionPage Sites { get; set; }
     
     }
 }

@@ -172,18 +172,6 @@ namespace Microsoft.Graph
         public IEnumerable<string> ProxyAddresses { get; set; }
     
         /// <summary>
-        /// Gets or sets refresh tokens valid from date time.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "refreshTokensValidFromDateTime", Required = Newtonsoft.Json.Required.Default)]
-        public DateTimeOffset? RefreshTokensValidFromDateTime { get; set; }
-    
-        /// <summary>
-        /// Gets or sets show in address list.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "showInAddressList", Required = Newtonsoft.Json.Required.Default)]
-        public bool? ShowInAddressList { get; set; }
-    
-        /// <summary>
         /// Gets or sets state.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "state", Required = Newtonsoft.Json.Required.Default)]
@@ -286,18 +274,6 @@ namespace Microsoft.Graph
         public IEnumerable<string> Skills { get; set; }
     
         /// <summary>
-        /// Gets or sets identity user risk.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "identityUserRisk", Required = Newtonsoft.Json.Required.Default)]
-        public IdentityUserRisk IdentityUserRisk { get; set; }
-    
-        /// <summary>
-        /// Gets or sets device enrollment limit.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "deviceEnrollmentLimit", Required = Newtonsoft.Json.Required.Default)]
-        public Int32? DeviceEnrollmentLimit { get; set; }
-    
-        /// <summary>
         /// Gets or sets owned devices.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "ownedDevices", Required = Newtonsoft.Json.Required.Default)]
@@ -340,34 +316,10 @@ namespace Microsoft.Graph
         public IUserOwnedObjectsCollectionWithReferencesPage OwnedObjects { get; set; }
     
         /// <summary>
-        /// Gets or sets scoped administrator of.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "scopedAdministratorOf", Required = Newtonsoft.Json.Required.Default)]
-        public IUserScopedAdministratorOfCollectionPage ScopedAdministratorOf { get; set; }
-    
-        /// <summary>
-        /// Gets or sets license details.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "licenseDetails", Required = Newtonsoft.Json.Required.Default)]
-        public IUserLicenseDetailsCollectionPage LicenseDetails { get; set; }
-    
-        /// <summary>
-        /// Gets or sets extensions.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "extensions", Required = Newtonsoft.Json.Required.Default)]
-        public IUserExtensionsCollectionPage Extensions { get; set; }
-    
-        /// <summary>
         /// Gets or sets messages.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "messages", Required = Newtonsoft.Json.Required.Default)]
         public IUserMessagesCollectionPage Messages { get; set; }
-    
-        /// <summary>
-        /// Gets or sets joined groups.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "joinedGroups", Required = Newtonsoft.Json.Required.Default)]
-        public IUserJoinedGroupsCollectionPage JoinedGroups { get; set; }
     
         /// <summary>
         /// Gets or sets mail folders.
@@ -406,12 +358,6 @@ namespace Microsoft.Graph
         public IUserEventsCollectionPage Events { get; set; }
     
         /// <summary>
-        /// Gets or sets people.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "people", Required = Newtonsoft.Json.Required.Default)]
-        public IUserPeopleCollectionPage People { get; set; }
-    
-        /// <summary>
         /// Gets or sets contacts.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "contacts", Required = Newtonsoft.Json.Required.Default)]
@@ -436,12 +382,6 @@ namespace Microsoft.Graph
         public ProfilePhoto Photo { get; set; }
     
         /// <summary>
-        /// Gets or sets photos.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "photos", Required = Newtonsoft.Json.Required.Default)]
-        public IUserPhotosCollectionPage Photos { get; set; }
-    
-        /// <summary>
         /// Gets or sets drive.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "drive", Required = Newtonsoft.Json.Required.Default)]
@@ -454,64 +394,10 @@ namespace Microsoft.Graph
         public IUserDrivesCollectionPage Drives { get; set; }
     
         /// <summary>
-        /// Gets or sets sharepoint.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "sharepoint", Required = Newtonsoft.Json.Required.Default)]
-        public SharePoint Sharepoint { get; set; }
-    
-        /// <summary>
-        /// Gets or sets insights.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "insights", Required = Newtonsoft.Json.Required.Default)]
-        public OfficeGraphInsights Insights { get; set; }
-    
-        /// <summary>
-        /// Gets or sets trending around.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "trendingAround", Required = Newtonsoft.Json.Required.Default)]
-        public IUserTrendingAroundCollectionPage TrendingAround { get; set; }
-    
-        /// <summary>
-        /// Gets or sets working with.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "workingWith", Required = Newtonsoft.Json.Required.Default)]
-        public IUserWorkingWithCollectionPage WorkingWith { get; set; }
-    
-        /// <summary>
-        /// Gets or sets tasks.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "tasks", Required = Newtonsoft.Json.Required.Default)]
-        public IUserTasksCollectionWithReferencesPage Tasks { get; set; }
-    
-        /// <summary>
-        /// Gets or sets plans.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "plans", Required = Newtonsoft.Json.Required.Default)]
-        public IUserPlansCollectionWithReferencesPage Plans { get; set; }
-    
-        /// <summary>
         /// Gets or sets planner.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "planner", Required = Newtonsoft.Json.Required.Default)]
         public PlannerUser Planner { get; set; }
-    
-        /// <summary>
-        /// Gets or sets notes.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "notes", Required = Newtonsoft.Json.Required.Default)]
-        public Notes Notes { get; set; }
-    
-        /// <summary>
-        /// Gets or sets managed devices.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "managedDevices", Required = Newtonsoft.Json.Required.Default)]
-        public IUserManagedDevicesCollectionWithReferencesPage ManagedDevices { get; set; }
-    
-        /// <summary>
-        /// Gets or sets managed app registrations.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "managedAppRegistrations", Required = Newtonsoft.Json.Required.Default)]
-        public IUserManagedAppRegistrationsCollectionWithReferencesPage ManagedAppRegistrations { get; set; }
     
     }
 }

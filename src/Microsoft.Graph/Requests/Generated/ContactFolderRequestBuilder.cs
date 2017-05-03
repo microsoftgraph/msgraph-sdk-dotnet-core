@@ -97,7 +97,5 @@ namespace Microsoft.Graph
             }
         }
     
-        
-    
     }
 }

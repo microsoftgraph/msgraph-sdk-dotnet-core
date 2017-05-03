@@ -196,16 +196,16 @@ namespace Microsoft.Graph
         public string WebDavUrl { get; set; }
     
         /// <summary>
-        /// Gets or sets workbook.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "workbook", Required = Newtonsoft.Json.Required.Default)]
-        public Workbook Workbook { get; set; }
-    
-        /// <summary>
         /// Gets or sets created by user.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "createdByUser", Required = Newtonsoft.Json.Required.Default)]
         public User CreatedByUser { get; set; }
+    
+        /// <summary>
+        /// Gets or sets workbook.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "workbook", Required = Newtonsoft.Json.Required.Default)]
+        public Workbook Workbook { get; set; }
     
         /// <summary>
         /// Gets or sets last modified by user.

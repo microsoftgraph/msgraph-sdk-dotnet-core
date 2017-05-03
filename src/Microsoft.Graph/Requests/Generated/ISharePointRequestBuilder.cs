@@ -30,24 +30,5 @@ namespace Microsoft.Graph
         /// <returns>The built request.</returns>
         new ISharePointRequest Request(IEnumerable<Option> options);
     
-        /// <summary>
-        /// Gets the request builder for Site.
-        /// </summary>
-        /// <returns>The <see cref="ISiteRequestBuilder"/>.</returns>
-        ISiteRequestBuilder Site { get; }
-
-        /// <summary>
-        /// Gets the request builder for Sites.
-        /// </summary>
-        /// <returns>The <see cref="ISharePointSitesCollectionRequestBuilder"/>.</returns>
-        ISharePointSitesCollectionRequestBuilder Sites { get; }
-    
-        /// <summary>
-        /// Gets the request builder for SharePointGetByPath.
-        /// </summary>
-        /// <returns>The <see cref="ISharePointGetByPathRequestBuilder"/>.</returns>
-        ISharePointGetByPathRequestBuilder GetByPath(
-            string path = null);
-    
     }
 }

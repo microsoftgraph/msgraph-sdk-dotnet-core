@@ -203,28 +203,6 @@ namespace Microsoft.Graph
         private void InitializeCollectionProperties(List listToInitialize)
         {
 
-            if (listToInitialize != null && listToInitialize.AdditionalData != null)
-            {
-
-                if (listToInitialize.Items != null && listToInitialize.Items.CurrentPage != null)
-                {
-                    listToInitialize.Items.AdditionalData = listToInitialize.AdditionalData;
-
-                    object nextPageLink;
-                    listToInitialize.AdditionalData.TryGetValue("items@odata.nextLink", out nextPageLink);
-                    var nextPageLinkString = nextPageLink as string;
-
-                    if (!string.IsNullOrEmpty(nextPageLinkString))
-                    {
-                        listToInitialize.Items.InitializeNextPageRequest(
-                            this.Client,
-                            nextPageLinkString);
-                    }
-                }
-
-            }
-
-
         }
     }
 }

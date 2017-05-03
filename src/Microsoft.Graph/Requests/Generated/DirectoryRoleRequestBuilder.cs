@@ -60,18 +60,6 @@ namespace Microsoft.Graph
                 return new DirectoryRoleMembersCollectionWithReferencesRequestBuilder(this.AppendSegmentToRequestUrl("members"), this.Client);
             }
         }
-
-        /// <summary>
-        /// Gets the request builder for ScopedAdministrators.
-        /// </summary>
-        /// <returns>The <see cref="IDirectoryRoleScopedAdministratorsCollectionRequestBuilder"/>.</returns>
-        public IDirectoryRoleScopedAdministratorsCollectionRequestBuilder ScopedAdministrators
-        {
-            get
-            {
-                return new DirectoryRoleScopedAdministratorsCollectionRequestBuilder(this.AppendSegmentToRequestUrl("scopedAdministrators"), this.Client);
-            }
-        }
     
     }
 }

@@ -50,18 +50,6 @@ namespace Microsoft.Graph
         }
     
         /// <summary>
-        /// Gets the request builder for Workbook.
-        /// </summary>
-        /// <returns>The <see cref="IWorkbookRequestBuilder"/>.</returns>
-        public IWorkbookRequestBuilder Workbook
-        {
-            get
-            {
-                return new WorkbookRequestBuilder(this.AppendSegmentToRequestUrl("workbook"), this.Client);
-            }
-        }
-
-        /// <summary>
         /// Gets the request builder for CreatedByUser.
         /// </summary>
         /// <returns>The <see cref="IUserWithReferenceRequestBuilder"/>.</returns>
@@ -70,6 +58,18 @@ namespace Microsoft.Graph
             get
             {
                 return new UserWithReferenceRequestBuilder(this.AppendSegmentToRequestUrl("createdByUser"), this.Client);
+            }
+        }
+
+        /// <summary>
+        /// Gets the request builder for Workbook.
+        /// </summary>
+        /// <returns>The <see cref="IWorkbookRequestBuilder"/>.</returns>
+        public IWorkbookRequestBuilder Workbook
+        {
+            get
+            {
+                return new WorkbookRequestBuilder(this.AppendSegmentToRequestUrl("workbook"), this.Client);
             }
         }
 

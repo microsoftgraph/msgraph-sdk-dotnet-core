@@ -45,12 +45,6 @@ namespace Microsoft.Graph
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "members", Required = Newtonsoft.Json.Required.Default)]
         public IDirectoryRoleMembersCollectionWithReferencesPage Members { get; set; }
     
-        /// <summary>
-        /// Gets or sets scoped administrators.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "scopedAdministrators", Required = Newtonsoft.Json.Required.Default)]
-        public IDirectoryRoleScopedAdministratorsCollectionPage ScopedAdministrators { get; set; }
-    
     }
 }
 

@@ -99,12 +99,6 @@ namespace Microsoft.Graph
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "multiValueExtendedProperties", Required = Newtonsoft.Json.Required.Default)]
         public IPostMultiValueExtendedPropertiesCollectionPage MultiValueExtendedProperties { get; set; }
     
-        /// <summary>
-        /// Gets or sets mentions.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "mentions", Required = Newtonsoft.Json.Required.Default)]
-        public IPostMentionsCollectionPage Mentions { get; set; }
-    
     }
 }
 
