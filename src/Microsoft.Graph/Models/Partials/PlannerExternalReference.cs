@@ -7,19 +7,30 @@ namespace Microsoft.Graph
     using System.Collections.Generic;
     using System.Runtime.Serialization;
 
+    /// <summary>
+    /// Represents an external reference item on a <see cref="PlannerTaskDetails"/>. 
+    /// </summary>
     public partial class PlannerExternalReference
     {
+        /// <summary>
+        /// OData type name for PlannerExternalReference resource.
+        /// </summary>
         internal const string ODataTypeName = "#microsoft.graph.plannerExternalReference";
 
+        /// <summary>
+        /// Ensures that @odata.type property is included when this object is serialized. 
+        /// This is required since this object is used as a value in dynamic properties of open types. 
+        /// </summary>
+        /// <param name="context">Serialization context. This parameter is ignored.</param>
         [OnSerializing]
-        public void AddODataType(StreamingContext context)
+        internal void AddODataType(StreamingContext context)
         {
             if (this.AdditionalData == null)
             {
                 this.AdditionalData = new Dictionary<string, object>();
             }
 
-            this.AdditionalData.Add("@odata.type", ODataTypeName);
+            this.AdditionalData.Add(CoreConstants.Serialization.ODataType, ODataTypeName);
         }
     }
 }

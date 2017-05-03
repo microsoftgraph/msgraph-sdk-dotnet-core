@@ -10,15 +10,29 @@ namespace Microsoft.Graph
     using System.Linq;
     using System.Runtime.Serialization;
 
+    /// <summary>
+    /// Represents the external references on a <see cref="PlannerTaskDetails"/>.
+    /// </summary>
     public partial class PlannerExternalReferences : IEnumerable<KeyValuePair<string, PlannerExternalReference>>
     {
+        /// <summary>
+        /// Specifies the character - encoding pairs to apply on the external reference urls.
+        /// </summary>
         private static readonly string[,] Conversions = new string[,] { { "%", "%25" }, { "@", "%40" }, { ".", "%2E" }, { ":", "%3A" } };
 
+        /// <summary>
+        /// Creates a new instance of PlannerExternalReferences.
+        /// </summary>
         public PlannerExternalReferences()
         {
             this.AdditionalData = new Dictionary<string, object>();
         }
 
+        /// <summary>
+        /// Gets or sets external reference data for a given reference url.
+        /// </summary>
+        /// <param name="url">The url of the reference.</param>
+        /// <returns>The external reference data for the given url.</returns>
         public PlannerExternalReference this[string url]
         {
             get
@@ -47,6 +61,12 @@ namespace Microsoft.Graph
             }
         }
 
+        /// <summary>
+        /// Adds a new external reference with the given url and short name.
+        /// </summary>
+        /// <param name="url">Url of the external reference.</param>
+        /// <param name="alias">Short name for the external reference.</param>
+        /// <returns>The created external reference.</returns>
         public PlannerExternalReference AddReference(string url, string alias)
         {
             if (string.IsNullOrEmpty(url))
@@ -68,6 +88,10 @@ namespace Microsoft.Graph
             return plannerExternalReference;
         }
 
+        /// <summary>
+        /// Returns pairs of external reference urls and external reference data.
+        /// </summary>
+        /// <returns>Enumeration of external reference ulr, external reference data pairs.</returns>
         public IEnumerator<KeyValuePair<string, PlannerExternalReference>> GetEnumerator()
         {
             return this.AdditionalData
@@ -81,40 +105,54 @@ namespace Microsoft.Graph
             return this.GetEnumerator();
         }
 
+        /// <summary>
+        /// Ensures the ExternalReference information is deserialized into <see cref="PlannerExternalReference"/> objects.
+        /// </summary>
+        /// <param name="context">Serialization context. This parameter is ignored.</param>
         [OnDeserialized]
         internal void DeserializeReferences(StreamingContext context)
         {
             this.AdditionalData.ConvertComplexTypeProperties<PlannerExternalReference>(PlannerExternalReference.ODataTypeName);
         }
 
-        private static string Encode(string propertyName)
+        /// <summary>
+        /// Encodes the url of an external reference to be compatible with a OData property naming requirements.
+        /// </summary>
+        /// <param name="externalReferenceUrl">Url to encode</param>
+        /// <returns>Encoded Url</returns>
+        private static string Encode(string externalReferenceUrl)
         {
-            if (string.IsNullOrEmpty(propertyName))
+            if (string.IsNullOrEmpty(externalReferenceUrl))
             {
-                throw new ArgumentNullException(nameof(propertyName));
+                throw new ArgumentNullException(nameof(externalReferenceUrl));
             }
 
             for (int i = 0; i < Conversions.GetLength(0); i++)
             {
-                propertyName = propertyName.Replace(Conversions[i, 0], Conversions[i, 1]);
+                externalReferenceUrl = externalReferenceUrl.Replace(Conversions[i, 0], Conversions[i, 1]);
             }
 
-            return propertyName;
+            return externalReferenceUrl;
         }
 
-        private static string Decode(string propertyName)
+        /// <summary>
+        /// Decodes an encoded the url of an external reference.
+        /// </summary>
+        /// <param name="externalReferenceUrl">Url to decode</param>
+        /// <returns>Decoded Url</returns>
+        private static string Decode(string externalReferenceUrl)
         {
-            if (string.IsNullOrEmpty(propertyName))
+            if (string.IsNullOrEmpty(externalReferenceUrl))
             {
-                throw new ArgumentNullException(nameof(propertyName));
+                throw new ArgumentNullException(nameof(externalReferenceUrl));
             }
 
             for (int i = Conversions.GetLength(0) - 1; i >= 0; i--)
             {
-                propertyName = propertyName.Replace(Conversions[i, 1], Conversions[i, 0]);
+                externalReferenceUrl = externalReferenceUrl.Replace(Conversions[i, 1], Conversions[i, 0]);
             }
 
-            return propertyName;
+            return externalReferenceUrl;
         }
     }
 }

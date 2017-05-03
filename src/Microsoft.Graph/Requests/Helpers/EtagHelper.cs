@@ -12,6 +12,13 @@ namespace Microsoft.Graph
     public static class EtagHelper
     {
         /// <summary>
+        /// Name of the OData etag property.
+        /// </summary>
+        public const string ODataEtagPropertyName = "@odata.etag";
+
+        private const string IfMatchHeaderName = "If-Match";
+
+        /// <summary>
         /// Returns the etag of an entity.
         /// </summary>
         /// <param name="entity">The entity that contains an etag.</param>
@@ -23,7 +30,7 @@ namespace Microsoft.Graph
                 throw new ArgumentNullException(nameof(entity));
             }
 
-            entity.AdditionalData.TryGetValue("@odata.etag", out object etag);
+            entity.AdditionalData.TryGetValue(ODataEtagPropertyName, out object etag);
             return etag as string;
         }
 
@@ -43,7 +50,7 @@ namespace Microsoft.Graph
 
             if (!string.IsNullOrEmpty(etag))
             {
-                request.Header("If-Match", etag);
+                request.Header(IfMatchHeaderName, etag);
             }
 
             return request;
