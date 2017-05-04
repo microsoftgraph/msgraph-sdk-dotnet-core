@@ -22,26 +22,26 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="requestUrl">The URL for the request.</param>
         /// <param name="client">The <see cref="IBaseClient"/> for handling requests.</param>
-        /// <param name="message">A message parameter for the OData method call.</param>
         /// <param name="recipients">A recipients parameter for the OData method call.</param>
         /// <param name="requireSignIn">A requireSignIn parameter for the OData method call.</param>
         /// <param name="roles">A roles parameter for the OData method call.</param>
         /// <param name="sendInvitation">A sendInvitation parameter for the OData method call.</param>
+        /// <param name="message">A message parameter for the OData method call.</param>
         public DriveItemInviteRequestBuilder(
             string requestUrl,
             IBaseClient client,
-            string message,
             IEnumerable<DriveRecipient> recipients,
             bool? requireSignIn,
             IEnumerable<string> roles,
-            bool? sendInvitation)
+            bool? sendInvitation,
+            string message)
             : base(requestUrl, client)
         {
-            this.SetParameter("message", message, true);
-            this.SetParameter("recipients", recipients, true);
+            this.SetParameter("recipients", recipients, false);
             this.SetParameter("requireSignIn", requireSignIn, true);
             this.SetParameter("roles", roles, true);
             this.SetParameter("sendInvitation", sendInvitation, true);
+            this.SetParameter("message", message, true);
         }
 
         /// <summary>
@@ -53,11 +53,6 @@ namespace Microsoft.Graph
         protected override IDriveItemInviteRequest CreateRequest(string functionUrl, IEnumerable<Option> options)
         {
             var request = new DriveItemInviteRequest(functionUrl, this.Client, options);
-
-            if (this.HasParameter("message"))
-            {
-                request.RequestBody.Message = this.GetParameter<string>("message");
-            }
 
             if (this.HasParameter("recipients"))
             {
@@ -77,6 +72,11 @@ namespace Microsoft.Graph
             if (this.HasParameter("sendInvitation"))
             {
                 request.RequestBody.SendInvitation = this.GetParameter<bool?>("sendInvitation");
+            }
+
+            if (this.HasParameter("message"))
+            {
+                request.RequestBody.Message = this.GetParameter<string>("message");
             }
 
             return request;

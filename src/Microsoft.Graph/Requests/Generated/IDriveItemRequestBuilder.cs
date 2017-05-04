@@ -88,11 +88,11 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IDriveItemInviteRequestBuilder"/>.</returns>
         IDriveItemInviteRequestBuilder Invite(
-            string message = null,
-            IEnumerable<DriveRecipient> recipients = null,
+            IEnumerable<DriveRecipient> recipients,
             bool? requireSignIn = null,
             IEnumerable<string> roles = null,
-            bool? sendInvitation = null);
+            bool? sendInvitation = null,
+            string message = null);
 
         /// <summary>
         /// Gets the request builder for DriveItemDelta.

@@ -157,20 +157,20 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IDriveItemInviteRequestBuilder"/>.</returns>
         public IDriveItemInviteRequestBuilder Invite(
-            string message = null,
-            IEnumerable<DriveRecipient> recipients = null,
+            IEnumerable<DriveRecipient> recipients,
             bool? requireSignIn = null,
             IEnumerable<string> roles = null,
-            bool? sendInvitation = null)
+            bool? sendInvitation = null,
+            string message = null)
         {
             return new DriveItemInviteRequestBuilder(
                 this.AppendSegmentToRequestUrl("microsoft.graph.invite"),
                 this.Client,
-                message,
                 recipients,
                 requireSignIn,
                 roles,
-                sendInvitation);
+                sendInvitation,
+                message);
         }
 
         /// <summary>
