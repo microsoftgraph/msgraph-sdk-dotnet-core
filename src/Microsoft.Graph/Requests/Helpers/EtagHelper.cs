@@ -16,8 +16,6 @@ namespace Microsoft.Graph
         /// </summary>
         public const string ODataEtagPropertyName = "@odata.etag";
 
-        private const string IfMatchHeaderName = "If-Match";
-
         /// <summary>
         /// Returns the etag of an entity.
         /// </summary>
