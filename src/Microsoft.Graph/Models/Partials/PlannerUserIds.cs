@@ -15,6 +15,14 @@ namespace Microsoft.Graph
     public partial class PlannerUserIds : IEnumerable<string>
     {
         /// <summary>
+        /// Creates a new instance of PlannerUserIds.
+        /// </summary>
+        public PlannerUserIds()
+        {
+            this.AdditionalData = new Dictionary<string, object>();
+        }
+
+        /// <summary>
         /// Number of user ids in the collection.
         /// </summary>
         public int Count => this.UserIds.Count();

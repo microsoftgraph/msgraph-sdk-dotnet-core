@@ -9,7 +9,7 @@ namespace Microsoft.Graph
     public class ServiceException : Exception
     {
         public ServiceException(Error error, Exception innerException = null)
-            : base(null, innerException)
+            : base(error?.ToString(), innerException)
         {
             this.Error = error;
         }
@@ -36,16 +36,6 @@ namespace Microsoft.Graph
             }
 
             return false;
-        }
-
-        public override string ToString()
-        {
-            if (this.Error != null)
-            {
-                return this.Error.ToString();
-            }
-
-            return null;
         }
     }
 }
