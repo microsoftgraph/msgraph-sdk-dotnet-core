@@ -40,7 +40,7 @@ namespace Microsoft.Graph.Test.Requests.Functional
             await graphClient.Groups[syncdGroup.Id].Members.References.Request().AddAsync(thisUser);
 
             // The group may take a few seconds to be available in Planner.
-            await Async.Task.Delay(50000);
+            await Async.Task.Delay(5000);
 
             return syncdGroup;
         }
@@ -170,7 +170,7 @@ namespace Microsoft.Graph.Test.Requests.Functional
             taskDetailsToUpdate.Description = "Description of the task";
 
             string etag = taskDetails.GetEtag();
-            PlannerTaskDetails updatedTaskDetails = await graphClient.Planner.Tasks[createdTask.Id].Details.Request().IfMatch(etag).ReturnRepresentation().UpdateAsync(taskDetailsToUpdate);
+            PlannerTaskDetails updatedTaskDetails = await graphClient.Planner.Tasks[createdTask.Id].Details.Request().Header("If-Match", etag).Header("Prefer", "return=representation").UpdateAsync(taskDetailsToUpdate);
 
             Assert.AreEqual("Description of the task", updatedTaskDetails.Description);
             Assert.AreEqual(PlannerPreviewType.Checklist, updatedTaskDetails.PreviewType);
@@ -198,7 +198,7 @@ namespace Microsoft.Graph.Test.Requests.Functional
             planDetailsToUpdate.SharedWith = new PlannerUserIds();
             planDetailsToUpdate.SharedWith.Add("me");
 
-            PlannerPlanDetails updatedPlanDetails = await graphClient.Planner.Plans[plannerPlan.Id].Details.Request().IfMatch(etag).ReturnRepresentation().UpdateAsync(planDetailsToUpdate);
+            PlannerPlanDetails updatedPlanDetails = await graphClient.Planner.Plans[plannerPlan.Id].Details.Request().Header("If-Match", etag).Header("Prefer", "return=representation").UpdateAsync(planDetailsToUpdate);
 
             Assert.AreEqual("First category", updatedPlanDetails.CategoryDescriptions.Category1);
             Assert.AreEqual("Category 4", updatedPlanDetails.CategoryDescriptions.Category4);
@@ -249,11 +249,11 @@ namespace Microsoft.Graph.Test.Requests.Functional
 
             var bottomTaskFormatUpdate = new PlannerAssignedToTaskBoardTaskFormat();
             bottomTaskFormatUpdate.OrderHintsByAssignee = new PlannerOrderHintsByAssignee();
-            bottomTaskFormatUpdate.OrderHintsByAssignee[myUserId] = $"{formatsByTasks[topTask.Id].OrderHintsByAssignee[myUserId]} !"; // after top task.
+            bottomTaskFormatUpdate.OrderHintsByAssignee[myUserId] = $"{formatsByTasks[topTask.Id].GetOrderHintForAssignee(myUserId)} !"; // after top task.
 
             var middleTaskFormatUpdate = new PlannerAssignedToTaskBoardTaskFormat();
             middleTaskFormatUpdate.OrderHintsByAssignee = new PlannerOrderHintsByAssignee();
-            middleTaskFormatUpdate.OrderHintsByAssignee[myUserId] = $"{formatsByTasks[topTask.Id].OrderHintsByAssignee[myUserId]} {bottomTaskFormatUpdate.OrderHintsByAssignee[myUserId]}!"; // after top task, before bottom task's client side new value.
+            middleTaskFormatUpdate.OrderHintsByAssignee[myUserId] = $"{formatsByTasks[topTask.Id].GetOrderHintForAssignee(myUserId)} {bottomTaskFormatUpdate.GetOrderHintForAssignee(myUserId)}!"; // after top task, before bottom task's client side new value.
 
             string etag = formatsByTasks[bottomTask.Id].GetEtag();
             formatsByTasks[bottomTask.Id] = await graphClient
@@ -261,8 +261,8 @@ namespace Microsoft.Graph.Test.Requests.Functional
                 .Tasks[bottomTask.Id]
                 .AssignedToTaskBoardFormat
                 .Request()
-                .IfMatch(etag)
-                .ReturnRepresentation()
+                .Header("If-Match", etag)
+                .Header("Prefer", "return=representation")
                 .UpdateAsync(bottomTaskFormatUpdate);
 
             etag = formatsByTasks[middleTask.Id].GetEtag();
@@ -271,8 +271,8 @@ namespace Microsoft.Graph.Test.Requests.Functional
                 .Tasks[middleTask.Id]
                 .AssignedToTaskBoardFormat
                 .Request()
-                .IfMatch(etag)
-                .ReturnRepresentation()
+                .Header("If-Match", etag)
+                .Header("Prefer", "return=representation")
                 .UpdateAsync(middleTaskFormatUpdate);
 
             // verify final order

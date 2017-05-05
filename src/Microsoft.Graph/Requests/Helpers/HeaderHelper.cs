@@ -38,16 +38,5 @@ namespace Microsoft.Graph
 
             return request;
         }
-
-        /// <summary>
-        /// Adds prefer: return=representation header to a request.
-        /// </summary>
-        /// <typeparam name="TRequest">Type of the request.</typeparam>
-        /// <param name="request">Request to which the header should be added.</param>
-        /// <returns>Modified request with the added header.</returns>
-        public static TRequest ReturnRepresentation<TRequest>(this TRequest request) where TRequest : IBaseRequest
-        {
-            return request.Header("Prefer", "return=representation");
-        }
     }
 }

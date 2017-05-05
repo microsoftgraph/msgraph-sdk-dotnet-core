@@ -33,27 +33,5 @@ namespace Microsoft.Graph
             entity.AdditionalData.TryGetValue(ODataEtagPropertyName, out object etag);
             return etag as string;
         }
-
-        /// <summary>
-        /// Adds If-Match header to a request with the given etag.
-        /// </summary>
-        /// <typeparam name="TRequest">Type of the request.</typeparam>
-        /// <param name="request">The request.</param>
-        /// <param name="etag">The etag value.</param>
-        /// <returns>The request with the If-Match header.</returns>
-        public static TRequest IfMatch<TRequest>(this TRequest request, string etag) where TRequest : IBaseRequest
-        {
-            if (request == null)
-            {
-                throw new ArgumentNullException(nameof(request));
-            }
-
-            if (!string.IsNullOrEmpty(etag))
-            {
-                request.Header(IfMatchHeaderName, etag);
-            }
-
-            return request;
-        }
     }
 }

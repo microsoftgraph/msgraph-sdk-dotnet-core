@@ -31,7 +31,7 @@ namespace Microsoft.Graph
         {
             get
             {
-                return this.AdditionalData[userId] as string;
+                return this.AdditionalData.TryGetValue(userId, out object orderHint) ? orderHint as string : null;
             }
 
             set
