@@ -99,6 +99,7 @@ namespace Microsoft.Graph.Test.Requests.Functional
             }
         }
 
+        [Ignore] // Issue with this. Informed service API owner. Sharing token is not recognized.
         [TestMethod]
         public async System.Threading.Tasks.Task SharePointAccessSiteByUrl()
         {
