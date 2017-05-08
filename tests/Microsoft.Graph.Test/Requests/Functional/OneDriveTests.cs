@@ -210,7 +210,7 @@ namespace Microsoft.Graph.Test.Requests.Functional
 
                 var permission = await graphClient.Me.Drive.Root
                                                            .ItemWithPath(itemToShare[0].Name)
-                                                           .CreateLink("edit", "organization")
+                                                           .CreateLink("organization", "edit")
                                                            .Request()
                                                            .PostAsync();
 
