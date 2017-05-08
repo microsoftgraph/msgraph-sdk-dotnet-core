@@ -40,7 +40,7 @@ namespace Microsoft.Graph.Test.Requests.Functional
             await graphClient.Groups[syncdGroup.Id].Members.References.Request().AddAsync(thisUser);
 
             // The group may take a few seconds to be available in Planner.
-            await Async.Task.Delay(5000);
+            await Async.Task.Delay(20000);
 
             return syncdGroup;
         }
@@ -149,7 +149,7 @@ namespace Microsoft.Graph.Test.Requests.Functional
         {
             var group = await CreateGroup();
             this.testGroup = group;
-            var plannerPlan = await CreatePlan(group);
+            var plannerPlan = await CreatePlan(group); // You may need to add a Delay in this since there is some latency.
 
             PlannerTask taskToCreate = new PlannerTask();
             taskToCreate.PlanId = plannerPlan.Id;
@@ -187,6 +187,8 @@ namespace Microsoft.Graph.Test.Requests.Functional
             var group = await CreateGroup();
             this.testGroup = group;
             var plannerPlan = await CreatePlan(group);
+
+            await Async.Task.Delay(3000); // sometimes we need to delay
 
             PlannerPlanDetails planDetails = await graphClient.Planner.Plans[plannerPlan.Id].Details.Request().GetAsync();
 
@@ -239,7 +241,7 @@ namespace Microsoft.Graph.Test.Requests.Functional
             PlannerTask middleTask = await graphClient.Planner.Tasks.Request().AddAsync(taskToCreate);
 
             // give it two second to ensure asynchronous processing is completed.
-            await Async.Task.Delay(2000);
+            await Async.Task.Delay(10000);
 
             var myUserId = plannerPlan.CreatedBy.User.Id;
 
