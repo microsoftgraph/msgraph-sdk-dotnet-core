@@ -336,6 +336,11 @@ namespace Microsoft.Graph.Test.Requests.Functional
             {
                 var me = await graphClient.Me.Request().GetAsync();
 
+                var oldMe = new User()
+                {
+                    GivenName = me.GivenName
+                };
+
                 var betterMe = new User()
                 {
                     GivenName = "Beth"
@@ -345,8 +350,7 @@ namespace Microsoft.Graph.Test.Requests.Functional
                 await graphClient.Users[me.UserPrincipalName].Request().UpdateAsync(betterMe);
 
                 // Update the user back to me.
-                await graphClient.Users[me.UserPrincipalName].Request().UpdateAsync(me);
-
+                await graphClient.Users[me.UserPrincipalName].Request().UpdateAsync(oldMe);
             }
             catch (Microsoft.Graph.ServiceException e)
             {
