@@ -16,7 +16,7 @@
       New features
 
       * Added support for .NetStandard 1.1
-      * Added support for Planner which includes custom serialization for planner open types, an eTag and header helper.
+      * Added support for Planner which includes custom serialization for Planner open types, an ETag and header helper.
       * Added support SharePoint.
       * Added support for delta queries and enum flags.
       * Added FindMeetingTimes functionality.
@@ -44,7 +44,7 @@
     <GenerateNeutralResourcesLanguageAttribute>false</GenerateNeutralResourcesLanguageAttribute>
     <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
     <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
-    <SignAssembly>True</SignAssembly>
+    <SignAssembly>False</SignAssembly>
     <DelaySign>True</DelaySign>
     <AssemblyOriginatorKeyFile>35MSSharedLib1024.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
