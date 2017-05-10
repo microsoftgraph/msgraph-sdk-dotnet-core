@@ -6,12 +6,7 @@
 Integrate the [Microsoft Graph API](https://graph.microsoft.io) into your .NET
 project!
 
-The Microsoft Graph .NET Client Library is built as a Portable Class Library targeting profile 111.
-This targets the following frameworks:
-
-* .NET 4.5
-* .NET for Windows Store apps
-* Windows Phone 8.1 and higher
+The Microsoft Graph .NET Client Library targets .NetStandard 1.1 and .Net Framework 4.5.
 
 ## Installation via NuGet
 
@@ -102,6 +97,8 @@ The following sample applications are also available:
 ## Notes
 
 Install NewtonSoft.Json first if you want to use a version greater than NewtonSoft.Json 6.0.1. For example, you'll need to install NewtonSoft.Json 9.0.1 first if you want to use this to library while targeting .Net Core with standard1.0.
+
+Install System.Runtime.InteropServices.RuntimeInformation before you install Microsoft.Graph >=1.3 if you are having an issue updating the package for a Xamarin solution. You may need to updated references to Microsoft.NETCore.UniversalWindowsPlatform to >=5.2.2 as well.
 
 ## Issues
 

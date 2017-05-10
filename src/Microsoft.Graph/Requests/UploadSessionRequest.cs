@@ -22,7 +22,7 @@ namespace Microsoft.Graph
         /// Deletes the specified Session
         /// </summary>
         /// <returns>The task to await.</returns>
-        public Task DeleteAsync()
+        public Task<UploadSession> DeleteAsync()
         {
             return this.DeleteAsync(CancellationToken.None);
         }
@@ -32,10 +32,10 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await.</returns>
-        public async Task DeleteAsync(CancellationToken cancellationToken)
+        public async Task<UploadSession> DeleteAsync(CancellationToken cancellationToken)
         {
             this.Method = "DELETE";
-            await this.SendAsync<UploadSession>(null, cancellationToken).ConfigureAwait(false);
+            return await this.SendAsync<UploadSession>(null, cancellationToken).ConfigureAwait(false);
         }
 
         /// <summary>

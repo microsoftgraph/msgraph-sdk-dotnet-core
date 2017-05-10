@@ -13,7 +13,7 @@ namespace Microsoft.Graph.Test.Requests.Functional
         // 
         // http://graph.microsoft.io/en-us/docs/api-reference/v1.0/api/singlevaluelegacyextendedproperty_post_singlevalueextendedproperties
         [TestMethod]
-        public async Task ContactsSetGetSingleExtendedProperty()
+        public async System.Threading.Tasks.Task ContactsSetGetSingleExtendedProperty()
         {
             try
             {

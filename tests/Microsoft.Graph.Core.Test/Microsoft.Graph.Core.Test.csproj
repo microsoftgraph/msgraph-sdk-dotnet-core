@@ -39,9 +39,8 @@
       <HintPath>..\..\packages\Moq.4.2.1510.2205\lib\net40\Moq.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Net.Http" />
@@ -69,6 +68,7 @@
     <Compile Include="Mocks\MockProgress.cs" />
     <Compile Include="Requests\AsyncMonitorTests.cs" />
     <Compile Include="Requests\BaseRequestBuilderTests.cs" />
+    <Compile Include="Serialization\DurationConverterTests.cs" />
     <Compile Include="TestModels\AbstractEntityType.cs" />
     <Compile Include="TestModels\ClassWithJson.cs" />
     <Compile Include="TestModels\CustomRequest.cs" />
@@ -91,6 +91,7 @@
     <Compile Include="Requests\RequestTestBase.cs" />
     <Compile Include="Serialization\DateConverterTests.cs" />
     <Compile Include="Serialization\SerializerTests.cs" />
+    <Compile Include="Serialization\TimeOfDayConverterTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\Microsoft.Graph.Core\Microsoft.Graph.Core.csproj">
@@ -99,7 +100,15 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Microsoft.Graph.Core\Microsoft.Graph.Core.csproj">
+      <Project>{9f04608c-d845-4445-83b1-e6d4eee38cbc}</Project>
+      <Name>Microsoft.Graph.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
