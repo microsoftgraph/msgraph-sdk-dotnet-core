@@ -12,10 +12,6 @@ before_build:
 build:
   verbosity: minimal
 
-configuration:
- - Debug
- - Release
-
 test:
   assemblies:
     only:
