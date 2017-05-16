@@ -11,6 +11,11 @@ before_build:
     dotnet restore
 build:
   verbosity: minimal
+
+configuration:
+ - Debug
+ - Release
+
 test:
   assemblies:
     only:
