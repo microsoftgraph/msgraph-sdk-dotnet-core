@@ -94,6 +94,11 @@ namespace Microsoft.Graph
             else if (!passParametersInQueryString)
             {
                 string valueAsString = value != null ? value.ToString() : "null";
+                if (value is bool)
+                {
+                    valueAsString = valueAsString.ToLower();
+                }
+
                 if (value != null && value is string)
                 {
                     valueAsString = "'" + EscapeStringValue(valueAsString) + "'";
