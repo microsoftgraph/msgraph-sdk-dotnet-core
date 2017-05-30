@@ -6,7 +6,7 @@ using Async = System.Threading.Tasks;
 
 namespace Microsoft.Graph.Test.Requests.Functional
 {
-    [Ignore]
+    //[Ignore]
     [TestClass]
     public class SchemaExtensionTests : GraphTestBase
     {
@@ -57,12 +57,13 @@ namespace Microsoft.Graph.Test.Requests.Functional
             headers.Add(preferHeader);
 
             // Update a specific schema extension.
-            extensionFromGet.Status = "Available";
+            extensionFromGet.Description = "This extension will be deleted";
 
             // Potential bug: state transition from deprecated to available is not working.
             // Potential bug here as the service is not returning the SchemaExtension on update. Must delete test until this is fixed. 5/30/2017
-            SchemaExtension extensionFromUpdate = await graphClient.SchemaExtensions[extensionFromGet.Id].Request(headers).UpdateAsync(extensionFromGet);
-            
+            // SchemaExtension extensionFromUpdate = await graphClient.SchemaExtensions[extensionFromGet.Id].Request(headers).UpdateAsync(extensionFromGet);
+            await graphClient.SchemaExtensions[extensionFromGet.Id].Request(headers).UpdateAsync(extensionFromGet);
+
             // Enable or re-write test when we learn expected behavior.
             //Assert.AreEqual(extensionFromGet.Status, extensionFromUpdate.Status, "Expected: the patch object status property matches the returned status property; Actual: they don't match.");
 
@@ -75,7 +76,7 @@ namespace Microsoft.Graph.Test.Requests.Functional
             }
             catch (ServiceException e)
             {
-                Assert.AreEqual(e.StatusCode == System.Net.HttpStatusCode.NotFound, $"Expected: {System.Net.HttpStatusCode.NotFound}; Actual: {e.StatusCode}");
+                Assert.AreEqual(e.StatusCode, System.Net.HttpStatusCode.NotFound, $"Expected: {System.Net.HttpStatusCode.NotFound}; Actual: {e.StatusCode}");
             }
         }
     }
