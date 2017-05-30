@@ -138,6 +138,31 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
+        /// Sends the multipart request.
+        /// </summary>
+        /// <typeparam name="T">The expected response object type for deserialization.</typeparam>
+        /// <param name="multipartContent">The multipart object to send.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <param name="completionOption">The <see cref="HttpCompletionOption"/> to pass to the <see cref="IHttpProvider"/> on send.</param>
+        /// <returns>The deserialized response object.</returns>
+        public async Task<T> SendMultiPartAsync<T>(
+            MultipartContent multipartContent,
+            CancellationToken cancellationToken,
+            HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        {
+            using (var response = await this.SendMultiPartRequestAsync(multipartContent, cancellationToken, completionOption).ConfigureAwait(false))
+            {
+                if (response.Content != null)
+                {
+                    var responseString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                    return this.Client.HttpProvider.Serializer.DeserializeObject<T>(responseString);
+                }
+
+                return default(T);
+            }
+        }
+
+        /// <summary>
         /// Sends the request.
         /// </summary>
         /// <typeparam name="T">The expected response object type for deserialization.</typeparam>
@@ -152,6 +177,56 @@ namespace Microsoft.Graph
         {
             var response = await this.SendRequestAsync(serializableObject, cancellationToken, completionOption).ConfigureAwait(false);
             return await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Sends the multipart request.
+        /// </summary>
+        /// <typeparam name="T">The expected response object type for deserialization.</typeparam>
+        /// <param name="multipartContent">The multipart object to send.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <param name="completionOption">The <see cref="HttpCompletionOption"/> to pass to the <see cref="IHttpProvider"/> on send.</param>
+        /// <returns>The <see cref="HttpResponseMessage"/> object.</returns>
+        public async Task<HttpResponseMessage> SendMultiPartRequestAsync(
+            MultipartContent multipartContent,
+            CancellationToken cancellationToken,
+            HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        {
+            if (string.IsNullOrEmpty(this.RequestUrl))
+            {
+                throw new ServiceException(
+                    new Error
+                    {
+                        Code = ErrorConstants.Codes.InvalidRequest,
+                        Message = ErrorConstants.Messages.RequestUrlMissing,
+                    });
+            }
+
+            if (this.Client.AuthenticationProvider == null)
+            {
+                throw new ServiceException(
+                    new Error
+                    {
+                        Code = ErrorConstants.Codes.InvalidRequest,
+                        Message = ErrorConstants.Messages.AuthenticationProviderMissing,
+                    });
+            }
+
+            if (multipartContent != null)
+            {
+                using (var request = this.GetHttpRequestMessage())
+                {
+                    await this.AuthenticateRequest(request).ConfigureAwait(false);
+
+                    request.Content = multipartContent;
+
+                    return await this.Client.HttpProvider.SendAsync(request, completionOption, cancellationToken).ConfigureAwait(false);
+                }
+            }
+            else
+            {
+                throw new Exception("The Multipart content is null. Set the multipart content.");
+            }
         }
 
         /// <summary>
