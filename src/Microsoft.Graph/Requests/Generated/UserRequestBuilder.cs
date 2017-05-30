@@ -146,6 +146,18 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
+        /// Gets the request builder for Extensions.
+        /// </summary>
+        /// <returns>The <see cref="IUserExtensionsCollectionRequestBuilder"/>.</returns>
+        public IUserExtensionsCollectionRequestBuilder Extensions
+        {
+            get
+            {
+                return new UserExtensionsCollectionRequestBuilder(this.AppendSegmentToRequestUrl("extensions"), this.Client);
+            }
+        }
+
+        /// <summary>
         /// Gets the request builder for Messages.
         /// </summary>
         /// <returns>The <see cref="IUserMessagesCollectionRequestBuilder"/>.</returns>
@@ -322,6 +334,18 @@ namespace Microsoft.Graph
             get
             {
                 return new PlannerUserRequestBuilder(this.AppendSegmentToRequestUrl("planner"), this.Client);
+            }
+        }
+
+        /// <summary>
+        /// Gets the request builder for Onenote.
+        /// </summary>
+        /// <returns>The <see cref="IOnenoteRequestBuilder"/>.</returns>
+        public IOnenoteRequestBuilder Onenote
+        {
+            get
+            {
+                return new OnenoteRequestBuilder(this.AppendSegmentToRequestUrl("onenote"), this.Client);
             }
         }
     
