@@ -80,5 +80,62 @@ namespace Microsoft.Graph.Test.Requests.Functional
                 Assert.Fail("Something happened, check out a trace. Error code: {0}", e.Error.Code);
             }
         }
+
+        /// <summary>
+        /// Test FindMeetingTimes and custom duration serliazation.
+        /// </summary>
+        [TestMethod]
+        public async System.Threading.Tasks.Task EventFindMeetingsTimes()
+        {
+            try
+            {
+                User me = await graphClient.Me.Request().GetAsync();
+
+                // Get the first three users in the org as attendees unless user is the organizer.
+                var orgUsers = await graphClient.Users.Request().GetAsync();
+                List<Attendee> attendees = new List<Attendee>();
+                for (int i = 0; i < 3; ++i)
+                {
+                    if (orgUsers[i].Mail == me.Mail)
+                        continue; // Skip the organizer.
+
+                    Attendee attendee = new Attendee();
+                    attendee.EmailAddress = new EmailAddress();
+                    attendee.EmailAddress.Address = orgUsers[i].Mail;
+                    attendees.Add(attendee);
+                }
+
+                // Create a duration with an ISO8601 duration.
+                Duration durationFromISO8601 = new Duration("PT1H");
+                MeetingTimeSuggestionsResult suggestionsFromISO8601 = await graphClient.Me.FindMeetingTimes(attendees, 
+                                                                                                            null, 
+                                                                                                            null, 
+                                                                                                            durationFromISO8601, 
+                                                                                                            10, 
+                                                                                                            true, 
+                                                                                                            false, 
+                                                                                                            10.0).Request().PostAsync();
+
+                // Create a duration with a TimeSpan.
+                Duration durationFromTimeSpan = new Duration(new TimeSpan(1, 0, 0));
+                MeetingTimeSuggestionsResult suggestionsFromTimeSpan = await graphClient.Me.FindMeetingTimes(attendees, 
+                                                                                                             null, 
+                                                                                                             null,
+                                                                                                             durationFromTimeSpan,
+                                                                                                             10, 
+                                                                                                             true, 
+                                                                                                             false, 
+                                                                                                             10.0).Request().PostAsync();
+
+                Assert.IsNotNull(suggestionsFromTimeSpan, "The results object is null.");
+                // Make sure that our custom serialization results are the same for both scenarios.
+                // DurationConverter.cs and Duration.cs
+                Assert.AreEqual(suggestionsFromISO8601, suggestionsFromTimeSpan, "The meeting suggestion results don't match as expected.");
+            }
+            catch (Microsoft.Graph.ServiceException e)
+            {
+                Assert.Fail("Something happened, check out a trace. Error code: {0}", e.Error.Code);
+            }
+        }
     }
 }
