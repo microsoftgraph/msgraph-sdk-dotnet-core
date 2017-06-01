@@ -127,7 +127,7 @@ namespace Microsoft.Graph.Test.Requests.Functional
                                                                                                              false, 
                                                                                                              10.0).Request().PostAsync();
 
-                Assert.IsNotNull(suggestionsFromTimeSpan, "The results object is null.");
+                Assert.IsNotNull(suggestionsFromTimeSpan, "The results object is null. Check that the IUserFindMeetingTimesRequestBuilder operates as expected.");
                 // Make sure that our custom serialization results are the same for both scenarios.
                 // DurationConverter.cs and Duration.cs
                 Assert.AreEqual(suggestionsFromISO8601, suggestionsFromTimeSpan, "The meeting suggestion results don't match as expected.");
