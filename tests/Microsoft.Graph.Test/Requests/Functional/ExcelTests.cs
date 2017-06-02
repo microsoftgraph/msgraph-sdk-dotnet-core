@@ -10,10 +10,12 @@
 namespace Microsoft.Graph.Test.Requests.Functional
 {
     using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using System;
+    using System.Net.Http;
 
     /// <summary>
     /// The tests in this class cover the Excel REST API.
@@ -449,6 +451,80 @@ namespace Microsoft.Graph.Test.Requests.Functional
                                                               .Add("ColumnStacked", "Auto", tableRange.Address)
                                                               .Request()
                                                               .PostAsync();
+
+                await OneDriveDeleteTestFile(excelFileId, 3000);
+            }
+            catch (Microsoft.Graph.ServiceException e)
+            {
+                Assert.Fail("Something happened. Error code: {0}", e.Error.Code);
+            }
+        }
+
+        [TestMethod]
+        public async Task ExcelGetImageFromChart()
+        {
+            try
+            {
+                var excelFileId = await OneDriveCreateTestFile("_excelCreateChartFromTable.xlsx");
+                await OneDriveUploadTestFileContent(excelFileId);
+
+                // Get the table range.
+                var tableRange = await graphClient.Me.Drive.Items[excelFileId]
+                                                            .Workbook
+                                                            .Tables["CreateChartFromTable"] // Set in excelTestResource.xlsx
+                                                            .Range()
+                                                            .Request()
+                                                            .GetAsync();
+
+                // Create a chart based on the table range.
+                var workbookChart = await graphClient.Me.Drive.Items[excelFileId]
+                                                                .Workbook
+                                                                .Worksheets["CreateChartFromTable"] // Set in excelTestResource.xlsx
+                                                                .Charts
+                                                                .Add("ColumnStacked", "Auto", tableRange.Address)
+                                                                .Request()
+                                                                .PostAsync();
+
+                // Sometimes the creation of the chart takes too long and the new chart resource isn't accessible.
+                await Task.Delay(1000);
+
+                // Workaround since the metadata description isn't correct as it states it returns a string and not the 
+                // actual JSON object, and since the service doesn't accept the fully qualified name that the client emits
+                // even though it should accept the FQN.
+                string chartResourceUrl = graphClient.Me.Drive.Items[excelFileId]
+                                                        .Workbook
+                                                        .Worksheets["CreateChartFromTable"] // Set in excelTestResource.xlsx
+                                                        .Charts[workbookChart.Name]
+                                                        .Request()
+                                                        .RequestUrl;
+
+                string urlToGetImageFromChart = String.Format("{0}/{1}", chartResourceUrl, "image(width=400)");
+
+                HttpRequestMessage hrm = new HttpRequestMessage(HttpMethod.Get, urlToGetImageFromChart);
+
+                // Authenticate (add access token) our HttpRequestMessage
+                await graphClient.AuthenticationProvider.AuthenticateRequestAsync(hrm);
+
+                // Send the request and get the response.
+                HttpResponseMessage response = await graphClient.HttpProvider.SendAsync(hrm);
+
+                // Get the JsonObject page that we created.
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+
+                    JObject imageObject = JObject.Parse(content);
+                    JToken obj = imageObject.GetValue("value"); 
+
+                    Assert.IsNotNull(obj, "Expected to get a JToken from a property named value.");
+                }
+                else
+                    throw new ServiceException(
+                        new Error
+                        {
+                            Code = response.StatusCode.ToString(),
+                            Message = await response.Content.ReadAsStringAsync()
+                        });
 
                 await OneDriveDeleteTestFile(excelFileId, 3000);
             }
