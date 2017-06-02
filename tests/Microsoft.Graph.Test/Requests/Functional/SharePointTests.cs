@@ -154,15 +154,15 @@ namespace Microsoft.Graph.Test.Requests.Functional
             }
         }
         
-
-        [Ignore] // Issue with this. Informed service API owner. Sharing token is not recognized.
+        /// <summary>
+        /// Test to get information about a SharePoint site by its URL.
+        /// </summary>
         [TestMethod]
         public async Async.Task SharePointAccessSiteByUrl()
         {
             try
             {
-                // 
-                Site site = graphClient.Shares[UrlToSharingToken("https://mod810997.sharepoint.com/sites/SMBverticals")].Site.Request().GetAsync().Result;
+                Site site = await graphClient.Shares[UrlToSharingToken("https://mod810997.sharepoint.com/sites/SMBverticals")].Site.Request().GetAsync();
                 Assert.IsNotNull(site);
             }
             catch (Microsoft.Graph.ServiceException e)
@@ -176,6 +176,5 @@ namespace Microsoft.Graph.Test.Requests.Functional
             var base64Value = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(inputUrl));
             return "u!" + base64Value.TrimEnd('=').Replace('/', '_').Replace('+', '-');
         }
-
     }
 }
