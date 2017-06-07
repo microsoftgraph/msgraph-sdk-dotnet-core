@@ -142,6 +142,12 @@ namespace Microsoft.Graph
         public IGroupOwnersCollectionWithReferencesPage Owners { get; set; }
     
         /// <summary>
+        /// Gets or sets extensions.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "extensions", Required = Newtonsoft.Json.Required.Default)]
+        public IGroupExtensionsCollectionPage Extensions { get; set; }
+    
+        /// <summary>
         /// Gets or sets threads.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "threads", Required = Newtonsoft.Json.Required.Default)]
@@ -218,6 +224,12 @@ namespace Microsoft.Graph
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "planner", Required = Newtonsoft.Json.Required.Default)]
         public PlannerGroup Planner { get; set; }
+    
+        /// <summary>
+        /// Gets or sets onenote.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "onenote", Required = Newtonsoft.Json.Required.Default)]
+        public Onenote Onenote { get; set; }
     
     }
 }

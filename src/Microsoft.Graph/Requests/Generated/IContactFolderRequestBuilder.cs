@@ -54,5 +54,7 @@ namespace Microsoft.Graph
         /// <returns>The <see cref="IContactFolderMultiValueExtendedPropertiesCollectionRequestBuilder"/>.</returns>
         IContactFolderMultiValueExtendedPropertiesCollectionRequestBuilder MultiValueExtendedProperties { get; }
     
+        
+    
     }
 }

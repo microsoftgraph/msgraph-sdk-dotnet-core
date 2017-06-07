@@ -30,5 +30,11 @@ namespace Microsoft.Graph
         /// <returns>The built request.</returns>
         new IOrganizationRequest Request(IEnumerable<Option> options);
     
+        /// <summary>
+        /// Gets the request builder for Extensions.
+        /// </summary>
+        /// <returns>The <see cref="IOrganizationExtensionsCollectionRequestBuilder"/>.</returns>
+        IOrganizationExtensionsCollectionRequestBuilder Extensions { get; }
+    
     }
 }

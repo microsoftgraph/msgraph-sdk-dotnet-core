@@ -59,6 +59,15 @@ namespace Microsoft.Graph
             }
         }
 
-        
+        /// <summary>
+        /// Gets the request builder for ContactDelta.
+        /// </summary>
+        /// <returns>The <see cref="IContactDeltaRequestBuilder"/>.</returns>
+        public IContactDeltaRequestBuilder Delta()
+        {
+            return new ContactDeltaRequestBuilder(
+                this.AppendSegmentToRequestUrl("microsoft.graph.delta"),
+                this.Client);
+        }
     }
 }

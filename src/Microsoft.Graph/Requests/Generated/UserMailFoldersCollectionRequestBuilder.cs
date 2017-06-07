@@ -59,6 +59,15 @@ namespace Microsoft.Graph
             }
         }
 
-        
+        /// <summary>
+        /// Gets the request builder for MailFolderDelta.
+        /// </summary>
+        /// <returns>The <see cref="IMailFolderDeltaRequestBuilder"/>.</returns>
+        public IMailFolderDeltaRequestBuilder Delta()
+        {
+            return new MailFolderDeltaRequestBuilder(
+                this.AppendSegmentToRequestUrl("microsoft.graph.delta"),
+                this.Client);
+        }
     }
 }

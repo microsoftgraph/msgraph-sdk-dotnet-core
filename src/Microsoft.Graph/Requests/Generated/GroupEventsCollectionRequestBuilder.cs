@@ -59,6 +59,15 @@ namespace Microsoft.Graph
             }
         }
 
-        
+        /// <summary>
+        /// Gets the request builder for EventDelta.
+        /// </summary>
+        /// <returns>The <see cref="IEventDeltaRequestBuilder"/>.</returns>
+        public IEventDeltaRequestBuilder Delta()
+        {
+            return new EventDeltaRequestBuilder(
+                this.AppendSegmentToRequestUrl("microsoft.graph.delta"),
+                this.Client);
+        }
     }
 }

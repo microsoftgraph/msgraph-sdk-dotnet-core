@@ -41,6 +41,12 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IDeviceRegisteredUsersCollectionWithReferencesRequestBuilder"/>.</returns>
         IDeviceRegisteredUsersCollectionWithReferencesRequestBuilder RegisteredUsers { get; }
+
+        /// <summary>
+        /// Gets the request builder for Extensions.
+        /// </summary>
+        /// <returns>The <see cref="IDeviceExtensionsCollectionRequestBuilder"/>.</returns>
+        IDeviceExtensionsCollectionRequestBuilder Extensions { get; }
     
     }
 }
