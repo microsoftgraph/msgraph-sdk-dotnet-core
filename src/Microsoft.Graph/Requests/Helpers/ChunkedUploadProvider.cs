@@ -211,9 +211,9 @@ namespace Microsoft.Graph
             return newRangesRemaining;
         }
 
-        private int NextChunkSize(long rangeBegin, long rangeEnd)
+        private long NextChunkSize(long rangeBegin, long rangeEnd)
         {
-            var sizeBasedOnRange = (int)(rangeEnd - rangeBegin) + 1;
+            var sizeBasedOnRange = (long)(rangeEnd - rangeBegin) + 1;
             return sizeBasedOnRange > this.maxChunkSize
                 ? this.maxChunkSize
                 : sizeBasedOnRange;
