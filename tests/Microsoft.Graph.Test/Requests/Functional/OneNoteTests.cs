@@ -37,11 +37,6 @@ namespace Microsoft.Graph.Test.Requests.Functional
             await graphClient.Me.Onenote.Pages[testPage.Id].Request().DeleteAsync();
         }
 
-        public async void TestNotebookCleanUp()
-        {
-            await graphClient.Me.Onenote.Pages[testNotebook.Id].Request().DeleteAsync();
-        }
-
         /// <summary>
         /// Get the OneNote notebooks.
         /// https://developer.microsoft.com/en-us/graph/docs/api-reference/v1.0/api/notebook_get
@@ -331,8 +326,6 @@ namespace Microsoft.Graph.Test.Requests.Functional
                 Assert.IsNotNull(notebook, "Expected: A Notebook object, Actual: null. Check the request.");
                 Assert.AreEqual(testNotebook.DisplayName, notebook.DisplayName, "Expected: Input notebook " +
                     "display name is the same as the notebook created on the service. Actual: they are different");
-
-                TestNotebookCleanUp();
             }
             catch (Microsoft.Graph.ServiceException e)
             {

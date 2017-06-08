@@ -118,7 +118,7 @@ Please see [collections](/docs/collections.md) for details on collections and pa
 
 ## Send HTTP requests with the .Net Microsoft Graph client library
 
-Sometimes, the functionality that you want to use isn't a part of the .Net client library. In this case, you can still use the client library to make your life easier. The client library can authenticate your requests and provide you the serializers. Here's an example of using the client library to create a OneNote page and deserialize the response object. 
+Sometimes, the functionality that you want to use isn't a part of the .NET client library. In this case, you can still use the client library to make your life easier. The client library can authenticate your requests and provide you the serializers. Here's an example of using the client library to create a OneNote page and deserialize the response object. 
 
 ```csharp
 
