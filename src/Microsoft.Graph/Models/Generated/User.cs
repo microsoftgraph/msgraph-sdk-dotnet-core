@@ -328,6 +328,12 @@ namespace Microsoft.Graph
         public IUserLicenseDetailsCollectionPage LicenseDetails { get; set; }
     
         /// <summary>
+        /// Gets or sets extensions.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "extensions", Required = Newtonsoft.Json.Required.Default)]
+        public IUserExtensionsCollectionPage Extensions { get; set; }
+    
+        /// <summary>
         /// Gets or sets messages.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "messages", Required = Newtonsoft.Json.Required.Default)]
@@ -416,6 +422,12 @@ namespace Microsoft.Graph
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "planner", Required = Newtonsoft.Json.Required.Default)]
         public PlannerUser Planner { get; set; }
+    
+        /// <summary>
+        /// Gets or sets onenote.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "onenote", Required = Newtonsoft.Json.Required.Default)]
+        public Onenote Onenote { get; set; }
     
     }
 }

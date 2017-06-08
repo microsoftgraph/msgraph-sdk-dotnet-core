@@ -25,7 +25,6 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>A Microsoft.Graph.Duration object.</returns>
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
-        //public override object ReadJson(JsonReader reader, Type objectType, object existingValue, Microsoft.Graph.Serializer serializer)
         {
             try
             {

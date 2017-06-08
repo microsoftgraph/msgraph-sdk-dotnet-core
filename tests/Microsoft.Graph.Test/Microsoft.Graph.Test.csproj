@@ -94,7 +94,10 @@
     <Compile Include="Requests\Functional\ErrorTests.cs" />
     <Compile Include="Requests\Functional\PlannerTests.cs" />
     <Compile Include="Requests\Functional\DeltaQueryTests.cs" />
+    <Compile Include="Requests\Functional\MiscTests.cs" />
     <Compile Include="Requests\Functional\SharePointTests.cs" />
+    <Compile Include="Requests\Functional\OneNoteTests.cs" />
+    <Compile Include="Requests\Functional\SchemaExtensionTests.cs" />
     <Compile Include="Requests\Functional\UsersTests.cs" />
     <Compile Include="Requests\Generated\EntityWithReferenceRequestTests.cs" />
     <Compile Include="Requests\Generated\EntityReferenceRequestTests.cs" />
