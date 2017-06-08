@@ -142,7 +142,7 @@ namespace Microsoft.Graph.Test.Requests.Functional
                 string siteResource = "portals/Information-Technology";
 
                 // Get the portals/Information-Technology site.
-                Site portalInfoTechSite = await graphClient.Sites.GetSiteByPath(site.SiteCollection.Hostname, siteResource).Request().GetAsync();
+                Site portalInfoTechSite = await graphClient.Sites.GetByPath(siteResource, site.SiteCollection.Hostname).Request().GetAsync();
 
                 StringAssert.Contains(portalInfoTechSite.WebUrl, siteResource);
                 StringAssert.Contains(portalInfoTechSite.Id, portalInfoTechSite.SiteCollection.Hostname); // Check if id format changes under us. 

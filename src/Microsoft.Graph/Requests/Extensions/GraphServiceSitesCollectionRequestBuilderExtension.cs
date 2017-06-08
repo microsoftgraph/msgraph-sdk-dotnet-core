@@ -13,9 +13,8 @@ namespace Microsoft.Graph
         /// Gets a request builder for accessing a site by relative path.
         /// </summary>
         /// <returns>The <see cref="ISiteRequestBuilder"/>.</returns>
-        public ISiteRequestBuilder GetSiteByPath(string hostname, string siteRelativePath)
+        public ISiteRequestBuilder GetByPath(string siteRelativePath, string hostname)
         {
-
             if (!string.IsNullOrEmpty(siteRelativePath))
             {
                 if (!siteRelativePath.StartsWith("/"))
@@ -28,7 +27,5 @@ namespace Microsoft.Graph
                 string.Format("{0}/{1}:{2}", this.RequestUrl, hostname, siteRelativePath),
                 this.Client);
         }
-
-
     }
 }

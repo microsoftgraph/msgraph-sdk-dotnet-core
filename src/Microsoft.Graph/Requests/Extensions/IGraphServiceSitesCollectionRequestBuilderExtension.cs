@@ -14,6 +14,6 @@ namespace Microsoft.Graph
         /// Gets a request builder for accessing a site by relative path.
         /// </summary>
         /// <returns>The <see cref="ISiteRequestBuilder"/>.</returns>
-        ISiteRequestBuilder GetSiteByPath(string hostname, string siteRelativePath);
+        ISiteRequestBuilder GetByPath(string siteRelativePath, string hostname);
     }
 }
