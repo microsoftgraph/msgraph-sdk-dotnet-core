@@ -30,8 +30,6 @@ namespace Microsoft.Graph.Test.Requests.Functional
 
             // Get a handle to the first section.
             firstSectionID = sectionPage[0].Id;
-
-            //await Async.Task.Delay(5000);
         }
 
         public async void TestPageCleanUp()
@@ -377,10 +375,15 @@ namespace Microsoft.Graph.Test.Requests.Functional
                     StringAssert.Contains(testPage.Title, title, "Expected: title from the posted body matches the title in the OneNotePage object. That didn't happen");
                     Assert.IsNull(testPage.Content, "Expected: content property does not contain anything. Actual: there's an unexpected object in the content property.");
 
-                    TestPageCleanUp();
+                    TestPageCleanUp(); 
                 }
                 else
-                    throw new Exception("Error");
+                    throw new ServiceException(
+                        new Error
+                        {
+                            Code = response.StatusCode.ToString(),
+                            Message = await response.Content.ReadAsStringAsync()
+                        });
             }
             catch (Microsoft.Graph.ServiceException e)
             {
@@ -444,7 +447,12 @@ namespace Microsoft.Graph.Test.Requests.Functional
                     TestPageCleanUp();
                 }
                 else
-                    throw new Exception("Error");
+                    throw new ServiceException(
+                        new Error
+                        {
+                            Code = response.StatusCode.ToString(),
+                            Message = await response.Content.ReadAsStringAsync()
+                        });
             }
             catch (Microsoft.Graph.ServiceException e)
             {
@@ -529,7 +537,12 @@ namespace Microsoft.Graph.Test.Requests.Functional
                     TestPageCleanUp();
                 }
                 else
-                    throw new Exception("Error");
+                    throw new ServiceException(
+                        new Error
+                        {
+                            Code = response.StatusCode.ToString(),
+                            Message = await response.Content.ReadAsStringAsync()
+                        });
             }
             catch (Microsoft.Graph.ServiceException e)
             {
@@ -603,7 +616,12 @@ namespace Microsoft.Graph.Test.Requests.Functional
                     Assert.AreEqual(response.StatusCode, System.Net.HttpStatusCode.NoContent, $"Expected: 204 No Content, Actual: {response.StatusCode}");
                 }
                 else
-                    throw new Exception("Error");
+                    throw new ServiceException(
+                        new Error
+                        {
+                            Code = response.StatusCode.ToString(),
+                            Message = await response.Content.ReadAsStringAsync()
+                        });
             }
             catch (Microsoft.Graph.ServiceException e)
             {

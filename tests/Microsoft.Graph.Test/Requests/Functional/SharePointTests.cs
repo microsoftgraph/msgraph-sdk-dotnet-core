@@ -106,7 +106,7 @@ namespace Microsoft.Graph.Test.Requests.Functional
             try
             {
                 // 
-                Site site = graphClient.Shares[UrlToSharingToken("https://mod810997.sharepoint.com/sites/SMBverticals")].Site.Request().GetAsync().Result;
+                Site site = await graphClient.Shares[UrlToSharingToken("https://mod810997.sharepoint.com/sites/SMBverticals")].Site.Request().GetAsync();
                 Assert.IsNotNull(site);
             }
             catch (Microsoft.Graph.ServiceException e)

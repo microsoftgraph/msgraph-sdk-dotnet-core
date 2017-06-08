@@ -116,7 +116,7 @@ Expand, Skip, Top, OrderBy, and Filter are also supported via the client library
 
 Please see [collections](/docs/collections.md) for details on collections and paging.
 
-## Use the .NET Microsoft Graph client library when the client doesn't support a feature
+## Send HTTP requests with the .Net Microsoft Graph client library
 
 Sometimes, the functionality that you want to use isn't a part of the .NET client library. In this case, you can still use the client library to make your life easier. The client library can authenticate your requests and provide you the serializers. Here's an example of using the client library to create a OneNote page and deserialize the response object. 
 
@@ -154,7 +154,12 @@ public async Task OneNoteAddPageHtml()
         OnenotePage page = graphClient.HttpProvider.Serializer.DeserializeObject<OnenotePage>(content);
     }
     else
-        throw new Exception("Error");
+        throw new ServiceException(
+            new Error
+            {
+                Code = response.StatusCode.ToString(),
+                Message = await response.Content.ReadAsStringAsync()
+            });
 }
 
 ```
