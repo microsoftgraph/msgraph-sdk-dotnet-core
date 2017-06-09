@@ -4,6 +4,8 @@
     <Copyright>Copyright (c) Microsoft Corporation</Copyright>
     <AssemblyTitle>Microsoft Graph Core Client Library</AssemblyTitle>
     <VersionPrefix>1.5.0</VersionPrefix>
+    <FileVersion>1.5.0</FileVersion>
+    <AssemblyVersion>1.5.0</AssemblyVersion>
     <Authors>Microsoft</Authors>
     <TargetFrameworks>netstandard1.1;net45</TargetFrameworks>
     <AssemblyName>Microsoft.Graph.Core</AssemblyName>
