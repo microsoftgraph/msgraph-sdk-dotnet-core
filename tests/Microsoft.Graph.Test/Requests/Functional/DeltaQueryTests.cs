@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.IO;
-using System.Threading.Tasks;
+using Async = System.Threading.Tasks;
 
 namespace Microsoft.Graph.Test.Requests.Functional
 {
@@ -11,7 +11,7 @@ namespace Microsoft.Graph.Test.Requests.Functional
     public class DeltaQueryTests : GraphTestBase
     {
         [TestMethod]
-        public async System.Threading.Tasks.Task DeltaLinkDriveItem()
+        public async Async.Task DeltaLinkDriveItem()
         {
             try
             {
@@ -24,7 +24,7 @@ namespace Microsoft.Graph.Test.Requests.Functional
                     driveItemDeltaCollectionPage = await driveItemDeltaCollectionPage.NextPageRequest.GetAsync();
                 }
 
-                // At this point we're up to date. driveItemDeltaCollectionPage now has a deltalink.  
+                // At this point we're up to date. messagesDeltaCollectionPage now has a deltalink.  
                 object deltaLink;
 
                 // Now let's use the deltalink to make sure there aren't any changes. There shouldn't be.
@@ -67,6 +67,57 @@ namespace Microsoft.Graph.Test.Requests.Functional
             }
         }
 
+        // TODO: Before enabling these tests, we need to cleanup our test data.
+
+        //[TestMethod]
+        //public async Async.Task DeltaLinkMessages()
+        //{
+        //    try
+        //    {
+        //        // Get our first delta page.
+        //        var messagesDeltaCollectionPage = await graphClient.Me.MailFolders["inbox"].Messages.Delta().Request().GetAsync();
+
+        //        // Go through all of the delta pages so that we can get the delta link on the last page.
+        //        while (messagesDeltaCollectionPage.NextPageRequest != null)
+        //        {
+        //            messagesDeltaCollectionPage = await messagesDeltaCollectionPage.NextPageRequest.GetAsync();
+        //        }
+
+        //        // At this point we're up to date. messagesDeltaCollectionPage now has a deltalink.  
+        //        object deltaLink;
+
+        //        // Now let's use the deltalink to make sure there aren't any changes. There shouldn't be.
+        //        if (messagesDeltaCollectionPage.AdditionalData.TryGetValue("@odata.deltaLink", out deltaLink))
+        //        {
+        //            messagesDeltaCollectionPage.InitializeNextPageRequest(graphClient, deltaLink.ToString());
+        //            messagesDeltaCollectionPage = await messagesDeltaCollectionPage.NextPageRequest.GetAsync();
+        //        }
+        //        Assert.IsNotNull(deltaLink, "We did not get a deltalink back as expected.");
+        //        Assert.AreEqual(messagesDeltaCollectionPage.Count, 0, "We received an unexpected change.");
+
+        //        // Create a new message.
+        //        //CreateNewMessage();
+
+        //        // Now let's use the deltalink to make sure there aren't any changes. We expect to see a new message.
+        //        if (messagesDeltaCollectionPage.AdditionalData.TryGetValue("@odata.deltaLink", out deltaLink))
+        //        {
+        //            messagesDeltaCollectionPage.InitializeNextPageRequest(graphClient, deltaLink.ToString());
+        //            messagesDeltaCollectionPage = await messagesDeltaCollectionPage.NextPageRequest.GetAsync();
+        //        }
+
+        //        // We expect two changes, one new item, and the root folder will have a change.
+        //        Assert.AreEqual(messagesDeltaCollectionPage.Count, 2, "We didn't receive the expected change.");
+        //    }
+        //    catch (Microsoft.Graph.ServiceException e)
+        //    {
+        //        Assert.Inconclusive("Error code: {0}", e.Error.Code);
+        //    }
+
+        //    catch (Exception e)
+        //    {
+        //        Assert.Inconclusive("Error code: {0}", e.Message);
+        //    }
+        //}
 
         //[TestMethod]
         //public async System.Threading.Tasks.Task UserDeltaLink()
