@@ -1,5 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Collections.Generic;
+using System.Net.Http;
+using Async = System.Threading.Tasks;
 
 namespace Microsoft.Graph.Test.Requests.Functional
 {
@@ -9,7 +12,7 @@ namespace Microsoft.Graph.Test.Requests.Functional
     {
         // Test search a SharePoint site.
         [TestMethod]
-        public async System.Threading.Tasks.Task SharePointSearchSites()
+        public async Async.Task SharePointSearchSites()
         {
             try
             {
@@ -33,7 +36,7 @@ namespace Microsoft.Graph.Test.Requests.Functional
 
         // Test accessing the default document libraries for a SharePoint site.
         [TestMethod]
-        public async System.Threading.Tasks.Task SharePointGetDocumentLibraries()
+        public async Async.Task SharePointGetDocumentLibraries()
         {
             try
             {
@@ -61,7 +64,7 @@ namespace Microsoft.Graph.Test.Requests.Functional
 
         // Test accessing the non-default document library on a SharePoint site.
         [TestMethod]
-        public async System.Threading.Tasks.Task SharePointGetNonDefaultDocumentLibraries()
+        public async Async.Task SharePointGetNonDefaultDocumentLibraries()
         {
             try
             {
@@ -99,14 +102,67 @@ namespace Microsoft.Graph.Test.Requests.Functional
             }
         }
 
-        [Ignore] // Issue with this. Informed service API owner. Sharing token is not recognized.
+        /// <summary>
+        /// Tests the GetSiteByPath method added in GraphServiceSitesCollectionRequestBuilderExtension.cs
+        /// https://developer.microsoft.com/en-us/graph/docs/api-reference/v1.0/api/site_get
+        /// </summary>
+        /// Open question: how is a customer expected to get Site path. This part of the experience is unclear to me. 
         [TestMethod]
-        public async System.Threading.Tasks.Task SharePointAccessSiteByUrl()
+        public async Async.Task SharePointGetSiteWithPath()
         {
             try
             {
-                // 
-                Site site = graphClient.Shares[UrlToSharingToken("https://mod810997.sharepoint.com/sites/SMBverticals")].Site.Request().GetAsync().Result;
+                // Create the request to get the root site by using the root structural property. We don't generate 
+                // request builders for structural properties so we need to use HttpRequestMessage to make the request.
+                string requestUrlToGetSiteRootInfo = String.Format("{0}{1}", graphClient.Sites.Request().RequestUrl, "/root");
+                HttpRequestMessage hrm = new HttpRequestMessage(HttpMethod.Get, requestUrlToGetSiteRootInfo);
+
+                // Authenticate (add access token) to our HttpRequestMessage
+                await graphClient.AuthenticationProvider.AuthenticateRequestAsync(hrm);
+
+                HttpResponseMessage response = await graphClient.HttpProvider.SendAsync(hrm);
+
+                Site site;
+
+                // Get the Site.
+                if (response.IsSuccessStatusCode)
+                {
+                    // Deserialize Site object.
+                    var content = await response.Content.ReadAsStringAsync();
+                    site = graphClient.HttpProvider.Serializer.DeserializeObject<Site>(content);
+                }
+                else
+                    throw new ServiceException(
+                        new Error
+                        {
+                            Code = response.StatusCode.ToString(),
+                            Message = await response.Content.ReadAsStringAsync()
+                        });
+                               
+                string siteResource = "portals/Information-Technology";
+
+                // Get the portals/Information-Technology site.
+                Site portalInfoTechSite = await graphClient.Sites.GetByPath(siteResource, site.SiteCollection.Hostname).Request().GetAsync();
+
+                StringAssert.Contains(portalInfoTechSite.WebUrl, siteResource);
+                StringAssert.Contains(portalInfoTechSite.Id, portalInfoTechSite.SiteCollection.Hostname); // Check if id format changes under us. 
+                Assert.AreEqual(site.SiteCollection.Hostname, portalInfoTechSite.SiteCollection.Hostname);
+            }
+            catch (Microsoft.Graph.ServiceException e)
+            {
+                Assert.Fail("Something happened, check out a trace. Error code: {0}", e.Error.Code);
+            }
+        }
+        
+        /// <summary>
+        /// Test to get information about a SharePoint site by its URL.
+        /// </summary>
+        [TestMethod]
+        public async Async.Task SharePointAccessSiteByUrl()
+        {
+            try
+            {
+                Site site = await graphClient.Shares[UrlToSharingToken("https://mod810997.sharepoint.com/sites/SMBverticals")].Site.Request().GetAsync();
                 Assert.IsNotNull(site);
             }
             catch (Microsoft.Graph.ServiceException e)
@@ -120,6 +176,5 @@ namespace Microsoft.Graph.Test.Requests.Functional
             var base64Value = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(inputUrl));
             return "u!" + base64Value.TrimEnd('=').Replace('/', '_').Replace('+', '-');
         }
-
     }
 }

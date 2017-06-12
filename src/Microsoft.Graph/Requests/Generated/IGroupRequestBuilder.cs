@@ -55,6 +55,12 @@ namespace Microsoft.Graph
         IGroupOwnersCollectionWithReferencesRequestBuilder Owners { get; }
 
         /// <summary>
+        /// Gets the request builder for Extensions.
+        /// </summary>
+        /// <returns>The <see cref="IGroupExtensionsCollectionRequestBuilder"/>.</returns>
+        IGroupExtensionsCollectionRequestBuilder Extensions { get; }
+
+        /// <summary>
         /// Gets the request builder for Threads.
         /// </summary>
         /// <returns>The <see cref="IGroupThreadsCollectionRequestBuilder"/>.</returns>
@@ -131,6 +137,12 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IPlannerGroupRequestBuilder"/>.</returns>
         IPlannerGroupRequestBuilder Planner { get; }
+
+        /// <summary>
+        /// Gets the request builder for Onenote.
+        /// </summary>
+        /// <returns>The <see cref="IOnenoteRequestBuilder"/>.</returns>
+        IOnenoteRequestBuilder Onenote { get; }
     
         /// <summary>
         /// Gets the request builder for GroupSubscribeByMail.

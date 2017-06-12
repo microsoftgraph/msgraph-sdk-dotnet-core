@@ -73,8 +73,8 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IDriveItemCreateLinkRequestBuilder"/>.</returns>
         IDriveItemCreateLinkRequestBuilder CreateLink(
-            string scope = null,
-            string type = null);
+            string type = null,
+            string scope = null);
 
         /// <summary>
         /// Gets the request builder for DriveItemCreateUploadSession.

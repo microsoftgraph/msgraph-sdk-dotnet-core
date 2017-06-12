@@ -203,6 +203,28 @@ namespace Microsoft.Graph
         private void InitializeCollectionProperties(Organization organizationToInitialize)
         {
 
+            if (organizationToInitialize != null && organizationToInitialize.AdditionalData != null)
+            {
+
+                if (organizationToInitialize.Extensions != null && organizationToInitialize.Extensions.CurrentPage != null)
+                {
+                    organizationToInitialize.Extensions.AdditionalData = organizationToInitialize.AdditionalData;
+
+                    object nextPageLink;
+                    organizationToInitialize.AdditionalData.TryGetValue("extensions@odata.nextLink", out nextPageLink);
+                    var nextPageLinkString = nextPageLink as string;
+
+                    if (!string.IsNullOrEmpty(nextPageLinkString))
+                    {
+                        organizationToInitialize.Extensions.InitializeNextPageRequest(
+                            this.Client,
+                            nextPageLinkString);
+                    }
+                }
+
+            }
+
+
         }
     }
 }

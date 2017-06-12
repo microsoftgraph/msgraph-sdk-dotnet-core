@@ -129,14 +129,14 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IDriveItemCreateLinkRequestBuilder"/>.</returns>
         public IDriveItemCreateLinkRequestBuilder CreateLink(
-            string scope = null,
-            string type = null)
+            string type = null,
+            string scope = null)
         {
             return new DriveItemCreateLinkRequestBuilder(
                 this.AppendSegmentToRequestUrl("microsoft.graph.createLink"),
                 this.Client,
-                scope,
-                type);
+                type,
+                scope);
         }
 
         /// <summary>

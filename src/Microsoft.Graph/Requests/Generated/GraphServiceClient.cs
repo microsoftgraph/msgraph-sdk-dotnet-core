@@ -162,6 +162,17 @@ namespace Microsoft.Graph
         }
     
         /// <summary>
+        /// Gets the GraphServiceSchemaExtensions request builder.
+        /// </summary>
+        public IGraphServiceSchemaExtensionsCollectionRequestBuilder SchemaExtensions
+        {
+            get
+            {
+                return new GraphServiceSchemaExtensionsCollectionRequestBuilder(this.BaseUrl + "/schemaExtensions", this);
+            }
+        }
+    
+        /// <summary>
         /// Gets the GraphServiceDrives request builder.
         /// </summary>
         public IGraphServiceDrivesCollectionRequestBuilder Drives

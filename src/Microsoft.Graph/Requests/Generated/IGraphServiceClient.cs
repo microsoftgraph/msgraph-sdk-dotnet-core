@@ -71,6 +71,11 @@ namespace Microsoft.Graph
         IGraphServiceContractsCollectionRequestBuilder Contracts { get; }
     
         /// <summary>
+        /// Gets the GraphServiceSchemaExtensions request builder.
+        /// </summary>
+        IGraphServiceSchemaExtensionsCollectionRequestBuilder SchemaExtensions { get; }
+    
+        /// <summary>
         /// Gets the GraphServiceDrives request builder.
         /// </summary>
         IGraphServiceDrivesCollectionRequestBuilder Drives { get; }

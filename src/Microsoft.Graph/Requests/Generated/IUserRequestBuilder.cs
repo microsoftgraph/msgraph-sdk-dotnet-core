@@ -79,6 +79,12 @@ namespace Microsoft.Graph
         IUserLicenseDetailsCollectionRequestBuilder LicenseDetails { get; }
 
         /// <summary>
+        /// Gets the request builder for Extensions.
+        /// </summary>
+        /// <returns>The <see cref="IUserExtensionsCollectionRequestBuilder"/>.</returns>
+        IUserExtensionsCollectionRequestBuilder Extensions { get; }
+
+        /// <summary>
         /// Gets the request builder for Messages.
         /// </summary>
         /// <returns>The <see cref="IUserMessagesCollectionRequestBuilder"/>.</returns>
@@ -167,6 +173,12 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IPlannerUserRequestBuilder"/>.</returns>
         IPlannerUserRequestBuilder Planner { get; }
+
+        /// <summary>
+        /// Gets the request builder for Onenote.
+        /// </summary>
+        /// <returns>The <see cref="IOnenoteRequestBuilder"/>.</returns>
+        IOnenoteRequestBuilder Onenote { get; }
     
         /// <summary>
         /// Gets the request builder for UserAssignLicense.

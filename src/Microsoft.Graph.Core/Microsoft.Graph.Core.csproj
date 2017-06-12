@@ -3,23 +3,25 @@
     <Description>Microsoft Graph Core Client Library implements core functionality used by Microsoft Graph Client Libraries.</Description>
     <Copyright>Copyright (c) Microsoft Corporation</Copyright>
     <AssemblyTitle>Microsoft Graph Core Client Library</AssemblyTitle>
-    <VersionPrefix>1.4.0</VersionPrefix>
+    <VersionPrefix>1.5.0</VersionPrefix>
+    <FileVersion>1.5.0</FileVersion>
+    <AssemblyVersion>1.5.0</AssemblyVersion>
     <Authors>Microsoft</Authors>
     <TargetFrameworks>netstandard1.1;net45</TargetFrameworks>
     <AssemblyName>Microsoft.Graph.Core</AssemblyName>
     <PackageId>Microsoft.Graph.Core</PackageId>
     <PackageTags>Microsoft Office365;Graph;GraphServiceClient;Outlook;OneDrive;AzureAD;GraphAPI;Productivity;SharePoint;SDK</PackageTags>
     <PackageReleaseNotes>
-      May 2017 Release Summary (version 1.4.0)
+      June 2017 Release Summary (version 1.5.0)
 
       New features
 
-      * Added support for .NetStandard 1.1
+      * Support for posting multipart content.
 
-      Updates
+      Bug fixes
 
-      * Updated dependency on Newtonsoft.Json to 10.0.2.
-      * Removed the Exception ToString override
+      * Boolean query string parameters are no longer emitted in upper case.
+
     </PackageReleaseNotes>
     <PackageProjectUrl>https://graph.microsoft.io</PackageProjectUrl>
     <PackageLicenseUrl>http://aka.ms/devservicesagreement</PackageLicenseUrl>

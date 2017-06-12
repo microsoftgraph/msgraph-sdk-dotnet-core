@@ -49,5 +49,17 @@ namespace Microsoft.Graph
             return new OrganizationRequest(this.RequestUrl, this.Client, options);
         }
     
+        /// <summary>
+        /// Gets the request builder for Extensions.
+        /// </summary>
+        /// <returns>The <see cref="IOrganizationExtensionsCollectionRequestBuilder"/>.</returns>
+        public IOrganizationExtensionsCollectionRequestBuilder Extensions
+        {
+            get
+            {
+                return new OrganizationExtensionsCollectionRequestBuilder(this.AppendSegmentToRequestUrl("extensions"), this.Client);
+            }
+        }
+    
     }
 }

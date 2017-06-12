@@ -22,18 +22,6 @@ namespace Microsoft.Graph
     {
     
         /// <summary>
-        /// Gets or sets Message.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "message", Required = Newtonsoft.Json.Required.Default)]
-        public string Message { get; set; }
-    
-        /// <summary>
-        /// Gets or sets Recipients.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "recipients", Required = Newtonsoft.Json.Required.Default)]
-        public IEnumerable<DriveRecipient> Recipients { get; set; }
-    
-        /// <summary>
         /// Gets or sets RequireSignIn.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "requireSignIn", Required = Newtonsoft.Json.Required.Default)]
@@ -50,6 +38,18 @@ namespace Microsoft.Graph
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "sendInvitation", Required = Newtonsoft.Json.Required.Default)]
         public bool? SendInvitation { get; set; }
+    
+        /// <summary>
+        /// Gets or sets Message.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "message", Required = Newtonsoft.Json.Required.Default)]
+        public string Message { get; set; }
+    
+        /// <summary>
+        /// Gets or sets Recipients.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "recipients", Required = Newtonsoft.Json.Required.Default)]
+        public IEnumerable<DriveRecipient> Recipients { get; set; }
     
     }
 }
