@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
@@ -123,6 +123,7 @@ namespace Microsoft.Graph.Test.Requests.Functional
             // Get a default plan
             var group = await CreateGroup();
             this.testGroup = group;
+            await Async.Task.Delay(5000);
             var plannerPlan = await CreatePlan(group);
 
             PlannerTask taskToCreate = new PlannerTask();
@@ -186,9 +187,8 @@ namespace Microsoft.Graph.Test.Requests.Functional
         {
             var group = await CreateGroup();
             this.testGroup = group;
+            await Async.Task.Delay(3000); // sometimes we need to delay, the group information needs to be set before we can create a plan.
             var plannerPlan = await CreatePlan(group);
-
-            await Async.Task.Delay(3000); // sometimes we need to delay
 
             PlannerPlanDetails planDetails = await graphClient.Planner.Plans[plannerPlan.Id].Details.Request().GetAsync();
 
