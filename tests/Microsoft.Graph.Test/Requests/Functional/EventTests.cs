@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -107,30 +107,37 @@ namespace Microsoft.Graph.Test.Requests.Functional
 
                 // Create a duration with an ISO8601 duration.
                 Duration durationFromISO8601 = new Duration("PT1H");
-                MeetingTimeSuggestionsResult suggestionsFromISO8601 = await graphClient.Me.FindMeetingTimes(attendees, 
+                MeetingTimeSuggestionsResult resultsFromISO8601 = await graphClient.Me.FindMeetingTimes(attendees, 
                                                                                                             null, 
                                                                                                             null, 
                                                                                                             durationFromISO8601, 
-                                                                                                            10, 
+                                                                                                            2, 
                                                                                                             true, 
                                                                                                             false, 
                                                                                                             10.0).Request().PostAsync();
 
                 // Create a duration with a TimeSpan.
                 Duration durationFromTimeSpan = new Duration(new TimeSpan(1, 0, 0));
-                MeetingTimeSuggestionsResult suggestionsFromTimeSpan = await graphClient.Me.FindMeetingTimes(attendees, 
+                MeetingTimeSuggestionsResult resultsFromTimeSpan = await graphClient.Me.FindMeetingTimes(attendees, 
                                                                                                              null, 
                                                                                                              null,
                                                                                                              durationFromTimeSpan,
-                                                                                                             10, 
+                                                                                                             2, 
                                                                                                              true, 
                                                                                                              false, 
                                                                                                              10.0).Request().PostAsync();
 
-                Assert.IsNotNull(suggestionsFromTimeSpan, "The results object is null. Check that the IUserFindMeetingTimesRequestBuilder operates as expected.");
+                Assert.IsNotNull(resultsFromTimeSpan, "The results object is null. Check that the IUserFindMeetingTimesRequestBuilder operates as expected.");
                 // Make sure that our custom serialization results are the same for both scenarios.
                 // DurationConverter.cs and Duration.cs
-                Assert.AreEqual(suggestionsFromISO8601, suggestionsFromTimeSpan, "The meeting suggestion results don't match as expected.");
+
+
+                List<MeetingTimeSuggestion> suggestionsFromISO8601 = new List<MeetingTimeSuggestion>(resultsFromISO8601.MeetingTimeSuggestions);
+                List<MeetingTimeSuggestion> suggestionsFromTimeSpan = new List<MeetingTimeSuggestion>(resultsFromTimeSpan.MeetingTimeSuggestions);
+
+                Assert.AreEqual(suggestionsFromISO8601[0].MeetingTimeSlot.Start.DateTime, 
+                                suggestionsFromTimeSpan[0].MeetingTimeSlot.Start.DateTime, 
+                                "The meeting suggestion results don't match as expected.");
             }
             catch (Microsoft.Graph.ServiceException e)
             {
