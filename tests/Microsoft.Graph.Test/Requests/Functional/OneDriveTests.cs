@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.IO;
@@ -7,7 +7,7 @@ using System.Net.Http;
 
 namespace Microsoft.Graph.Test.Requests.Functional
 {
-    [Ignore]
+    //[Ignore]
     [TestClass]
     public class OneDriveTests : GraphTestBase
     {
@@ -301,7 +301,7 @@ namespace Microsoft.Graph.Test.Requests.Functional
 
                 var permission = await graphClient.Me.Drive.Root
                                                            .ItemWithPath(itemToShare[0].Name)
-                                                           .CreateLink("organization", "edit")
+                                                           .CreateLink("edit", "organization")
                                                            .Request()
                                                            .PostAsync();
 
@@ -364,3 +364,4 @@ namespace Microsoft.Graph.Test.Requests.Functional
         }
     }
 }
+
