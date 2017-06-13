@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.IO;
@@ -26,8 +26,19 @@ namespace Microsoft.Graph.Test.Requests.Functional
             newExtension.AdditionalData.Add("trackingKeyMajor", "ABC");
             newExtension.AdditionalData.Add("trackingKeyMinor", "123");
 
-            // Add an extension to the group. Results in a call to the service.
-            var extension = await graphClient.Groups[groupPage[0].Id].Extensions.Request().AddAsync(newExtension);
+            try
+            {
+                // Add an extension to the group. Results in a call to the service.
+                var extension = await graphClient.Groups[groupPage[0].Id].Extensions.Request().AddAsync(newExtension);
+
+                // Delete the extension. Results in a call to the service.
+                await graphClient.Groups[groupPage[0].Id].Extensions["com.contoso.trackingKey"].Request().DeleteAsync();
+            }
+            catch (ServiceException e)
+            {
+                Assert.Fail(e.Error.ToString());
+            }
         }
     }
 }
+
