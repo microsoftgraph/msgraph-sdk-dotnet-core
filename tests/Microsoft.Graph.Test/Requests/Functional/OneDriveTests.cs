@@ -7,7 +7,7 @@ using System.Net.Http;
 
 namespace Microsoft.Graph.Test.Requests.Functional
 {
-    //[Ignore]
+    [Ignore]
     [TestClass]
     public class OneDriveTests : GraphTestBase
     {
