@@ -4,6 +4,7 @@
 * [Collections](./collections.md)
 * [Errors](./errors.md)
 * [Contributions](./contributions.md)
+* [FAQ](./FAQ.md)
 
 ## How do I with...
 
