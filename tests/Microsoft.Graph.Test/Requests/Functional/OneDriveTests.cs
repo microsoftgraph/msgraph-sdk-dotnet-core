@@ -11,6 +11,28 @@ namespace Microsoft.Graph.Test.Requests.Functional
     [TestClass]
     public class OneDriveTests : GraphTestBase
     {
+        [TestMethod]
+        public async System.Threading.Tasks.Task OneDriveSharedWithMe()
+        {
+
+            var sharedDriveItems = await graphClient.Me.Drive.SharedWithMe().Request().GetAsync();
+            var permissionsPage = await graphClient.Me.Drive.Items[sharedDriveItems[0].Id].Permissions.Request().GetAsync();
+            var permissions = new List<Permission>();
+            permissions.AddRange(permissionsPage.CurrentPage);
+
+            while (permissionsPage.NextPageRequest != null)
+            {
+                permissionsPage = await permissionsPage.NextPageRequest.GetAsync();
+                permissions.AddRange(permissionsPage.CurrentPage);
+            }
+            foreach (var permission in permissions)
+            {
+                Assert.IsNotNull(permission.GrantedTo);
+                Assert.IsNotNull(permission.Roles);
+            }
+        }
+
+
         // https://github.com/OneDrive/onedrive-sdk-csharp/blob/master/docs/chunked-uploads.md
         // https://dev.onedrive.com/items/upload_large_files.htm
         [TestMethod]
