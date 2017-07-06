@@ -26,7 +26,7 @@ To begin making requests with the library, you will need to initialize a **Graph
 
 ## IAuthenticationProvider
 
-The authentication provider is responsible for authenticating requests before sending them to the service. The Microsoft Graph .NET Client Library doesn't implement any authentication by default. Instead, you will need to retrieve access tokens for the service via the authentication library of their choice or by coding against one of the authentication endpoints directly. Please [read here](https://graph.microsoft.io/en-us/docs/authorization/app_authorization) for more details about authenticating the Microsoft Graph service.
+The authentication provider is responsible for authenticating requests before sending them to the service. The Microsoft Graph .NET Client Library doesn't implement any authentication by default. Instead, you will need to retrieve access tokens for the service via the authentication library of your choice or by coding against one of the authentication endpoints directly. Please [read here](https://graph.microsoft.io/en-us/docs/authorization/app_authorization) for more details about authenticating the Microsoft Graph service.
 
 ### DelegateAuthenticationProvider
 
@@ -94,7 +94,7 @@ var calendar = await graphServiceClient
 					 .GetAsync();
 ```
 
-Any errors while building or sending a request will bubble up as a `ServiceException`. See [errors](/docs/errors.md) on for more information on errors.
+Any errors while building or sending a request will bubble up as a `ServiceException`. See [errors](/docs/errors.md) for more information on errors.
 
 ## Query options
 
