@@ -112,6 +112,20 @@ All properties other than `Id` will be null on the returned user object.
 
 Expand, Skip, Top, OrderBy, and Filter are also supported via the client library when supported by the Microsoft Graph service for the request type.
 
+## Custom query options
+
+If you need to include more specific behavior during a request that is not supported by the library, you can create a custom queryOptions List that you can add when calling ```Request```:
+
+```chsarp
+List<QueryOption> options = new List<QueryOption>
+{
+     new QueryOption("$search", "lunch")
+};
+var messages = await client.Me.Messages.Request(options).GetAsync();
+```
+
+
+
 ## Collections
 
 Please see [collections](/docs/collections.md) for details on collections and paging.
