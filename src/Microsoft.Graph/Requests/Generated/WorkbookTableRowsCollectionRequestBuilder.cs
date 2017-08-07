@@ -79,7 +79,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IWorkbookTableRowItemAtRequestBuilder"/>.</returns>
         public IWorkbookTableRowItemAtRequestBuilder ItemAt(
-            Int32? index = null)
+            Int32 index)
         {
             return new WorkbookTableRowItemAtRequestBuilder(
                 this.AppendSegmentToRequestUrl("microsoft.graph.itemAt"),

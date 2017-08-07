@@ -31,7 +31,7 @@ namespace Microsoft.Graph
             string EndDateTime)
             : base(requestUrl, client)
         {
-            this.SetParameter("startDateTime", StartDateTime, true);
+            this.SetParameter("startDateTime", StartDateTime, false);
             this.SetParameter("endDateTime", EndDateTime, true);
         }
 

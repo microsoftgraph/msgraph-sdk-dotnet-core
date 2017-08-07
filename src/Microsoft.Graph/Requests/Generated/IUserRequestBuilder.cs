@@ -185,8 +185,8 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IUserAssignLicenseRequestBuilder"/>.</returns>
         IUserAssignLicenseRequestBuilder AssignLicense(
-            IEnumerable<AssignedLicense> addLicenses = null,
-            IEnumerable<Guid> removeLicenses = null);
+            IEnumerable<AssignedLicense> addLicenses,
+            IEnumerable<Guid> removeLicenses);
 
         /// <summary>
         /// Gets the request builder for UserChangePassword.
@@ -201,7 +201,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IUserSendMailRequestBuilder"/>.</returns>
         IUserSendMailRequestBuilder SendMail(
-            Message Message = null,
+            Message Message,
             bool? SaveToSentItems = null);
 
         /// <summary>
@@ -223,7 +223,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IUserReminderViewRequestBuilder"/>.</returns>
         IUserReminderViewRequestBuilder ReminderView(
-            string StartDateTime = null,
+            string StartDateTime,
             string EndDateTime = null);
     
     }

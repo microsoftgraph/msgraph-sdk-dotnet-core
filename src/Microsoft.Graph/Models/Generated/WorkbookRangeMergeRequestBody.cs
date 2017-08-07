@@ -25,7 +25,7 @@ namespace Microsoft.Graph
         /// Gets or sets Across.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "across", Required = Newtonsoft.Json.Required.Default)]
-        public bool? Across { get; set; }
+        public bool Across { get; set; }
     
     }
 }

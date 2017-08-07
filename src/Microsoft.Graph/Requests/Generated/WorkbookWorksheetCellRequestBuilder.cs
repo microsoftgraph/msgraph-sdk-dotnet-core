@@ -27,12 +27,12 @@ namespace Microsoft.Graph
         public WorkbookWorksheetCellRequestBuilder(
             string requestUrl,
             IBaseClient client,
-            Int32? row,
-            Int32? column)
+            Int32 row,
+            Int32 column)
             : base(requestUrl, client)
         {
-            this.SetParameter("row", row, true);
-            this.SetParameter("column", column, true);
+            this.SetParameter("row", row, false);
+            this.SetParameter("column", column, false);
         }
 
         /// <summary>

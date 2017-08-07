@@ -23,7 +23,7 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets created by.
-        /// Read-only. The user that created the Plan
+        /// Read-only. The user who created the plan.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "createdBy", Required = Newtonsoft.Json.Required.Default)]
         public IdentitySet CreatedBy { get; set; }

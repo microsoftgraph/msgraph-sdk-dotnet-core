@@ -95,7 +95,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IEventSnoozeReminderRequestBuilder"/>.</returns>
         IEventSnoozeReminderRequestBuilder SnoozeReminder(
-            DateTimeTimeZone NewReminderTime = null);
+            DateTimeTimeZone NewReminderTime);
 
         /// <summary>
         /// Gets the request builder for EventDismissReminder.

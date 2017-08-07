@@ -27,12 +27,12 @@ namespace Microsoft.Graph
         public WorkbookRangeResizedRangeRequestBuilder(
             string requestUrl,
             IBaseClient client,
-            Int32? deltaRows,
-            Int32? deltaColumns)
+            Int32 deltaRows,
+            Int32 deltaColumns)
             : base(requestUrl, client)
         {
-            this.SetParameter("deltaRows", deltaRows, true);
-            this.SetParameter("deltaColumns", deltaColumns, true);
+            this.SetParameter("deltaRows", deltaRows, false);
+            this.SetParameter("deltaColumns", deltaColumns, false);
         }
 
         /// <summary>

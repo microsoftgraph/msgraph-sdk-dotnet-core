@@ -38,10 +38,10 @@ namespace Microsoft.Graph
         public WorkbookRangeUsedRangeRequestBuilder(
             string requestUrl,
             IBaseClient client,
-            bool? valuesOnly)
+            bool valuesOnly)
             : base(requestUrl, client)
         {
-            this.SetParameter("valuesOnly", valuesOnly, true);
+            this.SetParameter("valuesOnly", valuesOnly, false);
         }
 
         /// <summary>

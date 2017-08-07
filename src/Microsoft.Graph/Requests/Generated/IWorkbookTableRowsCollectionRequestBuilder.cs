@@ -48,7 +48,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IWorkbookTableRowItemAtRequestBuilder"/>.</returns>
         IWorkbookTableRowItemAtRequestBuilder ItemAt(
-            Int32? index = null);
+            Int32 index);
 
         /// <summary>
         /// Gets the request builder for WorkbookTableRowCount.

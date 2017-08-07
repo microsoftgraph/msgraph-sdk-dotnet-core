@@ -90,7 +90,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IWorkbookRangeClearRequestBuilder"/>.</returns>
         public IWorkbookRangeClearRequestBuilder Clear(
-            string applyTo = null)
+            string applyTo)
         {
             return new WorkbookRangeClearRequestBuilder(
                 this.AppendSegmentToRequestUrl("microsoft.graph.clear"),
@@ -103,7 +103,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IWorkbookRangeDeleteRequestBuilder"/>.</returns>
         public IWorkbookRangeDeleteRequestBuilder Delete(
-            string shift = null)
+            string shift)
         {
             return new WorkbookRangeDeleteRequestBuilder(
                 this.AppendSegmentToRequestUrl("microsoft.graph.delete"),
@@ -116,7 +116,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IWorkbookRangeInsertRequestBuilder"/>.</returns>
         public IWorkbookRangeInsertRequestBuilder Insert(
-            string shift = null)
+            string shift)
         {
             return new WorkbookRangeInsertRequestBuilder(
                 this.AppendSegmentToRequestUrl("microsoft.graph.insert"),
@@ -129,7 +129,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IWorkbookRangeMergeRequestBuilder"/>.</returns>
         public IWorkbookRangeMergeRequestBuilder Merge(
-            bool? across = null)
+            bool across)
         {
             return new WorkbookRangeMergeRequestBuilder(
                 this.AppendSegmentToRequestUrl("microsoft.graph.merge"),
@@ -166,8 +166,8 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IWorkbookRangeCellRequestBuilder"/>.</returns>
         public IWorkbookRangeCellRequestBuilder Cell(
-            Int32? row = null,
-            Int32? column = null)
+            Int32 row,
+            Int32 column)
         {
             return new WorkbookRangeCellRequestBuilder(
                 this.AppendSegmentToRequestUrl("microsoft.graph.cell"),
@@ -181,7 +181,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IWorkbookRangeColumnRequestBuilder"/>.</returns>
         public IWorkbookRangeColumnRequestBuilder Column(
-            Int32? column = null)
+            Int32 column)
         {
             return new WorkbookRangeColumnRequestBuilder(
                 this.AppendSegmentToRequestUrl("microsoft.graph.column"),
@@ -310,8 +310,8 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IWorkbookRangeOffsetRangeRequestBuilder"/>.</returns>
         public IWorkbookRangeOffsetRangeRequestBuilder OffsetRange(
-            Int32? rowOffset = null,
-            Int32? columnOffset = null)
+            Int32 rowOffset,
+            Int32 columnOffset)
         {
             return new WorkbookRangeOffsetRangeRequestBuilder(
                 this.AppendSegmentToRequestUrl("microsoft.graph.offsetRange"),
@@ -325,8 +325,8 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IWorkbookRangeResizedRangeRequestBuilder"/>.</returns>
         public IWorkbookRangeResizedRangeRequestBuilder ResizedRange(
-            Int32? deltaRows = null,
-            Int32? deltaColumns = null)
+            Int32 deltaRows,
+            Int32 deltaColumns)
         {
             return new WorkbookRangeResizedRangeRequestBuilder(
                 this.AppendSegmentToRequestUrl("microsoft.graph.resizedRange"),
@@ -340,7 +340,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IWorkbookRangeRowRequestBuilder"/>.</returns>
         public IWorkbookRangeRowRequestBuilder Row(
-            Int32? row = null)
+            Int32 row)
         {
             return new WorkbookRangeRowRequestBuilder(
                 this.AppendSegmentToRequestUrl("microsoft.graph.row"),
@@ -412,7 +412,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IWorkbookRangeUsedRangeRequestBuilder"/>.</returns>
         public IWorkbookRangeUsedRangeRequestBuilder UsedRange(
-            bool? valuesOnly = null)
+            bool valuesOnly)
         {
             return new WorkbookRangeUsedRangeRequestBuilder(
                 this.AppendSegmentToRequestUrl("microsoft.graph.usedRange"),

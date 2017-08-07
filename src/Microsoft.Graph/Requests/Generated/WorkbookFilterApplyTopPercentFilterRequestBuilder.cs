@@ -26,10 +26,10 @@ namespace Microsoft.Graph
         public WorkbookFilterApplyTopPercentFilterRequestBuilder(
             string requestUrl,
             IBaseClient client,
-            Int32? percent)
+            Int32 percent)
             : base(requestUrl, client)
         {
-            this.SetParameter("percent", percent, true);
+            this.SetParameter("percent", percent, false);
         }
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace Microsoft.Graph
 
             if (this.HasParameter("percent"))
             {
-                request.RequestBody.Percent = this.GetParameter<Int32?>("percent");
+                request.RequestBody.Percent = this.GetParameter<Int32>("percent");
             }
 
             return request;

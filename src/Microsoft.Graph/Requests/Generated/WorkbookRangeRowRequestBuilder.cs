@@ -26,10 +26,10 @@ namespace Microsoft.Graph
         public WorkbookRangeRowRequestBuilder(
             string requestUrl,
             IBaseClient client,
-            Int32? row)
+            Int32 row)
             : base(requestUrl, client)
         {
-            this.SetParameter("row", row, true);
+            this.SetParameter("row", row, false);
         }
 
         /// <summary>

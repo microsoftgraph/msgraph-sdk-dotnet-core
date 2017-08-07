@@ -27,12 +27,12 @@ namespace Microsoft.Graph
         public WorkbookRangeOffsetRangeRequestBuilder(
             string requestUrl,
             IBaseClient client,
-            Int32? rowOffset,
-            Int32? columnOffset)
+            Int32 rowOffset,
+            Int32 columnOffset)
             : base(requestUrl, client)
         {
-            this.SetParameter("rowOffset", rowOffset, true);
-            this.SetParameter("columnOffset", columnOffset, true);
+            this.SetParameter("rowOffset", rowOffset, false);
+            this.SetParameter("columnOffset", columnOffset, false);
         }
 
         /// <summary>

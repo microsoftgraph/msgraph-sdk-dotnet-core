@@ -26,10 +26,10 @@ namespace Microsoft.Graph
         public WorkbookRangeMergeRequestBuilder(
             string requestUrl,
             IBaseClient client,
-            bool? across)
+            bool across)
             : base(requestUrl, client)
         {
-            this.SetParameter("across", across, true);
+            this.SetParameter("across", across, false);
         }
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace Microsoft.Graph
 
             if (this.HasParameter("across"))
             {
-                request.RequestBody.Across = this.GetParameter<bool?>("across");
+                request.RequestBody.Across = this.GetParameter<bool>("across");
             }
 
             return request;

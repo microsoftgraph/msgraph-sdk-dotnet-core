@@ -25,7 +25,7 @@ namespace Microsoft.Graph
         /// Gets or sets Percent.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "percent", Required = Newtonsoft.Json.Required.Default)]
-        public Int32? Percent { get; set; }
+        public Int32 Percent { get; set; }
     
     }
 }

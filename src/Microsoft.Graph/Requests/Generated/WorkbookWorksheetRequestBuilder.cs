@@ -114,8 +114,8 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IWorkbookWorksheetCellRequestBuilder"/>.</returns>
         public IWorkbookWorksheetCellRequestBuilder Cell(
-            Int32? row = null,
-            Int32? column = null)
+            Int32 row,
+            Int32 column)
         {
             return new WorkbookWorksheetCellRequestBuilder(
                 this.AppendSegmentToRequestUrl("microsoft.graph.cell"),
@@ -164,7 +164,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IWorkbookWorksheetUsedRangeRequestBuilder"/>.</returns>
         public IWorkbookWorksheetUsedRangeRequestBuilder UsedRange(
-            bool? valuesOnly = null)
+            bool valuesOnly)
         {
             return new WorkbookWorksheetUsedRangeRequestBuilder(
                 this.AppendSegmentToRequestUrl("microsoft.graph.usedRange"),

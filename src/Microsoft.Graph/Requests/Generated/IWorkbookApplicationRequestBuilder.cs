@@ -35,7 +35,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IWorkbookApplicationCalculateRequestBuilder"/>.</returns>
         IWorkbookApplicationCalculateRequestBuilder Calculate(
-            string calculationType = null);
+            string calculationType);
     
     }
 }

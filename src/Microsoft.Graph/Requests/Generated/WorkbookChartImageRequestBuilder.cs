@@ -38,10 +38,10 @@ namespace Microsoft.Graph
         public WorkbookChartImageRequestBuilder(
             string requestUrl,
             IBaseClient client,
-            Int32? width)
+            Int32 width)
             : base(requestUrl, client)
         {
-            this.SetParameter("width", width, true);
+            this.SetParameter("width", width, false);
         }
 
         /// <summary>
@@ -54,12 +54,12 @@ namespace Microsoft.Graph
         public WorkbookChartImageRequestBuilder(
             string requestUrl,
             IBaseClient client,
-            Int32? width,
-            Int32? height)
+            Int32 width,
+            Int32 height)
             : base(requestUrl, client)
         {
-            this.SetParameter("width", width, true);
-            this.SetParameter("height", height, true);
+            this.SetParameter("width", width, false);
+            this.SetParameter("height", height, false);
         }
 
         /// <summary>
@@ -73,14 +73,14 @@ namespace Microsoft.Graph
         public WorkbookChartImageRequestBuilder(
             string requestUrl,
             IBaseClient client,
-            Int32? width,
-            Int32? height,
+            Int32 width,
+            Int32 height,
             string fittingMode)
             : base(requestUrl, client)
         {
-            this.SetParameter("width", width, true);
-            this.SetParameter("height", height, true);
-            this.SetParameter("fittingMode", fittingMode, true);
+            this.SetParameter("width", width, false);
+            this.SetParameter("height", height, false);
+            this.SetParameter("fittingMode", fittingMode, false);
         }
 
         /// <summary>

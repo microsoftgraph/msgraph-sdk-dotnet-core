@@ -169,6 +169,7 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets settings.
+        /// Read-only. Nullable.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "settings", Required = Newtonsoft.Json.Required.Default)]
         public IGroupSettingsCollectionPage Settings { get; set; }

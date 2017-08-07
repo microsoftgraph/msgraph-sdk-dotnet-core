@@ -31,7 +31,7 @@ namespace Microsoft.Graph
             IEnumerable<string> types)
             : base(requestUrl, client)
         {
-            this.SetParameter("ids", ids, true);
+            this.SetParameter("ids", ids, false);
             this.SetParameter("types", types, true);
         }
 

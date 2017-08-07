@@ -29,7 +29,7 @@ namespace Microsoft.Graph
             string calculationType)
             : base(requestUrl, client)
         {
-            this.SetParameter("calculationType", calculationType, true);
+            this.SetParameter("calculationType", calculationType, false);
         }
 
         /// <summary>

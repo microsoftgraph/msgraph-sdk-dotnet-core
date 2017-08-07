@@ -29,7 +29,7 @@ namespace Microsoft.Graph
             string criteria)
             : base(requestUrl, client)
         {
-            this.SetParameter("criteria", criteria, true);
+            this.SetParameter("criteria", criteria, false);
         }
 
         /// <summary>

@@ -25,7 +25,7 @@ namespace Microsoft.Graph
         /// Gets or sets PersistChanges.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "persistChanges", Required = Newtonsoft.Json.Required.Default)]
-        public bool? PersistChanges { get; set; }
+        public bool PersistChanges { get; set; }
     
     }
 }

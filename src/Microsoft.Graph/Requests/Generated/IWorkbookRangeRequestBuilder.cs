@@ -53,28 +53,28 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IWorkbookRangeClearRequestBuilder"/>.</returns>
         IWorkbookRangeClearRequestBuilder Clear(
-            string applyTo = null);
+            string applyTo);
 
         /// <summary>
         /// Gets the request builder for WorkbookRangeDelete.
         /// </summary>
         /// <returns>The <see cref="IWorkbookRangeDeleteRequestBuilder"/>.</returns>
         IWorkbookRangeDeleteRequestBuilder Delete(
-            string shift = null);
+            string shift);
 
         /// <summary>
         /// Gets the request builder for WorkbookRangeInsert.
         /// </summary>
         /// <returns>The <see cref="IWorkbookRangeInsertRequestBuilder"/>.</returns>
         IWorkbookRangeInsertRequestBuilder Insert(
-            string shift = null);
+            string shift);
 
         /// <summary>
         /// Gets the request builder for WorkbookRangeMerge.
         /// </summary>
         /// <returns>The <see cref="IWorkbookRangeMergeRequestBuilder"/>.</returns>
         IWorkbookRangeMergeRequestBuilder Merge(
-            bool? across = null);
+            bool across);
 
         /// <summary>
         /// Gets the request builder for WorkbookRangeUnmerge.
@@ -94,15 +94,15 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IWorkbookRangeCellRequestBuilder"/>.</returns>
         IWorkbookRangeCellRequestBuilder Cell(
-            Int32? row = null,
-            Int32? column = null);
+            Int32 row,
+            Int32 column);
 
         /// <summary>
         /// Gets the request builder for WorkbookRangeColumn.
         /// </summary>
         /// <returns>The <see cref="IWorkbookRangeColumnRequestBuilder"/>.</returns>
         IWorkbookRangeColumnRequestBuilder Column(
-            Int32? column = null);
+            Int32 column);
 
         /// <summary>
         /// Gets the request builder for WorkbookRangeColumnsAfter.
@@ -172,23 +172,23 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IWorkbookRangeOffsetRangeRequestBuilder"/>.</returns>
         IWorkbookRangeOffsetRangeRequestBuilder OffsetRange(
-            Int32? rowOffset = null,
-            Int32? columnOffset = null);
+            Int32 rowOffset,
+            Int32 columnOffset);
 
         /// <summary>
         /// Gets the request builder for WorkbookRangeResizedRange.
         /// </summary>
         /// <returns>The <see cref="IWorkbookRangeResizedRangeRequestBuilder"/>.</returns>
         IWorkbookRangeResizedRangeRequestBuilder ResizedRange(
-            Int32? deltaRows = null,
-            Int32? deltaColumns = null);
+            Int32 deltaRows,
+            Int32 deltaColumns);
 
         /// <summary>
         /// Gets the request builder for WorkbookRangeRow.
         /// </summary>
         /// <returns>The <see cref="IWorkbookRangeRowRequestBuilder"/>.</returns>
         IWorkbookRangeRowRequestBuilder Row(
-            Int32? row = null);
+            Int32 row);
 
         /// <summary>
         /// Gets the request builder for WorkbookRangeRowsAbove.
@@ -227,7 +227,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IWorkbookRangeUsedRangeRequestBuilder"/>.</returns>
         IWorkbookRangeUsedRangeRequestBuilder UsedRange(
-            bool? valuesOnly = null);
+            bool valuesOnly);
 
         /// <summary>
         /// Gets the request builder for WorkbookRangeVisibleView.

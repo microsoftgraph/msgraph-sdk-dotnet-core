@@ -49,7 +49,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IWorkbookTableColumnItemAtRequestBuilder"/>.</returns>
         IWorkbookTableColumnItemAtRequestBuilder ItemAt(
-            Int32? index = null);
+            Int32 index);
 
         /// <summary>
         /// Gets the request builder for WorkbookTableColumnCount.

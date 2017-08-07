@@ -26,10 +26,10 @@ namespace Microsoft.Graph
         public WorkbookCreateSessionRequestBuilder(
             string requestUrl,
             IBaseClient client,
-            bool? persistChanges)
+            bool persistChanges)
             : base(requestUrl, client)
         {
-            this.SetParameter("persistChanges", persistChanges, true);
+            this.SetParameter("persistChanges", persistChanges, false);
         }
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace Microsoft.Graph
 
             if (this.HasParameter("persistChanges"))
             {
-                request.RequestBody.PersistChanges = this.GetParameter<bool?>("persistChanges");
+                request.RequestBody.PersistChanges = this.GetParameter<bool>("persistChanges");
             }
 
             return request;

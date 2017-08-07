@@ -31,7 +31,7 @@ namespace Microsoft.Graph
         /// Gets or sets HasHeaders.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "hasHeaders", Required = Newtonsoft.Json.Required.Default)]
-        public bool? HasHeaders { get; set; }
+        public bool HasHeaders { get; set; }
     
     }
 }

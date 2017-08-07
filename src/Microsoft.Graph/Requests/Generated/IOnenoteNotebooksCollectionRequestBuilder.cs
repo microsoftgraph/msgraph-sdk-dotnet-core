@@ -40,6 +40,6 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="INotebookGetRecentNotebooksRequestBuilder"/>.</returns>
         INotebookGetRecentNotebooksRequestBuilder GetRecentNotebooks(
-            bool? includePersonalNotebooks = null);
+            bool includePersonalNotebooks);
     }
 }

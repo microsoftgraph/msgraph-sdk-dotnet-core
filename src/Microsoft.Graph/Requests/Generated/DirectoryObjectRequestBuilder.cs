@@ -54,7 +54,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IDirectoryObjectCheckMemberGroupsRequestBuilder"/>.</returns>
         public IDirectoryObjectCheckMemberGroupsRequestBuilder CheckMemberGroups(
-            IEnumerable<string> groupIds = null)
+            IEnumerable<string> groupIds)
         {
             return new DirectoryObjectCheckMemberGroupsRequestBuilder(
                 this.AppendSegmentToRequestUrl("microsoft.graph.checkMemberGroups"),

@@ -26,10 +26,10 @@ namespace Microsoft.Graph
         public WorkbookRangeColumnRequestBuilder(
             string requestUrl,
             IBaseClient client,
-            Int32? column)
+            Int32 column)
             : base(requestUrl, client)
         {
-            this.SetParameter("column", column, true);
+            this.SetParameter("column", column, false);
         }
 
         /// <summary>

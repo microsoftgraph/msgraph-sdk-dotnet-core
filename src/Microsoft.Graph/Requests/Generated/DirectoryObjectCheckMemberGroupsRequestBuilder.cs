@@ -29,7 +29,7 @@ namespace Microsoft.Graph
             IEnumerable<string> groupIds)
             : base(requestUrl, client)
         {
-            this.SetParameter("groupIds", groupIds, true);
+            this.SetParameter("groupIds", groupIds, false);
         }
 
         /// <summary>

@@ -354,8 +354,8 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IUserAssignLicenseRequestBuilder"/>.</returns>
         public IUserAssignLicenseRequestBuilder AssignLicense(
-            IEnumerable<AssignedLicense> addLicenses = null,
-            IEnumerable<Guid> removeLicenses = null)
+            IEnumerable<AssignedLicense> addLicenses,
+            IEnumerable<Guid> removeLicenses)
         {
             return new UserAssignLicenseRequestBuilder(
                 this.AppendSegmentToRequestUrl("microsoft.graph.assignLicense"),
@@ -384,7 +384,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IUserSendMailRequestBuilder"/>.</returns>
         public IUserSendMailRequestBuilder SendMail(
-            Message Message = null,
+            Message Message,
             bool? SaveToSentItems = null)
         {
             return new UserSendMailRequestBuilder(
@@ -426,7 +426,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IUserReminderViewRequestBuilder"/>.</returns>
         public IUserReminderViewRequestBuilder ReminderView(
-            string StartDateTime = null,
+            string StartDateTime,
             string EndDateTime = null)
         {
             return new UserReminderViewRequestBuilder(

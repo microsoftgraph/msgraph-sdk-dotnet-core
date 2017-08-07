@@ -65,7 +65,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IWorkbookCreateSessionRequestBuilder"/>.</returns>
         IWorkbookCreateSessionRequestBuilder CreateSession(
-            bool? persistChanges = null);
+            bool persistChanges);
 
         /// <summary>
         /// Gets the request builder for WorkbookCloseSession.

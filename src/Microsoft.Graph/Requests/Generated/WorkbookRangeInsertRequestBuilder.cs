@@ -29,7 +29,7 @@ namespace Microsoft.Graph
             string shift)
             : base(requestUrl, client)
         {
-            this.SetParameter("shift", shift, true);
+            this.SetParameter("shift", shift, false);
         }
 
         /// <summary>
