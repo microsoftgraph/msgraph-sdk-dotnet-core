@@ -41,14 +41,15 @@ namespace Microsoft.Graph
         /// <returns>The <see cref="IWorkbookTableAddRequestBuilder"/>.</returns>
         IWorkbookTableAddRequestBuilder Add(
             bool hasHeaders,
-            string address = null);
+            string address
+            );
 
         /// <summary>
         /// Gets the request builder for WorkbookTableItemAt.
         /// </summary>
         /// <returns>The <see cref="IWorkbookTableItemAtRequestBuilder"/>.</returns>
         IWorkbookTableItemAtRequestBuilder ItemAt(
-            Int32 index);
+            Int32? index = null);
 
         /// <summary>
         /// Gets the request builder for WorkbookTableCount.
