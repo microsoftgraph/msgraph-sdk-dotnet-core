@@ -24,18 +24,21 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets servicePlanId.
+		/// The unique identifier of the service plan.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "servicePlanId", Required = Newtonsoft.Json.Required.Default)]
         public Guid? ServicePlanId { get; set; }
     
         /// <summary>
         /// Gets or sets servicePlanName.
+		/// The name of the service plan.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "servicePlanName", Required = Newtonsoft.Json.Required.Default)]
         public string ServicePlanName { get; set; }
     
         /// <summary>
         /// Gets or sets provisioningStatus.
+		/// The provisioning status of the service plan.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "provisioningStatus", Required = Newtonsoft.Json.Required.Default)]
         public string ProvisioningStatus { get; set; }

@@ -64,7 +64,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="INotebookGetRecentNotebooksRequestBuilder"/>.</returns>
         public INotebookGetRecentNotebooksRequestBuilder GetRecentNotebooks(
-            bool includePersonalNotebooks)
+            bool? includePersonalNotebooks = null)
         {
             return new NotebookGetRecentNotebooksRequestBuilder(
                 this.AppendSegmentToRequestUrl("microsoft.graph.getRecentNotebooks"),

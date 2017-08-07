@@ -26,10 +26,10 @@ namespace Microsoft.Graph
         public WorkbookChartPointItemAtRequestBuilder(
             string requestUrl,
             IBaseClient client,
-            Int32 index)
+            Int32? index)
             : base(requestUrl, client)
         {
-            this.SetParameter("index", index, false);
+            this.SetParameter("index", index, true);
         }
 
         /// <summary>

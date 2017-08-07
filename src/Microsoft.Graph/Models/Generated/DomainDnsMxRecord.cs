@@ -23,12 +23,14 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets mail exchange.
+        /// Value used when configuring the answer/destination/value of the MX record at the DNS host.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "mailExchange", Required = Newtonsoft.Json.Required.Default)]
         public string MailExchange { get; set; }
     
         /// <summary>
         /// Gets or sets preference.
+        /// Value used when configuring the Preference/Priority property of the MX record at the DNS host.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "preference", Required = Newtonsoft.Json.Required.Default)]
         public Int32? Preference { get; set; }

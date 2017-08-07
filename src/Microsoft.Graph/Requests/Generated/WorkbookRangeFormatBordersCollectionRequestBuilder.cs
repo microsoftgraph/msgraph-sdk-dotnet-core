@@ -64,7 +64,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IWorkbookRangeBorderItemAtRequestBuilder"/>.</returns>
         public IWorkbookRangeBorderItemAtRequestBuilder ItemAt(
-            Int32 index)
+            Int32? index = null)
         {
             return new WorkbookRangeBorderItemAtRequestBuilder(
                 this.AppendSegmentToRequestUrl("microsoft.graph.itemAt"),

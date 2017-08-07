@@ -23,24 +23,28 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets granted to.
+        /// For user type permissions, the details of the users & applications for this permission. Read-only.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "grantedTo", Required = Newtonsoft.Json.Required.Default)]
         public IdentitySet GrantedTo { get; set; }
     
         /// <summary>
         /// Gets or sets inherited from.
+        /// Provides a reference to the ancestor of the current permission, if it is inherited from an ancestor. Read-only.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "inheritedFrom", Required = Newtonsoft.Json.Required.Default)]
         public ItemReference InheritedFrom { get; set; }
     
         /// <summary>
         /// Gets or sets invitation.
+        /// Details of any associated sharing invitation for this permission. Read-only.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "invitation", Required = Newtonsoft.Json.Required.Default)]
         public SharingInvitation Invitation { get; set; }
     
         /// <summary>
         /// Gets or sets link.
+        /// Provides the link details of the current permission, if it is a link type permissions. Read-only.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "link", Required = Newtonsoft.Json.Required.Default)]
         public SharingLink Link { get; set; }
@@ -53,6 +57,7 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets share id.
+        /// A unique token that can be used to access this shared item via the **shares** API. Read-only.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "shareId", Required = Newtonsoft.Json.Required.Default)]
         public string ShareId { get; set; }

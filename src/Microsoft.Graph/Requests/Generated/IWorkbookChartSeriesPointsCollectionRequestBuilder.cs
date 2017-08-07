@@ -40,7 +40,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IWorkbookChartPointItemAtRequestBuilder"/>.</returns>
         IWorkbookChartPointItemAtRequestBuilder ItemAt(
-            Int32 index);
+            Int32? index = null);
 
         /// <summary>
         /// Gets the request builder for WorkbookChartPointCount.

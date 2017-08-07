@@ -47,6 +47,12 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="ISiteSitesCollectionRequestBuilder"/>.</returns>
         ISiteSitesCollectionRequestBuilder Sites { get; }
+
+        /// <summary>
+        /// Gets the request builder for Onenote.
+        /// </summary>
+        /// <returns>The <see cref="IOnenoteRequestBuilder"/>.</returns>
+        IOnenoteRequestBuilder Onenote { get; }
     
         /// <summary>
         /// Gets the request builder for SiteGetByPath.

@@ -24,6 +24,7 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets hostname.
+		/// The hostname for the site collection. Read-only.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "hostname", Required = Newtonsoft.Json.Required.Default)]
         public string Hostname { get; set; }

@@ -98,6 +98,18 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
+        /// Gets the request builder for Settings.
+        /// </summary>
+        /// <returns>The <see cref="IGroupSettingsCollectionRequestBuilder"/>.</returns>
+        public IGroupSettingsCollectionRequestBuilder Settings
+        {
+            get
+            {
+                return new GroupSettingsCollectionRequestBuilder(this.AppendSegmentToRequestUrl("settings"), this.Client);
+            }
+        }
+
+        /// <summary>
         /// Gets the request builder for Extensions.
         /// </summary>
         /// <returns>The <see cref="IGroupExtensionsCollectionRequestBuilder"/>.</returns>

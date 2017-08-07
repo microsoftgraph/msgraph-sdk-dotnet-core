@@ -29,7 +29,7 @@ namespace Microsoft.Graph
             Post Post)
             : base(requestUrl, client)
         {
-            this.SetParameter("post", Post, false);
+            this.SetParameter("post", Post, true);
         }
 
         /// <summary>

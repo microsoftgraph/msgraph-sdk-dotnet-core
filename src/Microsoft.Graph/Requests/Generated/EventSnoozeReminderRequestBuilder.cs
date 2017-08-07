@@ -29,7 +29,7 @@ namespace Microsoft.Graph
             DateTimeTimeZone NewReminderTime)
             : base(requestUrl, client)
         {
-            this.SetParameter("newReminderTime", NewReminderTime, false);
+            this.SetParameter("newReminderTime", NewReminderTime, true);
         }
 
         /// <summary>

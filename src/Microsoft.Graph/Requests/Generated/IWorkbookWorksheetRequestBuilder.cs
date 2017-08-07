@@ -65,8 +65,8 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IWorkbookWorksheetCellRequestBuilder"/>.</returns>
         IWorkbookWorksheetCellRequestBuilder Cell(
-            Int32 row,
-            Int32 column);
+            Int32? row = null,
+            Int32? column = null);
 
         /// <summary>
         /// Gets the request builder for WorkbookWorksheetRange.
@@ -92,7 +92,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IWorkbookWorksheetUsedRangeRequestBuilder"/>.</returns>
         IWorkbookWorksheetUsedRangeRequestBuilder UsedRange(
-            bool valuesOnly);
+            bool? valuesOnly = null);
     
     }
 }

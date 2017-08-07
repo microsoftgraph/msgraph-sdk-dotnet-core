@@ -23,18 +23,21 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets content id.
+        /// The ID of the attachment in the Exchange store.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "contentId", Required = Newtonsoft.Json.Required.Default)]
         public string ContentId { get; set; }
     
         /// <summary>
         /// Gets or sets content location.
+        /// The Uniform Resource Identifier (URI) that corresponds to the location of the content of the attachment.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "contentLocation", Required = Newtonsoft.Json.Required.Default)]
         public string ContentLocation { get; set; }
     
         /// <summary>
         /// Gets or sets content bytes.
+        /// The binary contents of the file.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "contentBytes", Required = Newtonsoft.Json.Required.Default)]
         public byte[] ContentBytes { get; set; }

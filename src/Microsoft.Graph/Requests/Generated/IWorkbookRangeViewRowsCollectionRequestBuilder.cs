@@ -40,6 +40,6 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IWorkbookRangeViewItemAtRequestBuilder"/>.</returns>
         IWorkbookRangeViewItemAtRequestBuilder ItemAt(
-            Int32 index);
+            Int32? index = null);
     }
 }

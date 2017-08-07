@@ -26,10 +26,10 @@ namespace Microsoft.Graph
         public NotebookGetRecentNotebooksRequestBuilder(
             string requestUrl,
             IBaseClient client,
-            bool includePersonalNotebooks)
+            bool? includePersonalNotebooks)
             : base(requestUrl, client)
         {
-            this.SetParameter("includePersonalNotebooks", includePersonalNotebooks, false);
+            this.SetParameter("includePersonalNotebooks", includePersonalNotebooks, true);
         }
 
         /// <summary>

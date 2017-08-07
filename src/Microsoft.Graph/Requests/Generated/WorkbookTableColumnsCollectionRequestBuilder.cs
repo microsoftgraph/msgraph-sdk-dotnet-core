@@ -81,7 +81,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IWorkbookTableColumnItemAtRequestBuilder"/>.</returns>
         public IWorkbookTableColumnItemAtRequestBuilder ItemAt(
-            Int32 index)
+            Int32? index = null)
         {
             return new WorkbookTableColumnItemAtRequestBuilder(
                 this.AppendSegmentToRequestUrl("microsoft.graph.itemAt"),

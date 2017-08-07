@@ -26,10 +26,10 @@ namespace Microsoft.Graph
         public WorkbookFilterApplyBottomItemsFilterRequestBuilder(
             string requestUrl,
             IBaseClient client,
-            Int32 count)
+            Int32? count)
             : base(requestUrl, client)
         {
-            this.SetParameter("count", count, false);
+            this.SetParameter("count", count, true);
         }
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace Microsoft.Graph
 
             if (this.HasParameter("count"))
             {
-                request.RequestBody.Count = this.GetParameter<Int32>("count");
+                request.RequestBody.Count = this.GetParameter<Int32?>("count");
             }
 
             return request;

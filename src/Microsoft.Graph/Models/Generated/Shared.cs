@@ -24,24 +24,28 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets owner.
+		/// The identity of the owner of the shared item. Read-only.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "owner", Required = Newtonsoft.Json.Required.Default)]
         public IdentitySet Owner { get; set; }
     
         /// <summary>
         /// Gets or sets scope.
+		/// Indicates the scope of how the item is shared: anonymous, organization, or users. Read-only.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "scope", Required = Newtonsoft.Json.Required.Default)]
         public string Scope { get; set; }
     
         /// <summary>
         /// Gets or sets sharedBy.
+		/// The identity of the user who shared the item. Read-only.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "sharedBy", Required = Newtonsoft.Json.Required.Default)]
         public IdentitySet SharedBy { get; set; }
     
         /// <summary>
         /// Gets or sets sharedDateTime.
+		/// The UTC date and time when the item was shared. Read-only.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "sharedDateTime", Required = Newtonsoft.Json.Required.Default)]
         public DateTimeOffset? SharedDateTime { get; set; }

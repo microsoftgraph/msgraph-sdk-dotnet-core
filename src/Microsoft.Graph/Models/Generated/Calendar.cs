@@ -23,42 +23,73 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets name.
+        /// The calendar name.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "name", Required = Newtonsoft.Json.Required.Default)]
         public string Name { get; set; }
     
         /// <summary>
         /// Gets or sets color.
+        /// Specifies the color theme to distinguish the calendar from other calendars in a UI. The property values are: LightBlue=0, LightGreen=1, LightOrange=2, LightGray=3, LightYellow=4, LightTeal=5, LightPink=6, LightBrown=7, LightRed=8, MaxColor=9, Auto=-1
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "color", Required = Newtonsoft.Json.Required.Default)]
         public CalendarColor? Color { get; set; }
     
         /// <summary>
         /// Gets or sets change key.
+        /// Identifies the version of the calendar object. Every time the calendar is changed, ChangeKey  changes as well. This allows Exchange to apply changes to the correct version of the object. Read-only.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "changeKey", Required = Newtonsoft.Json.Required.Default)]
         public string ChangeKey { get; set; }
     
         /// <summary>
+        /// Gets or sets can share.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "canShare", Required = Newtonsoft.Json.Required.Default)]
+        public bool? CanShare { get; set; }
+    
+        /// <summary>
+        /// Gets or sets can view private items.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "canViewPrivateItems", Required = Newtonsoft.Json.Required.Default)]
+        public bool? CanViewPrivateItems { get; set; }
+    
+        /// <summary>
+        /// Gets or sets can edit.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "canEdit", Required = Newtonsoft.Json.Required.Default)]
+        public bool? CanEdit { get; set; }
+    
+        /// <summary>
+        /// Gets or sets owner.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "owner", Required = Newtonsoft.Json.Required.Default)]
+        public EmailAddress Owner { get; set; }
+    
+        /// <summary>
         /// Gets or sets events.
+        /// The events in the calendar. Navigation property. Read-only.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "events", Required = Newtonsoft.Json.Required.Default)]
         public ICalendarEventsCollectionPage Events { get; set; }
     
         /// <summary>
         /// Gets or sets calendar view.
+        /// The calendar view for the calendar. Navigation property. Read-only.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "calendarView", Required = Newtonsoft.Json.Required.Default)]
         public ICalendarCalendarViewCollectionPage CalendarView { get; set; }
     
         /// <summary>
         /// Gets or sets single value extended properties.
+        /// The collection of single-value extended properties defined for the calendar. Read-only. Nullable.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "singleValueExtendedProperties", Required = Newtonsoft.Json.Required.Default)]
         public ICalendarSingleValueExtendedPropertiesCollectionPage SingleValueExtendedProperties { get; set; }
     
         /// <summary>
         /// Gets or sets multi value extended properties.
+        /// The collection of multi-value extended properties defined for the calendar. Read-only. Nullable.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "multiValueExtendedProperties", Required = Newtonsoft.Json.Required.Default)]
         public ICalendarMultiValueExtendedPropertiesCollectionPage MultiValueExtendedProperties { get; set; }

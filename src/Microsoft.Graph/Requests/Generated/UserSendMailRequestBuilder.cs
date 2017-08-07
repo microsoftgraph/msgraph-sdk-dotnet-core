@@ -31,7 +31,7 @@ namespace Microsoft.Graph
             bool? SaveToSentItems)
             : base(requestUrl, client)
         {
-            this.SetParameter("message", Message, false);
+            this.SetParameter("message", Message, true);
             this.SetParameter("saveToSentItems", SaveToSentItems, true);
         }
 

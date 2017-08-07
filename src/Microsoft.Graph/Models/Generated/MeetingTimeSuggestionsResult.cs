@@ -24,12 +24,14 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets meetingTimeSuggestions.
+		/// An array of meeting suggestions.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "meetingTimeSuggestions", Required = Newtonsoft.Json.Required.Default)]
         public IEnumerable<MeetingTimeSuggestion> MeetingTimeSuggestions { get; set; }
     
         /// <summary>
         /// Gets or sets emptySuggestionsReason.
+		/// A reason for not returning any meeting suggestions. Possible values are: attendeesUnavailable, attendeesUnavailableOrUnknown, locationsUnavailable, organizerUnavailable, or unknown. This property is an empty string if the meetingTimeSuggestions property does include any meeting suggestions.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "emptySuggestionsReason", Required = Newtonsoft.Json.Required.Default)]
         public string EmptySuggestionsReason { get; set; }

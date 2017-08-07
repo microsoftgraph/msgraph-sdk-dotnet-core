@@ -37,7 +37,7 @@ namespace Microsoft.Graph
             string message)
             : base(requestUrl, client)
         {
-            this.SetParameter("recipients", recipients, false);
+            this.SetParameter("recipients", recipients, true);
             this.SetParameter("requireSignIn", requireSignIn, true);
             this.SetParameter("roles", roles, true);
             this.SetParameter("sendInvitation", sendInvitation, true);

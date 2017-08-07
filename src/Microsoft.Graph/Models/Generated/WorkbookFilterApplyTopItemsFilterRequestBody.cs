@@ -25,7 +25,7 @@ namespace Microsoft.Graph
         /// Gets or sets Count.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "count", Required = Newtonsoft.Json.Required.Default)]
-        public Int32 Count { get; set; }
+        public Int32? Count { get; set; }
     
     }
 }

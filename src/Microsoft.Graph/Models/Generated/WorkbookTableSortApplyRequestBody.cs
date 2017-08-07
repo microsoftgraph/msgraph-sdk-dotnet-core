@@ -31,7 +31,7 @@ namespace Microsoft.Graph
         /// Gets or sets MatchCase.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "matchCase", Required = Newtonsoft.Json.Required.Default)]
-        public bool MatchCase { get; set; }
+        public bool? MatchCase { get; set; }
     
         /// <summary>
         /// Gets or sets Method.

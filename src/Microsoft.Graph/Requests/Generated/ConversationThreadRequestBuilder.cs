@@ -66,7 +66,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IConversationThreadReplyRequestBuilder"/>.</returns>
         public IConversationThreadReplyRequestBuilder Reply(
-            Post Post)
+            Post Post = null)
         {
             return new ConversationThreadReplyRequestBuilder(
                 this.AppendSegmentToRequestUrl("microsoft.graph.reply"),

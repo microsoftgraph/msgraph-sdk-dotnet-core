@@ -22,37 +22,36 @@ namespace Microsoft.Graph
     {
     
         /// <summary>
-        /// Gets or sets name.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "name", Required = Newtonsoft.Json.Required.Default)]
-        public string Name { get; set; }
-    
-        /// <summary>
         /// Gets or sets owner.
+        /// Information about the owner of the shared item being referenced.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "owner", Required = Newtonsoft.Json.Required.Default)]
         public IdentitySet Owner { get; set; }
     
         /// <summary>
         /// Gets or sets drive item.
+        /// A driveItem for the resource that was shared.  This is identical to the root property.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "driveItem", Required = Newtonsoft.Json.Required.Default)]
         public DriveItem DriveItem { get; set; }
     
         /// <summary>
         /// Gets or sets items.
+        /// A collection of shared driveItem resources. This collection cannot be enumerated, but items can be accessed by their unique ID.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "items", Required = Newtonsoft.Json.Required.Default)]
         public ISharedDriveItemItemsCollectionPage Items { get; set; }
     
         /// <summary>
         /// Gets or sets root.
+        /// The top level shared driveItem. If a single file is shared, this item is the file. If a folder is shared, this item will be the folder. You can use the item's facets to determine which case applies.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "root", Required = Newtonsoft.Json.Required.Default)]
         public DriveItem Root { get; set; }
     
         /// <summary>
         /// Gets or sets site.
+        /// A site resource that contains the item that was shared.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "site", Required = Newtonsoft.Json.Required.Default)]
         public Site Site { get; set; }

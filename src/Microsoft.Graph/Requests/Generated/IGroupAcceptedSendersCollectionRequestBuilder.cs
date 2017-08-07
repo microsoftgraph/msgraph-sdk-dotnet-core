@@ -40,7 +40,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IDirectoryObjectGetByIdsRequestBuilder"/>.</returns>
         IDirectoryObjectGetByIdsRequestBuilder GetByIds(
-            IEnumerable<string> ids,
+            IEnumerable<string> ids = null,
             IEnumerable<string> types = null);
     }
 }

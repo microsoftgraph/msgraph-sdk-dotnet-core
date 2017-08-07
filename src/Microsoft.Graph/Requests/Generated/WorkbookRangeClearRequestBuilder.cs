@@ -29,7 +29,7 @@ namespace Microsoft.Graph
             string applyTo)
             : base(requestUrl, client)
         {
-            this.SetParameter("applyTo", applyTo, false);
+            this.SetParameter("applyTo", applyTo, true);
         }
 
         /// <summary>

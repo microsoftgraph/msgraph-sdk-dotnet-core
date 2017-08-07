@@ -41,7 +41,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IConversationThreadReplyRequestBuilder"/>.</returns>
         IConversationThreadReplyRequestBuilder Reply(
-            Post Post);
+            Post Post = null);
     
     }
 }

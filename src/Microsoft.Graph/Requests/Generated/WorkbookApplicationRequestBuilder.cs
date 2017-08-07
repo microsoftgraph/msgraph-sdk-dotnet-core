@@ -54,7 +54,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IWorkbookApplicationCalculateRequestBuilder"/>.</returns>
         public IWorkbookApplicationCalculateRequestBuilder Calculate(
-            string calculationType)
+            string calculationType = null)
         {
             return new WorkbookApplicationCalculateRequestBuilder(
                 this.AppendSegmentToRequestUrl("microsoft.graph.calculate"),

@@ -171,7 +171,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IEventSnoozeReminderRequestBuilder"/>.</returns>
         public IEventSnoozeReminderRequestBuilder SnoozeReminder(
-            DateTimeTimeZone NewReminderTime)
+            DateTimeTimeZone NewReminderTime = null)
         {
             return new EventSnoozeReminderRequestBuilder(
                 this.AppendSegmentToRequestUrl("microsoft.graph.snoozeReminder"),

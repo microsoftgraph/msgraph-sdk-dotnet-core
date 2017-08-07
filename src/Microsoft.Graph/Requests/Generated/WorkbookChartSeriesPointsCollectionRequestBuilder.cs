@@ -64,7 +64,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IWorkbookChartPointItemAtRequestBuilder"/>.</returns>
         public IWorkbookChartPointItemAtRequestBuilder ItemAt(
-            Int32 index)
+            Int32? index = null)
         {
             return new WorkbookChartPointItemAtRequestBuilder(
                 this.AppendSegmentToRequestUrl("microsoft.graph.itemAt"),

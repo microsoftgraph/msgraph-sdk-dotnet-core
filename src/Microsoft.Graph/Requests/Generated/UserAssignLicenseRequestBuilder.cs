@@ -31,8 +31,8 @@ namespace Microsoft.Graph
             IEnumerable<Guid> removeLicenses)
             : base(requestUrl, client)
         {
-            this.SetParameter("addLicenses", addLicenses, false);
-            this.SetParameter("removeLicenses", removeLicenses, false);
+            this.SetParameter("addLicenses", addLicenses, true);
+            this.SetParameter("removeLicenses", removeLicenses, true);
         }
 
         /// <summary>
