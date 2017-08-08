@@ -24,6 +24,7 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets onClickTelemetryUrl.
+		/// A callback URL that can be used to record telemetry information. The application should issue a GET on this URL if the user interacts with this item to improve the quality of results.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "onClickTelemetryUrl", Required = Newtonsoft.Json.Required.Default)]
         public string OnClickTelemetryUrl { get; set; }

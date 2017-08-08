@@ -23,12 +23,14 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets classify as.
+        /// Specifies how incoming messages from a specific sender should always be classified as. Possible values are: focused, other.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "classifyAs", Required = Newtonsoft.Json.Required.Default)]
         public InferenceClassificationType? ClassifyAs { get; set; }
     
         /// <summary>
         /// Gets or sets sender email address.
+        /// The email address information of the sender for whom the override is created.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "senderEmailAddress", Required = Newtonsoft.Json.Required.Default)]
         public EmailAddress SenderEmailAddress { get; set; }

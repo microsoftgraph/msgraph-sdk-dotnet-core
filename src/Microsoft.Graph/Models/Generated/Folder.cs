@@ -24,6 +24,7 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets childCount.
+		/// Number of children contained immediately within this container.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "childCount", Required = Newtonsoft.Json.Required.Default)]
         public Int32? ChildCount { get; set; }

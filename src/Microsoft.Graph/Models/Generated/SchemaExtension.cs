@@ -23,30 +23,35 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets description.
+        /// Description for the schema extension.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "description", Required = Newtonsoft.Json.Required.Default)]
         public string Description { get; set; }
     
         /// <summary>
         /// Gets or sets target types.
+        /// Set of Microsoft Graph types (that can support extensions) that the schema extension can be applied to. Select from contact, device, event, group, message, organization, post, or user.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "targetTypes", Required = Newtonsoft.Json.Required.Default)]
         public IEnumerable<string> TargetTypes { get; set; }
     
         /// <summary>
         /// Gets or sets properties.
+        /// The collection of property names and types that make up the schema extension definition.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "properties", Required = Newtonsoft.Json.Required.Default)]
         public IEnumerable<ExtensionSchemaProperty> Properties { get; set; }
     
         /// <summary>
         /// Gets or sets status.
+        /// The lifecycle state of the schema extension. Possible states are InDevelopment, Available, and Deprecated. Automatically set to InDevelopment on creation. Schema extensions provides more information on the possible state transitions and behaviors.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "status", Required = Newtonsoft.Json.Required.Default)]
         public string Status { get; set; }
     
         /// <summary>
         /// Gets or sets owner.
+        /// The appId of the application that created the schema extension. Read-only.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "owner", Required = Newtonsoft.Json.Required.Default)]
         public string Owner { get; set; }

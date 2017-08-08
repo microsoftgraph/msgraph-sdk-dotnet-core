@@ -84,6 +84,18 @@ namespace Microsoft.Graph
                 return new SiteSitesCollectionRequestBuilder(this.AppendSegmentToRequestUrl("sites"), this.Client);
             }
         }
+
+        /// <summary>
+        /// Gets the request builder for Onenote.
+        /// </summary>
+        /// <returns>The <see cref="IOnenoteRequestBuilder"/>.</returns>
+        public IOnenoteRequestBuilder Onenote
+        {
+            get
+            {
+                return new OnenoteRequestBuilder(this.AppendSegmentToRequestUrl("onenote"), this.Client);
+            }
+        }
     
         /// <summary>
         /// Gets the request builder for SiteGetByPath.

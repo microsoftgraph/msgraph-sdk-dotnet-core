@@ -23,45 +23,59 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets display name.
+        /// The full title for the site. Read-only.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "displayName", Required = Newtonsoft.Json.Required.Default)]
         public string DisplayName { get; set; }
     
         /// <summary>
         /// Gets or sets root.
+        /// If present, indicates that this is the root site in the site collection. Read-only.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "root", Required = Newtonsoft.Json.Required.Default)]
         public Root Root { get; set; }
     
         /// <summary>
         /// Gets or sets sharepoint ids.
+        /// Returns identifiers useful for SharePoint REST compatibility. Read-only.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "sharepointIds", Required = Newtonsoft.Json.Required.Default)]
         public SharepointIds SharepointIds { get; set; }
     
         /// <summary>
         /// Gets or sets site collection.
+        /// Provides details about the site's site collection. Available only on the root site. Read-only.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "siteCollection", Required = Newtonsoft.Json.Required.Default)]
         public SiteCollection SiteCollection { get; set; }
     
         /// <summary>
         /// Gets or sets drive.
+        /// The default drive (document library) for this site.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "drive", Required = Newtonsoft.Json.Required.Default)]
         public Drive Drive { get; set; }
     
         /// <summary>
         /// Gets or sets drives.
+        /// The collection of drives (document libraries) under this site.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "drives", Required = Newtonsoft.Json.Required.Default)]
         public ISiteDrivesCollectionPage Drives { get; set; }
     
         /// <summary>
         /// Gets or sets sites.
+        /// The collection of the sub-sites under this site.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "sites", Required = Newtonsoft.Json.Required.Default)]
         public ISiteSitesCollectionPage Sites { get; set; }
+    
+        /// <summary>
+        /// Gets or sets onenote.
+        /// Calls the OneNote service for notebook related operations.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "onenote", Required = Newtonsoft.Json.Required.Default)]
+        public Onenote Onenote { get; set; }
     
     }
 }

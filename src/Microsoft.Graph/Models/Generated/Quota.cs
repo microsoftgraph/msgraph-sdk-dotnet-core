@@ -24,30 +24,35 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets deleted.
+		/// Total space consumed by files in the recycle bin, in bytes. Read-only.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "deleted", Required = Newtonsoft.Json.Required.Default)]
         public Int64? Deleted { get; set; }
     
         /// <summary>
         /// Gets or sets remaining.
+		/// Total space remaining before reaching the quota limit, in bytes. Read-only.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "remaining", Required = Newtonsoft.Json.Required.Default)]
         public Int64? Remaining { get; set; }
     
         /// <summary>
         /// Gets or sets state.
+		/// Enumeration value that indicates the state of the storage space. Read-only.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "state", Required = Newtonsoft.Json.Required.Default)]
         public string State { get; set; }
     
         /// <summary>
         /// Gets or sets total.
+		/// Total allowed storage space, in bytes. Read-only.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "total", Required = Newtonsoft.Json.Required.Default)]
         public Int64? Total { get; set; }
     
         /// <summary>
         /// Gets or sets used.
+		/// Total space used, in bytes. Read-only.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "used", Required = Newtonsoft.Json.Required.Default)]
         public Int64? Used { get; set; }

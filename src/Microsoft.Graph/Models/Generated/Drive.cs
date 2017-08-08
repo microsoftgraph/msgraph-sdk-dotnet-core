@@ -23,18 +23,21 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets drive type.
+        /// Describes the type of drive represented by this resource. OneDrive personal drives will return personal. OneDrive for Business will return business. SharePoint document libraries will return documentLibrary. Read-only.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "driveType", Required = Newtonsoft.Json.Required.Default)]
         public string DriveType { get; set; }
     
         /// <summary>
         /// Gets or sets owner.
+        /// Optional. The user account that owns the drive. Read-only.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "owner", Required = Newtonsoft.Json.Required.Default)]
         public IdentitySet Owner { get; set; }
     
         /// <summary>
         /// Gets or sets quota.
+        /// Optional. Information about the drive's storage space quota. Read-only.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "quota", Required = Newtonsoft.Json.Required.Default)]
         public Quota Quota { get; set; }
@@ -47,18 +50,21 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets items.
+        /// All items contained in the drive. Read-only. Nullable.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "items", Required = Newtonsoft.Json.Required.Default)]
         public IDriveItemsCollectionPage Items { get; set; }
     
         /// <summary>
         /// Gets or sets root.
+        /// The root folder of the drive. Read-only.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "root", Required = Newtonsoft.Json.Required.Default)]
         public DriveItem Root { get; set; }
     
         /// <summary>
         /// Gets or sets special.
+        /// Collection of common folders available in OneDrive. Read-only. Nullable.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "special", Required = Newtonsoft.Json.Required.Default)]
         public IDriveSpecialCollectionPage Special { get; set; }

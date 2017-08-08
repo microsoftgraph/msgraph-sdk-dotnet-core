@@ -24,12 +24,14 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets height.
+		/// Optional. Height of the image, in pixels. Read-only.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "height", Required = Newtonsoft.Json.Required.Default)]
         public Int32? Height { get; set; }
     
         /// <summary>
         /// Gets or sets width.
+		/// Optional. Width of the image, in pixels. Read-only.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "width", Required = Newtonsoft.Json.Required.Default)]
         public Int32? Width { get; set; }

@@ -24,12 +24,14 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets email.
+		/// The email address provided for the recipient of the sharing invitation. Read-only.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "email", Required = Newtonsoft.Json.Required.Default)]
         public string Email { get; set; }
     
         /// <summary>
         /// Gets or sets invitedBy.
+		/// Provides information about who sent the invitation that created this permission, if that information is available. Read-only.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "invitedBy", Required = Newtonsoft.Json.Required.Default)]
         public IdentitySet InvitedBy { get; set; }
@@ -42,6 +44,7 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets signInRequired.
+		/// If true the recipient of the invitation needs to sign in in order to access the shared item. Read-only.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "signInRequired", Required = Newtonsoft.Json.Required.Default)]
         public bool? SignInRequired { get; set; }

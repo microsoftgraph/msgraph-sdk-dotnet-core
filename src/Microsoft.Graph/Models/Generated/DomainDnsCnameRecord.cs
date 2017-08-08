@@ -23,6 +23,7 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets canonical name.
+        /// The canonical name of the CNAME record. Used to configure the CNAME record at the DNS host.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "canonicalName", Required = Newtonsoft.Json.Required.Default)]
         public string CanonicalName { get; set; }

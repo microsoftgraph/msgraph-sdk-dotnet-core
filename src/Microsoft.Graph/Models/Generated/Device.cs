@@ -23,24 +23,28 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets account enabled.
+        /// true if the account is enabled; otherwise, false. Required.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "accountEnabled", Required = Newtonsoft.Json.Required.Default)]
         public bool? AccountEnabled { get; set; }
     
         /// <summary>
         /// Gets or sets alternative security ids.
+        /// The any operator is required for filter expressions on multi-valued properties. Not nullable. Required.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "alternativeSecurityIds", Required = Newtonsoft.Json.Required.Default)]
         public IEnumerable<AlternativeSecurityId> AlternativeSecurityIds { get; set; }
     
         /// <summary>
         /// Gets or sets approximate last sign in date time.
+        /// The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "approximateLastSignInDateTime", Required = Newtonsoft.Json.Required.Default)]
         public DateTimeOffset? ApproximateLastSignInDateTime { get; set; }
     
         /// <summary>
         /// Gets or sets device id.
+        /// Unique client specified GUID to represent the device. Required.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "deviceId", Required = Newtonsoft.Json.Required.Default)]
         public string DeviceId { get; set; }
@@ -59,48 +63,56 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets display name.
+        /// The display name for the device. Required.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "displayName", Required = Newtonsoft.Json.Required.Default)]
         public string DisplayName { get; set; }
     
         /// <summary>
         /// Gets or sets is compliant.
+        /// true if the device complies with Mobile Device Management (MDM) policies; otherwise, false.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "isCompliant", Required = Newtonsoft.Json.Required.Default)]
         public bool? IsCompliant { get; set; }
     
         /// <summary>
         /// Gets or sets is managed.
+        /// true if the device is managed by a Mobile Device Management (MDM) app such as Intune; otherwise, false.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "isManaged", Required = Newtonsoft.Json.Required.Default)]
         public bool? IsManaged { get; set; }
     
         /// <summary>
         /// Gets or sets on premises last sync date time.
+        /// The last time at which the object was synced with the on-premises directory.The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "onPremisesLastSyncDateTime", Required = Newtonsoft.Json.Required.Default)]
         public DateTimeOffset? OnPremisesLastSyncDateTime { get; set; }
     
         /// <summary>
         /// Gets or sets on premises sync enabled.
+        /// true if this object is synced from an on-premises directory; false if this object was originally synced from an on-premises directory but is no longer synced; null if this object has never been synced from an on-premises directory (default).
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "onPremisesSyncEnabled", Required = Newtonsoft.Json.Required.Default)]
         public bool? OnPremisesSyncEnabled { get; set; }
     
         /// <summary>
         /// Gets or sets operating system.
+        /// The type of operating system on the device. Required.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "operatingSystem", Required = Newtonsoft.Json.Required.Default)]
         public string OperatingSystem { get; set; }
     
         /// <summary>
         /// Gets or sets operating system version.
+        /// The version of the operating system on the device. Required.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "operatingSystemVersion", Required = Newtonsoft.Json.Required.Default)]
         public string OperatingSystemVersion { get; set; }
     
         /// <summary>
         /// Gets or sets physical ids.
+        /// Not nullable.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "physicalIds", Required = Newtonsoft.Json.Required.Default)]
         public IEnumerable<string> PhysicalIds { get; set; }
@@ -113,18 +125,21 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets registered owners.
+        /// Users that are registered owners of the device. Read-only. Nullable.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "registeredOwners", Required = Newtonsoft.Json.Required.Default)]
         public IDeviceRegisteredOwnersCollectionWithReferencesPage RegisteredOwners { get; set; }
     
         /// <summary>
         /// Gets or sets registered users.
+        /// Users that are registered users of the device. Read-only. Nullable.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "registeredUsers", Required = Newtonsoft.Json.Required.Default)]
         public IDeviceRegisteredUsersCollectionWithReferencesPage RegisteredUsers { get; set; }
     
         /// <summary>
         /// Gets or sets extensions.
+        /// The collection of open extensions defined for the device. Read-only. Nullable.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "extensions", Required = Newtonsoft.Json.Required.Default)]
         public IDeviceExtensionsCollectionPage Extensions { get; set; }

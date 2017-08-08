@@ -23,6 +23,7 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets assigned plans.
+        /// The collection of service plans associated with the tenant. Not nullable.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "assignedPlans", Required = Newtonsoft.Json.Required.Default)]
         public IEnumerable<AssignedPlan> AssignedPlans { get; set; }
@@ -53,12 +54,14 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets display name.
+        /// The display name for the tenant.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "displayName", Required = Newtonsoft.Json.Required.Default)]
         public string DisplayName { get; set; }
     
         /// <summary>
         /// Gets or sets marketing notification emails.
+        /// Not nullable.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "marketingNotificationEmails", Required = Newtonsoft.Json.Required.Default)]
         public IEnumerable<string> MarketingNotificationEmails { get; set; }
@@ -89,6 +92,7 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets provisioned plans.
+        /// Not nullable.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "provisionedPlans", Required = Newtonsoft.Json.Required.Default)]
         public IEnumerable<ProvisionedPlan> ProvisionedPlans { get; set; }
@@ -119,18 +123,21 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets technical notification mails.
+        /// Not nullable.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "technicalNotificationMails", Required = Newtonsoft.Json.Required.Default)]
         public IEnumerable<string> TechnicalNotificationMails { get; set; }
     
         /// <summary>
         /// Gets or sets verified domains.
+        /// The collection of domains associated with this tenant. Not nullable.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "verifiedDomains", Required = Newtonsoft.Json.Required.Default)]
         public IEnumerable<VerifiedDomain> VerifiedDomains { get; set; }
     
         /// <summary>
         /// Gets or sets extensions.
+        /// The collection of open extensions defined for the organization. Read-only. Nullable.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "extensions", Required = Newtonsoft.Json.Required.Default)]
         public IOrganizationExtensionsCollectionPage Extensions { get; set; }

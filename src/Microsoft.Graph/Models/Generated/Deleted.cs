@@ -24,6 +24,7 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets state.
+		/// Represents the state of the deleted item.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "state", Required = Newtonsoft.Json.Required.Default)]
         public string State { get; set; }
