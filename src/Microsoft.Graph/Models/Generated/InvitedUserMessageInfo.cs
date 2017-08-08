@@ -24,18 +24,21 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets ccRecipients.
+		/// Additional recipients the invitation message should be sent to. Currently only 1 additional recipient is supported.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "ccRecipients", Required = Newtonsoft.Json.Required.Default)]
         public IEnumerable<Recipient> CcRecipients { get; set; }
     
         /// <summary>
         /// Gets or sets messageLanguage.
+		/// The language you want to send the default message in. If the customizedMessageBody is specified, this property is ignored, and the message is sent using the customizedMessageBody. The language format should be in ISO 639. The default is en-US.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "messageLanguage", Required = Newtonsoft.Json.Required.Default)]
         public string MessageLanguage { get; set; }
     
         /// <summary>
         /// Gets or sets customizedMessageBody.
+		/// Customized message body you want to send if you don't want the default message.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "customizedMessageBody", Required = Newtonsoft.Json.Required.Default)]
         public string CustomizedMessageBody { get; set; }

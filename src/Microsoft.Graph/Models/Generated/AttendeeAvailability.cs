@@ -24,12 +24,14 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets attendee.
+		/// The type of attendee - whether it's a person or a resource, and whether required or optional if it's a person.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "attendee", Required = Newtonsoft.Json.Required.Default)]
         public AttendeeBase Attendee { get; set; }
     
         /// <summary>
         /// Gets or sets availability.
+		/// The availability status of the attendee. Possible values are: free, tentative, busy, oof, workingElsewhere, unknown.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "availability", Required = Newtonsoft.Json.Required.Default)]
         public FreeBusyStatus? Availability { get; set; }

@@ -56,6 +56,16 @@ namespace Microsoft.Graph
         IGraphServiceOrganizationCollectionRequestBuilder Organization { get; }
     
         /// <summary>
+        /// Gets the GraphServiceGroupSettings request builder.
+        /// </summary>
+        IGraphServiceGroupSettingsCollectionRequestBuilder GroupSettings { get; }
+    
+        /// <summary>
+        /// Gets the GraphServiceGroupSettingTemplates request builder.
+        /// </summary>
+        IGraphServiceGroupSettingTemplatesCollectionRequestBuilder GroupSettingTemplates { get; }
+    
+        /// <summary>
         /// Gets the GraphServiceSubscribedSkus request builder.
         /// </summary>
         IGraphServiceSubscribedSkusCollectionRequestBuilder SubscribedSkus { get; }

@@ -1,8 +1,9 @@
-﻿using System;
+using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.IO;
-using System.Threading.Tasks;
+using Async = System.Threading.Tasks;
+using System.Net.Http;
 
 namespace Microsoft.Graph.Test.Requests.Functional
 {
@@ -10,10 +11,32 @@ namespace Microsoft.Graph.Test.Requests.Functional
     [TestClass]
     public class OneDriveTests : GraphTestBase
     {
+        [TestMethod]
+        public async System.Threading.Tasks.Task OneDriveSharedWithMe()
+        {
+
+            var sharedDriveItems = await graphClient.Me.Drive.SharedWithMe().Request().GetAsync();
+            var permissionsPage = await graphClient.Me.Drive.Items[sharedDriveItems[0].Id].Permissions.Request().GetAsync();
+            var permissions = new List<Permission>();
+            permissions.AddRange(permissionsPage.CurrentPage);
+
+            while (permissionsPage.NextPageRequest != null)
+            {
+                permissionsPage = await permissionsPage.NextPageRequest.GetAsync();
+                permissions.AddRange(permissionsPage.CurrentPage);
+            }
+            foreach (var permission in permissions)
+            {
+                Assert.IsNotNull(permission.GrantedTo);
+                Assert.IsNotNull(permission.Roles);
+            }
+        }
+
+
         // https://github.com/OneDrive/onedrive-sdk-csharp/blob/master/docs/chunked-uploads.md
         // https://dev.onedrive.com/items/upload_large_files.htm
         [TestMethod]
-        public async System.Threading.Tasks.Task OneDriveUploadLargeFile()
+        public async Async.Task OneDriveUploadLargeFile()
         {
             try
             {
@@ -71,9 +94,99 @@ namespace Microsoft.Graph.Test.Requests.Functional
             }
         }
 
+        /// <summary>
+        /// Based of the documentation: https://developer.microsoft.com/en-us/graph/docs/api-reference/v1.0/api/item_downloadcontent
+        /// </summary>
+        /// <returns></returns>
+        [TestMethod]
+        public async Async.Task OneDriveDownloadLargeFile()
+        {
+            // Based on question by Pavan Tiwari, 11/26/2012, and answer by Simon Mourier
+            // https://stackoverflow.com/questions/13566302/download-large-file-in-small-chunks-in-c-sharp
+
+            const long DefaultChunkSize = 50 * 1024; // 50 KB, TODO: change chunk size to make it realistic for a large file.
+            long ChunkSize = DefaultChunkSize;
+            long offset = 0;                         // cursor location for updating the Range header.
+            byte[] bytesInStream;                    // bytes in range returned by chunk download.
+
+            try
+            {
+                 // Get the collection of drive items. We'll only use one.
+                IDriveItemChildrenCollectionPage driveItems = await graphClient.Me.Drive.Root.Children.Request().GetAsync();
+
+                foreach (var item in driveItems)
+                {
+                    // Let's download the first file we get in the response.
+                    if (item.File != null)
+                    {
+                        // We'll use the file metadata to determine size and the name of the downloaded file
+                        // and to get the download URL.
+                        var driveItemInfo = await graphClient.Me.Drive.Items[item.Id].Request().GetAsync();
+
+                        // Get the download URL. This URL is preauthenticated and has a short TTL.
+                        object downloadUrl;
+                        driveItemInfo.AdditionalData.TryGetValue("@microsoft.graph.downloadUrl", out downloadUrl);
+
+                        // Get the number of bytes to download. calculate the number of chunks and determine
+                        // the last chunk size.
+                        long size = (long)driveItemInfo.Size;
+                        int numberOfChunks = Convert.ToInt32(size / DefaultChunkSize); 
+                        // We are incrementing the offset cursor after writing the response stream to a file after each chunk. 
+                        // Subtracting one since the size is 1 based, and the range is 0 base. There should be a better way to do
+                        // this but I haven't spent the time on that.
+                        int lastChunkSize = Convert.ToInt32(size % DefaultChunkSize) - numberOfChunks - 1; 
+                        if (lastChunkSize > 0) { numberOfChunks++; }
+
+                        // Create a file stream to contain the downloaded file.
+                        using (FileStream fileStream = System.IO.File.Create((@"C:\Temp\" + driveItemInfo.Name)))
+                        {
+                            for (int i = 0; i < numberOfChunks; i++)
+                            {
+                                // Setup the last chunk to request. This will be called at the end of this loop.
+                                if (i == numberOfChunks - 1)
+                                {
+                                    ChunkSize = lastChunkSize;
+                                }
+                                
+                                // Create the request message with the download URL and Range header.
+                                HttpRequestMessage req = new HttpRequestMessage(HttpMethod.Get, (string)downloadUrl);
+                                req.Headers.Range = new System.Net.Http.Headers.RangeHeaderValue(offset, ChunkSize + offset);
+
+                                // We can use the the client library to send this although it does add an authentication cost.
+                                // HttpResponseMessage response = await graphClient.HttpProvider.SendAsync(req);
+                                // Since the download URL is preauthenticated, and we aren't deserializing objects, 
+                                // we'd be better to make the request with HttpClient.
+                                var client = new HttpClient();
+                                HttpResponseMessage response = await client.SendAsync(req);
+
+                                using (Stream responseStream = await response.Content.ReadAsStreamAsync())
+                                {
+                                    bytesInStream = new byte[ChunkSize];
+                                    int read;
+                                    do
+                                    {
+                                        read = responseStream.Read(bytesInStream, 0, (int)bytesInStream.Length);
+                                        if (read > 0)
+                                            fileStream.Write(bytesInStream, 0, bytesInStream.Length);
+                                    }
+                                    while (read > 0);
+                                }
+                                offset += ChunkSize + 1; // Move the offset cursor to the next chunk.
+                            }
+                        }
+                        return;
+                    }
+                }
+            }
+            catch (Microsoft.Graph.ServiceException e)
+            {
+                Assert.Fail("Something happened, check out a trace. Error code: {0}", e.Error.Code);
+            }
+        }
+
 
         [TestMethod]
-        public async System.Threading.Tasks.Task OneDriveNextPageRequest()
+        public async Async.Task OneDriveNextPageRequest()
         {
             try
             {
@@ -99,7 +212,7 @@ namespace Microsoft.Graph.Test.Requests.Functional
 
         // http://graph.microsoft.io/en-us/docs/api-reference/v1.0/api/item_downloadcontent
         [TestMethod]
-        public async System.Threading.Tasks.Task OneDriveGetContent()
+        public async Async.Task OneDriveGetContent()
         {
             try
             {
@@ -125,7 +238,7 @@ namespace Microsoft.Graph.Test.Requests.Functional
 
 
         [TestMethod]
-        public async System.Threading.Tasks.Task OneDriveGetSetPermissions()
+        public async Async.Task OneDriveGetSetPermissions()
         {
             try
             {
@@ -175,7 +288,7 @@ namespace Microsoft.Graph.Test.Requests.Functional
         }
 
         [TestMethod]
-        public async System.Threading.Tasks.Task OneDriveSearchFile()
+        public async Async.Task OneDriveSearchFile()
         {
             // Note: can't upload an item and immediately search for it. Seems like search index doesn't get immediately updated.
             // Tried applying a delay of 30sec and it made no difference.
@@ -196,7 +309,7 @@ namespace Microsoft.Graph.Test.Requests.Functional
 
         // Assumption: test tenant has a file name that starts with 'Timesheet'.
         [TestMethod]
-        public async System.Threading.Tasks.Task OneDriveCreateSharingLink()
+        public async Async.Task OneDriveCreateSharingLink()
         {
             try
             {
@@ -210,7 +323,7 @@ namespace Microsoft.Graph.Test.Requests.Functional
 
                 var permission = await graphClient.Me.Drive.Root
                                                            .ItemWithPath(itemToShare[0].Name)
-                                                           .CreateLink("organization", "edit")
+                                                           .CreateLink("edit", "organization")
                                                            .Request()
                                                            .PostAsync();
 
@@ -228,7 +341,7 @@ namespace Microsoft.Graph.Test.Requests.Functional
         // Assumption: test tenant has a file name that starts with 'Timesheet'.
         // Assumption: there is a user with an email alias of alexd and a display name of Alex Darrow in the test tenant.
         [TestMethod]
-        public async System.Threading.Tasks.Task OneDriveInvite()
+        public async Async.Task OneDriveInvite()
         {
             try
             {
@@ -273,3 +386,4 @@ namespace Microsoft.Graph.Test.Requests.Functional
         }
     }
 }
+

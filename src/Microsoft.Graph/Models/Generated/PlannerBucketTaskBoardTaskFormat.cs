@@ -23,6 +23,7 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets order hint.
+        /// Hint used to order tasks in the Bucket view of the Task Board. The format is defined as outlined here.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "orderHint", Required = Newtonsoft.Json.Required.Default)]
         public string OrderHint { get; set; }

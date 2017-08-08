@@ -23,24 +23,28 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets description.
+        /// Description of the task
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "description", Required = Newtonsoft.Json.Required.Default)]
         public string Description { get; set; }
     
         /// <summary>
         /// Gets or sets preview type.
+        /// This sets the type of preview that shows up on the task. Possible values are: automatic, noPreview, checklist, description, reference. When set to automatic the displayed preview is chosen by the app viewing the task.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "previewType", Required = Newtonsoft.Json.Required.Default)]
         public PlannerPreviewType? PreviewType { get; set; }
     
         /// <summary>
         /// Gets or sets references.
+        /// The collection of references on the task.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "references", Required = Newtonsoft.Json.Required.Default)]
         public PlannerExternalReferences References { get; set; }
     
         /// <summary>
         /// Gets or sets checklist.
+        /// The collection of checklist items on the task.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "checklist", Required = Newtonsoft.Json.Required.Default)]
         public PlannerChecklistItems Checklist { get; set; }

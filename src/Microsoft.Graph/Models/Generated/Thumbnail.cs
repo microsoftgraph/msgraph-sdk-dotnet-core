@@ -30,24 +30,28 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets height.
+		/// The height of the thumbnail, in pixels.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "height", Required = Newtonsoft.Json.Required.Default)]
         public Int32? Height { get; set; }
     
         /// <summary>
         /// Gets or sets sourceItemId.
+		/// The unique identifier of the item that provided the thumbnail. This is only available when a folder thumbnail is requested.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "sourceItemId", Required = Newtonsoft.Json.Required.Default)]
         public string SourceItemId { get; set; }
     
         /// <summary>
         /// Gets or sets url.
+		/// The URL used to fetch the thumbnail content.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "url", Required = Newtonsoft.Json.Required.Default)]
         public string Url { get; set; }
     
         /// <summary>
         /// Gets or sets width.
+		/// The width of the thumbnail, in pixels.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "width", Required = Newtonsoft.Json.Required.Default)]
         public Int32? Width { get; set; }

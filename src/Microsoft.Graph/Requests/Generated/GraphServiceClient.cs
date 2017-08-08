@@ -129,6 +129,28 @@ namespace Microsoft.Graph
         }
     
         /// <summary>
+        /// Gets the GraphServiceGroupSettings request builder.
+        /// </summary>
+        public IGraphServiceGroupSettingsCollectionRequestBuilder GroupSettings
+        {
+            get
+            {
+                return new GraphServiceGroupSettingsCollectionRequestBuilder(this.BaseUrl + "/groupSettings", this);
+            }
+        }
+    
+        /// <summary>
+        /// Gets the GraphServiceGroupSettingTemplates request builder.
+        /// </summary>
+        public IGraphServiceGroupSettingTemplatesCollectionRequestBuilder GroupSettingTemplates
+        {
+            get
+            {
+                return new GraphServiceGroupSettingTemplatesCollectionRequestBuilder(this.BaseUrl + "/groupSettingTemplates", this);
+            }
+        }
+    
+        /// <summary>
         /// Gets the GraphServiceSubscribedSkus request builder.
         /// </summary>
         public IGraphServiceSubscribedSkusCollectionRequestBuilder SubscribedSkus

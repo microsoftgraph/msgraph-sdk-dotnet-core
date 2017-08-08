@@ -55,6 +55,12 @@ namespace Microsoft.Graph
         IGroupOwnersCollectionWithReferencesRequestBuilder Owners { get; }
 
         /// <summary>
+        /// Gets the request builder for Settings.
+        /// </summary>
+        /// <returns>The <see cref="IGroupSettingsCollectionRequestBuilder"/>.</returns>
+        IGroupSettingsCollectionRequestBuilder Settings { get; }
+
+        /// <summary>
         /// Gets the request builder for Extensions.
         /// </summary>
         /// <returns>The <see cref="IGroupExtensionsCollectionRequestBuilder"/>.</returns>

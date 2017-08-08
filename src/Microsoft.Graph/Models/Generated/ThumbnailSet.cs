@@ -23,24 +23,28 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets large.
+        /// A 1920x1920 scaled thumbnail.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "large", Required = Newtonsoft.Json.Required.Default)]
         public Thumbnail Large { get; set; }
     
         /// <summary>
         /// Gets or sets medium.
+        /// A 176x176 scaled thumbnail.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "medium", Required = Newtonsoft.Json.Required.Default)]
         public Thumbnail Medium { get; set; }
     
         /// <summary>
         /// Gets or sets small.
+        /// A 48x48 cropped thumbnail.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "small", Required = Newtonsoft.Json.Required.Default)]
         public Thumbnail Small { get; set; }
     
         /// <summary>
         /// Gets or sets source.
+        /// A custom thumbnail image or the original image used to generate other thumbnails.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "source", Required = Newtonsoft.Json.Required.Default)]
         public Thumbnail Source { get; set; }

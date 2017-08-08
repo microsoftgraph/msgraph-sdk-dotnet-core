@@ -23,24 +23,28 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets name.
+        /// Name of the bucket.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "name", Required = Newtonsoft.Json.Required.Default)]
         public string Name { get; set; }
     
         /// <summary>
         /// Gets or sets plan id.
+        /// Plan ID to which the bucket belongs.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "planId", Required = Newtonsoft.Json.Required.Default)]
         public string PlanId { get; set; }
     
         /// <summary>
         /// Gets or sets order hint.
+        /// Hint used to order items of this type in a list view. The format is defined as outlined here.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "orderHint", Required = Newtonsoft.Json.Required.Default)]
         public string OrderHint { get; set; }
     
         /// <summary>
         /// Gets or sets tasks.
+        /// Read-only. Nullable. The collection of tasks in the bucket.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "tasks", Required = Newtonsoft.Json.Required.Default)]
         public IPlannerBucketTasksCollectionPage Tasks { get; set; }

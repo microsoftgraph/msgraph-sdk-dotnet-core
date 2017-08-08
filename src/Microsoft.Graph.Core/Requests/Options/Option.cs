@@ -4,9 +4,9 @@
 
 namespace Microsoft.Graph
 {
-    public class Option
+    public abstract class Option
     {
-        public Option(string name, string value)
+        protected Option(string name, string value)
         {
             this.Name = name;
             this.Value = value;

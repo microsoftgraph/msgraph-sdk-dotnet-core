@@ -24,36 +24,42 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets listId.
+		/// The unique identifier (guid) for the item's list in SharePoint.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "listId", Required = Newtonsoft.Json.Required.Default)]
         public string ListId { get; set; }
     
         /// <summary>
         /// Gets or sets listItemId.
+		/// An integer identifier for the item within the containing list.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "listItemId", Required = Newtonsoft.Json.Required.Default)]
         public string ListItemId { get; set; }
     
         /// <summary>
         /// Gets or sets listItemUniqueId.
+		/// The unique identifier (guid) for the item within OneDrive for Busienss or a SharePoint site.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "listItemUniqueId", Required = Newtonsoft.Json.Required.Default)]
         public string ListItemUniqueId { get; set; }
     
         /// <summary>
         /// Gets or sets siteId.
+		/// The unique identifier (guid) for the item's site collection (SPSite).
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "siteId", Required = Newtonsoft.Json.Required.Default)]
         public string SiteId { get; set; }
     
         /// <summary>
         /// Gets or sets siteUrl.
+		/// The SharePoint URL for the site that contains the item.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "siteUrl", Required = Newtonsoft.Json.Required.Default)]
         public string SiteUrl { get; set; }
     
         /// <summary>
         /// Gets or sets webId.
+		/// The unique identifier (guid) for the item's site (SPWeb).
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "webId", Required = Newtonsoft.Json.Required.Default)]
         public string WebId { get; set; }

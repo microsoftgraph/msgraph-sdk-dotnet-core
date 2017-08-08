@@ -3,9 +3,22 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.IO;
 using Async = System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace Microsoft.Graph.Test.Requests.Functional
 {
+    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
+    public class MyDBExtensionClass
+    {
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "fid", Required = Newtonsoft.Json.Required.Default)]
+        public int FID { get; set; }
+
+        public MyDBExtensionClass(int fid)
+        {
+            FID = fid;
+        }
+    }
+
     [Ignore]
     [TestClass]
     public class SchemaExtensionTests : GraphTestBase
@@ -15,10 +28,11 @@ namespace Microsoft.Graph.Test.Requests.Functional
         /// https://developer.microsoft.com/en-us/graph/docs/api-reference/v1.0/api/schemaextension_post_schemaextensions
         /// </summary>
         [TestMethod]
-        public async Async.Task CreateSchemaExtension()
+        public async Async.Task SchemaExtensionTest()
         {
             // Create a schema extension on a contact.
-            SchemaExtension extensionPayload = new SchemaExtension()
+            // TODO: a tool that creates an object based on a schemaExtension definition.
+            SchemaExtension extensionDefinition = new SchemaExtension()
             {
                 Description = "This extension correlates a group with a foreign database.",
                 Id = $"crmForeignKey", // Microsoft Graph will prepend 8 chars
@@ -33,10 +47,10 @@ namespace Microsoft.Graph.Test.Requests.Functional
             };
 
             // Create the schema extension. This results in a call to Microsoft Graph.
-            SchemaExtension schemaExtension = await graphClient.SchemaExtensions.Request().AddAsync(extensionPayload);
+            SchemaExtension schemaExtension = await graphClient.SchemaExtensions.Request().AddAsync(extensionDefinition);
             Assert.IsNotNull(schemaExtension, "Expected: schemaExtension is not null; Actual: it returned null");
             Assert.AreEqual(schemaExtension.Status, "InDevelopment", $"Expected: a new schem extension has a status as InDevelopment; Actual: {schemaExtension.Status}");
-            StringAssert.Contains(schemaExtension.Id, extensionPayload.Id, "Expected: the payload identifier is contained in the schema extension returned by the service; Actual: it is not returned");
+            StringAssert.Contains(schemaExtension.Id, extensionDefinition.Id, "Expected: the payload identifier is contained in the schema extension returned by the service; Actual: it is not returned");
             Assert.IsNotNull(schemaExtension.Owner, "Expected: the owner value is set by the service; Actual: it wasn't set by the service.");
 
             // List all of the schema extensions available to this application.
@@ -67,7 +81,23 @@ namespace Microsoft.Graph.Test.Requests.Functional
             // Enable or re-write test when we learn expected behavior.
             //Assert.AreEqual(extensionFromGet.Status, extensionFromUpdate.Status, "Expected: the patch object status property matches the returned status property; Actual: they don't match.");
 
-            // Delete a specific scheam extension.
+            // Create a group with the schema extension defined earlier.
+            IDictionary<string, object> extensionInstance = new Dictionary<string, object>();
+            extensionInstance.Add(schemaExtension.Id, new MyDBExtensionClass(123123));
+            Group group = new Group()
+            {
+                DisplayName = $"Test group - {Guid.NewGuid().ToString()}",
+                Description = "This group was created with a schema extension",
+                MailEnabled = false,
+                MailNickname = "nickname", // silly requirement since this isn't mail enabled.
+                SecurityEnabled = false,
+                GroupTypes = new List<string>() { "Unified"},
+                AdditionalData = extensionInstance
+            };
+            await Async.Task.Delay(10000); // It takes some time for the schema extension def to be available for the creation of a group.
+            group = await graphClient.Groups.Request().AddAsync(group);
+            
+            // Delete a specific schema extension.
             await graphClient.SchemaExtensions[extensionFromGet.Id].Request().DeleteAsync();
             try
             {
@@ -77,6 +107,16 @@ namespace Microsoft.Graph.Test.Requests.Functional
             catch (ServiceException e)
             {
                 Assert.AreEqual(e.StatusCode, System.Net.HttpStatusCode.NotFound, $"Expected: {System.Net.HttpStatusCode.NotFound}; Actual: {e.StatusCode}");
+            }
+
+            // Delete the group.
+            try
+            {
+                await graphClient.Groups[group.Id].Request().DeleteAsync();
+            }
+            catch (ServiceException e)
+            {
+                Assert.Fail($"Error: {e.Error.ToString()}");
             }
         }
     }
