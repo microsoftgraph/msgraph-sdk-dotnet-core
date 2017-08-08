@@ -13,17 +13,10 @@
     <PackageId>Microsoft.Graph.Core</PackageId>
     <PackageTags>Microsoft Office365;Graph;GraphServiceClient;Outlook;OneDrive;AzureAD;GraphAPI;Productivity;SharePoint;SDK</PackageTags>
     <PackageReleaseNotes>
-      June 2017 Release Summary (version 1.5.0)
+      August 2017 Release Summary (version 1.6.0)
 
-      New features
-
-      * Support for posting multipart content.
-
-      Bug fixes
-
-      * Boolean query string parameters are no longer emitted in upper case.
-
-    </PackageReleaseNotes>
+      New Features
+      * Added Intellisense file to package</PackageReleaseNotes>
     <PackageProjectUrl>https://graph.microsoft.io</PackageProjectUrl>
     <PackageLicenseUrl>http://aka.ms/devservicesagreement</PackageLicenseUrl>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
@@ -42,6 +35,7 @@
     <DelaySign>True</DelaySign>
     <AssemblyOriginatorKeyFile>35MSSharedLib1024.snk</AssemblyOriginatorKeyFile>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Version>1.6.0</Version>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard1.1|AnyCPU'">
     <DocumentationFile>bin\Release\netstandard1.1\Microsoft.Graph.Core.xml</DocumentationFile>

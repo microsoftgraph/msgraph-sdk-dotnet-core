@@ -13,26 +13,12 @@
     <AssemblyName>Microsoft.Graph</AssemblyName>
     <PackageId>Microsoft.Graph</PackageId>
     <PackageTags>Microsoft Office365;Graph;GraphServiceClient;Outlook;OneDrive;AzureAD;GraphAPI;Productivity;SharePoint;SDK</PackageTags>
-    <PackageReleaseNotes>
-      June 2017 Release Summary (version 1.4.0)
+    <PackageReleaseNotes>August 2017 Release Summary (version 1.5.0)
 
       New features
-
-      * OneNote
-      * Open extensions
-      * Schema extensions
-      
-      Updates
-      
-      * Provided example and tests for scenarios where Microsoft.Graph client library request builders don't support functionality. This way you can make use of the serializer and authentication provider. 
-      * The service metadata doesn't support GetByPath for getting SharePoint sites by relative path. Added functionality to enable this.
-      * Added FindMeetingTimes test.
-
-      Bug fixes
-      
-      * Large file uploads larger than 2GB is enabled.
-
-    </PackageReleaseNotes>
+      * Access OneNote notebooks through SharePoint
+      * New Groups functionality
+      * Added Intellisense file</PackageReleaseNotes>
     <PackageProjectUrl>https://graph.microsoft.io</PackageProjectUrl>
     <PackageLicenseUrl>http://aka.ms/devservicesagreement</PackageLicenseUrl>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
@@ -51,6 +37,7 @@
     <DelaySign>True</DelaySign>
     <AssemblyOriginatorKeyFile>35MSSharedLib1024.snk</AssemblyOriginatorKeyFile>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Version>1.5.0</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard1.1|AnyCPU'">
