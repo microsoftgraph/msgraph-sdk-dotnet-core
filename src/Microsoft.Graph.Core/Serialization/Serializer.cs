@@ -20,7 +20,8 @@ namespace Microsoft.Graph
                   new JsonSerializerSettings
                   {
                       ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor,
-                      TypeNameHandling = TypeNameHandling.None
+                      TypeNameHandling = TypeNameHandling.None,
+                      DateParseHandling = DateParseHandling.None
                   })
         {
         }
