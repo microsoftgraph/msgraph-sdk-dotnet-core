@@ -15,10 +15,8 @@
     <PackageReleaseNotes>
       September 2017 Release Summary (version 1.6.2)
 
-      Bug fix for 1.6.2
-      * Updated JsonSerializer parser to ignore Date in strings. Thank you Neil White, issue 180.
-
-      
+      Bug fix
+      Fixed issue for serializing dates in string properties. Thank you, Neil White.
     </PackageReleaseNotes>
     <PackageProjectUrl>https://graph.microsoft.io</PackageProjectUrl>
     <PackageLicenseUrl>http://aka.ms/devservicesagreement</PackageLicenseUrl>
@@ -38,7 +36,7 @@
     <DelaySign>True</DelaySign>
     <AssemblyOriginatorKeyFile>35MSSharedLib1024.snk</AssemblyOriginatorKeyFile>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <Version>1.6.1</Version>
+    <Version>1.6.2</Version>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard1.1|AnyCPU'">
     <DocumentationFile>bin\Release\netstandard1.1\Microsoft.Graph.Core.xml</DocumentationFile>

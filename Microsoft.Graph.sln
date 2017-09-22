@@ -1,10 +1,13 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.9
+VisualStudioVersion = 15.0.26403.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{5E0B65FC-67B7-41F8-87BF-96D6A342C438}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{6496B661-8321-4D07-ACC2-B6602649293C}"
+	ProjectSection(SolutionItems) = preProject
+		src\Microsoft.Graph\Constants.cs = src\Microsoft.Graph\Constants.cs
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Graph", "src\Microsoft.Graph\Microsoft.Graph.csproj", "{660FA73B-987D-4085-A230-1B04F7EAEFBC}"
 EndProject
