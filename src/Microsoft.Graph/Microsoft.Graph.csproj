@@ -4,9 +4,9 @@
     <Description>Microsoft Graph Client Library allows you to call Office 365, Azure AD and other Microsoft services through a single unified developer experience.</Description>
     <Copyright>Copyright (c) Microsoft Corporation</Copyright>
     <AssemblyTitle>Microsoft Graph Client Library</AssemblyTitle>
-    <VersionPrefix>1.5.1</VersionPrefix>
-    <FileVersion>1.5.1</FileVersion>
-    <AssemblyVersion>1.5.1</AssemblyVersion>
+    <VersionPrefix>1.6.0</VersionPrefix>
+    <FileVersion>1.6.0</FileVersion>
+    <AssemblyVersion>1.6.0</AssemblyVersion>
     <Authors>Microsoft</Authors>
     <TargetFrameworks>netstandard1.1;net45</TargetFrameworks>
     <PreserveCompilationContext>false</PreserveCompilationContext>
@@ -14,15 +14,22 @@
     <PackageId>Microsoft.Graph</PackageId>
     <PackageTags>Microsoft Office365;Graph;GraphServiceClient;Outlook;OneDrive;AzureAD;GraphAPI;Productivity;SharePoint;SDK</PackageTags>
     <PackageReleaseNotes>
-      August 2017.1 Release Summary (version 1.5.1)
+      September 2017 Release Summary (version 1.6.0)
 
-      New features for 1.5.0
-      * Access OneNote notebooks through SharePoint
-      * New Groups functionality
-      * Added Intellisense file
+      New features for 1.6.0
+      * Added columns, contentTypes, items, and lists to the site type.
+      * Added the columnDefinition, columnLink, contentType, fieldValueSet, list and listitem types.
+      * Added the scoredEmailAddress, phone, website, and personType types.
+      * Added the booleanColumn, calculatedColumn, choiceColumn, currencyColumn, dateTimeColumn, systemFacet,
+        defaultColumnValue, lookupColumn, numberColumn, personOrGroupColumn, textColumn, and contentTypeOrder types.
+      * Added the person type. It is accessible from the user type. 
+      * Added the listInfo, contentTypeInfo, and folderView types.
+      * Added the list and listItem properties to the sharedDriveItem type 
+      * Added the audioBitePerSample, audioChannels, audioFormat, audioSamplesPerSecond, fourCC, and frameRate properties to the Video type.
+      * Added a Search function to driveItems.
+      
 
-      New features for 1.5.1
-      * Updated Newtonsoft JSON.Net dependency to use all version up to 11.
+      
     </PackageReleaseNotes>
     <PackageProjectUrl>https://graph.microsoft.io</PackageProjectUrl>
     <PackageLicenseUrl>http://aka.ms/devservicesagreement</PackageLicenseUrl>
