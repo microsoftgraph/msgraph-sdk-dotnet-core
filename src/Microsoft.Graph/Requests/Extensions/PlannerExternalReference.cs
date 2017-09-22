@@ -30,7 +30,13 @@ namespace Microsoft.Graph
                 this.AdditionalData = new Dictionary<string, object>();
             }
 
-            this.AdditionalData.Add(CoreConstants.Serialization.ODataType, ODataTypeName);
+            // We don't want to reapply ODataType. This happens when you try to re-serialize
+            // an object you already downloaded. Addresses this issue:
+            // https://github.com/microsoftgraph/msgraph-sdk-dotnet/issues/182
+            if (!this.AdditionalData.ContainsKey(CoreConstants.Serialization.ODataType))
+            {
+                this.AdditionalData.Add(CoreConstants.Serialization.ODataType, ODataTypeName);
+            }
         }
     }
 }
