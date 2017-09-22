@@ -34,8 +34,8 @@ namespace Microsoft.Graph
         /// <summary>
         /// Issues the POST request.
         /// </summary>
-        /// <param name=""cancellationToken"">The <see cref=""CancellationToken""/> for the request.</param>
-        /// <param name=""httpCompletionOption"">The <see cref=""HttpCompletionOption""/> for the request.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <param name="httpCompletionOption">The <see cref="HttpCompletionOption"/> for the request.</param>
         /// <returns>The task to await for async call.</returns>
         System.Threading.Tasks.Task<Stream> PostAsync(
             CancellationToken cancellationToken,

@@ -23,29 +23,65 @@ namespace Microsoft.Graph
     {
     
         /// <summary>
+        /// Gets or sets audioBitsPerSample.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "audioBitsPerSample", Required = Newtonsoft.Json.Required.Default)]
+        public Int32? AudioBitsPerSample { get; set; }
+    
+        /// <summary>
+        /// Gets or sets audioChannels.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "audioChannels", Required = Newtonsoft.Json.Required.Default)]
+        public Int32? AudioChannels { get; set; }
+    
+        /// <summary>
+        /// Gets or sets audioFormat.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "audioFormat", Required = Newtonsoft.Json.Required.Default)]
+        public string AudioFormat { get; set; }
+    
+        /// <summary>
+        /// Gets or sets audioSamplesPerSecond.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "audioSamplesPerSecond", Required = Newtonsoft.Json.Required.Default)]
+        public Int32? AudioSamplesPerSecond { get; set; }
+    
+        /// <summary>
         /// Gets or sets bitrate.
-		/// Bit rate of the video in bits per second.
+        /// Bit rate of the video in bits per second.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "bitrate", Required = Newtonsoft.Json.Required.Default)]
         public Int32? Bitrate { get; set; }
     
         /// <summary>
         /// Gets or sets duration.
-		/// Duration of the file in milliseconds.
+        /// Duration of the file in milliseconds.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "duration", Required = Newtonsoft.Json.Required.Default)]
         public Int64? Duration { get; set; }
     
         /// <summary>
+        /// Gets or sets fourCC.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "fourCC", Required = Newtonsoft.Json.Required.Default)]
+        public string FourCC { get; set; }
+    
+        /// <summary>
+        /// Gets or sets frameRate.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "frameRate", Required = Newtonsoft.Json.Required.Default)]
+        public double? FrameRate { get; set; }
+    
+        /// <summary>
         /// Gets or sets height.
-		/// Height of the video, in pixels.
+        /// Height of the video, in pixels.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "height", Required = Newtonsoft.Json.Required.Default)]
         public Int32? Height { get; set; }
     
         /// <summary>
         /// Gets or sets width.
-		/// Width of the video, in pixels.
+        /// Width of the video, in pixels.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "width", Required = Newtonsoft.Json.Required.Default)]
         public Int32? Width { get; set; }

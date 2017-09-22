@@ -24,28 +24,28 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets action.
-		/// The action to perform on the target element. Possible values are: replace, append, delete, insert, or prepend.
+        /// The action to perform on the target element. Possible values are: replace, append, delete, insert, or prepend.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "action", Required = Newtonsoft.Json.Required.Default)]
         public OnenotePatchActionType? Action { get; set; }
     
         /// <summary>
         /// Gets or sets target.
-		/// The element to update. Must be the #<data-id> or the generated <id> of the element, or the body or title keyword.
+        /// The element to update. Must be the #<data-id> or the generated <id> of the element, or the body or title keyword.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "target", Required = Newtonsoft.Json.Required.Default)]
         public string Target { get; set; }
     
         /// <summary>
         /// Gets or sets content.
-		/// A string of well-formed HTML to add to the page, and any image or file binary data. If the content contains binary data, the request must be sent using the multipart/form-data content type with a "Commands" part.
+        /// A string of well-formed HTML to add to the page, and any image or file binary data. If the content contains binary data, the request must be sent using the multipart/form-data content type with a "Commands" part.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "content", Required = Newtonsoft.Json.Required.Default)]
         public string Content { get; set; }
     
         /// <summary>
         /// Gets or sets position.
-		/// The location to add the supplied content, relative to the target element. Possible values are: after (default) or before.
+        /// The location to add the supplied content, relative to the target element. Possible values are: after (default) or before.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "position", Required = Newtonsoft.Json.Required.Default)]
         public OnenotePatchInsertPosition? Position { get; set; }

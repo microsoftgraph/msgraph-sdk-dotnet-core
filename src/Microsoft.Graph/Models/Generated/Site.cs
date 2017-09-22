@@ -50,6 +50,18 @@ namespace Microsoft.Graph
         public SiteCollection SiteCollection { get; set; }
     
         /// <summary>
+        /// Gets or sets columns.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "columns", Required = Newtonsoft.Json.Required.Default)]
+        public ISiteColumnsCollectionPage Columns { get; set; }
+    
+        /// <summary>
+        /// Gets or sets content types.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "contentTypes", Required = Newtonsoft.Json.Required.Default)]
+        public ISiteContentTypesCollectionPage ContentTypes { get; set; }
+    
+        /// <summary>
         /// Gets or sets drive.
         /// The default drive (document library) for this site.
         /// </summary>
@@ -62,6 +74,19 @@ namespace Microsoft.Graph
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "drives", Required = Newtonsoft.Json.Required.Default)]
         public ISiteDrivesCollectionPage Drives { get; set; }
+    
+        /// <summary>
+        /// Gets or sets items.
+        /// Used to address any item contained in this site. This collection cannot be enumerated.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "items", Required = Newtonsoft.Json.Required.Default)]
+        public ISiteItemsCollectionPage Items { get; set; }
+    
+        /// <summary>
+        /// Gets or sets lists.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "lists", Required = Newtonsoft.Json.Required.Default)]
+        public ISiteListsCollectionPage Lists { get; set; }
     
         /// <summary>
         /// Gets or sets sites.

@@ -24,21 +24,21 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets altitude.
-		/// Optional. The altitude (height), in feet,  above sea level for the item. Read-only.
+        /// Optional. The altitude (height), in feet,  above sea level for the item. Read-only.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "altitude", Required = Newtonsoft.Json.Required.Default)]
         public double? Altitude { get; set; }
     
         /// <summary>
         /// Gets or sets latitude.
-		/// Optional. The latitude, in decimal, for the item. Read-only.
+        /// Optional. The latitude, in decimal, for the item. Read-only.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "latitude", Required = Newtonsoft.Json.Required.Default)]
         public double? Latitude { get; set; }
     
         /// <summary>
         /// Gets or sets longitude.
-		/// Optional. The longitude, in decimal, for the item. Read-only.
+        /// Optional. The longitude, in decimal, for the item. Read-only.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "longitude", Required = Newtonsoft.Json.Required.Default)]
         public double? Longitude { get; set; }

@@ -433,6 +433,12 @@ namespace Microsoft.Graph
         public IUserEventsCollectionPage Events { get; set; }
     
         /// <summary>
+        /// Gets or sets people.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "people", Required = Newtonsoft.Json.Required.Default)]
+        public IUserPeopleCollectionPage People { get; set; }
+    
+        /// <summary>
         /// Gets or sets contacts.
         /// The user's contacts. Read-only. Nullable.
         /// </summary>

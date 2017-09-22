@@ -127,6 +127,12 @@ namespace Microsoft.Graph
         IUserEventsCollectionRequestBuilder Events { get; }
 
         /// <summary>
+        /// Gets the request builder for People.
+        /// </summary>
+        /// <returns>The <see cref="IUserPeopleCollectionRequestBuilder"/>.</returns>
+        IUserPeopleCollectionRequestBuilder People { get; }
+
+        /// <summary>
         /// Gets the request builder for Contacts.
         /// </summary>
         /// <returns>The <see cref="IUserContactsCollectionRequestBuilder"/>.</returns>

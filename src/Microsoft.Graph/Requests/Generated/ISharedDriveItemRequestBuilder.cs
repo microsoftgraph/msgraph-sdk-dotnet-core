@@ -43,6 +43,18 @@ namespace Microsoft.Graph
         ISharedDriveItemItemsCollectionRequestBuilder Items { get; }
 
         /// <summary>
+        /// Gets the request builder for List.
+        /// </summary>
+        /// <returns>The <see cref="IListRequestBuilder"/>.</returns>
+        IListRequestBuilder List { get; }
+
+        /// <summary>
+        /// Gets the request builder for ListItem.
+        /// </summary>
+        /// <returns>The <see cref="IListItemRequestBuilder"/>.</returns>
+        IListItemRequestBuilder ListItem { get; }
+
+        /// <summary>
         /// Gets the request builder for Root.
         /// </summary>
         /// <returns>The <see cref="IDriveItemRequestBuilder"/>.</returns>

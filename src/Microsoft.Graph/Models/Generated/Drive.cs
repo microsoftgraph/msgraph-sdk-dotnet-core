@@ -49,11 +49,23 @@ namespace Microsoft.Graph
         public SharepointIds SharePointIds { get; set; }
     
         /// <summary>
+        /// Gets or sets system.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "system", Required = Newtonsoft.Json.Required.Default)]
+        public SystemFacet System { get; set; }
+    
+        /// <summary>
         /// Gets or sets items.
         /// All items contained in the drive. Read-only. Nullable.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "items", Required = Newtonsoft.Json.Required.Default)]
         public IDriveItemsCollectionPage Items { get; set; }
+    
+        /// <summary>
+        /// Gets or sets list.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "list", Required = Newtonsoft.Json.Required.Default)]
+        public List List { get; set; }
     
         /// <summary>
         /// Gets or sets root.

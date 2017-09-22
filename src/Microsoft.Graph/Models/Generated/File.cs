@@ -24,14 +24,14 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets hashes.
-		/// Hashes of the file's binary content, if available. Read-only.
+        /// Hashes of the file's binary content, if available. Read-only.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "hashes", Required = Newtonsoft.Json.Required.Default)]
         public Hashes Hashes { get; set; }
     
         /// <summary>
         /// Gets or sets mimeType.
-		/// The MIME type for the file. This is determined by logic on the server and might not be the value provided when the file was uploaded. Read-only.
+        /// The MIME type for the file. This is determined by logic on the server and might not be the value provided when the file was uploaded. Read-only.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "mimeType", Required = Newtonsoft.Json.Required.Default)]
         public string MimeType { get; set; }

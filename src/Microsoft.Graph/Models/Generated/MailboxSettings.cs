@@ -24,7 +24,7 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets automaticRepliesSetting.
-		/// Configuration settings to automatically notify the sender of an incoming email with a message from the signed-in user.
+        /// Configuration settings to automatically notify the sender of an incoming email with a message from the signed-in user.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "automaticRepliesSetting", Required = Newtonsoft.Json.Required.Default)]
         public AutomaticRepliesSetting AutomaticRepliesSetting { get; set; }
@@ -37,14 +37,14 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets timeZone.
-		/// The default time zone for the user's mailbox.
+        /// The default time zone for the user's mailbox.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "timeZone", Required = Newtonsoft.Json.Required.Default)]
         public string TimeZone { get; set; }
     
         /// <summary>
         /// Gets or sets language.
-		/// The locale information for the user, including the preferred language and country/region.
+        /// The locale information for the user, including the preferred language and country/region.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "language", Required = Newtonsoft.Json.Required.Default)]
         public LocaleInfo Language { get; set; }

@@ -24,28 +24,28 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets application.
-		/// The app the link is associated with.
+        /// The app the link is associated with.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "application", Required = Newtonsoft.Json.Required.Default)]
         public Identity Application { get; set; }
     
         /// <summary>
         /// Gets or sets scope.
-		/// The scope of the link represented by this permission. Value anonymous indicates the link is usable by anyone, organization indicates the link is only usable for users signed into the same tenant.
+        /// The scope of the link represented by this permission. Value anonymous indicates the link is usable by anyone, organization indicates the link is only usable for users signed into the same tenant.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "scope", Required = Newtonsoft.Json.Required.Default)]
         public string Scope { get; set; }
     
         /// <summary>
         /// Gets or sets type.
-		/// The type of the link created.
+        /// The type of the link created.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "type", Required = Newtonsoft.Json.Required.Default)]
         public string Type { get; set; }
     
         /// <summary>
         /// Gets or sets webUrl.
-		/// A URL that opens the item in the browser on the OneDrive website.
+        /// A URL that opens the item in the browser on the OneDrive website.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "webUrl", Required = Newtonsoft.Json.Required.Default)]
         public string WebUrl { get; set; }

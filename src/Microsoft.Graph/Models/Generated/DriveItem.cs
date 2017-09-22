@@ -168,6 +168,12 @@ namespace Microsoft.Graph
         public IDriveItemChildrenCollectionPage Children { get; set; }
     
         /// <summary>
+        /// Gets or sets list item.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "listItem", Required = Newtonsoft.Json.Required.Default)]
+        public ListItem ListItem { get; set; }
+    
+        /// <summary>
         /// Gets or sets permissions.
         /// The set of permissions for the item. Read-only. Nullable.
         /// </summary>

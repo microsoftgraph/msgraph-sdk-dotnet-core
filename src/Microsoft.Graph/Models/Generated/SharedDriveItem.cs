@@ -43,6 +43,18 @@ namespace Microsoft.Graph
         public ISharedDriveItemItemsCollectionPage Items { get; set; }
     
         /// <summary>
+        /// Gets or sets list.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "list", Required = Newtonsoft.Json.Required.Default)]
+        public List List { get; set; }
+    
+        /// <summary>
+        /// Gets or sets list item.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "listItem", Required = Newtonsoft.Json.Required.Default)]
+        public ListItem ListItem { get; set; }
+    
+        /// <summary>
         /// Gets or sets root.
         /// The top level shared driveItem. If a single file is shared, this item is the file. If a folder is shared, this item will be the folder. You can use the item's facets to determine which case applies.
         /// </summary>

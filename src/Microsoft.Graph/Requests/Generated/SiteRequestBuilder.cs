@@ -50,6 +50,30 @@ namespace Microsoft.Graph
         }
     
         /// <summary>
+        /// Gets the request builder for Columns.
+        /// </summary>
+        /// <returns>The <see cref="ISiteColumnsCollectionRequestBuilder"/>.</returns>
+        public ISiteColumnsCollectionRequestBuilder Columns
+        {
+            get
+            {
+                return new SiteColumnsCollectionRequestBuilder(this.AppendSegmentToRequestUrl("columns"), this.Client);
+            }
+        }
+
+        /// <summary>
+        /// Gets the request builder for ContentTypes.
+        /// </summary>
+        /// <returns>The <see cref="ISiteContentTypesCollectionRequestBuilder"/>.</returns>
+        public ISiteContentTypesCollectionRequestBuilder ContentTypes
+        {
+            get
+            {
+                return new SiteContentTypesCollectionRequestBuilder(this.AppendSegmentToRequestUrl("contentTypes"), this.Client);
+            }
+        }
+
+        /// <summary>
         /// Gets the request builder for Drive.
         /// </summary>
         /// <returns>The <see cref="IDriveRequestBuilder"/>.</returns>
@@ -70,6 +94,30 @@ namespace Microsoft.Graph
             get
             {
                 return new SiteDrivesCollectionRequestBuilder(this.AppendSegmentToRequestUrl("drives"), this.Client);
+            }
+        }
+
+        /// <summary>
+        /// Gets the request builder for Items.
+        /// </summary>
+        /// <returns>The <see cref="ISiteItemsCollectionRequestBuilder"/>.</returns>
+        public ISiteItemsCollectionRequestBuilder Items
+        {
+            get
+            {
+                return new SiteItemsCollectionRequestBuilder(this.AppendSegmentToRequestUrl("items"), this.Client);
+            }
+        }
+
+        /// <summary>
+        /// Gets the request builder for Lists.
+        /// </summary>
+        /// <returns>The <see cref="ISiteListsCollectionRequestBuilder"/>.</returns>
+        public ISiteListsCollectionRequestBuilder Lists
+        {
+            get
+            {
+                return new SiteListsCollectionRequestBuilder(this.AppendSegmentToRequestUrl("lists"), this.Client);
             }
         }
 

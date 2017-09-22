@@ -62,6 +62,18 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
+        /// Gets the request builder for List.
+        /// </summary>
+        /// <returns>The <see cref="IListRequestBuilder"/>.</returns>
+        public IListRequestBuilder List
+        {
+            get
+            {
+                return new ListRequestBuilder(this.AppendSegmentToRequestUrl("list"), this.Client);
+            }
+        }
+
+        /// <summary>
         /// Gets the request builder for Root.
         /// </summary>
         /// <returns>The <see cref="IDriveItemRequestBuilder"/>.</returns>

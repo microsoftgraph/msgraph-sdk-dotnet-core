@@ -37,6 +37,12 @@ namespace Microsoft.Graph
         IDriveItemChildrenCollectionRequestBuilder Children { get; }
 
         /// <summary>
+        /// Gets the request builder for ListItem.
+        /// </summary>
+        /// <returns>The <see cref="IListItemRequestBuilder"/>.</returns>
+        IListItemRequestBuilder ListItem { get; }
+
+        /// <summary>
         /// Gets the request builder for Permissions.
         /// </summary>
         /// <returns>The <see cref="IDriveItemPermissionsCollectionRequestBuilder"/>.</returns>
@@ -73,7 +79,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IDriveItemCreateLinkRequestBuilder"/>.</returns>
         IDriveItemCreateLinkRequestBuilder CreateLink(
-            string type = null,
+            string type,
             string scope = null);
 
         /// <summary>

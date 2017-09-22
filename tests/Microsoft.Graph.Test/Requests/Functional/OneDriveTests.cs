@@ -27,7 +27,7 @@ namespace Microsoft.Graph.Test.Requests.Functional
             }
             foreach (var permission in permissions)
             {
-                Assert.IsNotNull(permission.GrantedTo);
+                Assert.IsNotNull(permission.Id);
                 Assert.IsNotNull(permission.Roles);
             }
         }

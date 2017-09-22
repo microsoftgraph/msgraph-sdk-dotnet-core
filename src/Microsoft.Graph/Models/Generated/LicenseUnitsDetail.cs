@@ -24,21 +24,21 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets enabled.
-		/// The number of units that are enabled.
+        /// The number of units that are enabled.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "enabled", Required = Newtonsoft.Json.Required.Default)]
         public Int32? Enabled { get; set; }
     
         /// <summary>
         /// Gets or sets suspended.
-		/// The number of units that are suspended.
+        /// The number of units that are suspended.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "suspended", Required = Newtonsoft.Json.Required.Default)]
         public Int32? Suspended { get; set; }
     
         /// <summary>
         /// Gets or sets warning.
-		/// The number of units that are in warning status.
+        /// The number of units that are in warning status.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "warning", Required = Newtonsoft.Json.Required.Default)]
         public Int32? Warning { get; set; }

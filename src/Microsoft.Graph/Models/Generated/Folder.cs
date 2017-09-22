@@ -24,10 +24,16 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets childCount.
-		/// Number of children contained immediately within this container.
+        /// Number of children contained immediately within this container.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "childCount", Required = Newtonsoft.Json.Required.Default)]
         public Int32? ChildCount { get; set; }
+    
+        /// <summary>
+        /// Gets or sets view.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "view", Required = Newtonsoft.Json.Required.Default)]
+        public FolderView View { get; set; }
     
         /// <summary>
         /// Gets or sets additional data.
