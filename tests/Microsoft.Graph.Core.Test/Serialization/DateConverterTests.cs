@@ -5,7 +5,7 @@
 namespace Microsoft.Graph.Core.Test.Serialization
 {
     using System;
-
+    using Microsoft.Graph;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     [TestClass]
@@ -29,6 +29,17 @@ namespace Microsoft.Graph.Core.Test.Serialization
         public void CanConvert_InvalidType()
         {
             Assert.IsFalse(this.converter.CanConvert(typeof(DateTime)), "Unexpected value for CanConvert.");
+        }
+
+        [TestMethod]
+        public void SerializerRoundTripsDates()
+        {
+            var eventIn = new Event { Start = new DateTimeTimeZone { DateTime = "2017-10-11T07:30:00.0000+00:00", TimeZone = "UTC" } };
+            var serializer = new Serializer();
+            var json = serializer.SerializeObject(eventIn);
+            var eventRoundTrip = serializer.DeserializeObject<Event>(json);
+
+            Assert.AreEqual(eventIn.Start.DateTime, eventRoundTrip.Start.DateTime);
         }
     }
 }
