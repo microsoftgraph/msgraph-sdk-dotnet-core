@@ -15,8 +15,8 @@
     <PackageReleaseNotes>
       September 2017 Release Summary (version 1.6.2)
 
-      Bug fix
-      Fixed issue for serializing dates in string properties. Thank you, Neil White.
+      Bug fix for 1.6.2
+      * Updated JsonSerializer parser to ignore Date in strings. Thank you Neil White, issue 180.
     </PackageReleaseNotes>
     <PackageProjectUrl>https://graph.microsoft.io</PackageProjectUrl>
     <PackageLicenseUrl>http://aka.ms/devservicesagreement</PackageLicenseUrl>
@@ -32,7 +32,7 @@
     <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
     <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <SignAssembly>False</SignAssembly>
+    <SignAssembly>True</SignAssembly>
     <DelaySign>True</DelaySign>
     <AssemblyOriginatorKeyFile>35MSSharedLib1024.snk</AssemblyOriginatorKeyFile>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
