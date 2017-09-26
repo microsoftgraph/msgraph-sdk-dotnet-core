@@ -24,7 +24,7 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets href.
-		/// The url of the link.
+        /// The url of the link.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "href", Required = Newtonsoft.Json.Required.Default)]
         public string Href { get; set; }

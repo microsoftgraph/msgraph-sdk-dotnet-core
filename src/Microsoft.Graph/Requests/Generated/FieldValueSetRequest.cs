@@ -16,17 +16,17 @@ namespace Microsoft.Graph
     using System.Linq.Expressions;
 
     /// <summary>
-    /// The type SharePointRequest.
+    /// The type FieldValueSetRequest.
     /// </summary>
-    public partial class SharePointRequest : BaseRequest, ISharePointRequest
+    public partial class FieldValueSetRequest : BaseRequest, IFieldValueSetRequest
     {
         /// <summary>
-        /// Constructs a new SharePointRequest.
+        /// Constructs a new FieldValueSetRequest.
         /// </summary>
         /// <param name="requestUrl">The URL for the built request.</param>
         /// <param name="client">The <see cref="IBaseClient"/> for handling requests.</param>
         /// <param name="options">Query and header option name value pairs for the request.</param>
-        public SharePointRequest(
+        public FieldValueSetRequest(
             string requestUrl,
             IBaseClient client,
             IEnumerable<Option> options)
@@ -35,32 +35,32 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Creates the specified SharePoint using POST.
+        /// Creates the specified FieldValueSet using POST.
         /// </summary>
-        /// <param name="sharePointToCreate">The SharePoint to create.</param>
-        /// <returns>The created SharePoint.</returns>
-        public System.Threading.Tasks.Task<SharePoint> CreateAsync(SharePoint sharePointToCreate)
+        /// <param name="fieldValueSetToCreate">The FieldValueSet to create.</param>
+        /// <returns>The created FieldValueSet.</returns>
+        public System.Threading.Tasks.Task<FieldValueSet> CreateAsync(FieldValueSet fieldValueSetToCreate)
         {
-            return this.CreateAsync(sharePointToCreate, CancellationToken.None);
+            return this.CreateAsync(fieldValueSetToCreate, CancellationToken.None);
         }
 
         /// <summary>
-        /// Creates the specified SharePoint using POST.
+        /// Creates the specified FieldValueSet using POST.
         /// </summary>
-        /// <param name="sharePointToCreate">The SharePoint to create.</param>
+        /// <param name="fieldValueSetToCreate">The FieldValueSet to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
-        /// <returns>The created SharePoint.</returns>
-        public async System.Threading.Tasks.Task<SharePoint> CreateAsync(SharePoint sharePointToCreate, CancellationToken cancellationToken)
+        /// <returns>The created FieldValueSet.</returns>
+        public async System.Threading.Tasks.Task<FieldValueSet> CreateAsync(FieldValueSet fieldValueSetToCreate, CancellationToken cancellationToken)
         {
             this.ContentType = "application/json";
             this.Method = "POST";
-            var newEntity = await this.SendAsync<SharePoint>(sharePointToCreate, cancellationToken).ConfigureAwait(false);
+            var newEntity = await this.SendAsync<FieldValueSet>(fieldValueSetToCreate, cancellationToken).ConfigureAwait(false);
             this.InitializeCollectionProperties(newEntity);
             return newEntity;
         }
 
         /// <summary>
-        /// Deletes the specified SharePoint.
+        /// Deletes the specified FieldValueSet.
         /// </summary>
         /// <returns>The task to await.</returns>
         public System.Threading.Tasks.Task DeleteAsync()
@@ -69,59 +69,59 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Deletes the specified SharePoint.
+        /// Deletes the specified FieldValueSet.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await.</returns>
         public async System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken)
         {
             this.Method = "DELETE";
-            await this.SendAsync<SharePoint>(null, cancellationToken).ConfigureAwait(false);
+            await this.SendAsync<FieldValueSet>(null, cancellationToken).ConfigureAwait(false);
         }
 
         /// <summary>
-        /// Gets the specified SharePoint.
+        /// Gets the specified FieldValueSet.
         /// </summary>
-        /// <returns>The SharePoint.</returns>
-        public System.Threading.Tasks.Task<SharePoint> GetAsync()
+        /// <returns>The FieldValueSet.</returns>
+        public System.Threading.Tasks.Task<FieldValueSet> GetAsync()
         {
             return this.GetAsync(CancellationToken.None);
         }
 
         /// <summary>
-        /// Gets the specified SharePoint.
+        /// Gets the specified FieldValueSet.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
-        /// <returns>The SharePoint.</returns>
-        public async System.Threading.Tasks.Task<SharePoint> GetAsync(CancellationToken cancellationToken)
+        /// <returns>The FieldValueSet.</returns>
+        public async System.Threading.Tasks.Task<FieldValueSet> GetAsync(CancellationToken cancellationToken)
         {
             this.Method = "GET";
-            var retrievedEntity = await this.SendAsync<SharePoint>(null, cancellationToken).ConfigureAwait(false);
+            var retrievedEntity = await this.SendAsync<FieldValueSet>(null, cancellationToken).ConfigureAwait(false);
             this.InitializeCollectionProperties(retrievedEntity);
             return retrievedEntity;
         }
 
         /// <summary>
-        /// Updates the specified SharePoint using PATCH.
+        /// Updates the specified FieldValueSet using PATCH.
         /// </summary>
-        /// <param name="sharePointToUpdate">The SharePoint to update.</param>
-        /// <returns>The updated SharePoint.</returns>
-        public System.Threading.Tasks.Task<SharePoint> UpdateAsync(SharePoint sharePointToUpdate)
+        /// <param name="fieldValueSetToUpdate">The FieldValueSet to update.</param>
+        /// <returns>The updated FieldValueSet.</returns>
+        public System.Threading.Tasks.Task<FieldValueSet> UpdateAsync(FieldValueSet fieldValueSetToUpdate)
         {
-            return this.UpdateAsync(sharePointToUpdate, CancellationToken.None);
+            return this.UpdateAsync(fieldValueSetToUpdate, CancellationToken.None);
         }
 
         /// <summary>
-        /// Updates the specified SharePoint using PATCH.
+        /// Updates the specified FieldValueSet using PATCH.
         /// </summary>
-        /// <param name="sharePointToUpdate">The SharePoint to update.</param>
+        /// <param name="fieldValueSetToUpdate">The FieldValueSet to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
-        /// <returns>The updated SharePoint.</returns>
-        public async System.Threading.Tasks.Task<SharePoint> UpdateAsync(SharePoint sharePointToUpdate, CancellationToken cancellationToken)
+        /// <returns>The updated FieldValueSet.</returns>
+        public async System.Threading.Tasks.Task<FieldValueSet> UpdateAsync(FieldValueSet fieldValueSetToUpdate, CancellationToken cancellationToken)
         {
             this.ContentType = "application/json";
             this.Method = "PATCH";
-            var updatedEntity = await this.SendAsync<SharePoint>(sharePointToUpdate, cancellationToken).ConfigureAwait(false);
+            var updatedEntity = await this.SendAsync<FieldValueSet>(fieldValueSetToUpdate, cancellationToken).ConfigureAwait(false);
             this.InitializeCollectionProperties(updatedEntity);
             return updatedEntity;
         }
@@ -131,7 +131,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="value">The expand value.</param>
         /// <returns>The request object to send.</returns>
-        public ISharePointRequest Expand(string value)
+        public IFieldValueSetRequest Expand(string value)
         {
             this.QueryOptions.Add(new QueryOption("$expand", value));
             return this;
@@ -142,7 +142,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="expandExpression">The expression from which to calculate the expand value.</param>
         /// <returns>The request object to send.</returns>
-        public ISharePointRequest Expand(Expression<Func<SharePoint, object>> expandExpression)
+        public IFieldValueSetRequest Expand(Expression<Func<FieldValueSet, object>> expandExpression)
         {
 		    if (expandExpression == null)
             {
@@ -166,7 +166,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="value">The select value.</param>
         /// <returns>The request object to send.</returns>
-        public ISharePointRequest Select(string value)
+        public IFieldValueSetRequest Select(string value)
         {
             this.QueryOptions.Add(new QueryOption("$select", value));
             return this;
@@ -177,7 +177,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="selectExpression">The expression from which to calculate the select value.</param>
         /// <returns>The request object to send.</returns>
-        public ISharePointRequest Select(Expression<Func<SharePoint, object>> selectExpression)
+        public IFieldValueSetRequest Select(Expression<Func<FieldValueSet, object>> selectExpression)
         {
             if (selectExpression == null)
             {
@@ -199,8 +199,8 @@ namespace Microsoft.Graph
         /// <summary>
         /// Initializes any collection properties after deserialization, like next requests for paging.
         /// </summary>
-        /// <param name="sharePointToInitialize">The <see cref="SharePoint"/> with the collection properties to initialize.</param>
-        private void InitializeCollectionProperties(SharePoint sharePointToInitialize)
+        /// <param name="fieldValueSetToInitialize">The <see cref="FieldValueSet"/> with the collection properties to initialize.</param>
+        private void InitializeCollectionProperties(FieldValueSet fieldValueSetToInitialize)
         {
 
         }

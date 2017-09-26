@@ -15,7 +15,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The interface IListRequestBuilder.
     /// </summary>
-    public partial interface IListRequestBuilder : IEntityRequestBuilder
+    public partial interface IListRequestBuilder : IBaseItemRequestBuilder
     {
         /// <summary>
         /// Builds the request.
@@ -29,6 +29,30 @@ namespace Microsoft.Graph
         /// <param name="options">The query and header options for the request.</param>
         /// <returns>The built request.</returns>
         new IListRequest Request(IEnumerable<Option> options);
+    
+        /// <summary>
+        /// Gets the request builder for Columns.
+        /// </summary>
+        /// <returns>The <see cref="IListColumnsCollectionRequestBuilder"/>.</returns>
+        IListColumnsCollectionRequestBuilder Columns { get; }
+
+        /// <summary>
+        /// Gets the request builder for ContentTypes.
+        /// </summary>
+        /// <returns>The <see cref="IListContentTypesCollectionRequestBuilder"/>.</returns>
+        IListContentTypesCollectionRequestBuilder ContentTypes { get; }
+
+        /// <summary>
+        /// Gets the request builder for Drive.
+        /// </summary>
+        /// <returns>The <see cref="IDriveRequestBuilder"/>.</returns>
+        IDriveRequestBuilder Drive { get; }
+
+        /// <summary>
+        /// Gets the request builder for Items.
+        /// </summary>
+        /// <returns>The <see cref="IListItemsCollectionRequestBuilder"/>.</returns>
+        IListItemsCollectionRequestBuilder Items { get; }
     
     }
 }

@@ -242,6 +242,18 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
+        /// Gets the request builder for People.
+        /// </summary>
+        /// <returns>The <see cref="IUserPeopleCollectionRequestBuilder"/>.</returns>
+        public IUserPeopleCollectionRequestBuilder People
+        {
+            get
+            {
+                return new UserPeopleCollectionRequestBuilder(this.AppendSegmentToRequestUrl("people"), this.Client);
+            }
+        }
+
+        /// <summary>
         /// Gets the request builder for Contacts.
         /// </summary>
         /// <returns>The <see cref="IUserContactsCollectionRequestBuilder"/>.</returns>

@@ -206,6 +206,38 @@ namespace Microsoft.Graph
             if (siteToInitialize != null && siteToInitialize.AdditionalData != null)
             {
 
+                if (siteToInitialize.Columns != null && siteToInitialize.Columns.CurrentPage != null)
+                {
+                    siteToInitialize.Columns.AdditionalData = siteToInitialize.AdditionalData;
+
+                    object nextPageLink;
+                    siteToInitialize.AdditionalData.TryGetValue("columns@odata.nextLink", out nextPageLink);
+                    var nextPageLinkString = nextPageLink as string;
+
+                    if (!string.IsNullOrEmpty(nextPageLinkString))
+                    {
+                        siteToInitialize.Columns.InitializeNextPageRequest(
+                            this.Client,
+                            nextPageLinkString);
+                    }
+                }
+
+                if (siteToInitialize.ContentTypes != null && siteToInitialize.ContentTypes.CurrentPage != null)
+                {
+                    siteToInitialize.ContentTypes.AdditionalData = siteToInitialize.AdditionalData;
+
+                    object nextPageLink;
+                    siteToInitialize.AdditionalData.TryGetValue("contentTypes@odata.nextLink", out nextPageLink);
+                    var nextPageLinkString = nextPageLink as string;
+
+                    if (!string.IsNullOrEmpty(nextPageLinkString))
+                    {
+                        siteToInitialize.ContentTypes.InitializeNextPageRequest(
+                            this.Client,
+                            nextPageLinkString);
+                    }
+                }
+
                 if (siteToInitialize.Drives != null && siteToInitialize.Drives.CurrentPage != null)
                 {
                     siteToInitialize.Drives.AdditionalData = siteToInitialize.AdditionalData;
@@ -217,6 +249,38 @@ namespace Microsoft.Graph
                     if (!string.IsNullOrEmpty(nextPageLinkString))
                     {
                         siteToInitialize.Drives.InitializeNextPageRequest(
+                            this.Client,
+                            nextPageLinkString);
+                    }
+                }
+
+                if (siteToInitialize.Items != null && siteToInitialize.Items.CurrentPage != null)
+                {
+                    siteToInitialize.Items.AdditionalData = siteToInitialize.AdditionalData;
+
+                    object nextPageLink;
+                    siteToInitialize.AdditionalData.TryGetValue("items@odata.nextLink", out nextPageLink);
+                    var nextPageLinkString = nextPageLink as string;
+
+                    if (!string.IsNullOrEmpty(nextPageLinkString))
+                    {
+                        siteToInitialize.Items.InitializeNextPageRequest(
+                            this.Client,
+                            nextPageLinkString);
+                    }
+                }
+
+                if (siteToInitialize.Lists != null && siteToInitialize.Lists.CurrentPage != null)
+                {
+                    siteToInitialize.Lists.AdditionalData = siteToInitialize.AdditionalData;
+
+                    object nextPageLink;
+                    siteToInitialize.AdditionalData.TryGetValue("lists@odata.nextLink", out nextPageLink);
+                    var nextPageLinkString = nextPageLink as string;
+
+                    if (!string.IsNullOrEmpty(nextPageLinkString))
+                    {
+                        siteToInitialize.Lists.InitializeNextPageRequest(
                             this.Client,
                             nextPageLinkString);
                     }

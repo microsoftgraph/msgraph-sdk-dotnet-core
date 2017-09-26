@@ -31,6 +31,18 @@ namespace Microsoft.Graph
         new ISiteRequest Request(IEnumerable<Option> options);
     
         /// <summary>
+        /// Gets the request builder for Columns.
+        /// </summary>
+        /// <returns>The <see cref="ISiteColumnsCollectionRequestBuilder"/>.</returns>
+        ISiteColumnsCollectionRequestBuilder Columns { get; }
+
+        /// <summary>
+        /// Gets the request builder for ContentTypes.
+        /// </summary>
+        /// <returns>The <see cref="ISiteContentTypesCollectionRequestBuilder"/>.</returns>
+        ISiteContentTypesCollectionRequestBuilder ContentTypes { get; }
+
+        /// <summary>
         /// Gets the request builder for Drive.
         /// </summary>
         /// <returns>The <see cref="IDriveRequestBuilder"/>.</returns>
@@ -41,6 +53,18 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="ISiteDrivesCollectionRequestBuilder"/>.</returns>
         ISiteDrivesCollectionRequestBuilder Drives { get; }
+
+        /// <summary>
+        /// Gets the request builder for Items.
+        /// </summary>
+        /// <returns>The <see cref="ISiteItemsCollectionRequestBuilder"/>.</returns>
+        ISiteItemsCollectionRequestBuilder Items { get; }
+
+        /// <summary>
+        /// Gets the request builder for Lists.
+        /// </summary>
+        /// <returns>The <see cref="ISiteListsCollectionRequestBuilder"/>.</returns>
+        ISiteListsCollectionRequestBuilder Lists { get; }
 
         /// <summary>
         /// Gets the request builder for Sites.

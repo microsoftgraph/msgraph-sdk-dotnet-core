@@ -24,14 +24,14 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets disabledPlans.
-		/// A collection of the unique identifiers for plans that have been disabled.
+        /// A collection of the unique identifiers for plans that have been disabled.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "disabledPlans", Required = Newtonsoft.Json.Required.Default)]
         public IEnumerable<Guid> DisabledPlans { get; set; }
     
         /// <summary>
         /// Gets or sets skuId.
-		/// The unique identifier for the SKU.
+        /// The unique identifier for the SKU.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "skuId", Required = Newtonsoft.Json.Required.Default)]
         public Guid? SkuId { get; set; }

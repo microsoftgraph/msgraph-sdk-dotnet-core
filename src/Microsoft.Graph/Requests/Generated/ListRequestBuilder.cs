@@ -15,7 +15,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type ListRequestBuilder.
     /// </summary>
-    public partial class ListRequestBuilder : EntityRequestBuilder, IListRequestBuilder
+    public partial class ListRequestBuilder : BaseItemRequestBuilder, IListRequestBuilder
     {
 
         /// <summary>
@@ -47,6 +47,54 @@ namespace Microsoft.Graph
         public new IListRequest Request(IEnumerable<Option> options)
         {
             return new ListRequest(this.RequestUrl, this.Client, options);
+        }
+    
+        /// <summary>
+        /// Gets the request builder for Columns.
+        /// </summary>
+        /// <returns>The <see cref="IListColumnsCollectionRequestBuilder"/>.</returns>
+        public IListColumnsCollectionRequestBuilder Columns
+        {
+            get
+            {
+                return new ListColumnsCollectionRequestBuilder(this.AppendSegmentToRequestUrl("columns"), this.Client);
+            }
+        }
+
+        /// <summary>
+        /// Gets the request builder for ContentTypes.
+        /// </summary>
+        /// <returns>The <see cref="IListContentTypesCollectionRequestBuilder"/>.</returns>
+        public IListContentTypesCollectionRequestBuilder ContentTypes
+        {
+            get
+            {
+                return new ListContentTypesCollectionRequestBuilder(this.AppendSegmentToRequestUrl("contentTypes"), this.Client);
+            }
+        }
+
+        /// <summary>
+        /// Gets the request builder for Drive.
+        /// </summary>
+        /// <returns>The <see cref="IDriveRequestBuilder"/>.</returns>
+        public IDriveRequestBuilder Drive
+        {
+            get
+            {
+                return new DriveRequestBuilder(this.AppendSegmentToRequestUrl("drive"), this.Client);
+            }
+        }
+
+        /// <summary>
+        /// Gets the request builder for Items.
+        /// </summary>
+        /// <returns>The <see cref="IListItemsCollectionRequestBuilder"/>.</returns>
+        public IListItemsCollectionRequestBuilder Items
+        {
+            get
+            {
+                return new ListItemsCollectionRequestBuilder(this.AppendSegmentToRequestUrl("items"), this.Client);
+            }
         }
     
     }

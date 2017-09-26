@@ -24,119 +24,119 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets createdBy.
-		/// Identity of the user, device, and application which created the item. Read-only.
+        /// Identity of the user, device, and application which created the item. Read-only.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "createdBy", Required = Newtonsoft.Json.Required.Default)]
         public IdentitySet CreatedBy { get; set; }
     
         /// <summary>
         /// Gets or sets createdDateTime.
-		/// Date and time of item creation. Read-only.
+        /// Date and time of item creation. Read-only.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "createdDateTime", Required = Newtonsoft.Json.Required.Default)]
         public DateTimeOffset? CreatedDateTime { get; set; }
     
         /// <summary>
         /// Gets or sets file.
-		/// Indicates that the remote item is a file. Read-only.
+        /// Indicates that the remote item is a file. Read-only.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "file", Required = Newtonsoft.Json.Required.Default)]
         public File File { get; set; }
     
         /// <summary>
         /// Gets or sets fileSystemInfo.
-		/// Information about the remote item from the local file system. Read-only.
+        /// Information about the remote item from the local file system. Read-only.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "fileSystemInfo", Required = Newtonsoft.Json.Required.Default)]
         public FileSystemInfo FileSystemInfo { get; set; }
     
         /// <summary>
         /// Gets or sets folder.
-		/// Indicates that the remote item is a folder. Read-only.
+        /// Indicates that the remote item is a folder. Read-only.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "folder", Required = Newtonsoft.Json.Required.Default)]
         public Folder Folder { get; set; }
     
         /// <summary>
         /// Gets or sets id.
-		/// Unique identifier for the remote item in its drive. Read-only.
+        /// Unique identifier for the remote item in its drive. Read-only.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "id", Required = Newtonsoft.Json.Required.Default)]
         public string Id { get; set; }
     
         /// <summary>
         /// Gets or sets lastModifiedBy.
-		/// Identity of the user, device, and application which last modified the item. Read-only.
+        /// Identity of the user, device, and application which last modified the item. Read-only.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "lastModifiedBy", Required = Newtonsoft.Json.Required.Default)]
         public IdentitySet LastModifiedBy { get; set; }
     
         /// <summary>
         /// Gets or sets lastModifiedDateTime.
-		/// Date and time the item was last modified. Read-only.
+        /// Date and time the item was last modified. Read-only.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "lastModifiedDateTime", Required = Newtonsoft.Json.Required.Default)]
         public DateTimeOffset? LastModifiedDateTime { get; set; }
     
         /// <summary>
         /// Gets or sets name.
-		/// Optional. Filename of the remote item. Read-only.
+        /// Optional. Filename of the remote item. Read-only.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "name", Required = Newtonsoft.Json.Required.Default)]
         public string Name { get; set; }
     
         /// <summary>
         /// Gets or sets package.
-		/// If present, indicates that this item is a package instead of a folder or file. Packages are treated like files in some contexts and folders in others. Read-only.
+        /// If present, indicates that this item is a package instead of a folder or file. Packages are treated like files in some contexts and folders in others. Read-only.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "package", Required = Newtonsoft.Json.Required.Default)]
         public Package Package { get; set; }
     
         /// <summary>
         /// Gets or sets parentReference.
-		/// Properties of the parent of the remote item. Read-only.
+        /// Properties of the parent of the remote item. Read-only.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "parentReference", Required = Newtonsoft.Json.Required.Default)]
         public ItemReference ParentReference { get; set; }
     
         /// <summary>
         /// Gets or sets shared.
-		/// Indicates that the item has been shared with others and provides information about the shared state of the item. Read-only.
+        /// Indicates that the item has been shared with others and provides information about the shared state of the item. Read-only.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "shared", Required = Newtonsoft.Json.Required.Default)]
         public Shared Shared { get; set; }
     
         /// <summary>
         /// Gets or sets sharepointIds.
-		/// Provides interop between items in OneDrive for Business and SharePoint with the full set of item identifiers. Read-only.
+        /// Provides interop between items in OneDrive for Business and SharePoint with the full set of item identifiers. Read-only.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "sharepointIds", Required = Newtonsoft.Json.Required.Default)]
         public SharepointIds SharepointIds { get; set; }
     
         /// <summary>
         /// Gets or sets size.
-		/// Size of the remote item. Read-only.
+        /// Size of the remote item. Read-only.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "size", Required = Newtonsoft.Json.Required.Default)]
         public Int64? Size { get; set; }
     
         /// <summary>
         /// Gets or sets specialFolder.
-		/// If the current item is also available as a special folder, this facet is returned. Read-only.
+        /// If the current item is also available as a special folder, this facet is returned. Read-only.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "specialFolder", Required = Newtonsoft.Json.Required.Default)]
         public SpecialFolder SpecialFolder { get; set; }
     
         /// <summary>
         /// Gets or sets webDavUrl.
-		/// DAV compatible URL for the item.
+        /// DAV compatible URL for the item.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "webDavUrl", Required = Newtonsoft.Json.Required.Default)]
         public string WebDavUrl { get; set; }
     
         /// <summary>
         /// Gets or sets webUrl.
-		/// URL that displays the resource in the browser. Read-only.
+        /// URL that displays the resource in the browser. Read-only.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "webUrl", Required = Newtonsoft.Json.Required.Default)]
         public string WebUrl { get; set; }

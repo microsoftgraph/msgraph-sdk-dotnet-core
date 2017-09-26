@@ -203,6 +203,60 @@ namespace Microsoft.Graph
         private void InitializeCollectionProperties(List listToInitialize)
         {
 
+            if (listToInitialize != null && listToInitialize.AdditionalData != null)
+            {
+
+                if (listToInitialize.Columns != null && listToInitialize.Columns.CurrentPage != null)
+                {
+                    listToInitialize.Columns.AdditionalData = listToInitialize.AdditionalData;
+
+                    object nextPageLink;
+                    listToInitialize.AdditionalData.TryGetValue("columns@odata.nextLink", out nextPageLink);
+                    var nextPageLinkString = nextPageLink as string;
+
+                    if (!string.IsNullOrEmpty(nextPageLinkString))
+                    {
+                        listToInitialize.Columns.InitializeNextPageRequest(
+                            this.Client,
+                            nextPageLinkString);
+                    }
+                }
+
+                if (listToInitialize.ContentTypes != null && listToInitialize.ContentTypes.CurrentPage != null)
+                {
+                    listToInitialize.ContentTypes.AdditionalData = listToInitialize.AdditionalData;
+
+                    object nextPageLink;
+                    listToInitialize.AdditionalData.TryGetValue("contentTypes@odata.nextLink", out nextPageLink);
+                    var nextPageLinkString = nextPageLink as string;
+
+                    if (!string.IsNullOrEmpty(nextPageLinkString))
+                    {
+                        listToInitialize.ContentTypes.InitializeNextPageRequest(
+                            this.Client,
+                            nextPageLinkString);
+                    }
+                }
+
+                if (listToInitialize.Items != null && listToInitialize.Items.CurrentPage != null)
+                {
+                    listToInitialize.Items.AdditionalData = listToInitialize.AdditionalData;
+
+                    object nextPageLink;
+                    listToInitialize.AdditionalData.TryGetValue("items@odata.nextLink", out nextPageLink);
+                    var nextPageLinkString = nextPageLink as string;
+
+                    if (!string.IsNullOrEmpty(nextPageLinkString))
+                    {
+                        listToInitialize.Items.InitializeNextPageRequest(
+                            this.Client,
+                            nextPageLinkString);
+                    }
+                }
+
+            }
+
+
         }
     }
 }

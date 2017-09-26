@@ -3,9 +3,9 @@
     <Description>Microsoft Graph Core Client Library implements core functionality used by Microsoft Graph Client Libraries.</Description>
     <Copyright>Copyright (c) Microsoft Corporation</Copyright>
     <AssemblyTitle>Microsoft Graph Core Client Library</AssemblyTitle>
-    <VersionPrefix>1.6.1</VersionPrefix>
-    <FileVersion>1.6.1</FileVersion>
-    <AssemblyVersion>1.6.1</AssemblyVersion>
+    <VersionPrefix>1.6.2</VersionPrefix>
+    <FileVersion>1.6.2</FileVersion>
+    <AssemblyVersion>1.6.2</AssemblyVersion>
     <Authors>Microsoft</Authors>
     <TargetFrameworks>netstandard1.1;net45</TargetFrameworks>
     <PreserveCompilationContext>false</PreserveCompilationContext>
@@ -13,13 +13,10 @@
     <PackageId>Microsoft.Graph.Core</PackageId>
     <PackageTags>Microsoft Office365;Graph;GraphServiceClient;Outlook;OneDrive;AzureAD;GraphAPI;Productivity;SharePoint;SDK</PackageTags>
     <PackageReleaseNotes>
-      August 2017.1 Release Summary (version 1.6.1)
+      September 2017 Release Summary (version 1.6.2)
 
-      New Features for 1.6.0
-      * Added Intellisense file to package
-
-      New Features for 1.6.1
-      * Updated Newtonsoft JSON.Net dependency to use all version up to 11.
+      Bug fix for 1.6.2
+      * Updated JsonSerializer parser to ignore Date in strings. Thank you Neil White, issue 180.
     </PackageReleaseNotes>
     <PackageProjectUrl>https://graph.microsoft.io</PackageProjectUrl>
     <PackageLicenseUrl>http://aka.ms/devservicesagreement</PackageLicenseUrl>
@@ -39,7 +36,7 @@
     <DelaySign>True</DelaySign>
     <AssemblyOriginatorKeyFile>35MSSharedLib1024.snk</AssemblyOriginatorKeyFile>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <Version>1.6.1</Version>
+    <Version>1.6.2</Version>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard1.1|AnyCPU'">
     <DocumentationFile>bin\Release\netstandard1.1\Microsoft.Graph.Core.xml</DocumentationFile>

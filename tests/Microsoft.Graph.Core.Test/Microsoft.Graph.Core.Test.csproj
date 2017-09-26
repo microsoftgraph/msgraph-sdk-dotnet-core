@@ -98,6 +98,10 @@
       <Project>{9f04608c-d845-4445-83b1-e6d4eee38cbc}</Project>
       <Name>Microsoft.Graph.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\src\Microsoft.Graph\Microsoft.Graph.csproj">
+      <Project>{660fa73b-987d-4085-a230-1b04f7eaefbc}</Project>
+      <Name>Microsoft.Graph</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config">

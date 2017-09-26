@@ -62,6 +62,18 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
+        /// Gets the request builder for ListItem.
+        /// </summary>
+        /// <returns>The <see cref="IListItemRequestBuilder"/>.</returns>
+        public IListItemRequestBuilder ListItem
+        {
+            get
+            {
+                return new ListItemRequestBuilder(this.AppendSegmentToRequestUrl("listItem"), this.Client);
+            }
+        }
+
+        /// <summary>
         /// Gets the request builder for Permissions.
         /// </summary>
         /// <returns>The <see cref="IDriveItemPermissionsCollectionRequestBuilder"/>.</returns>
@@ -129,7 +141,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IDriveItemCreateLinkRequestBuilder"/>.</returns>
         public IDriveItemCreateLinkRequestBuilder CreateLink(
-            string type = null,
+            string type,
             string scope = null)
         {
             return new DriveItemCreateLinkRequestBuilder(
