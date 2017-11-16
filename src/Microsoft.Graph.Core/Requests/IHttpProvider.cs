@@ -20,6 +20,11 @@ namespace Microsoft.Graph
         ISerializer Serializer { get; }
 
         /// <summary>
+        /// Gets or sets the timeout interval. The default value is 100 seconds.
+        /// </summary>
+        TimeSpan OverallTimeout { get; set; }
+
+        /// <summary>
         /// Sends the request.
         /// </summary>
         /// <param name="request">The <see cref="HttpRequestMessage"/> to send.</param>
