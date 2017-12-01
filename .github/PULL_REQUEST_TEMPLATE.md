@@ -16,7 +16,7 @@ Fixes #
 -
 -
 
-<!-- Optional. Provide related links. This might be other pull requests, code files, StackOverflow posts. Delete this section if itis not used. -->
+<!-- Optional. Provide related links. This might be other pull requests, code files, StackOverflow posts. Delete this section if it is not used. -->
 ### Other links
 -
 -
