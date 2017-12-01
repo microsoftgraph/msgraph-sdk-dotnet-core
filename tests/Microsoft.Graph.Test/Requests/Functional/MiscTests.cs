@@ -18,7 +18,7 @@ namespace Microsoft.Graph.Test.Requests.Functional
         {
             // Get a groups collection. We'll use the first entry to add the extension. Results in a call to the service.
             IGraphServiceGroupsCollectionPage groupPage = await graphClient.Groups.Request().GetAsync();
-            graphClient.HttpProvider.OverallTimeout = new TimeSpan(5000000);
+
             // Create the extension property.
             OpenTypeExtension newExtension = new OpenTypeExtension();
             newExtension.ExtensionName = "com.contoso.trackingKey";
