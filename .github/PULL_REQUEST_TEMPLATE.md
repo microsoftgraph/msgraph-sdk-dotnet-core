@@ -3,7 +3,7 @@
 First off, thank you for opening this pull request! We do appreciate it.
 
 The requests and models for this client library are generated. We won't be accepting pull requests for those code files. With that said, we do appreciate
-it when you open pull requests with the proposed file changesas we'll use that to help guide us in updating our template files.
+it when you open pull requests with the proposed file changes as we'll use that to help guide us in updating our template files.
 
 -->
 
