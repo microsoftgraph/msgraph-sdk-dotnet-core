@@ -110,6 +110,13 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 
 * NuGet Package: [https://www.nuget.org/packages/Microsoft.Graph](https://www.nuget.org/packages/Microsoft.Graph)
 
+## Building library locally
+
+If you are looking to build the library locally for the purposes of contributing code or running tests, you will need to:
+
+- Have the .NET Core SDK (> 1.0) installed
+- Run `dotnet restore` from the command line in your package directory
+- Run `nuget restore` and `msbuild` from CLI or run Build from Visual Studio to restore Nuget packages and build the project
 
 ## License
 
