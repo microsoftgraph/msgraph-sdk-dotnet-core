@@ -116,6 +116,11 @@ namespace Microsoft.Graph
         IGraphServiceInvitationsCollectionRequestBuilder Invitations { get; }
     
         /// <summary>
+        /// Gets the GraphServiceGroupLifecyclePolicies request builder.
+        /// </summary>
+        IGraphServiceGroupLifecyclePoliciesCollectionRequestBuilder GroupLifecyclePolicies { get; }
+    
+        /// <summary>
         /// Gets the GraphServiceMe request builder.
         /// </summary>
         IUserRequestBuilder Me { get; }
@@ -134,6 +139,21 @@ namespace Microsoft.Graph
         /// Gets the GraphServiceReports request builder.
         /// </summary>
         IReportRootRequestBuilder Reports { get; }
+    
+        /// <summary>
+        /// Gets the GraphServiceEducation request builder.
+        /// </summary>
+        IEducationRootRequestBuilder Education { get; }
+    
+        /// <summary>
+        /// Gets the GraphServiceDeviceAppManagement request builder.
+        /// </summary>
+        IDeviceAppManagementRequestBuilder DeviceAppManagement { get; }
+    
+        /// <summary>
+        /// Gets the GraphServiceDeviceManagement request builder.
+        /// </summary>
+        IDeviceManagementRequestBuilder DeviceManagement { get; }
     
     }
 }

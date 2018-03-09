@@ -551,6 +551,74 @@ namespace Microsoft.Graph
         /// <returns>The <see cref="IReportRootGetYammerGroupsActivityCountsRequestBuilder"/>.</returns>
         IReportRootGetYammerGroupsActivityCountsRequestBuilder GetYammerGroupsActivityCounts(
             string period);
+
+        /// <summary>
+        /// Gets the request builder for ReportRootGetTeamsUserActivityUserDetail.
+        /// </summary>
+        /// <returns>The <see cref="IReportRootGetTeamsUserActivityUserDetailRequestBuilder"/>.</returns>
+        IReportRootGetTeamsUserActivityUserDetailRequestBuilder GetTeamsUserActivityUserDetail(
+            Date date);
+
+        /// <summary>
+        /// Gets the request builder for ReportRootGetTeamsUserActivityUserDetail.
+        /// </summary>
+        /// <returns>The <see cref="IReportRootGetTeamsUserActivityUserDetailRequestBuilder"/>.</returns>
+        IReportRootGetTeamsUserActivityUserDetailRequestBuilder GetTeamsUserActivityUserDetail(
+            string period);
+
+        /// <summary>
+        /// Gets the request builder for ReportRootGetTeamsUserActivityCounts.
+        /// </summary>
+        /// <returns>The <see cref="IReportRootGetTeamsUserActivityCountsRequestBuilder"/>.</returns>
+        IReportRootGetTeamsUserActivityCountsRequestBuilder GetTeamsUserActivityCounts(
+            string period);
+
+        /// <summary>
+        /// Gets the request builder for ReportRootGetTeamsUserActivityUserCounts.
+        /// </summary>
+        /// <returns>The <see cref="IReportRootGetTeamsUserActivityUserCountsRequestBuilder"/>.</returns>
+        IReportRootGetTeamsUserActivityUserCountsRequestBuilder GetTeamsUserActivityUserCounts(
+            string period);
+
+        /// <summary>
+        /// Gets the request builder for ReportRootGetTeamsDeviceUsageUserDetail.
+        /// </summary>
+        /// <returns>The <see cref="IReportRootGetTeamsDeviceUsageUserDetailRequestBuilder"/>.</returns>
+        IReportRootGetTeamsDeviceUsageUserDetailRequestBuilder GetTeamsDeviceUsageUserDetail(
+            Date date);
+
+        /// <summary>
+        /// Gets the request builder for ReportRootGetTeamsDeviceUsageUserDetail.
+        /// </summary>
+        /// <returns>The <see cref="IReportRootGetTeamsDeviceUsageUserDetailRequestBuilder"/>.</returns>
+        IReportRootGetTeamsDeviceUsageUserDetailRequestBuilder GetTeamsDeviceUsageUserDetail(
+            string period);
+
+        /// <summary>
+        /// Gets the request builder for ReportRootGetTeamsDeviceUsageUserCounts.
+        /// </summary>
+        /// <returns>The <see cref="IReportRootGetTeamsDeviceUsageUserCountsRequestBuilder"/>.</returns>
+        IReportRootGetTeamsDeviceUsageUserCountsRequestBuilder GetTeamsDeviceUsageUserCounts(
+            string period);
+
+        /// <summary>
+        /// Gets the request builder for ReportRootGetTeamsDeviceUsageDistributionUserCounts.
+        /// </summary>
+        /// <returns>The <see cref="IReportRootGetTeamsDeviceUsageDistributionUserCountsRequestBuilder"/>.</returns>
+        IReportRootGetTeamsDeviceUsageDistributionUserCountsRequestBuilder GetTeamsDeviceUsageDistributionUserCounts(
+            string period);
+
+        /// <summary>
+        /// Gets the request builder for ReportRootDeviceConfigurationUserActivity.
+        /// </summary>
+        /// <returns>The <see cref="IReportRootDeviceConfigurationUserActivityRequestBuilder"/>.</returns>
+        IReportRootDeviceConfigurationUserActivityRequestBuilder DeviceConfigurationUserActivity();
+
+        /// <summary>
+        /// Gets the request builder for ReportRootDeviceConfigurationDeviceActivity.
+        /// </summary>
+        /// <returns>The <see cref="IReportRootDeviceConfigurationDeviceActivityRequestBuilder"/>.</returns>
+        IReportRootDeviceConfigurationDeviceActivityRequestBuilder DeviceConfigurationDeviceActivity();
     
     }
 }

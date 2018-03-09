@@ -61,5 +61,16 @@ namespace Microsoft.Graph
             }
         }
     
+        /// <summary>
+        /// Gets the request builder for OrganizationSetMobileDeviceManagementAuthority.
+        /// </summary>
+        /// <returns>The <see cref="IOrganizationSetMobileDeviceManagementAuthorityRequestBuilder"/>.</returns>
+        public IOrganizationSetMobileDeviceManagementAuthorityRequestBuilder SetMobileDeviceManagementAuthority()
+        {
+            return new OrganizationSetMobileDeviceManagementAuthorityRequestBuilder(
+                this.AppendSegmentToRequestUrl("microsoft.graph.setMobileDeviceManagementAuthority"),
+                this.Client);
+        }
+    
     }
 }

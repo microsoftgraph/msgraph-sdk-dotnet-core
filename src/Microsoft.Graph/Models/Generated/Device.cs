@@ -30,33 +30,34 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets alternative security ids.
-        /// The any operator is required for filter expressions on multi-valued properties. Not nullable. Required.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "alternativeSecurityIds", Required = Newtonsoft.Json.Required.Default)]
         public IEnumerable<AlternativeSecurityId> AlternativeSecurityIds { get; set; }
     
         /// <summary>
         /// Gets or sets approximate last sign in date time.
-        /// The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'
+        /// The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z' Read-only.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "approximateLastSignInDateTime", Required = Newtonsoft.Json.Required.Default)]
         public DateTimeOffset? ApproximateLastSignInDateTime { get; set; }
     
         /// <summary>
         /// Gets or sets device id.
-        /// Unique client specified GUID to represent the device. Required.
+        /// Unique identifier set by Azure Device Registration Service at the time of registration.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "deviceId", Required = Newtonsoft.Json.Required.Default)]
         public string DeviceId { get; set; }
     
         /// <summary>
         /// Gets or sets device metadata.
+        /// For interal use only. Set to null.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "deviceMetadata", Required = Newtonsoft.Json.Required.Default)]
         public string DeviceMetadata { get; set; }
     
         /// <summary>
         /// Gets or sets device version.
+        /// For interal use only.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "deviceVersion", Required = Newtonsoft.Json.Required.Default)]
         public Int32? DeviceVersion { get; set; }
@@ -70,28 +71,28 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets is compliant.
-        /// true if the device complies with Mobile Device Management (MDM) policies; otherwise, false.
+        /// true if the device complies with Mobile Device Management (MDM) policies; otherwise, false. Read-only.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "isCompliant", Required = Newtonsoft.Json.Required.Default)]
         public bool? IsCompliant { get; set; }
     
         /// <summary>
         /// Gets or sets is managed.
-        /// true if the device is managed by a Mobile Device Management (MDM) app such as Intune; otherwise, false.
+        /// true if the device is managed by a Mobile Device Management (MDM) app; otherwise, false.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "isManaged", Required = Newtonsoft.Json.Required.Default)]
         public bool? IsManaged { get; set; }
     
         /// <summary>
         /// Gets or sets on premises last sync date time.
-        /// The last time at which the object was synced with the on-premises directory.The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'
+        /// The last time at which the object was synced with the on-premises directory.The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z' Read-only.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "onPremisesLastSyncDateTime", Required = Newtonsoft.Json.Required.Default)]
         public DateTimeOffset? OnPremisesLastSyncDateTime { get; set; }
     
         /// <summary>
         /// Gets or sets on premises sync enabled.
-        /// true if this object is synced from an on-premises directory; false if this object was originally synced from an on-premises directory but is no longer synced; null if this object has never been synced from an on-premises directory (default).
+        /// true if this object is synced from an on-premises directory; false if this object was originally synced from an on-premises directory but is no longer synced; null if this object has never been synced from an on-premises directory (default). Read-only.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "onPremisesSyncEnabled", Required = Newtonsoft.Json.Required.Default)]
         public bool? OnPremisesSyncEnabled { get; set; }
@@ -112,27 +113,28 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets physical ids.
-        /// Not nullable.
+        /// For interal use only. Not nullable.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "physicalIds", Required = Newtonsoft.Json.Required.Default)]
         public IEnumerable<string> PhysicalIds { get; set; }
     
         /// <summary>
         /// Gets or sets trust type.
+        /// Type of trust for the joined device. Read-only. Possible values: Workplace - indicates bring your own personal devicesAzureAd - Cloud only joined devicesServerAd - on-premises domain joined devices joined to Azure AD. For more details, see Introduction to device management in Azure Active Directory
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "trustType", Required = Newtonsoft.Json.Required.Default)]
         public string TrustType { get; set; }
     
         /// <summary>
         /// Gets or sets registered owners.
-        /// Users that are registered owners of the device. Read-only. Nullable.
+        /// The user that cloud joined the device or registered their personal device. The registered owner is set at the time of registration. Currently, there can be only one owner. Read-only. Nullable.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "registeredOwners", Required = Newtonsoft.Json.Required.Default)]
         public IDeviceRegisteredOwnersCollectionWithReferencesPage RegisteredOwners { get; set; }
     
         /// <summary>
         /// Gets or sets registered users.
-        /// Users that are registered users of the device. Read-only. Nullable.
+        /// Collection of registered users of the device. For cloud joined devices and registered personal devices, registered users are set to the same value as registered owners at the time of registration. Read-only. Nullable.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "registeredUsers", Required = Newtonsoft.Json.Required.Default)]
         public IDeviceRegisteredUsersCollectionWithReferencesPage RegisteredUsers { get; set; }

@@ -261,6 +261,17 @@ namespace Microsoft.Graph
         }
     
         /// <summary>
+        /// Gets the GraphServiceGroupLifecyclePolicies request builder.
+        /// </summary>
+        public IGraphServiceGroupLifecyclePoliciesCollectionRequestBuilder GroupLifecyclePolicies
+        {
+            get
+            {
+                return new GraphServiceGroupLifecyclePoliciesCollectionRequestBuilder(this.BaseUrl + "/groupLifecyclePolicies", this);
+            }
+        }
+    
+        /// <summary>
         /// Gets the GraphServiceMe request builder.
         /// </summary>
         public IUserRequestBuilder Me
@@ -301,6 +312,39 @@ namespace Microsoft.Graph
             get
             {
                 return new ReportRootRequestBuilder(this.BaseUrl + "/reports", this);
+            }
+        }
+    
+        /// <summary>
+        /// Gets the GraphServiceEducation request builder.
+        /// </summary>
+        public IEducationRootRequestBuilder Education
+        {
+            get
+            {
+                return new EducationRootRequestBuilder(this.BaseUrl + "/education", this);
+            }
+        }
+    
+        /// <summary>
+        /// Gets the GraphServiceDeviceAppManagement request builder.
+        /// </summary>
+        public IDeviceAppManagementRequestBuilder DeviceAppManagement
+        {
+            get
+            {
+                return new DeviceAppManagementRequestBuilder(this.BaseUrl + "/deviceAppManagement", this);
+            }
+        }
+    
+        /// <summary>
+        /// Gets the GraphServiceDeviceManagement request builder.
+        /// </summary>
+        public IDeviceManagementRequestBuilder DeviceManagement
+        {
+            get
+            {
+                return new DeviceManagementRequestBuilder(this.BaseUrl + "/deviceManagement", this);
             }
         }
     
