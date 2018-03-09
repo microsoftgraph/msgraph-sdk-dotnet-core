@@ -10,7 +10,7 @@ namespace Microsoft.Graph.Core.Test.Serialization
     using Newtonsoft.Json;
     using System.IO;
 
-    [Ignore]
+    //[Ignore]
     [TestClass]
     public class DurationConverterTests
     { 
@@ -38,26 +38,11 @@ namespace Microsoft.Graph.Core.Test.Serialization
         [TestMethod]
         public void Duration_CanDeserialize()
         {
-            string json = @"{'meetingDuration': 'PT2H'}";
-            JsonTextReader reader = new JsonTextReader(new StringReader(json));
-
-            using (MemoryStream stream = new MemoryStream())
-            using (StreamWriter writer = new StreamWriter(stream))
-            {
-                writer.Write(json);
-            }
-
-                if (reader.Read())
-                {
-                    var durationConverter = new DurationConverter();
-                    var type = typeof(Duration);
-                var duration = durationConverter.ReadJson(reader, type, null, new Newtonsoft.Json.JsonSerializer());
-                Assert.IsTrue(type == duration.GetType());
-                }
-                else
-                {
-                    Assert.Fail("Did not read a JSON token.");
-                }
+            var json = "\"PT2H\"";
+            var serializer = new Serializer();
+            var derivedType = serializer.DeserializeObject<Duration>(json);
+            Assert.IsNotNull(derivedType, "Object not correctly deserialized.");
+            Assert.AreEqual(2, derivedType.TimeSpan.Hours);
         }
     }
 }

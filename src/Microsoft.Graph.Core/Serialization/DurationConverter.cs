@@ -32,10 +32,9 @@ namespace Microsoft.Graph
                 {
                     return null;
                 }
+                var value = (string)serializer.Deserialize(reader, typeof(string));
 
-                var value = (Microsoft.Graph.Duration)serializer.Deserialize(reader, typeof(Microsoft.Graph.Duration));
-
-                return value;
+                return new Duration(value);
             }
             catch (JsonSerializationException serializationException)
             {
