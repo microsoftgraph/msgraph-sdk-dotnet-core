@@ -291,6 +291,12 @@ namespace Microsoft.Graph
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "onenote", Required = Newtonsoft.Json.Required.Default)]
         public Onenote Onenote { get; set; }
     
+        /// <summary>
+        /// Gets or sets group lifecycle policies.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "groupLifecyclePolicies", Required = Newtonsoft.Json.Required.Default)]
+        public IGroupGroupLifecyclePoliciesCollectionPage GroupLifecyclePolicies { get; set; }
+    
     }
 }
 

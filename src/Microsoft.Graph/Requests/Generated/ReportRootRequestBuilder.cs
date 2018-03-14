@@ -1017,6 +1017,132 @@ namespace Microsoft.Graph
                 this.Client,
                 period);
         }
+
+        /// <summary>
+        /// Gets the request builder for ReportRootGetTeamsUserActivityUserDetail.
+        /// </summary>
+        /// <returns>The <see cref="IReportRootGetTeamsUserActivityUserDetailRequestBuilder"/>.</returns>
+        public IReportRootGetTeamsUserActivityUserDetailRequestBuilder GetTeamsUserActivityUserDetail(
+            Date date)
+        {
+            return new ReportRootGetTeamsUserActivityUserDetailRequestBuilder(
+                this.AppendSegmentToRequestUrl("microsoft.graph.getTeamsUserActivityUserDetail"),
+                this.Client,
+                date);
+        }
+
+        /// <summary>
+        /// Gets the request builder for ReportRootGetTeamsUserActivityUserDetail.
+        /// </summary>
+        /// <returns>The <see cref="IReportRootGetTeamsUserActivityUserDetailRequestBuilder"/>.</returns>
+        public IReportRootGetTeamsUserActivityUserDetailRequestBuilder GetTeamsUserActivityUserDetail(
+            string period)
+        {
+            return new ReportRootGetTeamsUserActivityUserDetailRequestBuilder(
+                this.AppendSegmentToRequestUrl("microsoft.graph.getTeamsUserActivityUserDetail"),
+                this.Client,
+                period);
+        }
+
+        /// <summary>
+        /// Gets the request builder for ReportRootGetTeamsUserActivityCounts.
+        /// </summary>
+        /// <returns>The <see cref="IReportRootGetTeamsUserActivityCountsRequestBuilder"/>.</returns>
+        public IReportRootGetTeamsUserActivityCountsRequestBuilder GetTeamsUserActivityCounts(
+            string period)
+        {
+            return new ReportRootGetTeamsUserActivityCountsRequestBuilder(
+                this.AppendSegmentToRequestUrl("microsoft.graph.getTeamsUserActivityCounts"),
+                this.Client,
+                period);
+        }
+
+        /// <summary>
+        /// Gets the request builder for ReportRootGetTeamsUserActivityUserCounts.
+        /// </summary>
+        /// <returns>The <see cref="IReportRootGetTeamsUserActivityUserCountsRequestBuilder"/>.</returns>
+        public IReportRootGetTeamsUserActivityUserCountsRequestBuilder GetTeamsUserActivityUserCounts(
+            string period)
+        {
+            return new ReportRootGetTeamsUserActivityUserCountsRequestBuilder(
+                this.AppendSegmentToRequestUrl("microsoft.graph.getTeamsUserActivityUserCounts"),
+                this.Client,
+                period);
+        }
+
+        /// <summary>
+        /// Gets the request builder for ReportRootGetTeamsDeviceUsageUserDetail.
+        /// </summary>
+        /// <returns>The <see cref="IReportRootGetTeamsDeviceUsageUserDetailRequestBuilder"/>.</returns>
+        public IReportRootGetTeamsDeviceUsageUserDetailRequestBuilder GetTeamsDeviceUsageUserDetail(
+            Date date)
+        {
+            return new ReportRootGetTeamsDeviceUsageUserDetailRequestBuilder(
+                this.AppendSegmentToRequestUrl("microsoft.graph.getTeamsDeviceUsageUserDetail"),
+                this.Client,
+                date);
+        }
+
+        /// <summary>
+        /// Gets the request builder for ReportRootGetTeamsDeviceUsageUserDetail.
+        /// </summary>
+        /// <returns>The <see cref="IReportRootGetTeamsDeviceUsageUserDetailRequestBuilder"/>.</returns>
+        public IReportRootGetTeamsDeviceUsageUserDetailRequestBuilder GetTeamsDeviceUsageUserDetail(
+            string period)
+        {
+            return new ReportRootGetTeamsDeviceUsageUserDetailRequestBuilder(
+                this.AppendSegmentToRequestUrl("microsoft.graph.getTeamsDeviceUsageUserDetail"),
+                this.Client,
+                period);
+        }
+
+        /// <summary>
+        /// Gets the request builder for ReportRootGetTeamsDeviceUsageUserCounts.
+        /// </summary>
+        /// <returns>The <see cref="IReportRootGetTeamsDeviceUsageUserCountsRequestBuilder"/>.</returns>
+        public IReportRootGetTeamsDeviceUsageUserCountsRequestBuilder GetTeamsDeviceUsageUserCounts(
+            string period)
+        {
+            return new ReportRootGetTeamsDeviceUsageUserCountsRequestBuilder(
+                this.AppendSegmentToRequestUrl("microsoft.graph.getTeamsDeviceUsageUserCounts"),
+                this.Client,
+                period);
+        }
+
+        /// <summary>
+        /// Gets the request builder for ReportRootGetTeamsDeviceUsageDistributionUserCounts.
+        /// </summary>
+        /// <returns>The <see cref="IReportRootGetTeamsDeviceUsageDistributionUserCountsRequestBuilder"/>.</returns>
+        public IReportRootGetTeamsDeviceUsageDistributionUserCountsRequestBuilder GetTeamsDeviceUsageDistributionUserCounts(
+            string period)
+        {
+            return new ReportRootGetTeamsDeviceUsageDistributionUserCountsRequestBuilder(
+                this.AppendSegmentToRequestUrl("microsoft.graph.getTeamsDeviceUsageDistributionUserCounts"),
+                this.Client,
+                period);
+        }
+
+        /// <summary>
+        /// Gets the request builder for ReportRootDeviceConfigurationUserActivity.
+        /// </summary>
+        /// <returns>The <see cref="IReportRootDeviceConfigurationUserActivityRequestBuilder"/>.</returns>
+        public IReportRootDeviceConfigurationUserActivityRequestBuilder DeviceConfigurationUserActivity()
+        {
+            return new ReportRootDeviceConfigurationUserActivityRequestBuilder(
+                this.AppendSegmentToRequestUrl("microsoft.graph.deviceConfigurationUserActivity"),
+                this.Client);
+        }
+
+        /// <summary>
+        /// Gets the request builder for ReportRootDeviceConfigurationDeviceActivity.
+        /// </summary>
+        /// <returns>The <see cref="IReportRootDeviceConfigurationDeviceActivityRequestBuilder"/>.</returns>
+        public IReportRootDeviceConfigurationDeviceActivityRequestBuilder DeviceConfigurationDeviceActivity()
+        {
+            return new ReportRootDeviceConfigurationDeviceActivityRequestBuilder(
+                this.AppendSegmentToRequestUrl("microsoft.graph.deviceConfigurationDeviceActivity"),
+                this.Client);
+        }
     
     }
 }

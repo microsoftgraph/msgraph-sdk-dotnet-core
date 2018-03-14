@@ -23,12 +23,14 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets meeting message type.
+        /// The type of event message: none, meetingRequest, meetingCancelled, meetingAccepted, meetingTenativelyAccepted, meetingDeclined.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "meetingMessageType", Required = Newtonsoft.Json.Required.Default)]
         public MeetingMessageType? MeetingMessageType { get; set; }
     
         /// <summary>
         /// Gets or sets event.
+        /// The event associated with the event message. The assumption for attendees or room resources is that the Calendar Attendant is set to automatically update the calendar with an event when meeting request event messages arrive. Navigation property.  Read-only.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "event", Required = Newtonsoft.Json.Required.Default)]
         public Event Event { get; set; }

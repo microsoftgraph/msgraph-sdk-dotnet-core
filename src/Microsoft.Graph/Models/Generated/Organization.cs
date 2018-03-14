@@ -143,6 +143,13 @@ namespace Microsoft.Graph
         public IEnumerable<VerifiedDomain> VerifiedDomains { get; set; }
     
         /// <summary>
+        /// Gets or sets mobile device management authority.
+        /// Mobile device management authority. Possible values are: unknown, intune, sccm, office365.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "mobileDeviceManagementAuthority", Required = Newtonsoft.Json.Required.Default)]
+        public MdmAuthority? MobileDeviceManagementAuthority { get; set; }
+    
+        /// <summary>
         /// Gets or sets extensions.
         /// The collection of open extensions defined for the organization. Read-only. Nullable.
         /// </summary>

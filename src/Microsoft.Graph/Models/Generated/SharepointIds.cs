@@ -38,7 +38,7 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets listItemUniqueId.
-        /// The unique identifier (guid) for the item within OneDrive for Busienss or a SharePoint site.
+        /// The unique identifier (guid) for the item within OneDrive for Business or a SharePoint site.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "listItemUniqueId", Required = Newtonsoft.Json.Required.Default)]
         public string ListItemUniqueId { get; set; }
