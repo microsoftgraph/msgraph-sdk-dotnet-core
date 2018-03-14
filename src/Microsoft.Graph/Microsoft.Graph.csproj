@@ -52,9 +52,9 @@
   <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
-    <PackageReference Include="Newtonsoft.Json" Version="[6.0.1,11)" />
+    <PackageReference Include="Newtonsoft.Json" Version="[6.0.1,12)" />
   </ItemGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.1' ">
-    <PackageReference Include="Newtonsoft.Json" Version="[9.0.1,11)" />
+    <PackageReference Include="Newtonsoft.Json" Version="[9.0.1,12)" />
   </ItemGroup>
 </Project>
