@@ -3,23 +3,22 @@
     <Description>Microsoft Graph Core Client Library implements core functionality used by Microsoft Graph Client Libraries.</Description>
     <Copyright>Copyright (c) Microsoft Corporation</Copyright>
     <AssemblyTitle>Microsoft Graph Core Client Library</AssemblyTitle>
-    <VersionPrefix>1.7.0</VersionPrefix>
-    <FileVersion>1.7.0</FileVersion>
-    <AssemblyVersion>1.7.0</AssemblyVersion>
+    <VersionPrefix>1.8.0</VersionPrefix>
+    <FileVersion>1.8.0</FileVersion>
+    <AssemblyVersion>1.8.0</AssemblyVersion>
     <Authors>Microsoft</Authors>
     <TargetFrameworks>netstandard1.1;net45</TargetFrameworks>
     <PreserveCompilationContext>false</PreserveCompilationContext>
     <AssemblyName>Microsoft.Graph.Core</AssemblyName>
     <PackageId>Microsoft.Graph.Core</PackageId>
-    <PackageTags>Microsoft Office365;Graph;GraphServiceClient;Outlook;OneDrive;AzureAD;GraphAPI;Productivity;SharePoint;SDK</PackageTags>
+    <PackageTags>Microsoft Office365;Graph;GraphServiceClient;Outlook;OneDrive;AzureAD;GraphAPI;Productivity;SharePoint;Intune;SDK</PackageTags>
     <PackageReleaseNotes>
-      December 2017 Release Summary (version 1.7.0)
+      March 2018 Release Summary (version 1.8.0)
 
-      New feature
-      * Exposed the OverallTimeout property on IHttpProvider interface. This now allows the timeout to be set for the HTTP client.
-      * Include symbols in the Nuget package.
+      New features
+      * Update Json.NET dependency to include 11.x
     </PackageReleaseNotes>
-    <PackageProjectUrl>https://graph.microsoft.io</PackageProjectUrl>
+    <PackageProjectUrl>https://developer.microsoft.com/graph</PackageProjectUrl>
     <PackageLicenseUrl>http://aka.ms/devservicesagreement</PackageLicenseUrl>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard1.1' ">1.6.0</NetStandardImplicitPackageVersion>
@@ -37,7 +36,7 @@
     <DelaySign>True</DelaySign>
     <AssemblyOriginatorKeyFile>35MSSharedLib1024.snk</AssemblyOriginatorKeyFile>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <Version>1.7.0</Version>
+    <Version>1.8.0</Version>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard1.1|AnyCPU'">
     <DocumentationFile>bin\Release\netstandard1.1\Microsoft.Graph.Core.xml</DocumentationFile>
