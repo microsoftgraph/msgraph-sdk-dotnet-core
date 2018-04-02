@@ -430,6 +430,22 @@ namespace Microsoft.Graph
                     }
                 }
 
+                if (groupToInitialize.GroupLifecyclePolicies != null && groupToInitialize.GroupLifecyclePolicies.CurrentPage != null)
+                {
+                    groupToInitialize.GroupLifecyclePolicies.AdditionalData = groupToInitialize.AdditionalData;
+
+                    object nextPageLink;
+                    groupToInitialize.AdditionalData.TryGetValue("groupLifecyclePolicies@odata.nextLink", out nextPageLink);
+                    var nextPageLinkString = nextPageLink as string;
+
+                    if (!string.IsNullOrEmpty(nextPageLinkString))
+                    {
+                        groupToInitialize.GroupLifecyclePolicies.InitializeNextPageRequest(
+                            this.Client,
+                            nextPageLinkString);
+                    }
+                }
+
             }
 
 

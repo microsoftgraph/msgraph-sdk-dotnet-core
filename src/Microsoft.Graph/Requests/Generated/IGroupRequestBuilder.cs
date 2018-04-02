@@ -149,6 +149,12 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IOnenoteRequestBuilder"/>.</returns>
         IOnenoteRequestBuilder Onenote { get; }
+
+        /// <summary>
+        /// Gets the request builder for GroupLifecyclePolicies.
+        /// </summary>
+        /// <returns>The <see cref="IGroupGroupLifecyclePoliciesCollectionRequestBuilder"/>.</returns>
+        IGroupGroupLifecyclePoliciesCollectionRequestBuilder GroupLifecyclePolicies { get; }
     
         /// <summary>
         /// Gets the request builder for GroupSubscribeByMail.
@@ -179,6 +185,12 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IGroupResetUnseenCountRequestBuilder"/>.</returns>
         IGroupResetUnseenCountRequestBuilder ResetUnseenCount();
+
+        /// <summary>
+        /// Gets the request builder for GroupRenew.
+        /// </summary>
+        /// <returns>The <see cref="IGroupRenewRequestBuilder"/>.</returns>
+        IGroupRenewRequestBuilder Renew();
     
     }
 }

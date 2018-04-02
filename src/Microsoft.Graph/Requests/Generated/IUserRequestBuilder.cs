@@ -185,6 +185,24 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IOnenoteRequestBuilder"/>.</returns>
         IOnenoteRequestBuilder Onenote { get; }
+
+        /// <summary>
+        /// Gets the request builder for ManagedDevices.
+        /// </summary>
+        /// <returns>The <see cref="IUserManagedDevicesCollectionRequestBuilder"/>.</returns>
+        IUserManagedDevicesCollectionRequestBuilder ManagedDevices { get; }
+
+        /// <summary>
+        /// Gets the request builder for ManagedAppRegistrations.
+        /// </summary>
+        /// <returns>The <see cref="IUserManagedAppRegistrationsCollectionWithReferencesRequestBuilder"/>.</returns>
+        IUserManagedAppRegistrationsCollectionWithReferencesRequestBuilder ManagedAppRegistrations { get; }
+
+        /// <summary>
+        /// Gets the request builder for DeviceManagementTroubleshootingEvents.
+        /// </summary>
+        /// <returns>The <see cref="IUserDeviceManagementTroubleshootingEventsCollectionRequestBuilder"/>.</returns>
+        IUserDeviceManagementTroubleshootingEventsCollectionRequestBuilder DeviceManagementTroubleshootingEvents { get; }
     
         /// <summary>
         /// Gets the request builder for UserAssignLicense.
@@ -225,12 +243,37 @@ namespace Microsoft.Graph
             double? MinimumAttendeePercentage = null);
 
         /// <summary>
+        /// Gets the request builder for UserRemoveAllDevicesFromManagement.
+        /// </summary>
+        /// <returns>The <see cref="IUserRemoveAllDevicesFromManagementRequestBuilder"/>.</returns>
+        IUserRemoveAllDevicesFromManagementRequestBuilder RemoveAllDevicesFromManagement();
+
+        /// <summary>
+        /// Gets the request builder for UserWipeManagedAppRegistrationsByDeviceTag.
+        /// </summary>
+        /// <returns>The <see cref="IUserWipeManagedAppRegistrationsByDeviceTagRequestBuilder"/>.</returns>
+        IUserWipeManagedAppRegistrationsByDeviceTagRequestBuilder WipeManagedAppRegistrationsByDeviceTag(
+            string deviceTag = null);
+
+        /// <summary>
         /// Gets the request builder for UserReminderView.
         /// </summary>
         /// <returns>The <see cref="IUserReminderViewRequestBuilder"/>.</returns>
         IUserReminderViewRequestBuilder ReminderView(
             string StartDateTime,
             string EndDateTime = null);
+
+        /// <summary>
+        /// Gets the request builder for UserGetManagedAppDiagnosticStatuses.
+        /// </summary>
+        /// <returns>The <see cref="IUserGetManagedAppDiagnosticStatusesRequestBuilder"/>.</returns>
+        IUserGetManagedAppDiagnosticStatusesRequestBuilder GetManagedAppDiagnosticStatuses();
+
+        /// <summary>
+        /// Gets the request builder for UserGetManagedAppPolicies.
+        /// </summary>
+        /// <returns>The <see cref="IUserGetManagedAppPoliciesRequestBuilder"/>.</returns>
+        IUserGetManagedAppPoliciesRequestBuilder GetManagedAppPolicies();
     
     }
 }

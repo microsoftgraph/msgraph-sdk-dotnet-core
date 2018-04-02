@@ -93,7 +93,7 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets importance.
-        /// The importance of the event: Low = 0, Normal = 1, High = 2. Possible values are: Low, Normal, High.
+        /// The importance of the event. Possible values are: Low, Normal, High.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "importance", Required = Newtonsoft.Json.Required.Default)]
         public Importance? Importance { get; set; }
@@ -177,14 +177,14 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets show as.
-        /// The status to show: Free = 0, Tentative = 1, Busy = 2, Oof = 3, WorkingElsewhere = 4, Unknown = -1. Possible values are: Free, Tentative, Busy, Oof, WorkingElsewhere, Unknown.
+        /// The status to show. Possible values are: Free, Tentative, Busy, Oof, WorkingElsewhere, Unknown.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "showAs", Required = Newtonsoft.Json.Required.Default)]
         public FreeBusyStatus? ShowAs { get; set; }
     
         /// <summary>
         /// Gets or sets type.
-        /// The event type: SingleInstance = 0, Occurrence = 1, Exception = 2, SeriesMaster = 3. Possible values are: SingleInstance, Occurrence, Exception, SeriesMaster.
+        /// The event type. Possible values are: SingleInstance, Occurrence, Exception, SeriesMaster. Read-only.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "type", Required = Newtonsoft.Json.Required.Default)]
         public EventType? Type { get; set; }

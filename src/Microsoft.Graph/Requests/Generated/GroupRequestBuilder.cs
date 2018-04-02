@@ -288,6 +288,18 @@ namespace Microsoft.Graph
                 return new OnenoteRequestBuilder(this.AppendSegmentToRequestUrl("onenote"), this.Client);
             }
         }
+
+        /// <summary>
+        /// Gets the request builder for GroupLifecyclePolicies.
+        /// </summary>
+        /// <returns>The <see cref="IGroupGroupLifecyclePoliciesCollectionRequestBuilder"/>.</returns>
+        public IGroupGroupLifecyclePoliciesCollectionRequestBuilder GroupLifecyclePolicies
+        {
+            get
+            {
+                return new GroupGroupLifecyclePoliciesCollectionRequestBuilder(this.AppendSegmentToRequestUrl("groupLifecyclePolicies"), this.Client);
+            }
+        }
     
         /// <summary>
         /// Gets the request builder for GroupSubscribeByMail.
@@ -341,6 +353,17 @@ namespace Microsoft.Graph
         {
             return new GroupResetUnseenCountRequestBuilder(
                 this.AppendSegmentToRequestUrl("microsoft.graph.resetUnseenCount"),
+                this.Client);
+        }
+
+        /// <summary>
+        /// Gets the request builder for GroupRenew.
+        /// </summary>
+        /// <returns>The <see cref="IGroupRenewRequestBuilder"/>.</returns>
+        public IGroupRenewRequestBuilder Renew()
+        {
+            return new GroupRenewRequestBuilder(
+                this.AppendSegmentToRequestUrl("microsoft.graph.renew"),
                 this.Client);
         }
     

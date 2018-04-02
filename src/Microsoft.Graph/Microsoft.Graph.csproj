@@ -3,22 +3,26 @@
     <Description>Microsoft Graph Client Library allows you to call Office 365, Azure AD and other Microsoft services through a single unified developer experience.</Description>
     <Copyright>Copyright (c) Microsoft Corporation</Copyright>
     <AssemblyTitle>Microsoft Graph Client Library</AssemblyTitle>
-    <VersionPrefix>1.6.2</VersionPrefix>
-    <FileVersion>1.6.2</FileVersion>
-    <AssemblyVersion>1.6.2</AssemblyVersion>
+    <VersionPrefix>1.8.0</VersionPrefix>
+    <FileVersion>1.8.0</FileVersion>
+    <AssemblyVersion>1.8.0</AssemblyVersion>
     <Authors>Microsoft</Authors>
     <TargetFrameworks>netstandard1.1;net45</TargetFrameworks>
     <PreserveCompilationContext>false</PreserveCompilationContext>
     <AssemblyName>Microsoft.Graph</AssemblyName>
     <PackageId>Microsoft.Graph</PackageId>
-    <PackageTags>Microsoft Office365;Graph;GraphServiceClient;Outlook;OneDrive;AzureAD;GraphAPI;Productivity;SharePoint;SDK</PackageTags>
+    <PackageTags>Microsoft Office365;Graph;GraphServiceClient;Outlook;OneDrive;AzureAD;GraphAPI;Productivity;SharePoint;Intune;SDK</PackageTags>
     <PackageReleaseNotes>
-      October 2017 Release Summary (version 1.6.2)
+      March 2018 Release Summary (version 1.8.0)
 
-      Bug fix for Microsoft.Graph 1.6.2
-      * Update Nuget package to reference Microsoft.Graph.Core 1.6.2
-          </PackageReleaseNotes>
-    <PackageProjectUrl>https://graph.microsoft.io</PackageProjectUrl>
+      New features
+      * Include support for the Reports API. This gives you access to Office 365 usage reports for Outlook, users, groups, OneDrive, SharePoint, Skype for Business and Yammer. See https://developer.microsoft.com/en-us/graph/docs/api-reference/v1.0/resources/report for more information.
+      * Updated IntelliSense file with new documentation.
+      * Include support for the Intune API. This enables programmatic access to Intune information for your tenant with rich information and relationship navigation. See https://developer.microsoft.com/en-us/graph/docs/api-reference/v1.0/resources/intune_graph_overview for more information.
+      * Include support for the Education API. This enhances Office 365 resources and data with information that is relevant for education scnearios, including schools, students, teachers, classes, and enrollments. See https://developer.microsoft.com/en-us/graph/docs/api-reference/v1.0/resources/education-overview for more information.
+      * Update Json.NET dependency to include 11.x
+    </PackageReleaseNotes>
+    <PackageProjectUrl>https://developer.microsoft.com/graph</PackageProjectUrl>
     <PackageLicenseUrl>http://aka.ms/devservicesagreement</PackageLicenseUrl>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard1.1' ">1.6.0</NetStandardImplicitPackageVersion>
@@ -36,7 +40,7 @@
     <DelaySign>True</DelaySign>
     <AssemblyOriginatorKeyFile>35MSSharedLib1024.snk</AssemblyOriginatorKeyFile>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <Version>1.6.2</Version>
+    <Version>1.8.0</Version>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard1.1|AnyCPU'">
     <DocumentationFile>bin\Release\Microsoft.Graph.xml</DocumentationFile>
@@ -51,9 +55,9 @@
   <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
-    <PackageReference Include="Newtonsoft.Json" Version="[6.0.1,11)" />
+    <PackageReference Include="Newtonsoft.Json" Version="[6.0.1,12)" />
   </ItemGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.1' ">
-    <PackageReference Include="Newtonsoft.Json" Version="[9.0.1,11)" />
+    <PackageReference Include="Newtonsoft.Json" Version="[9.0.1,12)" />
   </ItemGroup>
 </Project>

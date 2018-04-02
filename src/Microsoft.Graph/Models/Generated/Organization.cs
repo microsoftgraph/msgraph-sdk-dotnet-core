@@ -36,18 +36,21 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets city.
+        /// City name of the address for the organization
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "city", Required = Newtonsoft.Json.Required.Default)]
         public string City { get; set; }
     
         /// <summary>
         /// Gets or sets country.
+        /// Country/region name of the address for the organization
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "country", Required = Newtonsoft.Json.Required.Default)]
         public string Country { get; set; }
     
         /// <summary>
         /// Gets or sets country letter code.
+        /// Country/region abbreviation for the organization
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "countryLetterCode", Required = Newtonsoft.Json.Required.Default)]
         public string CountryLetterCode { get; set; }
@@ -80,12 +83,14 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets postal code.
+        /// Postal code of the address for the organization
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "postalCode", Required = Newtonsoft.Json.Required.Default)]
         public string PostalCode { get; set; }
     
         /// <summary>
         /// Gets or sets preferred language.
+        /// The preferred language for the organization. Should follow ISO 639-1 Code; for example "en".
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "preferredLanguage", Required = Newtonsoft.Json.Required.Default)]
         public string PreferredLanguage { get; set; }
@@ -111,12 +116,14 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets state.
+        /// State name of the address for the organization
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "state", Required = Newtonsoft.Json.Required.Default)]
         public string State { get; set; }
     
         /// <summary>
         /// Gets or sets street.
+        /// Street name of the address for organization
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "street", Required = Newtonsoft.Json.Required.Default)]
         public string Street { get; set; }
@@ -134,6 +141,13 @@ namespace Microsoft.Graph
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "verifiedDomains", Required = Newtonsoft.Json.Required.Default)]
         public IEnumerable<VerifiedDomain> VerifiedDomains { get; set; }
+    
+        /// <summary>
+        /// Gets or sets mobile device management authority.
+        /// Mobile device management authority. Possible values are: unknown, intune, sccm, office365.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "mobileDeviceManagementAuthority", Required = Newtonsoft.Json.Required.Default)]
+        public MdmAuthority? MobileDeviceManagementAuthority { get; set; }
     
         /// <summary>
         /// Gets or sets extensions.

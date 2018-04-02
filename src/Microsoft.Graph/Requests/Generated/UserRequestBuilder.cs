@@ -360,6 +360,42 @@ namespace Microsoft.Graph
                 return new OnenoteRequestBuilder(this.AppendSegmentToRequestUrl("onenote"), this.Client);
             }
         }
+
+        /// <summary>
+        /// Gets the request builder for ManagedDevices.
+        /// </summary>
+        /// <returns>The <see cref="IUserManagedDevicesCollectionRequestBuilder"/>.</returns>
+        public IUserManagedDevicesCollectionRequestBuilder ManagedDevices
+        {
+            get
+            {
+                return new UserManagedDevicesCollectionRequestBuilder(this.AppendSegmentToRequestUrl("managedDevices"), this.Client);
+            }
+        }
+
+        /// <summary>
+        /// Gets the request builder for ManagedAppRegistrations.
+        /// </summary>
+        /// <returns>The <see cref="IUserManagedAppRegistrationsCollectionWithReferencesRequestBuilder"/>.</returns>
+        public IUserManagedAppRegistrationsCollectionWithReferencesRequestBuilder ManagedAppRegistrations
+        {
+            get
+            {
+                return new UserManagedAppRegistrationsCollectionWithReferencesRequestBuilder(this.AppendSegmentToRequestUrl("managedAppRegistrations"), this.Client);
+            }
+        }
+
+        /// <summary>
+        /// Gets the request builder for DeviceManagementTroubleshootingEvents.
+        /// </summary>
+        /// <returns>The <see cref="IUserDeviceManagementTroubleshootingEventsCollectionRequestBuilder"/>.</returns>
+        public IUserDeviceManagementTroubleshootingEventsCollectionRequestBuilder DeviceManagementTroubleshootingEvents
+        {
+            get
+            {
+                return new UserDeviceManagementTroubleshootingEventsCollectionRequestBuilder(this.AppendSegmentToRequestUrl("deviceManagementTroubleshootingEvents"), this.Client);
+            }
+        }
     
         /// <summary>
         /// Gets the request builder for UserAssignLicense.
@@ -434,6 +470,30 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
+        /// Gets the request builder for UserRemoveAllDevicesFromManagement.
+        /// </summary>
+        /// <returns>The <see cref="IUserRemoveAllDevicesFromManagementRequestBuilder"/>.</returns>
+        public IUserRemoveAllDevicesFromManagementRequestBuilder RemoveAllDevicesFromManagement()
+        {
+            return new UserRemoveAllDevicesFromManagementRequestBuilder(
+                this.AppendSegmentToRequestUrl("microsoft.graph.removeAllDevicesFromManagement"),
+                this.Client);
+        }
+
+        /// <summary>
+        /// Gets the request builder for UserWipeManagedAppRegistrationsByDeviceTag.
+        /// </summary>
+        /// <returns>The <see cref="IUserWipeManagedAppRegistrationsByDeviceTagRequestBuilder"/>.</returns>
+        public IUserWipeManagedAppRegistrationsByDeviceTagRequestBuilder WipeManagedAppRegistrationsByDeviceTag(
+            string deviceTag = null)
+        {
+            return new UserWipeManagedAppRegistrationsByDeviceTagRequestBuilder(
+                this.AppendSegmentToRequestUrl("microsoft.graph.wipeManagedAppRegistrationsByDeviceTag"),
+                this.Client,
+                deviceTag);
+        }
+
+        /// <summary>
         /// Gets the request builder for UserReminderView.
         /// </summary>
         /// <returns>The <see cref="IUserReminderViewRequestBuilder"/>.</returns>
@@ -446,6 +506,28 @@ namespace Microsoft.Graph
                 this.Client,
                 StartDateTime,
                 EndDateTime);
+        }
+
+        /// <summary>
+        /// Gets the request builder for UserGetManagedAppDiagnosticStatuses.
+        /// </summary>
+        /// <returns>The <see cref="IUserGetManagedAppDiagnosticStatusesRequestBuilder"/>.</returns>
+        public IUserGetManagedAppDiagnosticStatusesRequestBuilder GetManagedAppDiagnosticStatuses()
+        {
+            return new UserGetManagedAppDiagnosticStatusesRequestBuilder(
+                this.AppendSegmentToRequestUrl("microsoft.graph.getManagedAppDiagnosticStatuses"),
+                this.Client);
+        }
+
+        /// <summary>
+        /// Gets the request builder for UserGetManagedAppPolicies.
+        /// </summary>
+        /// <returns>The <see cref="IUserGetManagedAppPoliciesRequestBuilder"/>.</returns>
+        public IUserGetManagedAppPoliciesRequestBuilder GetManagedAppPolicies()
+        {
+            return new UserGetManagedAppPoliciesRequestBuilder(
+                this.AppendSegmentToRequestUrl("microsoft.graph.getManagedAppPolicies"),
+                this.Client);
         }
     
     }

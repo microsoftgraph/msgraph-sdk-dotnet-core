@@ -58,7 +58,7 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets company name.
-        /// The company name which the user is associated.
+        /// The company name which the user is associated. Read-only.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "companyName", Required = Newtonsoft.Json.Required.Default)]
         public string CompanyName { get; set; }
@@ -322,6 +322,13 @@ namespace Microsoft.Graph
         public IEnumerable<string> Skills { get; set; }
     
         /// <summary>
+        /// Gets or sets device enrollment limit.
+        /// The limit on the maximum number of devices that the user is permitted to enroll. Allowed values are 5 or 1000.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "deviceEnrollmentLimit", Required = Newtonsoft.Json.Required.Default)]
+        public Int32? DeviceEnrollmentLimit { get; set; }
+    
+        /// <summary>
         /// Gets or sets owned devices.
         /// Devices that are owned by the user. Read-only. Nullable.
         /// </summary>
@@ -498,6 +505,27 @@ namespace Microsoft.Graph
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "onenote", Required = Newtonsoft.Json.Required.Default)]
         public Onenote Onenote { get; set; }
+    
+        /// <summary>
+        /// Gets or sets managed devices.
+        /// The managed devices associated with the user.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "managedDevices", Required = Newtonsoft.Json.Required.Default)]
+        public IUserManagedDevicesCollectionPage ManagedDevices { get; set; }
+    
+        /// <summary>
+        /// Gets or sets managed app registrations.
+        /// Zero or more managed app registrations that belong to the user.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "managedAppRegistrations", Required = Newtonsoft.Json.Required.Default)]
+        public IUserManagedAppRegistrationsCollectionWithReferencesPage ManagedAppRegistrations { get; set; }
+    
+        /// <summary>
+        /// Gets or sets device management troubleshooting events.
+        /// The list of troubleshooting events for this user.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "deviceManagementTroubleshootingEvents", Required = Newtonsoft.Json.Required.Default)]
+        public IUserDeviceManagementTroubleshootingEventsCollectionPage DeviceManagementTroubleshootingEvents { get; set; }
     
     }
 }

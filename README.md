@@ -104,11 +104,20 @@ Install System.Runtime.InteropServices.RuntimeInformation before you install Mic
 
 To view or log issues, see [issues](https://github.com/microsoftgraph/msgraph-sdk-dotnet/issues).
 
+This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
+
 ## Other resources
 
 * NuGet Package: [https://www.nuget.org/packages/Microsoft.Graph](https://www.nuget.org/packages/Microsoft.Graph)
 
+## Building library locally
+
+If you are looking to build the library locally for the purposes of contributing code or running tests, you will need to:
+
+- Have the .NET Core SDK (> 1.0) installed
+- Run `dotnet restore` from the command line in your package directory
+- Run `nuget restore` and `msbuild` from CLI or run Build from Visual Studio to restore Nuget packages and build the project
 
 ## License
 
-Copyright (c) Microsoft Corporation. All Rights Reserved. Licensed under the MIT [license](LICENSE.txt)
+Copyright (c) Microsoft Corporation. All Rights Reserved. Licensed under the MIT [license](LICENSE.txt). See [Third Party Notices](https://github.com/microsoftgraph/msgraph-sdk-dotnet/blob/master/THIRD%20PARTY%20NOTICES) for information on the packages referenced via NuGet.

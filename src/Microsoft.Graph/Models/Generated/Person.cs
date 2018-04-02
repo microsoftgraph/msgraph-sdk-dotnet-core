@@ -51,7 +51,7 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets person notes.
-        /// Free-form notes that the the user has taken about this person.
+        /// Free-form notes that the user has taken about this person.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "personNotes", Required = Newtonsoft.Json.Required.Default)]
         public string PersonNotes { get; set; }
@@ -149,6 +149,7 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets im address.
+        /// The instant message voice over IP (VOIP) session initiation protocol (SIP) address for the user. Read-only.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "imAddress", Required = Newtonsoft.Json.Required.Default)]
         public string ImAddress { get; set; }
