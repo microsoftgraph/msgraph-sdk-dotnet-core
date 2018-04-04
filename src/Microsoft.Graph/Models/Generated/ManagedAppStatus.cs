@@ -21,6 +21,9 @@ namespace Microsoft.Graph
     public partial class ManagedAppStatus : Entity
     {
     
+		///<summary>
+		/// The internal ManagedAppStatus constructor
+		///</summary>
         protected internal ManagedAppStatus()
         {
             // Don't allow initialization of abstract entity types

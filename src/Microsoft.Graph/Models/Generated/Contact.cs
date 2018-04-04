@@ -135,7 +135,7 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets job title.
-        /// The contact’s job title.
+        /// The contact's job title.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "jobTitle", Required = Newtonsoft.Json.Required.Default)]
         public string JobTitle { get; set; }

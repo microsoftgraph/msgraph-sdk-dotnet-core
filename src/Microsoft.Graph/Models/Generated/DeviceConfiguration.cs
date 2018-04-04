@@ -21,6 +21,9 @@ namespace Microsoft.Graph
     public partial class DeviceConfiguration : Entity
     {
     
+		///<summary>
+		/// The internal DeviceConfiguration constructor
+		///</summary>
         protected internal DeviceConfiguration()
         {
             // Don't allow initialization of abstract entity types

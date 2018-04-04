@@ -21,6 +21,9 @@ namespace Microsoft.Graph
     public partial class OnenoteEntityBaseModel : Entity
     {
     
+		///<summary>
+		/// The internal OnenoteEntityBaseModel constructor
+		///</summary>
         protected internal OnenoteEntityBaseModel()
         {
             // Don't allow initialization of abstract entity types
