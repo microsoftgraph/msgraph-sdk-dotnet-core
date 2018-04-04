@@ -19,14 +19,13 @@ namespace Microsoft.Graph
     public partial interface IDetectedAppManagedDevicesCollectionReferencesRequest : IBaseRequest
     {
         
-
-        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         System.Threading.Tasks.Task AddAsync(ManagedDevice managedDevice);
 
         /// <summary>
         /// Adds the specified ManagedDevice to the collection via POST.
         /// </summary>
         /// <param name="managedDevice">The ManagedDevice to add.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         System.Threading.Tasks.Task AddAsync(ManagedDevice managedDevice, CancellationToken cancellationToken);
     }
 }
