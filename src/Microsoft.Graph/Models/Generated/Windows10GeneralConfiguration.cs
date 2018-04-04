@@ -835,7 +835,7 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets settings block network internet page.
-        /// Indicates whether or not to block access to Network & Internet in Settings app.
+        /// Indicates whether or not to block access to Network &amp; Internet in Settings app.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "settingsBlockNetworkInternetPage", Required = Newtonsoft.Json.Required.Default)]
         public bool? SettingsBlockNetworkInternetPage { get; set; }
@@ -856,7 +856,7 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets settings block time language page.
-        /// Indicates whether or not to block access to Time & Language in Settings app.
+        /// Indicates whether or not to block access to Time &amp; Language in Settings app.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "settingsBlockTimeLanguagePage", Required = Newtonsoft.Json.Required.Default)]
         public bool? SettingsBlockTimeLanguagePage { get; set; }
@@ -877,7 +877,7 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets settings block update security page.
-        /// Indicates whether or not to block access to Update & Security in Settings app.
+        /// Indicates whether or not to block access to Update &amp; Security in Settings app.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "settingsBlockUpdateSecurityPage", Required = Newtonsoft.Json.Required.Default)]
         public bool? SettingsBlockUpdateSecurityPage { get; set; }

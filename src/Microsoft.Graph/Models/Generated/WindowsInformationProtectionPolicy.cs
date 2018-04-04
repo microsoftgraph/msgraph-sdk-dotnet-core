@@ -65,7 +65,7 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets pin special characters.
-        /// Integer value that configures the use of special characters in the Windows Hello for Business PIN. Valid special characters for Windows Hello for Business PIN gestures include: ! " # $ % & ' ( )  + , - . / : ; < = > ? @ [ \ ] ^  ` {
+        /// Integer value that configures the use of special characters in the Windows Hello for Business PIN. Valid special characters for Windows Hello for Business PIN gestures include: ! " # $ % &amp; ' ( )  + , - . / : ; &amp;lt; = &amp;gt; ? @ [ \ ] ^  ` {
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "pinSpecialCharacters", Required = Newtonsoft.Json.Required.Default)]
         public WindowsInformationProtectionPinCharacterRequirements? PinSpecialCharacters { get; set; }
@@ -86,14 +86,14 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets password maximum attempt count.
-        /// The number of authentication failures allowed before the device will be wiped. A value of 0 disables device wipe functionality. Range is an integer X where 4 <= X <= 16 for desktop and 0 <= X <= 999 for mobile devices.
+        /// The number of authentication failures allowed before the device will be wiped. A value of 0 disables device wipe functionality. Range is an integer X where 4 &amp;lt;= X &amp;lt;= 16 for desktop and 0 &amp;lt;= X &amp;lt;= 999 for mobile devices.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "passwordMaximumAttemptCount", Required = Newtonsoft.Json.Required.Default)]
         public Int32? PasswordMaximumAttemptCount { get; set; }
     
         /// <summary>
         /// Gets or sets minutes of inactivity before device lock.
-        /// Specifies the maximum amount of time (in minutes) allowed after the device is idle that will cause the device to become PIN or password locked.   Range is an integer X where 0 <= X <= 999.
+        /// Specifies the maximum amount of time (in minutes) allowed after the device is idle that will cause the device to become PIN or password locked.   Range is an integer X where 0 &amp;lt;= X &amp;lt;= 999.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "minutesOfInactivityBeforeDeviceLock", Required = Newtonsoft.Json.Required.Default)]
         public Int32? MinutesOfInactivityBeforeDeviceLock { get; set; }

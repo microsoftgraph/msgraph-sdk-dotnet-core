@@ -23,7 +23,7 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets target.
-        /// Assignment target that the T&C policy is assigned to.
+        /// Assignment target that the T&amp;C policy is assigned to.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "target", Required = Newtonsoft.Json.Required.Default)]
         public DeviceAndAppManagementAssignmentTarget Target { get; set; }
