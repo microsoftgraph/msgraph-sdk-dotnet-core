@@ -19,6 +19,10 @@ namespace Microsoft.Graph
     public partial interface IUserRegisteredDevicesCollectionReferencesRequest : IBaseRequest
     {
         
+        /// <summary>
+        /// Adds the specified DirectoryObject to the collection via POST.
+        /// </summary>
+        /// <param name="directoryObject">The DirectoryObject to add.</param>
         System.Threading.Tasks.Task AddAsync(DirectoryObject directoryObject);
 
         /// <summary>

@@ -19,6 +19,10 @@ namespace Microsoft.Graph
     public partial interface IDetectedAppManagedDevicesCollectionReferencesRequest : IBaseRequest
     {
         
+        /// <summary>
+        /// Adds the specified ManagedDevice to the collection via POST.
+        /// </summary>
+        /// <param name="managedDevice">The ManagedDevice to add.</param>
         System.Threading.Tasks.Task AddAsync(ManagedDevice managedDevice);
 
         /// <summary>

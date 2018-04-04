@@ -19,6 +19,10 @@ namespace Microsoft.Graph
     public partial interface IUserManagedAppRegistrationsCollectionReferencesRequest : IBaseRequest
     {
         
+        /// <summary>
+        /// Adds the specified ManagedAppRegistration to the collection via POST.
+        /// </summary>
+        /// <param name="managedAppRegistration">The ManagedAppRegistration to add.</param>
         System.Threading.Tasks.Task AddAsync(ManagedAppRegistration managedAppRegistration);
 
         /// <summary>

@@ -19,6 +19,10 @@ namespace Microsoft.Graph
     public partial interface IEducationUserClassesCollectionReferencesRequest : IBaseRequest
     {
         
+        /// <summary>
+        /// Adds the specified EducationClass to the collection via POST.
+        /// </summary>
+        /// <param name="educationClass">The EducationClass to add.</param>
         System.Threading.Tasks.Task AddAsync(EducationClass educationClass);
 
         /// <summary>
