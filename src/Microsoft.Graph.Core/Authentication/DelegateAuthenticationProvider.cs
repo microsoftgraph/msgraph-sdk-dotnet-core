@@ -7,6 +7,11 @@ namespace Microsoft.Graph
     using System.Net.Http;
     using System.Threading.Tasks;
 
+    /// <summary>
+    /// Authenticate request async delegate.
+    /// </summary>
+    /// <param name="request">The <see cref="HttpRequestMessage"/> to authenticate.</param>
+    /// <returns></returns>
     public delegate Task AuthenticateRequestAsyncDelegate(HttpRequestMessage request);
 
     /// <summary>

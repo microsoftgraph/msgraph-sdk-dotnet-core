@@ -72,6 +72,12 @@ namespace Microsoft.Graph
             return null;
         }
 
+        /// <summary>
+        /// Serializes the object into a JSON string.
+        /// </summary>
+        /// <param name="writer">The  <see cref="JsonWriter"/> to write with.</param>
+        /// <param name="value">The object to write.</param>
+        /// <param name="serializer">The <see cref="JsonSerializer"/> for serialization.</param>
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
             base.WriteJson(writer, value, serializer);

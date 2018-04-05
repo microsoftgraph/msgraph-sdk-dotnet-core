@@ -7,6 +7,9 @@ namespace Microsoft.Graph
     using System.Collections.Generic;
     using System.Net.Http;
 
+    /// <summary>
+    /// The base request interface.
+    /// </summary>
     public interface IBaseRequest
     {
         /// <summary>
