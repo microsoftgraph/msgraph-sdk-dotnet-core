@@ -17,17 +17,29 @@ namespace Microsoft.Graph
     /// </summary>
     public class EnumConverter : StringEnumConverter
     {
+        /// <summary>
+        /// Constructs a new EnumConverter.
+        /// </summary>
         public EnumConverter()
             : base()
         {
             this.CamelCaseText = true;
         }
 
+        /// <summary>
+        /// Checks if the given type can be converted into an enum. All types
+        /// can be converted.
+        /// </summary>
+        /// <param name="objectType">The object type.</param>
+        /// <returns>True.</returns>
         public override bool CanConvert(Type objectType)
         {
             return true;
         }
 
+        /// <summary>
+        /// Whether the object can be serialized to a request body.
+        /// </summary>
         public override bool CanWrite
         {
             get

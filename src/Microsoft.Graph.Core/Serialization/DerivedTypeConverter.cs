@@ -19,16 +19,27 @@ namespace Microsoft.Graph
     {
         internal static readonly ConcurrentDictionary<string, Type> TypeMappingCache = new ConcurrentDictionary<string, Type>(StringComparer.OrdinalIgnoreCase);
 
+        /// <summary>
+        /// Constructs a new DerivedTypeConverter.
+        /// </summary>
         public DerivedTypeConverter()
             : base()
         {
         }
 
+        /// <summary>
+        /// Checks if the given object can be converted. In this instance, all object can be converted.
+        /// </summary>
+        /// <param name="objectType">The type of the object to convert.</param>
+        /// <returns>True</returns>
         public override bool CanConvert(Type objectType)
         {
             return true;
         }
 
+        /// <summary>
+        /// Checks if the entity supports write. Currently no derived types support write.
+        /// </summary>
         public override bool CanWrite
         {
             get
@@ -108,6 +119,12 @@ namespace Microsoft.Graph
             }
         }
 
+        /// <summary>
+        /// Not yet implemented
+        /// </summary>
+        /// <param name="writer"></param>
+        /// <param name="value"></param>
+        /// <param name="serializer"></param>
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
             throw new NotImplementedException();

@@ -8,6 +8,9 @@ namespace Microsoft.Graph
 
     using Newtonsoft.Json;
 
+    /// <summary>
+    /// Time of day model.
+    /// </summary>
     [JsonConverter(typeof(TimeOfDayConverter))]
     public class TimeOfDay
     {
@@ -18,11 +21,20 @@ namespace Microsoft.Graph
             this.DateTime = dateTime;
         }
 
+        /// <summary>
+        /// Create a new TimeOfDay from hours, minutes, and seconds.
+        /// </summary>
+        /// <param name="hour">The hour.</param>
+        /// <param name="minute">The minute.</param>
+        /// <param name="second">The second.</param>
         public TimeOfDay(int hour, int minute, int second)
             : this(new DateTime(1, 1, 1, hour, minute, second))
         {
         }
         
+        /// <summary>
+        /// The hour.
+        /// </summary>
         public int Hour
         {
             get
@@ -31,6 +43,9 @@ namespace Microsoft.Graph
             }
         }
 
+        /// <summary>
+        /// The minute.
+        /// </summary>
         public int Minute
         {
             get
@@ -39,6 +54,9 @@ namespace Microsoft.Graph
             }
         }
 
+        /// <summary>
+        /// The second.
+        /// </summary>
         public int Second
         {
             get
@@ -47,6 +65,10 @@ namespace Microsoft.Graph
             }
         }
 
+        /// <summary>
+        /// The time of day, formatted as "HH:mm:ss".
+        /// </summary>
+        /// <returns>The string time of day.</returns>
         public override string ToString()
         {
             return this.DateTime.ToString("HH:mm:ss");

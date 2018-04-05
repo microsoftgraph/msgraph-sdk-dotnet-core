@@ -8,8 +8,16 @@ namespace Microsoft.Graph
 
     using Newtonsoft.Json;
 
+    /// <summary>
+    /// Handles serialization and deserialization for TimeOfDay.
+    /// </summary>
     public class TimeOfDayConverter : JsonConverter
     {
+        /// <summary>
+        /// Checks if the given type can be converted to a TimeOfDay.
+        /// </summary>
+        /// <param name="objectType">The object type.</param>
+        /// <returns>True if the object is type match of TimeOfDay.</returns>
         public override bool CanConvert(Type objectType)
         {
             if (objectType == typeof(TimeOfDay))
@@ -20,6 +28,14 @@ namespace Microsoft.Graph
             return false;
         }
 
+        /// <summary>
+        /// Deserialize the JSON data into a TimeOfDay object.
+        /// </summary>
+        /// <param name="reader">The <see cref="JsonReader"/> to read from.</param>
+        /// <param name="objectType">The object type.</param>
+        /// <param name="existingValue">The original value.</param>
+        /// <param name="serializer">The serializer to deserialize the object with.</param>
+        /// <returns>A TimeOfDay object.</returns>
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             try
