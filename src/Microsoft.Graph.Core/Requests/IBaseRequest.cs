@@ -20,7 +20,7 @@ namespace Microsoft.Graph
         IList<HeaderOption> Headers { get; }
 
         /// <summary>
-        /// Gets the <see cref="IGraphServiceClient"/> for handling requests.
+        /// Gets the <see cref="IBaseClient"/> for handling requests.
         /// </summary>
         IBaseClient Client { get; }
 
