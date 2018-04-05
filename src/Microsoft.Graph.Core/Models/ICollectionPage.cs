@@ -17,6 +17,9 @@ namespace Microsoft.Graph
         /// </summary>
         IList<T> CurrentPage { get; }
 
+        /// <summary>
+        /// The additional data property bag.
+        /// </summary>
         IDictionary<string, object> AdditionalData { get; set; }
     }
 }
