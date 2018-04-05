@@ -20,7 +20,9 @@ namespace Microsoft.Graph
     /// </summary>
     public class BaseRequest : IBaseRequest
     {
+        /// The key for the SDK version header.
         protected string sdkVersionHeaderName;
+        /// The value for the SDK version header.
         protected string sdkVersionHeaderValue;
 
         /// <summary>

@@ -6,6 +6,9 @@ namespace Microsoft.Graph
 {
     using System.Linq;
 
+    /// <summary>
+    /// Helper class for string casing.
+    /// </summary>
     public static class StringHelper
     {
         /// <summary>
