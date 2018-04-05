@@ -24,6 +24,9 @@ namespace Microsoft.Graph
             /// </summary>
             public const string DeletedItems = "DeletedItems";
 
+            /// <summary>
+            /// The Drafts folder
+            /// </summary>
             public const string Drafts = "Drafts";
 
             /// <summary>

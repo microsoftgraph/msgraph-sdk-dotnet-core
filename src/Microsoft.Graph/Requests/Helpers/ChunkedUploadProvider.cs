@@ -21,6 +21,9 @@ namespace Microsoft.Graph
         private const int DefaultMaxChunkSize = 5 * 1024 * 1024;
         private const int RequiredChunkSizeIncrement = 320 * 1024;
 
+        /// <summary>
+        /// The UploadSession object
+        /// </summary>
         public UploadSession Session { get; private set; }
         private IBaseClient client;
         private Stream uploadStream;
@@ -117,6 +120,7 @@ namespace Microsoft.Graph
         /// Upload the whole session.
         /// </summary>
         /// <param name="maxTries">Number of times to retry entire session before giving up.</param>
+        /// <param name="options">Query and header option name value pairs for the request.</param>
         /// <returns>Item information returned by server.</returns>
         public async Task<DriveItem> UploadAsync(int maxTries = 3, IEnumerable<Option> options = null)
         {
@@ -150,6 +154,13 @@ namespace Microsoft.Graph
             throw new TaskCanceledException("Upload failed too many times. See InnerException for list of exceptions that occured.", new AggregateException(trackedExceptions.ToArray()));
         }
 
+        /// <summary>
+        /// Write a chunk of data using the UploadChunkRequest.
+        /// </summary>
+        /// <param name="request">The UploadChunkRequest to make the request with.</param>
+        /// <param name="readBuffer">The byte[] content to read from.</param>
+        /// <param name="exceptionTrackingList">A list of exceptions to use to track progress. ChunkedUpload may retry.</param>
+        /// <returns></returns>
         public virtual async Task<UploadChunkResult> GetChunkRequestResponseAsync(UploadChunkRequest request, byte[] readBuffer, ICollection<Exception> exceptionTrackingList)
         {
             var firstAttempt = true;
