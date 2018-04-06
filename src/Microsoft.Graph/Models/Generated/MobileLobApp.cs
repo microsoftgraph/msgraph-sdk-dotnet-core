@@ -21,6 +21,9 @@ namespace Microsoft.Graph
     public partial class MobileLobApp : MobileApp
     {
     
+		///<summary>
+		/// The internal MobileLobApp constructor
+		///</summary>
         protected internal MobileLobApp()
         {
             // Don't allow initialization of abstract entity types

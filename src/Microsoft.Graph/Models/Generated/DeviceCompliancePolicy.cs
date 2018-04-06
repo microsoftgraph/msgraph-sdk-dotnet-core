@@ -21,6 +21,9 @@ namespace Microsoft.Graph
     public partial class DeviceCompliancePolicy : Entity
     {
     
+		///<summary>
+		/// The internal DeviceCompliancePolicy constructor
+		///</summary>
         protected internal DeviceCompliancePolicy()
         {
             // Don't allow initialization of abstract entity types

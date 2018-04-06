@@ -21,6 +21,9 @@ namespace Microsoft.Graph
     public partial class OutlookItem : Entity
     {
     
+		///<summary>
+		/// The internal OutlookItem constructor
+		///</summary>
         protected internal OutlookItem()
         {
             // Don't allow initialization of abstract entity types

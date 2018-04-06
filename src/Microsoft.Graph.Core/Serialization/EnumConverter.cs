@@ -17,17 +17,29 @@ namespace Microsoft.Graph
     /// </summary>
     public class EnumConverter : StringEnumConverter
     {
+        /// <summary>
+        /// Constructs a new EnumConverter.
+        /// </summary>
         public EnumConverter()
             : base()
         {
             this.CamelCaseText = true;
         }
 
+        /// <summary>
+        /// Checks if the given type can be converted into an enum. All types
+        /// can be converted.
+        /// </summary>
+        /// <param name="objectType">The object type.</param>
+        /// <returns>True.</returns>
         public override bool CanConvert(Type objectType)
         {
             return true;
         }
 
+        /// <summary>
+        /// Whether the object can be serialized to a request body.
+        /// </summary>
         public override bool CanWrite
         {
             get
@@ -60,6 +72,12 @@ namespace Microsoft.Graph
             return null;
         }
 
+        /// <summary>
+        /// Serializes the object into a JSON string.
+        /// </summary>
+        /// <param name="writer">The  <see cref="JsonWriter"/> to write with.</param>
+        /// <param name="value">The object to write.</param>
+        /// <param name="serializer">The <see cref="JsonSerializer"/> for serialization.</param>
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
             base.WriteJson(writer, value, serializer);

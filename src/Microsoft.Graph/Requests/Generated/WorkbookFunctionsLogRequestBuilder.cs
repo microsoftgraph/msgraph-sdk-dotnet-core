@@ -23,7 +23,7 @@ namespace Microsoft.Graph
         /// <param name="requestUrl">The URL for the request.</param>
         /// <param name="client">The <see cref="IBaseClient"/> for handling requests.</param>
         /// <param name="number">A number parameter for the OData method call.</param>
-        /// <param name="@base">A @base parameter for the OData method call.</param>
+        /// <param name="@base">A base parameter for the OData method call.</param>
         public WorkbookFunctionsLogRequestBuilder(
             string requestUrl,
             IBaseClient client,

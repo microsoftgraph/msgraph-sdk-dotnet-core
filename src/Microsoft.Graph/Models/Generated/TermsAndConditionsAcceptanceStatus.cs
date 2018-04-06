@@ -30,7 +30,7 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets accepted version.
-        /// Most recent version number of the T&C accepted by the user.
+        /// Most recent version number of the T&amp;C accepted by the user.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "acceptedVersion", Required = Newtonsoft.Json.Required.Default)]
         public Int32? AcceptedVersion { get; set; }

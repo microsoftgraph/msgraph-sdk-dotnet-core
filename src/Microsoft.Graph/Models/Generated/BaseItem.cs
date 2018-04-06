@@ -21,6 +21,9 @@ namespace Microsoft.Graph
     public partial class BaseItem : Entity
     {
     
+		///<summary>
+		/// The internal BaseItem constructor
+		///</summary>
         protected internal BaseItem()
         {
             // Don't allow initialization of abstract entity types

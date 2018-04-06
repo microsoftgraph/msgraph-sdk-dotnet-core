@@ -21,7 +21,6 @@ namespace Microsoft.Graph
         /// Adds the specified OnenotePage to the collection via POST.
         /// </summary>
         /// <param name="onenotePage">The OnenotePage to add in stream form.</param>
-        /// <param name="contentType">The content type of the stream. Values can be text/html or application/xhtml+xml.</param>
         /// <returns>The created OnenotePage.</returns>
         public System.Threading.Tasks.Task<OnenotePage> AddAsync(MultipartContent onenotePage)
         {
@@ -32,7 +31,6 @@ namespace Microsoft.Graph
         /// Adds the specified OnenotePage to the collection via POST.
         /// </summary>
         /// <param name="onenotePage">The OnenotePage to add in stream form.</param>
-        /// <param name="contentType">The content type of the stream. Values can be text/html or application/xhtml+xml.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The created OnenotePage.</returns>
         public System.Threading.Tasks.Task<OnenotePage> AddAsync(MultipartContent onenotePage, CancellationToken cancellationToken)

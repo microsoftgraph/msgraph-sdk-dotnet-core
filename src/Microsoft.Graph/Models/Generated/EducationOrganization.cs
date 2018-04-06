@@ -21,6 +21,9 @@ namespace Microsoft.Graph
     public partial class EducationOrganization : Entity
     {
     
+		///<summary>
+		/// The internal EducationOrganization constructor
+		///</summary>
         protected internal EducationOrganization()
         {
             // Don't allow initialization of abstract entity types

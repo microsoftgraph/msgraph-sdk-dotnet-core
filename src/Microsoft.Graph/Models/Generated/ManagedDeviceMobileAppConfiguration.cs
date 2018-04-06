@@ -21,6 +21,9 @@ namespace Microsoft.Graph
     public partial class ManagedDeviceMobileAppConfiguration : Entity
     {
     
+		///<summary>
+		/// The internal ManagedDeviceMobileAppConfiguration constructor
+		///</summary>
         protected internal ManagedDeviceMobileAppConfiguration()
         {
             // Don't allow initialization of abstract entity types

@@ -19,14 +19,17 @@ namespace Microsoft.Graph
     public partial interface IUserOwnedObjectsCollectionReferencesRequest : IBaseRequest
     {
         
-
-        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <summary>
+        /// Adds the specified DirectoryObject to the collection via POST.
+        /// </summary>
+        /// <param name="directoryObject">The DirectoryObject to add.</param>
         System.Threading.Tasks.Task AddAsync(DirectoryObject directoryObject);
 
         /// <summary>
         /// Adds the specified DirectoryObject to the collection via POST.
         /// </summary>
         /// <param name="directoryObject">The DirectoryObject to add.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         System.Threading.Tasks.Task AddAsync(DirectoryObject directoryObject, CancellationToken cancellationToken);
     }
 }

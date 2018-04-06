@@ -33,12 +33,14 @@ namespace Microsoft.Graph
         /// <summary>
         /// Puts the specified Group reference.
         /// </summary>
+        /// <param name="id">The Group reference reference to update.</param>
         /// <returns>The task to await.</returns>
         System.Threading.Tasks.Task PutAsync(string id);
 
         /// <summary>
         /// Puts the specified Group reference.
         /// </summary>
+        /// <param name="id">The Group reference reference to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await.</returns>
         System.Threading.Tasks.Task PutAsync(string id, CancellationToken cancellationToken);

@@ -20,7 +20,9 @@ namespace Microsoft.Graph
     /// </summary>
     public class BaseRequest : IBaseRequest
     {
+        /// The key for the SDK version header.
         protected string sdkVersionHeaderName;
+        /// The value for the SDK version header.
         protected string sdkVersionHeaderValue;
 
         /// <summary>
@@ -71,7 +73,7 @@ namespace Microsoft.Graph
         public IList<HeaderOption> Headers { get; private set; }
 
         /// <summary>
-        /// Gets the <see cref="IGraphServiceClient"/> for handling requests.
+        /// Gets the <see cref="IBaseClient"/> for handling requests.
         /// </summary>
         public IBaseClient Client { get; private set; }
 
@@ -165,7 +167,6 @@ namespace Microsoft.Graph
         /// <summary>
         /// Sends the request.
         /// </summary>
-        /// <typeparam name="T">The expected response object type for deserialization.</typeparam>
         /// <param name="serializableObject">The serializable object to send.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <param name="completionOption">The <see cref="HttpCompletionOption"/> to pass to the <see cref="IHttpProvider"/> on send.</param>
@@ -182,7 +183,6 @@ namespace Microsoft.Graph
         /// <summary>
         /// Sends the multipart request.
         /// </summary>
-        /// <typeparam name="T">The expected response object type for deserialization.</typeparam>
         /// <param name="multipartContent">The multipart object to send.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <param name="completionOption">The <see cref="HttpCompletionOption"/> to pass to the <see cref="IHttpProvider"/> on send.</param>
@@ -232,7 +232,6 @@ namespace Microsoft.Graph
         /// <summary>
         /// Sends the request.
         /// </summary>
-        /// <typeparam name="T">The expected response object type for deserialization.</typeparam>
         /// <param name="serializableObject">The serializable object to send.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <param name="completionOption">The <see cref="HttpCompletionOption"/> to pass to the <see cref="IHttpProvider"/> on send.</param>

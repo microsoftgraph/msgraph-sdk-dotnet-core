@@ -23,9 +23,24 @@ namespace Microsoft.Graph
     /// </summary>
     public partial class UploadChunkRequest : BaseRequest, IUploadChunkRequest
     {
+        /// <summary>
+        /// The beginning of the chunk range to send.
+        /// </summary>
         public long RangeBegin { get; private set; }
+
+        /// <summary>
+        /// The end of the chunk range to send.
+        /// </summary>
         public long RangeEnd { get; private set; }
+
+        /// <summary>
+        /// The length in bytes of the session.
+        /// </summary>
         public long TotalSessionLength { get; private set; }
+
+        /// <summary>
+        /// The range length of the chunk to send.
+        /// </summary>
         public int RangeLength => (int)(this.RangeEnd - this.RangeBegin + 1);
 
         /// <summary>
@@ -55,6 +70,7 @@ namespace Microsoft.Graph
         /// <summary>
         /// Uploads the chunk using PUT.
         /// </summary>
+        /// <param name="stream">Stream of data to be sent in the request.</param>
         /// <returns>The status of the upload.</returns>
         public Task<UploadChunkResult> PutAsync(Stream stream)
         {
@@ -120,6 +136,13 @@ namespace Microsoft.Graph
             }
         }
 
+        /// <summary>
+        /// Send the Chunked Upload request
+        /// </summary>
+        /// <param name="stream">Stream of data to be sent in the request.</param>
+        /// <param name="cancellationToken">The cancellation token</param>
+        /// <param name="completionOption">The completion option for the request. Defaults to ResponseContentRead.</param>
+        /// <returns></returns>
         private async Task<HttpResponseMessage> SendRequestAsync(
             Stream stream,
             CancellationToken cancellationToken,
@@ -147,10 +170,23 @@ namespace Microsoft.Graph
         }
     }
 
+    /// <summary>
+    /// The UploadChunkResult class
+    /// </summary>
     public class UploadChunkResult
     {
+        /// <summary>
+        /// The UploadSession containing information about the created upload session.
+        /// </summary>
         public UploadSession UploadSession;
+        /// <summary>
+        /// The uploaded item, once upload has completed.
+        /// </summary>
         public DriveItem ItemResponse;
+
+        /// <summary>
+        /// Status of the request.
+        /// </summary>
         public bool UploadSucceeded => this.ItemResponse != null;
     }
 }
