@@ -130,6 +130,7 @@ namespace Microsoft.Graph
                 if (response.Content != null)
                 {
                     var responseString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                    responseString = AddHeadersToResponse(response, responseString);
                     return this.Client.HttpProvider.Serializer.DeserializeObject<T>(responseString);
                 }
 
@@ -155,6 +156,7 @@ namespace Microsoft.Graph
                 if (response.Content != null)
                 {
                     var responseString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                    responseString = AddHeadersToResponse(response, responseString);
                     return this.Client.HttpProvider.Serializer.DeserializeObject<T>(responseString);
                 }
 
@@ -424,6 +426,27 @@ namespace Microsoft.Graph
             }
 
             return new UriBuilder(uri) { Query = string.Empty }.ToString();
+        }
+
+        /// <summary>
+        /// Add response headers to serialized response
+        /// </summary>
+        /// <param name="response">The response object</param>
+        /// <param name="content">The string to append the headers to</param>
+        /// <returns>The full response string to return</returns>
+        private string AddHeadersToResponse(HttpResponseMessage response, string content)
+        {
+            var responseHeaders = response.Headers;
+            var statusCode = response.StatusCode;
+
+            Dictionary<string, string[]> headerDictionary = responseHeaders.ToDictionary(x => x.Key, x => x.Value.ToArray());
+            var responseHeaderString = this.Client.HttpProvider.Serializer.SerializeObject(headerDictionary);
+
+            var responseContent = content.Substring(0, content.Length - 1);
+            responseContent += ", \"responseHeaders\": " + responseHeaderString + ", ";
+            responseContent += "\"statusCode\": \"" + statusCode + "\"}";
+
+            return responseContent;
         }
     }
 }
