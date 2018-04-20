@@ -442,8 +442,14 @@ namespace Microsoft.Graph
             Dictionary<string, string[]> headerDictionary = responseHeaders.ToDictionary(x => x.Key, x => x.Value.ToArray());
             var responseHeaderString = this.Client.HttpProvider.Serializer.SerializeObject(headerDictionary);
 
-            var responseContent = content.Substring(0, content.Length - 1);
-            responseContent += ", \"responseHeaders\": " + responseHeaderString + ", ";
+            var responseContent = "";
+
+            if (content.Length > 0)
+            {
+                responseContent = content.Substring(0, content.Length - 1) + ", ";
+            }
+           
+            responseContent += "\"responseHeaders\": " + responseHeaderString + ", ";
             responseContent += "\"statusCode\": \"" + statusCode + "\"}";
 
             return responseContent;
