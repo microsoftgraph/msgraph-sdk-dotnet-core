@@ -10,6 +10,7 @@ namespace Microsoft.Graph.Core.Test.Requests
     using System.Linq;
     using System.Net.Http;
     using System.Reflection;
+    using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
     
@@ -162,6 +163,49 @@ namespace Microsoft.Graph.Core.Test.Requests
                 Assert.AreEqual(expectedResponseItem.Id, responseItem.Id, "Unexpected ID.");
 
                 this.authenticationProvider.Verify(provider => provider.AuthenticateRequestAsync(It.IsAny<HttpRequestMessage>()), Times.Once);
+            }
+        }
+
+        [TestMethod]
+        public async Task SendAsync_ResponseHeaders()
+        {
+            var requestUrl = string.Concat(this.baseUrl, "/me/drive/items/id");
+
+            var baseRequest = new BaseRequest(requestUrl, this.baseClient) { ContentType = "application/json" };
+
+            var data = "{\"data\"}";
+            
+            using (var httpResponseMessage = new HttpResponseMessage())
+            using (var responseStream = new MemoryStream(Encoding.ASCII.GetBytes(data)))
+            using (var streamContent = new StreamContent(responseStream))
+            {
+                httpResponseMessage.Content = streamContent;
+                httpResponseMessage.StatusCode = System.Net.HttpStatusCode.OK;
+
+                this.httpProvider.Setup(
+                    provider => provider.SendAsync(
+                        It.Is<HttpRequestMessage>(
+                            request =>
+                                string.Equals(request.Content.Headers.ContentType.ToString(), "application/json")
+                               && request.RequestUri.ToString().Equals(requestUrl)),
+                        HttpCompletionOption.ResponseContentRead,
+                        CancellationToken.None))
+                        .Returns(Task.FromResult(httpResponseMessage));
+
+                Dictionary<string, object> additionalData = new Dictionary<string,object>();
+                additionalData["responseHeaders"] = new Dictionary<string, List<string>>() { { "key", new List<string>() { "value" } } };
+
+                var expectedResponseItem = new DerivedTypeClass { Id = "id" , AdditionalData = additionalData };
+
+                this.serializer.Setup(
+                    serializer => serializer.DeserializeObject<DerivedTypeClass>(It.IsAny<string>()))
+                    .Returns(expectedResponseItem);
+                this.serializer.Setup(
+                    serializer => serializer.DeserializeObject<DerivedTypeClass>(It.IsAny<string>()))
+                    .Returns(expectedResponseItem);
+
+                var responseItem = await baseRequest.SendAsync<DerivedTypeClass>("string", CancellationToken.None);
+                Assert.IsNotNull(responseItem.AdditionalData["responseHeaders"], "No response headers available");
             }
         }
 
