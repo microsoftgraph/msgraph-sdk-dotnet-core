@@ -206,6 +206,7 @@ namespace Microsoft.Graph.Core.Test.Requests
 
                 var responseItem = await baseRequest.SendAsync<DerivedTypeClass>("string", CancellationToken.None);
                 Assert.IsNotNull(responseItem.AdditionalData["responseHeaders"], "No response headers available");
+                Assert.AreEqual(expectedResponseItem.AdditionalData["responseHeaders"], responseItem.AdditionalData["responseHeaders"], "Unexpected response headers");
             }
         }
 
