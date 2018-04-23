@@ -81,7 +81,7 @@ namespace Microsoft.Graph.Test.Requests.Functional
         {
             if (planId == "")
             {
-                planId = "HJLUP2ZwhE6-Gd0Sp3UMB2QAHsEe"; // OnlineMarketingGroup PlanId in test tenant.
+                planId = "X64sGtz57EO5q2KVrqEfVmUAEAYw"; // OnlineMarketingGroup PlanId in test tenant.
             }
 
             try
