@@ -17,7 +17,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Mocks
         {
             this.Setup(
                 provider => provider.SerializeObject(It.IsAny<object>()))
-                .Returns(It.IsAny<string>);
+                .Returns("{\"key\": \"value\"}");
         }
     }
 }
