@@ -436,21 +436,21 @@ namespace Microsoft.Graph
         /// <returns>The full response string to return</returns>
         private string AddHeadersToResponse(HttpResponseMessage response, string content)
         {
-            var responseHeaders = response.Headers;
-            var statusCode = response.StatusCode;
-
-            Dictionary<string, string[]> headerDictionary = responseHeaders.ToDictionary(x => x.Key, x => x.Value.ToArray());
-            var responseHeaderString = this.Client.HttpProvider.Serializer.SerializeObject(headerDictionary);
-
             var responseContent = "";
 
+            //Only add headers if we are going to return a response body
             if (content.Length > 0)
             {
+                var responseHeaders = response.Headers;
+                var statusCode = response.StatusCode;
+
+                Dictionary<string, string[]> headerDictionary = responseHeaders.ToDictionary(x => x.Key, x => x.Value.ToArray());
+                var responseHeaderString = this.Client.HttpProvider.Serializer.SerializeObject(headerDictionary);
+
                 responseContent = content.Substring(0, content.Length - 1) + ", ";
+                responseContent += "\"responseHeaders\": " + responseHeaderString + ", ";
+                responseContent += "\"statusCode\": \"" + statusCode + "\"}";
             }
-           
-            responseContent += "\"responseHeaders\": " + responseHeaderString + ", ";
-            responseContent += "\"statusCode\": \"" + statusCode + "\"}";
 
             return responseContent;
         }
