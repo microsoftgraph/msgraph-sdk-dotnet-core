@@ -131,7 +131,7 @@ namespace Microsoft.Graph
             {
                 if (response.Content != null)
                 {
-                    var responseString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                    var responseString = await GetResponseString(response);
                     return this.Client.HttpProvider.Serializer.DeserializeObject<T>(responseString);
                 }
 
@@ -156,7 +156,7 @@ namespace Microsoft.Graph
             {
                 if (response.Content != null)
                 {
-                    var responseString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                    var responseString = await GetResponseString(response);
                     return this.Client.HttpProvider.Serializer.DeserializeObject<T>(responseString);
                 }
 
@@ -423,6 +423,34 @@ namespace Microsoft.Graph
             }
 
             return new UriBuilder(uri) { Query = string.Empty }.ToString();
+        }
+
+        /// <summary>
+        /// Get the response content string
+        /// </summary>
+        /// <param name="hrm">The response object</param>
+        /// <returns>The full response string to return</returns>
+        private async Task<string> GetResponseString(HttpResponseMessage hrm)
+        {
+            var responseContent = "";
+
+            var content = await hrm.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+            //Only add headers if we are going to return a response body
+            if (content.Length > 0)
+            {
+                var responseHeaders = hrm.Headers;
+                var statusCode = hrm.StatusCode;
+
+                Dictionary<string, string[]> headerDictionary = responseHeaders.ToDictionary(x => x.Key, x => x.Value.ToArray());
+                var responseHeaderString = this.Client.HttpProvider.Serializer.SerializeObject(headerDictionary);
+
+                responseContent = content.Substring(0, content.Length - 1) + ", ";
+                responseContent += "\"responseHeaders\": " + responseHeaderString + ", ";
+                responseContent += "\"statusCode\": \"" + statusCode + "\"}";
+            }
+
+            return responseContent;
         }
     }
 }
