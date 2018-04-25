@@ -5,12 +5,13 @@ The .NET Client Library allows you to add your own custom request headers and in
 
 ## Adding request headers
 
-Custom headers can be added by creating a new header option collection and adding it to the request object:
+Custom headers can be added by creating a new option collection and adding it to the request object:
 
-```chsarp
-List<HeaderOption> options = new List<HeaderOption>();
+```csharp
+List<Option> options = new List<Option>();
 options.Add(new HeaderOption("Etag", etag));
 options.Add(new HeaderOption("If-Match", etag));
+options.Add(new QueryOption("$filter", filterQuery));
 
 var newObject = graphServiceClient
 	.Object
@@ -20,7 +21,7 @@ var newObject = graphServiceClient
 
 You can also pass headers in individually if you only need to include one header:
 
-```chsarp
+```csharp
 var newObject = graphServiceClient
 	.Object
 	.Request(new HeaderOption("Etag", etag))
