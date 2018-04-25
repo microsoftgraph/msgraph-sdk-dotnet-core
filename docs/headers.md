@@ -50,4 +50,4 @@ var requestId = responseHeaderCollection["request-id"][0];
 ```
 
 
-*Currently, requests that have a return type of `void` do not return response headers and cannot be inspected.*
+*Currently, requests that have a return type of `void` or `Stream` do not return response headers and cannot be inspected.*
