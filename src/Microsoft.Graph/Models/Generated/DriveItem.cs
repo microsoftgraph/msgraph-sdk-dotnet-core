@@ -98,6 +98,12 @@ namespace Microsoft.Graph
         public Photo Photo { get; set; }
     
         /// <summary>
+        /// Gets or sets publication.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "publication", Required = Newtonsoft.Json.Required.Default)]
+        public PublicationFacet Publication { get; set; }
+    
+        /// <summary>
         /// Gets or sets remote item.
         /// Remote item data, if the item is shared from a drive other than the one being accessed. Read-only.
         /// </summary>
@@ -186,6 +192,12 @@ namespace Microsoft.Graph
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "thumbnails", Required = Newtonsoft.Json.Required.Default)]
         public IDriveItemThumbnailsCollectionPage Thumbnails { get; set; }
+    
+        /// <summary>
+        /// Gets or sets versions.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "versions", Required = Newtonsoft.Json.Required.Default)]
+        public IDriveItemVersionsCollectionPage Versions { get; set; }
     
         /// <summary>
         /// Gets or sets workbook.

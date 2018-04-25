@@ -222,6 +222,22 @@ namespace Microsoft.Graph
                     }
                 }
 
+                if (managedDeviceMobileAppConfigurationToInitialize.DeviceStatuses != null && managedDeviceMobileAppConfigurationToInitialize.DeviceStatuses.CurrentPage != null)
+                {
+                    managedDeviceMobileAppConfigurationToInitialize.DeviceStatuses.AdditionalData = managedDeviceMobileAppConfigurationToInitialize.AdditionalData;
+
+                    object nextPageLink;
+                    managedDeviceMobileAppConfigurationToInitialize.AdditionalData.TryGetValue("deviceStatuses@odata.nextLink", out nextPageLink);
+                    var nextPageLinkString = nextPageLink as string;
+
+                    if (!string.IsNullOrEmpty(nextPageLinkString))
+                    {
+                        managedDeviceMobileAppConfigurationToInitialize.DeviceStatuses.InitializeNextPageRequest(
+                            this.Client,
+                            nextPageLinkString);
+                    }
+                }
+
                 if (managedDeviceMobileAppConfigurationToInitialize.UserStatuses != null && managedDeviceMobileAppConfigurationToInitialize.UserStatuses.CurrentPage != null)
                 {
                     managedDeviceMobileAppConfigurationToInitialize.UserStatuses.AdditionalData = managedDeviceMobileAppConfigurationToInitialize.AdditionalData;

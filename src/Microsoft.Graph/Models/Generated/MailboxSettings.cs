@@ -31,6 +31,7 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets archiveFolder.
+        /// Folder ID of an archive folder for the user.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "archiveFolder", Required = Newtonsoft.Json.Required.Default)]
         public string ArchiveFolder { get; set; }
@@ -48,6 +49,13 @@ namespace Microsoft.Graph
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "language", Required = Newtonsoft.Json.Required.Default)]
         public LocaleInfo Language { get; set; }
+    
+        /// <summary>
+        /// Gets or sets workingHours.
+        /// The days of the week and hours in a specific time zone that the user works.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "workingHours", Required = Newtonsoft.Json.Required.Default)]
+        public WorkingHours WorkingHours { get; set; }
     
         /// <summary>
         /// Gets or sets additional data.

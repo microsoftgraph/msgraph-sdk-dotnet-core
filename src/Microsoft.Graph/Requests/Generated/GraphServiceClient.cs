@@ -283,6 +283,17 @@ namespace Microsoft.Graph
         }
     
         /// <summary>
+        /// Gets the GraphServiceDirectory request builder.
+        /// </summary>
+        public IDirectoryRequestBuilder Directory
+        {
+            get
+            {
+                return new DirectoryRequestBuilder(this.BaseUrl + "/directory", this);
+            }
+        }
+    
+        /// <summary>
         /// Gets the GraphServiceDrive request builder.
         /// </summary>
         public IDriveRequestBuilder Drive

@@ -92,14 +92,18 @@ namespace Microsoft.Graph
         public IOnenoteSectionCopyToNotebookRequestBuilder CopyToNotebook(
             string id = null,
             string groupId = null,
-            string renameAs = null)
+            string renameAs = null,
+            string siteCollectionId = null,
+            string siteId = null)
         {
             return new OnenoteSectionCopyToNotebookRequestBuilder(
                 this.AppendSegmentToRequestUrl("microsoft.graph.copyToNotebook"),
                 this.Client,
                 id,
                 groupId,
-                renameAs);
+                renameAs,
+                siteCollectionId,
+                siteId);
         }
 
         /// <summary>
@@ -109,14 +113,18 @@ namespace Microsoft.Graph
         public IOnenoteSectionCopyToSectionGroupRequestBuilder CopyToSectionGroup(
             string id = null,
             string groupId = null,
-            string renameAs = null)
+            string renameAs = null,
+            string siteCollectionId = null,
+            string siteId = null)
         {
             return new OnenoteSectionCopyToSectionGroupRequestBuilder(
                 this.AppendSegmentToRequestUrl("microsoft.graph.copyToSectionGroup"),
                 this.Client,
                 id,
                 groupId,
-                renameAs);
+                renameAs,
+                siteCollectionId,
+                siteId);
         }
     
     }

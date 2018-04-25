@@ -61,7 +61,9 @@ namespace Microsoft.Graph
         /// <returns>The <see cref="IOnenotePageCopyToSectionRequestBuilder"/>.</returns>
         IOnenotePageCopyToSectionRequestBuilder CopyToSection(
             string id = null,
-            string groupId = null);
+            string groupId = null,
+            string siteCollectionId = null,
+            string siteId = null);
 
         /// <summary>
         /// Gets the request builder for OnenotePagePreview.

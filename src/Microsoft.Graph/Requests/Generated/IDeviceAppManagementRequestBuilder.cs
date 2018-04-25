@@ -49,6 +49,12 @@ namespace Microsoft.Graph
         IDeviceAppManagementMobileAppConfigurationsCollectionRequestBuilder MobileAppConfigurations { get; }
 
         /// <summary>
+        /// Gets the request builder for VppTokens.
+        /// </summary>
+        /// <returns>The <see cref="IDeviceAppManagementVppTokensCollectionRequestBuilder"/>.</returns>
+        IDeviceAppManagementVppTokensCollectionRequestBuilder VppTokens { get; }
+
+        /// <summary>
         /// Gets the request builder for ManagedAppPolicies.
         /// </summary>
         /// <returns>The <see cref="IDeviceAppManagementManagedAppPoliciesCollectionRequestBuilder"/>.</returns>

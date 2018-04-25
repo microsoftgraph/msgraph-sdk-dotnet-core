@@ -80,14 +80,18 @@ namespace Microsoft.Graph
         public INotebookCopyNotebookRequestBuilder CopyNotebook(
             string groupId = null,
             string renameAs = null,
-            string notebookFolder = null)
+            string notebookFolder = null,
+            string siteCollectionId = null,
+            string siteId = null)
         {
             return new NotebookCopyNotebookRequestBuilder(
                 this.AppendSegmentToRequestUrl("microsoft.graph.copyNotebook"),
                 this.Client,
                 groupId,
                 renameAs,
-                notebookFolder);
+                notebookFolder,
+                siteCollectionId,
+                siteId);
         }
     
     }

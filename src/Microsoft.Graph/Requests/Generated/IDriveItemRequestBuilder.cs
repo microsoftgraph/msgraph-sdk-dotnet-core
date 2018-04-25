@@ -55,6 +55,12 @@ namespace Microsoft.Graph
         IDriveItemThumbnailsCollectionRequestBuilder Thumbnails { get; }
 
         /// <summary>
+        /// Gets the request builder for Versions.
+        /// </summary>
+        /// <returns>The <see cref="IDriveItemVersionsCollectionRequestBuilder"/>.</returns>
+        IDriveItemVersionsCollectionRequestBuilder Versions { get; }
+
+        /// <summary>
         /// Gets the request builder for Workbook.
         /// </summary>
         /// <returns>The <see cref="IWorkbookRequestBuilder"/>.</returns>

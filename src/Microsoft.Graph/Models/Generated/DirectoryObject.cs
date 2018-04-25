@@ -21,6 +21,12 @@ namespace Microsoft.Graph
     public partial class DirectoryObject : Entity
     {
     
+        /// <summary>
+        /// Gets or sets deleted date time.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "deletedDateTime", Required = Newtonsoft.Json.Required.Default)]
+        public DateTimeOffset? DeletedDateTime { get; set; }
+    
     }
 }
 

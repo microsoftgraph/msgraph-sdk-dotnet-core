@@ -30,6 +30,12 @@ namespace Microsoft.Graph
         public string Hostname { get; set; }
     
         /// <summary>
+        /// Gets or sets root.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "root", Required = Newtonsoft.Json.Required.Default)]
+        public Root Root { get; set; }
+    
+        /// <summary>
         /// Gets or sets additional data.
         /// </summary>
         [JsonExtensionData(ReadData = true)]

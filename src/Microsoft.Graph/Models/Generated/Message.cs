@@ -50,6 +50,13 @@ namespace Microsoft.Graph
         public string InternetMessageId { get; set; }
     
         /// <summary>
+        /// Gets or sets internet message headers.
+        /// The collection of message headers, defined by RFC5322, that provide details of the network path taken by a message from the sender to the recipient. Read-only.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "internetMessageHeaders", Required = Newtonsoft.Json.Required.Default)]
+        public IEnumerable<InternetMessageHeader> InternetMessageHeaders { get; set; }
+    
+        /// <summary>
         /// Gets or sets subject.
         /// The subject of the message.
         /// </summary>
@@ -181,6 +188,13 @@ namespace Microsoft.Graph
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "inferenceClassification", Required = Newtonsoft.Json.Required.Default)]
         public InferenceClassificationType? InferenceClassification { get; set; }
+    
+        /// <summary>
+        /// Gets or sets flag.
+        /// The flag value that indicates the status, start date, due date, or completion date for the message.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "flag", Required = Newtonsoft.Json.Required.Default)]
+        public FollowupFlag Flag { get; set; }
     
         /// <summary>
         /// Gets or sets attachments.

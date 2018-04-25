@@ -55,7 +55,9 @@ namespace Microsoft.Graph
         IOnenoteSectionCopyToNotebookRequestBuilder CopyToNotebook(
             string id = null,
             string groupId = null,
-            string renameAs = null);
+            string renameAs = null,
+            string siteCollectionId = null,
+            string siteId = null);
 
         /// <summary>
         /// Gets the request builder for OnenoteSectionCopyToSectionGroup.
@@ -64,7 +66,9 @@ namespace Microsoft.Graph
         IOnenoteSectionCopyToSectionGroupRequestBuilder CopyToSectionGroup(
             string id = null,
             string groupId = null,
-            string renameAs = null);
+            string renameAs = null,
+            string siteCollectionId = null,
+            string siteId = null);
     
     }
 }

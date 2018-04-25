@@ -37,6 +37,12 @@ namespace Microsoft.Graph
         public double? RelevanceScore { get; set; }
     
         /// <summary>
+        /// Gets or sets selectionLikelihood.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "selectionLikelihood", Required = Newtonsoft.Json.Required.Default)]
+        public SelectionLikelihoodInfo? SelectionLikelihood { get; set; }
+    
+        /// <summary>
         /// Gets or sets additional data.
         /// </summary>
         [JsonExtensionData(ReadData = true)]
