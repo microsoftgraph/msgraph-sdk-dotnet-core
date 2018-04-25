@@ -129,8 +129,7 @@ namespace Microsoft.Graph
             {
                 if (response.Content != null)
                 {
-                    var responseString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                    responseString = AddHeadersToResponse(response, responseString);
+                    var responseString = await GetResponseString(response);
                     return this.Client.HttpProvider.Serializer.DeserializeObject<T>(responseString);
                 }
 
@@ -155,8 +154,7 @@ namespace Microsoft.Graph
             {
                 if (response.Content != null)
                 {
-                    var responseString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                    responseString = AddHeadersToResponse(response, responseString);
+                    var responseString = await GetResponseString(response);
                     return this.Client.HttpProvider.Serializer.DeserializeObject<T>(responseString);
                 }
 
@@ -429,20 +427,21 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Add response headers to serialized response
+        /// Get the response content string
         /// </summary>
-        /// <param name="response">The response object</param>
-        /// <param name="content">The string to append the headers to</param>
+        /// <param name="hrm">The response object</param>
         /// <returns>The full response string to return</returns>
-        private string AddHeadersToResponse(HttpResponseMessage response, string content)
+        private async Task<string> GetResponseString(HttpResponseMessage hrm)
         {
             var responseContent = "";
+
+            var content = await hrm.Content.ReadAsStringAsync().ConfigureAwait(false);
 
             //Only add headers if we are going to return a response body
             if (content.Length > 0)
             {
-                var responseHeaders = response.Headers;
-                var statusCode = response.StatusCode;
+                var responseHeaders = hrm.Headers;
+                var statusCode = hrm.StatusCode;
 
                 Dictionary<string, string[]> headerDictionary = responseHeaders.ToDictionary(x => x.Key, x => x.Value.ToArray());
                 var responseHeaderString = this.Client.HttpProvider.Serializer.SerializeObject(headerDictionary);
