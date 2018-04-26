@@ -250,6 +250,8 @@ namespace Microsoft.Graph.Test.Requests.Functional
         // {    "@odata.id": "https://graph.microsoft.com/v1.0/users/55aa3346-08cb-4e98-8567-879b039a72c1" }
         // http://graph.microsoft.io/en-us/docs/api-reference/v1.0/api/user_post_manager
         // We are getting and setting the user's manager.
+        // Must be an admin to set this
+        [Ignore]
         [TestMethod]
         public async System.Threading.Tasks.Task UserUpdateManager()
         {
@@ -328,7 +330,9 @@ namespace Microsoft.Graph.Test.Requests.Functional
             }
         }
 
+        // Need admin perms.
         [TestMethod]
+        [Ignore]
         // Addressing https://github.com/microsoftgraph/msgraph-sdk-dotnet/issues/28
         public async System.Threading.Tasks.Task UpdateUser()
         {
