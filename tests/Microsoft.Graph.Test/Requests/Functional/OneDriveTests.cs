@@ -53,9 +53,9 @@ namespace Microsoft.Graph.Test.Requests.Functional
                     //props.FileSystemInfo.LastModifiedDateTime = System.DateTimeOffset.Now;
 
                     // Get the provider. 
-                    // POST /v1.0/drive/items/01KGPRHTV6Y2GOVW7725BZO354PWSELRRZ:/_hamiltion.png:/microsoft.graph.createUploadSession
+                    // POST /v1.0/drive/items/01KA5JMEBZ7FQ7QYBXKJE3X3THBVZLQIUS:/_hamiltion.png:/microsoft.graph.createUploadSession
                     // The CreateUploadSesssion action doesn't seem to support the options stated in the metadata.
-                    var uploadSession = await graphClient.Drive.Items["01KGPRHTV6Y2GOVW7725BZO354PWSELRRZ"].ItemWithPath("_hamilton.png").CreateUploadSession().Request().PostAsync();
+                    var uploadSession = await graphClient.Drive.Items["01KA5JMEBZ7FQ7QYBXKJE3X3THBVZLQIUS"].ItemWithPath("_hamilton.png").CreateUploadSession().Request().PostAsync();
 
                     var maxChunkSize = 320 * 1024; // 320 KB - Change this to your chunk size. 5MB is the default.
                     var provider = new ChunkedUploadProvider(uploadSession, graphClient, ms, maxChunkSize);
@@ -339,7 +339,7 @@ namespace Microsoft.Graph.Test.Requests.Functional
         }
 
         // Assumption: test tenant has a file name that starts with 'Timesheet'.
-        // Assumption: there is a user with an email alias of alexd and a display name of Alex Darrow in the test tenant.
+        // Assumption: there is a user with an email alias of alexw and a display name of Alex Wilber in the test tenant.
         [TestMethod]
         public async Async.Task OneDriveInvite()
         {
@@ -361,7 +361,7 @@ namespace Microsoft.Graph.Test.Requests.Functional
                 {
                     new DriveRecipient()
                     {
-                        Email = $"alexd@{domain}"
+                        Email = $"alexw@{domain}"
                     }
                 };
 
@@ -377,7 +377,7 @@ namespace Microsoft.Graph.Test.Requests.Functional
                                                            .Request()
                                                            .PostAsync();
 
-                Assert.AreEqual("Alex Darrow", inviteCollection[0].GrantedTo.User.DisplayName);
+                Assert.AreEqual("Alex Wilber", inviteCollection[0].GrantedTo.User.DisplayName);
             }
             catch (Microsoft.Graph.ServiceException e)
             {

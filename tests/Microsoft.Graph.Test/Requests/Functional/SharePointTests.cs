@@ -141,14 +141,18 @@ namespace Microsoft.Graph.Test.Requests.Functional
                             Message = await response.Content.ReadAsStringAsync()
                         });
                                
-                string siteResource = "portals2";
+                string siteResource = "sites/IT";
 
-                // Get the portals/Information-Technology site.
+                // Get the sites/IT site.
                 Site portalInfoTechSite = await graphClient.Sites.GetByPath(siteResource, site.SiteCollection.Hostname).Request().GetAsync();
 
                 StringAssert.Contains(portalInfoTechSite.WebUrl, siteResource);
                 StringAssert.Contains(portalInfoTechSite.Id, portalInfoTechSite.SiteCollection.Hostname); // Check if id format changes under us. 
                 Assert.AreEqual(site.SiteCollection.Hostname, portalInfoTechSite.SiteCollection.Hostname);
+
+                // Get the site's drive
+                Drive techDrive = await graphClient.Sites.GetByPath(siteResource, site.SiteCollection.Hostname).Drive.Request().GetAsync();
+                Assert.IsNotNull(techDrive);
             }
             catch (Microsoft.Graph.ServiceException e)
             {
