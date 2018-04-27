@@ -19,7 +19,7 @@ namespace Microsoft.Graph
             {
                 if (!siteRelativePath.StartsWith("/"))
                 {
-                    siteRelativePath = string.Format("/{0}", siteRelativePath);
+                    siteRelativePath = string.Format("/{0}:", siteRelativePath);
                 }
             }
 
