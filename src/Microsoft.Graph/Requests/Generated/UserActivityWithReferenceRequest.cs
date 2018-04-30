@@ -55,6 +55,76 @@ namespace Microsoft.Graph
             return retrievedEntity;
         }
 
+		/// <summary>
+        /// Creates the specified UserActivity using POST.
+        /// </summary>
+        /// <param name="userActivityToCreate">The UserActivity to create.</param>
+        /// <returns>The created UserActivity.</returns>
+        public System.Threading.Tasks.Task<UserActivity> CreateAsync(UserActivity userActivityToCreate)
+        {
+            return this.CreateAsync(userActivityToCreate, CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Creates the specified UserActivity using POST.
+        /// </summary>
+        /// <param name="userActivityToCreate">The UserActivity to create.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The created UserActivity.</returns>
+        public async System.Threading.Tasks.Task<UserActivity> CreateAsync(UserActivity userActivityToCreate, CancellationToken cancellationToken)
+        {
+            this.ContentType = "application/json";
+            this.Method = "POST";
+            var newEntity = await this.SendAsync<UserActivity>(userActivityToCreate, cancellationToken).ConfigureAwait(false);
+            this.InitializeCollectionProperties(newEntity);
+            return newEntity;
+        }
+
+		/// <summary>
+        /// Updates the specified UserActivity using PATCH.
+        /// </summary>
+        /// <param name="userActivityToUpdate">The UserActivity to update.</param>
+        /// <returns>The updated UserActivity.</returns>
+        public System.Threading.Tasks.Task<UserActivity> UpdateAsync(UserActivity userActivityToUpdate)
+        {
+            return this.UpdateAsync(userActivityToUpdate, CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Updates the specified UserActivity using PATCH.
+        /// </summary>
+        /// <param name="userActivityToUpdate">The UserActivity to update.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The updated UserActivity.</returns>
+        public async System.Threading.Tasks.Task<UserActivity> UpdateAsync(UserActivity userActivityToUpdate, CancellationToken cancellationToken)
+        {
+            this.ContentType = "application/json";
+            this.Method = "PATCH";
+            var updatedEntity = await this.SendAsync<UserActivity>(userActivityToUpdate, cancellationToken).ConfigureAwait(false);
+            this.InitializeCollectionProperties(updatedEntity);
+            return updatedEntity;
+        }
+
+		/// <summary>
+        /// Deletes the specified UserActivity.
+        /// </summary>
+        /// <returns>The task to await.</returns>
+        public System.Threading.Tasks.Task DeleteAsync()
+        {
+            return this.DeleteAsync(CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Deletes the specified UserActivity.
+        /// </summary>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The task to await.</returns>
+        public async System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken)
+        {
+            this.Method = "DELETE";
+            await this.SendAsync<UserActivity>(null, cancellationToken).ConfigureAwait(false);
+        }
+
         /// <summary>
         /// Adds the specified expand value to the request.
         /// </summary>

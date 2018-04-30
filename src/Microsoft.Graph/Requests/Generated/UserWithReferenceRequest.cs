@@ -55,6 +55,76 @@ namespace Microsoft.Graph
             return retrievedEntity;
         }
 
+		/// <summary>
+        /// Creates the specified User using POST.
+        /// </summary>
+        /// <param name="userToCreate">The User to create.</param>
+        /// <returns>The created User.</returns>
+        public System.Threading.Tasks.Task<User> CreateAsync(User userToCreate)
+        {
+            return this.CreateAsync(userToCreate, CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Creates the specified User using POST.
+        /// </summary>
+        /// <param name="userToCreate">The User to create.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The created User.</returns>
+        public async System.Threading.Tasks.Task<User> CreateAsync(User userToCreate, CancellationToken cancellationToken)
+        {
+            this.ContentType = "application/json";
+            this.Method = "POST";
+            var newEntity = await this.SendAsync<User>(userToCreate, cancellationToken).ConfigureAwait(false);
+            this.InitializeCollectionProperties(newEntity);
+            return newEntity;
+        }
+
+		/// <summary>
+        /// Updates the specified User using PATCH.
+        /// </summary>
+        /// <param name="userToUpdate">The User to update.</param>
+        /// <returns>The updated User.</returns>
+        public System.Threading.Tasks.Task<User> UpdateAsync(User userToUpdate)
+        {
+            return this.UpdateAsync(userToUpdate, CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Updates the specified User using PATCH.
+        /// </summary>
+        /// <param name="userToUpdate">The User to update.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The updated User.</returns>
+        public async System.Threading.Tasks.Task<User> UpdateAsync(User userToUpdate, CancellationToken cancellationToken)
+        {
+            this.ContentType = "application/json";
+            this.Method = "PATCH";
+            var updatedEntity = await this.SendAsync<User>(userToUpdate, cancellationToken).ConfigureAwait(false);
+            this.InitializeCollectionProperties(updatedEntity);
+            return updatedEntity;
+        }
+
+		/// <summary>
+        /// Deletes the specified User.
+        /// </summary>
+        /// <returns>The task to await.</returns>
+        public System.Threading.Tasks.Task DeleteAsync()
+        {
+            return this.DeleteAsync(CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Deletes the specified User.
+        /// </summary>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The task to await.</returns>
+        public async System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken)
+        {
+            this.Method = "DELETE";
+            await this.SendAsync<User>(null, cancellationToken).ConfigureAwait(false);
+        }
+
         /// <summary>
         /// Adds the specified expand value to the request.
         /// </summary>

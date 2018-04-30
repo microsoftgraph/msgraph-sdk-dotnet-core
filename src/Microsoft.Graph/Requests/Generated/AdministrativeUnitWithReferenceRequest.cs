@@ -55,6 +55,76 @@ namespace Microsoft.Graph
             return retrievedEntity;
         }
 
+		/// <summary>
+        /// Creates the specified AdministrativeUnit using POST.
+        /// </summary>
+        /// <param name="administrativeUnitToCreate">The AdministrativeUnit to create.</param>
+        /// <returns>The created AdministrativeUnit.</returns>
+        public System.Threading.Tasks.Task<AdministrativeUnit> CreateAsync(AdministrativeUnit administrativeUnitToCreate)
+        {
+            return this.CreateAsync(administrativeUnitToCreate, CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Creates the specified AdministrativeUnit using POST.
+        /// </summary>
+        /// <param name="administrativeUnitToCreate">The AdministrativeUnit to create.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The created AdministrativeUnit.</returns>
+        public async System.Threading.Tasks.Task<AdministrativeUnit> CreateAsync(AdministrativeUnit administrativeUnitToCreate, CancellationToken cancellationToken)
+        {
+            this.ContentType = "application/json";
+            this.Method = "POST";
+            var newEntity = await this.SendAsync<AdministrativeUnit>(administrativeUnitToCreate, cancellationToken).ConfigureAwait(false);
+            this.InitializeCollectionProperties(newEntity);
+            return newEntity;
+        }
+
+		/// <summary>
+        /// Updates the specified AdministrativeUnit using PATCH.
+        /// </summary>
+        /// <param name="administrativeUnitToUpdate">The AdministrativeUnit to update.</param>
+        /// <returns>The updated AdministrativeUnit.</returns>
+        public System.Threading.Tasks.Task<AdministrativeUnit> UpdateAsync(AdministrativeUnit administrativeUnitToUpdate)
+        {
+            return this.UpdateAsync(administrativeUnitToUpdate, CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Updates the specified AdministrativeUnit using PATCH.
+        /// </summary>
+        /// <param name="administrativeUnitToUpdate">The AdministrativeUnit to update.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The updated AdministrativeUnit.</returns>
+        public async System.Threading.Tasks.Task<AdministrativeUnit> UpdateAsync(AdministrativeUnit administrativeUnitToUpdate, CancellationToken cancellationToken)
+        {
+            this.ContentType = "application/json";
+            this.Method = "PATCH";
+            var updatedEntity = await this.SendAsync<AdministrativeUnit>(administrativeUnitToUpdate, cancellationToken).ConfigureAwait(false);
+            this.InitializeCollectionProperties(updatedEntity);
+            return updatedEntity;
+        }
+
+		/// <summary>
+        /// Deletes the specified AdministrativeUnit.
+        /// </summary>
+        /// <returns>The task to await.</returns>
+        public System.Threading.Tasks.Task DeleteAsync()
+        {
+            return this.DeleteAsync(CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Deletes the specified AdministrativeUnit.
+        /// </summary>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The task to await.</returns>
+        public async System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken)
+        {
+            this.Method = "DELETE";
+            await this.SendAsync<AdministrativeUnit>(null, cancellationToken).ConfigureAwait(false);
+        }
+
         /// <summary>
         /// Adds the specified expand value to the request.
         /// </summary>

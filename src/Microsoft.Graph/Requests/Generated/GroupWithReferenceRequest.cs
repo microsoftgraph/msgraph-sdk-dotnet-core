@@ -55,6 +55,76 @@ namespace Microsoft.Graph
             return retrievedEntity;
         }
 
+		/// <summary>
+        /// Creates the specified Group using POST.
+        /// </summary>
+        /// <param name="groupToCreate">The Group to create.</param>
+        /// <returns>The created Group.</returns>
+        public System.Threading.Tasks.Task<Group> CreateAsync(Group groupToCreate)
+        {
+            return this.CreateAsync(groupToCreate, CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Creates the specified Group using POST.
+        /// </summary>
+        /// <param name="groupToCreate">The Group to create.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The created Group.</returns>
+        public async System.Threading.Tasks.Task<Group> CreateAsync(Group groupToCreate, CancellationToken cancellationToken)
+        {
+            this.ContentType = "application/json";
+            this.Method = "POST";
+            var newEntity = await this.SendAsync<Group>(groupToCreate, cancellationToken).ConfigureAwait(false);
+            this.InitializeCollectionProperties(newEntity);
+            return newEntity;
+        }
+
+		/// <summary>
+        /// Updates the specified Group using PATCH.
+        /// </summary>
+        /// <param name="groupToUpdate">The Group to update.</param>
+        /// <returns>The updated Group.</returns>
+        public System.Threading.Tasks.Task<Group> UpdateAsync(Group groupToUpdate)
+        {
+            return this.UpdateAsync(groupToUpdate, CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Updates the specified Group using PATCH.
+        /// </summary>
+        /// <param name="groupToUpdate">The Group to update.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The updated Group.</returns>
+        public async System.Threading.Tasks.Task<Group> UpdateAsync(Group groupToUpdate, CancellationToken cancellationToken)
+        {
+            this.ContentType = "application/json";
+            this.Method = "PATCH";
+            var updatedEntity = await this.SendAsync<Group>(groupToUpdate, cancellationToken).ConfigureAwait(false);
+            this.InitializeCollectionProperties(updatedEntity);
+            return updatedEntity;
+        }
+
+		/// <summary>
+        /// Deletes the specified Group.
+        /// </summary>
+        /// <returns>The task to await.</returns>
+        public System.Threading.Tasks.Task DeleteAsync()
+        {
+            return this.DeleteAsync(CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Deletes the specified Group.
+        /// </summary>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The task to await.</returns>
+        public async System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken)
+        {
+            this.Method = "DELETE";
+            await this.SendAsync<Group>(null, cancellationToken).ConfigureAwait(false);
+        }
+
         /// <summary>
         /// Adds the specified expand value to the request.
         /// </summary>
