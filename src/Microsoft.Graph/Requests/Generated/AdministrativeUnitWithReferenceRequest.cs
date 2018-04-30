@@ -76,7 +76,6 @@ namespace Microsoft.Graph
             this.ContentType = "application/json";
             this.Method = "POST";
             var newEntity = await this.SendAsync<AdministrativeUnit>(administrativeUnitToCreate, cancellationToken).ConfigureAwait(false);
-            this.InitializeCollectionProperties(newEntity);
             return newEntity;
         }
 
@@ -101,7 +100,6 @@ namespace Microsoft.Graph
             this.ContentType = "application/json";
             this.Method = "PATCH";
             var updatedEntity = await this.SendAsync<AdministrativeUnit>(administrativeUnitToUpdate, cancellationToken).ConfigureAwait(false);
-            this.InitializeCollectionProperties(updatedEntity);
             return updatedEntity;
         }
 
