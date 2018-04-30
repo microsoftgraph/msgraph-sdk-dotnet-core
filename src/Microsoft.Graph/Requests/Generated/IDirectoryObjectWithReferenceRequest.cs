@@ -32,6 +32,47 @@ namespace Microsoft.Graph
         /// <returns>The DirectoryObject.</returns>
         System.Threading.Tasks.Task<DirectoryObject> GetAsync(CancellationToken cancellationToken);
 
+		/// <summary>
+        /// Creates the specified DirectoryObject using PUT.
+        /// </summary>
+        /// <param name="directoryObjectToCreate">The DirectoryObject to create.</param>
+        /// <returns>The created DirectoryObject.</returns>
+        System.Threading.Tasks.Task<DirectoryObject> CreateAsync(DirectoryObject directoryObjectToCreate);        /// <summary>
+        /// Creates the specified DirectoryObject using PUT.
+        /// </summary>
+        /// <param name="directoryObjectToCreate">The DirectoryObject to create.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The created DirectoryObject.</returns>
+        System.Threading.Tasks.Task<DirectoryObject> CreateAsync(DirectoryObject directoryObjectToCreate, CancellationToken cancellationToken);
+
+		/// <summary>
+        /// Updates the specified DirectoryObject using PATCH.
+        /// </summary>
+        /// <param name="directoryObjectToUpdate">The DirectoryObject to update.</param>
+        /// <returns>The updated DirectoryObject.</returns>
+        System.Threading.Tasks.Task<DirectoryObject> UpdateAsync(DirectoryObject directoryObjectToUpdate);
+
+        /// <summary>
+        /// Updates the specified DirectoryObject using PATCH.
+        /// </summary>
+        /// <param name="directoryObjectToUpdate">The DirectoryObject to update.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The updated DirectoryObject.</returns>
+        System.Threading.Tasks.Task<DirectoryObject> UpdateAsync(DirectoryObject directoryObjectToUpdate, CancellationToken cancellationToken);
+
+		/// <summary>
+        /// Deletes the specified DirectoryObject.
+        /// </summary>
+        /// <returns>The task to await.</returns>
+        System.Threading.Tasks.Task DeleteAsync();
+
+        /// <summary>
+        /// Deletes the specified DirectoryObject.
+        /// </summary>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The task to await.</returns>
+        System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken);
+
         /// <summary>
         /// Adds the specified expand value to the request.
         /// </summary>

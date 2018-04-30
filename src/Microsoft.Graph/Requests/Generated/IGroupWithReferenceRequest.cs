@@ -32,6 +32,47 @@ namespace Microsoft.Graph
         /// <returns>The Group.</returns>
         System.Threading.Tasks.Task<Group> GetAsync(CancellationToken cancellationToken);
 
+		/// <summary>
+        /// Creates the specified Group using PUT.
+        /// </summary>
+        /// <param name="groupToCreate">The Group to create.</param>
+        /// <returns>The created Group.</returns>
+        System.Threading.Tasks.Task<Group> CreateAsync(Group groupToCreate);        /// <summary>
+        /// Creates the specified Group using PUT.
+        /// </summary>
+        /// <param name="groupToCreate">The Group to create.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The created Group.</returns>
+        System.Threading.Tasks.Task<Group> CreateAsync(Group groupToCreate, CancellationToken cancellationToken);
+
+		/// <summary>
+        /// Updates the specified Group using PATCH.
+        /// </summary>
+        /// <param name="groupToUpdate">The Group to update.</param>
+        /// <returns>The updated Group.</returns>
+        System.Threading.Tasks.Task<Group> UpdateAsync(Group groupToUpdate);
+
+        /// <summary>
+        /// Updates the specified Group using PATCH.
+        /// </summary>
+        /// <param name="groupToUpdate">The Group to update.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The updated Group.</returns>
+        System.Threading.Tasks.Task<Group> UpdateAsync(Group groupToUpdate, CancellationToken cancellationToken);
+
+		/// <summary>
+        /// Deletes the specified Group.
+        /// </summary>
+        /// <returns>The task to await.</returns>
+        System.Threading.Tasks.Task DeleteAsync();
+
+        /// <summary>
+        /// Deletes the specified Group.
+        /// </summary>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The task to await.</returns>
+        System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken);
+
         /// <summary>
         /// Adds the specified expand value to the request.
         /// </summary>
