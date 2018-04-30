@@ -29,7 +29,7 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets created date time.
-        /// The date and time the group was created.
+        /// Timestamp of when the group was created. The value cannot be modified and is automatically populated when the group is created. The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'. Read-only.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "createdDateTime", Required = Newtonsoft.Json.Required.Default)]
         public DateTimeOffset? CreatedDateTime { get; set; }
@@ -71,7 +71,7 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets mail nickname.
-        /// The mail alias for the group. This property must be specified when a group is created. Supports $filter.
+        /// The mail alias for the group, unique in the organization. This property must be specified when a group is created. Supports $filter.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "mailNickname", Required = Newtonsoft.Json.Required.Default)]
         public string MailNickname { get; set; }
@@ -106,6 +106,7 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets renewed date time.
+        /// Timestamp of when the group was last renewed. This cannot be modified directly and is only updated via the renew service action. The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'. Read-only.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "renewedDateTime", Required = Newtonsoft.Json.Required.Default)]
         public DateTimeOffset? RenewedDateTime { get; set; }

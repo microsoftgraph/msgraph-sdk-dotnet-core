@@ -158,6 +158,18 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
+        /// Gets the request builder for Outlook.
+        /// </summary>
+        /// <returns>The <see cref="IOutlookUserRequestBuilder"/>.</returns>
+        public IOutlookUserRequestBuilder Outlook
+        {
+            get
+            {
+                return new OutlookUserRequestBuilder(this.AppendSegmentToRequestUrl("outlook"), this.Client);
+            }
+        }
+
+        /// <summary>
         /// Gets the request builder for Messages.
         /// </summary>
         /// <returns>The <see cref="IUserMessagesCollectionRequestBuilder"/>.</returns>
@@ -394,6 +406,18 @@ namespace Microsoft.Graph
             get
             {
                 return new UserDeviceManagementTroubleshootingEventsCollectionRequestBuilder(this.AppendSegmentToRequestUrl("deviceManagementTroubleshootingEvents"), this.Client);
+            }
+        }
+
+        /// <summary>
+        /// Gets the request builder for Activities.
+        /// </summary>
+        /// <returns>The <see cref="IUserActivitiesCollectionRequestBuilder"/>.</returns>
+        public IUserActivitiesCollectionRequestBuilder Activities
+        {
+            get
+            {
+                return new UserActivitiesCollectionRequestBuilder(this.AppendSegmentToRequestUrl("activities"), this.Client);
             }
         }
     

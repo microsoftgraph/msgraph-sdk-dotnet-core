@@ -391,6 +391,12 @@ namespace Microsoft.Graph
         public IUserExtensionsCollectionPage Extensions { get; set; }
     
         /// <summary>
+        /// Gets or sets outlook.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "outlook", Required = Newtonsoft.Json.Required.Default)]
+        public OutlookUser Outlook { get; set; }
+    
+        /// <summary>
         /// Gets or sets messages.
         /// The messages in a mailbox or folder. Read-only. Nullable.
         /// </summary>
@@ -526,6 +532,12 @@ namespace Microsoft.Graph
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "deviceManagementTroubleshootingEvents", Required = Newtonsoft.Json.Required.Default)]
         public IUserDeviceManagementTroubleshootingEventsCollectionPage DeviceManagementTroubleshootingEvents { get; set; }
+    
+        /// <summary>
+        /// Gets or sets activities.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "activities", Required = Newtonsoft.Json.Required.Default)]
+        public IUserActivitiesCollectionPage Activities { get; set; }
     
     }
 }

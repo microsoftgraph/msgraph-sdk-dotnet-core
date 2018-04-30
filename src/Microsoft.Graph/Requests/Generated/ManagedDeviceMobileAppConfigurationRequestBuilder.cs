@@ -62,6 +62,18 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
+        /// Gets the request builder for DeviceStatuses.
+        /// </summary>
+        /// <returns>The <see cref="IManagedDeviceMobileAppConfigurationDeviceStatusesCollectionRequestBuilder"/>.</returns>
+        public IManagedDeviceMobileAppConfigurationDeviceStatusesCollectionRequestBuilder DeviceStatuses
+        {
+            get
+            {
+                return new ManagedDeviceMobileAppConfigurationDeviceStatusesCollectionRequestBuilder(this.AppendSegmentToRequestUrl("deviceStatuses"), this.Client);
+            }
+        }
+
+        /// <summary>
         /// Gets the request builder for UserStatuses.
         /// </summary>
         /// <returns>The <see cref="IManagedDeviceMobileAppConfigurationUserStatusesCollectionRequestBuilder"/>.</returns>

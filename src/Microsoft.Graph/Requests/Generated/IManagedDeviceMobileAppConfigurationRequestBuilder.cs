@@ -37,6 +37,12 @@ namespace Microsoft.Graph
         IManagedDeviceMobileAppConfigurationAssignmentsCollectionRequestBuilder Assignments { get; }
 
         /// <summary>
+        /// Gets the request builder for DeviceStatuses.
+        /// </summary>
+        /// <returns>The <see cref="IManagedDeviceMobileAppConfigurationDeviceStatusesCollectionRequestBuilder"/>.</returns>
+        IManagedDeviceMobileAppConfigurationDeviceStatusesCollectionRequestBuilder DeviceStatuses { get; }
+
+        /// <summary>
         /// Gets the request builder for UserStatuses.
         /// </summary>
         /// <returns>The <see cref="IManagedDeviceMobileAppConfigurationUserStatusesCollectionRequestBuilder"/>.</returns>

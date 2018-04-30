@@ -30,7 +30,7 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets original end time zone.
-        /// The end time zone that was set when the event was created. A value of tzone://Microsoft/Customindicates that a legacy custom time zone was set in desktop Outlook.
+        /// The end time zone that was set when the event was created. A value of tzone://Microsoft/Custom indicates that a legacy custom time zone was set in desktop Outlook.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "originalEndTimeZone", Required = Newtonsoft.Json.Required.Default)]
         public string OriginalEndTimeZone { get; set; }
@@ -93,14 +93,14 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets importance.
-        /// The importance of the event. Possible values are: Low, Normal, High.
+        /// The importance of the event. Possible values are: low, normal, high.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "importance", Required = Newtonsoft.Json.Required.Default)]
         public Importance? Importance { get; set; }
     
         /// <summary>
         /// Gets or sets sensitivity.
-        /// Possible values are: Normal, Personal, Private, Confidential.
+        /// Possible values are: normal, personal, private, confidential.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "sensitivity", Required = Newtonsoft.Json.Required.Default)]
         public Sensitivity? Sensitivity { get; set; }
@@ -132,6 +132,13 @@ namespace Microsoft.Graph
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "location", Required = Newtonsoft.Json.Required.Default)]
         public Location Location { get; set; }
+    
+        /// <summary>
+        /// Gets or sets locations.
+        /// The locations where the event is held or attended from. The location and locations properties always correspond with each other. If you update the location property, any prior locations in the locations collection would be removed and replaced by the new location value.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "locations", Required = Newtonsoft.Json.Required.Default)]
+        public IEnumerable<Location> Locations { get; set; }
     
         /// <summary>
         /// Gets or sets is all day.
@@ -177,14 +184,14 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets show as.
-        /// The status to show. Possible values are: Free, Tentative, Busy, Oof, WorkingElsewhere, Unknown.
+        /// The status to show. Possible values are: free, tentative, busy, oof, workingElsewhere, unknown.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "showAs", Required = Newtonsoft.Json.Required.Default)]
         public FreeBusyStatus? ShowAs { get; set; }
     
         /// <summary>
         /// Gets or sets type.
-        /// The event type. Possible values are: SingleInstance, Occurrence, Exception, SeriesMaster. Read-only.
+        /// The event type. Possible values are: singleInstance, occurrence, exception, seriesMaster. Read-only.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "type", Required = Newtonsoft.Json.Required.Default)]
         public EventType? Type { get; set; }

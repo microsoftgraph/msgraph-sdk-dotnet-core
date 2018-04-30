@@ -126,6 +126,11 @@ namespace Microsoft.Graph
         IUserRequestBuilder Me { get; }
     
         /// <summary>
+        /// Gets the GraphServiceDirectory request builder.
+        /// </summary>
+        IDirectoryRequestBuilder Directory { get; }
+    
+        /// <summary>
         /// Gets the GraphServiceDrive request builder.
         /// </summary>
         IDriveRequestBuilder Drive { get; }

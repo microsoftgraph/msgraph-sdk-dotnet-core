@@ -79,6 +79,12 @@ namespace Microsoft.Graph
         public IManagedDeviceMobileAppConfigurationAssignmentsCollectionPage Assignments { get; set; }
     
         /// <summary>
+        /// Gets or sets device statuses.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "deviceStatuses", Required = Newtonsoft.Json.Required.Default)]
+        public IManagedDeviceMobileAppConfigurationDeviceStatusesCollectionPage DeviceStatuses { get; set; }
+    
+        /// <summary>
         /// Gets or sets user statuses.
         /// List of ManagedDeviceMobileAppConfigurationUserStatus.
         /// </summary>

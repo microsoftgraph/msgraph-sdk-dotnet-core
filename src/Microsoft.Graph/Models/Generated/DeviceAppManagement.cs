@@ -71,6 +71,13 @@ namespace Microsoft.Graph
         public IDeviceAppManagementMobileAppConfigurationsCollectionPage MobileAppConfigurations { get; set; }
     
         /// <summary>
+        /// Gets or sets vpp tokens.
+        /// List of Vpp tokens for this organization.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "vppTokens", Required = Newtonsoft.Json.Required.Default)]
+        public IDeviceAppManagementVppTokensCollectionPage VppTokens { get; set; }
+    
+        /// <summary>
         /// Gets or sets managed app policies.
         /// Managed app policies.
         /// </summary>

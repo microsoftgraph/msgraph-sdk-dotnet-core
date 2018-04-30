@@ -86,6 +86,18 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
+        /// Gets the request builder for VppTokens.
+        /// </summary>
+        /// <returns>The <see cref="IDeviceAppManagementVppTokensCollectionRequestBuilder"/>.</returns>
+        public IDeviceAppManagementVppTokensCollectionRequestBuilder VppTokens
+        {
+            get
+            {
+                return new DeviceAppManagementVppTokensCollectionRequestBuilder(this.AppendSegmentToRequestUrl("vppTokens"), this.Client);
+            }
+        }
+
+        /// <summary>
         /// Gets the request builder for ManagedAppPolicies.
         /// </summary>
         /// <returns>The <see cref="IDeviceAppManagementManagedAppPoliciesCollectionRequestBuilder"/>.</returns>

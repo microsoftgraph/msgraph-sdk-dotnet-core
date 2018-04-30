@@ -30,18 +30,18 @@ namespace Microsoft.Graph
         public bool? AllowMultipleSelection { get; set; }
     
         /// <summary>
-        /// Gets or sets displayAs.
-        /// How to display the information about the person or group chosen. See below.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "displayAs", Required = Newtonsoft.Json.Required.Default)]
-        public string DisplayAs { get; set; }
-    
-        /// <summary>
         /// Gets or sets chooseFromType.
         /// Whether to allow selection of people only, or people and groups. Must be one of peopleAndGroups or peopleOnly.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "chooseFromType", Required = Newtonsoft.Json.Required.Default)]
         public string ChooseFromType { get; set; }
+    
+        /// <summary>
+        /// Gets or sets displayAs.
+        /// How to display the information about the person or group chosen. See below.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "displayAs", Required = Newtonsoft.Json.Required.Default)]
+        public string DisplayAs { get; set; }
     
         /// <summary>
         /// Gets or sets additional data.

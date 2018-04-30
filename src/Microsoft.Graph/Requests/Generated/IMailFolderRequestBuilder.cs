@@ -37,6 +37,12 @@ namespace Microsoft.Graph
         IMailFolderMessagesCollectionRequestBuilder Messages { get; }
 
         /// <summary>
+        /// Gets the request builder for MessageRules.
+        /// </summary>
+        /// <returns>The <see cref="IMailFolderMessageRulesCollectionRequestBuilder"/>.</returns>
+        IMailFolderMessageRulesCollectionRequestBuilder MessageRules { get; }
+
+        /// <summary>
         /// Gets the request builder for ChildFolders.
         /// </summary>
         /// <returns>The <see cref="IMailFolderChildFoldersCollectionRequestBuilder"/>.</returns>

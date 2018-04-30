@@ -138,7 +138,7 @@ namespace Microsoft.Graph.Test.Requests.Functional
                         if (lastChunkSize > 0) { numberOfChunks++; }
 
                         // Create a file stream to contain the downloaded file.
-                        using (FileStream fileStream = System.IO.File.Create((@"C:\Temp\" + driveItemInfo.Name)))
+                        using (FileStream fileStream = System.IO.File.Create((driveItemInfo.Name)))
                         {
                             for (int i = 0; i < numberOfChunks; i++)
                             {

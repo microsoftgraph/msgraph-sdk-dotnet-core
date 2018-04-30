@@ -47,6 +47,12 @@ namespace Microsoft.Graph
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "fields", Required = Newtonsoft.Json.Required.Default)]
         public FieldValueSet Fields { get; set; }
     
+        /// <summary>
+        /// Gets or sets versions.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "versions", Required = Newtonsoft.Json.Required.Default)]
+        public IListItemVersionsCollectionPage Versions { get; set; }
+    
     }
 }
 

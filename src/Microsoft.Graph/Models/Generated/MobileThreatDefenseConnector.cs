@@ -23,52 +23,52 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets last heartbeat date time.
-        /// Timestamp of last heartbeat after admin enabled option Connect to MTP
+        /// DateTime of last Heartbeat recieved from the Data Sync Partner
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "lastHeartbeatDateTime", Required = Newtonsoft.Json.Required.Default)]
         public DateTimeOffset? LastHeartbeatDateTime { get; set; }
     
         /// <summary>
         /// Gets or sets partner state.
-        /// Partner state of this tenant Possible values are: unavailable, available, enabled, unresponsive.
+        /// Data Sync Partner state for this account Possible values are: unavailable, available, enabled, unresponsive.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "partnerState", Required = Newtonsoft.Json.Required.Default)]
         public MobileThreatPartnerTenantState? PartnerState { get; set; }
     
         /// <summary>
         /// Gets or sets android enabled.
-        /// Android Toggle On or Off
+        /// For Android, set whether data from the data sync partner should be used during compliance evaluations
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "androidEnabled", Required = Newtonsoft.Json.Required.Default)]
         public bool? AndroidEnabled { get; set; }
     
         /// <summary>
+        /// Gets or sets ios enabled.
+        /// For IOS, get or set whether data from the data sync partner should be used during compliance evaluations
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "iosEnabled", Required = Newtonsoft.Json.Required.Default)]
+        public bool? IosEnabled { get; set; }
+    
+        /// <summary>
         /// Gets or sets android device blocked on missing partner data.
-        /// For Android, Allows admin to config must receive data from the data sync partner prior to being considered compliant
+        /// For Android, set whether Intune must receive data from the data sync partner prior to marking a device compliant
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "androidDeviceBlockedOnMissingPartnerData", Required = Newtonsoft.Json.Required.Default)]
         public bool? AndroidDeviceBlockedOnMissingPartnerData { get; set; }
     
         /// <summary>
         /// Gets or sets ios device blocked on missing partner data.
-        /// For IOS, Allows admin to config must receive data from the data sync partner prior to being considered compliant
+        /// For IOS, set whether Intune must receive data from the data sync partner prior to marking a device compliant
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "iosDeviceBlockedOnMissingPartnerData", Required = Newtonsoft.Json.Required.Default)]
         public bool? IosDeviceBlockedOnMissingPartnerData { get; set; }
     
         /// <summary>
         /// Gets or sets partner unsupported os version blocked.
-        /// Allows admin to block devices on the enabled platforms that do not meet minimum version requirements
+        /// Get or set whether to block devices on the enabled platforms that do not meet the minimum version requirements of the Data Sync Partner
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "partnerUnsupportedOsVersionBlocked", Required = Newtonsoft.Json.Required.Default)]
         public bool? PartnerUnsupportedOsVersionBlocked { get; set; }
-    
-        /// <summary>
-        /// Gets or sets ios enabled.
-        /// IOS Toggle On or Off
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "iosEnabled", Required = Newtonsoft.Json.Required.Default)]
-        public bool? IosEnabled { get; set; }
     
         /// <summary>
         /// Gets or sets partner unresponsiveness threshold in days.

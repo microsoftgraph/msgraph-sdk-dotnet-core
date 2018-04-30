@@ -49,7 +49,9 @@ namespace Microsoft.Graph
         INotebookCopyNotebookRequestBuilder CopyNotebook(
             string groupId = null,
             string renameAs = null,
-            string notebookFolder = null);
+            string notebookFolder = null,
+            string siteCollectionId = null,
+            string siteId = null);
     
     }
 }

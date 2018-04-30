@@ -104,13 +104,17 @@ namespace Microsoft.Graph
         /// <returns>The <see cref="IOnenotePageCopyToSectionRequestBuilder"/>.</returns>
         public IOnenotePageCopyToSectionRequestBuilder CopyToSection(
             string id = null,
-            string groupId = null)
+            string groupId = null,
+            string siteCollectionId = null,
+            string siteId = null)
         {
             return new OnenotePageCopyToSectionRequestBuilder(
                 this.AppendSegmentToRequestUrl("microsoft.graph.copyToSection"),
                 this.Client,
                 id,
-                groupId);
+                groupId,
+                siteCollectionId,
+                siteId);
         }
 
         /// <summary>

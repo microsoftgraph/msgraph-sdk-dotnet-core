@@ -36,6 +36,12 @@ namespace Microsoft.Graph
         public string DeviceName { get; set; }
     
         /// <summary>
+        /// Gets or sets managed device owner type.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "managedDeviceOwnerType", Required = Newtonsoft.Json.Required.Default)]
+        public ManagedDeviceOwnerType? ManagedDeviceOwnerType { get; set; }
+    
+        /// <summary>
         /// Gets or sets device action results.
         /// List of ComplexType deviceActionResult objects.
         /// </summary>
