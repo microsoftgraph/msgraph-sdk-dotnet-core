@@ -55,6 +55,74 @@ namespace Microsoft.Graph
             return retrievedEntity;
         }
 
+		/// <summary>
+        /// Creates the specified EducationUser using POST.
+        /// </summary>
+        /// <param name="educationUserToCreate">The EducationUser to create.</param>
+        /// <returns>The created EducationUser.</returns>
+        public System.Threading.Tasks.Task<EducationUser> CreateAsync(EducationUser educationUserToCreate)
+        {
+            return this.CreateAsync(educationUserToCreate, CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Creates the specified EducationUser using POST.
+        /// </summary>
+        /// <param name="educationUserToCreate">The EducationUser to create.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The created EducationUser.</returns>
+        public async System.Threading.Tasks.Task<EducationUser> CreateAsync(EducationUser educationUserToCreate, CancellationToken cancellationToken)
+        {
+            this.ContentType = "application/json";
+            this.Method = "POST";
+            var newEntity = await this.SendAsync<EducationUser>(educationUserToCreate, cancellationToken).ConfigureAwait(false);
+            return newEntity;
+        }
+
+		/// <summary>
+        /// Updates the specified EducationUser using PATCH.
+        /// </summary>
+        /// <param name="educationUserToUpdate">The EducationUser to update.</param>
+        /// <returns>The updated EducationUser.</returns>
+        public System.Threading.Tasks.Task<EducationUser> UpdateAsync(EducationUser educationUserToUpdate)
+        {
+            return this.UpdateAsync(educationUserToUpdate, CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Updates the specified EducationUser using PATCH.
+        /// </summary>
+        /// <param name="educationUserToUpdate">The EducationUser to update.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The updated EducationUser.</returns>
+        public async System.Threading.Tasks.Task<EducationUser> UpdateAsync(EducationUser educationUserToUpdate, CancellationToken cancellationToken)
+        {
+            this.ContentType = "application/json";
+            this.Method = "PATCH";
+            var updatedEntity = await this.SendAsync<EducationUser>(educationUserToUpdate, cancellationToken).ConfigureAwait(false);
+            return updatedEntity;
+        }
+
+		/// <summary>
+        /// Deletes the specified EducationUser.
+        /// </summary>
+        /// <returns>The task to await.</returns>
+        public System.Threading.Tasks.Task DeleteAsync()
+        {
+            return this.DeleteAsync(CancellationToken.None);
+        }
+
+        /// <summary>
+        /// Deletes the specified EducationUser.
+        /// </summary>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The task to await.</returns>
+        public async System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken)
+        {
+            this.Method = "DELETE";
+            await this.SendAsync<EducationUser>(null, cancellationToken).ConfigureAwait(false);
+        }
+
         /// <summary>
         /// Adds the specified expand value to the request.
         /// </summary>

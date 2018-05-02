@@ -32,6 +32,47 @@ namespace Microsoft.Graph
         /// <returns>The EducationClass.</returns>
         System.Threading.Tasks.Task<EducationClass> GetAsync(CancellationToken cancellationToken);
 
+		/// <summary>
+        /// Creates the specified EducationClass using PUT.
+        /// </summary>
+        /// <param name="educationClassToCreate">The EducationClass to create.</param>
+        /// <returns>The created EducationClass.</returns>
+        System.Threading.Tasks.Task<EducationClass> CreateAsync(EducationClass educationClassToCreate);        /// <summary>
+        /// Creates the specified EducationClass using PUT.
+        /// </summary>
+        /// <param name="educationClassToCreate">The EducationClass to create.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The created EducationClass.</returns>
+        System.Threading.Tasks.Task<EducationClass> CreateAsync(EducationClass educationClassToCreate, CancellationToken cancellationToken);
+
+		/// <summary>
+        /// Updates the specified EducationClass using PATCH.
+        /// </summary>
+        /// <param name="educationClassToUpdate">The EducationClass to update.</param>
+        /// <returns>The updated EducationClass.</returns>
+        System.Threading.Tasks.Task<EducationClass> UpdateAsync(EducationClass educationClassToUpdate);
+
+        /// <summary>
+        /// Updates the specified EducationClass using PATCH.
+        /// </summary>
+        /// <param name="educationClassToUpdate">The EducationClass to update.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The updated EducationClass.</returns>
+        System.Threading.Tasks.Task<EducationClass> UpdateAsync(EducationClass educationClassToUpdate, CancellationToken cancellationToken);
+
+		/// <summary>
+        /// Deletes the specified EducationClass.
+        /// </summary>
+        /// <returns>The task to await.</returns>
+        System.Threading.Tasks.Task DeleteAsync();
+
+        /// <summary>
+        /// Deletes the specified EducationClass.
+        /// </summary>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The task to await.</returns>
+        System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken);
+
         /// <summary>
         /// Adds the specified expand value to the request.
         /// </summary>

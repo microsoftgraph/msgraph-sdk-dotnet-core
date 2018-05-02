@@ -32,6 +32,47 @@ namespace Microsoft.Graph
         /// <returns>The UserActivity.</returns>
         System.Threading.Tasks.Task<UserActivity> GetAsync(CancellationToken cancellationToken);
 
+		/// <summary>
+        /// Creates the specified UserActivity using PUT.
+        /// </summary>
+        /// <param name="userActivityToCreate">The UserActivity to create.</param>
+        /// <returns>The created UserActivity.</returns>
+        System.Threading.Tasks.Task<UserActivity> CreateAsync(UserActivity userActivityToCreate);        /// <summary>
+        /// Creates the specified UserActivity using PUT.
+        /// </summary>
+        /// <param name="userActivityToCreate">The UserActivity to create.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The created UserActivity.</returns>
+        System.Threading.Tasks.Task<UserActivity> CreateAsync(UserActivity userActivityToCreate, CancellationToken cancellationToken);
+
+		/// <summary>
+        /// Updates the specified UserActivity using PATCH.
+        /// </summary>
+        /// <param name="userActivityToUpdate">The UserActivity to update.</param>
+        /// <returns>The updated UserActivity.</returns>
+        System.Threading.Tasks.Task<UserActivity> UpdateAsync(UserActivity userActivityToUpdate);
+
+        /// <summary>
+        /// Updates the specified UserActivity using PATCH.
+        /// </summary>
+        /// <param name="userActivityToUpdate">The UserActivity to update.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The updated UserActivity.</returns>
+        System.Threading.Tasks.Task<UserActivity> UpdateAsync(UserActivity userActivityToUpdate, CancellationToken cancellationToken);
+
+		/// <summary>
+        /// Deletes the specified UserActivity.
+        /// </summary>
+        /// <returns>The task to await.</returns>
+        System.Threading.Tasks.Task DeleteAsync();
+
+        /// <summary>
+        /// Deletes the specified UserActivity.
+        /// </summary>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The task to await.</returns>
+        System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken);
+
         /// <summary>
         /// Adds the specified expand value to the request.
         /// </summary>
