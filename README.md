@@ -91,6 +91,7 @@ The following sample applications are also available:
 * [Overview](docs/overview.md)
 * [Collections](docs/collections.md)
 * [Errors](docs/errors.md)
+* [Headers](docs/headers.md)
 * [Microsoft Graph API](https://graph.microsoft.io)
 * [Release notes](https://github.com/microsoftgraph/msgraph-sdk-dotnet/releases)
 

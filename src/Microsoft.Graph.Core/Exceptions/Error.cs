@@ -10,24 +10,46 @@ namespace Microsoft.Graph
     using System.Text;
     using Newtonsoft.Json;
 
+    /// <summary>
+    /// The error object that handles unsuccessful responses returned from the service.
+    /// </summary>
     [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public class Error
     {
+        /// <summary>
+        /// The HTTP status code.
+        /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "code", Required = Required.Default)]
         public string Code { get; set; }
 
+        /// <summary>
+        /// The inner error of the response. These are additional error objects that may be more specific than the top level error.
+        /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "innererror", Required = Required.Default)]
         public Error InnerError { get; set; }
 
+        /// <summary>
+        /// The error message.
+        /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "message", Required = Required.Default)]
         public string Message { get; set; }
 
+        /// <summary>
+        /// The Throw site of the error.
+        /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "throwSite", Required = Required.Default)]
         public string ThrowSite { get; set; }
 
+        /// <summary>
+        /// The AdditionalData property bag.
+        /// </summary>
         [JsonExtensionData(ReadData = true)]
         public IDictionary<string, object> AdditionalData { get; set; }
 
+        /// <summary>
+        /// Concatenates the error into a string.
+        /// </summary>
+        /// <returns>A human-readable string error response.</returns>
         public override string ToString()
         {
             var errorStringBuilder = new StringBuilder();

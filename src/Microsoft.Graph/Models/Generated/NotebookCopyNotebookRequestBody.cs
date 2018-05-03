@@ -39,5 +39,17 @@ namespace Microsoft.Graph
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "notebookFolder", Required = Newtonsoft.Json.Required.Default)]
         public string NotebookFolder { get; set; }
     
+        /// <summary>
+        /// Gets or sets SiteCollectionId.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "siteCollectionId", Required = Newtonsoft.Json.Required.Default)]
+        public string SiteCollectionId { get; set; }
+    
+        /// <summary>
+        /// Gets or sets SiteId.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "siteId", Required = Newtonsoft.Json.Required.Default)]
+        public string SiteId { get; set; }
+    
     }
 }

@@ -21,6 +21,9 @@ namespace Microsoft.Graph
     public partial class Attachment : Entity
     {
     
+		///<summary>
+		/// The internal Attachment constructor
+		///</summary>
         protected internal Attachment()
         {
             // Don't allow initialization of abstract entity types

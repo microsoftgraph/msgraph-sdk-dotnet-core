@@ -3,9 +3,9 @@
     <Description>Microsoft Graph Client Library allows you to call Office 365, Azure AD and other Microsoft services through a single unified developer experience.</Description>
     <Copyright>Copyright (c) Microsoft Corporation</Copyright>
     <AssemblyTitle>Microsoft Graph Client Library</AssemblyTitle>
-    <VersionPrefix>1.8.0</VersionPrefix>
-    <FileVersion>1.8.0</FileVersion>
-    <AssemblyVersion>1.8.0</AssemblyVersion>
+    <VersionPrefix>1.9.0</VersionPrefix>
+    <FileVersion>1.9.0</FileVersion>
+    <AssemblyVersion>1.9.0</AssemblyVersion>
     <Authors>Microsoft</Authors>
     <TargetFrameworks>netstandard1.1;net45</TargetFrameworks>
     <PreserveCompilationContext>false</PreserveCompilationContext>
@@ -13,14 +13,18 @@
     <PackageId>Microsoft.Graph</PackageId>
     <PackageTags>Microsoft Office365;Graph;GraphServiceClient;Outlook;OneDrive;AzureAD;GraphAPI;Productivity;SharePoint;Intune;SDK</PackageTags>
     <PackageReleaseNotes>
-      March 2018 Release Summary (version 1.8.0)
+May 2018 Release Summary (version 1.9.0)
 
-      New features
-      * Include support for the Reports API. This gives you access to Office 365 usage reports for Outlook, users, groups, OneDrive, SharePoint, Skype for Business and Yammer. See https://developer.microsoft.com/en-us/graph/docs/api-reference/v1.0/resources/report for more information.
-      * Updated IntelliSense file with new documentation.
-      * Include support for the Intune API. This enables programmatic access to Intune information for your tenant with rich information and relationship navigation. See https://developer.microsoft.com/en-us/graph/docs/api-reference/v1.0/resources/intune_graph_overview for more information.
-      * Include support for the Education API. This enhances Office 365 resources and data with information that is relevant for education scnearios, including schools, students, teachers, classes, and enrollments. See https://developer.microsoft.com/en-us/graph/docs/api-reference/v1.0/resources/education-overview for more information.
-      * Update Json.NET dependency to include 11.x
+New features
+- Added more comments.
+- UserActivity - apps can push information to the user's timeline.
+- Updated timezone information.
+- Updates to Intune functionality.
+- New Outlook functionality which includes an OutlookUser object, categories, coordinates, message rules, and working hours.
+- New OneNote functionality which includes a notebook's site collection.
+
+Bug fixes
+- Fixed Site GetByPath
     </PackageReleaseNotes>
     <PackageProjectUrl>https://developer.microsoft.com/graph</PackageProjectUrl>
     <PackageLicenseUrl>http://aka.ms/devservicesagreement</PackageLicenseUrl>
@@ -40,7 +44,7 @@
     <DelaySign>True</DelaySign>
     <AssemblyOriginatorKeyFile>35MSSharedLib1024.snk</AssemblyOriginatorKeyFile>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <Version>1.8.0</Version>
+    <Version>1.9.0</Version>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard1.1|AnyCPU'">
     <DocumentationFile>bin\Release\Microsoft.Graph.xml</DocumentationFile>

@@ -21,6 +21,9 @@ namespace Microsoft.Graph
     public partial class OnenoteEntityHierarchyModel : OnenoteEntitySchemaObjectModel
     {
     
+		///<summary>
+		/// The internal OnenoteEntityHierarchyModel constructor
+		///</summary>
         protected internal OnenoteEntityHierarchyModel()
         {
             // Don't allow initialization of abstract entity types

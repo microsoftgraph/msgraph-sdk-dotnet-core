@@ -15,6 +15,9 @@ namespace Microsoft.Graph
     {
         JsonSerializerSettings jsonSerializerSettings;
 
+        /// <summary>
+        /// Constructor for the serializer with defaults for the JsonSerializer settings.
+        /// </summary>
         public Serializer()
             : this(
                   new JsonSerializerSettings
@@ -26,6 +29,10 @@ namespace Microsoft.Graph
         {
         }
 
+        /// <summary>
+        /// Constructor for the serializer.
+        /// </summary>
+        /// <param name="jsonSerializerSettings">The serializer settings to apply to the serializer.</param>
         public Serializer(JsonSerializerSettings jsonSerializerSettings)
         {
             this.jsonSerializerSettings = jsonSerializerSettings;

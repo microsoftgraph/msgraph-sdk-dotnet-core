@@ -85,6 +85,12 @@ namespace Microsoft.Graph
         IUserExtensionsCollectionRequestBuilder Extensions { get; }
 
         /// <summary>
+        /// Gets the request builder for Outlook.
+        /// </summary>
+        /// <returns>The <see cref="IOutlookUserRequestBuilder"/>.</returns>
+        IOutlookUserRequestBuilder Outlook { get; }
+
+        /// <summary>
         /// Gets the request builder for Messages.
         /// </summary>
         /// <returns>The <see cref="IUserMessagesCollectionRequestBuilder"/>.</returns>
@@ -203,6 +209,12 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IUserDeviceManagementTroubleshootingEventsCollectionRequestBuilder"/>.</returns>
         IUserDeviceManagementTroubleshootingEventsCollectionRequestBuilder DeviceManagementTroubleshootingEvents { get; }
+
+        /// <summary>
+        /// Gets the request builder for Activities.
+        /// </summary>
+        /// <returns>The <see cref="IUserActivitiesCollectionRequestBuilder"/>.</returns>
+        IUserActivitiesCollectionRequestBuilder Activities { get; }
     
         /// <summary>
         /// Gets the request builder for UserAssignLicense.

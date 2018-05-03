@@ -8,8 +8,16 @@ namespace Microsoft.Graph
 
     using Newtonsoft.Json;
 
+    /// <summary>
+    /// Converter for serializing and deserializing Duration objects.
+    /// </summary>
     public class DurationConverter : JsonConverter
     {
+        /// <summary>
+        /// Checks if the given object can be converted into a Duration object.
+        /// </summary>
+        /// <param name="objectType">The object type.</param>
+        /// <returns>True if the object is of type Duration.</returns>
         public override bool CanConvert(Type objectType)
         {
             if (objectType == typeof(Duration))

@@ -17,7 +17,7 @@ namespace Microsoft.Graph.Test.Requests.Functional
             try
             {
                 // Specify the search query parameter.
-                var searchQuery = new QueryOption("search", "a");
+                var searchQuery = new QueryOption("search", "contoso");
                 var options = new List<QueryOption>();
                 options.Add(searchQuery);
 
@@ -69,7 +69,7 @@ namespace Microsoft.Graph.Test.Requests.Functional
             try
             {
                 // Specify the search query parameter.
-                var searchQuery = new QueryOption("search", "Office 365 Demos");
+                var searchQuery = new QueryOption("search", "sales");
                 var options = new List<QueryOption>();
                 options.Add(searchQuery);
 
@@ -107,6 +107,8 @@ namespace Microsoft.Graph.Test.Requests.Functional
         /// https://developer.microsoft.com/en-us/graph/docs/api-reference/v1.0/api/site_get
         /// </summary>
         /// Open question: how is a customer expected to get Site path. This part of the experience is unclear to me. 
+        /// 
+        [Ignore] // Need reset test data  in demo tenant
         [TestMethod]
         public async Async.Task SharePointGetSiteWithPath()
         {
@@ -139,14 +141,18 @@ namespace Microsoft.Graph.Test.Requests.Functional
                             Message = await response.Content.ReadAsStringAsync()
                         });
                                
-                string siteResource = "portals/Information-Technology";
+                string siteResource = "sites/IT";
 
-                // Get the portals/Information-Technology site.
+                // Get the sites/IT site.
                 Site portalInfoTechSite = await graphClient.Sites.GetByPath(siteResource, site.SiteCollection.Hostname).Request().GetAsync();
 
                 StringAssert.Contains(portalInfoTechSite.WebUrl, siteResource);
                 StringAssert.Contains(portalInfoTechSite.Id, portalInfoTechSite.SiteCollection.Hostname); // Check if id format changes under us. 
                 Assert.AreEqual(site.SiteCollection.Hostname, portalInfoTechSite.SiteCollection.Hostname);
+
+                // Get the site's drive
+                Drive techDrive = await graphClient.Sites.GetByPath(siteResource, site.SiteCollection.Hostname).Drive.Request().GetAsync();
+                Assert.IsNotNull(techDrive);
             }
             catch (Microsoft.Graph.ServiceException e)
             {
@@ -162,7 +168,7 @@ namespace Microsoft.Graph.Test.Requests.Functional
         {
             try
             {
-                Site site = await graphClient.Shares[UrlToSharingToken("https://mod810997.sharepoint.com/sites/SMBverticals")].Site.Request().GetAsync();
+                Site site = await graphClient.Shares[UrlToSharingToken("https://m365x462896.sharepoint.com/sites/portals2")].Site.Request().GetAsync();
                 Assert.IsNotNull(site);
             }
             catch (Microsoft.Graph.ServiceException e)

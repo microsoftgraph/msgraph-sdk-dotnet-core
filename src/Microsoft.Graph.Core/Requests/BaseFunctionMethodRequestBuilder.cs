@@ -15,10 +15,13 @@ namespace Microsoft.Graph
         private List<string> _parameters = new List<string>();
         private List<QueryOption> _queryOptions = new List<QueryOption>();
 
+        /// <summary>
+        /// Whether to include parameters in the query string.
+        /// </summary>
         protected bool passParametersInQueryString;
 
         /// <summary>
-        /// Constructs a new <see cref="BaseMethodRequestBuilder"/>.
+        /// Constructs a new BaseFunctionMethodRequestBuilder.
         /// </summary>
         /// <param name="requestUrl">The URL for the request.</param>
         /// <param name="client">The <see cref="IBaseClient"/> for handling requests.</param>
@@ -71,7 +74,7 @@ namespace Microsoft.Graph
         /// pair. This method handles the nullable case and properly wrapped and escaping
         /// string values.
         /// </summary>
-        /// <param name="name">The parameter name.<param>
+        /// <param name="name">The parameter name.</param>
         /// <param name="value">The parameter value.</param>
         /// <param name="nullable">A flag specifying whether the parameter is allowed to be null.</param>
         /// <returns>A string representing the parameter for an OData method call.</returns>

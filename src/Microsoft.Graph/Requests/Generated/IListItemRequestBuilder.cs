@@ -41,6 +41,12 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IFieldValueSetRequestBuilder"/>.</returns>
         IFieldValueSetRequestBuilder Fields { get; }
+
+        /// <summary>
+        /// Gets the request builder for Versions.
+        /// </summary>
+        /// <returns>The <see cref="IListItemVersionsCollectionRequestBuilder"/>.</returns>
+        IListItemVersionsCollectionRequestBuilder Versions { get; }
     
     }
 }

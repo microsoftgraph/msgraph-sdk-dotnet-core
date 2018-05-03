@@ -62,6 +62,18 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
+        /// Gets the request builder for MessageRules.
+        /// </summary>
+        /// <returns>The <see cref="IMailFolderMessageRulesCollectionRequestBuilder"/>.</returns>
+        public IMailFolderMessageRulesCollectionRequestBuilder MessageRules
+        {
+            get
+            {
+                return new MailFolderMessageRulesCollectionRequestBuilder(this.AppendSegmentToRequestUrl("messageRules"), this.Client);
+            }
+        }
+
+        /// <summary>
         /// Gets the request builder for ChildFolders.
         /// </summary>
         /// <returns>The <see cref="IMailFolderChildFoldersCollectionRequestBuilder"/>.</returns>

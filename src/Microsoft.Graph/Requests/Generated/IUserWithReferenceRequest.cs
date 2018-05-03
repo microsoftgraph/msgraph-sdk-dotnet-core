@@ -32,6 +32,47 @@ namespace Microsoft.Graph
         /// <returns>The User.</returns>
         System.Threading.Tasks.Task<User> GetAsync(CancellationToken cancellationToken);
 
+		/// <summary>
+        /// Creates the specified User using PUT.
+        /// </summary>
+        /// <param name="userToCreate">The User to create.</param>
+        /// <returns>The created User.</returns>
+        System.Threading.Tasks.Task<User> CreateAsync(User userToCreate);        /// <summary>
+        /// Creates the specified User using PUT.
+        /// </summary>
+        /// <param name="userToCreate">The User to create.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The created User.</returns>
+        System.Threading.Tasks.Task<User> CreateAsync(User userToCreate, CancellationToken cancellationToken);
+
+		/// <summary>
+        /// Updates the specified User using PATCH.
+        /// </summary>
+        /// <param name="userToUpdate">The User to update.</param>
+        /// <returns>The updated User.</returns>
+        System.Threading.Tasks.Task<User> UpdateAsync(User userToUpdate);
+
+        /// <summary>
+        /// Updates the specified User using PATCH.
+        /// </summary>
+        /// <param name="userToUpdate">The User to update.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The updated User.</returns>
+        System.Threading.Tasks.Task<User> UpdateAsync(User userToUpdate, CancellationToken cancellationToken);
+
+		/// <summary>
+        /// Deletes the specified User.
+        /// </summary>
+        /// <returns>The task to await.</returns>
+        System.Threading.Tasks.Task DeleteAsync();
+
+        /// <summary>
+        /// Deletes the specified User.
+        /// </summary>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The task to await.</returns>
+        System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken);
+
         /// <summary>
         /// Adds the specified expand value to the request.
         /// </summary>

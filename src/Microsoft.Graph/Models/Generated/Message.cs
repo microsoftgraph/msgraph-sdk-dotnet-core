@@ -37,7 +37,7 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets has attachments.
-        /// Indicates whether the message has attachments. This property doesn't include inline attachments, so if a message contains only inline attachments, this property is false. To verify the existence of inline attachments, parse the body property to look for a src attribute, such as <IMG src="cid:image001.jpg@01D26CD8.6C05F070">.
+        /// Indicates whether the message has attachments. This property doesn't include inline attachments, so if a message contains only inline attachments, this property is false. To verify the existence of inline attachments, parse the body property to look for a src attribute, such as &amp;lt;IMG src="cid:image001.jpg@01D26CD8.6C05F070"&amp;gt;.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "hasAttachments", Required = Newtonsoft.Json.Required.Default)]
         public bool? HasAttachments { get; set; }
@@ -48,6 +48,13 @@ namespace Microsoft.Graph
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "internetMessageId", Required = Newtonsoft.Json.Required.Default)]
         public string InternetMessageId { get; set; }
+    
+        /// <summary>
+        /// Gets or sets internet message headers.
+        /// The collection of message headers, defined by RFC5322, that provide details of the network path taken by a message from the sender to the recipient. Read-only.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "internetMessageHeaders", Required = Newtonsoft.Json.Required.Default)]
+        public IEnumerable<InternetMessageHeader> InternetMessageHeaders { get; set; }
     
         /// <summary>
         /// Gets or sets subject.
@@ -181,6 +188,13 @@ namespace Microsoft.Graph
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "inferenceClassification", Required = Newtonsoft.Json.Required.Default)]
         public InferenceClassificationType? InferenceClassification { get; set; }
+    
+        /// <summary>
+        /// Gets or sets flag.
+        /// The flag value that indicates the status, start date, due date, or completion date for the message.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "flag", Required = Newtonsoft.Json.Required.Default)]
+        public FollowupFlag Flag { get; set; }
     
         /// <summary>
         /// Gets or sets attachments.

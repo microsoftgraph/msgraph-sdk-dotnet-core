@@ -23,7 +23,6 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets target.
-        /// Identifier for deployment of a group or app
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "target", Required = Newtonsoft.Json.Required.Default)]
         public DeviceAndAppManagementAssignmentTarget Target { get; set; }

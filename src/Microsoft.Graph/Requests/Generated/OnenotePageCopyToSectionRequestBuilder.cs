@@ -24,15 +24,21 @@ namespace Microsoft.Graph
         /// <param name="client">The <see cref="IBaseClient"/> for handling requests.</param>
         /// <param name="id">A id parameter for the OData method call.</param>
         /// <param name="groupId">A groupId parameter for the OData method call.</param>
+        /// <param name="siteCollectionId">A siteCollectionId parameter for the OData method call.</param>
+        /// <param name="siteId">A siteId parameter for the OData method call.</param>
         public OnenotePageCopyToSectionRequestBuilder(
             string requestUrl,
             IBaseClient client,
             string id,
-            string groupId)
+            string groupId,
+            string siteCollectionId,
+            string siteId)
             : base(requestUrl, client)
         {
             this.SetParameter("id", id, true);
             this.SetParameter("groupId", groupId, true);
+            this.SetParameter("siteCollectionId", siteCollectionId, true);
+            this.SetParameter("siteId", siteId, true);
         }
 
         /// <summary>
@@ -53,6 +59,16 @@ namespace Microsoft.Graph
             if (this.HasParameter("groupId"))
             {
                 request.RequestBody.GroupId = this.GetParameter<string>("groupId");
+            }
+
+            if (this.HasParameter("siteCollectionId"))
+            {
+                request.RequestBody.SiteCollectionId = this.GetParameter<string>("siteCollectionId");
+            }
+
+            if (this.HasParameter("siteId"))
+            {
+                request.RequestBody.SiteId = this.GetParameter<string>("siteId");
             }
 
             return request;

@@ -294,7 +294,7 @@ namespace Microsoft.Graph
         /// <summary>
         /// Converts the <see cref="HttpRequestException"/> into an <see cref="ErrorResponse"/> object;
         /// </summary>
-        /// <param name="response">The <see cref="WebResponse"/> to convert.</param>
+        /// <param name="response">The <see cref="HttpResponseMessage"/> to convert.</param>
         /// <returns>The <see cref="ErrorResponse"/> object.</returns>
         private async Task<ErrorResponse> ConvertErrorResponseAsync(HttpResponseMessage response)
         {

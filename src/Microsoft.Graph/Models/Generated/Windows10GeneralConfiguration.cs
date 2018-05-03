@@ -86,7 +86,7 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets search enable remote queries.
-        /// Indicates whether or not to block remote queries of this computer’s index.
+        /// Indicates whether or not to block remote queries of this computer's index.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "searchEnableRemoteQueries", Required = Newtonsoft.Json.Required.Default)]
         public bool? SearchEnableRemoteQueries { get; set; }
@@ -324,7 +324,7 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets defender detected malware actions.
-        /// Gets or sets Defender’s actions to take on detected Malware per threat level.
+        /// Gets or sets Defender's actions to take on detected Malware per threat level.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "defenderDetectedMalwareActions", Required = Newtonsoft.Json.Required.Default)]
         public DefenderDetectedMalwareActions DefenderDetectedMalwareActions { get; set; }
@@ -681,7 +681,7 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets start menu hide restart options.
-        /// Enabling this policy hides “Restart/Update and Restart” from appearing in the power button in the start menu.
+        /// Enabling this policy hides "Restart/Update and Restart" from appearing in the power button in the start menu.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "startMenuHideRestartOptions", Required = Newtonsoft.Json.Required.Default)]
         public bool? StartMenuHideRestartOptions { get; set; }
@@ -835,7 +835,7 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets settings block network internet page.
-        /// Indicates whether or not to block access to Network & Internet in Settings app.
+        /// Indicates whether or not to block access to Network &amp; Internet in Settings app.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "settingsBlockNetworkInternetPage", Required = Newtonsoft.Json.Required.Default)]
         public bool? SettingsBlockNetworkInternetPage { get; set; }
@@ -856,7 +856,7 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets settings block time language page.
-        /// Indicates whether or not to block access to Time & Language in Settings app.
+        /// Indicates whether or not to block access to Time &amp; Language in Settings app.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "settingsBlockTimeLanguagePage", Required = Newtonsoft.Json.Required.Default)]
         public bool? SettingsBlockTimeLanguagePage { get; set; }
@@ -877,7 +877,7 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets settings block update security page.
-        /// Indicates whether or not to block access to Update & Security in Settings app.
+        /// Indicates whether or not to block access to Update &amp; Security in Settings app.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "settingsBlockUpdateSecurityPage", Required = Newtonsoft.Json.Required.Default)]
         public bool? SettingsBlockUpdateSecurityPage { get; set; }
@@ -919,7 +919,7 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets windows spotlight block tailored experiences.
-        /// Block personalized content in Windows spotlight based on user’s device usage.
+        /// Block personalized content in Windows spotlight based on user's device usage.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "windowsSpotlightBlockTailoredExperiences", Required = Newtonsoft.Json.Required.Default)]
         public bool? WindowsSpotlightBlockTailoredExperiences { get; set; }
@@ -954,7 +954,7 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets network proxy apply settings device wide.
-        /// If set, proxy settings will be applied to all processes and accounts in the device. Otherwise, it will be applied to the user account that’s enrolled into MDM.
+        /// If set, proxy settings will be applied to all processes and accounts in the device. Otherwise, it will be applied to the user account that's enrolled into MDM.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "networkProxyApplySettingsDeviceWide", Required = Newtonsoft.Json.Required.Default)]
         public bool? NetworkProxyApplySettingsDeviceWide { get; set; }

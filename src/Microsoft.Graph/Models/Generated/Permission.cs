@@ -23,7 +23,7 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets granted to.
-        /// For user type permissions, the details of the users & applications for this permission. Read-only.
+        /// For user type permissions, the details of the users &amp; applications for this permission. Read-only.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "grantedTo", Required = Newtonsoft.Json.Required.Default)]
         public IdentitySet GrantedTo { get; set; }

@@ -8,8 +8,16 @@ namespace Microsoft.Graph
     using System.Collections.Generic;
     using System.Net;
 
+    /// <summary>
+    /// Helper class for working with URLs.
+    /// </summary>
     public static class UrlHelper
     {
+        /// <summary>
+        /// Parse query options from the URL.
+        /// </summary>
+        /// <param name="resultUri"></param>
+        /// <returns></returns>
         public static IDictionary<string, string> GetQueryOptions(Uri resultUri)
         {
             string[] queryParams = null;

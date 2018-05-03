@@ -58,7 +58,7 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets maintenance window duration in hours.
-        /// Maintenance window duration for device updates. Valid values 1 to 5
+        /// Maintenance window duration for device updates. Valid values 0 to 5
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "maintenanceWindowDurationInHours", Required = Newtonsoft.Json.Required.Default)]
         public Int32? MaintenanceWindowDurationInHours { get; set; }

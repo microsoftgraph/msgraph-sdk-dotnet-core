@@ -25,17 +25,23 @@ namespace Microsoft.Graph
         /// <param name="groupId">A groupId parameter for the OData method call.</param>
         /// <param name="renameAs">A renameAs parameter for the OData method call.</param>
         /// <param name="notebookFolder">A notebookFolder parameter for the OData method call.</param>
+        /// <param name="siteCollectionId">A siteCollectionId parameter for the OData method call.</param>
+        /// <param name="siteId">A siteId parameter for the OData method call.</param>
         public NotebookCopyNotebookRequestBuilder(
             string requestUrl,
             IBaseClient client,
             string groupId,
             string renameAs,
-            string notebookFolder)
+            string notebookFolder,
+            string siteCollectionId,
+            string siteId)
             : base(requestUrl, client)
         {
             this.SetParameter("groupId", groupId, true);
             this.SetParameter("renameAs", renameAs, true);
             this.SetParameter("notebookFolder", notebookFolder, true);
+            this.SetParameter("siteCollectionId", siteCollectionId, true);
+            this.SetParameter("siteId", siteId, true);
         }
 
         /// <summary>
@@ -61,6 +67,16 @@ namespace Microsoft.Graph
             if (this.HasParameter("notebookFolder"))
             {
                 request.RequestBody.NotebookFolder = this.GetParameter<string>("notebookFolder");
+            }
+
+            if (this.HasParameter("siteCollectionId"))
+            {
+                request.RequestBody.SiteCollectionId = this.GetParameter<string>("siteCollectionId");
+            }
+
+            if (this.HasParameter("siteId"))
+            {
+                request.RequestBody.SiteId = this.GetParameter<string>("siteId");
             }
 
             return request;

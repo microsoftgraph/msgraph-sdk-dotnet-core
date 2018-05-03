@@ -8,8 +8,16 @@ namespace Microsoft.Graph
 
     using Newtonsoft.Json;
 
+    /// <summary>
+    /// The Date Converter.
+    /// </summary>
     public class DateConverter : JsonConverter
     {
+        /// <summary>
+        /// Check if the given object can be converted into a Date.
+        /// </summary>
+        /// <param name="objectType">The type of the object.</param>
+        /// <returns>True if the object is a Date type.</returns>
         public override bool CanConvert(Type objectType)
         {
             if (objectType == typeof(Date))
@@ -20,6 +28,14 @@ namespace Microsoft.Graph
             return false;
         }
 
+        /// <summary>
+        /// Converts the JSON object into a Date object
+        /// </summary>
+        /// <param name="reader">The <see cref="JsonWriter"/> to read from.</param>
+        /// <param name="objectType">The object type.</param>
+        /// <param name="existingValue">The existing value.</param>
+        /// <param name="serializer">The serializer to convert the object with.</param>
+        /// <returns></returns>
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             try

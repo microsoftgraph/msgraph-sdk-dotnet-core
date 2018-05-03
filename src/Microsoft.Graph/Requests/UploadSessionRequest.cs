@@ -8,10 +8,20 @@ namespace Microsoft.Graph
     using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
+
+    /// <summary>
+    /// The UploadSessionRequest class
+    /// </summary>
     public class UploadSessionRequest : BaseRequest
     {
         private readonly UploadSession session;
 
+        /// <summary>
+        /// Create a new UploadSessionRequest
+        /// </summary>
+        /// <param name="session">The UploadSession to use in the request.</param>
+        /// <param name="client">The <see cref="IBaseClient"/> for handling requests.</param>
+        /// <param name="options">Query and header option name value pairs for the request.</param>
         public UploadSessionRequest(UploadSession session, IBaseClient client, IEnumerable<Option> options)
             : base(session.UploadUrl, client, options)
         {

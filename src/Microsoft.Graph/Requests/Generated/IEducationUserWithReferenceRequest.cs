@@ -32,6 +32,47 @@ namespace Microsoft.Graph
         /// <returns>The EducationUser.</returns>
         System.Threading.Tasks.Task<EducationUser> GetAsync(CancellationToken cancellationToken);
 
+		/// <summary>
+        /// Creates the specified EducationUser using PUT.
+        /// </summary>
+        /// <param name="educationUserToCreate">The EducationUser to create.</param>
+        /// <returns>The created EducationUser.</returns>
+        System.Threading.Tasks.Task<EducationUser> CreateAsync(EducationUser educationUserToCreate);        /// <summary>
+        /// Creates the specified EducationUser using PUT.
+        /// </summary>
+        /// <param name="educationUserToCreate">The EducationUser to create.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The created EducationUser.</returns>
+        System.Threading.Tasks.Task<EducationUser> CreateAsync(EducationUser educationUserToCreate, CancellationToken cancellationToken);
+
+		/// <summary>
+        /// Updates the specified EducationUser using PATCH.
+        /// </summary>
+        /// <param name="educationUserToUpdate">The EducationUser to update.</param>
+        /// <returns>The updated EducationUser.</returns>
+        System.Threading.Tasks.Task<EducationUser> UpdateAsync(EducationUser educationUserToUpdate);
+
+        /// <summary>
+        /// Updates the specified EducationUser using PATCH.
+        /// </summary>
+        /// <param name="educationUserToUpdate">The EducationUser to update.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The updated EducationUser.</returns>
+        System.Threading.Tasks.Task<EducationUser> UpdateAsync(EducationUser educationUserToUpdate, CancellationToken cancellationToken);
+
+		/// <summary>
+        /// Deletes the specified EducationUser.
+        /// </summary>
+        /// <returns>The task to await.</returns>
+        System.Threading.Tasks.Task DeleteAsync();
+
+        /// <summary>
+        /// Deletes the specified EducationUser.
+        /// </summary>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns>The task to await.</returns>
+        System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken);
+
         /// <summary>
         /// Adds the specified expand value to the request.
         /// </summary>

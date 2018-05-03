@@ -20,7 +20,9 @@ namespace Microsoft.Graph
     /// </summary>
     public class BaseRequest : IBaseRequest
     {
+        /// The key for the SDK version header.
         protected string sdkVersionHeaderName;
+        /// The value for the SDK version header.
         protected string sdkVersionHeaderValue;
 
         /// <summary>
@@ -71,7 +73,7 @@ namespace Microsoft.Graph
         public IList<HeaderOption> Headers { get; private set; }
 
         /// <summary>
-        /// Gets the <see cref="IGraphServiceClient"/> for handling requests.
+        /// Gets the <see cref="IBaseClient"/> for handling requests.
         /// </summary>
         public IBaseClient Client { get; private set; }
 
@@ -129,7 +131,7 @@ namespace Microsoft.Graph
             {
                 if (response.Content != null)
                 {
-                    var responseString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                    var responseString = await GetResponseString(response);
                     return this.Client.HttpProvider.Serializer.DeserializeObject<T>(responseString);
                 }
 
@@ -154,7 +156,7 @@ namespace Microsoft.Graph
             {
                 if (response.Content != null)
                 {
-                    var responseString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                    var responseString = await GetResponseString(response);
                     return this.Client.HttpProvider.Serializer.DeserializeObject<T>(responseString);
                 }
 
@@ -165,7 +167,6 @@ namespace Microsoft.Graph
         /// <summary>
         /// Sends the request.
         /// </summary>
-        /// <typeparam name="T">The expected response object type for deserialization.</typeparam>
         /// <param name="serializableObject">The serializable object to send.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <param name="completionOption">The <see cref="HttpCompletionOption"/> to pass to the <see cref="IHttpProvider"/> on send.</param>
@@ -182,7 +183,6 @@ namespace Microsoft.Graph
         /// <summary>
         /// Sends the multipart request.
         /// </summary>
-        /// <typeparam name="T">The expected response object type for deserialization.</typeparam>
         /// <param name="multipartContent">The multipart object to send.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <param name="completionOption">The <see cref="HttpCompletionOption"/> to pass to the <see cref="IHttpProvider"/> on send.</param>
@@ -232,7 +232,6 @@ namespace Microsoft.Graph
         /// <summary>
         /// Sends the request.
         /// </summary>
-        /// <typeparam name="T">The expected response object type for deserialization.</typeparam>
         /// <param name="serializableObject">The serializable object to send.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <param name="completionOption">The <see cref="HttpCompletionOption"/> to pass to the <see cref="IHttpProvider"/> on send.</param>
@@ -424,6 +423,34 @@ namespace Microsoft.Graph
             }
 
             return new UriBuilder(uri) { Query = string.Empty }.ToString();
+        }
+
+        /// <summary>
+        /// Get the response content string
+        /// </summary>
+        /// <param name="hrm">The response object</param>
+        /// <returns>The full response string to return</returns>
+        private async Task<string> GetResponseString(HttpResponseMessage hrm)
+        {
+            var responseContent = "";
+
+            var content = await hrm.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+            //Only add headers if we are going to return a response body
+            if (content.Length > 0)
+            {
+                var responseHeaders = hrm.Headers;
+                var statusCode = hrm.StatusCode;
+
+                Dictionary<string, string[]> headerDictionary = responseHeaders.ToDictionary(x => x.Key, x => x.Value.ToArray());
+                var responseHeaderString = this.Client.HttpProvider.Serializer.SerializeObject(headerDictionary);
+
+                responseContent = content.Substring(0, content.Length - 1) + ", ";
+                responseContent += "\"responseHeaders\": " + responseHeaderString + ", ";
+                responseContent += "\"statusCode\": \"" + statusCode + "\"}";
+            }
+
+            return responseContent;
         }
     }
 }

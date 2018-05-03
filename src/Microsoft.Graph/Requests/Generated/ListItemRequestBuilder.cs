@@ -72,6 +72,18 @@ namespace Microsoft.Graph
                 return new FieldValueSetRequestBuilder(this.AppendSegmentToRequestUrl("fields"), this.Client);
             }
         }
+
+        /// <summary>
+        /// Gets the request builder for Versions.
+        /// </summary>
+        /// <returns>The <see cref="IListItemVersionsCollectionRequestBuilder"/>.</returns>
+        public IListItemVersionsCollectionRequestBuilder Versions
+        {
+            get
+            {
+                return new ListItemVersionsCollectionRequestBuilder(this.AppendSegmentToRequestUrl("versions"), this.Client);
+            }
+        }
     
     }
 }

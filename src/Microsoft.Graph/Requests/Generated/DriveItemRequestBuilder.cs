@@ -98,6 +98,18 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
+        /// Gets the request builder for Versions.
+        /// </summary>
+        /// <returns>The <see cref="IDriveItemVersionsCollectionRequestBuilder"/>.</returns>
+        public IDriveItemVersionsCollectionRequestBuilder Versions
+        {
+            get
+            {
+                return new DriveItemVersionsCollectionRequestBuilder(this.AppendSegmentToRequestUrl("versions"), this.Client);
+            }
+        }
+
+        /// <summary>
         /// Gets the request builder for Workbook.
         /// </summary>
         /// <returns>The <see cref="IWorkbookRequestBuilder"/>.</returns>

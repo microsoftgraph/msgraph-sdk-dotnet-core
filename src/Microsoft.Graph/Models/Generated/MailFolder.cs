@@ -64,6 +64,13 @@ namespace Microsoft.Graph
         public IMailFolderMessagesCollectionPage Messages { get; set; }
     
         /// <summary>
+        /// Gets or sets message rules.
+        /// The collection of rules that apply to the user's Inbox folder.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "messageRules", Required = Newtonsoft.Json.Required.Default)]
+        public IMailFolderMessageRulesCollectionPage MessageRules { get; set; }
+    
+        /// <summary>
         /// Gets or sets child folders.
         /// The collection of child folders in the mailFolder.
         /// </summary>

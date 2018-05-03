@@ -22,6 +22,9 @@ namespace Microsoft.Graph
     public partial class Entity
     {
     
+		///<summary>
+		/// The internal Entity constructor
+		///</summary>
         protected internal Entity()
         {
             // Don't allow initialization of abstract entity types
@@ -29,7 +32,6 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets id.
-        /// Read-only.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "id", Required = Newtonsoft.Json.Required.Default)]
         public string Id { get; set; }

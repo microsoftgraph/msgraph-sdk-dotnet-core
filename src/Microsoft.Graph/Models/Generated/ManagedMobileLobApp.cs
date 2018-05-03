@@ -21,6 +21,9 @@ namespace Microsoft.Graph
     public partial class ManagedMobileLobApp : ManagedApp
     {
     
+		///<summary>
+		/// The internal ManagedMobileLobApp constructor
+		///</summary>
         protected internal ManagedMobileLobApp()
         {
             // Don't allow initialization of abstract entity types

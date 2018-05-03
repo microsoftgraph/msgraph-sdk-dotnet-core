@@ -14,7 +14,7 @@ namespace Microsoft.Graph
         private Dictionary<string, object> _parameters = new Dictionary<string, object>();
 
         /// <summary>
-        /// Constructs a new <see cref="BasePostMethodRequestBuilder"/>.
+        /// Constructs a new BaseActionMethodRequestBuilder.
         /// </summary>
         /// <param name="requestUrl">The URL for the request.</param>
         /// <param name="client">The <see cref="IBaseClient"/> for handling requests.</param>
@@ -49,7 +49,7 @@ namespace Microsoft.Graph
         /// pair. This method handles the nullable case and properly wrapped and escaping
         /// string values.
         /// </summary>
-        /// <param name="name">The parameter name.<param>
+        /// <param name="name">The parameter name.</param>
         /// <param name="value">The parameter value.</param>
         /// <param name="nullable">A flag specifying whether the parameter is allowed to be null.</param>
         /// <typeparam name="U">The type of the value parameter.</typeparam>
@@ -69,11 +69,22 @@ namespace Microsoft.Graph
             _parameters.Add(name, value);
         }
 
+        /// <summary>
+        /// Check if the parameter list contains a given name.
+        /// </summary>
+        /// <param name="name">The name to search for.</param>
+        /// <returns>True if the parameter list contains the given name.</returns>
         protected bool HasParameter(string name)
         {
             return _parameters.ContainsKey(name);
         }
 
+        /// <summary>
+        /// Get a parameter string for a given name.
+        /// </summary>
+        /// <typeparam name="U">The type of the value parameter.</typeparam>
+        /// <param name="name">The name key.</param>
+        /// <returns>The value associated with the given name.</returns>
         protected U GetParameter<U>(string name)
         {
             return (U)_parameters[name];

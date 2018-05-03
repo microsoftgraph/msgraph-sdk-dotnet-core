@@ -21,6 +21,9 @@ namespace Microsoft.Graph
     public partial class ManagedDeviceMobileAppConfiguration : Entity
     {
     
+		///<summary>
+		/// The internal ManagedDeviceMobileAppConfiguration constructor
+		///</summary>
         protected internal ManagedDeviceMobileAppConfiguration()
         {
             // Don't allow initialization of abstract entity types
@@ -74,6 +77,12 @@ namespace Microsoft.Graph
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "assignments", Required = Newtonsoft.Json.Required.Default)]
         public IManagedDeviceMobileAppConfigurationAssignmentsCollectionPage Assignments { get; set; }
+    
+        /// <summary>
+        /// Gets or sets device statuses.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "deviceStatuses", Required = Newtonsoft.Json.Required.Default)]
+        public IManagedDeviceMobileAppConfigurationDeviceStatusesCollectionPage DeviceStatuses { get; set; }
     
         /// <summary>
         /// Gets or sets user statuses.

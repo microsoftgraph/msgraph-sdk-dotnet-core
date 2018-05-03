@@ -10,6 +10,10 @@ namespace Microsoft.Graph
     using System.Threading;
     using System.Threading.Tasks;
 
+    /// <summary>
+    /// Monitor for async operations to the Graph service on the client.
+    /// </summary>
+    /// <typeparam name="T">The object type to return.</typeparam>
     public class AsyncMonitor<T> : IAsyncMonitor<T>
     {
         private AsyncOperationStatus asyncOperationStatus;
@@ -17,12 +21,23 @@ namespace Microsoft.Graph
 
         internal string monitorUrl;
 
+        /// <summary>
+        /// Construct an Async Monitor.
+        /// </summary>
+        /// <param name="client">The client to monitor.</param>
+        /// <param name="monitorUrl">The URL to monitor.</param>
         public AsyncMonitor(IBaseClient client, string monitorUrl)
         {
             this.client = client;
             this.monitorUrl = monitorUrl;
         }
         
+        /// <summary>
+        /// Poll to check for completion of an async call to the Graph service.
+        /// </summary>
+        /// <param name="progress">The progress status.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The operation task.</returns>
         public async Task<T> PollForOperationCompletionAsync(IProgress<AsyncOperationStatus> progress, CancellationToken cancellationToken)
         {
             while (!cancellationToken.IsCancellationRequested)

@@ -14,6 +14,12 @@ namespace Microsoft.Graph
     public class InterfaceConverter<T> : CustomCreationConverter<T>
         where T : new()
     {
+
+        /// <summary>
+        /// Create a new object of type T.
+        /// </summary>
+        /// <param name="objectType">The type of object to create.</param>
+        /// <returns></returns>
         public override T Create(Type objectType)
         {
             return new T();

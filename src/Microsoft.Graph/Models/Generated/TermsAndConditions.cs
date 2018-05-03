@@ -37,56 +37,56 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets display name.
-        /// Administrator-supplied name for the T&C policy.
+        /// Administrator-supplied name for the T&amp;C policy.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "displayName", Required = Newtonsoft.Json.Required.Default)]
         public string DisplayName { get; set; }
     
         /// <summary>
         /// Gets or sets description.
-        /// Administrator-supplied description of the T&C policy.
+        /// Administrator-supplied description of the T&amp;C policy.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "description", Required = Newtonsoft.Json.Required.Default)]
         public string Description { get; set; }
     
         /// <summary>
         /// Gets or sets title.
-        /// Administrator-supplied title of the terms and conditions. This is shown to the user on prompts to accept the T&C policy.
+        /// Administrator-supplied title of the terms and conditions. This is shown to the user on prompts to accept the T&amp;C policy.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "title", Required = Newtonsoft.Json.Required.Default)]
         public string Title { get; set; }
     
         /// <summary>
         /// Gets or sets body text.
-        /// Administrator-supplied body text of the terms and conditions, typically the terms themselves. This is shown to the user on prompts to accept the T&C policy.
+        /// Administrator-supplied body text of the terms and conditions, typically the terms themselves. This is shown to the user on prompts to accept the T&amp;C policy.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "bodyText", Required = Newtonsoft.Json.Required.Default)]
         public string BodyText { get; set; }
     
         /// <summary>
         /// Gets or sets acceptance statement.
-        /// Administrator-supplied explanation of the terms and conditions, typically describing what it means to accept the terms and conditions set out in the T&C policy. This is shown to the user on prompts to accept the T&C policy.
+        /// Administrator-supplied explanation of the terms and conditions, typically describing what it means to accept the terms and conditions set out in the T&amp;C policy. This is shown to the user on prompts to accept the T&amp;C policy.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "acceptanceStatement", Required = Newtonsoft.Json.Required.Default)]
         public string AcceptanceStatement { get; set; }
     
         /// <summary>
         /// Gets or sets version.
-        /// Integer indicating the current version of the terms. Incremented when an administrator makes a change to the terms and wishes to require users to re-accept the modified T&C policy.
+        /// Integer indicating the current version of the terms. Incremented when an administrator makes a change to the terms and wishes to require users to re-accept the modified T&amp;C policy.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "version", Required = Newtonsoft.Json.Required.Default)]
         public Int32? Version { get; set; }
     
         /// <summary>
         /// Gets or sets assignments.
-        /// The list of assignments for this T&C policy.
+        /// The list of assignments for this T&amp;C policy.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "assignments", Required = Newtonsoft.Json.Required.Default)]
         public ITermsAndConditionsAssignmentsCollectionPage Assignments { get; set; }
     
         /// <summary>
         /// Gets or sets acceptance statuses.
-        /// The list of acceptance statuses for this T&C policy.
+        /// The list of acceptance statuses for this T&amp;C policy.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "acceptanceStatuses", Required = Newtonsoft.Json.Required.Default)]
         public ITermsAndConditionsAcceptanceStatusesCollectionPage AcceptanceStatuses { get; set; }
