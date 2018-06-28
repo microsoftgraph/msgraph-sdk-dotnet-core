@@ -3,9 +3,9 @@
     <Description>Microsoft Graph Client Library allows you to call Office 365, Azure AD and other Microsoft services through a single unified developer experience.</Description>
     <Copyright>Copyright (c) Microsoft Corporation</Copyright>
     <AssemblyTitle>Microsoft Graph Client Library</AssemblyTitle>
-    <VersionPrefix>1.9.0</VersionPrefix>
-    <FileVersion>1.9.0</FileVersion>
-    <AssemblyVersion>1.9.0</AssemblyVersion>
+    <VersionPrefix>1.9.1</VersionPrefix>
+    <FileVersion>1.9.1</FileVersion>
+    <AssemblyVersion>1.9.1</AssemblyVersion>
     <Authors>Microsoft</Authors>
     <TargetFrameworks>netstandard1.1;net45</TargetFrameworks>
     <PreserveCompilationContext>false</PreserveCompilationContext>
@@ -13,18 +13,11 @@
     <PackageId>Microsoft.Graph</PackageId>
     <PackageTags>Microsoft Office365;Graph;GraphServiceClient;Outlook;OneDrive;AzureAD;GraphAPI;Productivity;SharePoint;Intune;SDK</PackageTags>
     <PackageReleaseNotes>
-May 2018 Release Summary (version 1.9.0)
+June 2018 Release Summary (version 1.9.1)
 
-New features
-- Added more comments.
-- UserActivity - apps can push information to the user's timeline.
-- Updated timezone information.
-- Updates to Intune functionality.
-- New Outlook functionality which includes an OutlookUser object, categories, coordinates, message rules, and working hours.
-- New OneNote functionality which includes a notebook's site collection.
+- Updated reference to System.Net.Http to address vulnerability.
 
-Bug fixes
-- Fixed Site GetByPath
+
     </PackageReleaseNotes>
     <PackageProjectUrl>https://developer.microsoft.com/graph</PackageProjectUrl>
     <PackageLicenseUrl>http://aka.ms/devservicesagreement</PackageLicenseUrl>
@@ -44,7 +37,7 @@ Bug fixes
     <DelaySign>True</DelaySign>
     <AssemblyOriginatorKeyFile>35MSSharedLib1024.snk</AssemblyOriginatorKeyFile>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <Version>1.9.0</Version>
+    <Version>1.9.1</Version>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard1.1|AnyCPU'">
     <DocumentationFile>bin\Release\Microsoft.Graph.xml</DocumentationFile>
@@ -54,7 +47,7 @@ Bug fixes
     <ProjectReference Include="..\Microsoft.Graph.Core\Microsoft.Graph.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="System.Net.Http" Version="4.3.1" />
+    <PackageReference Include="System.Net.Http" Version="4.3.3" />
   </ItemGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
     <Reference Include="System" />
