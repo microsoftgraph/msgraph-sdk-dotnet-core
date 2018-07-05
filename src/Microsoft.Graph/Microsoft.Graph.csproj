@@ -48,7 +48,7 @@ July 2018 Release Summary (version 1.10.0)
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="System.Net.Http" Version="4.3.3">
-      <ExcludeAssets>All</ExcludeAssets>
+      <!--<ExcludeAssets>All</ExcludeAssets>-->
     </PackageReference>
   </ItemGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
