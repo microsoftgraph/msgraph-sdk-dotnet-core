@@ -31,6 +31,18 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
+        /// Disposes the HttpMessageHandler instance.
+        /// </summary>
+        public new void Dispose()
+        {
+            if (InnerHandler != null)
+            {
+                InnerHandler.Dispose();
+            }
+
+        }
+
+        /// <summary>
         /// Sends the Request 
         /// </summary>
         /// <param name="request">The <see cref="HttpRequestMessage"/> to send.</param>
