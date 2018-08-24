@@ -3,12 +3,7 @@
 // ------------------------------------------------------------------------------
 
 using Microsoft.Graph.DotnetCore.Core.Test.Mocks;
-using Microsoft.Graph;
-using Moq;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -121,7 +116,6 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             Assert.NotSame(response.RequestMessage, httpRequestMessage);
             Assert.NotSame(response.RequestMessage.RequestUri.Host, httpRequestMessage.RequestUri.Host);
             Assert.Null(response.RequestMessage.Headers.Authorization);
-
         }
 
         [Fact]
@@ -136,7 +130,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             this.testHttpMessageHandler.SetHttpResponse(redirectResponse, new HttpResponseMessage(HttpStatusCode.OK));
 
             var response = await invoker.SendAsync(httpRequestMessage, new CancellationToken());
-            Console.WriteLine(response.RequestMessage.RequestUri.Host);
+            
             Assert.NotSame(response.RequestMessage, httpRequestMessage);
             Assert.Equal(response.RequestMessage.RequestUri.Host, httpRequestMessage.RequestUri.Host);
             Assert.NotNull(response.RequestMessage.Headers.Authorization);
@@ -154,19 +148,13 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             _response2.Headers.Location = new Uri("http://example.org/foo");
 
             this.testHttpMessageHandler.SetHttpResponse(_response1, _response2);
-
-            try
-            {
-                await Assert.ThrowsAsync<ServiceException>(async () => await this.invoker.SendAsync(
+           
+            ServiceException exception = await Assert.ThrowsAsync<ServiceException> (async () => await this.invoker.SendAsync(
                     httpRequestMessage, CancellationToken.None));
-            }
-            catch (ServiceException exception)
-            {
-                Assert.True(exception.IsMatch(ErrorConstants.Codes.TooManyRedirects));
-                Assert.Equal(ErrorConstants.Messages.TooManyRedirectsFormatString, exception.Error.Message);
-                Assert.IsType(typeof(ServiceException), exception);
-            }
-
+  
+            Assert.True(exception.IsMatch(ErrorConstants.Codes.TooManyRedirects));
+            Assert.Equal(String.Format(ErrorConstants.Messages.TooManyRedirectsFormatString, 5), exception.Error.Message);
+            Assert.IsType(typeof(ServiceException), exception);
         }
 
 

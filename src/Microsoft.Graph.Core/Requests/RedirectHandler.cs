@@ -70,7 +70,7 @@ namespace Microsoft.Graph
                 var redirectCount = 0;
 
                 // check whether redirect count over maxRedirects
-                while (redirectCount++ < maxRedirects)
+                while (redirectCount < maxRedirects)
                 {
                    
                     // status code == 303: change request method from post to get and content to be null
@@ -103,12 +103,13 @@ namespace Microsoft.Graph
                     {
                         return response;
                     }
+                    redirectCount++;
                 }
                 throw new ServiceException(
                         new Error
                         {
                             Code = ErrorConstants.Codes.TooManyRedirects,
-                            Message = string.Format(ErrorConstants.Messages.TooManyRedirectsFormatString, maxRedirects)
+                            Message = string.Format(ErrorConstants.Messages.TooManyRedirectsFormatString, redirectCount)
                         });
 
             }

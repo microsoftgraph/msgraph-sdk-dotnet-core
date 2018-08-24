@@ -6,7 +6,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Threading;
 
-namespace Microsoft.Graph.DotnetCore.Core.Test.Mocks
+namespace Microsoft.Graph.Core.Test.Mocks
 {
     public class MockRedirectHander : HttpMessageHandler
     {
@@ -35,10 +35,9 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Mocks
 
         public void SetHttpResponse(HttpResponseMessage response1, HttpResponseMessage response2 = null)
         {
-            this._response1Sent = false;
             this._response1 = response1;
             this._response2 = response2;
         }
-            
+
     }
 }
