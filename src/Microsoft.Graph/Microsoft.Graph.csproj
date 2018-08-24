@@ -47,6 +47,7 @@ July 2018 Release Summary (version 1.10.0)
     <ProjectReference Include="..\Microsoft.Graph.Core\Microsoft.Graph.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="MSTest.TestFramework" Version="1.3.2" />
     <PackageReference Include="System.Net.Http" Version="4.3.3">
       <!--<ExcludeAssets>All</ExcludeAssets>-->
     </PackageReference>
