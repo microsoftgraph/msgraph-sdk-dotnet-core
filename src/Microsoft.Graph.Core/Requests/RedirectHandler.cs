@@ -12,6 +12,7 @@ namespace Microsoft.Graph
     using System.Threading;
     using System.Threading.Tasks;
     using System.Net;
+    
 
     /// <summary>
     /// An <see cref="DelegatingHandler"/> implementation using standard .NET libraries.
@@ -58,13 +59,12 @@ namespace Microsoft.Graph
             if (IsRedirect(response.StatusCode))
             {
 
-                // general copy request with internal copyRequest(see copyRequest for details) Method 
-                var newRequest = CopyRequest(request);
+                // Cache the original http request content 
                 StreamContent content = null;
 
                 if (request.Content != null && request.Content.Headers.ContentLength != 0)
                 {
-                    content = new StreamContent(request.Content.ReadAsStreamAsync().Result);
+                    content = new StreamContent(await request.Content.ReadAsStreamAsync());
                 }
 
                 var redirectCount = 0;
@@ -72,27 +72,24 @@ namespace Microsoft.Graph
                 // check whether redirect count over maxRedirects
                 while (redirectCount < maxRedirects)
                 {
-                   
+                    // general copy request with internal CopyRequest(see copyRequest for details) method 
+                    var newRequest = CopyRequest(response.RequestMessage, content);
+
                     // status code == 303: change request method from post to get and content to be null
                     if (response.StatusCode == HttpStatusCode.SeeOther)
                     {
                         newRequest.Content = null;
                         newRequest.Method = HttpMethod.Get;
                     }
-                    else
-                    {
-                        newRequest.Content = content;
-                        newRequest.Method = request.Method;
-                    }
-
+                    
                     // Set newRequestUri from response
                     newRequest.RequestUri = response.Headers.Location;
-
-                    // Remove Auth if unneccessary
-                    if (String.Compare(newRequest.RequestUri.Host, request.RequestUri.Host, StringComparison.OrdinalIgnoreCase) != 0)
+                    
+                    // Remove Auth if http request's scheme or host changes
+                    if (String.Compare(newRequest.RequestUri.Host, request.RequestUri.Host, StringComparison.OrdinalIgnoreCase) != 0 || 
+                        !newRequest.RequestUri.Scheme.Equals(request.RequestUri.Scheme))
                     {
                         newRequest.Headers.Authorization = null;
-
                     }
 
                     // Send redirect request to get reponse      
@@ -118,14 +115,15 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Copy original HTTP request's headers and porperties.
+        /// Re-issue a new HTTP request by copying previous HTTP request's headers and porperties from response's request message.
         /// </summary>
-        /// <param name="originalRequest">The original <see cref="HttpRequestMessage"/> needs to be copy.</param>
+        /// <param name="originalRequest">The previous <see cref="HttpRequestMessage"/> needs to be copy.</param>
+        /// <param name="content">The <see cref="StreamContent"/>may need to be passed to the new request.</param>
         /// <returns>The <see cref="HttpRequestMessage"/>.</returns>
         /// <remarks>
-        /// Re-issue a new HTTP request with the original request's headers and properities
+        /// Re-issue a new HTTP request with the previous request's headers and properities
         /// </remarks>
-        internal HttpRequestMessage CopyRequest(HttpRequestMessage originalRequest)
+        internal HttpRequestMessage CopyRequest(HttpRequestMessage originalRequest, StreamContent content)
         {
             var newRequest = new HttpRequestMessage(originalRequest.Method, originalRequest.RequestUri);
 
@@ -139,18 +137,33 @@ namespace Microsoft.Graph
                 newRequest.Properties.Add(property);
             }
 
+            // Set Content if previous request contains
+            if (originalRequest.Content != null && originalRequest.Content.Headers.ContentLength != 0)
+            {
+                newRequest.Content = content;
+            }
+
             return newRequest;
         }
 
 
         /// <summary>
-        /// Checks whether <see cref="HttpStatusCode"/> needs redirected
+        /// Checks whether <see cref="HttpStatusCode"/> is redirected
         /// </summary>
         /// <param name="statusCode">The <see cref="HttpStatusCode"/>.</param>
         /// <returns>Bool value for redirection or not</returns>
         private bool IsRedirect(HttpStatusCode statusCode)
         {
-            return (int)statusCode >= 300 && (int)statusCode < 400 && statusCode != HttpStatusCode.NotModified && statusCode != HttpStatusCode.UseProxy;
+            if (statusCode == HttpStatusCode.MovedPermanently ||
+                statusCode == HttpStatusCode.Found ||
+                statusCode == HttpStatusCode.SeeOther ||
+                statusCode == HttpStatusCode.TemporaryRedirect ||
+                statusCode == (HttpStatusCode)308
+                )
+            {
+                return true;
+            }
+            return false;
         }
 
 

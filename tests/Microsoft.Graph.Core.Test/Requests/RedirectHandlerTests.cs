@@ -61,6 +61,7 @@ namespace Microsoft.Graph.Core.Test.Requests
         [DataRow(HttpStatusCode.MovedPermanently)]  // 301
         [DataRow(HttpStatusCode.Found)]  // 302
         [DataRow(HttpStatusCode.TemporaryRedirect)]  // 307
+        [DataRow(308)] // 308
         public async Task ShouldRedirectSameMethodAndContent(HttpStatusCode statusCode)
         {
             var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, "http://example.org/foo");
@@ -120,6 +121,7 @@ namespace Microsoft.Graph.Core.Test.Requests
         [DataRow(HttpStatusCode.Found)]  // 302
         [DataRow(HttpStatusCode.SeeOther)]  //303
         [DataRow(HttpStatusCode.TemporaryRedirect)]  // 307
+        [DataRow(308)] // 308
         public async Task RedirectWithDifferentHostShouldRemoveAuthHeader(HttpStatusCode statusCode)
         {
             var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, "http://example.org/foo");
@@ -134,6 +136,29 @@ namespace Microsoft.Graph.Core.Test.Requests
 
             Assert.AreNotSame(response.RequestMessage, httpRequestMessage, "Doesn't reissue a new http request");
             Assert.AreNotEqual(response.RequestMessage.RequestUri.Host, httpRequestMessage.RequestUri.Host, "Hosts are same.");
+            Assert.IsNull(response.RequestMessage.Headers.Authorization, "Authorization doesn't be removed.");
+        }
+
+        [DataTestMethod]
+        [DataRow(HttpStatusCode.MovedPermanently)]  // 301
+        [DataRow(HttpStatusCode.Found)]  // 302
+        [DataRow(HttpStatusCode.SeeOther)]  //303
+        [DataRow(HttpStatusCode.TemporaryRedirect)]  // 307
+        [DataRow(308)] // 308
+        public async Task RedirectWithDifferentSchemeShouldRemoveAuthHeader(HttpStatusCode statusCode)
+        {
+            var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, "https://example.org/foo");
+            httpRequestMessage.Headers.Authorization = new AuthenticationHeaderValue("fooAuth", "aparam");
+
+            var redirectResponse = new HttpResponseMessage(statusCode);
+            redirectResponse.Headers.Location = new Uri("http://example.org/bar");
+
+            this.testHttpMessageHandler.SetHttpResponse(redirectResponse, new HttpResponseMessage(HttpStatusCode.OK));
+
+            var response = await invoker.SendAsync(httpRequestMessage, new CancellationToken());
+
+            Assert.AreNotSame(response.RequestMessage, httpRequestMessage, "Doesn't reissue a new http request");
+            Assert.AreNotEqual(response.RequestMessage.RequestUri.Scheme, httpRequestMessage.RequestUri.Scheme, "Schemes are same.");
             Assert.IsNull(response.RequestMessage.Headers.Authorization, "Authorization doesn't be removed.");
         }
 

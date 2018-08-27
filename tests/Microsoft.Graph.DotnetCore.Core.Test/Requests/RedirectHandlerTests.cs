@@ -25,7 +25,6 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             this.testHttpMessageHandler = new MockRedirectHander();
             this.redirectHandler = new RedirectHandler(this.testHttpMessageHandler);
             this.invoker = new HttpMessageInvoker(this.redirectHandler);
-            
         }
 
         public void Dispose()
@@ -59,6 +58,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         [InlineData(HttpStatusCode.MovedPermanently)]  // 301
         [InlineData(HttpStatusCode.Found)]  // 302
         [InlineData(HttpStatusCode.TemporaryRedirect)]  // 307
+        [InlineData(308)] // 308
         public async Task ShouldRedirectSameMethodAndContent(HttpStatusCode statusCode)
         {
             var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, "http://example.org/foo");
@@ -101,6 +101,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         [InlineData(HttpStatusCode.MovedPermanently)]  // 301
         [InlineData(HttpStatusCode.Found)]  // 302
         [InlineData(HttpStatusCode.TemporaryRedirect)]  // 307
+        [InlineData((HttpStatusCode)308)] // 308
         public async Task RedirectWithDifferentHostShouldRemoveAuthHeader(HttpStatusCode statusCode)
         {
             var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, "http://example.org/foo");
@@ -115,6 +116,28 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 
             Assert.NotSame(response.RequestMessage, httpRequestMessage);
             Assert.NotSame(response.RequestMessage.RequestUri.Host, httpRequestMessage.RequestUri.Host);
+            Assert.Null(response.RequestMessage.Headers.Authorization);
+        }
+
+        [Theory]
+        [InlineData(HttpStatusCode.MovedPermanently)]  // 301
+        [InlineData(HttpStatusCode.Found)]  // 302
+        [InlineData(HttpStatusCode.TemporaryRedirect)]  // 307
+        [InlineData((HttpStatusCode)308)] // 308
+        public async Task RedirectWithDifferentSchemeShouldRemoveAuthHeader(HttpStatusCode statusCode)
+        {
+            var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, "https://example.org/foo");
+            httpRequestMessage.Headers.Authorization = new AuthenticationHeaderValue("fooAuth", "aparam");
+
+            var redirectResponse = new HttpResponseMessage(statusCode);
+            redirectResponse.Headers.Location = new Uri("http://example.org/bar");
+
+            this.testHttpMessageHandler.SetHttpResponse(redirectResponse, new HttpResponseMessage(HttpStatusCode.OK));
+
+            var response = await invoker.SendAsync(httpRequestMessage, new CancellationToken());
+
+            Assert.NotSame(response.RequestMessage, httpRequestMessage);
+            Assert.NotSame(response.RequestMessage.RequestUri.Scheme, httpRequestMessage.RequestUri.Scheme);
             Assert.Null(response.RequestMessage.Headers.Authorization);
         }
 
