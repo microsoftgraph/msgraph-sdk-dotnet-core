@@ -110,7 +110,6 @@
     <Compile Include="Requests\Functional\MailTests.cs" />
     <Compile Include="Requests\Functional\OneDriveTests.cs" />
     <Compile Include="Requests\Functional\ErrorTests.cs" />
-    <Compile Include="Requests\Functional\PlannerTests.cs" />
     <Compile Include="Requests\Functional\DeltaQueryTests.cs" />
     <Compile Include="Requests\Functional\MiscTests.cs" />
     <Compile Include="Requests\Functional\SharePointTests.cs" />

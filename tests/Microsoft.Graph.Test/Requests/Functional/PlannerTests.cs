@@ -7,8 +7,9 @@ using Async = System.Threading.Tasks;
 
 namespace Microsoft.Graph.Test.Requests.Functional
 {
-    [Ignore]
+   
     [TestClass]
+    [Ignore]
     public class PlannerTests : GraphTestBase
     {
         private Group testGroup;
