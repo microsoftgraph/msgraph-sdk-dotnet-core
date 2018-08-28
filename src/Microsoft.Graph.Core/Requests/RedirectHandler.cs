@@ -38,7 +38,7 @@ namespace Microsoft.Graph
         {
             if (InnerHandler != null)
             {
-                InnerHandler.Dispose();
+                InnerHandler = null;
             }
 
         }
@@ -115,7 +115,7 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Re-issue a new HTTP request by copying previous HTTP request's headers and porperties from response's request message.
+        /// Create a new HTTP request by copying previous HTTP request's headers and properties from response's request message.
         /// </summary>
         /// <param name="originalRequest">The previous <see cref="HttpRequestMessage"/> needs to be copy.</param>
         /// <param name="content">The <see cref="StreamContent"/>may need to be passed to the new request.</param>
