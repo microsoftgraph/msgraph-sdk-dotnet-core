@@ -12,7 +12,7 @@ namespace Microsoft.Graph
     using System.Threading;
     using System.Threading.Tasks;
     using System.Net;
-    
+    using System.IO;
 
     /// <summary>
     /// An <see cref="DelegatingHandler"/> implementation using standard .NET libraries.
@@ -59,21 +59,12 @@ namespace Microsoft.Graph
             if (IsRedirect(response.StatusCode))
             {
 
-                // Cache the original http request content 
-                StreamContent content = null;
-
-                if (request.Content != null && request.Content.Headers.ContentLength != 0)
-                {
-                    content = new StreamContent(await request.Content.ReadAsStreamAsync());
-                }
-
                 var redirectCount = 0;
 
-                // check whether redirect count over maxRedirects
                 while (redirectCount < maxRedirects)
                 {
                     // general copy request with internal CopyRequest(see copyRequest for details) method 
-                    var newRequest = CopyRequest(response.RequestMessage, content);
+                    var newRequest = await CopyRequest(response.RequestMessage);
 
                     // status code == 303: change request method from post to get and content to be null
                     if (response.StatusCode == HttpStatusCode.SeeOther)
@@ -81,7 +72,7 @@ namespace Microsoft.Graph
                         newRequest.Content = null;
                         newRequest.Method = HttpMethod.Get;
                     }
-                    
+
                     // Set newRequestUri from response
                     newRequest.RequestUri = response.Headers.Location;
                     
@@ -123,7 +114,7 @@ namespace Microsoft.Graph
         /// <remarks>
         /// Re-issue a new HTTP request with the previous request's headers and properities
         /// </remarks>
-        internal HttpRequestMessage CopyRequest(HttpRequestMessage originalRequest, StreamContent content)
+        internal async Task<HttpRequestMessage> CopyRequest(HttpRequestMessage originalRequest)
         {
             var newRequest = new HttpRequestMessage(originalRequest.Method, originalRequest.RequestUri);
 
@@ -135,12 +126,12 @@ namespace Microsoft.Graph
             foreach (var property in originalRequest.Properties)
             {
                 newRequest.Properties.Add(property);
-            }
+            }    
 
             // Set Content if previous request contains
             if (originalRequest.Content != null && originalRequest.Content.Headers.ContentLength != 0)
             {
-                newRequest.Content = content;
+                newRequest.Content = new StreamContent(await originalRequest.Content.ReadAsStreamAsync());
             }
 
             return newRequest;
