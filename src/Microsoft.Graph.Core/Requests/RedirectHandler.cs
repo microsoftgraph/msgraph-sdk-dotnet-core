@@ -98,7 +98,6 @@ namespace Microsoft.Graph
         /// Create a new HTTP request by copying previous HTTP request's headers and properties from response's request message.
         /// </summary>
         /// <param name="originalRequest">The previous <see cref="HttpRequestMessage"/> needs to be copy.</param>
-        /// <param name="content">The <see cref="StreamContent"/>may need to be passed to the new request.</param>
         /// <returns>The <see cref="HttpRequestMessage"/>.</returns>
         /// <remarks>
         /// Re-issue a new HTTP request with the previous request's headers and properities

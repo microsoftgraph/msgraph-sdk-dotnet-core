@@ -24,7 +24,7 @@ namespace Microsoft.Graph.Core.Test.Requests
         [TestInitialize]
         public void Setup()
         {
-            this.testHttpMessageHandler = new MockRedirectHander();
+            this.testHttpMessageHandler = new MockRedirectHandler();
             this.redirectHandler = new RedirectHandler(this.testHttpMessageHandler);
             this.invoker = new HttpMessageInvoker(this.redirectHandler);
         }
