@@ -17,7 +17,7 @@ namespace Microsoft.Graph.Core.Test.Requests
     [TestClass]
     public class RedirectHandlerTests 
     {
-        private MockRedirectHander testHttpMessageHandler;
+        private MockRedirectHandler testHttpMessageHandler;
         private RedirectHandler redirectHandler;
         private HttpMessageInvoker invoker;
 

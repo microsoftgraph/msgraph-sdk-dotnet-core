@@ -8,7 +8,7 @@ using System.Threading;
 
 namespace Microsoft.Graph.Core.Test.Mocks
 {
-    public class MockRedirectHander : HttpMessageHandler
+    public class MockRedirectHandler : HttpMessageHandler
     {
         private HttpResponseMessage _response1
         { get; set; }

@@ -15,14 +15,14 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 {
     public class RedirectHandlerTests : IDisposable
     {
-        private MockRedirectHander testHttpMessageHandler;
+        private MockRedirectHandler testHttpMessageHandler;
         private RedirectHandler redirectHandler;
         private HttpMessageInvoker invoker;
         
 
         public RedirectHandlerTests()
         {
-            this.testHttpMessageHandler = new MockRedirectHander();
+            this.testHttpMessageHandler = new MockRedirectHandler();
             this.redirectHandler = new RedirectHandler(this.testHttpMessageHandler);
             this.invoker = new HttpMessageInvoker(this.redirectHandler);
         }

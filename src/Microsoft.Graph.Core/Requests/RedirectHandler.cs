@@ -31,18 +31,7 @@ namespace Microsoft.Graph
             InnerHandler = innerHandler;
         }
 
-        /// <summary>
-        /// Disposes the HttpMessageHandler instance.
-        /// </summary>
-        public new void Dispose()
-        {
-            if (InnerHandler != null)
-            {
-                InnerHandler = null;
-            }
-
-        }
-
+        
         /// <summary>
         /// Sends the Request 
         /// </summary>
