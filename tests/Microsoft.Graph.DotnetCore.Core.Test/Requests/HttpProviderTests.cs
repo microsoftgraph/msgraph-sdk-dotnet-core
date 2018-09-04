@@ -148,6 +148,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                 }
                 catch (ServiceException exception)
                 {
+                    
                     Assert.True(exception.IsMatch(ErrorConstants.Codes.GeneralException));
                     Assert.Equal(ErrorConstants.Messages.UnexpectedExceptionOnSend, exception.Error.Message);
                     Assert.Equal(clientException, exception.InnerException);
