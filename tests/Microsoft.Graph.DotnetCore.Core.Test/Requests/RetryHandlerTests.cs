@@ -1,23 +1,21 @@
 ﻿// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
- 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Microsoft.Graph.Core.Test.Requests
+using Microsoft.Graph.DotnetCore.Core.Test.Mocks;
+using System;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Threading;
+using System.Threading.Tasks;
+using Xunit;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 {
-    using Mocks;
-    using System;
-    using System.Net;
-    using System.Net.Http;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using System.Linq;
-    using System.Collections.Generic;
-    
-
-    [TestClass]
-    public class RetryHandlerTests 
+    public class RetryHandlerTests : IDisposable
     {
         private MockRedirectHandler testHttpMessageHandler;
         private RetryHandler retryHandler;
@@ -25,29 +23,28 @@ namespace Microsoft.Graph.Core.Test.Requests
         private const string RETRY_AFTER = "Retry-After";
         private const string RETRY_ATTEMPT = "Retry-Attempt";
 
-        [TestInitialize]
-        public void Setup()
+
+        public RetryHandlerTests()
         {
             this.testHttpMessageHandler = new MockRedirectHandler();
             this.retryHandler = new RetryHandler(this.testHttpMessageHandler);
             this.invoker = new HttpMessageInvoker(this.retryHandler);
         }
 
-        [TestCleanup]
-        public void Teardown()
+        public void Dispose()
         {
             this.invoker.Dispose();
         }
 
-        [TestMethod]
+        [Fact]
         public void retryHandler_HttpMessageHandlerConstructor()
         {
-            Assert.IsNotNull(retryHandler.InnerHandler, "HttpMessageHandler not initialized.");
-            Assert.AreEqual(retryHandler.InnerHandler, testHttpMessageHandler, "Unexpected message handler set.");
-            Assert.IsInstanceOfType(retryHandler, typeof(RetryHandler), "Unexpected redirect handler set.");
+            Assert.NotNull(retryHandler.InnerHandler);
+            Assert.Equal(retryHandler.InnerHandler, testHttpMessageHandler);
+            Assert.IsType(typeof(RetryHandler), retryHandler);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task OkStatusShouldPassThrough()
         {
             var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, "http://example.org/foo");
@@ -57,15 +54,15 @@ namespace Microsoft.Graph.Core.Test.Requests
 
             var response = await this.invoker.SendAsync(httpRequestMessage, new CancellationToken());
 
-            Assert.AreSame(response, retryResponse, "Return a successful response fail");
-            Assert.AreSame(response.RequestMessage, httpRequestMessage, "Http response message sets request wrong.");
-            Assert.IsFalse(response.RequestMessage.Headers.Contains(RETRY_ATTEMPT), "The request add header wrong.");
+            Assert.Same(response, retryResponse);
+            Assert.Same(response.RequestMessage, httpRequestMessage);
+            Assert.False(response.RequestMessage.Headers.Contains(RETRY_ATTEMPT), "The request add header wrong.");
 
         }
 
-        [DataTestMethod]
-        [DataRow(HttpStatusCode.ServiceUnavailable)]  // 503
-        [DataRow(429)] // 429
+        [Theory]
+        [InlineData(HttpStatusCode.ServiceUnavailable)]  // 503
+        [InlineData(429)] // 429
         public async Task ShouldRetryWithAddRetryAttemptHeader(HttpStatusCode statusCode)
         {
             var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, "http://example.org/foo");
@@ -78,20 +75,20 @@ namespace Microsoft.Graph.Core.Test.Requests
 
             var response = await invoker.SendAsync(httpRequestMessage, new CancellationToken());
 
-            Assert.AreSame(response, response_2, "Return a response fail.");
-            Assert.AreSame(response.RequestMessage, httpRequestMessage, "The request is set wrong.");
-            Assert.IsNotNull(response.RequestMessage.Headers, "The request header is null");
-            Assert.IsTrue(response.RequestMessage.Headers.Contains(RETRY_ATTEMPT), "Doesn't set Retry-Attemp header to request");
+            Assert.Same(response, response_2);
+            Assert.Same(response.RequestMessage, httpRequestMessage);
+            Assert.NotNull(response.RequestMessage.Headers);
+            Assert.True(response.RequestMessage.Headers.Contains(RETRY_ATTEMPT));
             IEnumerable<string> values;
-            Assert.IsTrue(response.RequestMessage.Headers.TryGetValues(RETRY_ATTEMPT, out values), "Get Retry-Attemp Header values");
-            Assert.AreEqual(values.Count(), 1, "There are multiple values for Retry-Attemp header.");
-            Assert.AreEqual(values.First(), 1.ToString(), "The value of  Retry-Attemp header is wrong.");
+            Assert.True(response.RequestMessage.Headers.TryGetValues(RETRY_ATTEMPT, out values));
+            Assert.Equal(values.Count(), 1);
+            Assert.Equal(values.First(), 1.ToString());
         }
 
 
-        [DataTestMethod]
-        [DataRow(HttpStatusCode.ServiceUnavailable)]  // 503
-        [DataRow(429)] // 429
+        [Theory]
+        [InlineData(HttpStatusCode.ServiceUnavailable)]  // 503
+        [InlineData(429)] // 429
         public async Task ShouldRetryWithBuffedContent(HttpStatusCode statusCode)
         {
             var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, "http://example.org/foo");
@@ -105,22 +102,22 @@ namespace Microsoft.Graph.Core.Test.Requests
 
             var response = await invoker.SendAsync(httpRequestMessage, new CancellationToken());
 
-            Assert.IsNotNull(response.RequestMessage.Content, "The request content is null");
-            Assert.AreEqual(response.RequestMessage.Content.ReadAsStringAsync().Result, "Hello World", "The content changed.");
+            Assert.NotNull(response.RequestMessage.Content);
+            Assert.Equal(response.RequestMessage.Content.ReadAsStringAsync().Result, "Hello World");
 
         }
 
-        [DataTestMethod]
-        [DataRow(HttpStatusCode.ServiceUnavailable)]  // 503
-        [DataRow(429)] // 429
+        [Theory]
+        [InlineData(HttpStatusCode.ServiceUnavailable)]  // 503
+        [InlineData(429)] // 429
         public async Task ShouldNotRetryWithForwardOnlyStream(HttpStatusCode statusCode)
         {
 
         }
 
-        [DataTestMethod]
-        [DataRow(HttpStatusCode.ServiceUnavailable)]  // 503
-        [DataRow(429)] // 429
+        [Theory]
+        [InlineData(HttpStatusCode.ServiceUnavailable)]  // 503
+        [InlineData(429)] // 429
         public async Task ExceedMaxRetryShouldReturn(HttpStatusCode statusCode)
         {
             var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, "http://example.org/foo");
@@ -135,9 +132,9 @@ namespace Microsoft.Graph.Core.Test.Requests
             }
             catch (ServiceException exception)
             {
-                Assert.IsTrue(exception.IsMatch(ErrorConstants.Codes.TooManyRetries), "Unexpected error code returned.");
-                Assert.AreEqual(String.Format(ErrorConstants.Messages.TooManyRedirectsFormatString, 3), exception.Error.Message, "Unexpected error message.");
-                Assert.IsInstanceOfType(exception, typeof(ServiceException), "Eeception is not the right type");
+                Assert.True(exception.IsMatch(ErrorConstants.Codes.TooManyRetries), "Unexpected error code returned.");
+                Assert.Equal(String.Format(ErrorConstants.Messages.TooManyRedirectsFormatString, 3), exception.Error.Message);
+                Assert.IsType(typeof(ServiceException), exception);
             }
 
             //Assert.IsTrue((response.Equals(retryResponse) || response.Equals(response_2)), "The response doesn't match.");
@@ -147,30 +144,33 @@ namespace Microsoft.Graph.Core.Test.Requests
             //Assert.AreEqual(values.First(), 3.ToString(), "Exceed max retry times.");
         }
 
-        [DataTestMethod]
-        [DataRow(HttpStatusCode.ServiceUnavailable)]  // 503
-        [DataRow(429)] // 429
+        [Theory]
+        [InlineData(HttpStatusCode.ServiceUnavailable)]  // 503
+        [InlineData(429)] // 429
         public async Task ShouldDelayBasedOnRetryAfterHeader(HttpStatusCode statusCode)
         {
             var retryResponse = new HttpResponseMessage(statusCode);
-            retryResponse.Headers.TryAddWithoutValidation(RETRY_AFTER, 4.ToString());
+            retryResponse.Headers.TryAddWithoutValidation(RETRY_AFTER, 1.ToString());
+           
             await DelayTestWithMessage(retryResponse, 1, "Init");
-            Assert.AreEqual(Message, "Init Work 1", "Delay doesn't work");
+        
+            Assert.Equal(Message, "Init Work 1");
+            
         }
 
 
-        [DataTestMethod]
-        [DataRow(HttpStatusCode.ServiceUnavailable)]  // 503
-        //[DataRow(429)] // 429
+        [Theory]
+        [InlineData(HttpStatusCode.ServiceUnavailable)]  // 503
+        [InlineData(429)] // 429
         public async Task ShouldDelayBasedOnExponentialBackOff(HttpStatusCode statusCode)
         {
             var retryResponse = new HttpResponseMessage(statusCode);
             String compareMessage = "Init Work ";
-            //IEnumerable<Task> tasks = new List<Task>();
+           
             for (int count = 0; count < 3; count++)
             {
                 await DelayTestWithMessage(retryResponse, count, "Init");
-                Assert.AreEqual(Message, compareMessage + count.ToString(), "Delay doesn't work");
+                Assert.Equal(Message, compareMessage + count.ToString());
             }
 
         }
@@ -189,3 +189,4 @@ namespace Microsoft.Graph.Core.Test.Requests
         public string Message { get; private set; }
     }
 }
+

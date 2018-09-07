@@ -22,7 +22,7 @@ namespace Microsoft.Graph
         // property RetryPolicy
         //public RetryPolicy retryPolicy { get; private set; }
 
-        // All value for fields are temporary
+        // All values for fields are temporary
         private const int MAX_RETRY = 3;
         private const string RETRY_AFTER = "Retry-After";
         private const string RETRY_ATTEMPT = "Retry-Attempt";
@@ -48,17 +48,17 @@ namespace Microsoft.Graph
         //}
 
         /// <summary>
-        /// Send a HTTP request 
+        /// Sends a HTTP request 
         /// </summary>
         /// <param name="httpRequest">The HTTP request <see cref="HttpRequestMessage"/>need to be sent.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns></returns>
         protected async override Task<HttpResponseMessage> SendAsync(HttpRequestMessage httpRequest, CancellationToken cancellationToken)
         {
-            // Sends request first time
+            // Send request first time
             var response = await base.SendAsync(httpRequest, cancellationToken);
 
-            // Check whether needs to retry 
+            // Check request's payloads and response status
             if (IsRetry(response) && IsBuffed(httpRequest))
             {
                 response = await SendRetryAsync(response, cancellationToken);
@@ -70,7 +70,7 @@ namespace Microsoft.Graph
         /// <summary>
         /// Retry sending the HTTP request 
         /// </summary>
-        /// <param name="response">The <see cref="HttpResponseMessage"/> need to be retried.</param>
+        /// <param name="response">The <see cref="HttpResponseMessage"/> needs to be retried.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the retry.</param>
         /// <returns></returns>
         public async Task<HttpResponseMessage> SendRetryAsync(HttpResponseMessage response, CancellationToken cancellationToken)
@@ -90,7 +90,7 @@ namespace Microsoft.Graph
                 // Get the original request
                 var request = response.RequestMessage;
 
-                // Increament retryCount and then update Retry-Attempt in request header
+                // Increase retryCount and then update Retry-Attempt in request header
                 retryCount++;
                 AddOrUpdateRetryAttempt(request, retryCount);
 
@@ -139,6 +139,12 @@ namespace Microsoft.Graph
         /// <returns></returns>
         private bool IsBuffed(HttpRequestMessage request)
         {
+            HttpContent content = request.Content;
+
+            if (content != null && content.Headers.ContentLength != 0)
+            {
+                return !(content is StreamContent);
+            }
             return true;
         }
 
@@ -159,8 +165,8 @@ namespace Microsoft.Graph
         /// <summary>
         /// Delay task operation based on Retry-After header in the response or exponential backoff
         /// </summary>
-        /// <param name="response">The <see cref="HttpResponseMessage"/>returned</param>
-        /// <param name="retry_count">The retry times</param>
+        /// <param name="response">The <see cref="HttpResponseMessage"/></param>
+        /// <param name="retry_count">The retry counts</param>
         /// <returns></returns>
         public Task Delay(HttpResponseMessage response, int retry_count)
         {
