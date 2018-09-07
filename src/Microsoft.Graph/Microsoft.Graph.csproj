@@ -58,6 +58,6 @@ July 2018 Release Summary (version 1.10.0)
     <PackageReference Include="Newtonsoft.Json" Version="[6.0.1,12)" />
   </ItemGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.1' ">
-    <PackageReference Include="Newtonsoft.Json" Version="[9.0.1,12)" />
+    <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
   </ItemGroup>
 </Project>
