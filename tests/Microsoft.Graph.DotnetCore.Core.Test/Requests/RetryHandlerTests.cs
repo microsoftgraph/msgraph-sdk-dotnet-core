@@ -65,7 +65,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         [InlineData(429)] // 429
         public async Task ShouldRetryWithAddRetryAttemptHeader(HttpStatusCode statusCode)
         {
-            var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, "http://example.org/foo");
+            var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, "http://example.org/foo");
 
             var retryResponse = new HttpResponseMessage(statusCode);
 
@@ -102,6 +102,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 
             var response = await invoker.SendAsync(httpRequestMessage, new CancellationToken());
 
+            Assert.Same(response, response_2);
             Assert.NotNull(response.RequestMessage.Content);
             Assert.Equal(response.RequestMessage.Content.ReadAsStringAsync().Result, "Hello World");
 
@@ -110,7 +111,33 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         [Theory]
         [InlineData(HttpStatusCode.ServiceUnavailable)]  // 503
         [InlineData(429)] // 429
-        public async Task ShouldNotRetryWithForwardOnlyStream(HttpStatusCode statusCode)
+        public async Task ShouldNotRetryWithPostStreaming(HttpStatusCode statusCode)
+        {
+            var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, "http://example.org/foo");
+            httpRequestMessage.Content = new StringContent("Test Content");
+            httpRequestMessage.Content.Headers.ContentLength = -1;
+
+            var retryResponse = new HttpResponseMessage(statusCode);
+
+            var response_2 = new HttpResponseMessage(HttpStatusCode.OK);
+
+            this.testHttpMessageHandler.SetHttpResponse(retryResponse, response_2);
+
+            var response = await invoker.SendAsync(httpRequestMessage, new CancellationToken());
+
+            Assert.NotEqual(response, response_2);
+            Assert.Same(response, retryResponse);
+            Assert.NotNull(response.RequestMessage.Content);
+            Assert.NotNull(response.RequestMessage.Content.Headers.ContentLength);
+            Assert.Equal(response.RequestMessage.Content.Headers.ContentLength, -1);
+
+        }
+
+
+        [Theory]
+        [InlineData(HttpStatusCode.ServiceUnavailable)]  // 503
+        [InlineData(429)] // 429
+        public async Task ShouldNotRetryWithPutStreaming(HttpStatusCode statusCode)
         {
 
         }
