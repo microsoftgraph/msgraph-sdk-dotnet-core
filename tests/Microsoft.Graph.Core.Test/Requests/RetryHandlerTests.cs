@@ -92,7 +92,7 @@ namespace Microsoft.Graph.Core.Test.Requests
         [DataTestMethod]
         [DataRow(HttpStatusCode.ServiceUnavailable)]  // 503
         [DataRow(429)] // 429
-        public async Task ShouldRetryWithBuffedContent(HttpStatusCode statusCode)
+        public async Task ShouldRetryWithBufferedContent(HttpStatusCode statusCode)
         {
             var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, "http://example.org/foo");
             httpRequestMessage.Content = new StringContent("Hello World");
@@ -167,7 +167,7 @@ namespace Microsoft.Graph.Core.Test.Requests
         [DataRow(429)] // 429
         public async Task ExceedMaxRetryShouldReturn(HttpStatusCode statusCode)
         {
-            var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, "http://example.org/foo");
+            var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, "http://example.org/foo");
 
             var retryResponse = new HttpResponseMessage(statusCode);
             var response_2 = new HttpResponseMessage(statusCode);
@@ -176,13 +176,27 @@ namespace Microsoft.Graph.Core.Test.Requests
             try
             {
                 var response = await invoker.SendAsync(httpRequestMessage, new CancellationToken());
+               
             }
             catch (ServiceException exception)
             {
+                
                 Assert.IsTrue(exception.IsMatch(ErrorConstants.Codes.TooManyRetries), "Unexpected error code returned.");
                 Assert.AreEqual(String.Format(ErrorConstants.Messages.TooManyRedirectsFormatString, 3), exception.Error.Message, "Unexpected error message.");
                 Assert.IsInstanceOfType(exception, typeof(ServiceException), "Eeception is not the right type");
+
+                Assert.IsTrue(httpRequestMessage.Headers.Contains(RETRY_ATTEMPT), "Doesn't set Retry-Attemp header to request");
+                IEnumerable<string> values;
+                Assert.IsTrue(httpRequestMessage.Headers.TryGetValues(RETRY_ATTEMPT, out values), "Get Retry-Attemp Header values");
+               // Assert.AreEqual(values.Count(), 1, "There are multiple values for Retry-Attemp header.");
+                foreach(var str in values) {
+                    //Assert.IsTrue(str.Equals(1.ToString()) ||  str.Equals(2.ToString()), "count value is : " + str);
+                }
+               // Assert.AreEqual(values.First(), 3.ToString(), "The value of  Retry-Attemp header is wrong.");
             }
+
+           
+
         }
 
         [DataTestMethod]

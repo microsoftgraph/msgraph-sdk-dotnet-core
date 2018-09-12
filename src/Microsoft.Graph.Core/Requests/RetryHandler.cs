@@ -49,7 +49,7 @@ namespace Microsoft.Graph
             var response = await base.SendAsync(httpRequest, cancellationToken);
 
             // Check request's payloads and response status
-            if (IsRetry(response) && IsBuffed(httpRequest))
+            if (IsRetry(response) && IsBuffered(httpRequest))
             {
 
                 response = await SendRetryAsync(response, cancellationToken);
@@ -128,7 +128,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="request">The <see cref="HttpRequestMessage"/>needs to be sent.</param>
         /// <returns></returns>
-        private bool IsBuffed(HttpRequestMessage request)
+        private bool IsBuffered(HttpRequestMessage request)
         {
             HttpContent content = request.Content;
 
@@ -148,10 +148,10 @@ namespace Microsoft.Graph
         /// <param name="retry_count">Retry times</param>
         private void AddOrUpdateRetryAttempt(HttpRequestMessage request, int retry_count)
         {
-            if (request.Headers.Contains(RETRY_ATTEMPT))
-            {
-                request.Headers.Remove(RETRY_ATTEMPT);
-            }
+            //if (request.Headers.Contains(RETRY_ATTEMPT))
+            //{
+            //    request.Headers.Remove(RETRY_ATTEMPT);
+            //}
             request.Headers.Add(RETRY_ATTEMPT, retry_count.ToString());
         }
 
@@ -160,8 +160,9 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="response">The <see cref="HttpResponseMessage"/>returned.</param>
         /// <param name="retry_count">The retry counts</param>
+        /// <param name="cancellationToken">The cancellationToken for the Http request</param>
         /// <returns>The <see cref="Task"/> for delay operation.</returns>
-        public Task Delay(HttpResponseMessage response, int retry_count)
+        public Task Delay(HttpResponseMessage response, int retry_count, CancellationToken cancellationToken)
         {
             
             TimeSpan delay = TimeSpan.FromMilliseconds(0);
@@ -185,7 +186,7 @@ namespace Microsoft.Graph
                
                 delay = TimeSpan.FromMilliseconds(delay_time);
             }
-            return Task.Delay(delay);
+            return Task.Delay(delay, cancellationToken);
 
         }
 
