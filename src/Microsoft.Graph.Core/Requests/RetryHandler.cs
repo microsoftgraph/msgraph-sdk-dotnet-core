@@ -10,7 +10,7 @@ using System.Threading;
 using System.Net.Http;
 using System.Net;
 using System.Net.Http.Headers;
-using System.IO;
+using System.Globalization;
 
 namespace Microsoft.Graph
 { 
@@ -19,14 +19,14 @@ namespace Microsoft.Graph
     /// </summary>
     public class RetryHandler : DelegatingHandler
     {
-
-        // All values for fields are temporary
-        private const int MAX_RETRY = 3;
         private const string RETRY_AFTER = "Retry-After";
         private const string RETRY_ATTEMPT = "Retry-Attempt";
-        private const int DELAY_MILLISECONDES = 6000;
-        private const int MAX_DELAY_MILLISECONDS = 10000;
+        // temporary value still need to discussion
+        private const int DELAY_MILLISECONDS = 30000;
+        private const int MAX_DELAY_MILLISECONDS = 60000;
+        private const int MAX_RETRY = 5;
         private int m_pow = 1;
+        
 
         /// <summary>
         /// Construct a new <see cref="RetryHandler"/>
@@ -48,10 +48,8 @@ namespace Microsoft.Graph
             // Send request first time
             var response = await base.SendAsync(httpRequest, cancellationToken);
 
-            // Check request's payloads and response status
             if (IsRetry(response) && IsBuffered(httpRequest))
             {
-
                 response = await SendRetryAsync(response, cancellationToken);
             }
 
@@ -76,7 +74,7 @@ namespace Microsoft.Graph
 
                 // Call Delay method to get delay time from response's Retry-After header or from exponential backoff 
                 // Start Task.Delay task
-                Task delay = Delay(response, retryCount);
+                Task delay = Delay(response, retryCount, cancellationToken);
 
                 // Get the original request
                 var request = response.RequestMessage;
@@ -91,7 +89,7 @@ namespace Microsoft.Graph
                 // Call base.SendAsync to send the request
                 response = await base.SendAsync(request, cancellationToken);
 
-                if (!IsRetry(response) || !IsBuffed(request))
+                if (!IsRetry(response) || !IsBuffered(request))
                 {
                     return response;
                 }
@@ -101,7 +99,7 @@ namespace Microsoft.Graph
                          new Error
                          {
                              Code = ErrorConstants.Codes.TooManyRetries,
-                             Message = string.Format(ErrorConstants.Messages.TooManyRedirectsFormatString, retryCount)
+                             Message = string.Format(ErrorConstants.Messages.TooManyRetriesFormatString, retryCount)
                          });
 
         }
@@ -132,8 +130,8 @@ namespace Microsoft.Graph
         {
             HttpContent content = request.Content;
 
-            if ((request.Method == HttpMethod.Put || request.Method == HttpMethod.Post) 
-                && (content == null || content.Headers.ContentLength == null || (int)content.Headers.ContentLength == -1))
+            if ((request.Method == HttpMethod.Put || request.Method == HttpMethod.Post || request.Method.Method.Equals("PATCH")) 
+                && content != null && (content.Headers.ContentLength == null || (int)content.Headers.ContentLength == -1))
             {
                 return false;
             }
@@ -148,10 +146,10 @@ namespace Microsoft.Graph
         /// <param name="retry_count">Retry times</param>
         private void AddOrUpdateRetryAttempt(HttpRequestMessage request, int retry_count)
         {
-            //if (request.Headers.Contains(RETRY_ATTEMPT))
-            //{
-            //    request.Headers.Remove(RETRY_ATTEMPT);
-            //}
+            if (request.Headers.Contains(RETRY_ATTEMPT))
+            {
+                request.Headers.Remove(RETRY_ATTEMPT);
+            }
             request.Headers.Add(RETRY_ATTEMPT, retry_count.ToString());
         }
 
@@ -169,7 +167,7 @@ namespace Microsoft.Graph
             HttpHeaders headers = response.Headers;
             if (headers.TryGetValues(RETRY_AFTER, out IEnumerable<string> values))
             {
-                string retry_after = values.First();
+                string retry_after = values.First();    
                 if (Int32.TryParse(retry_after, out int delay_seconds))
                 {
                     delay = TimeSpan.FromSeconds(delay_seconds);
@@ -177,11 +175,9 @@ namespace Microsoft.Graph
             }
             else
             {
-                if (retry_count < 31)
-                {
-                    m_pow = m_pow << 1; // m_pow = Pow(2, m_retries - 1)
-                }
-                int delay_time = Math.Min(DELAY_MILLISECONDES * (m_pow - 1) / 2,
+                m_pow = m_pow << 1; // m_pow = Pow(2, retry_count - 1)
+               
+                int delay_time = Math.Min(DELAY_MILLISECONDS * (m_pow - 1) / 2,
                     MAX_DELAY_MILLISECONDS);
                
                 delay = TimeSpan.FromMilliseconds(delay_time);

@@ -104,6 +104,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 
             Assert.Same(response, response_2);
             Assert.NotNull(response.RequestMessage.Content);
+            Assert.NotNull(response.RequestMessage.Content.Headers.ContentLength);
             Assert.Equal(response.RequestMessage.Content.ReadAsStringAsync().Result, "Hello World");
 
         }
@@ -139,7 +140,23 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         [InlineData(429)] // 429
         public async Task ShouldNotRetryWithPutStreaming(HttpStatusCode statusCode)
         {
+            var httpRequestMessage = new HttpRequestMessage(HttpMethod.Put, "http://example.org/foo");
+            httpRequestMessage.Content = new StringContent("Test Content");
+            httpRequestMessage.Content.Headers.ContentLength = null;
 
+            var retryResponse = new HttpResponseMessage(statusCode);
+
+            var response_2 = new HttpResponseMessage(HttpStatusCode.OK);
+
+            this.testHttpMessageHandler.SetHttpResponse(retryResponse, response_2);
+
+            var response = await invoker.SendAsync(httpRequestMessage, new CancellationToken());
+
+            Assert.NotEqual(response, response_2);
+            Assert.Same(response, retryResponse);
+            Assert.NotNull(response.RequestMessage.Content);
+            Assert.Null(response.RequestMessage.Content.Headers.ContentLength);
+          
         }
 
         [Theory]
@@ -160,15 +177,15 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             catch (ServiceException exception)
             {
                 Assert.True(exception.IsMatch(ErrorConstants.Codes.TooManyRetries), "Unexpected error code returned.");
-                Assert.Equal(String.Format(ErrorConstants.Messages.TooManyRedirectsFormatString, 3), exception.Error.Message);
+                Assert.Equal(String.Format(ErrorConstants.Messages.TooManyRetriesFormatString, 5), exception.Error.Message);
                 Assert.IsType(typeof(ServiceException), exception);
+                IEnumerable<string> values;
+                Assert.True(httpRequestMessage.Headers.TryGetValues(RETRY_ATTEMPT, out values), "Don't set Retry-Attemp Header");
+                Assert.Equal(values.Count(), 1);
+                Assert.Equal(values.First(), 5.ToString());
             }
 
-            //Assert.IsTrue((response.Equals(retryResponse) || response.Equals(response_2)), "The response doesn't match.");
-            //IEnumerable<string> values;
-            //Assert.IsTrue(response.RequestMessage.Headers.TryGetValues(RETRY_ATTEMPT, out values), "Don't set Retry-Attemp Header");
-            //Assert.AreEqual(values.Count(), 1, "There are multiple values for Retry-Attemp header.");
-            //Assert.AreEqual(values.First(), 3.ToString(), "Exceed max retry times.");
+
         }
 
         [Theory]
@@ -207,7 +224,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             Message = message;
             await Task.Run(async () =>
             {
-                await this.retryHandler.Delay(response, count);
+                await this.retryHandler.Delay(response, count, new CancellationToken());
                 Message += " Work " + count.ToString();
             });
 

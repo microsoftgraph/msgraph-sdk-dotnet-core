@@ -68,7 +68,7 @@ namespace Microsoft.Graph.Core.Test.Requests
         [DataRow(429)] // 429
         public async Task ShouldRetryWithAddRetryAttemptHeader(HttpStatusCode statusCode)
         {
-            var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, "http://example.org/foo");
+            var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, "http://example.org/foo");
 
             var retryResponse = new HttpResponseMessage(statusCode);
 
@@ -78,7 +78,7 @@ namespace Microsoft.Graph.Core.Test.Requests
 
             var response = await invoker.SendAsync(httpRequestMessage, new CancellationToken());
 
-            Assert.AreSame(response, response_2, "Return a response fail.");
+            Assert.AreSame(response, response_2, "Retry failed.");
             Assert.AreSame(response.RequestMessage, httpRequestMessage, "The request is set wrong.");
             Assert.IsNotNull(response.RequestMessage.Headers, "The request header is null");
             Assert.IsTrue(response.RequestMessage.Headers.Contains(RETRY_ATTEMPT), "Doesn't set Retry-Attemp header to request");
@@ -96,7 +96,7 @@ namespace Microsoft.Graph.Core.Test.Requests
         {
             var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, "http://example.org/foo");
             httpRequestMessage.Content = new StringContent("Hello World");
-
+            
             var retryResponse = new HttpResponseMessage(statusCode);
 
             var response_2 = new HttpResponseMessage(HttpStatusCode.OK);
@@ -182,17 +182,14 @@ namespace Microsoft.Graph.Core.Test.Requests
             {
                 
                 Assert.IsTrue(exception.IsMatch(ErrorConstants.Codes.TooManyRetries), "Unexpected error code returned.");
-                Assert.AreEqual(String.Format(ErrorConstants.Messages.TooManyRedirectsFormatString, 3), exception.Error.Message, "Unexpected error message.");
+                Assert.AreEqual(String.Format(ErrorConstants.Messages.TooManyRetriesFormatString, 5), exception.Error.Message, "Unexpected error message.");
                 Assert.IsInstanceOfType(exception, typeof(ServiceException), "Eeception is not the right type");
 
                 Assert.IsTrue(httpRequestMessage.Headers.Contains(RETRY_ATTEMPT), "Doesn't set Retry-Attemp header to request");
                 IEnumerable<string> values;
                 Assert.IsTrue(httpRequestMessage.Headers.TryGetValues(RETRY_ATTEMPT, out values), "Get Retry-Attemp Header values");
-               // Assert.AreEqual(values.Count(), 1, "There are multiple values for Retry-Attemp header.");
-                foreach(var str in values) {
-                    //Assert.IsTrue(str.Equals(1.ToString()) ||  str.Equals(2.ToString()), "count value is : " + str);
-                }
-               // Assert.AreEqual(values.First(), 3.ToString(), "The value of  Retry-Attemp header is wrong.");
+                Assert.AreEqual(values.Count(), 1, "There are multiple values for Retry-Attemp header.");
+                Assert.AreEqual(values.First(), 5.ToString(), "The value of  Retry-Attemp header is wrong.");
             }
 
            
@@ -232,7 +229,7 @@ namespace Microsoft.Graph.Core.Test.Requests
             Message = message;
             await Task.Run(async () =>
             {
-                await this.retryHandler.Delay(response, count);
+                await this.retryHandler.Delay(response, count, new CancellationToken());
                 Message += " Work " + count.ToString();
             });
 
