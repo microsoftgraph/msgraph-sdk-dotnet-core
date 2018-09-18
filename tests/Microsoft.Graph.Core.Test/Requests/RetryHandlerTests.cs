@@ -163,6 +163,7 @@ namespace Microsoft.Graph.Core.Test.Requests
         }
 
         [DataTestMethod]
+        [Ignore]
         [DataRow(HttpStatusCode.ServiceUnavailable)]  // 503
         [DataRow(429)] // 429
         public async Task ExceedMaxRetryShouldReturn(HttpStatusCode statusCode)
@@ -182,17 +183,43 @@ namespace Microsoft.Graph.Core.Test.Requests
             {
                 
                 Assert.IsTrue(exception.IsMatch(ErrorConstants.Codes.TooManyRetries), "Unexpected error code returned.");
-                Assert.AreEqual(String.Format(ErrorConstants.Messages.TooManyRetriesFormatString, 5), exception.Error.Message, "Unexpected error message.");
+                Assert.AreEqual(String.Format(ErrorConstants.Messages.TooManyRetriesFormatString, 10), exception.Error.Message, "Unexpected error message.");
                 Assert.IsInstanceOfType(exception, typeof(ServiceException), "Eeception is not the right type");
 
                 Assert.IsTrue(httpRequestMessage.Headers.Contains(RETRY_ATTEMPT), "Doesn't set Retry-Attemp header to request");
                 IEnumerable<string> values;
                 Assert.IsTrue(httpRequestMessage.Headers.TryGetValues(RETRY_ATTEMPT, out values), "Get Retry-Attemp Header values");
                 Assert.AreEqual(values.Count(), 1, "There are multiple values for Retry-Attemp header.");
-                Assert.AreEqual(values.First(), 5.ToString(), "The value of  Retry-Attemp header is wrong.");
+                Assert.AreEqual(values.First(), 10.ToString(), "The value of  Retry-Attemp header is wrong.");
             }
 
            
+
+        }
+
+        [DataTestMethod]
+        [DataRow(HttpStatusCode.ServiceUnavailable)]  // 503
+        [DataRow(429)] // 429
+        public async Task ShouldRetrytBasedOnRetryAfter(HttpStatusCode statusCode)
+        {
+            var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, "http://example.org/foo");
+            httpRequestMessage.Content = new StringContent("Hello World");
+
+            var retryResponse = new HttpResponseMessage(statusCode);
+            retryResponse.Headers.TryAddWithoutValidation(RETRY_AFTER, 30.ToString());
+
+            var response_2 = new HttpResponseMessage(HttpStatusCode.OK);
+
+            this.testHttpMessageHandler.SetHttpResponse(retryResponse, response_2);
+
+            var response = await invoker.SendAsync(httpRequestMessage, new CancellationToken());
+
+            Assert.AreSame(response, response_2);
+            IEnumerable<string> values;
+            Assert.IsTrue(httpRequestMessage.Headers.TryGetValues(RETRY_ATTEMPT, out values), "Don't set Retry-Attemp Header");
+            Assert.AreEqual(values.Count(), 1);
+            Assert.AreEqual(values.First(), 1.ToString());
+
 
         }
 

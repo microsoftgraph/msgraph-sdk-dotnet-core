@@ -19,13 +19,14 @@ namespace Microsoft.Graph
     /// </summary>
     public class RetryHandler : DelegatingHandler
     {
+
         private const string RETRY_AFTER = "Retry-After";
         private const string RETRY_ATTEMPT = "Retry-Attempt";
-        // temporary value still need to discussion
-        private const int DELAY_MILLISECONDS = 30000;
-        private const int MAX_DELAY_MILLISECONDS = 60000;
-        private const int MAX_RETRY = 5;
-        private int m_pow = 1;
+       
+        
+        private const int DELAY_MILLISECONDS = 60000;
+        private const int MAX_RETRY = 10;
+        private double m_pow = 1;
         
 
         /// <summary>
@@ -72,8 +73,7 @@ namespace Microsoft.Graph
             while (retryCount < MAX_RETRY)
             {
 
-                // Call Delay method to get delay time from response's Retry-After header or from exponential backoff 
-                // Start Task.Delay task
+                // Call Delay method to get delay time from response's Retry-After header or by exponential backoff 
                 Task delay = Delay(response, retryCount, cancellationToken);
 
                 // Get the original request
@@ -175,11 +175,11 @@ namespace Microsoft.Graph
             }
             else
             {
-                m_pow = m_pow << 1; // m_pow = Pow(2, retry_count - 1)
-               
-                int delay_time = Math.Min(DELAY_MILLISECONDS * (m_pow - 1) / 2,
-                    MAX_DELAY_MILLISECONDS);
-               
+
+                m_pow = Math.Pow(2, retry_count); // m_pow = Pow(2, retry_count)
+
+                double delay_time = m_pow * DELAY_MILLISECONDS;
+              
                 delay = TimeSpan.FromMilliseconds(delay_time);
             }
             return Task.Delay(delay, cancellationToken);
