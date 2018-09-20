@@ -22,12 +22,13 @@ namespace Microsoft.Graph
 
         private const string RETRY_AFTER = "Retry-After";
         private const string RETRY_ATTEMPT = "Retry-Attempt";
-       
-        
-        private const int DELAY_MILLISECONDS = 60000;
-        private const int MAX_RETRY = 10;
+        private const int DELAY_MILLISECONDS = 10000;
         private double m_pow = 1;
-        
+
+        /// <summary>
+        /// MaxRetry property
+        /// </summary>
+        public int MaxRetry { set; get; } = 10;
 
         /// <summary>
         /// Construct a new <see cref="RetryHandler"/>
@@ -46,7 +47,7 @@ namespace Microsoft.Graph
         /// <returns></returns>
         protected async override Task<HttpResponseMessage> SendAsync(HttpRequestMessage httpRequest, CancellationToken cancellationToken)
         {
-            // Send request first time
+          
             var response = await base.SendAsync(httpRequest, cancellationToken);
 
             if (IsRetry(response) && IsBuffered(httpRequest))
@@ -60,7 +61,7 @@ namespace Microsoft.Graph
         /// <summary>
         /// Retry sending the HTTP request 
         /// </summary>
-        /// <param name="response">The <see cref="HttpResponseMessage"/> needs to be retried.</param>
+        /// <param name="response">The <see cref="HttpResponseMessage"/> which is returned and includes the HTTP request needs to be retried.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the retry.</param>
         /// <returns></returns>
         public async Task<HttpResponseMessage> SendRetryAsync(HttpResponseMessage response, CancellationToken cancellationToken)
@@ -70,7 +71,7 @@ namespace Microsoft.Graph
             int retryCount = 0;
 
           
-            while (retryCount < MAX_RETRY)
+            while (retryCount < MaxRetry)
             {
 
                 // Call Delay method to get delay time from response's Retry-After header or by exponential backoff 
@@ -185,6 +186,7 @@ namespace Microsoft.Graph
             return Task.Delay(delay, cancellationToken);
 
         }
+
 
     }
 }
