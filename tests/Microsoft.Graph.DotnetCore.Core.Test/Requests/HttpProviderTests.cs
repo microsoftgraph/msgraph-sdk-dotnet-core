@@ -81,6 +81,18 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         }
 
         [Fact]
+        public void HttpProvider_HttpMessageHandlerConstructor() {
+           
+            using (var httpProvider = new HttpProvider(this.testHttpMessageHandler, false, null))
+            {
+                Assert.NotNull(httpProvider.httpMessageHandler);
+                Assert.Equal(httpProvider.httpMessageHandler, this.testHttpMessageHandler);
+                Assert.False(httpProvider.disposeHandler);
+                Assert.IsType(typeof(Serializer), httpProvider.Serializer);
+            }
+        }
+
+        [Fact]
         public async Task OverallTimeout_RequestAlreadySent()
         {
             using (var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, "https://localhost"))
@@ -136,6 +148,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                 }
                 catch (ServiceException exception)
                 {
+                    
                     Assert.True(exception.IsMatch(ErrorConstants.Codes.GeneralException));
                     Assert.Equal(ErrorConstants.Messages.UnexpectedExceptionOnSend, exception.Error.Message);
                     Assert.Equal(clientException, exception.InnerException);
