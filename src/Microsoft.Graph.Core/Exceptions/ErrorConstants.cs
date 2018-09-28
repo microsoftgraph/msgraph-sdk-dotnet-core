@@ -21,6 +21,10 @@ namespace Microsoft.Graph
             internal static string TooManyRedirects = "tooManyRedirects";
 
             internal static string TooManyRetries = "tooManyRetries";
+
+            internal static string DelegatingHandlerArray = "DelegatingHandlerArray";
+
+            internal static string DelegatingHandlerArrayInnerHandler = "DelegatingHandlerArrayInnerHandler";
         }
 
         internal static class Messages
@@ -50,6 +54,10 @@ namespace Microsoft.Graph
             internal static string UnexpectedExceptionOnSend = "An error occurred sending the request.";
 
             internal static string UnexpectedExceptionResponse = "Unexpected exception returned from the service.";
+
+            internal static string DelegatingHandlerArrayContainsNullItem = "DelegatingHandler array contains null item.";
+
+            internal static string DelegatingHandlerArrayHasNullInnerHandler = "DelegatingHandler array has null InnerHandler.";
         }
     }
 }
