@@ -90,28 +90,43 @@ namespace Microsoft.Graph.Core.Test.Requests
             var baseAddress = new Uri("https://localhost");
             var cacheHeader = new CacheControlHeaderValue();
             var webProxy = new WebProxy("http://127.0.0.1:8888");
-            using (HttpClient client = GraphClientFactory.CreateClient(timeout, baseAddress, cacheHeader, webProxy, handlers))
+            using (HttpClient client = GraphClientFactory.CreateClient(webProxy, handlers))
             {
+                GraphClientFactory.Configure(client, timeout, baseAddress, cacheHeader);
                 Assert.IsNotNull(client, "Create Http client failed.");
                 Assert.AreEqual(client.Timeout, timeout, "Unexpected default timeout set.");
                 Assert.IsFalse(client.DefaultRequestHeaders.CacheControl.NoCache, "NoCache true.");
                 Assert.IsFalse(client.DefaultRequestHeaders.CacheControl.NoStore, "NoStore true.");
                 Assert.AreEqual(client.BaseAddress, baseAddress, "Unexpected default baseAddress set.");
-                
 
             }
         }
 
         [TestMethod]
-        public void CreateClient_SelectedCloud()
+        public void CreateClient_SelectedCloudAndVersion()
         {
-
-            using (HttpClient httpClient = GraphClientFactory.CreateClient(GraphServieCloudList.Germany, handlers))
+            GraphClientFactory.Version = "beta";
+            using (HttpClient httpClient = GraphClientFactory.CreateClient(GraphClientFactory.Germany_Cloud, handlers))
             {
                 Assert.IsNotNull(httpClient, "Create Http client failed.");
-                Uri clouldEndpoint = new Uri("https://graph.microsoft.de/v1.0");
+                Uri clouldEndpoint = new Uri("https://graph.microsoft.de/beta");
                 Assert.AreEqual(httpClient.BaseAddress, clouldEndpoint, "Unexpected endpoint set.");
                 Assert.AreEqual(httpClient.Timeout, TimeSpan.FromSeconds(100), "Default timeout not set.");
+            }
+        }
+
+        [TestMethod]
+        public void CreateClient_SelectedCloudWithExceptions()
+        {
+            string nation = "Canada";
+            try
+            {
+                HttpClient httpClient = GraphClientFactory.CreateClient(nation, handlers);
+            }
+            catch (ArgumentException exception)
+            {
+                Assert.IsInstanceOfType(exception, typeof(ArgumentException), "Eeception is not the right type");
+                Assert.AreEqual(exception.Message, String.Format("{0} is an unexpected national cloud.", nation));
             }
         }
 
@@ -144,10 +159,9 @@ namespace Microsoft.Graph.Core.Test.Requests
             using (HttpClient client = GraphClientFactory.CreateClient(handlers))
             {
                 Assert.IsNotNull(client, "Create Http client failed.");
-
             }
-
         }
+
 
         [TestMethod]
         public async Task SendRequest_Redirect()
@@ -193,6 +207,32 @@ namespace Microsoft.Graph.Core.Test.Requests
 
         }
 
+        [TestMethod]
+        public void CreateClient_WithHandlersHasExceptions()
+        {
+            handlers[1] = null;
+            try
+            {
+                HttpClient client = GraphClientFactory.CreateClient(handlers);
+            }
+            catch (ArgumentNullException exception)
+            {
+                Assert.IsInstanceOfType(exception, typeof(ArgumentNullException), "Eeception is not the right type");
+                Assert.AreEqual(exception.ParamName, "handlers", "ParamName not right.");
+            }
 
+            handlers[1] = new RetryHandler(this.testHttpMessageHandler);
+            try
+            {
+                HttpClient client = GraphClientFactory.CreateClient(handlers);
+            }
+            catch (ArgumentException exception)
+            {
+                Assert.IsInstanceOfType(exception, typeof(ArgumentException), "Eeception is not the right type");
+                Assert.AreEqual(exception.Message, String.Format("DelegatingHandler array has unexpected InnerHandler. {0} has unexpected InnerHandler.", handlers[1]));
+
+            }
+
+        }
     }
 }

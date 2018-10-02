@@ -11,33 +11,13 @@ namespace Microsoft.Graph
     using System.Reflection;
     using System.Net.Http.Headers;
 
-    /// <summary>
-    /// Enum value to represent Microsoft graph service national cloud root endpoints
-    /// </summary>
-    public enum GraphServieCloudList {
-        /// <summary>
-        /// Global endpoint
-        /// </summary>
-        Global = 0,
-        /// <summary>
-        /// US_GOV endpoint
-        /// </summary>
-        US_GOV = 1,
-        /// <summary>
-        /// China endpoint
-        /// </summary>
-        China = 2,
-        /// <summary>
-        /// Germany endpoint
-        /// </summary>
-        Germany = 3
-    }
-
+   
     /// <summary>
     /// GraphClientFactory class to create the HTTP client
     /// </summary>
     public static class GraphClientFactory
     {
+
         
         /// The key for the SDK version header.
         private static readonly string SdkVersionHeaderName = CoreConstants.Headers.SdkVersionHeaderName;
@@ -57,17 +37,33 @@ namespace Microsoft.Graph
         private static readonly TimeSpan defaultTimeout = TimeSpan.FromSeconds(100);
 
         /// The default value for the baseAddress of HTTP client
-        private static readonly Uri _baseAddress = new Uri("https://graph.microsoft.com/v1.0");
+        private static readonly string _baseAddress = "https://graph.microsoft.com/";
 
-        /// The default value for Api version
-        private static readonly string version = "v1.0";
-        
         /// Microsoft Graph service nationa cloud endpoints
-        private static readonly string[] cloudList = { "https://graph.microsoft.com",
-                                                       "https://graph.microsoft.com",
-                                                       "https://microsoftgraph.chinacloudapi.cn",
-                                                       "https://graph.microsoft.de" };
+        private static readonly Dictionary<string, string> cloudList;
 
+
+        /// Global endpoint
+        public const string Global_Cloud = "Global";
+        /// US_GOV endpoint
+        public const string USGOV_Cloud = "US_GOV";
+        /// China endpoint
+        public const string China_Cloud = "China";
+        /// Germany endpoint
+        public const string Germany_Cloud = "Germany";
+
+        static GraphClientFactory()
+        {
+            cloudList = new Dictionary<string, string>();
+            cloudList.Add(Global_Cloud, "https://graph.microsoft.com");
+            cloudList.Add(USGOV_Cloud, "https://graph.microsoft.com");
+            cloudList.Add(China_Cloud, "https://microsoftgraph.chinacloudapi.cn");
+            cloudList.Add(Germany_Cloud, "https://graph.microsoft.de");
+        }
+
+       
+        /// Property Version for version value
+        public static string Version { set; get; } = "v1.0";
 
         /// <summary>
         /// Creates a new <see cref="HttpClient"/> instance configured with the handlers provided.
@@ -80,7 +76,7 @@ namespace Microsoft.Graph
         /// <returns>An <see cref="HttpClient"/> instance with the configured handlers.</returns>
         public static HttpClient CreateClient(params DelegatingHandler[] handlers)
         {
-            return CreateClient(defaultTimeout, _baseAddress, null, null, handlers);
+            return Create(null, handlers);
         }
 
         /// <summary>
@@ -100,29 +96,35 @@ namespace Microsoft.Graph
         /// <summary>
         /// Creates a new <see cref="HttpClient"/> instance configured with the handlers provided.
         /// </summary>
-        /// <param name="sovereignCloud">The <see cref="GraphServieCloudList"/> enum value to pass the national cloud root endpoint to client.</param>
+        /// <param name="sovereignCloud">The <see cref="string"/>value to pass the national cloud root endpoint to client.</param>
         /// <param name="handlers">An ordered list of <see cref="DelegatingHandler"/> instances to be invoked as an 
         /// <see cref="HttpRequestMessage"/> travels from the <see cref="HttpClient"/> to the network and an 
         /// <see cref="HttpResponseMessage"/> travels from the network back to <see cref="HttpClient"/>.
         /// The handlers are invoked in a top-down fashion. That is, the first entry is invoked first for 
         /// an outbound request message but last for an inbound response message.</param>
         /// <returns>An <see cref="HttpClient"/> instance with the configured handlers.</returns>
-        public static HttpClient CreateClient(GraphServieCloudList sovereignCloud, params DelegatingHandler[] handlers)
+        public static HttpClient CreateClient(string sovereignCloud, params DelegatingHandler[] handlers)
         {
-            string cloud = cloudList[(int)sovereignCloud];
-            string cloudAddress = cloud + "/" + version;
+            if (sovereignCloud == null)
+            {
+                throw new ArgumentNullException(String.Format("{0} is null.", sovereignCloud, "sovereignCloud"));
+            }
+            string cloud = "";
+            if (!cloudList.TryGetValue(sovereignCloud, out cloud))
+            {
+                throw new ArgumentException(String.Format("{0} is an unexpected national cloud.", sovereignCloud, "sovereignCloud"));
+            }
+            string cloudAddress = cloud + "/" + Version;
             Uri address = new Uri(cloudAddress);
-            return CreateClient(defaultTimeout, address, null, null, handlers);
+            HttpClient client = Create(null, handlers);
+            client.BaseAddress = address;
+            return client;
         }
 
         /// <summary>
         /// Creates a new <see cref="HttpClient"/> instance configured with the handlers, timeout, baseAddress,
         /// cacheControlHeaderValue and proxy provided.
         /// </summary>
-        /// <param name="timeout">A <see cref="TimeSpan"/> object to be passed to the client's Timeout property</param>
-        /// <param name="baseAddress">A <see cref="string"/> value to be setted as the client's BaseAddress property</param>
-        /// <param name="cacheControlHeaderValue">A <see cref="CacheControlHeaderValue"/> object to be passed to Client's CacheControlHeaderValue 
-        /// in DefaultRequestHeaders property.</param>
         /// <param name="proxy">A <see cref="IWebProxy"/> object to be passed to client to configure InnderHandler's proxy property.</param>
         /// <param name="handlers">An ordered list of <see cref="DelegatingHandler"/> instances to be invoked as an 
         /// <see cref="HttpRequestMessage"/> travels from the <see cref="HttpClient"/> to the network and an 
@@ -130,7 +132,7 @@ namespace Microsoft.Graph
         /// The handlers are invoked in a top-down fashion. That is, the first entry is invoked first for 
         /// an outbound request message but last for an inbound response message.</param>
         /// <returns>An <see cref="HttpClient"/> instance with the configured handlers.</returns>
-        public static HttpClient CreateClient(TimeSpan timeout, Uri baseAddress = null, CacheControlHeaderValue cacheControlHeaderValue = null, IWebProxy proxy = null, params DelegatingHandler[] handlers)
+        public static HttpClient CreateClient(IWebProxy proxy = null, params DelegatingHandler[] handlers)
         {
             HttpClientHandler handler = new HttpClientHandler();
             if (proxy != null)
@@ -138,14 +140,7 @@ namespace Microsoft.Graph
                 handler.Proxy = proxy;
             }
 
-            HttpClient client = Create(handler, handlers);
-
-            if (timeout == null)
-            {
-                timeout = defaultTimeout;
-            }
-
-            return Configure(client, timeout, baseAddress, cacheControlHeaderValue);
+            return Create(handler, handlers);
 
         }
 
@@ -166,6 +161,10 @@ namespace Microsoft.Graph
             HttpMessageHandler pipeline = CreatePipeline(innerHandler, handlers);
             HttpClient client = new HttpClient(pipeline);
             client.DefaultRequestHeaders.Add(SdkVersionHeaderName, SdkVersionHeaderValue);
+            client.Timeout = defaultTimeout;
+            string address = _baseAddress + Version;
+            client.BaseAddress = new Uri(address);
+            client.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue { NoCache = true, NoStore = true };
             return client;
         }
 
@@ -199,22 +198,12 @@ namespace Microsoft.Graph
             {
                 if (handler == null)
                 {
-                    throw new ServiceException(
-                    new Error
-                    {
-                        Code = ErrorConstants.Codes.DelegatingHandlerArray,
-                        Message = ErrorConstants.Messages.DelegatingHandlerArrayContainsNullItem,
-                    });
+                    throw new ArgumentNullException(nameof(handlers), "DelegatingHandler array contains null item.");
                 }
 
                 if (handler.InnerHandler != null)
                 {
-                    throw new ServiceException(
-                   new Error
-                   {
-                       Code = ErrorConstants.Codes.DelegatingHandlerArrayInnerHandler,
-                       Message = ErrorConstants.Messages.DelegatingHandlerArrayHasNullInnerHandler,
-                   });
+                    throw new ArgumentException(String.Format("DelegatingHandler array has unexpected InnerHandler. {0} has unexpected InnerHandler.", handler, "handler"));
                 }
 
                 handler.InnerHandler = pipeline;
@@ -233,7 +222,7 @@ namespace Microsoft.Graph
         /// <param name="baseAddress">A <see cref="Uri"/> value to set the HTTP client BaseAddress property.</param>
         /// <param name="cacheControlHeaderValue">A <see cref="CacheControlHeaderValue"/> value to set HTTP client DefaultRequestHeaders property.</param>
         /// <returns></returns>
-        private static HttpClient Configure(HttpClient client, TimeSpan timeout, Uri baseAddress, CacheControlHeaderValue cacheControlHeaderValue)
+        public static HttpClient Configure(HttpClient client, TimeSpan timeout, Uri baseAddress, CacheControlHeaderValue cacheControlHeaderValue)
         {
             try
             {
@@ -250,7 +239,7 @@ namespace Microsoft.Graph
                     exception);
             }
 
-            client.BaseAddress = baseAddress == null ? _baseAddress : baseAddress;
+            client.BaseAddress = baseAddress == null ? new Uri(_baseAddress + Version) : baseAddress;
             client.DefaultRequestHeaders.CacheControl = cacheControlHeaderValue ?? new CacheControlHeaderValue { NoCache = true, NoStore = true };
             return client;
         }

@@ -86,8 +86,9 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             var baseAddress = new Uri("https://localhost");
             var cacheHeader = new CacheControlHeaderValue();
             
-            using (HttpClient client = GraphClientFactory.CreateClient(timeout, baseAddress, cacheHeader,null, handlers))
+            using (HttpClient client = GraphClientFactory.CreateClient(handlers))
             {
+                GraphClientFactory.Configure(client, timeout, baseAddress, cacheHeader);
                 Assert.NotNull(client);
                 Assert.Equal(client.Timeout, timeout);
                 Assert.False(client.DefaultRequestHeaders.CacheControl.NoCache, "NoCache true.");
@@ -100,13 +101,28 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         [Fact]
         public void CreateClient_SelectedCloud()
         {
-
-            using (HttpClient httpClient = GraphClientFactory.CreateClient(GraphServieCloudList.Germany, handlers))
+            GraphClientFactory.Version = "beta";
+            using (HttpClient httpClient = GraphClientFactory.CreateClient(GraphClientFactory.Germany_Cloud, handlers))
             {
                 Assert.NotNull(httpClient);
-                Uri clouldEndpoint = new Uri("https://graph.microsoft.de/v1.0");
+                Uri clouldEndpoint = new Uri("https://graph.microsoft.de/beta");
                 Assert.Equal(httpClient.BaseAddress, clouldEndpoint);
                 Assert.Equal(httpClient.Timeout, TimeSpan.FromSeconds(100));
+            }
+        }
+
+        [Fact]
+        public void CreateClient_SelectedCloudWithExceptions()
+        {
+            string nation = "Canada";
+            try
+            {
+                HttpClient httpClient = GraphClientFactory.CreateClient(nation, handlers);
+            }
+            catch (ArgumentException exception)
+            {
+                Assert.IsType(typeof(ArgumentException), exception);
+                Assert.Equal(exception.Message, String.Format("{0} is an unexpected national cloud.", nation));
             }
         }
 
@@ -184,6 +200,35 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                 Assert.True(httpRequestMessage.Headers.TryGetValues("Retry-Attempt", out values), "Don't set Retry-Attemp Header");
                 Assert.Equal(values.Count(), 1);
                 Assert.Equal(values.First(), 1.ToString());
+            }
+
+        }
+
+
+        [Fact]
+        public void CreateClient_WithHandlersHasExceptions()
+        {
+            handlers[1] = null;
+            try
+            {
+                HttpClient client = GraphClientFactory.CreateClient(handlers);
+            }
+            catch (ArgumentNullException exception)
+            {
+                Assert.IsType(typeof(ArgumentNullException), exception);
+                Assert.Equal(exception.ParamName, "handlers");
+            }
+
+            handlers[1] = new RetryHandler(this.testHttpMessageHandler);
+            try
+            {
+                HttpClient client = GraphClientFactory.CreateClient(handlers);
+            }
+            catch (ArgumentException exception)
+            {
+                Assert.IsType(typeof(ArgumentException), exception);
+                Assert.Equal(exception.Message, String.Format("DelegatingHandler array has unexpected InnerHandler. {0} has unexpected InnerHandler.", handlers[1]));
+
             }
 
         }
