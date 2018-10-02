@@ -11,13 +11,31 @@ namespace Microsoft.Graph
     using System.Reflection;
     using System.Net.Http.Headers;
 
+    /// <summary>
+    /// Enum value to represent Microsoft graph service national cloud root endpoints
+    /// </summary>
     public enum GraphServieCloudList {
+        /// <summary>
+        /// Global endpoint
+        /// </summary>
         Global = 0,
+        /// <summary>
+        /// US_GOV endpoint
+        /// </summary>
         US_GOV = 1,
+        /// <summary>
+        /// China endpoint
+        /// </summary>
         China = 2,
+        /// <summary>
+        /// Germany endpoint
+        /// </summary>
         Germany = 3
     }
 
+    /// <summary>
+    /// GraphClientFactory class to create the HTTP client
+    /// </summary>
     public static class GraphClientFactory
     {
         
@@ -74,12 +92,21 @@ namespace Microsoft.Graph
         /// <see cref="HttpResponseMessage"/> travels from the network back to <see cref="HttpClient"/>.
         /// The handlers are invoked in a top-down fashion. That is, the first entry is invoked first for 
         /// an outbound request message but last for an inbound response message.</param>
-        /// <returns></returns>
+        /// <returns>An <see cref="HttpClient"/> instance with the configured handlers.</returns>
         public static HttpClient CreateClient(HttpMessageHandler innerHandler, params DelegatingHandler[] handlers)
         {
             return Create(innerHandler, handlers);
         }
-
+        /// <summary>
+        /// Creates a new <see cref="HttpClient"/> instance configured with the handlers provided.
+        /// </summary>
+        /// <param name="sovereignCloud">The <see cref="GraphServieCloudList"/> enum value to pass the national cloud root endpoint to client.</param>
+        /// <param name="handlers">An ordered list of <see cref="DelegatingHandler"/> instances to be invoked as an 
+        /// <see cref="HttpRequestMessage"/> travels from the <see cref="HttpClient"/> to the network and an 
+        /// <see cref="HttpResponseMessage"/> travels from the network back to <see cref="HttpClient"/>.
+        /// The handlers are invoked in a top-down fashion. That is, the first entry is invoked first for 
+        /// an outbound request message but last for an inbound response message.</param>
+        /// <returns>An <see cref="HttpClient"/> instance with the configured handlers.</returns>
         public static HttpClient CreateClient(GraphServieCloudList sovereignCloud, params DelegatingHandler[] handlers)
         {
             string cloud = cloudList[(int)sovereignCloud];
@@ -92,16 +119,16 @@ namespace Microsoft.Graph
         /// Creates a new <see cref="HttpClient"/> instance configured with the handlers, timeout, baseAddress,
         /// cacheControlHeaderValue and proxy provided.
         /// </summary>
-        /// <param name="handlers">An ordered list of <see cref="DelegatingHandler"/> instances to be invoked as an 
-        /// <see cref="HttpRequestMessage"/> travels from the <see cref="HttpClient"/> to the network and an 
-        /// <see cref="HttpResponseMessage"/> travels from the network back to <see cref="HttpClient"/>.
-        /// The handlers are invoked in a top-down fashion. That is, the first entry is invoked first for 
-        /// an outbound request message but last for an inbound response message.</param>
         /// <param name="timeout">A <see cref="TimeSpan"/> object to be passed to the client's Timeout property</param>
         /// <param name="baseAddress">A <see cref="string"/> value to be setted as the client's BaseAddress property</param>
         /// <param name="cacheControlHeaderValue">A <see cref="CacheControlHeaderValue"/> object to be passed to Client's CacheControlHeaderValue 
         /// in DefaultRequestHeaders property.</param>
         /// <param name="proxy">A <see cref="IWebProxy"/> object to be passed to client to configure InnderHandler's proxy property.</param>
+        /// <param name="handlers">An ordered list of <see cref="DelegatingHandler"/> instances to be invoked as an 
+        /// <see cref="HttpRequestMessage"/> travels from the <see cref="HttpClient"/> to the network and an 
+        /// <see cref="HttpResponseMessage"/> travels from the network back to <see cref="HttpClient"/>.
+        /// The handlers are invoked in a top-down fashion. That is, the first entry is invoked first for 
+        /// an outbound request message but last for an inbound response message.</param>
         /// <returns>An <see cref="HttpClient"/> instance with the configured handlers.</returns>
         public static HttpClient CreateClient(TimeSpan timeout, Uri baseAddress = null, CacheControlHeaderValue cacheControlHeaderValue = null, IWebProxy proxy = null, params DelegatingHandler[] handlers)
         {
@@ -201,10 +228,10 @@ namespace Microsoft.Graph
         /// <summary>
         /// Configure an instance of an <see cref="HttpClient"/>
         /// </summary>
-        /// <param name="client"></param>
-        /// <param name="timeout"></param>
-        /// <param name="baseAddress"></param>
-        /// <param name="cacheControlHeaderValue"></param>
+        /// <param name="client">The <see cref="HttpClient"/> client instance need to be configured.</param>
+        /// <param name="timeout">A <see cref="TimeSpan"/> value for the HTTP client timeout property.</param>
+        /// <param name="baseAddress">A <see cref="Uri"/> value to set the HTTP client BaseAddress property.</param>
+        /// <param name="cacheControlHeaderValue">A <see cref="CacheControlHeaderValue"/> value to set HTTP client DefaultRequestHeaders property.</param>
         /// <returns></returns>
         private static HttpClient Configure(HttpClient client, TimeSpan timeout, Uri baseAddress, CacheControlHeaderValue cacheControlHeaderValue)
         {
