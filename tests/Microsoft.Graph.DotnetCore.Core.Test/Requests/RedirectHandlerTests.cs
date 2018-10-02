@@ -33,6 +33,16 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         }
 
         [Fact]
+        public void RedirectHandler_Constructor()
+        {
+            using (RedirectHandler redirect = new RedirectHandler())
+            {
+                Assert.Null(redirect.InnerHandler);
+                Assert.IsType(typeof(RedirectHandler), redirect);
+            }
+        }
+
+        [Fact]
         public void RedirectHandler_HttpMessageHandlerConstructor()
         {
             Assert.NotNull(this.redirectHandler.InnerHandler);

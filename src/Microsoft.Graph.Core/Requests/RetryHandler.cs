@@ -1,19 +1,16 @@
 ﻿// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Threading;
-using System.Net.Http;
-using System.Net;
-using System.Net.Http.Headers;
-using System.Globalization;
-
 namespace Microsoft.Graph
-{ 
+{
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using System.Threading;
+    using System.Net.Http;
+    using System.Net;
+    using System.Net.Http.Headers;
     /// <summary>
     /// An <see cref="DelegatingHandler"/> implementation using standard .NET libraries.
     /// </summary>
@@ -29,6 +26,13 @@ namespace Microsoft.Graph
         /// MaxRetry property
         /// </summary>
         public int MaxRetry { set; get; } = 10;
+
+        /// <summary>
+        /// Construct a new <see cref="RetryHandler"/>
+        /// </summary>
+        public RetryHandler()
+        {
+        }
 
         /// <summary>
         /// Construct a new <see cref="RetryHandler"/>

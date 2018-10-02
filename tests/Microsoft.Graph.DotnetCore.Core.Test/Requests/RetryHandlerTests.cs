@@ -37,6 +37,17 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         }
 
         [Fact]
+        public void retryHandler_Constructor()
+        {
+            using (RetryHandler retry = new RetryHandler())
+            {
+                Assert.Null(retry.InnerHandler);
+                Assert.IsType(typeof(RetryHandler), retry);
+            }
+        }
+
+
+        [Fact]
         public void retryHandler_HttpMessageHandlerConstructor()
         {
             Assert.NotNull(retryHandler.InnerHandler);

@@ -5,14 +5,10 @@
 namespace Microsoft.Graph
 {
     using System;
-    using System.Collections.Generic;
     using System.Net.Http;
-    using System.Text;
-    using System.Net.Http.Headers;
     using System.Threading;
     using System.Threading.Tasks;
     using System.Net;
-    using System.IO;
 
     /// <summary>
     /// An <see cref="DelegatingHandler"/> implementation using standard .NET libraries.
@@ -21,6 +17,14 @@ namespace Microsoft.Graph
     {
 
         private const int maxRedirects = 5;
+
+
+        /// <summary>
+        /// Constructs a new <see cref="RedirectHandler"/> 
+        /// </summary>
+        public RedirectHandler()
+        {
+        }
 
         /// <summary>
         /// Constructs a new <see cref="RedirectHandler"/> 
