@@ -217,7 +217,7 @@ namespace Microsoft.Graph.Core.Test.Requests
             }
             catch (ArgumentNullException exception)
             {
-                Assert.IsInstanceOfType(exception, typeof(ArgumentNullException), "Eeception is not the right type");
+                Assert.IsInstanceOfType(exception, typeof(ArgumentNullException), "Exception is not the right type");
                 Assert.AreEqual(exception.ParamName, "handlers", "ParamName not right.");
             }
 
@@ -228,7 +228,7 @@ namespace Microsoft.Graph.Core.Test.Requests
             }
             catch (ArgumentException exception)
             {
-                Assert.IsInstanceOfType(exception, typeof(ArgumentException), "Eeception is not the right type");
+                Assert.IsInstanceOfType(exception, typeof(ArgumentException), "Exception is not the right type");
                 Assert.AreEqual(exception.Message, String.Format("DelegatingHandler array has unexpected InnerHandler. {0} has unexpected InnerHandler.", handlers[1]));
 
             }
