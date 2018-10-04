@@ -36,6 +36,16 @@ namespace Microsoft.Graph.Core.Test.Requests
         }
 
         [TestMethod]
+        public void RedirectHandler_Constructor()
+        {
+            using (RedirectHandler redirect = new RedirectHandler())
+            {
+                Assert.IsNull(redirect.InnerHandler, "HttpMessageHandler initialized.");
+                Assert.IsInstanceOfType(redirect, typeof(RedirectHandler), "Unexpected redirect handler set.");
+            }
+        }
+
+        [TestMethod]
         public void RedirectHandler_HttpMessageHandlerConstructor()
         {
             Assert.IsNotNull(redirectHandler.InnerHandler, "HttpMessageHandler not initialized.");

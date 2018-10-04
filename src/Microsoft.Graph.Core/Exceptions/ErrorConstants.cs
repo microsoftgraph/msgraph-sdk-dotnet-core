@@ -21,6 +21,8 @@ namespace Microsoft.Graph
             internal static string TooManyRedirects = "tooManyRedirects";
 
             internal static string TooManyRetries = "tooManyRetries";
+
+           
         }
 
         internal static class Messages
@@ -50,6 +52,7 @@ namespace Microsoft.Graph
             internal static string UnexpectedExceptionOnSend = "An error occurred sending the request.";
 
             internal static string UnexpectedExceptionResponse = "Unexpected exception returned from the service.";
+
         }
     }
 }

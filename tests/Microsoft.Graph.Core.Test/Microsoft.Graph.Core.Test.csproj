@@ -86,6 +86,7 @@
     <Compile Include="Mocks\MockRedirectHandler.cs" />
     <Compile Include="Requests\AsyncMonitorTests.cs" />
     <Compile Include="Requests\BaseRequestBuilderTests.cs" />
+    <Compile Include="Requests\GraphClientFactoryTests.cs" />
     <Compile Include="Requests\RedirectHandlerTests.cs" />
     <Compile Include="Requests\RetryHandlerTests.cs" />
     <Compile Include="Serialization\DurationConverterTests.cs" />
