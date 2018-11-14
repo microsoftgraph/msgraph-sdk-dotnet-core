@@ -13,15 +13,9 @@
     <PackageId>Microsoft.Graph</PackageId>
     <PackageTags>Microsoft Office365;Graph;GraphServiceClient;Outlook;OneDrive;AzureAD;GraphAPI;Productivity;SharePoint;Intune;SDK</PackageTags>
     <PackageReleaseNotes>
-October 2018 Release Summary (version 1.12.0)
+November 2018 Beta Release Summary (version 1.12.0)
 
-- New DriveItemPreviewRequestBody.cs is the request body content for the preview action bound to the driveItem entity.
-- New ItemPreviewInfo.cs is returned by the preview action.
-- Added odataType to base types.
-- New doc comments for IntelliSense.
-- New DriveItemPreviewRequest.cs and DriveItemPreviewRequestBuilder.cs requests. DriveItemRequestBuilder.cs updated to support the DriveItem preview functionality.
-- Removed System.Net.Http package reference for .Net target.
-    </PackageReleaseNotes>
+A ton of beta functionality is in this package.</PackageReleaseNotes>
     <PackageProjectUrl>https://developer.microsoft.com/graph</PackageProjectUrl>
     <PackageLicenseUrl>http://aka.ms/devservicesagreement</PackageLicenseUrl>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
@@ -40,7 +34,8 @@ October 2018 Release Summary (version 1.12.0)
     <DelaySign>false</DelaySign>
     <AssemblyOriginatorKeyFile>35MSSharedLib1024.snk</AssemblyOriginatorKeyFile>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <Version>1.12.0</Version>
+    <Version>1.12.0-beta</Version>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard1.1|AnyCPU'">
     <DocumentationFile>bin\Release\Microsoft.Graph.xml</DocumentationFile>
