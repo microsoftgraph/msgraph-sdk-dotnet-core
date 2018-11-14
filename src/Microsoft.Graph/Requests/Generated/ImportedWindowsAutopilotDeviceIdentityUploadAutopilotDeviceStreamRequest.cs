@@ -56,9 +56,9 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="string">The string object set with the properties to update.</param>
         /// <returns>The task to await for async call.</returns>
-        public System.Threading.Tasks.Task<string> PatchAsync(string string)
+        public System.Threading.Tasks.Task<string> PatchAsync(string @string)
         {
-            return this.PatchAsync(string, CancellationToken.None);
+            return this.PatchAsync(@string, CancellationToken.None);
         }
 
         /// <summary>
@@ -67,11 +67,11 @@ namespace Microsoft.Graph
         /// <param name="string">The string object set with the properties to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await for async call.</returns>
-        public System.Threading.Tasks.Task<string> PatchAsync(string string, 
+        public System.Threading.Tasks.Task<string> PatchAsync(string @string, 
             CancellationToken cancellationToken)
         {
             this.Method = "PATCH";
-            return this.SendAsync<string>(string, cancellationToken);
+            return this.SendAsync<string>(@string, cancellationToken);
         }        
 
         /// <summary>
@@ -79,9 +79,9 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="string">The string object to update.</param>
         /// <returns>The task to await for async call.</returns>
-        public System.Threading.Tasks.Task<string> PutAsync(string string)
+        public System.Threading.Tasks.Task<string> PutAsync(string @string)
         {
-            return this.PutAsync(string, CancellationToken.None);
+            return this.PutAsync(@string, CancellationToken.None);
         }
 
         /// <summary>
@@ -90,11 +90,11 @@ namespace Microsoft.Graph
         /// <param name="string">The string object to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await for async call.</returns>
-        public System.Threading.Tasks.Task<string> PutAsync(string string, 
+        public System.Threading.Tasks.Task<string> PutAsync(string @string, 
             CancellationToken cancellationToken)
         {
             this.Method = "PUT";
-            return this.SendAsync<string>(string, cancellationToken);
+            return this.SendAsync<string>(@string, cancellationToken);
         }        
 
         /// <summary>

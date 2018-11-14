@@ -31,12 +31,6 @@ namespace Microsoft.Graph
         new IPrivilegedApprovalRequest Request(IEnumerable<Option> options);
     
         /// <summary>
-        /// Gets the request builder for Request.
-        /// </summary>
-        /// <returns>The <see cref="IPrivilegedRoleAssignmentRequestWithReferenceRequestBuilder"/>.</returns>
-        IPrivilegedRoleAssignmentRequestWithReferenceRequestBuilder Request { get; }
-
-        /// <summary>
         /// Gets the request builder for RoleInfo.
         /// </summary>
         /// <returns>The <see cref="IPrivilegedRoleRequestBuilder"/>.</returns>

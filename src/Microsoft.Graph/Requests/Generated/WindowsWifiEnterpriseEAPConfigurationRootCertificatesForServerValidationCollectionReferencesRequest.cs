@@ -12,6 +12,7 @@ namespace Microsoft.Graph
     using System.Collections.Generic;
     using System.Net.Http;
     using System.Threading;
+    using System.Threading.Tasks;
 
     /// <summary>
     /// The type WindowsWifiEnterpriseEAPConfigurationRootCertificatesForServerValidationCollectionReferencesRequest.
@@ -31,6 +32,15 @@ namespace Microsoft.Graph
             : base(requestUrl, client, options)
         {
         }
-        
+
+        public Task AddAsync(Windows81TrustedRootCertificate windows81TrustedRootCertificate)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task AddAsync(Windows81TrustedRootCertificate windows81TrustedRootCertificate, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

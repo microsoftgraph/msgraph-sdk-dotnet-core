@@ -41,7 +41,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="string">The string object set with the properties to update.</param>
         /// <returns>The task to await for async call.</returns>
-        System.Threading.Tasks.Task<string> PatchAsync(string string);
+        System.Threading.Tasks.Task<string> PatchAsync(string @string);
 
         /// <summary>
         /// Issues the PATCH request.
@@ -49,7 +49,7 @@ namespace Microsoft.Graph
         /// <param name="string">The string object set with the properties to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await for async call.</returns>
-        System.Threading.Tasks.Task<string> PatchAsync(string string, 
+        System.Threading.Tasks.Task<string> PatchAsync(string @string, 
             CancellationToken cancellationToken);
           
 
@@ -58,7 +58,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="string">The string object to update.</param>
         /// <returns>The task to await for async call.</returns>
-        System.Threading.Tasks.Task<string> PutAsync(string string);
+        System.Threading.Tasks.Task<string> PutAsync(string @string);
 
         /// <summary>
         /// Issues the PUT request.
@@ -66,7 +66,7 @@ namespace Microsoft.Graph
         /// <param name="string">The string object to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await for async call.</returns>
-        System.Threading.Tasks.Task<string> PutAsync(string string, 
+        System.Threading.Tasks.Task<string> PutAsync(string @string, 
             CancellationToken cancellationToken);
 
 
