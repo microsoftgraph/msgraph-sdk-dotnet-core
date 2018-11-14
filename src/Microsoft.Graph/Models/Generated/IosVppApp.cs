@@ -91,6 +91,27 @@ namespace Microsoft.Graph
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "bundleId", Required = Newtonsoft.Json.Required.Default)]
         public string BundleId { get; set; }
     
+        /// <summary>
+        /// Gets or sets vpp token id.
+        /// Identifier of the VPP token associated with this app.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "vppTokenId", Required = Newtonsoft.Json.Required.Default)]
+        public string VppTokenId { get; set; }
+    
+        /// <summary>
+        /// Gets or sets revoke license action results.
+        /// Results of revoke license actions on this app.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "revokeLicenseActionResults", Required = Newtonsoft.Json.Required.Default)]
+        public IEnumerable<IosVppAppRevokeLicensesActionResult> RevokeLicenseActionResults { get; set; }
+    
+        /// <summary>
+        /// Gets or sets assigned licenses.
+        /// The licenses assigned to this app.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "assignedLicenses", Required = Newtonsoft.Json.Required.Default)]
+        public IIosVppAppAssignedLicensesCollectionPage AssignedLicenses { get; set; }
+    
     }
 }
 

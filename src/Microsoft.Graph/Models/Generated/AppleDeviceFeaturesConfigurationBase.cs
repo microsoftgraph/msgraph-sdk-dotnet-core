@@ -29,6 +29,13 @@ namespace Microsoft.Graph
             // Don't allow initialization of abstract entity types
         }
     
+        /// <summary>
+        /// Gets or sets air print destinations.
+        /// An array of AirPrint printers that should always be shown. This collection can contain a maximum of 500 elements.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "airPrintDestinations", Required = Newtonsoft.Json.Required.Default)]
+        public IEnumerable<AirPrintDestination> AirPrintDestinations { get; set; }
+    
     }
 }
 

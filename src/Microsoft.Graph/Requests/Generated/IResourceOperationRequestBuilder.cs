@@ -30,5 +30,12 @@ namespace Microsoft.Graph
         /// <returns>The built request.</returns>
         new IResourceOperationRequest Request(IEnumerable<Option> options);
     
+        /// <summary>
+        /// Gets the request builder for ResourceOperationGetScopesForUser.
+        /// </summary>
+        /// <returns>The <see cref="IResourceOperationGetScopesForUserRequestBuilder"/>.</returns>
+        IResourceOperationGetScopesForUserRequestBuilder GetScopesForUser(
+            string userid = null);
+    
     }
 }

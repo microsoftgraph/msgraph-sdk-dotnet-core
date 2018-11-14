@@ -30,5 +30,11 @@ namespace Microsoft.Graph
         /// <returns>The built request.</returns>
         new IDeviceAndAppManagementRoleAssignmentRequest Request(IEnumerable<Option> options);
     
+        /// <summary>
+        /// Gets the request builder for RoleScopeTags.
+        /// </summary>
+        /// <returns>The <see cref="IDeviceAndAppManagementRoleAssignmentRoleScopeTagsCollectionWithReferencesRequestBuilder"/>.</returns>
+        IDeviceAndAppManagementRoleAssignmentRoleScopeTagsCollectionWithReferencesRequestBuilder RoleScopeTags { get; }
+    
     }
 }

@@ -37,6 +37,13 @@ namespace Microsoft.Graph
         public IEnumerable<string> TargetedMobileApps { get; set; }
     
         /// <summary>
+        /// Gets or sets role scope tag ids.
+        /// List of Scope Tags for this App configuration entity.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "roleScopeTagIds", Required = Newtonsoft.Json.Required.Default)]
+        public IEnumerable<string> RoleScopeTagIds { get; set; }
+    
+        /// <summary>
         /// Gets or sets created date time.
         /// DateTime the object was created.
         /// </summary>

@@ -11,7 +11,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type DeviceManagementGetEffectivePermissionsCollectionPage.
     /// </summary>
-    public partial class DeviceManagementGetEffectivePermissionsCollectionPage : CollectionPage<RolePermission>, IDeviceManagementGetEffectivePermissionsCollectionPage
+    public partial class DeviceManagementGetEffectivePermissionsCollectionPage : CollectionPage<string>, IDeviceManagementGetEffectivePermissionsCollectionPage
     {
         /// <summary>
         /// Gets the next page <see cref="IDeviceManagementGetEffectivePermissionsRequest"/> instance.

@@ -30,5 +30,34 @@ namespace Microsoft.Graph
         /// <returns>The built request.</returns>
         new IIosVppAppRequest Request(IEnumerable<Option> options);
     
+        /// <summary>
+        /// Gets the request builder for AssignedLicenses.
+        /// </summary>
+        /// <returns>The <see cref="IIosVppAppAssignedLicensesCollectionRequestBuilder"/>.</returns>
+        IIosVppAppAssignedLicensesCollectionRequestBuilder AssignedLicenses { get; }
+    
+        /// <summary>
+        /// Gets the request builder for IosVppAppRevokeAllLicenses.
+        /// </summary>
+        /// <returns>The <see cref="IIosVppAppRevokeAllLicensesRequestBuilder"/>.</returns>
+        IIosVppAppRevokeAllLicensesRequestBuilder RevokeAllLicenses(
+            bool notifyManagedDevices);
+
+        /// <summary>
+        /// Gets the request builder for IosVppAppRevokeUserLicense.
+        /// </summary>
+        /// <returns>The <see cref="IIosVppAppRevokeUserLicenseRequestBuilder"/>.</returns>
+        IIosVppAppRevokeUserLicenseRequestBuilder RevokeUserLicense(
+            bool notifyManagedDevices,
+            string userId = null);
+
+        /// <summary>
+        /// Gets the request builder for IosVppAppRevokeDeviceLicense.
+        /// </summary>
+        /// <returns>The <see cref="IIosVppAppRevokeDeviceLicenseRequestBuilder"/>.</returns>
+        IIosVppAppRevokeDeviceLicenseRequestBuilder RevokeDeviceLicense(
+            bool notifyManagedDevices,
+            string managedDeviceId = null);
+    
     }
 }

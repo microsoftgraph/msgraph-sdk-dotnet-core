@@ -37,18 +37,6 @@ namespace Microsoft.Graph
         public string Number { get; set; }
     
         /// <summary>
-        /// Gets or sets region.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "region", Required = Newtonsoft.Json.Required.Default)]
-        public string Region { get; set; }
-    
-        /// <summary>
-        /// Gets or sets language.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "language", Required = Newtonsoft.Json.Required.Default)]
-        public string Language { get; set; }
-    
-        /// <summary>
         /// Gets or sets additional data.
         /// </summary>
         [JsonExtensionData(ReadData = true)]

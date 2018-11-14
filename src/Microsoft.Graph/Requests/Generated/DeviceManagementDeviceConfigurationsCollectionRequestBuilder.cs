@@ -59,6 +59,17 @@ namespace Microsoft.Graph
             }
         }
 
-        
+        /// <summary>
+        /// Gets the request builder for DeviceConfigurationGetTargetedUsersAndDevices.
+        /// </summary>
+        /// <returns>The <see cref="IDeviceConfigurationGetTargetedUsersAndDevicesRequestBuilder"/>.</returns>
+        public IDeviceConfigurationGetTargetedUsersAndDevicesRequestBuilder GetTargetedUsersAndDevices(
+            IEnumerable<string> deviceConfigurationIds = null)
+        {
+            return new DeviceConfigurationGetTargetedUsersAndDevicesRequestBuilder(
+                this.AppendSegmentToRequestUrl("microsoft.graph.getTargetedUsersAndDevices"),
+                this.Client,
+                deviceConfigurationIds);
+        }
     }
 }

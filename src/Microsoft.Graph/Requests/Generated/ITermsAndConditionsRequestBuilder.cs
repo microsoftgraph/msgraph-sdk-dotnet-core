@@ -31,6 +31,12 @@ namespace Microsoft.Graph
         new ITermsAndConditionsRequest Request(IEnumerable<Option> options);
     
         /// <summary>
+        /// Gets the request builder for GroupAssignments.
+        /// </summary>
+        /// <returns>The <see cref="ITermsAndConditionsGroupAssignmentsCollectionRequestBuilder"/>.</returns>
+        ITermsAndConditionsGroupAssignmentsCollectionRequestBuilder GroupAssignments { get; }
+
+        /// <summary>
         /// Gets the request builder for Assignments.
         /// </summary>
         /// <returns>The <see cref="ITermsAndConditionsAssignmentsCollectionRequestBuilder"/>.</returns>

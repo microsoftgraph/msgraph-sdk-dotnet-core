@@ -28,6 +28,13 @@ namespace Microsoft.Graph
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "members", Required = Newtonsoft.Json.Required.Default)]
         public IEnumerable<string> Members { get; set; }
     
+        /// <summary>
+        /// Gets or sets role scope tags.
+        /// The set of Role Scope Tags defined on the Role Assignment.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "roleScopeTags", Required = Newtonsoft.Json.Required.Default)]
+        public IDeviceAndAppManagementRoleAssignmentRoleScopeTagsCollectionWithReferencesPage RoleScopeTags { get; set; }
+    
     }
 }
 

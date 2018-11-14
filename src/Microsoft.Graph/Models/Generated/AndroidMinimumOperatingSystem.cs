@@ -79,6 +79,48 @@ namespace Microsoft.Graph
         public bool? V5_1 { get; set; }
     
         /// <summary>
+        /// Gets or sets v6_0.
+        /// Version 6.0 or later.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "v6_0", Required = Newtonsoft.Json.Required.Default)]
+        public bool? V6_0 { get; set; }
+    
+        /// <summary>
+        /// Gets or sets v7_0.
+        /// Version 7.0 or later.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "v7_0", Required = Newtonsoft.Json.Required.Default)]
+        public bool? V7_0 { get; set; }
+    
+        /// <summary>
+        /// Gets or sets v7_1.
+        /// Version 7.1 or later.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "v7_1", Required = Newtonsoft.Json.Required.Default)]
+        public bool? V7_1 { get; set; }
+    
+        /// <summary>
+        /// Gets or sets v8_0.
+        /// Version 8.0 or later.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "v8_0", Required = Newtonsoft.Json.Required.Default)]
+        public bool? V8_0 { get; set; }
+    
+        /// <summary>
+        /// Gets or sets v8_1.
+        /// Version 8.1 or later.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "v8_1", Required = Newtonsoft.Json.Required.Default)]
+        public bool? V8_1 { get; set; }
+    
+        /// <summary>
+        /// Gets or sets v9_0.
+        /// Version 9.0 or later.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "v9_0", Required = Newtonsoft.Json.Required.Default)]
+        public bool? V9_0 { get; set; }
+    
+        /// <summary>
         /// Gets or sets additional data.
         /// </summary>
         [JsonExtensionData(ReadData = true)]

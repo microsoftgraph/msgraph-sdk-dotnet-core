@@ -24,14 +24,14 @@ namespace Microsoft.Graph
         /// <summary>
         /// Issues the GET request.
         /// </summary>
-        System.Threading.Tasks.Task<Report> GetAsync();
+        System.Threading.Tasks.Task<IReportRootGetSharePointSiteUsageSiteCountsCollectionPage> GetAsync();
         
         /// <summary>
         /// Issues the GET request.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await for async call.</returns>
-        System.Threading.Tasks.Task<Report> GetAsync(
+        System.Threading.Tasks.Task<IReportRootGetSharePointSiteUsageSiteCountsCollectionPage> GetAsync(
             CancellationToken cancellationToken);
   
 
@@ -39,34 +39,34 @@ namespace Microsoft.Graph
         /// <summary>
         /// Issues the PATCH request.
         /// </summary>
-        /// <param name="report">The Report object set with the properties to update.</param>
+        /// <param name="sharepointsiteusagesitecounts">The SharePointSiteUsageSiteCounts object set with the properties to update.</param>
         /// <returns>The task to await for async call.</returns>
-        System.Threading.Tasks.Task<Report> PatchAsync(Report report);
+        System.Threading.Tasks.Task<IReportRootGetSharePointSiteUsageSiteCountsCollectionPage> PatchAsync(SharePointSiteUsageSiteCounts sharepointsiteusagesitecounts);
 
         /// <summary>
         /// Issues the PATCH request.
         /// </summary>
-        /// <param name="report">The Report object set with the properties to update.</param>
+        /// <param name="sharepointsiteusagesitecounts">The SharePointSiteUsageSiteCounts object set with the properties to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await for async call.</returns>
-        System.Threading.Tasks.Task<Report> PatchAsync(Report report, 
+        System.Threading.Tasks.Task<IReportRootGetSharePointSiteUsageSiteCountsCollectionPage> PatchAsync(SharePointSiteUsageSiteCounts sharepointsiteusagesitecounts, 
             CancellationToken cancellationToken);
           
 
         /// <summary>
         /// Issues the PUT request.
         /// </summary>
-        /// <param name="report">The Report object to update.</param>
+        /// <param name="sharepointsiteusagesitecounts">The SharePointSiteUsageSiteCounts object to update.</param>
         /// <returns>The task to await for async call.</returns>
-        System.Threading.Tasks.Task<Report> PutAsync(Report report);
+        System.Threading.Tasks.Task<IReportRootGetSharePointSiteUsageSiteCountsCollectionPage> PutAsync(SharePointSiteUsageSiteCounts sharepointsiteusagesitecounts);
 
         /// <summary>
         /// Issues the PUT request.
         /// </summary>
-        /// <param name="report">The Report object to update.</param>
+        /// <param name="sharepointsiteusagesitecounts">The SharePointSiteUsageSiteCounts object to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await for async call.</returns>
-        System.Threading.Tasks.Task<Report> PutAsync(Report report, 
+        System.Threading.Tasks.Task<IReportRootGetSharePointSiteUsageSiteCountsCollectionPage> PutAsync(SharePointSiteUsageSiteCounts sharepointsiteusagesitecounts, 
             CancellationToken cancellationToken);
 
 
@@ -85,5 +85,33 @@ namespace Microsoft.Graph
         /// <param name="value">The select value.</param>
         /// <returns>The request object to send.</returns>
         IReportRootGetSharePointSiteUsageSiteCountsRequest Select(string value);
+
+        /// <summary>
+        /// Adds the specified top value to the request.
+        /// </summary>
+        /// <param name="value">The top value.</param>
+        /// <returns>The request object to send.</returns>
+        IReportRootGetSharePointSiteUsageSiteCountsRequest Top(int value);
+
+        /// <summary>
+        /// Adds the specified filter value to the request.
+        /// </summary>
+        /// <param name="value">The filter value.</param>
+        /// <returns>The request object to send.</returns>
+        IReportRootGetSharePointSiteUsageSiteCountsRequest Filter(string value);
+
+        /// <summary>
+        /// Adds the specified skip value to the request.
+        /// </summary>
+        /// <param name="value">The skip value.</param>
+        /// <returns>The request object to send.</returns>
+        IReportRootGetSharePointSiteUsageSiteCountsRequest Skip(int value);
+
+        /// <summary>
+        /// Adds the specified orderby value to the request.
+        /// </summary>
+        /// <param name="value">The orderby value.</param>
+        /// <returns>The request object to send.</returns>
+        IReportRootGetSharePointSiteUsageSiteCountsRequest OrderBy(string value);
     }
 }

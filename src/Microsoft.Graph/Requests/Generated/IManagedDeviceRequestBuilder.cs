@@ -37,17 +37,57 @@ namespace Microsoft.Graph
         IManagedDeviceDeviceConfigurationStatesCollectionRequestBuilder DeviceConfigurationStates { get; }
 
         /// <summary>
+        /// Gets the request builder for DetectedApps.
+        /// </summary>
+        /// <returns>The <see cref="IManagedDeviceDetectedAppsCollectionWithReferencesRequestBuilder"/>.</returns>
+        IManagedDeviceDetectedAppsCollectionWithReferencesRequestBuilder DetectedApps { get; }
+
+        /// <summary>
         /// Gets the request builder for DeviceCategory.
         /// </summary>
         /// <returns>The <see cref="IDeviceCategoryRequestBuilder"/>.</returns>
         IDeviceCategoryRequestBuilder DeviceCategory { get; }
 
         /// <summary>
+        /// Gets the request builder for WindowsProtectionState.
+        /// </summary>
+        /// <returns>The <see cref="IWindowsProtectionStateRequestBuilder"/>.</returns>
+        IWindowsProtectionStateRequestBuilder WindowsProtectionState { get; }
+
+        /// <summary>
         /// Gets the request builder for DeviceCompliancePolicyStates.
         /// </summary>
         /// <returns>The <see cref="IManagedDeviceDeviceCompliancePolicyStatesCollectionRequestBuilder"/>.</returns>
         IManagedDeviceDeviceCompliancePolicyStatesCollectionRequestBuilder DeviceCompliancePolicyStates { get; }
+
+        /// <summary>
+        /// Gets the request builder for ManagedDeviceMobileAppConfigurationStates.
+        /// </summary>
+        /// <returns>The <see cref="IManagedDeviceManagedDeviceMobileAppConfigurationStatesCollectionRequestBuilder"/>.</returns>
+        IManagedDeviceManagedDeviceMobileAppConfigurationStatesCollectionRequestBuilder ManagedDeviceMobileAppConfigurationStates { get; }
     
+        /// <summary>
+        /// Gets the request builder for ManagedDeviceEnableLostMode.
+        /// </summary>
+        /// <returns>The <see cref="IManagedDeviceEnableLostModeRequestBuilder"/>.</returns>
+        IManagedDeviceEnableLostModeRequestBuilder EnableLostMode(
+            string message = null,
+            string phoneNumber = null,
+            string footer = null);
+
+        /// <summary>
+        /// Gets the request builder for ManagedDevicePlayLostModeSound.
+        /// </summary>
+        /// <returns>The <see cref="IManagedDevicePlayLostModeSoundRequestBuilder"/>.</returns>
+        IManagedDevicePlayLostModeSoundRequestBuilder PlayLostModeSound();
+
+        /// <summary>
+        /// Gets the request builder for ManagedDeviceSetDeviceName.
+        /// </summary>
+        /// <returns>The <see cref="IManagedDeviceSetDeviceNameRequestBuilder"/>.</returns>
+        IManagedDeviceSetDeviceNameRequestBuilder SetDeviceName(
+            string deviceName = null);
+
         /// <summary>
         /// Gets the request builder for ManagedDeviceRetire.
         /// </summary>
@@ -162,6 +202,20 @@ namespace Microsoft.Graph
         /// <returns>The <see cref="IManagedDeviceUpdateWindowsDeviceAccountRequestBuilder"/>.</returns>
         IManagedDeviceUpdateWindowsDeviceAccountRequestBuilder UpdateWindowsDeviceAccount(
             UpdateWindowsDeviceAccountActionParameter updateWindowsDeviceAccountActionParameter = null);
+
+        /// <summary>
+        /// Gets the request builder for ManagedDeviceRevokeAppleVppLicenses.
+        /// </summary>
+        /// <returns>The <see cref="IManagedDeviceRevokeAppleVppLicensesRequestBuilder"/>.</returns>
+        IManagedDeviceRevokeAppleVppLicensesRequestBuilder RevokeAppleVppLicenses();
+
+        /// <summary>
+        /// Gets the request builder for ManagedDeviceOverrideComplianceState.
+        /// </summary>
+        /// <returns>The <see cref="IManagedDeviceOverrideComplianceStateRequestBuilder"/>.</returns>
+        IManagedDeviceOverrideComplianceStateRequestBuilder OverrideComplianceState(
+            AdministratorConfiguredDeviceComplianceState complianceState,
+            string remediationUrl = null);
     
     }
 }

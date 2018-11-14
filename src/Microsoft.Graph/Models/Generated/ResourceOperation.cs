@@ -22,6 +22,13 @@ namespace Microsoft.Graph
     {
     
         /// <summary>
+        /// Gets or sets resource.
+        /// Resource category to which this Operation belongs.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "resource", Required = Newtonsoft.Json.Required.Default)]
+        public string Resource { get; set; }
+    
+        /// <summary>
         /// Gets or sets resource name.
         /// Name of the Resource this operation is performed on.
         /// </summary>
@@ -41,6 +48,13 @@ namespace Microsoft.Graph
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "description", Required = Newtonsoft.Json.Required.Default)]
         public string Description { get; set; }
+    
+        /// <summary>
+        /// Gets or sets enabled for scope validation.
+        /// Determines whether the Permission is validated for Scopes defined per Role Assignment.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "enabledForScopeValidation", Required = Newtonsoft.Json.Required.Default)]
+        public bool? EnabledForScopeValidation { get; set; }
     
     }
 }

@@ -50,6 +50,18 @@ namespace Microsoft.Graph
         }
     
         /// <summary>
+        /// Gets the request builder for GroupAssignments.
+        /// </summary>
+        /// <returns>The <see cref="IDeviceConfigurationGroupAssignmentsCollectionRequestBuilder"/>.</returns>
+        public IDeviceConfigurationGroupAssignmentsCollectionRequestBuilder GroupAssignments
+        {
+            get
+            {
+                return new DeviceConfigurationGroupAssignmentsCollectionRequestBuilder(this.AppendSegmentToRequestUrl("groupAssignments"), this.Client);
+            }
+        }
+
+        /// <summary>
         /// Gets the request builder for Assignments.
         /// </summary>
         /// <returns>The <see cref="IDeviceConfigurationAssignmentsCollectionRequestBuilder"/>.</returns>
@@ -126,12 +138,40 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IDeviceConfigurationAssignRequestBuilder"/>.</returns>
         public IDeviceConfigurationAssignRequestBuilder Assign(
+            IEnumerable<DeviceConfigurationGroupAssignment> deviceConfigurationGroupAssignments = null,
             IEnumerable<DeviceConfigurationAssignment> assignments = null)
         {
             return new DeviceConfigurationAssignRequestBuilder(
                 this.AppendSegmentToRequestUrl("microsoft.graph.assign"),
                 this.Client,
+                deviceConfigurationGroupAssignments,
                 assignments);
+        }
+
+        /// <summary>
+        /// Gets the request builder for DeviceConfigurationWindowsPrivacyAccessControls.
+        /// </summary>
+        /// <returns>The <see cref="IDeviceConfigurationWindowsPrivacyAccessControlsRequestBuilder"/>.</returns>
+        public IDeviceConfigurationWindowsPrivacyAccessControlsRequestBuilder WindowsPrivacyAccessControls(
+            IEnumerable<WindowsPrivacyDataAccessControlItem> windowsPrivacyAccessControls = null)
+        {
+            return new DeviceConfigurationWindowsPrivacyAccessControlsRequestBuilder(
+                this.AppendSegmentToRequestUrl("microsoft.graph.windowsPrivacyAccessControls"),
+                this.Client,
+                windowsPrivacyAccessControls);
+        }
+
+        /// <summary>
+        /// Gets the request builder for DeviceConfigurationAssignedAccessMultiModeProfiles.
+        /// </summary>
+        /// <returns>The <see cref="IDeviceConfigurationAssignedAccessMultiModeProfilesRequestBuilder"/>.</returns>
+        public IDeviceConfigurationAssignedAccessMultiModeProfilesRequestBuilder AssignedAccessMultiModeProfiles(
+            IEnumerable<WindowsAssignedAccessProfile> assignedAccessMultiModeProfiles = null)
+        {
+            return new DeviceConfigurationAssignedAccessMultiModeProfilesRequestBuilder(
+                this.AppendSegmentToRequestUrl("microsoft.graph.assignedAccessMultiModeProfiles"),
+                this.Client,
+                assignedAccessMultiModeProfiles);
         }
     
     }

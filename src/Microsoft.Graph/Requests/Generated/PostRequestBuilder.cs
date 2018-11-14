@@ -108,6 +108,18 @@ namespace Microsoft.Graph
                 return new PostMultiValueExtendedPropertiesCollectionRequestBuilder(this.AppendSegmentToRequestUrl("multiValueExtendedProperties"), this.Client);
             }
         }
+
+        /// <summary>
+        /// Gets the request builder for Mentions.
+        /// </summary>
+        /// <returns>The <see cref="IPostMentionsCollectionRequestBuilder"/>.</returns>
+        public IPostMentionsCollectionRequestBuilder Mentions
+        {
+            get
+            {
+                return new PostMentionsCollectionRequestBuilder(this.AppendSegmentToRequestUrl("mentions"), this.Client);
+            }
+        }
     
         /// <summary>
         /// Gets the request builder for PostForward.

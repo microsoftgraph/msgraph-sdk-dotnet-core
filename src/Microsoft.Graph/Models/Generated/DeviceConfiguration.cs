@@ -37,6 +37,20 @@ namespace Microsoft.Graph
         public DateTimeOffset? LastModifiedDateTime { get; set; }
     
         /// <summary>
+        /// Gets or sets role scope tag ids.
+        /// List of Scope Tags for this Entity instance.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "roleScopeTagIds", Required = Newtonsoft.Json.Required.Default)]
+        public IEnumerable<string> RoleScopeTagIds { get; set; }
+    
+        /// <summary>
+        /// Gets or sets supports scope tags.
+        /// Indicates whether or not the underlying Device Configuration supports the assignment of scope tags. Assigning to the ScopeTags property is not allowed when this value is false and entities will not be visible to scoped users. This occurs for Legacy policies created in Silverlight and can be resolved by deleting and recreating the policy in the Azure Portal. This property is read-only.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "supportsScopeTags", Required = Newtonsoft.Json.Required.Default)]
+        public bool? SupportsScopeTags { get; set; }
+    
+        /// <summary>
         /// Gets or sets created date time.
         /// DateTime the object was created.
         /// </summary>
@@ -63,6 +77,13 @@ namespace Microsoft.Graph
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "version", Required = Newtonsoft.Json.Required.Default)]
         public Int32? Version { get; set; }
+    
+        /// <summary>
+        /// Gets or sets group assignments.
+        /// The list of group assignments for the device configuration profile.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "groupAssignments", Required = Newtonsoft.Json.Required.Default)]
+        public IDeviceConfigurationGroupAssignmentsCollectionPage GroupAssignments { get; set; }
     
         /// <summary>
         /// Gets or sets assignments.

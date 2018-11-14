@@ -50,6 +50,18 @@ namespace Microsoft.Graph
         }
     
         /// <summary>
+        /// Gets the request builder for WindowsManagementApp.
+        /// </summary>
+        /// <returns>The <see cref="IWindowsManagementAppWithReferenceRequestBuilder"/>.</returns>
+        public IWindowsManagementAppWithReferenceRequestBuilder WindowsManagementApp
+        {
+            get
+            {
+                return new WindowsManagementAppWithReferenceRequestBuilder(this.AppendSegmentToRequestUrl("windowsManagementApp"), this.Client);
+            }
+        }
+
+        /// <summary>
         /// Gets the request builder for MobileApps.
         /// </summary>
         /// <returns>The <see cref="IDeviceAppManagementMobileAppsCollectionRequestBuilder"/>.</returns>
@@ -74,6 +86,42 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
+        /// Gets the request builder for EnterpriseCodeSigningCertificates.
+        /// </summary>
+        /// <returns>The <see cref="IDeviceAppManagementEnterpriseCodeSigningCertificatesCollectionRequestBuilder"/>.</returns>
+        public IDeviceAppManagementEnterpriseCodeSigningCertificatesCollectionRequestBuilder EnterpriseCodeSigningCertificates
+        {
+            get
+            {
+                return new DeviceAppManagementEnterpriseCodeSigningCertificatesCollectionRequestBuilder(this.AppendSegmentToRequestUrl("enterpriseCodeSigningCertificates"), this.Client);
+            }
+        }
+
+        /// <summary>
+        /// Gets the request builder for IosLobAppProvisioningConfigurations.
+        /// </summary>
+        /// <returns>The <see cref="IDeviceAppManagementIosLobAppProvisioningConfigurationsCollectionRequestBuilder"/>.</returns>
+        public IDeviceAppManagementIosLobAppProvisioningConfigurationsCollectionRequestBuilder IosLobAppProvisioningConfigurations
+        {
+            get
+            {
+                return new DeviceAppManagementIosLobAppProvisioningConfigurationsCollectionRequestBuilder(this.AppendSegmentToRequestUrl("iosLobAppProvisioningConfigurations"), this.Client);
+            }
+        }
+
+        /// <summary>
+        /// Gets the request builder for SymantecCodeSigningCertificate.
+        /// </summary>
+        /// <returns>The <see cref="ISymantecCodeSigningCertificateRequestBuilder"/>.</returns>
+        public ISymantecCodeSigningCertificateRequestBuilder SymantecCodeSigningCertificate
+        {
+            get
+            {
+                return new SymantecCodeSigningCertificateRequestBuilder(this.AppendSegmentToRequestUrl("symantecCodeSigningCertificate"), this.Client);
+            }
+        }
+
+        /// <summary>
         /// Gets the request builder for MobileAppConfigurations.
         /// </summary>
         /// <returns>The <see cref="IDeviceAppManagementMobileAppConfigurationsCollectionRequestBuilder"/>.</returns>
@@ -82,6 +130,18 @@ namespace Microsoft.Graph
             get
             {
                 return new DeviceAppManagementMobileAppConfigurationsCollectionRequestBuilder(this.AppendSegmentToRequestUrl("mobileAppConfigurations"), this.Client);
+            }
+        }
+
+        /// <summary>
+        /// Gets the request builder for SideLoadingKeys.
+        /// </summary>
+        /// <returns>The <see cref="IDeviceAppManagementSideLoadingKeysCollectionRequestBuilder"/>.</returns>
+        public IDeviceAppManagementSideLoadingKeysCollectionRequestBuilder SideLoadingKeys
+        {
+            get
+            {
+                return new DeviceAppManagementSideLoadingKeysCollectionRequestBuilder(this.AppendSegmentToRequestUrl("sideLoadingKeys"), this.Client);
             }
         }
 
@@ -214,6 +274,18 @@ namespace Microsoft.Graph
             get
             {
                 return new DeviceAppManagementManagedEBooksCollectionRequestBuilder(this.AppendSegmentToRequestUrl("managedEBooks"), this.Client);
+            }
+        }
+
+        /// <summary>
+        /// Gets the request builder for ManagedEBookCategories.
+        /// </summary>
+        /// <returns>The <see cref="IDeviceAppManagementManagedEBookCategoriesCollectionRequestBuilder"/>.</returns>
+        public IDeviceAppManagementManagedEBookCategoriesCollectionRequestBuilder ManagedEBookCategories
+        {
+            get
+            {
+                return new DeviceAppManagementManagedEBookCategoriesCollectionRequestBuilder(this.AppendSegmentToRequestUrl("managedEBookCategories"), this.Client);
             }
         }
     

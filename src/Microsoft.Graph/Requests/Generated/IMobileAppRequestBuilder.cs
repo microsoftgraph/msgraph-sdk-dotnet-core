@@ -41,6 +41,24 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IMobileAppAssignmentsCollectionRequestBuilder"/>.</returns>
         IMobileAppAssignmentsCollectionRequestBuilder Assignments { get; }
+
+        /// <summary>
+        /// Gets the request builder for InstallSummary.
+        /// </summary>
+        /// <returns>The <see cref="IMobileAppInstallSummaryRequestBuilder"/>.</returns>
+        IMobileAppInstallSummaryRequestBuilder InstallSummary { get; }
+
+        /// <summary>
+        /// Gets the request builder for DeviceStatuses.
+        /// </summary>
+        /// <returns>The <see cref="IMobileAppDeviceStatusesCollectionRequestBuilder"/>.</returns>
+        IMobileAppDeviceStatusesCollectionRequestBuilder DeviceStatuses { get; }
+
+        /// <summary>
+        /// Gets the request builder for UserStatuses.
+        /// </summary>
+        /// <returns>The <see cref="IMobileAppUserStatusesCollectionRequestBuilder"/>.</returns>
+        IMobileAppUserStatusesCollectionRequestBuilder UserStatuses { get; }
     
         /// <summary>
         /// Gets the request builder for MobileAppAssign.

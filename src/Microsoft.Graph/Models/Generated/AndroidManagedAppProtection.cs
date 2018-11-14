@@ -64,6 +64,34 @@ namespace Microsoft.Graph
         public string MinimumWarningPatchVersion { get; set; }
     
         /// <summary>
+        /// Gets or sets exempted app packages.
+        /// App packages in this list will be exempt from the policy and will be able to receive data from managed apps.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "exemptedAppPackages", Required = Newtonsoft.Json.Required.Default)]
+        public IEnumerable<KeyValuePair> ExemptedAppPackages { get; set; }
+    
+        /// <summary>
+        /// Gets or sets minimum wipe patch version.
+        /// Android security patch level  less than or equal to the specified value will wipe the managed app and the associated company data.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "minimumWipePatchVersion", Required = Newtonsoft.Json.Required.Default)]
+        public string MinimumWipePatchVersion { get; set; }
+    
+        /// <summary>
+        /// Gets or sets allowed android device manufacturers.
+        /// Semicolon seperated list of device manufacturers allowed, as a string, for the managed app to work.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "allowedAndroidDeviceManufacturers", Required = Newtonsoft.Json.Required.Default)]
+        public string AllowedAndroidDeviceManufacturers { get; set; }
+    
+        /// <summary>
+        /// Gets or sets app action if android device manufacturer not allowed.
+        /// Defines a managed app behavior, either block or wipe, if the specified device manufacturer is not allowed.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "appActionIfAndroidDeviceManufacturerNotAllowed", Required = Newtonsoft.Json.Required.Default)]
+        public ManagedAppRemediationAction? AppActionIfAndroidDeviceManufacturerNotAllowed { get; set; }
+    
+        /// <summary>
         /// Gets or sets apps.
         /// List of apps to which the policy is deployed.
         /// </summary>

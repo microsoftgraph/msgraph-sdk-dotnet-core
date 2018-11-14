@@ -49,5 +49,17 @@ namespace Microsoft.Graph
             return new DeviceAndAppManagementRoleAssignmentRequest(this.RequestUrl, this.Client, options);
         }
     
+        /// <summary>
+        /// Gets the request builder for RoleScopeTags.
+        /// </summary>
+        /// <returns>The <see cref="IDeviceAndAppManagementRoleAssignmentRoleScopeTagsCollectionWithReferencesRequestBuilder"/>.</returns>
+        public IDeviceAndAppManagementRoleAssignmentRoleScopeTagsCollectionWithReferencesRequestBuilder RoleScopeTags
+        {
+            get
+            {
+                return new DeviceAndAppManagementRoleAssignmentRoleScopeTagsCollectionWithReferencesRequestBuilder(this.AppendSegmentToRequestUrl("roleScopeTags"), this.Client);
+            }
+        }
+    
     }
 }

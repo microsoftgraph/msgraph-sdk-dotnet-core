@@ -35,6 +35,12 @@ namespace Microsoft.Graph
         /// <returns>The <see cref="IManagedDeviceRequestBuilder"/>.</returns>
         IManagedDeviceRequestBuilder this[string id] { get; }
 
-        
+        /// <summary>
+        /// Gets the request builder for ManagedDeviceExecuteAction.
+        /// </summary>
+        /// <returns>The <see cref="IManagedDeviceExecuteActionRequestBuilder"/>.</returns>
+        IManagedDeviceExecuteActionRequestBuilder ExecuteAction(
+            ManagedDeviceRemoteAction actionName,
+            IEnumerable<string> deviceIds = null);
     }
 }

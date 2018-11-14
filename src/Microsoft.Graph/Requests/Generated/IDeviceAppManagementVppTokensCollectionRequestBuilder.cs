@@ -35,6 +35,11 @@ namespace Microsoft.Graph
         /// <returns>The <see cref="IVppTokenRequestBuilder"/>.</returns>
         IVppTokenRequestBuilder this[string id] { get; }
 
-        
+        /// <summary>
+        /// Gets the request builder for VppTokenGetLicensesForApp.
+        /// </summary>
+        /// <returns>The <see cref="IVppTokenGetLicensesForAppRequestBuilder"/>.</returns>
+        IVppTokenGetLicensesForAppRequestBuilder GetLicensesForApp(
+            string bundleId = null);
     }
 }

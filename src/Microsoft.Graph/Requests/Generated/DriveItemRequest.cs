@@ -206,6 +206,22 @@ namespace Microsoft.Graph
             if (driveItemToInitialize != null && driveItemToInitialize.AdditionalData != null)
             {
 
+                if (driveItemToInitialize.Activities != null && driveItemToInitialize.Activities.CurrentPage != null)
+                {
+                    driveItemToInitialize.Activities.AdditionalData = driveItemToInitialize.AdditionalData;
+
+                    object nextPageLink;
+                    driveItemToInitialize.AdditionalData.TryGetValue("activities@odata.nextLink", out nextPageLink);
+                    var nextPageLinkString = nextPageLink as string;
+
+                    if (!string.IsNullOrEmpty(nextPageLinkString))
+                    {
+                        driveItemToInitialize.Activities.InitializeNextPageRequest(
+                            this.Client,
+                            nextPageLinkString);
+                    }
+                }
+
                 if (driveItemToInitialize.Children != null && driveItemToInitialize.Children.CurrentPage != null)
                 {
                     driveItemToInitialize.Children.AdditionalData = driveItemToInitialize.AdditionalData;
@@ -233,6 +249,22 @@ namespace Microsoft.Graph
                     if (!string.IsNullOrEmpty(nextPageLinkString))
                     {
                         driveItemToInitialize.Permissions.InitializeNextPageRequest(
+                            this.Client,
+                            nextPageLinkString);
+                    }
+                }
+
+                if (driveItemToInitialize.Subscriptions != null && driveItemToInitialize.Subscriptions.CurrentPage != null)
+                {
+                    driveItemToInitialize.Subscriptions.AdditionalData = driveItemToInitialize.AdditionalData;
+
+                    object nextPageLink;
+                    driveItemToInitialize.AdditionalData.TryGetValue("subscriptions@odata.nextLink", out nextPageLink);
+                    var nextPageLinkString = nextPageLink as string;
+
+                    if (!string.IsNullOrEmpty(nextPageLinkString))
+                    {
+                        driveItemToInitialize.Subscriptions.InitializeNextPageRequest(
                             this.Client,
                             nextPageLinkString);
                     }

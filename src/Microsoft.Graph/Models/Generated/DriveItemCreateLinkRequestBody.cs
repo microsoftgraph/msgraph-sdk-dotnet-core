@@ -33,5 +33,29 @@ namespace Microsoft.Graph
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "scope", Required = Newtonsoft.Json.Required.Default)]
         public string Scope { get; set; }
     
+        /// <summary>
+        /// Gets or sets ExpirationDateTime.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "expirationDateTime", Required = Newtonsoft.Json.Required.Default)]
+        public DateTimeOffset? ExpirationDateTime { get; set; }
+    
+        /// <summary>
+        /// Gets or sets Password.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "password", Required = Newtonsoft.Json.Required.Default)]
+        public string Password { get; set; }
+    
+        /// <summary>
+        /// Gets or sets Message.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "message", Required = Newtonsoft.Json.Required.Default)]
+        public string Message { get; set; }
+    
+        /// <summary>
+        /// Gets or sets Recipients.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "recipients", Required = Newtonsoft.Json.Required.Default)]
+        public IEnumerable<DriveRecipient> Recipients { get; set; }
+    
     }
 }

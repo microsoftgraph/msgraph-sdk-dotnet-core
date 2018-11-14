@@ -23,6 +23,13 @@ namespace Microsoft.Graph
     {
 
         /// <summary>
+        /// Gets or sets actions.
+        /// Allowed Actions
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "actions", Required = Newtonsoft.Json.Required.Default)]
+        public IEnumerable<string> Actions { get; set; }
+    
+        /// <summary>
         /// Gets or sets resourceActions.
         /// Actions
         /// </summary>

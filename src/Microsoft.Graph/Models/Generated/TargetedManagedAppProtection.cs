@@ -37,6 +37,13 @@ namespace Microsoft.Graph
         public bool? IsAssigned { get; set; }
     
         /// <summary>
+        /// Gets or sets targeted app management levels.
+        /// The intended app management levels for this policy
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "targetedAppManagementLevels", Required = Newtonsoft.Json.Required.Default)]
+        public AppManagementLevel? TargetedAppManagementLevels { get; set; }
+    
+        /// <summary>
         /// Gets or sets assignments.
         /// Navigation property to list of inclusion and exclusion groups to which the policy is deployed.
         /// </summary>

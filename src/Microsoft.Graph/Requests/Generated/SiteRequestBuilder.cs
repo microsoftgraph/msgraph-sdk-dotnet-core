@@ -50,6 +50,18 @@ namespace Microsoft.Graph
         }
     
         /// <summary>
+        /// Gets the request builder for Analytics.
+        /// </summary>
+        /// <returns>The <see cref="IItemAnalyticsWithReferenceRequestBuilder"/>.</returns>
+        public IItemAnalyticsWithReferenceRequestBuilder Analytics
+        {
+            get
+            {
+                return new ItemAnalyticsWithReferenceRequestBuilder(this.AppendSegmentToRequestUrl("analytics"), this.Client);
+            }
+        }
+
+        /// <summary>
         /// Gets the request builder for Columns.
         /// </summary>
         /// <returns>The <see cref="ISiteColumnsCollectionRequestBuilder"/>.</returns>
@@ -122,6 +134,18 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
+        /// Gets the request builder for Pages.
+        /// </summary>
+        /// <returns>The <see cref="ISitePagesCollectionRequestBuilder"/>.</returns>
+        public ISitePagesCollectionRequestBuilder Pages
+        {
+            get
+            {
+                return new SitePagesCollectionRequestBuilder(this.AppendSegmentToRequestUrl("pages"), this.Client);
+            }
+        }
+
+        /// <summary>
         /// Gets the request builder for Sites.
         /// </summary>
         /// <returns>The <see cref="ISiteSitesCollectionRequestBuilder"/>.</returns>
@@ -145,6 +169,17 @@ namespace Microsoft.Graph
             }
         }
     
+        /// <summary>
+        /// Gets the request builder for SiteGetActivitiesByInterval.
+        /// </summary>
+        /// <returns>The <see cref="ISiteGetActivitiesByIntervalRequestBuilder"/>.</returns>
+        public ISiteGetActivitiesByIntervalRequestBuilder GetActivitiesByInterval()
+        {
+            return new SiteGetActivitiesByIntervalRequestBuilder(
+                this.AppendSegmentToRequestUrl("microsoft.graph.getActivitiesByInterval"),
+                this.Client);
+        }
+
         /// <summary>
         /// Gets the request builder for SiteGetByPath.
         /// </summary>

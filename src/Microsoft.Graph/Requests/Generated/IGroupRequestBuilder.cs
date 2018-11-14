@@ -31,16 +31,46 @@ namespace Microsoft.Graph
         new IGroupRequest Request(IEnumerable<Option> options);
     
         /// <summary>
+        /// Gets the request builder for Extensions.
+        /// </summary>
+        /// <returns>The <see cref="IGroupExtensionsCollectionRequestBuilder"/>.</returns>
+        IGroupExtensionsCollectionRequestBuilder Extensions { get; }
+
+        /// <summary>
+        /// Gets the request builder for AppRoleAssignments.
+        /// </summary>
+        /// <returns>The <see cref="IGroupAppRoleAssignmentsCollectionWithReferencesRequestBuilder"/>.</returns>
+        IGroupAppRoleAssignmentsCollectionWithReferencesRequestBuilder AppRoleAssignments { get; }
+
+        /// <summary>
         /// Gets the request builder for Members.
         /// </summary>
         /// <returns>The <see cref="IGroupMembersCollectionWithReferencesRequestBuilder"/>.</returns>
         IGroupMembersCollectionWithReferencesRequestBuilder Members { get; }
 
         /// <summary>
+        /// Gets the request builder for MembersWithLicenseErrors.
+        /// </summary>
+        /// <returns>The <see cref="IGroupMembersWithLicenseErrorsCollectionWithReferencesRequestBuilder"/>.</returns>
+        IGroupMembersWithLicenseErrorsCollectionWithReferencesRequestBuilder MembersWithLicenseErrors { get; }
+
+        /// <summary>
         /// Gets the request builder for MemberOf.
         /// </summary>
         /// <returns>The <see cref="IGroupMemberOfCollectionWithReferencesRequestBuilder"/>.</returns>
         IGroupMemberOfCollectionWithReferencesRequestBuilder MemberOf { get; }
+
+        /// <summary>
+        /// Gets the request builder for TransitiveMembers.
+        /// </summary>
+        /// <returns>The <see cref="IGroupTransitiveMembersCollectionWithReferencesRequestBuilder"/>.</returns>
+        IGroupTransitiveMembersCollectionWithReferencesRequestBuilder TransitiveMembers { get; }
+
+        /// <summary>
+        /// Gets the request builder for TransitiveMemberOf.
+        /// </summary>
+        /// <returns>The <see cref="IGroupTransitiveMemberOfCollectionWithReferencesRequestBuilder"/>.</returns>
+        IGroupTransitiveMemberOfCollectionWithReferencesRequestBuilder TransitiveMemberOf { get; }
 
         /// <summary>
         /// Gets the request builder for CreatedOnBehalfOf.
@@ -61,10 +91,10 @@ namespace Microsoft.Graph
         IGroupSettingsCollectionRequestBuilder Settings { get; }
 
         /// <summary>
-        /// Gets the request builder for Extensions.
+        /// Gets the request builder for Endpoints.
         /// </summary>
-        /// <returns>The <see cref="IGroupExtensionsCollectionRequestBuilder"/>.</returns>
-        IGroupExtensionsCollectionRequestBuilder Extensions { get; }
+        /// <returns>The <see cref="IGroupEndpointsCollectionRequestBuilder"/>.</returns>
+        IGroupEndpointsCollectionRequestBuilder Endpoints { get; }
 
         /// <summary>
         /// Gets the request builder for Threads.
@@ -151,11 +181,38 @@ namespace Microsoft.Graph
         IOnenoteRequestBuilder Onenote { get; }
 
         /// <summary>
+        /// Gets the request builder for Team.
+        /// </summary>
+        /// <returns>The <see cref="ITeamRequestBuilder"/>.</returns>
+        ITeamRequestBuilder Team { get; }
+
+        /// <summary>
+        /// Gets the request builder for Channels.
+        /// </summary>
+        /// <returns>The <see cref="IGroupChannelsCollectionRequestBuilder"/>.</returns>
+        IGroupChannelsCollectionRequestBuilder Channels { get; }
+
+        /// <summary>
         /// Gets the request builder for GroupLifecyclePolicies.
         /// </summary>
         /// <returns>The <see cref="IGroupGroupLifecyclePoliciesCollectionRequestBuilder"/>.</returns>
         IGroupGroupLifecyclePoliciesCollectionRequestBuilder GroupLifecyclePolicies { get; }
     
+        /// <summary>
+        /// Gets the request builder for GroupValidateProperties.
+        /// </summary>
+        /// <returns>The <see cref="IGroupValidatePropertiesRequestBuilder"/>.</returns>
+        IGroupValidatePropertiesRequestBuilder ValidateProperties(
+            string displayName = null,
+            string mailNickname = null,
+            Guid? onBehalfOfUserId = null);
+
+        /// <summary>
+        /// Gets the request builder for GroupRenew.
+        /// </summary>
+        /// <returns>The <see cref="IGroupRenewRequestBuilder"/>.</returns>
+        IGroupRenewRequestBuilder Renew();
+
         /// <summary>
         /// Gets the request builder for GroupSubscribeByMail.
         /// </summary>
@@ -185,12 +242,6 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IGroupResetUnseenCountRequestBuilder"/>.</returns>
         IGroupResetUnseenCountRequestBuilder ResetUnseenCount();
-
-        /// <summary>
-        /// Gets the request builder for GroupRenew.
-        /// </summary>
-        /// <returns>The <see cref="IGroupRenewRequestBuilder"/>.</returns>
-        IGroupRenewRequestBuilder Renew();
     
     }
 }

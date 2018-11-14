@@ -203,6 +203,28 @@ namespace Microsoft.Graph
         private void InitializeCollectionProperties(IosVppApp iosVppAppToInitialize)
         {
 
+            if (iosVppAppToInitialize != null && iosVppAppToInitialize.AdditionalData != null)
+            {
+
+                if (iosVppAppToInitialize.AssignedLicenses != null && iosVppAppToInitialize.AssignedLicenses.CurrentPage != null)
+                {
+                    iosVppAppToInitialize.AssignedLicenses.AdditionalData = iosVppAppToInitialize.AdditionalData;
+
+                    object nextPageLink;
+                    iosVppAppToInitialize.AdditionalData.TryGetValue("assignedLicenses@odata.nextLink", out nextPageLink);
+                    var nextPageLinkString = nextPageLink as string;
+
+                    if (!string.IsNullOrEmpty(nextPageLinkString))
+                    {
+                        iosVppAppToInitialize.AssignedLicenses.InitializeNextPageRequest(
+                            this.Client,
+                            nextPageLinkString);
+                    }
+                }
+
+            }
+
+
         }
     }
 }

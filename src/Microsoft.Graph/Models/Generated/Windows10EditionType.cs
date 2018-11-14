@@ -78,5 +78,10 @@ namespace Microsoft.Graph
         /// </summary>
         Windows10ProfessionalWorkstationN = 11,
 	
+        /// <summary>
+        /// not Configured
+        /// </summary>
+        NotConfigured = 12,
+	
     }
 }

@@ -31,6 +31,12 @@ namespace Microsoft.Graph
         new IManagedEBookRequest Request(IEnumerable<Option> options);
     
         /// <summary>
+        /// Gets the request builder for Categories.
+        /// </summary>
+        /// <returns>The <see cref="IManagedEBookCategoriesCollectionWithReferencesRequestBuilder"/>.</returns>
+        IManagedEBookCategoriesCollectionWithReferencesRequestBuilder Categories { get; }
+
+        /// <summary>
         /// Gets the request builder for Assignments.
         /// </summary>
         /// <returns>The <see cref="IManagedEBookAssignmentsCollectionRequestBuilder"/>.</returns>

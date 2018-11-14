@@ -168,6 +168,20 @@ namespace Microsoft.Graph
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "securityRequireCompanyPortalAppIntegrity", Required = Newtonsoft.Json.Required.Default)]
         public bool? SecurityRequireCompanyPortalAppIntegrity { get; set; }
     
+        /// <summary>
+        /// Gets or sets condition statement id.
+        /// Condition statement id.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "conditionStatementId", Required = Newtonsoft.Json.Required.Default)]
+        public string ConditionStatementId { get; set; }
+    
+        /// <summary>
+        /// Gets or sets restricted apps.
+        /// Require the device to not have the specified apps installed. This collection can contain a maximum of 10000 elements.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "restrictedApps", Required = Newtonsoft.Json.Required.Default)]
+        public IEnumerable<AppListItem> RestrictedApps { get; set; }
+    
     }
 }
 

@@ -72,6 +72,42 @@ namespace Microsoft.Graph
                 return new MobileAppAssignmentsCollectionRequestBuilder(this.AppendSegmentToRequestUrl("assignments"), this.Client);
             }
         }
+
+        /// <summary>
+        /// Gets the request builder for InstallSummary.
+        /// </summary>
+        /// <returns>The <see cref="IMobileAppInstallSummaryRequestBuilder"/>.</returns>
+        public IMobileAppInstallSummaryRequestBuilder InstallSummary
+        {
+            get
+            {
+                return new MobileAppInstallSummaryRequestBuilder(this.AppendSegmentToRequestUrl("installSummary"), this.Client);
+            }
+        }
+
+        /// <summary>
+        /// Gets the request builder for DeviceStatuses.
+        /// </summary>
+        /// <returns>The <see cref="IMobileAppDeviceStatusesCollectionRequestBuilder"/>.</returns>
+        public IMobileAppDeviceStatusesCollectionRequestBuilder DeviceStatuses
+        {
+            get
+            {
+                return new MobileAppDeviceStatusesCollectionRequestBuilder(this.AppendSegmentToRequestUrl("deviceStatuses"), this.Client);
+            }
+        }
+
+        /// <summary>
+        /// Gets the request builder for UserStatuses.
+        /// </summary>
+        /// <returns>The <see cref="IMobileAppUserStatusesCollectionRequestBuilder"/>.</returns>
+        public IMobileAppUserStatusesCollectionRequestBuilder UserStatuses
+        {
+            get
+            {
+                return new MobileAppUserStatusesCollectionRequestBuilder(this.AppendSegmentToRequestUrl("userStatuses"), this.Client);
+            }
+        }
     
         /// <summary>
         /// Gets the request builder for MobileAppAssign.

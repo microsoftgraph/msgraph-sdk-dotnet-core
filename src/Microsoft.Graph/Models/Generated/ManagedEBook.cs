@@ -93,6 +93,13 @@ namespace Microsoft.Graph
         public string PrivacyInformationUrl { get; set; }
     
         /// <summary>
+        /// Gets or sets categories.
+        /// The list of categories for this eBook.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "categories", Required = Newtonsoft.Json.Required.Default)]
+        public IManagedEBookCategoriesCollectionWithReferencesPage Categories { get; set; }
+    
+        /// <summary>
         /// Gets or sets assignments.
         /// The list of assignments for this eBook.
         /// </summary>

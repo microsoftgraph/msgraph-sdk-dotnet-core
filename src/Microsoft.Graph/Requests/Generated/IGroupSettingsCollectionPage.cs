@@ -16,7 +16,7 @@ namespace Microsoft.Graph
     /// The interface IGroupSettingsCollectionPage.
     /// </summary>
     [JsonConverter(typeof(InterfaceConverter<GroupSettingsCollectionPage>))]
-    public interface IGroupSettingsCollectionPage : ICollectionPage<GroupSetting>
+    public interface IGroupSettingsCollectionPage : ICollectionPage<DirectorySetting>
     {
         /// <summary>
         /// Gets the next page <see cref="IGroupSettingsCollectionRequest"/> instance.

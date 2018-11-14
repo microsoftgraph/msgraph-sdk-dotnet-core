@@ -112,6 +112,12 @@ namespace Microsoft.Graph
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "group", Required = Newtonsoft.Json.Required.Default)]
         public Group Group { get; set; }
     
+        /// <summary>
+        /// Gets or sets assignments.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "assignments", Required = Newtonsoft.Json.Required.Default)]
+        public IEducationClassAssignmentsCollectionPage Assignments { get; set; }
+    
     }
 }
 

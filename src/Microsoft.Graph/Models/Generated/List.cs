@@ -50,6 +50,12 @@ namespace Microsoft.Graph
         public SystemFacet System { get; set; }
     
         /// <summary>
+        /// Gets or sets activities.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "activities", Required = Newtonsoft.Json.Required.Default)]
+        public IListActivitiesCollectionPage Activities { get; set; }
+    
+        /// <summary>
         /// Gets or sets columns.
         /// The collection of field definitions for this list.
         /// </summary>

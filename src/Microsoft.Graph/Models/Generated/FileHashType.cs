@@ -54,6 +54,16 @@ namespace Microsoft.Graph
         Ctph = 6,
 	
         /// <summary>
+        /// pe Sha1
+        /// </summary>
+        PeSha1 = 7,
+	
+        /// <summary>
+        /// pe Sha256
+        /// </summary>
+        PeSha256 = 8,
+	
+        /// <summary>
         /// unknown Future Value
         /// </summary>
         UnknownFutureValue = 127,

@@ -22,6 +22,13 @@ namespace Microsoft.Graph
     {
     
         /// <summary>
+        /// Gets or sets platform type.
+        /// Device platform type
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "platformType", Required = Newtonsoft.Json.Required.Default)]
+        public DeviceType? PlatformType { get; set; }
+    
+        /// <summary>
         /// Gets or sets setting.
         /// The setting class name and property name.
         /// </summary>

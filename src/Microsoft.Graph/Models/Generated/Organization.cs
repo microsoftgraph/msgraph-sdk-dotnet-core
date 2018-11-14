@@ -63,6 +63,13 @@ namespace Microsoft.Graph
         public string DisplayName { get; set; }
     
         /// <summary>
+        /// Gets or sets is multiple data locations for services enabled.
+        /// true if organization is Multi-Geo enabled; false if organization is not Multi-Geo enabled; null (default). Read-only. For more information, see OneDrive Online Multi-Geo.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "isMultipleDataLocationsForServicesEnabled", Required = Newtonsoft.Json.Required.Default)]
+        public bool? IsMultipleDataLocationsForServicesEnabled { get; set; }
+    
+        /// <summary>
         /// Gets or sets marketing notification emails.
         /// Not nullable.
         /// </summary>
@@ -155,6 +162,13 @@ namespace Microsoft.Graph
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "mobileDeviceManagementAuthority", Required = Newtonsoft.Json.Required.Default)]
         public MdmAuthority? MobileDeviceManagementAuthority { get; set; }
+    
+        /// <summary>
+        /// Gets or sets certificate connector setting.
+        /// Certificate connector setting.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "certificateConnectorSetting", Required = Newtonsoft.Json.Required.Default)]
+        public CertificateConnectorSetting CertificateConnectorSetting { get; set; }
     
         /// <summary>
         /// Gets or sets extensions.

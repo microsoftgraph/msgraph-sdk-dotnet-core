@@ -35,6 +35,66 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="ISecurityAlertsCollectionRequestBuilder"/>.</returns>
         ISecurityAlertsCollectionRequestBuilder Alerts { get; }
+
+        /// <summary>
+        /// Gets the request builder for CloudAppSecurityProfiles.
+        /// </summary>
+        /// <returns>The <see cref="ISecurityCloudAppSecurityProfilesCollectionRequestBuilder"/>.</returns>
+        ISecurityCloudAppSecurityProfilesCollectionRequestBuilder CloudAppSecurityProfiles { get; }
+
+        /// <summary>
+        /// Gets the request builder for DomainSecurityProfiles.
+        /// </summary>
+        /// <returns>The <see cref="ISecurityDomainSecurityProfilesCollectionRequestBuilder"/>.</returns>
+        ISecurityDomainSecurityProfilesCollectionRequestBuilder DomainSecurityProfiles { get; }
+
+        /// <summary>
+        /// Gets the request builder for FileSecurityProfiles.
+        /// </summary>
+        /// <returns>The <see cref="ISecurityFileSecurityProfilesCollectionRequestBuilder"/>.</returns>
+        ISecurityFileSecurityProfilesCollectionRequestBuilder FileSecurityProfiles { get; }
+
+        /// <summary>
+        /// Gets the request builder for HostSecurityProfiles.
+        /// </summary>
+        /// <returns>The <see cref="ISecurityHostSecurityProfilesCollectionRequestBuilder"/>.</returns>
+        ISecurityHostSecurityProfilesCollectionRequestBuilder HostSecurityProfiles { get; }
+
+        /// <summary>
+        /// Gets the request builder for IpSecurityProfiles.
+        /// </summary>
+        /// <returns>The <see cref="ISecurityIpSecurityProfilesCollectionRequestBuilder"/>.</returns>
+        ISecurityIpSecurityProfilesCollectionRequestBuilder IpSecurityProfiles { get; }
+
+        /// <summary>
+        /// Gets the request builder for ProviderTenantSettings.
+        /// </summary>
+        /// <returns>The <see cref="ISecurityProviderTenantSettingsCollectionRequestBuilder"/>.</returns>
+        ISecurityProviderTenantSettingsCollectionRequestBuilder ProviderTenantSettings { get; }
+
+        /// <summary>
+        /// Gets the request builder for SecureScoreControlProfiles.
+        /// </summary>
+        /// <returns>The <see cref="ISecuritySecureScoreControlProfilesCollectionRequestBuilder"/>.</returns>
+        ISecuritySecureScoreControlProfilesCollectionRequestBuilder SecureScoreControlProfiles { get; }
+
+        /// <summary>
+        /// Gets the request builder for SecureScores.
+        /// </summary>
+        /// <returns>The <see cref="ISecuritySecureScoresCollectionRequestBuilder"/>.</returns>
+        ISecuritySecureScoresCollectionRequestBuilder SecureScores { get; }
+
+        /// <summary>
+        /// Gets the request builder for TiIndicators.
+        /// </summary>
+        /// <returns>The <see cref="ISecurityTiIndicatorsCollectionRequestBuilder"/>.</returns>
+        ISecurityTiIndicatorsCollectionRequestBuilder TiIndicators { get; }
+
+        /// <summary>
+        /// Gets the request builder for UserSecurityProfiles.
+        /// </summary>
+        /// <returns>The <see cref="ISecurityUserSecurityProfilesCollectionRequestBuilder"/>.</returns>
+        ISecurityUserSecurityProfilesCollectionRequestBuilder UserSecurityProfiles { get; }
     
     }
 }

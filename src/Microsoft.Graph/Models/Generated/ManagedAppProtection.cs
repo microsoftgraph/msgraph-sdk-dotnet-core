@@ -211,6 +211,41 @@ namespace Microsoft.Graph
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "minimumWarningAppVersion", Required = Newtonsoft.Json.Required.Default)]
         public string MinimumWarningAppVersion { get; set; }
     
+        /// <summary>
+        /// Gets or sets minimum wipe os version.
+        /// Versions less than or equal to the specified version will wipe the managed app and the associated company data.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "minimumWipeOsVersion", Required = Newtonsoft.Json.Required.Default)]
+        public string MinimumWipeOsVersion { get; set; }
+    
+        /// <summary>
+        /// Gets or sets minimum wipe app version.
+        /// Versions less than or equal to the specified version will wipe the managed app and the associated company data.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "minimumWipeAppVersion", Required = Newtonsoft.Json.Required.Default)]
+        public string MinimumWipeAppVersion { get; set; }
+    
+        /// <summary>
+        /// Gets or sets app action if device compliance required.
+        /// Defines a managed app behavior, either block or wipe, when the device is either rooted or jailbroken, if DeviceComplianceRequired is set to true.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "appActionIfDeviceComplianceRequired", Required = Newtonsoft.Json.Required.Default)]
+        public ManagedAppRemediationAction? AppActionIfDeviceComplianceRequired { get; set; }
+    
+        /// <summary>
+        /// Gets or sets app action if maximum pin retries exceeded.
+        /// Defines a managed app behavior, either block or wipe, based on maximum number of incorrect pin retry attempts.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "appActionIfMaximumPinRetriesExceeded", Required = Newtonsoft.Json.Required.Default)]
+        public ManagedAppRemediationAction? AppActionIfMaximumPinRetriesExceeded { get; set; }
+    
+        /// <summary>
+        /// Gets or sets pin required instead of biometric timeout.
+        /// Timeout in minutes for an app pin instead of non biometrics passcode
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "pinRequiredInsteadOfBiometricTimeout", Required = Newtonsoft.Json.Required.Default)]
+        public Duration PinRequiredInsteadOfBiometricTimeout { get; set; }
+    
     }
 }
 

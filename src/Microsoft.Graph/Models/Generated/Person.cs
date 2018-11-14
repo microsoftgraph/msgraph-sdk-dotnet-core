@@ -64,11 +64,10 @@ namespace Microsoft.Graph
         public bool? IsFavorite { get; set; }
     
         /// <summary>
-        /// Gets or sets scored email addresses.
-        /// The person's email addresses.
+        /// Gets or sets email addresses.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "scoredEmailAddresses", Required = Newtonsoft.Json.Required.Default)]
-        public IEnumerable<ScoredEmailAddress> ScoredEmailAddresses { get; set; }
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "emailAddresses", Required = Newtonsoft.Json.Required.Default)]
+        public IEnumerable<RankedEmailAddress> EmailAddresses { get; set; }
     
         /// <summary>
         /// Gets or sets phones.
@@ -92,11 +91,10 @@ namespace Microsoft.Graph
         public IEnumerable<Website> Websites { get; set; }
     
         /// <summary>
-        /// Gets or sets job title.
-        /// The person's job title.
+        /// Gets or sets title.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "jobTitle", Required = Newtonsoft.Json.Required.Default)]
-        public string JobTitle { get; set; }
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "title", Required = Newtonsoft.Json.Required.Default)]
+        public string Title { get; set; }
     
         /// <summary>
         /// Gets or sets company name.
@@ -134,11 +132,23 @@ namespace Microsoft.Graph
         public string Profession { get; set; }
     
         /// <summary>
+        /// Gets or sets sources.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "sources", Required = Newtonsoft.Json.Required.Default)]
+        public IEnumerable<PersonDataSource> Sources { get; set; }
+    
+        /// <summary>
+        /// Gets or sets mailbox type.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "mailboxType", Required = Newtonsoft.Json.Required.Default)]
+        public string MailboxType { get; set; }
+    
+        /// <summary>
         /// Gets or sets person type.
         /// The type of person.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "personType", Required = Newtonsoft.Json.Required.Default)]
-        public PersonType PersonType { get; set; }
+        public string PersonType { get; set; }
     
         /// <summary>
         /// Gets or sets user principal name.
@@ -146,13 +156,6 @@ namespace Microsoft.Graph
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "userPrincipalName", Required = Newtonsoft.Json.Required.Default)]
         public string UserPrincipalName { get; set; }
-    
-        /// <summary>
-        /// Gets or sets im address.
-        /// The instant message voice over IP (VOIP) session initiation protocol (SIP) address for the user. Read-only.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "imAddress", Required = Newtonsoft.Json.Required.Default)]
-        public string ImAddress { get; set; }
     
     }
 }

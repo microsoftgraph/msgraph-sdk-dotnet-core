@@ -50,6 +50,42 @@ namespace Microsoft.Graph
         }
     
         /// <summary>
+        /// Gets the request builder for Workbook.
+        /// </summary>
+        /// <returns>The <see cref="IWorkbookRequestBuilder"/>.</returns>
+        public IWorkbookRequestBuilder Workbook
+        {
+            get
+            {
+                return new WorkbookRequestBuilder(this.AppendSegmentToRequestUrl("workbook"), this.Client);
+            }
+        }
+
+        /// <summary>
+        /// Gets the request builder for Activities.
+        /// </summary>
+        /// <returns>The <see cref="IDriveItemActivitiesCollectionRequestBuilder"/>.</returns>
+        public IDriveItemActivitiesCollectionRequestBuilder Activities
+        {
+            get
+            {
+                return new DriveItemActivitiesCollectionRequestBuilder(this.AppendSegmentToRequestUrl("activities"), this.Client);
+            }
+        }
+
+        /// <summary>
+        /// Gets the request builder for Analytics.
+        /// </summary>
+        /// <returns>The <see cref="IItemAnalyticsWithReferenceRequestBuilder"/>.</returns>
+        public IItemAnalyticsWithReferenceRequestBuilder Analytics
+        {
+            get
+            {
+                return new ItemAnalyticsWithReferenceRequestBuilder(this.AppendSegmentToRequestUrl("analytics"), this.Client);
+            }
+        }
+
+        /// <summary>
         /// Gets the request builder for Children.
         /// </summary>
         /// <returns>The <see cref="IDriveItemChildrenCollectionRequestBuilder"/>.</returns>
@@ -86,6 +122,18 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
+        /// Gets the request builder for Subscriptions.
+        /// </summary>
+        /// <returns>The <see cref="IDriveItemSubscriptionsCollectionRequestBuilder"/>.</returns>
+        public IDriveItemSubscriptionsCollectionRequestBuilder Subscriptions
+        {
+            get
+            {
+                return new DriveItemSubscriptionsCollectionRequestBuilder(this.AppendSegmentToRequestUrl("subscriptions"), this.Client);
+            }
+        }
+
+        /// <summary>
         /// Gets the request builder for Thumbnails.
         /// </summary>
         /// <returns>The <see cref="IDriveItemThumbnailsCollectionRequestBuilder"/>.</returns>
@@ -108,18 +156,6 @@ namespace Microsoft.Graph
                 return new DriveItemVersionsCollectionRequestBuilder(this.AppendSegmentToRequestUrl("versions"), this.Client);
             }
         }
-
-        /// <summary>
-        /// Gets the request builder for Workbook.
-        /// </summary>
-        /// <returns>The <see cref="IWorkbookRequestBuilder"/>.</returns>
-        public IWorkbookRequestBuilder Workbook
-        {
-            get
-            {
-                return new WorkbookRequestBuilder(this.AppendSegmentToRequestUrl("workbook"), this.Client);
-            }
-        }
     
         /// <summary>
         /// Gets the request builder for Content.
@@ -133,6 +169,32 @@ namespace Microsoft.Graph
             }
         }
     
+        /// <summary>
+        /// Gets the request builder for DriveItemCheckin.
+        /// </summary>
+        /// <returns>The <see cref="IDriveItemCheckinRequestBuilder"/>.</returns>
+        public IDriveItemCheckinRequestBuilder Checkin(
+            string checkInAs = null,
+            string comment = null)
+        {
+            return new DriveItemCheckinRequestBuilder(
+                this.AppendSegmentToRequestUrl("microsoft.graph.checkin"),
+                this.Client,
+                checkInAs,
+                comment);
+        }
+
+        /// <summary>
+        /// Gets the request builder for DriveItemCheckout.
+        /// </summary>
+        /// <returns>The <see cref="IDriveItemCheckoutRequestBuilder"/>.</returns>
+        public IDriveItemCheckoutRequestBuilder Checkout()
+        {
+            return new DriveItemCheckoutRequestBuilder(
+                this.AppendSegmentToRequestUrl("microsoft.graph.checkout"),
+                this.Client);
+        }
+
         /// <summary>
         /// Gets the request builder for DriveItemCopy.
         /// </summary>
@@ -154,13 +216,21 @@ namespace Microsoft.Graph
         /// <returns>The <see cref="IDriveItemCreateLinkRequestBuilder"/>.</returns>
         public IDriveItemCreateLinkRequestBuilder CreateLink(
             string type,
-            string scope = null)
+            string scope = null,
+            DateTimeOffset? expirationDateTime = null,
+            string password = null,
+            string message = null,
+            IEnumerable<DriveRecipient> recipients = null)
         {
             return new DriveItemCreateLinkRequestBuilder(
                 this.AppendSegmentToRequestUrl("microsoft.graph.createLink"),
                 this.Client,
                 type,
-                scope);
+                scope,
+                expirationDateTime,
+                password,
+                message,
+                recipients);
         }
 
         /// <summary>
@@ -168,12 +238,25 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IDriveItemCreateUploadSessionRequestBuilder"/>.</returns>
         public IDriveItemCreateUploadSessionRequestBuilder CreateUploadSession(
-            DriveItemUploadableProperties item = null)
+            DriveItemUploadableProperties item = null,
+            bool? deferCommit = null)
         {
             return new DriveItemCreateUploadSessionRequestBuilder(
                 this.AppendSegmentToRequestUrl("microsoft.graph.createUploadSession"),
                 this.Client,
-                item);
+                item,
+                deferCommit);
+        }
+
+        /// <summary>
+        /// Gets the request builder for DriveItemFollow.
+        /// </summary>
+        /// <returns>The <see cref="IDriveItemFollowRequestBuilder"/>.</returns>
+        public IDriveItemFollowRequestBuilder Follow()
+        {
+            return new DriveItemFollowRequestBuilder(
+                this.AppendSegmentToRequestUrl("microsoft.graph.follow"),
+                this.Client);
         }
 
         /// <summary>
@@ -202,14 +285,35 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IDriveItemPreviewRequestBuilder"/>.</returns>
         public IDriveItemPreviewRequestBuilder Preview(
+            string viewer = null,
+            bool? chromeless = null,
+            bool? allowEdit = null,
             string page = null,
             double? zoom = null)
         {
             return new DriveItemPreviewRequestBuilder(
                 this.AppendSegmentToRequestUrl("microsoft.graph.preview"),
                 this.Client,
+                viewer,
+                chromeless,
+                allowEdit,
                 page,
                 zoom);
+        }
+
+        /// <summary>
+        /// Gets the request builder for DriveItemValidatePermission.
+        /// </summary>
+        /// <returns>The <see cref="IDriveItemValidatePermissionRequestBuilder"/>.</returns>
+        public IDriveItemValidatePermissionRequestBuilder ValidatePermission(
+            string password,
+            string challengeToken = null)
+        {
+            return new DriveItemValidatePermissionRequestBuilder(
+                this.AppendSegmentToRequestUrl("microsoft.graph.validatePermission"),
+                this.Client,
+                password,
+                challengeToken);
         }
 
         /// <summary>
@@ -233,6 +337,17 @@ namespace Microsoft.Graph
         {
             return new DriveItemDeltaRequestBuilder(
                 this.AppendSegmentToRequestUrl("microsoft.graph.delta"),
+                this.Client);
+        }
+
+        /// <summary>
+        /// Gets the request builder for DriveItemGetActivitiesByInterval.
+        /// </summary>
+        /// <returns>The <see cref="IDriveItemGetActivitiesByIntervalRequestBuilder"/>.</returns>
+        public IDriveItemGetActivitiesByIntervalRequestBuilder GetActivitiesByInterval()
+        {
+            return new DriveItemGetActivitiesByIntervalRequestBuilder(
+                this.AppendSegmentToRequestUrl("microsoft.graph.getActivitiesByInterval"),
                 this.Client);
         }
 

@@ -30,5 +30,11 @@ namespace Microsoft.Graph
         /// <returns>The built request.</returns>
         new IWindowsUniversalAppXRequest Request(IEnumerable<Option> options);
     
+        /// <summary>
+        /// Gets the request builder for CommittedContainedApps.
+        /// </summary>
+        /// <returns>The <see cref="IWindowsUniversalAppXCommittedContainedAppsCollectionWithReferencesRequestBuilder"/>.</returns>
+        IWindowsUniversalAppXCommittedContainedAppsCollectionWithReferencesRequestBuilder CommittedContainedApps { get; }
+    
     }
 }

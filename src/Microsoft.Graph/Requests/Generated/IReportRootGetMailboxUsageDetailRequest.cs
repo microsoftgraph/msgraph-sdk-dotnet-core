@@ -24,14 +24,14 @@ namespace Microsoft.Graph
         /// <summary>
         /// Issues the GET request.
         /// </summary>
-        System.Threading.Tasks.Task<Report> GetAsync();
+        System.Threading.Tasks.Task<IReportRootGetMailboxUsageDetailCollectionPage> GetAsync();
         
         /// <summary>
         /// Issues the GET request.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await for async call.</returns>
-        System.Threading.Tasks.Task<Report> GetAsync(
+        System.Threading.Tasks.Task<IReportRootGetMailboxUsageDetailCollectionPage> GetAsync(
             CancellationToken cancellationToken);
   
 
@@ -39,34 +39,34 @@ namespace Microsoft.Graph
         /// <summary>
         /// Issues the PATCH request.
         /// </summary>
-        /// <param name="report">The Report object set with the properties to update.</param>
+        /// <param name="mailboxusagedetail">The MailboxUsageDetail object set with the properties to update.</param>
         /// <returns>The task to await for async call.</returns>
-        System.Threading.Tasks.Task<Report> PatchAsync(Report report);
+        System.Threading.Tasks.Task<IReportRootGetMailboxUsageDetailCollectionPage> PatchAsync(MailboxUsageDetail mailboxusagedetail);
 
         /// <summary>
         /// Issues the PATCH request.
         /// </summary>
-        /// <param name="report">The Report object set with the properties to update.</param>
+        /// <param name="mailboxusagedetail">The MailboxUsageDetail object set with the properties to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await for async call.</returns>
-        System.Threading.Tasks.Task<Report> PatchAsync(Report report, 
+        System.Threading.Tasks.Task<IReportRootGetMailboxUsageDetailCollectionPage> PatchAsync(MailboxUsageDetail mailboxusagedetail, 
             CancellationToken cancellationToken);
           
 
         /// <summary>
         /// Issues the PUT request.
         /// </summary>
-        /// <param name="report">The Report object to update.</param>
+        /// <param name="mailboxusagedetail">The MailboxUsageDetail object to update.</param>
         /// <returns>The task to await for async call.</returns>
-        System.Threading.Tasks.Task<Report> PutAsync(Report report);
+        System.Threading.Tasks.Task<IReportRootGetMailboxUsageDetailCollectionPage> PutAsync(MailboxUsageDetail mailboxusagedetail);
 
         /// <summary>
         /// Issues the PUT request.
         /// </summary>
-        /// <param name="report">The Report object to update.</param>
+        /// <param name="mailboxusagedetail">The MailboxUsageDetail object to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await for async call.</returns>
-        System.Threading.Tasks.Task<Report> PutAsync(Report report, 
+        System.Threading.Tasks.Task<IReportRootGetMailboxUsageDetailCollectionPage> PutAsync(MailboxUsageDetail mailboxusagedetail, 
             CancellationToken cancellationToken);
 
 
@@ -85,5 +85,33 @@ namespace Microsoft.Graph
         /// <param name="value">The select value.</param>
         /// <returns>The request object to send.</returns>
         IReportRootGetMailboxUsageDetailRequest Select(string value);
+
+        /// <summary>
+        /// Adds the specified top value to the request.
+        /// </summary>
+        /// <param name="value">The top value.</param>
+        /// <returns>The request object to send.</returns>
+        IReportRootGetMailboxUsageDetailRequest Top(int value);
+
+        /// <summary>
+        /// Adds the specified filter value to the request.
+        /// </summary>
+        /// <param name="value">The filter value.</param>
+        /// <returns>The request object to send.</returns>
+        IReportRootGetMailboxUsageDetailRequest Filter(string value);
+
+        /// <summary>
+        /// Adds the specified skip value to the request.
+        /// </summary>
+        /// <param name="value">The skip value.</param>
+        /// <returns>The request object to send.</returns>
+        IReportRootGetMailboxUsageDetailRequest Skip(int value);
+
+        /// <summary>
+        /// Adds the specified orderby value to the request.
+        /// </summary>
+        /// <param name="value">The orderby value.</param>
+        /// <returns>The request object to send.</returns>
+        IReportRootGetMailboxUsageDetailRequest OrderBy(string value);
     }
 }

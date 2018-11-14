@@ -50,6 +50,18 @@ namespace Microsoft.Graph
         }
     
         /// <summary>
+        /// Gets the request builder for Activities.
+        /// </summary>
+        /// <returns>The <see cref="IListActivitiesCollectionRequestBuilder"/>.</returns>
+        public IListActivitiesCollectionRequestBuilder Activities
+        {
+            get
+            {
+                return new ListActivitiesCollectionRequestBuilder(this.AppendSegmentToRequestUrl("activities"), this.Client);
+            }
+        }
+
+        /// <summary>
         /// Gets the request builder for Columns.
         /// </summary>
         /// <returns>The <see cref="IListColumnsCollectionRequestBuilder"/>.</returns>

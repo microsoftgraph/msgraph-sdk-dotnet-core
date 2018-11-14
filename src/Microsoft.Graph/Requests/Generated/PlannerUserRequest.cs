@@ -238,6 +238,54 @@ namespace Microsoft.Graph
                     }
                 }
 
+                if (plannerUserToInitialize.FavoritePlans != null && plannerUserToInitialize.FavoritePlans.CurrentPage != null)
+                {
+                    plannerUserToInitialize.FavoritePlans.AdditionalData = plannerUserToInitialize.AdditionalData;
+
+                    object nextPageLink;
+                    plannerUserToInitialize.AdditionalData.TryGetValue("favoritePlans@odata.nextLink", out nextPageLink);
+                    var nextPageLinkString = nextPageLink as string;
+
+                    if (!string.IsNullOrEmpty(nextPageLinkString))
+                    {
+                        plannerUserToInitialize.FavoritePlans.InitializeNextPageRequest(
+                            this.Client,
+                            nextPageLinkString);
+                    }
+                }
+
+                if (plannerUserToInitialize.RecentPlans != null && plannerUserToInitialize.RecentPlans.CurrentPage != null)
+                {
+                    plannerUserToInitialize.RecentPlans.AdditionalData = plannerUserToInitialize.AdditionalData;
+
+                    object nextPageLink;
+                    plannerUserToInitialize.AdditionalData.TryGetValue("recentPlans@odata.nextLink", out nextPageLink);
+                    var nextPageLinkString = nextPageLink as string;
+
+                    if (!string.IsNullOrEmpty(nextPageLinkString))
+                    {
+                        plannerUserToInitialize.RecentPlans.InitializeNextPageRequest(
+                            this.Client,
+                            nextPageLinkString);
+                    }
+                }
+
+                if (plannerUserToInitialize.All != null && plannerUserToInitialize.All.CurrentPage != null)
+                {
+                    plannerUserToInitialize.All.AdditionalData = plannerUserToInitialize.AdditionalData;
+
+                    object nextPageLink;
+                    plannerUserToInitialize.AdditionalData.TryGetValue("all@odata.nextLink", out nextPageLink);
+                    var nextPageLinkString = nextPageLink as string;
+
+                    if (!string.IsNullOrEmpty(nextPageLinkString))
+                    {
+                        plannerUserToInitialize.All.InitializeNextPageRequest(
+                            this.Client,
+                            nextPageLinkString);
+                    }
+                }
+
             }
 
 

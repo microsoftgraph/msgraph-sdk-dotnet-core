@@ -49,5 +49,17 @@ namespace Microsoft.Graph
             return new MicrosoftStoreForBusinessAppRequest(this.RequestUrl, this.Client, options);
         }
     
+        /// <summary>
+        /// Gets the request builder for ContainedApps.
+        /// </summary>
+        /// <returns>The <see cref="IMicrosoftStoreForBusinessAppContainedAppsCollectionRequestBuilder"/>.</returns>
+        public IMicrosoftStoreForBusinessAppContainedAppsCollectionRequestBuilder ContainedApps
+        {
+            get
+            {
+                return new MicrosoftStoreForBusinessAppContainedAppsCollectionRequestBuilder(this.AppendSegmentToRequestUrl("containedApps"), this.Client);
+            }
+        }
+    
     }
 }

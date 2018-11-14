@@ -222,6 +222,166 @@ namespace Microsoft.Graph
                     }
                 }
 
+                if (securityToInitialize.CloudAppSecurityProfiles != null && securityToInitialize.CloudAppSecurityProfiles.CurrentPage != null)
+                {
+                    securityToInitialize.CloudAppSecurityProfiles.AdditionalData = securityToInitialize.AdditionalData;
+
+                    object nextPageLink;
+                    securityToInitialize.AdditionalData.TryGetValue("cloudAppSecurityProfiles@odata.nextLink", out nextPageLink);
+                    var nextPageLinkString = nextPageLink as string;
+
+                    if (!string.IsNullOrEmpty(nextPageLinkString))
+                    {
+                        securityToInitialize.CloudAppSecurityProfiles.InitializeNextPageRequest(
+                            this.Client,
+                            nextPageLinkString);
+                    }
+                }
+
+                if (securityToInitialize.DomainSecurityProfiles != null && securityToInitialize.DomainSecurityProfiles.CurrentPage != null)
+                {
+                    securityToInitialize.DomainSecurityProfiles.AdditionalData = securityToInitialize.AdditionalData;
+
+                    object nextPageLink;
+                    securityToInitialize.AdditionalData.TryGetValue("domainSecurityProfiles@odata.nextLink", out nextPageLink);
+                    var nextPageLinkString = nextPageLink as string;
+
+                    if (!string.IsNullOrEmpty(nextPageLinkString))
+                    {
+                        securityToInitialize.DomainSecurityProfiles.InitializeNextPageRequest(
+                            this.Client,
+                            nextPageLinkString);
+                    }
+                }
+
+                if (securityToInitialize.FileSecurityProfiles != null && securityToInitialize.FileSecurityProfiles.CurrentPage != null)
+                {
+                    securityToInitialize.FileSecurityProfiles.AdditionalData = securityToInitialize.AdditionalData;
+
+                    object nextPageLink;
+                    securityToInitialize.AdditionalData.TryGetValue("fileSecurityProfiles@odata.nextLink", out nextPageLink);
+                    var nextPageLinkString = nextPageLink as string;
+
+                    if (!string.IsNullOrEmpty(nextPageLinkString))
+                    {
+                        securityToInitialize.FileSecurityProfiles.InitializeNextPageRequest(
+                            this.Client,
+                            nextPageLinkString);
+                    }
+                }
+
+                if (securityToInitialize.HostSecurityProfiles != null && securityToInitialize.HostSecurityProfiles.CurrentPage != null)
+                {
+                    securityToInitialize.HostSecurityProfiles.AdditionalData = securityToInitialize.AdditionalData;
+
+                    object nextPageLink;
+                    securityToInitialize.AdditionalData.TryGetValue("hostSecurityProfiles@odata.nextLink", out nextPageLink);
+                    var nextPageLinkString = nextPageLink as string;
+
+                    if (!string.IsNullOrEmpty(nextPageLinkString))
+                    {
+                        securityToInitialize.HostSecurityProfiles.InitializeNextPageRequest(
+                            this.Client,
+                            nextPageLinkString);
+                    }
+                }
+
+                if (securityToInitialize.IpSecurityProfiles != null && securityToInitialize.IpSecurityProfiles.CurrentPage != null)
+                {
+                    securityToInitialize.IpSecurityProfiles.AdditionalData = securityToInitialize.AdditionalData;
+
+                    object nextPageLink;
+                    securityToInitialize.AdditionalData.TryGetValue("ipSecurityProfiles@odata.nextLink", out nextPageLink);
+                    var nextPageLinkString = nextPageLink as string;
+
+                    if (!string.IsNullOrEmpty(nextPageLinkString))
+                    {
+                        securityToInitialize.IpSecurityProfiles.InitializeNextPageRequest(
+                            this.Client,
+                            nextPageLinkString);
+                    }
+                }
+
+                if (securityToInitialize.ProviderTenantSettings != null && securityToInitialize.ProviderTenantSettings.CurrentPage != null)
+                {
+                    securityToInitialize.ProviderTenantSettings.AdditionalData = securityToInitialize.AdditionalData;
+
+                    object nextPageLink;
+                    securityToInitialize.AdditionalData.TryGetValue("providerTenantSettings@odata.nextLink", out nextPageLink);
+                    var nextPageLinkString = nextPageLink as string;
+
+                    if (!string.IsNullOrEmpty(nextPageLinkString))
+                    {
+                        securityToInitialize.ProviderTenantSettings.InitializeNextPageRequest(
+                            this.Client,
+                            nextPageLinkString);
+                    }
+                }
+
+                if (securityToInitialize.SecureScoreControlProfiles != null && securityToInitialize.SecureScoreControlProfiles.CurrentPage != null)
+                {
+                    securityToInitialize.SecureScoreControlProfiles.AdditionalData = securityToInitialize.AdditionalData;
+
+                    object nextPageLink;
+                    securityToInitialize.AdditionalData.TryGetValue("secureScoreControlProfiles@odata.nextLink", out nextPageLink);
+                    var nextPageLinkString = nextPageLink as string;
+
+                    if (!string.IsNullOrEmpty(nextPageLinkString))
+                    {
+                        securityToInitialize.SecureScoreControlProfiles.InitializeNextPageRequest(
+                            this.Client,
+                            nextPageLinkString);
+                    }
+                }
+
+                if (securityToInitialize.SecureScores != null && securityToInitialize.SecureScores.CurrentPage != null)
+                {
+                    securityToInitialize.SecureScores.AdditionalData = securityToInitialize.AdditionalData;
+
+                    object nextPageLink;
+                    securityToInitialize.AdditionalData.TryGetValue("secureScores@odata.nextLink", out nextPageLink);
+                    var nextPageLinkString = nextPageLink as string;
+
+                    if (!string.IsNullOrEmpty(nextPageLinkString))
+                    {
+                        securityToInitialize.SecureScores.InitializeNextPageRequest(
+                            this.Client,
+                            nextPageLinkString);
+                    }
+                }
+
+                if (securityToInitialize.TiIndicators != null && securityToInitialize.TiIndicators.CurrentPage != null)
+                {
+                    securityToInitialize.TiIndicators.AdditionalData = securityToInitialize.AdditionalData;
+
+                    object nextPageLink;
+                    securityToInitialize.AdditionalData.TryGetValue("tiIndicators@odata.nextLink", out nextPageLink);
+                    var nextPageLinkString = nextPageLink as string;
+
+                    if (!string.IsNullOrEmpty(nextPageLinkString))
+                    {
+                        securityToInitialize.TiIndicators.InitializeNextPageRequest(
+                            this.Client,
+                            nextPageLinkString);
+                    }
+                }
+
+                if (securityToInitialize.UserSecurityProfiles != null && securityToInitialize.UserSecurityProfiles.CurrentPage != null)
+                {
+                    securityToInitialize.UserSecurityProfiles.AdditionalData = securityToInitialize.AdditionalData;
+
+                    object nextPageLink;
+                    securityToInitialize.AdditionalData.TryGetValue("userSecurityProfiles@odata.nextLink", out nextPageLink);
+                    var nextPageLinkString = nextPageLink as string;
+
+                    if (!string.IsNullOrEmpty(nextPageLinkString))
+                    {
+                        securityToInitialize.UserSecurityProfiles.InitializeNextPageRequest(
+                            this.Client,
+                            nextPageLinkString);
+                    }
+                }
+
             }
 
 

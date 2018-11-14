@@ -169,6 +169,25 @@ namespace Microsoft.Graph
         public string WebDavUrl { get; set; }
     
         /// <summary>
+        /// Gets or sets workbook.
+        /// For files that are Excel spreadsheets, accesses the workbook API to work with the spreadsheet's contents. Nullable.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "workbook", Required = Newtonsoft.Json.Required.Default)]
+        public Workbook Workbook { get; set; }
+    
+        /// <summary>
+        /// Gets or sets activities.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "activities", Required = Newtonsoft.Json.Required.Default)]
+        public IDriveItemActivitiesCollectionPage Activities { get; set; }
+    
+        /// <summary>
+        /// Gets or sets analytics.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "analytics", Required = Newtonsoft.Json.Required.Default)]
+        public ItemAnalytics Analytics { get; set; }
+    
+        /// <summary>
         /// Gets or sets children.
         /// Collection containing Item objects for the immediate children of Item. Only items representing folders have children. Read-only. Nullable.
         /// </summary>
@@ -190,6 +209,12 @@ namespace Microsoft.Graph
         public IDriveItemPermissionsCollectionPage Permissions { get; set; }
     
         /// <summary>
+        /// Gets or sets subscriptions.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "subscriptions", Required = Newtonsoft.Json.Required.Default)]
+        public IDriveItemSubscriptionsCollectionPage Subscriptions { get; set; }
+    
+        /// <summary>
         /// Gets or sets thumbnails.
         /// Collection containing [ThumbnailSet][] objects associated with the item. For more info, see [getting thumbnails][]. Read-only. Nullable.
         /// </summary>
@@ -202,13 +227,6 @@ namespace Microsoft.Graph
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "versions", Required = Newtonsoft.Json.Required.Default)]
         public IDriveItemVersionsCollectionPage Versions { get; set; }
-    
-        /// <summary>
-        /// Gets or sets workbook.
-        /// For files that are Excel spreadsheets, accesses the workbook API to work with the spreadsheet's contents. Nullable.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "workbook", Required = Newtonsoft.Json.Required.Default)]
-        public Workbook Workbook { get; set; }
     
     }
 }

@@ -28,6 +28,24 @@ namespace Microsoft.Graph
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "masterCategories", Required = Newtonsoft.Json.Required.Default)]
         public IOutlookUserMasterCategoriesCollectionPage MasterCategories { get; set; }
     
+        /// <summary>
+        /// Gets or sets task groups.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "taskGroups", Required = Newtonsoft.Json.Required.Default)]
+        public IOutlookUserTaskGroupsCollectionPage TaskGroups { get; set; }
+    
+        /// <summary>
+        /// Gets or sets task folders.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "taskFolders", Required = Newtonsoft.Json.Required.Default)]
+        public IOutlookUserTaskFoldersCollectionPage TaskFolders { get; set; }
+    
+        /// <summary>
+        /// Gets or sets tasks.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "tasks", Required = Newtonsoft.Json.Required.Default)]
+        public IOutlookUserTasksCollectionPage Tasks { get; set; }
+    
     }
 }
 

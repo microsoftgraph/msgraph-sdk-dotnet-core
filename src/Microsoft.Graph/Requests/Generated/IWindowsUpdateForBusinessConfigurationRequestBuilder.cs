@@ -30,5 +30,17 @@ namespace Microsoft.Graph
         /// <returns>The built request.</returns>
         new IWindowsUpdateForBusinessConfigurationRequest Request(IEnumerable<Option> options);
     
+        /// <summary>
+        /// Gets the request builder for WindowsUpdateForBusinessConfigurationExtendFeatureUpdatesPause.
+        /// </summary>
+        /// <returns>The <see cref="IWindowsUpdateForBusinessConfigurationExtendFeatureUpdatesPauseRequestBuilder"/>.</returns>
+        IWindowsUpdateForBusinessConfigurationExtendFeatureUpdatesPauseRequestBuilder ExtendFeatureUpdatesPause();
+
+        /// <summary>
+        /// Gets the request builder for WindowsUpdateForBusinessConfigurationExtendQualityUpdatesPause.
+        /// </summary>
+        /// <returns>The <see cref="IWindowsUpdateForBusinessConfigurationExtendQualityUpdatesPauseRequestBuilder"/>.</returns>
+        IWindowsUpdateForBusinessConfigurationExtendQualityUpdatesPauseRequestBuilder ExtendQualityUpdatesPause();
+    
     }
 }

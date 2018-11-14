@@ -59,6 +59,19 @@ namespace Microsoft.Graph
             }
         }
 
-        
+        /// <summary>
+        /// Gets the request builder for ManagedDeviceExecuteAction.
+        /// </summary>
+        /// <returns>The <see cref="IManagedDeviceExecuteActionRequestBuilder"/>.</returns>
+        public IManagedDeviceExecuteActionRequestBuilder ExecuteAction(
+            ManagedDeviceRemoteAction actionName,
+            IEnumerable<string> deviceIds = null)
+        {
+            return new ManagedDeviceExecuteActionRequestBuilder(
+                this.AppendSegmentToRequestUrl("microsoft.graph.executeAction"),
+                this.Client,
+                actionName,
+                deviceIds);
+        }
     }
 }

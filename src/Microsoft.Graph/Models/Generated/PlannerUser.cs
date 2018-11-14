@@ -22,6 +22,18 @@ namespace Microsoft.Graph
     {
     
         /// <summary>
+        /// Gets or sets favorite plan references.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "favoritePlanReferences", Required = Newtonsoft.Json.Required.Default)]
+        public PlannerFavoritePlanReferenceCollection FavoritePlanReferences { get; set; }
+    
+        /// <summary>
+        /// Gets or sets recent plan references.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "recentPlanReferences", Required = Newtonsoft.Json.Required.Default)]
+        public PlannerRecentPlanReferenceCollection RecentPlanReferences { get; set; }
+    
+        /// <summary>
         /// Gets or sets tasks.
         /// Read-only. Nullable. Returns the plannerPlans shared with the user.
         /// </summary>
@@ -34,6 +46,24 @@ namespace Microsoft.Graph
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "plans", Required = Newtonsoft.Json.Required.Default)]
         public IPlannerUserPlansCollectionPage Plans { get; set; }
+    
+        /// <summary>
+        /// Gets or sets favorite plans.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "favoritePlans", Required = Newtonsoft.Json.Required.Default)]
+        public IPlannerUserFavoritePlansCollectionPage FavoritePlans { get; set; }
+    
+        /// <summary>
+        /// Gets or sets recent plans.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "recentPlans", Required = Newtonsoft.Json.Required.Default)]
+        public IPlannerUserRecentPlansCollectionPage RecentPlans { get; set; }
+    
+        /// <summary>
+        /// Gets or sets all.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "all", Required = Newtonsoft.Json.Required.Default)]
+        public IPlannerUserAllCollectionPage All { get; set; }
     
     }
 }

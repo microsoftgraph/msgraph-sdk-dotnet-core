@@ -29,11 +29,11 @@ namespace Microsoft.Graph
         IGroupSettingsCollectionRequest Request(IEnumerable<Option> options);
 
         /// <summary>
-        /// Gets an <see cref="IGroupSettingRequestBuilder"/> for the specified GroupSetting.
+        /// Gets an <see cref="IDirectorySettingRequestBuilder"/> for the specified DirectorySetting.
         /// </summary>
-        /// <param name="id">The ID for the GroupSetting.</param>
-        /// <returns>The <see cref="IGroupSettingRequestBuilder"/>.</returns>
-        IGroupSettingRequestBuilder this[string id] { get; }
+        /// <param name="id">The ID for the DirectorySetting.</param>
+        /// <returns>The <see cref="IDirectorySettingRequestBuilder"/>.</returns>
+        IDirectorySettingRequestBuilder this[string id] { get; }
 
         
     }

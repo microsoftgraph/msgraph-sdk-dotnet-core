@@ -203,6 +203,28 @@ namespace Microsoft.Graph
         private void InitializeCollectionProperties(WindowsUniversalAppX windowsUniversalAppXToInitialize)
         {
 
+            if (windowsUniversalAppXToInitialize != null && windowsUniversalAppXToInitialize.AdditionalData != null)
+            {
+
+                if (windowsUniversalAppXToInitialize.CommittedContainedApps != null && windowsUniversalAppXToInitialize.CommittedContainedApps.CurrentPage != null)
+                {
+                    windowsUniversalAppXToInitialize.CommittedContainedApps.AdditionalData = windowsUniversalAppXToInitialize.AdditionalData;
+
+                    object nextPageLink;
+                    windowsUniversalAppXToInitialize.AdditionalData.TryGetValue("committedContainedApps@odata.nextLink", out nextPageLink);
+                    var nextPageLinkString = nextPageLink as string;
+
+                    if (!string.IsNullOrEmpty(nextPageLinkString))
+                    {
+                        windowsUniversalAppXToInitialize.CommittedContainedApps.InitializeNextPageRequest(
+                            this.Client,
+                            nextPageLinkString);
+                    }
+                }
+
+            }
+
+
         }
     }
 }

@@ -203,6 +203,28 @@ namespace Microsoft.Graph
         private void InitializeCollectionProperties(MicrosoftStoreForBusinessApp microsoftStoreForBusinessAppToInitialize)
         {
 
+            if (microsoftStoreForBusinessAppToInitialize != null && microsoftStoreForBusinessAppToInitialize.AdditionalData != null)
+            {
+
+                if (microsoftStoreForBusinessAppToInitialize.ContainedApps != null && microsoftStoreForBusinessAppToInitialize.ContainedApps.CurrentPage != null)
+                {
+                    microsoftStoreForBusinessAppToInitialize.ContainedApps.AdditionalData = microsoftStoreForBusinessAppToInitialize.AdditionalData;
+
+                    object nextPageLink;
+                    microsoftStoreForBusinessAppToInitialize.AdditionalData.TryGetValue("containedApps@odata.nextLink", out nextPageLink);
+                    var nextPageLinkString = nextPageLink as string;
+
+                    if (!string.IsNullOrEmpty(nextPageLinkString))
+                    {
+                        microsoftStoreForBusinessAppToInitialize.ContainedApps.InitializeNextPageRequest(
+                            this.Client,
+                            nextPageLinkString);
+                    }
+                }
+
+            }
+
+
         }
     }
 }

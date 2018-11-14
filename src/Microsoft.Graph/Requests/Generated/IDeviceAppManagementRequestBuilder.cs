@@ -31,6 +31,12 @@ namespace Microsoft.Graph
         new IDeviceAppManagementRequest Request(IEnumerable<Option> options);
     
         /// <summary>
+        /// Gets the request builder for WindowsManagementApp.
+        /// </summary>
+        /// <returns>The <see cref="IWindowsManagementAppWithReferenceRequestBuilder"/>.</returns>
+        IWindowsManagementAppWithReferenceRequestBuilder WindowsManagementApp { get; }
+
+        /// <summary>
         /// Gets the request builder for MobileApps.
         /// </summary>
         /// <returns>The <see cref="IDeviceAppManagementMobileAppsCollectionRequestBuilder"/>.</returns>
@@ -43,10 +49,34 @@ namespace Microsoft.Graph
         IDeviceAppManagementMobileAppCategoriesCollectionRequestBuilder MobileAppCategories { get; }
 
         /// <summary>
+        /// Gets the request builder for EnterpriseCodeSigningCertificates.
+        /// </summary>
+        /// <returns>The <see cref="IDeviceAppManagementEnterpriseCodeSigningCertificatesCollectionRequestBuilder"/>.</returns>
+        IDeviceAppManagementEnterpriseCodeSigningCertificatesCollectionRequestBuilder EnterpriseCodeSigningCertificates { get; }
+
+        /// <summary>
+        /// Gets the request builder for IosLobAppProvisioningConfigurations.
+        /// </summary>
+        /// <returns>The <see cref="IDeviceAppManagementIosLobAppProvisioningConfigurationsCollectionRequestBuilder"/>.</returns>
+        IDeviceAppManagementIosLobAppProvisioningConfigurationsCollectionRequestBuilder IosLobAppProvisioningConfigurations { get; }
+
+        /// <summary>
+        /// Gets the request builder for SymantecCodeSigningCertificate.
+        /// </summary>
+        /// <returns>The <see cref="ISymantecCodeSigningCertificateRequestBuilder"/>.</returns>
+        ISymantecCodeSigningCertificateRequestBuilder SymantecCodeSigningCertificate { get; }
+
+        /// <summary>
         /// Gets the request builder for MobileAppConfigurations.
         /// </summary>
         /// <returns>The <see cref="IDeviceAppManagementMobileAppConfigurationsCollectionRequestBuilder"/>.</returns>
         IDeviceAppManagementMobileAppConfigurationsCollectionRequestBuilder MobileAppConfigurations { get; }
+
+        /// <summary>
+        /// Gets the request builder for SideLoadingKeys.
+        /// </summary>
+        /// <returns>The <see cref="IDeviceAppManagementSideLoadingKeysCollectionRequestBuilder"/>.</returns>
+        IDeviceAppManagementSideLoadingKeysCollectionRequestBuilder SideLoadingKeys { get; }
 
         /// <summary>
         /// Gets the request builder for VppTokens.
@@ -113,6 +143,12 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IDeviceAppManagementManagedEBooksCollectionRequestBuilder"/>.</returns>
         IDeviceAppManagementManagedEBooksCollectionRequestBuilder ManagedEBooks { get; }
+
+        /// <summary>
+        /// Gets the request builder for ManagedEBookCategories.
+        /// </summary>
+        /// <returns>The <see cref="IDeviceAppManagementManagedEBookCategoriesCollectionRequestBuilder"/>.</returns>
+        IDeviceAppManagementManagedEBookCategoriesCollectionRequestBuilder ManagedEBookCategories { get; }
     
         /// <summary>
         /// Gets the request builder for DeviceAppManagementSyncMicrosoftStoreForBusinessApps.

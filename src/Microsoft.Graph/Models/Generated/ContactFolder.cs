@@ -36,6 +36,12 @@ namespace Microsoft.Graph
         public string DisplayName { get; set; }
     
         /// <summary>
+        /// Gets or sets well known name.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "wellKnownName", Required = Newtonsoft.Json.Required.Default)]
+        public string WellKnownName { get; set; }
+    
+        /// <summary>
         /// Gets or sets contacts.
         /// The contacts in the folder. Navigation property. Read-only. Nullable.
         /// </summary>

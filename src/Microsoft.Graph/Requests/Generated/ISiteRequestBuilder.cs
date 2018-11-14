@@ -31,6 +31,12 @@ namespace Microsoft.Graph
         new ISiteRequest Request(IEnumerable<Option> options);
     
         /// <summary>
+        /// Gets the request builder for Analytics.
+        /// </summary>
+        /// <returns>The <see cref="IItemAnalyticsWithReferenceRequestBuilder"/>.</returns>
+        IItemAnalyticsWithReferenceRequestBuilder Analytics { get; }
+
+        /// <summary>
         /// Gets the request builder for Columns.
         /// </summary>
         /// <returns>The <see cref="ISiteColumnsCollectionRequestBuilder"/>.</returns>
@@ -67,6 +73,12 @@ namespace Microsoft.Graph
         ISiteListsCollectionRequestBuilder Lists { get; }
 
         /// <summary>
+        /// Gets the request builder for Pages.
+        /// </summary>
+        /// <returns>The <see cref="ISitePagesCollectionRequestBuilder"/>.</returns>
+        ISitePagesCollectionRequestBuilder Pages { get; }
+
+        /// <summary>
         /// Gets the request builder for Sites.
         /// </summary>
         /// <returns>The <see cref="ISiteSitesCollectionRequestBuilder"/>.</returns>
@@ -78,6 +90,12 @@ namespace Microsoft.Graph
         /// <returns>The <see cref="IOnenoteRequestBuilder"/>.</returns>
         IOnenoteRequestBuilder Onenote { get; }
     
+        /// <summary>
+        /// Gets the request builder for SiteGetActivitiesByInterval.
+        /// </summary>
+        /// <returns>The <see cref="ISiteGetActivitiesByIntervalRequestBuilder"/>.</returns>
+        ISiteGetActivitiesByIntervalRequestBuilder GetActivitiesByInterval();
+
         /// <summary>
         /// Gets the request builder for SiteGetByPath.
         /// </summary>

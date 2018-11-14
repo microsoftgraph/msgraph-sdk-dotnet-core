@@ -24,15 +24,27 @@ namespace Microsoft.Graph
         /// <param name="client">The <see cref="IBaseClient"/> for handling requests.</param>
         /// <param name="type">A type parameter for the OData method call.</param>
         /// <param name="scope">A scope parameter for the OData method call.</param>
+        /// <param name="expirationDateTime">A expirationDateTime parameter for the OData method call.</param>
+        /// <param name="password">A password parameter for the OData method call.</param>
+        /// <param name="message">A message parameter for the OData method call.</param>
+        /// <param name="recipients">A recipients parameter for the OData method call.</param>
         public DriveItemCreateLinkRequestBuilder(
             string requestUrl,
             IBaseClient client,
             string type,
-            string scope)
+            string scope,
+            DateTimeOffset? expirationDateTime,
+            string password,
+            string message,
+            IEnumerable<DriveRecipient> recipients)
             : base(requestUrl, client)
         {
             this.SetParameter("type", type, false);
             this.SetParameter("scope", scope, true);
+            this.SetParameter("expirationDateTime", expirationDateTime, true);
+            this.SetParameter("password", password, true);
+            this.SetParameter("message", message, true);
+            this.SetParameter("recipients", recipients, true);
         }
 
         /// <summary>
@@ -53,6 +65,26 @@ namespace Microsoft.Graph
             if (this.HasParameter("scope"))
             {
                 request.RequestBody.Scope = this.GetParameter<string>("scope");
+            }
+
+            if (this.HasParameter("expirationDateTime"))
+            {
+                request.RequestBody.ExpirationDateTime = this.GetParameter<DateTimeOffset?>("expirationDateTime");
+            }
+
+            if (this.HasParameter("password"))
+            {
+                request.RequestBody.Password = this.GetParameter<string>("password");
+            }
+
+            if (this.HasParameter("message"))
+            {
+                request.RequestBody.Message = this.GetParameter<string>("message");
+            }
+
+            if (this.HasParameter("recipients"))
+            {
+                request.RequestBody.Recipients = this.GetParameter<IEnumerable<DriveRecipient>>("recipients");
             }
 
             return request;

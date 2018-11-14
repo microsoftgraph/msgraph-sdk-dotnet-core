@@ -47,15 +47,15 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Gets an <see cref="IGroupSettingRequestBuilder"/> for the specified GroupGroupSetting.
+        /// Gets an <see cref="IDirectorySettingRequestBuilder"/> for the specified GroupDirectorySetting.
         /// </summary>
-        /// <param name="id">The ID for the GroupGroupSetting.</param>
-        /// <returns>The <see cref="IGroupSettingRequestBuilder"/>.</returns>
-        public IGroupSettingRequestBuilder this[string id]
+        /// <param name="id">The ID for the GroupDirectorySetting.</param>
+        /// <returns>The <see cref="IDirectorySettingRequestBuilder"/>.</returns>
+        public IDirectorySettingRequestBuilder this[string id]
         {
             get
             {
-                return new GroupSettingRequestBuilder(this.AppendSegmentToRequestUrl(id), this.Client);
+                return new DirectorySettingRequestBuilder(this.AppendSegmentToRequestUrl(id), this.Client);
             }
         }
 

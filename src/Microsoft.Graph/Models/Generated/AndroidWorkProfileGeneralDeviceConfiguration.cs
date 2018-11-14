@@ -259,6 +259,20 @@ namespace Microsoft.Graph
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "securityRequireVerifyApps", Required = Newtonsoft.Json.Required.Default)]
         public bool? SecurityRequireVerifyApps { get; set; }
     
+        /// <summary>
+        /// Gets or sets vpn always on package identifier.
+        /// Enable lockdown mode for always-on VPN.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "vpnAlwaysOnPackageIdentifier", Required = Newtonsoft.Json.Required.Default)]
+        public string VpnAlwaysOnPackageIdentifier { get; set; }
+    
+        /// <summary>
+        /// Gets or sets vpn enable always on lockdown mode.
+        /// Enable lockdown mode for always-on VPN.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "vpnEnableAlwaysOnLockdownMode", Required = Newtonsoft.Json.Required.Default)]
+        public bool? VpnEnableAlwaysOnLockdownMode { get; set; }
+    
     }
 }
 

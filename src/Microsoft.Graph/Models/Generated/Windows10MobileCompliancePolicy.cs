@@ -133,6 +133,20 @@ namespace Microsoft.Graph
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "storageRequireEncryption", Required = Newtonsoft.Json.Required.Default)]
         public bool? StorageRequireEncryption { get; set; }
     
+        /// <summary>
+        /// Gets or sets active firewall required.
+        /// Require active firewall on Windows devices.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "activeFirewallRequired", Required = Newtonsoft.Json.Required.Default)]
+        public bool? ActiveFirewallRequired { get; set; }
+    
+        /// <summary>
+        /// Gets or sets valid operating system build ranges.
+        /// The valid operating system build ranges on Windows devices. This collection can contain a maximum of 10000 elements.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "validOperatingSystemBuildRanges", Required = Newtonsoft.Json.Required.Default)]
+        public IEnumerable<OperatingSystemVersionRange> ValidOperatingSystemBuildRanges { get; set; }
+    
     }
 }
 

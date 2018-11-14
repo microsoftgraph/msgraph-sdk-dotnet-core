@@ -206,6 +206,38 @@ namespace Microsoft.Graph
             if (deviceToInitialize != null && deviceToInitialize.AdditionalData != null)
             {
 
+                if (deviceToInitialize.Extensions != null && deviceToInitialize.Extensions.CurrentPage != null)
+                {
+                    deviceToInitialize.Extensions.AdditionalData = deviceToInitialize.AdditionalData;
+
+                    object nextPageLink;
+                    deviceToInitialize.AdditionalData.TryGetValue("extensions@odata.nextLink", out nextPageLink);
+                    var nextPageLinkString = nextPageLink as string;
+
+                    if (!string.IsNullOrEmpty(nextPageLinkString))
+                    {
+                        deviceToInitialize.Extensions.InitializeNextPageRequest(
+                            this.Client,
+                            nextPageLinkString);
+                    }
+                }
+
+                if (deviceToInitialize.MemberOf != null && deviceToInitialize.MemberOf.CurrentPage != null)
+                {
+                    deviceToInitialize.MemberOf.AdditionalData = deviceToInitialize.AdditionalData;
+
+                    object nextPageLink;
+                    deviceToInitialize.AdditionalData.TryGetValue("memberOf@odata.nextLink", out nextPageLink);
+                    var nextPageLinkString = nextPageLink as string;
+
+                    if (!string.IsNullOrEmpty(nextPageLinkString))
+                    {
+                        deviceToInitialize.MemberOf.InitializeNextPageRequest(
+                            this.Client,
+                            nextPageLinkString);
+                    }
+                }
+
                 if (deviceToInitialize.RegisteredOwners != null && deviceToInitialize.RegisteredOwners.CurrentPage != null)
                 {
                     deviceToInitialize.RegisteredOwners.AdditionalData = deviceToInitialize.AdditionalData;
@@ -238,17 +270,33 @@ namespace Microsoft.Graph
                     }
                 }
 
-                if (deviceToInitialize.Extensions != null && deviceToInitialize.Extensions.CurrentPage != null)
+                if (deviceToInitialize.TransitiveMemberOf != null && deviceToInitialize.TransitiveMemberOf.CurrentPage != null)
                 {
-                    deviceToInitialize.Extensions.AdditionalData = deviceToInitialize.AdditionalData;
+                    deviceToInitialize.TransitiveMemberOf.AdditionalData = deviceToInitialize.AdditionalData;
 
                     object nextPageLink;
-                    deviceToInitialize.AdditionalData.TryGetValue("extensions@odata.nextLink", out nextPageLink);
+                    deviceToInitialize.AdditionalData.TryGetValue("transitiveMemberOf@odata.nextLink", out nextPageLink);
                     var nextPageLinkString = nextPageLink as string;
 
                     if (!string.IsNullOrEmpty(nextPageLinkString))
                     {
-                        deviceToInitialize.Extensions.InitializeNextPageRequest(
+                        deviceToInitialize.TransitiveMemberOf.InitializeNextPageRequest(
+                            this.Client,
+                            nextPageLinkString);
+                    }
+                }
+
+                if (deviceToInitialize.Commands != null && deviceToInitialize.Commands.CurrentPage != null)
+                {
+                    deviceToInitialize.Commands.AdditionalData = deviceToInitialize.AdditionalData;
+
+                    object nextPageLink;
+                    deviceToInitialize.AdditionalData.TryGetValue("commands@odata.nextLink", out nextPageLink);
+                    var nextPageLinkString = nextPageLink as string;
+
+                    if (!string.IsNullOrEmpty(nextPageLinkString))
+                    {
+                        deviceToInitialize.Commands.InitializeNextPageRequest(
                             this.Client,
                             nextPageLinkString);
                     }

@@ -59,6 +59,19 @@ namespace Microsoft.Graph
                 this.AppendSegmentToRequestUrl("microsoft.graph.syncLicenses"),
                 this.Client);
         }
+
+        /// <summary>
+        /// Gets the request builder for VppTokenRevokeLicenses.
+        /// </summary>
+        /// <returns>The <see cref="IVppTokenRevokeLicensesRequestBuilder"/>.</returns>
+        public IVppTokenRevokeLicensesRequestBuilder RevokeLicenses(
+            bool notifyManagedDevices)
+        {
+            return new VppTokenRevokeLicensesRequestBuilder(
+                this.AppendSegmentToRequestUrl("microsoft.graph.revokeLicenses"),
+                this.Client,
+                notifyManagedDevices);
+        }
     
     }
 }

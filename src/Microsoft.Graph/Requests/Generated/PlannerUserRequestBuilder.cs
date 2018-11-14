@@ -72,6 +72,42 @@ namespace Microsoft.Graph
                 return new PlannerUserPlansCollectionRequestBuilder(this.AppendSegmentToRequestUrl("plans"), this.Client);
             }
         }
+
+        /// <summary>
+        /// Gets the request builder for FavoritePlans.
+        /// </summary>
+        /// <returns>The <see cref="IPlannerUserFavoritePlansCollectionRequestBuilder"/>.</returns>
+        public IPlannerUserFavoritePlansCollectionRequestBuilder FavoritePlans
+        {
+            get
+            {
+                return new PlannerUserFavoritePlansCollectionRequestBuilder(this.AppendSegmentToRequestUrl("favoritePlans"), this.Client);
+            }
+        }
+
+        /// <summary>
+        /// Gets the request builder for RecentPlans.
+        /// </summary>
+        /// <returns>The <see cref="IPlannerUserRecentPlansCollectionRequestBuilder"/>.</returns>
+        public IPlannerUserRecentPlansCollectionRequestBuilder RecentPlans
+        {
+            get
+            {
+                return new PlannerUserRecentPlansCollectionRequestBuilder(this.AppendSegmentToRequestUrl("recentPlans"), this.Client);
+            }
+        }
+
+        /// <summary>
+        /// Gets the request builder for All.
+        /// </summary>
+        /// <returns>The <see cref="IPlannerUserAllCollectionRequestBuilder"/>.</returns>
+        public IPlannerUserAllCollectionRequestBuilder All
+        {
+            get
+            {
+                return new PlannerUserAllCollectionRequestBuilder(this.AppendSegmentToRequestUrl("all"), this.Client);
+            }
+        }
     
     }
 }

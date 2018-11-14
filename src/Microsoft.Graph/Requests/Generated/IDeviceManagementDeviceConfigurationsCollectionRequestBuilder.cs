@@ -35,6 +35,11 @@ namespace Microsoft.Graph
         /// <returns>The <see cref="IDeviceConfigurationRequestBuilder"/>.</returns>
         IDeviceConfigurationRequestBuilder this[string id] { get; }
 
-        
+        /// <summary>
+        /// Gets the request builder for DeviceConfigurationGetTargetedUsersAndDevices.
+        /// </summary>
+        /// <returns>The <see cref="IDeviceConfigurationGetTargetedUsersAndDevicesRequestBuilder"/>.</returns>
+        IDeviceConfigurationGetTargetedUsersAndDevicesRequestBuilder GetTargetedUsersAndDevices(
+            IEnumerable<string> deviceConfigurationIds = null);
     }
 }

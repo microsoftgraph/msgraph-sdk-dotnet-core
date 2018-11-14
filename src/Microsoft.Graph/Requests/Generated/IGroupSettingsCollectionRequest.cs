@@ -21,19 +21,19 @@ namespace Microsoft.Graph
     {
         
         /// <summary>
-        /// Adds the specified GroupSetting to the collection via POST.
+        /// Adds the specified DirectorySetting to the collection via POST.
         /// </summary>
-        /// <param name="groupSetting">The GroupSetting to add.</param>
-        /// <returns>The created GroupSetting.</returns>
-        System.Threading.Tasks.Task<GroupSetting> AddAsync(GroupSetting groupSetting);
+        /// <param name="directorySetting">The DirectorySetting to add.</param>
+        /// <returns>The created DirectorySetting.</returns>
+        System.Threading.Tasks.Task<DirectorySetting> AddAsync(DirectorySetting directorySetting);
 
         /// <summary>
-        /// Adds the specified GroupSetting to the collection via POST.
+        /// Adds the specified DirectorySetting to the collection via POST.
         /// </summary>
-        /// <param name="groupSetting">The GroupSetting to add.</param>
+        /// <param name="directorySetting">The DirectorySetting to add.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
-        /// <returns>The created GroupSetting.</returns>
-        System.Threading.Tasks.Task<GroupSetting> AddAsync(GroupSetting groupSetting, CancellationToken cancellationToken);
+        /// <returns>The created DirectorySetting.</returns>
+        System.Threading.Tasks.Task<DirectorySetting> AddAsync(DirectorySetting directorySetting, CancellationToken cancellationToken);
         /// <summary>
         /// Gets the collection page.
         /// </summary>
@@ -59,7 +59,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="expandExpression">The expression from which to calculate the expand value.</param>
         /// <returns>The request object to send.</returns>
-        IGroupSettingsCollectionRequest Expand(Expression<Func<GroupSetting, object>> expandExpression);
+        IGroupSettingsCollectionRequest Expand(Expression<Func<DirectorySetting, object>> expandExpression);
 
         /// <summary>
         /// Adds the specified select value to the request.
@@ -73,7 +73,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="selectExpression">The expression from which to calculate the select value.</param>
         /// <returns>The request object to send.</returns>
-        IGroupSettingsCollectionRequest Select(Expression<Func<GroupSetting, object>> selectExpression);
+        IGroupSettingsCollectionRequest Select(Expression<Func<DirectorySetting, object>> selectExpression);
 
         /// <summary>
         /// Adds the specified top value to the request.

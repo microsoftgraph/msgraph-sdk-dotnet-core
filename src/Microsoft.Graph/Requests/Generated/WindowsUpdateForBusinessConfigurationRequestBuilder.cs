@@ -49,5 +49,27 @@ namespace Microsoft.Graph
             return new WindowsUpdateForBusinessConfigurationRequest(this.RequestUrl, this.Client, options);
         }
     
+        /// <summary>
+        /// Gets the request builder for WindowsUpdateForBusinessConfigurationExtendFeatureUpdatesPause.
+        /// </summary>
+        /// <returns>The <see cref="IWindowsUpdateForBusinessConfigurationExtendFeatureUpdatesPauseRequestBuilder"/>.</returns>
+        public IWindowsUpdateForBusinessConfigurationExtendFeatureUpdatesPauseRequestBuilder ExtendFeatureUpdatesPause()
+        {
+            return new WindowsUpdateForBusinessConfigurationExtendFeatureUpdatesPauseRequestBuilder(
+                this.AppendSegmentToRequestUrl("microsoft.graph.extendFeatureUpdatesPause"),
+                this.Client);
+        }
+
+        /// <summary>
+        /// Gets the request builder for WindowsUpdateForBusinessConfigurationExtendQualityUpdatesPause.
+        /// </summary>
+        /// <returns>The <see cref="IWindowsUpdateForBusinessConfigurationExtendQualityUpdatesPauseRequestBuilder"/>.</returns>
+        public IWindowsUpdateForBusinessConfigurationExtendQualityUpdatesPauseRequestBuilder ExtendQualityUpdatesPause()
+        {
+            return new WindowsUpdateForBusinessConfigurationExtendQualityUpdatesPauseRequestBuilder(
+                this.AppendSegmentToRequestUrl("microsoft.graph.extendQualityUpdatesPause"),
+                this.Client);
+        }
+    
     }
 }

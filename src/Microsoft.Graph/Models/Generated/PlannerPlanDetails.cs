@@ -35,6 +35,12 @@ namespace Microsoft.Graph
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "categoryDescriptions", Required = Newtonsoft.Json.Required.Default)]
         public PlannerCategoryDescriptions CategoryDescriptions { get; set; }
     
+        /// <summary>
+        /// Gets or sets context details.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "contextDetails", Required = Newtonsoft.Json.Required.Default)]
+        public PlannerPlanContextDetailsCollection ContextDetails { get; set; }
+    
     }
 }
 

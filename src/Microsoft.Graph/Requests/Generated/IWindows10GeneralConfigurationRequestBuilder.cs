@@ -30,5 +30,17 @@ namespace Microsoft.Graph
         /// <returns>The built request.</returns>
         new IWindows10GeneralConfigurationRequest Request(IEnumerable<Option> options);
     
+        /// <summary>
+        /// Gets the request builder for AssignedAccessMultiModeProfiles.
+        /// </summary>
+        /// <returns>The <see cref="IWindows10GeneralConfigurationAssignedAccessMultiModeProfilesCollectionRequestBuilder"/>.</returns>
+        IWindows10GeneralConfigurationAssignedAccessMultiModeProfilesCollectionRequestBuilder AssignedAccessMultiModeProfiles { get; }
+
+        /// <summary>
+        /// Gets the request builder for PrivacyAccessControls.
+        /// </summary>
+        /// <returns>The <see cref="IWindows10GeneralConfigurationPrivacyAccessControlsCollectionRequestBuilder"/>.</returns>
+        IWindows10GeneralConfigurationPrivacyAccessControlsCollectionRequestBuilder PrivacyAccessControls { get; }
+    
     }
 }

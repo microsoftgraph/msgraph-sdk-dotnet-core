@@ -33,7 +33,7 @@ namespace Microsoft.Graph
         /// <summary>
         /// Issues the GET request.
         /// </summary>
-        public System.Threading.Tasks.Task<Report> GetAsync()
+        public System.Threading.Tasks.Task<IReportRootGetOneDriveUsageAccountDetailCollectionPage> GetAsync()
         {
             return this.GetAsync(CancellationToken.None);
         }
@@ -43,58 +43,127 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await for async call.</returns>
-        public System.Threading.Tasks.Task<Report> GetAsync(
+        public async System.Threading.Tasks.Task<IReportRootGetOneDriveUsageAccountDetailCollectionPage> GetAsync(
             CancellationToken cancellationToken)
         {
             this.Method = "GET";
-            return this.SendAsync<Report>(null, cancellationToken);
+            var response = await this.SendAsync<ReportRootGetOneDriveUsageAccountDetailCollectionResponse>(null, cancellationToken).ConfigureAwait(false);
+            if (response != null && response.Value != null && response.Value.CurrentPage != null)
+            {
+                if (response.AdditionalData != null)
+                {
+                    response.Value.AdditionalData = response.AdditionalData;
+
+                    object nextPageLink;
+                    response.AdditionalData.TryGetValue("@odata.nextLink", out nextPageLink);
+
+                    var nextPageLinkString = nextPageLink as string;
+
+                    if (!string.IsNullOrEmpty(nextPageLinkString))
+                    {
+                        response.Value.InitializeNextPageRequest(
+                            this.Client,
+                            nextPageLinkString);
+                    }
+                }
+
+                return response.Value;
+            }
+
+            return null;
         }
 
 
         /// <summary>
         /// Issues the PATCH request.
         /// </summary>
-        /// <param name="report">The Report object set with the properties to update.</param>
+        /// <param name="onedriveusageaccountdetail">The OneDriveUsageAccountDetail object set with the properties to update.</param>
         /// <returns>The task to await for async call.</returns>
-        public System.Threading.Tasks.Task<Report> PatchAsync(Report report)
+        public System.Threading.Tasks.Task<IReportRootGetOneDriveUsageAccountDetailCollectionPage> PatchAsync(OneDriveUsageAccountDetail onedriveusageaccountdetail)
         {
-            return this.PatchAsync(report, CancellationToken.None);
+            return this.PatchAsync(onedriveusageaccountdetail, CancellationToken.None);
         }
 
         /// <summary>
         /// Issues the PATCH request.
         /// </summary>
-        /// <param name="report">The Report object set with the properties to update.</param>
+        /// <param name="onedriveusageaccountdetail">The OneDriveUsageAccountDetail object set with the properties to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await for async call.</returns>
-        public System.Threading.Tasks.Task<Report> PatchAsync(Report report, 
+        public async System.Threading.Tasks.Task<IReportRootGetOneDriveUsageAccountDetailCollectionPage> PatchAsync(OneDriveUsageAccountDetail onedriveusageaccountdetail, 
             CancellationToken cancellationToken)
         {
             this.Method = "PATCH";
-            return this.SendAsync<Report>(report, cancellationToken);
+            var response = await this.SendAsync<ReportRootGetOneDriveUsageAccountDetailCollectionResponse>(onedriveusageaccountdetail, cancellationToken).ConfigureAwait(false);
+            if (response != null && response.Value != null && response.Value.CurrentPage != null)
+            {
+                if (response.AdditionalData != null)
+                {
+                    response.Value.AdditionalData = response.AdditionalData;
+
+                    object nextPageLink;
+                    response.AdditionalData.TryGetValue("@odata.nextLink", out nextPageLink);
+
+                    var nextPageLinkString = nextPageLink as string;
+
+                    if (!string.IsNullOrEmpty(nextPageLinkString))
+                    {
+                        response.Value.InitializeNextPageRequest(
+                            this.Client,
+                            nextPageLinkString);
+                    }
+                }
+
+                return response.Value;
+            }
+
+            return null;
         }        
 
         /// <summary>
         /// Issues the PUT request.
         /// </summary>
-        /// <param name="report">The Report object to update.</param>
+        /// <param name="onedriveusageaccountdetail">The OneDriveUsageAccountDetail object to update.</param>
         /// <returns>The task to await for async call.</returns>
-        public System.Threading.Tasks.Task<Report> PutAsync(Report report)
+        public System.Threading.Tasks.Task<IReportRootGetOneDriveUsageAccountDetailCollectionPage> PutAsync(OneDriveUsageAccountDetail onedriveusageaccountdetail)
         {
-            return this.PutAsync(report, CancellationToken.None);
+            return this.PutAsync(onedriveusageaccountdetail, CancellationToken.None);
         }
 
         /// <summary>
         /// Issues the PUT request.
         /// </summary>
-        /// <param name="report">The Report object to update.</param>
+        /// <param name="onedriveusageaccountdetail">The OneDriveUsageAccountDetail object to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await for async call.</returns>
-        public System.Threading.Tasks.Task<Report> PutAsync(Report report, 
+        public async System.Threading.Tasks.Task<IReportRootGetOneDriveUsageAccountDetailCollectionPage> PutAsync(OneDriveUsageAccountDetail onedriveusageaccountdetail, 
             CancellationToken cancellationToken)
         {
             this.Method = "PUT";
-            return this.SendAsync<Report>(report, cancellationToken);
+            var response = await this.SendAsync<ReportRootGetOneDriveUsageAccountDetailCollectionResponse>(onedriveusageaccountdetail, cancellationToken).ConfigureAwait(false);
+            if (response != null && response.Value != null && response.Value.CurrentPage != null)
+            {
+                if (response.AdditionalData != null)
+                {
+                    response.Value.AdditionalData = response.AdditionalData;
+
+                    object nextPageLink;
+                    response.AdditionalData.TryGetValue("@odata.nextLink", out nextPageLink);
+
+                    var nextPageLinkString = nextPageLink as string;
+
+                    if (!string.IsNullOrEmpty(nextPageLinkString))
+                    {
+                        response.Value.InitializeNextPageRequest(
+                            this.Client,
+                            nextPageLinkString);
+                    }
+                }
+
+                return response.Value;
+            }
+
+            return null;
         }        
 
         /// <summary>
@@ -116,6 +185,50 @@ namespace Microsoft.Graph
         public IReportRootGetOneDriveUsageAccountDetailRequest Select(string value)
         {
             this.QueryOptions.Add(new QueryOption("$select", value));
+            return this;
+        }
+
+        /// <summary>
+        /// Adds the specified top value to the request.
+        /// </summary>
+        /// <param name="value">The top value.</param>
+        /// <returns>The request object to send.</returns>
+        public IReportRootGetOneDriveUsageAccountDetailRequest Top(int value)
+        {
+            this.QueryOptions.Add(new QueryOption("$top", value.ToString()));
+            return this;
+        }
+
+        /// <summary>
+        /// Adds the specified filter value to the request.
+        /// </summary>
+        /// <param name="value">The filter value.</param>
+        /// <returns>The request object to send.</returns>
+        public IReportRootGetOneDriveUsageAccountDetailRequest Filter(string value)
+        {
+            this.QueryOptions.Add(new QueryOption("$filter", value));
+            return this;
+        }
+
+        /// <summary>
+        /// Adds the specified skip value to the request.
+        /// </summary>
+        /// <param name="value">The skip value.</param>
+        /// <returns>The request object to send.</returns>
+        public IReportRootGetOneDriveUsageAccountDetailRequest Skip(int value)
+        {
+            this.QueryOptions.Add(new QueryOption("$skip", value.ToString()));
+            return this;
+        }
+
+        /// <summary>
+        /// Adds the specified orderby value to the request.
+        /// </summary>
+        /// <param name="value">The orderby value.</param>
+        /// <returns>The request object to send.</returns>
+        public IReportRootGetOneDriveUsageAccountDetailRequest OrderBy(string value)
+        {
+            this.QueryOptions.Add(new QueryOption("$orderby", value));
             return this;
         }
     }

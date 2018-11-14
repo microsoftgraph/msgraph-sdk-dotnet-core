@@ -50,6 +50,12 @@ namespace Microsoft.Graph
         public string Title { get; set; }
     
         /// <summary>
+        /// Gets or sets contexts.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "contexts", Required = Newtonsoft.Json.Required.Default)]
+        public PlannerPlanContextCollection Contexts { get; set; }
+    
+        /// <summary>
         /// Gets or sets tasks.
         /// Read-only. Nullable. Collection of tasks in the plan.
         /// </summary>

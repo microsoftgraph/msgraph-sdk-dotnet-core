@@ -73,5 +73,10 @@ namespace Microsoft.Graph
         /// </summary>
         GoogleCloudDevicePolicyController = 64,
 	
+        /// <summary>
+        /// microsoft365Managed Mdm
+        /// </summary>
+        Microsoft365ManagedMdm = 258,
+	
     }
 }

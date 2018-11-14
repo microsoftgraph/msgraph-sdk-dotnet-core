@@ -154,6 +154,83 @@ namespace Microsoft.Graph
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "storageRequireEncryption", Required = Newtonsoft.Json.Required.Default)]
         public bool? StorageRequireEncryption { get; set; }
     
+        /// <summary>
+        /// Gets or sets active firewall required.
+        /// Require active firewall on Windows devices.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "activeFirewallRequired", Required = Newtonsoft.Json.Required.Default)]
+        public bool? ActiveFirewallRequired { get; set; }
+    
+        /// <summary>
+        /// Gets or sets defender enabled.
+        /// Require Windows Defender Antimalware on Windows devices.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "defenderEnabled", Required = Newtonsoft.Json.Required.Default)]
+        public bool? DefenderEnabled { get; set; }
+    
+        /// <summary>
+        /// Gets or sets defender version.
+        /// Require Windows Defender Antimalware minimum version on Windows devices.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "defenderVersion", Required = Newtonsoft.Json.Required.Default)]
+        public string DefenderVersion { get; set; }
+    
+        /// <summary>
+        /// Gets or sets signature out of date.
+        /// Require Windows Defender Antimalware Signature to be up to date on Windows devices.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "signatureOutOfDate", Required = Newtonsoft.Json.Required.Default)]
+        public bool? SignatureOutOfDate { get; set; }
+    
+        /// <summary>
+        /// Gets or sets rtp enabled.
+        /// Require Windows Defender Antimalware Real-Time Protection on Windows devices.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "rtpEnabled", Required = Newtonsoft.Json.Required.Default)]
+        public bool? RtpEnabled { get; set; }
+    
+        /// <summary>
+        /// Gets or sets antivirus required.
+        /// Require any Antivirus solution registered with Windows Decurity Center to be on and monitoring (e.g. Symantec, Windows Defender).
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "antivirusRequired", Required = Newtonsoft.Json.Required.Default)]
+        public bool? AntivirusRequired { get; set; }
+    
+        /// <summary>
+        /// Gets or sets anti spyware required.
+        /// Require any AntiSpyware solution registered with Windows Decurity Center to be on and monitoring (e.g. Symantec, Windows Defender).
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "antiSpywareRequired", Required = Newtonsoft.Json.Required.Default)]
+        public bool? AntiSpywareRequired { get; set; }
+    
+        /// <summary>
+        /// Gets or sets valid operating system build ranges.
+        /// The valid operating system build ranges on Windows devices. This collection can contain a maximum of 10000 elements.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "validOperatingSystemBuildRanges", Required = Newtonsoft.Json.Required.Default)]
+        public IEnumerable<OperatingSystemVersionRange> ValidOperatingSystemBuildRanges { get; set; }
+    
+        /// <summary>
+        /// Gets or sets device threat protection enabled.
+        /// Require that devices have enabled device threat protection.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "deviceThreatProtectionEnabled", Required = Newtonsoft.Json.Required.Default)]
+        public bool? DeviceThreatProtectionEnabled { get; set; }
+    
+        /// <summary>
+        /// Gets or sets device threat protection required security level.
+        /// Require Device Threat Protection minimum risk level to report noncompliance.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "deviceThreatProtectionRequiredSecurityLevel", Required = Newtonsoft.Json.Required.Default)]
+        public DeviceThreatProtectionLevel? DeviceThreatProtectionRequiredSecurityLevel { get; set; }
+    
+        /// <summary>
+        /// Gets or sets configuration manager compliance required.
+        /// Require to consider SCCM Compliance state into consideration for Intune Compliance State.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "configurationManagerComplianceRequired", Required = Newtonsoft.Json.Required.Default)]
+        public bool? ConfigurationManagerComplianceRequired { get; set; }
+    
     }
 }
 

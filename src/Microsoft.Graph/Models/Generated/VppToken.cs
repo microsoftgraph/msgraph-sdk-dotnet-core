@@ -78,6 +78,13 @@ namespace Microsoft.Graph
         public VppTokenState? State { get; set; }
     
         /// <summary>
+        /// Gets or sets token action results.
+        /// The collection of statuses of the actions performed on the Apple Volume Purchase Program Token.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "tokenActionResults", Required = Newtonsoft.Json.Required.Default)]
+        public IEnumerable<VppTokenActionResult> TokenActionResults { get; set; }
+    
+        /// <summary>
         /// Gets or sets last sync status.
         /// Current sync status of the last application sync which was triggered using the Apple Volume Purchase Program Token. Possible values are: none, inProgress, completed, failed. Possible values are: none, inProgress, completed, failed.
         /// </summary>
@@ -97,6 +104,34 @@ namespace Microsoft.Graph
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "countryOrRegion", Required = Newtonsoft.Json.Required.Default)]
         public string CountryOrRegion { get; set; }
+    
+        /// <summary>
+        /// Gets or sets data sharing consent granted.
+        /// Consent granted for data sharing with the Apple Volume Purchase Program.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "dataSharingConsentGranted", Required = Newtonsoft.Json.Required.Default)]
+        public bool? DataSharingConsentGranted { get; set; }
+    
+        /// <summary>
+        /// Gets or sets display name.
+        /// An admin specified token friendly name.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "displayName", Required = Newtonsoft.Json.Required.Default)]
+        public string DisplayName { get; set; }
+    
+        /// <summary>
+        /// Gets or sets location name.
+        /// Token location returned from Apple VPP.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "locationName", Required = Newtonsoft.Json.Required.Default)]
+        public string LocationName { get; set; }
+    
+        /// <summary>
+        /// Gets or sets claim token management from external mdm.
+        /// Admin consent to allow claiming token management from external MDM.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "claimTokenManagementFromExternalMdm", Required = Newtonsoft.Json.Required.Default)]
+        public bool? ClaimTokenManagementFromExternalMdm { get; set; }
     
     }
 }

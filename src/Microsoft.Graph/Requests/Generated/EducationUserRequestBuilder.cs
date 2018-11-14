@@ -84,6 +84,18 @@ namespace Microsoft.Graph
                 return new UserWithReferenceRequestBuilder(this.AppendSegmentToRequestUrl("user"), this.Client);
             }
         }
+
+        /// <summary>
+        /// Gets the request builder for Assignments.
+        /// </summary>
+        /// <returns>The <see cref="IEducationUserAssignmentsCollectionRequestBuilder"/>.</returns>
+        public IEducationUserAssignmentsCollectionRequestBuilder Assignments
+        {
+            get
+            {
+                return new EducationUserAssignmentsCollectionRequestBuilder(this.AppendSegmentToRequestUrl("assignments"), this.Client);
+            }
+        }
     
     }
 }

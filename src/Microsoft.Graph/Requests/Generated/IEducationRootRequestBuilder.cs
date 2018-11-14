@@ -31,6 +31,12 @@ namespace Microsoft.Graph
         new IEducationRootRequest Request(IEnumerable<Option> options);
     
         /// <summary>
+        /// Gets the request builder for SynchronizationProfiles.
+        /// </summary>
+        /// <returns>The <see cref="IEducationRootSynchronizationProfilesCollectionRequestBuilder"/>.</returns>
+        IEducationRootSynchronizationProfilesCollectionRequestBuilder SynchronizationProfiles { get; }
+
+        /// <summary>
         /// Gets the request builder for Classes.
         /// </summary>
         /// <returns>The <see cref="IEducationRootClassesCollectionRequestBuilder"/>.</returns>

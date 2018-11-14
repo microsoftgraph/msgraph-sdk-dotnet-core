@@ -222,6 +222,22 @@ namespace Microsoft.Graph
                     }
                 }
 
+                if (managedDeviceToInitialize.DetectedApps != null && managedDeviceToInitialize.DetectedApps.CurrentPage != null)
+                {
+                    managedDeviceToInitialize.DetectedApps.AdditionalData = managedDeviceToInitialize.AdditionalData;
+
+                    object nextPageLink;
+                    managedDeviceToInitialize.AdditionalData.TryGetValue("detectedApps@odata.nextLink", out nextPageLink);
+                    var nextPageLinkString = nextPageLink as string;
+
+                    if (!string.IsNullOrEmpty(nextPageLinkString))
+                    {
+                        managedDeviceToInitialize.DetectedApps.InitializeNextPageRequest(
+                            this.Client,
+                            nextPageLinkString);
+                    }
+                }
+
                 if (managedDeviceToInitialize.DeviceCompliancePolicyStates != null && managedDeviceToInitialize.DeviceCompliancePolicyStates.CurrentPage != null)
                 {
                     managedDeviceToInitialize.DeviceCompliancePolicyStates.AdditionalData = managedDeviceToInitialize.AdditionalData;
@@ -233,6 +249,22 @@ namespace Microsoft.Graph
                     if (!string.IsNullOrEmpty(nextPageLinkString))
                     {
                         managedDeviceToInitialize.DeviceCompliancePolicyStates.InitializeNextPageRequest(
+                            this.Client,
+                            nextPageLinkString);
+                    }
+                }
+
+                if (managedDeviceToInitialize.ManagedDeviceMobileAppConfigurationStates != null && managedDeviceToInitialize.ManagedDeviceMobileAppConfigurationStates.CurrentPage != null)
+                {
+                    managedDeviceToInitialize.ManagedDeviceMobileAppConfigurationStates.AdditionalData = managedDeviceToInitialize.AdditionalData;
+
+                    object nextPageLink;
+                    managedDeviceToInitialize.AdditionalData.TryGetValue("managedDeviceMobileAppConfigurationStates@odata.nextLink", out nextPageLink);
+                    var nextPageLinkString = nextPageLink as string;
+
+                    if (!string.IsNullOrEmpty(nextPageLinkString))
+                    {
+                        managedDeviceToInitialize.ManagedDeviceMobileAppConfigurationStates.InitializeNextPageRequest(
                             this.Client,
                             nextPageLinkString);
                     }

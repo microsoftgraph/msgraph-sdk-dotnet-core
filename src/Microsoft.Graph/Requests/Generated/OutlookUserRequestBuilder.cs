@@ -60,6 +60,42 @@ namespace Microsoft.Graph
                 return new OutlookUserMasterCategoriesCollectionRequestBuilder(this.AppendSegmentToRequestUrl("masterCategories"), this.Client);
             }
         }
+
+        /// <summary>
+        /// Gets the request builder for TaskGroups.
+        /// </summary>
+        /// <returns>The <see cref="IOutlookUserTaskGroupsCollectionRequestBuilder"/>.</returns>
+        public IOutlookUserTaskGroupsCollectionRequestBuilder TaskGroups
+        {
+            get
+            {
+                return new OutlookUserTaskGroupsCollectionRequestBuilder(this.AppendSegmentToRequestUrl("taskGroups"), this.Client);
+            }
+        }
+
+        /// <summary>
+        /// Gets the request builder for TaskFolders.
+        /// </summary>
+        /// <returns>The <see cref="IOutlookUserTaskFoldersCollectionRequestBuilder"/>.</returns>
+        public IOutlookUserTaskFoldersCollectionRequestBuilder TaskFolders
+        {
+            get
+            {
+                return new OutlookUserTaskFoldersCollectionRequestBuilder(this.AppendSegmentToRequestUrl("taskFolders"), this.Client);
+            }
+        }
+
+        /// <summary>
+        /// Gets the request builder for Tasks.
+        /// </summary>
+        /// <returns>The <see cref="IOutlookUserTasksCollectionRequestBuilder"/>.</returns>
+        public IOutlookUserTasksCollectionRequestBuilder Tasks
+        {
+            get
+            {
+                return new OutlookUserTasksCollectionRequestBuilder(this.AppendSegmentToRequestUrl("tasks"), this.Client);
+            }
+        }
     
         /// <summary>
         /// Gets the request builder for OutlookUserSupportedLanguages.

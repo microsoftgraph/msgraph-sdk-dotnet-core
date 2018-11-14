@@ -22,13 +22,16 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="requestUrl">The URL for the request.</param>
         /// <param name="client">The <see cref="IBaseClient"/> for handling requests.</param>
+        /// <param name="deviceConfigurationGroupAssignments">A deviceConfigurationGroupAssignments parameter for the OData method call.</param>
         /// <param name="assignments">A assignments parameter for the OData method call.</param>
         public DeviceConfigurationAssignRequestBuilder(
             string requestUrl,
             IBaseClient client,
+            IEnumerable<DeviceConfigurationGroupAssignment> deviceConfigurationGroupAssignments,
             IEnumerable<DeviceConfigurationAssignment> assignments)
             : base(requestUrl, client)
         {
+            this.SetParameter("deviceConfigurationGroupAssignments", deviceConfigurationGroupAssignments, true);
             this.SetParameter("assignments", assignments, true);
         }
 
@@ -41,6 +44,11 @@ namespace Microsoft.Graph
         protected override IDeviceConfigurationAssignRequest CreateRequest(string functionUrl, IEnumerable<Option> options)
         {
             var request = new DeviceConfigurationAssignRequest(functionUrl, this.Client, options);
+
+            if (this.HasParameter("deviceConfigurationGroupAssignments"))
+            {
+                request.RequestBody.DeviceConfigurationGroupAssignments = this.GetParameter<IEnumerable<DeviceConfigurationGroupAssignment>>("deviceConfigurationGroupAssignments");
+            }
 
             if (this.HasParameter("assignments"))
             {

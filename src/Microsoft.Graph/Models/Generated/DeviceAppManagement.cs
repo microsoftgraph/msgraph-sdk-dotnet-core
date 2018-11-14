@@ -50,6 +50,20 @@ namespace Microsoft.Graph
         public DateTimeOffset? MicrosoftStoreForBusinessLastCompletedApplicationSyncTime { get; set; }
     
         /// <summary>
+        /// Gets or sets microsoft store for business portal selection.
+        /// The end user portal information is used to sync applications from the Microsoft Store for Business to Intune Company Portal. There are three options to pick from ['Company portal only', 'Company portal and private store', 'Private store only']
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "microsoftStoreForBusinessPortalSelection", Required = Newtonsoft.Json.Required.Default)]
+        public MicrosoftStoreForBusinessPortalSelectionOptions? MicrosoftStoreForBusinessPortalSelection { get; set; }
+    
+        /// <summary>
+        /// Gets or sets windows management app.
+        /// Windows management app.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "windowsManagementApp", Required = Newtonsoft.Json.Required.Default)]
+        public WindowsManagementApp WindowsManagementApp { get; set; }
+    
+        /// <summary>
         /// Gets or sets mobile apps.
         /// The mobile apps.
         /// </summary>
@@ -64,11 +78,39 @@ namespace Microsoft.Graph
         public IDeviceAppManagementMobileAppCategoriesCollectionPage MobileAppCategories { get; set; }
     
         /// <summary>
+        /// Gets or sets enterprise code signing certificates.
+        /// The Windows Enterprise Code Signing Certificate.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "enterpriseCodeSigningCertificates", Required = Newtonsoft.Json.Required.Default)]
+        public IDeviceAppManagementEnterpriseCodeSigningCertificatesCollectionPage EnterpriseCodeSigningCertificates { get; set; }
+    
+        /// <summary>
+        /// Gets or sets ios lob app provisioning configurations.
+        /// The IOS Lob App Provisioning Configurations.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "iosLobAppProvisioningConfigurations", Required = Newtonsoft.Json.Required.Default)]
+        public IDeviceAppManagementIosLobAppProvisioningConfigurationsCollectionPage IosLobAppProvisioningConfigurations { get; set; }
+    
+        /// <summary>
+        /// Gets or sets symantec code signing certificate.
+        /// The WinPhone Symantec Code Signing Certificate.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "symantecCodeSigningCertificate", Required = Newtonsoft.Json.Required.Default)]
+        public SymantecCodeSigningCertificate SymantecCodeSigningCertificate { get; set; }
+    
+        /// <summary>
         /// Gets or sets mobile app configurations.
         /// The Managed Device Mobile Application Configurations.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "mobileAppConfigurations", Required = Newtonsoft.Json.Required.Default)]
         public IDeviceAppManagementMobileAppConfigurationsCollectionPage MobileAppConfigurations { get; set; }
+    
+        /// <summary>
+        /// Gets or sets side loading keys.
+        /// Side Loading Keys that are required for the Windows 8 and 8.1 Apps installation.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "sideLoadingKeys", Required = Newtonsoft.Json.Required.Default)]
+        public IDeviceAppManagementSideLoadingKeysCollectionPage SideLoadingKeys { get; set; }
     
         /// <summary>
         /// Gets or sets vpp tokens.
@@ -146,6 +188,13 @@ namespace Microsoft.Graph
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "managedEBooks", Required = Newtonsoft.Json.Required.Default)]
         public IDeviceAppManagementManagedEBooksCollectionPage ManagedEBooks { get; set; }
+    
+        /// <summary>
+        /// Gets or sets managed ebook categories.
+        /// The mobile eBook categories.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "managedEBookCategories", Required = Newtonsoft.Json.Required.Default)]
+        public IDeviceAppManagementManagedEBookCategoriesCollectionPage ManagedEBookCategories { get; set; }
     
     }
 }

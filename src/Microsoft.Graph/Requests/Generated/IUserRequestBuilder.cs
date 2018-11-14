@@ -31,34 +31,16 @@ namespace Microsoft.Graph
         new IUserRequest Request(IEnumerable<Option> options);
     
         /// <summary>
-        /// Gets the request builder for OwnedDevices.
+        /// Gets the request builder for Extensions.
         /// </summary>
-        /// <returns>The <see cref="IUserOwnedDevicesCollectionWithReferencesRequestBuilder"/>.</returns>
-        IUserOwnedDevicesCollectionWithReferencesRequestBuilder OwnedDevices { get; }
+        /// <returns>The <see cref="IUserExtensionsCollectionRequestBuilder"/>.</returns>
+        IUserExtensionsCollectionRequestBuilder Extensions { get; }
 
         /// <summary>
-        /// Gets the request builder for RegisteredDevices.
+        /// Gets the request builder for AppRoleAssignments.
         /// </summary>
-        /// <returns>The <see cref="IUserRegisteredDevicesCollectionWithReferencesRequestBuilder"/>.</returns>
-        IUserRegisteredDevicesCollectionWithReferencesRequestBuilder RegisteredDevices { get; }
-
-        /// <summary>
-        /// Gets the request builder for Manager.
-        /// </summary>
-        /// <returns>The <see cref="IDirectoryObjectWithReferenceRequestBuilder"/>.</returns>
-        IDirectoryObjectWithReferenceRequestBuilder Manager { get; }
-
-        /// <summary>
-        /// Gets the request builder for DirectReports.
-        /// </summary>
-        /// <returns>The <see cref="IUserDirectReportsCollectionWithReferencesRequestBuilder"/>.</returns>
-        IUserDirectReportsCollectionWithReferencesRequestBuilder DirectReports { get; }
-
-        /// <summary>
-        /// Gets the request builder for MemberOf.
-        /// </summary>
-        /// <returns>The <see cref="IUserMemberOfCollectionWithReferencesRequestBuilder"/>.</returns>
-        IUserMemberOfCollectionWithReferencesRequestBuilder MemberOf { get; }
+        /// <returns>The <see cref="IUserAppRoleAssignmentsCollectionWithReferencesRequestBuilder"/>.</returns>
+        IUserAppRoleAssignmentsCollectionWithReferencesRequestBuilder AppRoleAssignments { get; }
 
         /// <summary>
         /// Gets the request builder for CreatedObjects.
@@ -67,10 +49,10 @@ namespace Microsoft.Graph
         IUserCreatedObjectsCollectionWithReferencesRequestBuilder CreatedObjects { get; }
 
         /// <summary>
-        /// Gets the request builder for OwnedObjects.
+        /// Gets the request builder for DirectReports.
         /// </summary>
-        /// <returns>The <see cref="IUserOwnedObjectsCollectionWithReferencesRequestBuilder"/>.</returns>
-        IUserOwnedObjectsCollectionWithReferencesRequestBuilder OwnedObjects { get; }
+        /// <returns>The <see cref="IUserDirectReportsCollectionWithReferencesRequestBuilder"/>.</returns>
+        IUserDirectReportsCollectionWithReferencesRequestBuilder DirectReports { get; }
 
         /// <summary>
         /// Gets the request builder for LicenseDetails.
@@ -79,10 +61,52 @@ namespace Microsoft.Graph
         IUserLicenseDetailsCollectionRequestBuilder LicenseDetails { get; }
 
         /// <summary>
-        /// Gets the request builder for Extensions.
+        /// Gets the request builder for Manager.
         /// </summary>
-        /// <returns>The <see cref="IUserExtensionsCollectionRequestBuilder"/>.</returns>
-        IUserExtensionsCollectionRequestBuilder Extensions { get; }
+        /// <returns>The <see cref="IDirectoryObjectWithReferenceRequestBuilder"/>.</returns>
+        IDirectoryObjectWithReferenceRequestBuilder Manager { get; }
+
+        /// <summary>
+        /// Gets the request builder for MemberOf.
+        /// </summary>
+        /// <returns>The <see cref="IUserMemberOfCollectionWithReferencesRequestBuilder"/>.</returns>
+        IUserMemberOfCollectionWithReferencesRequestBuilder MemberOf { get; }
+
+        /// <summary>
+        /// Gets the request builder for OwnedDevices.
+        /// </summary>
+        /// <returns>The <see cref="IUserOwnedDevicesCollectionWithReferencesRequestBuilder"/>.</returns>
+        IUserOwnedDevicesCollectionWithReferencesRequestBuilder OwnedDevices { get; }
+
+        /// <summary>
+        /// Gets the request builder for OwnedObjects.
+        /// </summary>
+        /// <returns>The <see cref="IUserOwnedObjectsCollectionWithReferencesRequestBuilder"/>.</returns>
+        IUserOwnedObjectsCollectionWithReferencesRequestBuilder OwnedObjects { get; }
+
+        /// <summary>
+        /// Gets the request builder for RegisteredDevices.
+        /// </summary>
+        /// <returns>The <see cref="IUserRegisteredDevicesCollectionWithReferencesRequestBuilder"/>.</returns>
+        IUserRegisteredDevicesCollectionWithReferencesRequestBuilder RegisteredDevices { get; }
+
+        /// <summary>
+        /// Gets the request builder for ScopedRoleMemberOf.
+        /// </summary>
+        /// <returns>The <see cref="IUserScopedRoleMemberOfCollectionRequestBuilder"/>.</returns>
+        IUserScopedRoleMemberOfCollectionRequestBuilder ScopedRoleMemberOf { get; }
+
+        /// <summary>
+        /// Gets the request builder for TransitiveMemberOf.
+        /// </summary>
+        /// <returns>The <see cref="IUserTransitiveMemberOfCollectionWithReferencesRequestBuilder"/>.</returns>
+        IUserTransitiveMemberOfCollectionWithReferencesRequestBuilder TransitiveMemberOf { get; }
+
+        /// <summary>
+        /// Gets the request builder for Activities.
+        /// </summary>
+        /// <returns>The <see cref="IUserActivitiesCollectionRequestBuilder"/>.</returns>
+        IUserActivitiesCollectionRequestBuilder Activities { get; }
 
         /// <summary>
         /// Gets the request builder for Outlook.
@@ -95,6 +119,12 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IUserMessagesCollectionRequestBuilder"/>.</returns>
         IUserMessagesCollectionRequestBuilder Messages { get; }
+
+        /// <summary>
+        /// Gets the request builder for JoinedGroups.
+        /// </summary>
+        /// <returns>The <see cref="IUserJoinedGroupsCollectionRequestBuilder"/>.</returns>
+        IUserJoinedGroupsCollectionRequestBuilder JoinedGroups { get; }
 
         /// <summary>
         /// Gets the request builder for MailFolders.
@@ -181,6 +211,18 @@ namespace Microsoft.Graph
         IUserDrivesCollectionRequestBuilder Drives { get; }
 
         /// <summary>
+        /// Gets the request builder for Insights.
+        /// </summary>
+        /// <returns>The <see cref="IOfficeGraphInsightsRequestBuilder"/>.</returns>
+        IOfficeGraphInsightsRequestBuilder Insights { get; }
+
+        /// <summary>
+        /// Gets the request builder for Settings.
+        /// </summary>
+        /// <returns>The <see cref="IUserSettingsRequestBuilder"/>.</returns>
+        IUserSettingsRequestBuilder Settings { get; }
+
+        /// <summary>
         /// Gets the request builder for Planner.
         /// </summary>
         /// <returns>The <see cref="IPlannerUserRequestBuilder"/>.</returns>
@@ -199,10 +241,28 @@ namespace Microsoft.Graph
         IUserManagedDevicesCollectionRequestBuilder ManagedDevices { get; }
 
         /// <summary>
+        /// Gets the request builder for DeviceEnrollmentConfigurations.
+        /// </summary>
+        /// <returns>The <see cref="IUserDeviceEnrollmentConfigurationsCollectionRequestBuilder"/>.</returns>
+        IUserDeviceEnrollmentConfigurationsCollectionRequestBuilder DeviceEnrollmentConfigurations { get; }
+
+        /// <summary>
         /// Gets the request builder for ManagedAppRegistrations.
         /// </summary>
         /// <returns>The <see cref="IUserManagedAppRegistrationsCollectionWithReferencesRequestBuilder"/>.</returns>
         IUserManagedAppRegistrationsCollectionWithReferencesRequestBuilder ManagedAppRegistrations { get; }
+
+        /// <summary>
+        /// Gets the request builder for Devices.
+        /// </summary>
+        /// <returns>The <see cref="IUserDevicesCollectionRequestBuilder"/>.</returns>
+        IUserDevicesCollectionRequestBuilder Devices { get; }
+
+        /// <summary>
+        /// Gets the request builder for JoinedTeams.
+        /// </summary>
+        /// <returns>The <see cref="IUserJoinedTeamsCollectionRequestBuilder"/>.</returns>
+        IUserJoinedTeamsCollectionRequestBuilder JoinedTeams { get; }
 
         /// <summary>
         /// Gets the request builder for DeviceManagementTroubleshootingEvents.
@@ -211,22 +271,28 @@ namespace Microsoft.Graph
         IUserDeviceManagementTroubleshootingEventsCollectionRequestBuilder DeviceManagementTroubleshootingEvents { get; }
 
         /// <summary>
-        /// Gets the request builder for Activities.
+        /// Gets the request builder for MobileAppIntentAndStates.
         /// </summary>
-        /// <returns>The <see cref="IUserActivitiesCollectionRequestBuilder"/>.</returns>
-        IUserActivitiesCollectionRequestBuilder Activities { get; }
+        /// <returns>The <see cref="IUserMobileAppIntentAndStatesCollectionRequestBuilder"/>.</returns>
+        IUserMobileAppIntentAndStatesCollectionRequestBuilder MobileAppIntentAndStates { get; }
 
         /// <summary>
-        /// Gets the request builder for Insights.
+        /// Gets the request builder for MobileAppTroubleshootingEvents.
         /// </summary>
-        /// <returns>The <see cref="IOfficeGraphInsightsRequestBuilder"/>.</returns>
-        IOfficeGraphInsightsRequestBuilder Insights { get; }
+        /// <returns>The <see cref="IUserMobileAppTroubleshootingEventsCollectionRequestBuilder"/>.</returns>
+        IUserMobileAppTroubleshootingEventsCollectionRequestBuilder MobileAppTroubleshootingEvents { get; }
 
         /// <summary>
-        /// Gets the request builder for Settings.
+        /// Gets the request builder for AgreementAcceptances.
         /// </summary>
-        /// <returns>The <see cref="IUserSettingsRequestBuilder"/>.</returns>
-        IUserSettingsRequestBuilder Settings { get; }
+        /// <returns>The <see cref="IUserAgreementAcceptancesCollectionWithReferencesRequestBuilder"/>.</returns>
+        IUserAgreementAcceptancesCollectionWithReferencesRequestBuilder AgreementAcceptances { get; }
+
+        /// <summary>
+        /// Gets the request builder for Notifications.
+        /// </summary>
+        /// <returns>The <see cref="IUserNotificationsCollectionRequestBuilder"/>.</returns>
+        IUserNotificationsCollectionRequestBuilder Notifications { get; }
     
         /// <summary>
         /// Gets the request builder for UserAssignLicense.
@@ -245,12 +311,31 @@ namespace Microsoft.Graph
             string newPassword = null);
 
         /// <summary>
+        /// Gets the request builder for UserInvalidateAllRefreshTokens.
+        /// </summary>
+        /// <returns>The <see cref="IUserInvalidateAllRefreshTokensRequestBuilder"/>.</returns>
+        IUserInvalidateAllRefreshTokensRequestBuilder InvalidateAllRefreshTokens();
+
+        /// <summary>
         /// Gets the request builder for UserSendMail.
         /// </summary>
         /// <returns>The <see cref="IUserSendMailRequestBuilder"/>.</returns>
         IUserSendMailRequestBuilder SendMail(
             Message Message,
             bool? SaveToSentItems = null);
+
+        /// <summary>
+        /// Gets the request builder for UserFindMeetingTimesOLD.
+        /// </summary>
+        /// <returns>The <see cref="IUserFindMeetingTimesOLDRequestBuilder"/>.</returns>
+        IUserFindMeetingTimesOLDRequestBuilder FindMeetingTimesOLD(
+            IEnumerable<AttendeeBase> Attendees = null,
+            LocationConstraint LocationConstraint = null,
+            TimeConstraint TimeConstraint = null,
+            Duration MeetingDuration = null,
+            Int32? MaxCandidates = null,
+            bool? IsOrganizerOptional = null,
+            bool? ReturnSuggestionHints = null);
 
         /// <summary>
         /// Gets the request builder for UserFindMeetingTimes.
@@ -275,10 +360,26 @@ namespace Microsoft.Graph
             MailTipsType? MailTipsOptions = null);
 
         /// <summary>
+        /// Gets the request builder for UserTranslateExchangeIds.
+        /// </summary>
+        /// <returns>The <see cref="IUserTranslateExchangeIdsRequestBuilder"/>.</returns>
+        IUserTranslateExchangeIdsRequestBuilder TranslateExchangeIds(
+            IEnumerable<string> InputIds,
+            ExchangeIdFormat TargetIdType,
+            ExchangeIdFormat SourceIdType);
+
+        /// <summary>
         /// Gets the request builder for UserRemoveAllDevicesFromManagement.
         /// </summary>
         /// <returns>The <see cref="IUserRemoveAllDevicesFromManagementRequestBuilder"/>.</returns>
         IUserRemoveAllDevicesFromManagementRequestBuilder RemoveAllDevicesFromManagement();
+
+        /// <summary>
+        /// Gets the request builder for UserWipeManagedAppRegistrationByDeviceTag.
+        /// </summary>
+        /// <returns>The <see cref="IUserWipeManagedAppRegistrationByDeviceTagRequestBuilder"/>.</returns>
+        IUserWipeManagedAppRegistrationByDeviceTagRequestBuilder WipeManagedAppRegistrationByDeviceTag(
+            string deviceTag = null);
 
         /// <summary>
         /// Gets the request builder for UserWipeManagedAppRegistrationsByDeviceTag.
@@ -288,12 +389,64 @@ namespace Microsoft.Graph
             string deviceTag = null);
 
         /// <summary>
+        /// Gets the request builder for UserExportPersonalData.
+        /// </summary>
+        /// <returns>The <see cref="IUserExportPersonalDataRequestBuilder"/>.</returns>
+        IUserExportPersonalDataRequestBuilder ExportPersonalData(
+            string storageLocation = null);
+
+        /// <summary>
         /// Gets the request builder for UserReminderView.
         /// </summary>
         /// <returns>The <see cref="IUserReminderViewRequestBuilder"/>.</returns>
         IUserReminderViewRequestBuilder ReminderView(
             string StartDateTime,
             string EndDateTime = null);
+
+        /// <summary>
+        /// Gets the request builder for UserFindRoomLists.
+        /// </summary>
+        /// <returns>The <see cref="IUserFindRoomListsRequestBuilder"/>.</returns>
+        IUserFindRoomListsRequestBuilder FindRoomLists();
+
+        /// <summary>
+        /// Gets the request builder for UserFindRooms.
+        /// </summary>
+        /// <returns>The <see cref="IUserFindRoomsRequestBuilder"/>.</returns>
+        IUserFindRoomsRequestBuilder FindRooms(
+            string RoomList);
+
+        /// <summary>
+        /// Gets the request builder for UserFindRooms.
+        /// </summary>
+        /// <returns>The <see cref="IUserFindRoomsRequestBuilder"/>.</returns>
+        IUserFindRoomsRequestBuilder FindRooms();
+
+        /// <summary>
+        /// Gets the request builder for UserGetLoggedOnManagedDevices.
+        /// </summary>
+        /// <returns>The <see cref="IUserGetLoggedOnManagedDevicesRequestBuilder"/>.</returns>
+        IUserGetLoggedOnManagedDevicesRequestBuilder GetLoggedOnManagedDevices();
+
+        /// <summary>
+        /// Gets the request builder for UserExportDeviceAndAppManagementData.
+        /// </summary>
+        /// <returns>The <see cref="IUserExportDeviceAndAppManagementDataRequestBuilder"/>.</returns>
+        IUserExportDeviceAndAppManagementDataRequestBuilder ExportDeviceAndAppManagementData();
+
+        /// <summary>
+        /// Gets the request builder for UserExportDeviceAndAppManagementData.
+        /// </summary>
+        /// <returns>The <see cref="IUserExportDeviceAndAppManagementDataRequestBuilder"/>.</returns>
+        IUserExportDeviceAndAppManagementDataRequestBuilder ExportDeviceAndAppManagementData(
+            Int32 skip,
+            Int32 top);
+
+        /// <summary>
+        /// Gets the request builder for UserGetEffectiveDeviceEnrollmentConfigurations.
+        /// </summary>
+        /// <returns>The <see cref="IUserGetEffectiveDeviceEnrollmentConfigurationsRequestBuilder"/>.</returns>
+        IUserGetEffectiveDeviceEnrollmentConfigurationsRequestBuilder GetEffectiveDeviceEnrollmentConfigurations();
 
         /// <summary>
         /// Gets the request builder for UserGetManagedAppDiagnosticStatuses.
@@ -306,6 +459,12 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IUserGetManagedAppPoliciesRequestBuilder"/>.</returns>
         IUserGetManagedAppPoliciesRequestBuilder GetManagedAppPolicies();
+
+        /// <summary>
+        /// Gets the request builder for UserGetManagedDevicesWithAppFailures.
+        /// </summary>
+        /// <returns>The <see cref="IUserGetManagedDevicesWithAppFailuresRequestBuilder"/>.</returns>
+        IUserGetManagedDevicesWithAppFailuresRequestBuilder GetManagedDevicesWithAppFailures();
     
     }
 }

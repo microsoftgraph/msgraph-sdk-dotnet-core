@@ -35,6 +35,13 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IVppTokenSyncLicensesRequestBuilder"/>.</returns>
         IVppTokenSyncLicensesRequestBuilder SyncLicenses();
+
+        /// <summary>
+        /// Gets the request builder for VppTokenRevokeLicenses.
+        /// </summary>
+        /// <returns>The <see cref="IVppTokenRevokeLicensesRequestBuilder"/>.</returns>
+        IVppTokenRevokeLicensesRequestBuilder RevokeLicenses(
+            bool notifyManagedDevices);
     
     }
 }

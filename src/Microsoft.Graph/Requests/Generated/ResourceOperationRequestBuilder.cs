@@ -49,5 +49,18 @@ namespace Microsoft.Graph
             return new ResourceOperationRequest(this.RequestUrl, this.Client, options);
         }
     
+        /// <summary>
+        /// Gets the request builder for ResourceOperationGetScopesForUser.
+        /// </summary>
+        /// <returns>The <see cref="IResourceOperationGetScopesForUserRequestBuilder"/>.</returns>
+        public IResourceOperationGetScopesForUserRequestBuilder GetScopesForUser(
+            string userid = null)
+        {
+            return new ResourceOperationGetScopesForUserRequestBuilder(
+                this.AppendSegmentToRequestUrl("microsoft.graph.getScopesForUser"),
+                this.Client,
+                userid);
+        }
+    
     }
 }

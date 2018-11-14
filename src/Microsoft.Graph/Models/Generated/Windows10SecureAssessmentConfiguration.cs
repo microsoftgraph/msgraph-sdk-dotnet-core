@@ -36,6 +36,13 @@ namespace Microsoft.Graph
         public string ConfigurationAccount { get; set; }
     
         /// <summary>
+        /// Gets or sets configuration account type.
+        /// The account type used to by ConfigurationAccount.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "configurationAccountType", Required = Newtonsoft.Json.Required.Default)]
+        public SecureAssessmentAccountType? ConfigurationAccountType { get; set; }
+    
+        /// <summary>
         /// Gets or sets allow printing.
         /// Indicates whether or not to allow the app from printing during the test.
         /// </summary>

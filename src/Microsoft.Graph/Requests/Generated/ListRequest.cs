@@ -206,6 +206,22 @@ namespace Microsoft.Graph
             if (listToInitialize != null && listToInitialize.AdditionalData != null)
             {
 
+                if (listToInitialize.Activities != null && listToInitialize.Activities.CurrentPage != null)
+                {
+                    listToInitialize.Activities.AdditionalData = listToInitialize.AdditionalData;
+
+                    object nextPageLink;
+                    listToInitialize.AdditionalData.TryGetValue("activities@odata.nextLink", out nextPageLink);
+                    var nextPageLinkString = nextPageLink as string;
+
+                    if (!string.IsNullOrEmpty(nextPageLinkString))
+                    {
+                        listToInitialize.Activities.InitializeNextPageRequest(
+                            this.Client,
+                            nextPageLinkString);
+                    }
+                }
+
                 if (listToInitialize.Columns != null && listToInitialize.Columns.CurrentPage != null)
                 {
                     listToInitialize.Columns.AdditionalData = listToInitialize.AdditionalData;

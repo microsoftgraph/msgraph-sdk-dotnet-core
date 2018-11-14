@@ -47,6 +47,12 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IUserWithReferenceRequestBuilder"/>.</returns>
         IUserWithReferenceRequestBuilder User { get; }
+
+        /// <summary>
+        /// Gets the request builder for Assignments.
+        /// </summary>
+        /// <returns>The <see cref="IEducationUserAssignmentsCollectionRequestBuilder"/>.</returns>
+        IEducationUserAssignmentsCollectionRequestBuilder Assignments { get; }
     
     }
 }

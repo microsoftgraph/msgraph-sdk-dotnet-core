@@ -270,6 +270,22 @@ namespace Microsoft.Graph
                     }
                 }
 
+                if (messageToInitialize.Mentions != null && messageToInitialize.Mentions.CurrentPage != null)
+                {
+                    messageToInitialize.Mentions.AdditionalData = messageToInitialize.AdditionalData;
+
+                    object nextPageLink;
+                    messageToInitialize.AdditionalData.TryGetValue("mentions@odata.nextLink", out nextPageLink);
+                    var nextPageLinkString = nextPageLink as string;
+
+                    if (!string.IsNullOrEmpty(nextPageLinkString))
+                    {
+                        messageToInitialize.Mentions.InitializeNextPageRequest(
+                            this.Client,
+                            nextPageLinkString);
+                    }
+                }
+
             }
 
 

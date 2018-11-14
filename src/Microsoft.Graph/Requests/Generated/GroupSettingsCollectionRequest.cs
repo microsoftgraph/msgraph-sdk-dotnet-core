@@ -34,26 +34,26 @@ namespace Microsoft.Graph
         }
         
         /// <summary>
-        /// Adds the specified GroupSetting to the collection via POST.
+        /// Adds the specified DirectorySetting to the collection via POST.
         /// </summary>
-        /// <param name="groupSetting">The GroupSetting to add.</param>
-        /// <returns>The created GroupSetting.</returns>
-        public System.Threading.Tasks.Task<GroupSetting> AddAsync(GroupSetting groupSetting)
+        /// <param name="directorySetting">The DirectorySetting to add.</param>
+        /// <returns>The created DirectorySetting.</returns>
+        public System.Threading.Tasks.Task<DirectorySetting> AddAsync(DirectorySetting directorySetting)
         {
-            return this.AddAsync(groupSetting, CancellationToken.None);
+            return this.AddAsync(directorySetting, CancellationToken.None);
         }
 
         /// <summary>
-        /// Adds the specified GroupSetting to the collection via POST.
+        /// Adds the specified DirectorySetting to the collection via POST.
         /// </summary>
-        /// <param name="groupSetting">The GroupSetting to add.</param>
+        /// <param name="directorySetting">The DirectorySetting to add.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
-        /// <returns>The created GroupSetting.</returns>
-        public System.Threading.Tasks.Task<GroupSetting> AddAsync(GroupSetting groupSetting, CancellationToken cancellationToken)
+        /// <returns>The created DirectorySetting.</returns>
+        public System.Threading.Tasks.Task<DirectorySetting> AddAsync(DirectorySetting directorySetting, CancellationToken cancellationToken)
         {
             this.ContentType = "application/json";
             this.Method = "POST";
-            return this.SendAsync<GroupSetting>(groupSetting, cancellationToken);
+            return this.SendAsync<DirectorySetting>(directorySetting, cancellationToken);
         }
 
         /// <summary>
@@ -116,7 +116,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="expandExpression">The expression from which to calculate the expand value.</param>
         /// <returns>The request object to send.</returns>
-        public IGroupSettingsCollectionRequest Expand(Expression<Func<GroupSetting, object>> expandExpression)
+        public IGroupSettingsCollectionRequest Expand(Expression<Func<DirectorySetting, object>> expandExpression)
         {
             if (expandExpression == null)
             {
@@ -151,7 +151,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="selectExpression">The expression from which to calculate the select value.</param>
         /// <returns>The request object to send.</returns>
-        public IGroupSettingsCollectionRequest Select(Expression<Func<GroupSetting, object>> selectExpression)
+        public IGroupSettingsCollectionRequest Select(Expression<Func<DirectorySetting, object>> selectExpression)
         {
             if (selectExpression == null)
             {

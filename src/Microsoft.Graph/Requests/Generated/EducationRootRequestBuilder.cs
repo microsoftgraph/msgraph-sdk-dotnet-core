@@ -50,6 +50,18 @@ namespace Microsoft.Graph
         }
     
         /// <summary>
+        /// Gets the request builder for SynchronizationProfiles.
+        /// </summary>
+        /// <returns>The <see cref="IEducationRootSynchronizationProfilesCollectionRequestBuilder"/>.</returns>
+        public IEducationRootSynchronizationProfilesCollectionRequestBuilder SynchronizationProfiles
+        {
+            get
+            {
+                return new EducationRootSynchronizationProfilesCollectionRequestBuilder(this.AppendSegmentToRequestUrl("synchronizationProfiles"), this.Client);
+            }
+        }
+
+        /// <summary>
         /// Gets the request builder for Classes.
         /// </summary>
         /// <returns>The <see cref="IEducationRootClassesCollectionRequestBuilder"/>.</returns>

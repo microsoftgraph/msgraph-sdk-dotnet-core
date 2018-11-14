@@ -56,6 +56,20 @@ namespace Microsoft.Graph
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "deviceExchangeAccessStateSummary", Required = Newtonsoft.Json.Required.Default)]
         public DeviceExchangeAccessStateSummary DeviceExchangeAccessStateSummary { get; set; }
     
+        /// <summary>
+        /// Gets or sets managed device models and manufacturers.
+        /// Models and Manufactures meatadata for managed devices in the account
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "managedDeviceModelsAndManufacturers", Required = Newtonsoft.Json.Required.Default)]
+        public ManagedDeviceModelsAndManufacturers ManagedDeviceModelsAndManufacturers { get; set; }
+    
+        /// <summary>
+        /// Gets or sets last modified date time.
+        /// Last modified date time of device overview
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "lastModifiedDateTime", Required = Newtonsoft.Json.Required.Default)]
+        public DateTimeOffset? LastModifiedDateTime { get; set; }
+    
     }
 }
 

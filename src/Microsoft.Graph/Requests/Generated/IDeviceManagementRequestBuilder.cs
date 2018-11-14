@@ -37,10 +37,58 @@ namespace Microsoft.Graph
         IDeviceManagementTermsAndConditionsCollectionRequestBuilder TermsAndConditions { get; }
 
         /// <summary>
+        /// Gets the request builder for AndroidForWorkSettings.
+        /// </summary>
+        /// <returns>The <see cref="IAndroidForWorkSettingsRequestBuilder"/>.</returns>
+        IAndroidForWorkSettingsRequestBuilder AndroidForWorkSettings { get; }
+
+        /// <summary>
+        /// Gets the request builder for AndroidForWorkAppConfigurationSchemas.
+        /// </summary>
+        /// <returns>The <see cref="IDeviceManagementAndroidForWorkAppConfigurationSchemasCollectionRequestBuilder"/>.</returns>
+        IDeviceManagementAndroidForWorkAppConfigurationSchemasCollectionRequestBuilder AndroidForWorkAppConfigurationSchemas { get; }
+
+        /// <summary>
+        /// Gets the request builder for AndroidForWorkEnrollmentProfiles.
+        /// </summary>
+        /// <returns>The <see cref="IDeviceManagementAndroidForWorkEnrollmentProfilesCollectionRequestBuilder"/>.</returns>
+        IDeviceManagementAndroidForWorkEnrollmentProfilesCollectionRequestBuilder AndroidForWorkEnrollmentProfiles { get; }
+
+        /// <summary>
+        /// Gets the request builder for AndroidManagedStoreAccountEnterpriseSettings.
+        /// </summary>
+        /// <returns>The <see cref="IAndroidManagedStoreAccountEnterpriseSettingsRequestBuilder"/>.</returns>
+        IAndroidManagedStoreAccountEnterpriseSettingsRequestBuilder AndroidManagedStoreAccountEnterpriseSettings { get; }
+
+        /// <summary>
+        /// Gets the request builder for AndroidManagedStoreAppConfigurationSchemas.
+        /// </summary>
+        /// <returns>The <see cref="IDeviceManagementAndroidManagedStoreAppConfigurationSchemasCollectionRequestBuilder"/>.</returns>
+        IDeviceManagementAndroidManagedStoreAppConfigurationSchemasCollectionRequestBuilder AndroidManagedStoreAppConfigurationSchemas { get; }
+
+        /// <summary>
+        /// Gets the request builder for AndroidDeviceOwnerEnrollmentProfiles.
+        /// </summary>
+        /// <returns>The <see cref="IDeviceManagementAndroidDeviceOwnerEnrollmentProfilesCollectionRequestBuilder"/>.</returns>
+        IDeviceManagementAndroidDeviceOwnerEnrollmentProfilesCollectionRequestBuilder AndroidDeviceOwnerEnrollmentProfiles { get; }
+
+        /// <summary>
+        /// Gets the request builder for RemoteActionAudits.
+        /// </summary>
+        /// <returns>The <see cref="IDeviceManagementRemoteActionAuditsCollectionRequestBuilder"/>.</returns>
+        IDeviceManagementRemoteActionAuditsCollectionRequestBuilder RemoteActionAudits { get; }
+
+        /// <summary>
         /// Gets the request builder for ApplePushNotificationCertificate.
         /// </summary>
         /// <returns>The <see cref="IApplePushNotificationCertificateRequestBuilder"/>.</returns>
         IApplePushNotificationCertificateRequestBuilder ApplePushNotificationCertificate { get; }
+
+        /// <summary>
+        /// Gets the request builder for DeviceManagementScripts.
+        /// </summary>
+        /// <returns>The <see cref="IDeviceManagementDeviceManagementScriptsCollectionRequestBuilder"/>.</returns>
+        IDeviceManagementDeviceManagementScriptsCollectionRequestBuilder DeviceManagementScripts { get; }
 
         /// <summary>
         /// Gets the request builder for ManagedDeviceOverview.
@@ -59,6 +107,18 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IDeviceManagementManagedDevicesCollectionRequestBuilder"/>.</returns>
         IDeviceManagementManagedDevicesCollectionRequestBuilder ManagedDevices { get; }
+
+        /// <summary>
+        /// Gets the request builder for WindowsMalwareInformation.
+        /// </summary>
+        /// <returns>The <see cref="IDeviceManagementWindowsMalwareInformationCollectionRequestBuilder"/>.</returns>
+        IDeviceManagementWindowsMalwareInformationCollectionRequestBuilder WindowsMalwareInformation { get; }
+
+        /// <summary>
+        /// Gets the request builder for DataSharingConsents.
+        /// </summary>
+        /// <returns>The <see cref="IDeviceManagementDataSharingConsentsCollectionRequestBuilder"/>.</returns>
+        IDeviceManagementDataSharingConsentsCollectionRequestBuilder DataSharingConsents { get; }
 
         /// <summary>
         /// Gets the request builder for DeviceConfigurations.
@@ -91,16 +151,52 @@ namespace Microsoft.Graph
         IDeviceManagementDeviceCompliancePolicySettingStateSummariesCollectionRequestBuilder DeviceCompliancePolicySettingStateSummaries { get; }
 
         /// <summary>
+        /// Gets the request builder for AdvancedThreatProtectionOnboardingStateSummary.
+        /// </summary>
+        /// <returns>The <see cref="IAdvancedThreatProtectionOnboardingStateSummaryRequestBuilder"/>.</returns>
+        IAdvancedThreatProtectionOnboardingStateSummaryRequestBuilder AdvancedThreatProtectionOnboardingStateSummary { get; }
+
+        /// <summary>
         /// Gets the request builder for DeviceConfigurationDeviceStateSummaries.
         /// </summary>
         /// <returns>The <see cref="IDeviceConfigurationDeviceStateSummaryRequestBuilder"/>.</returns>
         IDeviceConfigurationDeviceStateSummaryRequestBuilder DeviceConfigurationDeviceStateSummaries { get; }
 
         /// <summary>
+        /// Gets the request builder for DeviceConfigurationUserStateSummaries.
+        /// </summary>
+        /// <returns>The <see cref="IDeviceConfigurationUserStateSummaryRequestBuilder"/>.</returns>
+        IDeviceConfigurationUserStateSummaryRequestBuilder DeviceConfigurationUserStateSummaries { get; }
+
+        /// <summary>
+        /// Gets the request builder for CartToClassAssociations.
+        /// </summary>
+        /// <returns>The <see cref="IDeviceManagementCartToClassAssociationsCollectionRequestBuilder"/>.</returns>
+        IDeviceManagementCartToClassAssociationsCollectionRequestBuilder CartToClassAssociations { get; }
+
+        /// <summary>
         /// Gets the request builder for IosUpdateStatuses.
         /// </summary>
         /// <returns>The <see cref="IDeviceManagementIosUpdateStatusesCollectionRequestBuilder"/>.</returns>
         IDeviceManagementIosUpdateStatusesCollectionRequestBuilder IosUpdateStatuses { get; }
+
+        /// <summary>
+        /// Gets the request builder for NdesConnectors.
+        /// </summary>
+        /// <returns>The <see cref="IDeviceManagementNdesConnectorsCollectionRequestBuilder"/>.</returns>
+        IDeviceManagementNdesConnectorsCollectionRequestBuilder NdesConnectors { get; }
+
+        /// <summary>
+        /// Gets the request builder for DeviceConfigurationRestrictedAppsViolations.
+        /// </summary>
+        /// <returns>The <see cref="IDeviceManagementDeviceConfigurationRestrictedAppsViolationsCollectionRequestBuilder"/>.</returns>
+        IDeviceManagementDeviceConfigurationRestrictedAppsViolationsCollectionRequestBuilder DeviceConfigurationRestrictedAppsViolations { get; }
+
+        /// <summary>
+        /// Gets the request builder for DeviceConfigurationConflictSummary.
+        /// </summary>
+        /// <returns>The <see cref="IDeviceManagementDeviceConfigurationConflictSummaryCollectionRequestBuilder"/>.</returns>
+        IDeviceManagementDeviceConfigurationConflictSummaryCollectionRequestBuilder DeviceConfigurationConflictSummary { get; }
 
         /// <summary>
         /// Gets the request builder for DeviceCategories.
@@ -121,6 +217,18 @@ namespace Microsoft.Graph
         IDeviceManagementDeviceEnrollmentConfigurationsCollectionRequestBuilder DeviceEnrollmentConfigurations { get; }
 
         /// <summary>
+        /// Gets the request builder for ExchangeOnPremisesPolicy.
+        /// </summary>
+        /// <returns>The <see cref="IDeviceManagementExchangeOnPremisesPolicyRequestBuilder"/>.</returns>
+        IDeviceManagementExchangeOnPremisesPolicyRequestBuilder ExchangeOnPremisesPolicy { get; }
+
+        /// <summary>
+        /// Gets the request builder for ExchangeOnPremisesPolicies.
+        /// </summary>
+        /// <returns>The <see cref="IDeviceManagementExchangeOnPremisesPoliciesCollectionRequestBuilder"/>.</returns>
+        IDeviceManagementExchangeOnPremisesPoliciesCollectionRequestBuilder ExchangeOnPremisesPolicies { get; }
+
+        /// <summary>
         /// Gets the request builder for ConditionalAccessSettings.
         /// </summary>
         /// <returns>The <see cref="IOnPremisesConditionalAccessSettingsRequestBuilder"/>.</returns>
@@ -137,6 +245,18 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IDeviceManagementDeviceManagementPartnersCollectionRequestBuilder"/>.</returns>
         IDeviceManagementDeviceManagementPartnersCollectionRequestBuilder DeviceManagementPartners { get; }
+
+        /// <summary>
+        /// Gets the request builder for ManagementConditions.
+        /// </summary>
+        /// <returns>The <see cref="IDeviceManagementManagementConditionsCollectionRequestBuilder"/>.</returns>
+        IDeviceManagementManagementConditionsCollectionRequestBuilder ManagementConditions { get; }
+
+        /// <summary>
+        /// Gets the request builder for ManagementConditionStatements.
+        /// </summary>
+        /// <returns>The <see cref="IDeviceManagementManagementConditionStatementsCollectionRequestBuilder"/>.</returns>
+        IDeviceManagementManagementConditionStatementsCollectionRequestBuilder ManagementConditionStatements { get; }
 
         /// <summary>
         /// Gets the request builder for NotificationMessageTemplates.
@@ -157,16 +277,70 @@ namespace Microsoft.Graph
         IDeviceManagementRoleAssignmentsCollectionRequestBuilder RoleAssignments { get; }
 
         /// <summary>
+        /// Gets the request builder for RoleScopeTags.
+        /// </summary>
+        /// <returns>The <see cref="IDeviceManagementRoleScopeTagsCollectionRequestBuilder"/>.</returns>
+        IDeviceManagementRoleScopeTagsCollectionRequestBuilder RoleScopeTags { get; }
+
+        /// <summary>
         /// Gets the request builder for ResourceOperations.
         /// </summary>
         /// <returns>The <see cref="IDeviceManagementResourceOperationsCollectionRequestBuilder"/>.</returns>
         IDeviceManagementResourceOperationsCollectionRequestBuilder ResourceOperations { get; }
 
         /// <summary>
+        /// Gets the request builder for EmbeddedSIMActivationCodePools.
+        /// </summary>
+        /// <returns>The <see cref="IDeviceManagementEmbeddedSIMActivationCodePoolsCollectionRequestBuilder"/>.</returns>
+        IDeviceManagementEmbeddedSIMActivationCodePoolsCollectionRequestBuilder EmbeddedSIMActivationCodePools { get; }
+
+        /// <summary>
         /// Gets the request builder for TelecomExpenseManagementPartners.
         /// </summary>
         /// <returns>The <see cref="IDeviceManagementTelecomExpenseManagementPartnersCollectionRequestBuilder"/>.</returns>
         IDeviceManagementTelecomExpenseManagementPartnersCollectionRequestBuilder TelecomExpenseManagementPartners { get; }
+
+        /// <summary>
+        /// Gets the request builder for WindowsAutopilotSettings.
+        /// </summary>
+        /// <returns>The <see cref="IWindowsAutopilotSettingsRequestBuilder"/>.</returns>
+        IWindowsAutopilotSettingsRequestBuilder WindowsAutopilotSettings { get; }
+
+        /// <summary>
+        /// Gets the request builder for WindowsAutopilotDeviceIdentities.
+        /// </summary>
+        /// <returns>The <see cref="IDeviceManagementWindowsAutopilotDeviceIdentitiesCollectionRequestBuilder"/>.</returns>
+        IDeviceManagementWindowsAutopilotDeviceIdentitiesCollectionRequestBuilder WindowsAutopilotDeviceIdentities { get; }
+
+        /// <summary>
+        /// Gets the request builder for WindowsAutopilotDeploymentProfiles.
+        /// </summary>
+        /// <returns>The <see cref="IDeviceManagementWindowsAutopilotDeploymentProfilesCollectionRequestBuilder"/>.</returns>
+        IDeviceManagementWindowsAutopilotDeploymentProfilesCollectionRequestBuilder WindowsAutopilotDeploymentProfiles { get; }
+
+        /// <summary>
+        /// Gets the request builder for ImportedDeviceIdentities.
+        /// </summary>
+        /// <returns>The <see cref="IDeviceManagementImportedDeviceIdentitiesCollectionRequestBuilder"/>.</returns>
+        IDeviceManagementImportedDeviceIdentitiesCollectionRequestBuilder ImportedDeviceIdentities { get; }
+
+        /// <summary>
+        /// Gets the request builder for DepOnboardingSettings.
+        /// </summary>
+        /// <returns>The <see cref="IDeviceManagementDepOnboardingSettingsCollectionRequestBuilder"/>.</returns>
+        IDeviceManagementDepOnboardingSettingsCollectionRequestBuilder DepOnboardingSettings { get; }
+
+        /// <summary>
+        /// Gets the request builder for ImportedWindowsAutopilotDeviceIdentityUploads.
+        /// </summary>
+        /// <returns>The <see cref="IDeviceManagementImportedWindowsAutopilotDeviceIdentityUploadsCollectionRequestBuilder"/>.</returns>
+        IDeviceManagementImportedWindowsAutopilotDeviceIdentityUploadsCollectionRequestBuilder ImportedWindowsAutopilotDeviceIdentityUploads { get; }
+
+        /// <summary>
+        /// Gets the request builder for ImportedWindowsAutopilotDeviceIdentities.
+        /// </summary>
+        /// <returns>The <see cref="IDeviceManagementImportedWindowsAutopilotDeviceIdentitiesCollectionRequestBuilder"/>.</returns>
+        IDeviceManagementImportedWindowsAutopilotDeviceIdentitiesCollectionRequestBuilder ImportedWindowsAutopilotDeviceIdentities { get; }
 
         /// <summary>
         /// Gets the request builder for RemoteAssistancePartners.
@@ -187,11 +361,44 @@ namespace Microsoft.Graph
         IDeviceManagementWindowsInformationProtectionNetworkLearningSummariesCollectionRequestBuilder WindowsInformationProtectionNetworkLearningSummaries { get; }
 
         /// <summary>
+        /// Gets the request builder for IntuneBrandingProfiles.
+        /// </summary>
+        /// <returns>The <see cref="IDeviceManagementIntuneBrandingProfilesCollectionRequestBuilder"/>.</returns>
+        IDeviceManagementIntuneBrandingProfilesCollectionRequestBuilder IntuneBrandingProfiles { get; }
+
+        /// <summary>
+        /// Gets the request builder for AuditEvents.
+        /// </summary>
+        /// <returns>The <see cref="IDeviceManagementAuditEventsCollectionRequestBuilder"/>.</returns>
+        IDeviceManagementAuditEventsCollectionRequestBuilder AuditEvents { get; }
+
+        /// <summary>
         /// Gets the request builder for TroubleshootingEvents.
         /// </summary>
         /// <returns>The <see cref="IDeviceManagementTroubleshootingEventsCollectionRequestBuilder"/>.</returns>
         IDeviceManagementTroubleshootingEventsCollectionRequestBuilder TroubleshootingEvents { get; }
+
+        /// <summary>
+        /// Gets the request builder for UserPfxCertificates.
+        /// </summary>
+        /// <returns>The <see cref="IDeviceManagementUserPfxCertificatesCollectionRequestBuilder"/>.</returns>
+        IDeviceManagementUserPfxCertificatesCollectionRequestBuilder UserPfxCertificates { get; }
     
+        /// <summary>
+        /// Gets the request builder for DeviceManagementSendCustomNotificationToCompanyPortal.
+        /// </summary>
+        /// <returns>The <see cref="IDeviceManagementSendCustomNotificationToCompanyPortalRequestBuilder"/>.</returns>
+        IDeviceManagementSendCustomNotificationToCompanyPortalRequestBuilder SendCustomNotificationToCompanyPortal(
+            string notificationTitle = null,
+            string notificationBody = null,
+            IEnumerable<string> groupsToNotify = null);
+
+        /// <summary>
+        /// Gets the request builder for DeviceManagementEnableLegacyPcManagement.
+        /// </summary>
+        /// <returns>The <see cref="IDeviceManagementEnableLegacyPcManagementRequestBuilder"/>.</returns>
+        IDeviceManagementEnableLegacyPcManagementRequestBuilder EnableLegacyPcManagement();
+
         /// <summary>
         /// Gets the request builder for DeviceManagementVerifyWindowsEnrollmentAutoDiscovery.
         /// </summary>
@@ -203,8 +410,34 @@ namespace Microsoft.Graph
         /// Gets the request builder for DeviceManagementGetEffectivePermissions.
         /// </summary>
         /// <returns>The <see cref="IDeviceManagementGetEffectivePermissionsRequestBuilder"/>.</returns>
+        IDeviceManagementGetEffectivePermissionsRequestBuilder GetEffectivePermissions();
+
+        /// <summary>
+        /// Gets the request builder for DeviceManagementGetEffectivePermissions.
+        /// </summary>
+        /// <returns>The <see cref="IDeviceManagementGetEffectivePermissionsRequestBuilder"/>.</returns>
         IDeviceManagementGetEffectivePermissionsRequestBuilder GetEffectivePermissions(
             string scope = null);
+
+        /// <summary>
+        /// Gets the request builder for DeviceManagementGetRoleScopeTagsByResource.
+        /// </summary>
+        /// <returns>The <see cref="IDeviceManagementGetRoleScopeTagsByResourceRequestBuilder"/>.</returns>
+        IDeviceManagementGetRoleScopeTagsByResourceRequestBuilder GetRoleScopeTagsByResource(
+            string resource = null);
+
+        /// <summary>
+        /// Gets the request builder for DeviceManagementGetRoleScopeTagsByIds.
+        /// </summary>
+        /// <returns>The <see cref="IDeviceManagementGetRoleScopeTagsByIdsRequestBuilder"/>.</returns>
+        IDeviceManagementGetRoleScopeTagsByIdsRequestBuilder GetRoleScopeTagsByIds(
+            IEnumerable<string> ids = null);
+
+        /// <summary>
+        /// Gets the request builder for DeviceManagementGetAssignedRoleIdsForLoggedInUser.
+        /// </summary>
+        /// <returns>The <see cref="IDeviceManagementGetAssignedRoleIdsForLoggedInUserRequestBuilder"/>.</returns>
+        IDeviceManagementGetAssignedRoleIdsForLoggedInUserRequestBuilder GetAssignedRoleIdsForLoggedInUser();
     
     }
 }

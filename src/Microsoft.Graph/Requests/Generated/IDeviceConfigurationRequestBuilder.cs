@@ -31,6 +31,12 @@ namespace Microsoft.Graph
         new IDeviceConfigurationRequest Request(IEnumerable<Option> options);
     
         /// <summary>
+        /// Gets the request builder for GroupAssignments.
+        /// </summary>
+        /// <returns>The <see cref="IDeviceConfigurationGroupAssignmentsCollectionRequestBuilder"/>.</returns>
+        IDeviceConfigurationGroupAssignmentsCollectionRequestBuilder GroupAssignments { get; }
+
+        /// <summary>
         /// Gets the request builder for Assignments.
         /// </summary>
         /// <returns>The <see cref="IDeviceConfigurationAssignmentsCollectionRequestBuilder"/>.</returns>
@@ -71,7 +77,22 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IDeviceConfigurationAssignRequestBuilder"/>.</returns>
         IDeviceConfigurationAssignRequestBuilder Assign(
+            IEnumerable<DeviceConfigurationGroupAssignment> deviceConfigurationGroupAssignments = null,
             IEnumerable<DeviceConfigurationAssignment> assignments = null);
+
+        /// <summary>
+        /// Gets the request builder for DeviceConfigurationWindowsPrivacyAccessControls.
+        /// </summary>
+        /// <returns>The <see cref="IDeviceConfigurationWindowsPrivacyAccessControlsRequestBuilder"/>.</returns>
+        IDeviceConfigurationWindowsPrivacyAccessControlsRequestBuilder WindowsPrivacyAccessControls(
+            IEnumerable<WindowsPrivacyDataAccessControlItem> windowsPrivacyAccessControls = null);
+
+        /// <summary>
+        /// Gets the request builder for DeviceConfigurationAssignedAccessMultiModeProfiles.
+        /// </summary>
+        /// <returns>The <see cref="IDeviceConfigurationAssignedAccessMultiModeProfilesRequestBuilder"/>.</returns>
+        IDeviceConfigurationAssignedAccessMultiModeProfilesRequestBuilder AssignedAccessMultiModeProfiles(
+            IEnumerable<WindowsAssignedAccessProfile> assignedAccessMultiModeProfiles = null);
     
     }
 }

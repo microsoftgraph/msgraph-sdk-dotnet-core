@@ -50,6 +50,30 @@ namespace Microsoft.Graph
         }
     
         /// <summary>
+        /// Gets the request builder for Activities.
+        /// </summary>
+        /// <returns>The <see cref="IListItemActivitiesCollectionRequestBuilder"/>.</returns>
+        public IListItemActivitiesCollectionRequestBuilder Activities
+        {
+            get
+            {
+                return new ListItemActivitiesCollectionRequestBuilder(this.AppendSegmentToRequestUrl("activities"), this.Client);
+            }
+        }
+
+        /// <summary>
+        /// Gets the request builder for Analytics.
+        /// </summary>
+        /// <returns>The <see cref="IItemAnalyticsWithReferenceRequestBuilder"/>.</returns>
+        public IItemAnalyticsWithReferenceRequestBuilder Analytics
+        {
+            get
+            {
+                return new ItemAnalyticsWithReferenceRequestBuilder(this.AppendSegmentToRequestUrl("analytics"), this.Client);
+            }
+        }
+
+        /// <summary>
         /// Gets the request builder for DriveItem.
         /// </summary>
         /// <returns>The <see cref="IDriveItemRequestBuilder"/>.</returns>
@@ -83,6 +107,17 @@ namespace Microsoft.Graph
             {
                 return new ListItemVersionsCollectionRequestBuilder(this.AppendSegmentToRequestUrl("versions"), this.Client);
             }
+        }
+    
+        /// <summary>
+        /// Gets the request builder for ListItemGetActivitiesByInterval.
+        /// </summary>
+        /// <returns>The <see cref="IListItemGetActivitiesByIntervalRequestBuilder"/>.</returns>
+        public IListItemGetActivitiesByIntervalRequestBuilder GetActivitiesByInterval()
+        {
+            return new ListItemGetActivitiesByIntervalRequestBuilder(
+                this.AppendSegmentToRequestUrl("microsoft.graph.getActivitiesByInterval"),
+                this.Client);
         }
     
     }

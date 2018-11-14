@@ -23,6 +23,13 @@ namespace Microsoft.Graph
     {
 
         /// <summary>
+        /// Gets or sets lastCollectedDateTimeUtc.
+        /// Time at which location was recorded, relative to UTC
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "lastCollectedDateTimeUtc", Required = Newtonsoft.Json.Required.Default)]
+        public DateTimeOffset? LastCollectedDateTimeUtc { get; set; }
+    
+        /// <summary>
         /// Gets or sets lastCollectedDateTime.
         /// Time at which location was recorded, relative to UTC
         /// </summary>

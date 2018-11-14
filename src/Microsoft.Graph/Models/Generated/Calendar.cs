@@ -36,6 +36,18 @@ namespace Microsoft.Graph
         public CalendarColor? Color { get; set; }
     
         /// <summary>
+        /// Gets or sets hex color.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "hexColor", Required = Newtonsoft.Json.Required.Default)]
+        public string HexColor { get; set; }
+    
+        /// <summary>
+        /// Gets or sets is default calendar.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "isDefaultCalendar", Required = Newtonsoft.Json.Required.Default)]
+        public bool? IsDefaultCalendar { get; set; }
+    
+        /// <summary>
         /// Gets or sets change key.
         /// Identifies the version of the calendar object. Every time the calendar is changed, changeKey changes as well. This allows Exchange to apply changes to the correct version of the object. Read-only.
         /// </summary>
@@ -55,6 +67,18 @@ namespace Microsoft.Graph
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "canViewPrivateItems", Required = Newtonsoft.Json.Required.Default)]
         public bool? CanViewPrivateItems { get; set; }
+    
+        /// <summary>
+        /// Gets or sets is shared.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "isShared", Required = Newtonsoft.Json.Required.Default)]
+        public bool? IsShared { get; set; }
+    
+        /// <summary>
+        /// Gets or sets is shared with me.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "isSharedWithMe", Required = Newtonsoft.Json.Required.Default)]
+        public bool? IsSharedWithMe { get; set; }
     
         /// <summary>
         /// Gets or sets can edit.

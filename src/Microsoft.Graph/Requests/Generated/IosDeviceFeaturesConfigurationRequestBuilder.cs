@@ -49,5 +49,17 @@ namespace Microsoft.Graph
             return new IosDeviceFeaturesConfigurationRequest(this.RequestUrl, this.Client, options);
         }
     
+        /// <summary>
+        /// Gets the request builder for IdentityCertificateForClientAuthentication.
+        /// </summary>
+        /// <returns>The <see cref="IIosCertificateProfileBaseWithReferenceRequestBuilder"/>.</returns>
+        public IIosCertificateProfileBaseWithReferenceRequestBuilder IdentityCertificateForClientAuthentication
+        {
+            get
+            {
+                return new IosCertificateProfileBaseWithReferenceRequestBuilder(this.AppendSegmentToRequestUrl("identityCertificateForClientAuthentication"), this.Client);
+            }
+        }
+    
     }
 }

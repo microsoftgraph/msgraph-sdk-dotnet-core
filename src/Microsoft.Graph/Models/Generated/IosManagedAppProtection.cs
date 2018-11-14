@@ -50,6 +50,62 @@ namespace Microsoft.Graph
         public bool? FaceIdBlocked { get; set; }
     
         /// <summary>
+        /// Gets or sets exempted app protocols.
+        /// Apps in this list will be exempt from the policy and will be able to receive data from managed apps.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "exemptedAppProtocols", Required = Newtonsoft.Json.Required.Default)]
+        public IEnumerable<KeyValuePair> ExemptedAppProtocols { get; set; }
+    
+        /// <summary>
+        /// Gets or sets minimum wipe sdk version.
+        /// Versions less than the specified version will block the managed app from accessing company data.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "minimumWipeSdkVersion", Required = Newtonsoft.Json.Required.Default)]
+        public string MinimumWipeSdkVersion { get; set; }
+    
+        /// <summary>
+        /// Gets or sets allowed ios device models.
+        /// Semicolon seperated list of device models allowed, as a string, for the managed app to work.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "allowedIosDeviceModels", Required = Newtonsoft.Json.Required.Default)]
+        public string AllowedIosDeviceModels { get; set; }
+    
+        /// <summary>
+        /// Gets or sets app action if ios device model not allowed.
+        /// Defines a managed app behavior, either block or wipe, if the specified device model is not allowed.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "appActionIfIosDeviceModelNotAllowed", Required = Newtonsoft.Json.Required.Default)]
+        public ManagedAppRemediationAction? AppActionIfIosDeviceModelNotAllowed { get; set; }
+    
+        /// <summary>
+        /// Gets or sets third party keyboards blocked.
+        /// Defines if third party keyboards are allowed while accessing a managed app
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "thirdPartyKeyboardsBlocked", Required = Newtonsoft.Json.Required.Default)]
+        public bool? ThirdPartyKeyboardsBlocked { get; set; }
+    
+        /// <summary>
+        /// Gets or sets filter open in to only managed apps.
+        /// Defines if open-in operation is supported from the managed app to the filesharing locations selected. This setting only applies when AllowedOutboundDataTransferDestinations is set to ManagedApps and DisableProtectionOfManagedOutboundOpenInData is set to False.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "filterOpenInToOnlyManagedApps", Required = Newtonsoft.Json.Required.Default)]
+        public bool? FilterOpenInToOnlyManagedApps { get; set; }
+    
+        /// <summary>
+        /// Gets or sets disable protection of managed outbound open in data.
+        /// Disable protection of data transferred to other apps through IOS OpenIn option. This setting is only allowed to be True when AllowedOutboundDataTransferDestinations is set to ManagedApps.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "disableProtectionOfManagedOutboundOpenInData", Required = Newtonsoft.Json.Required.Default)]
+        public bool? DisableProtectionOfManagedOutboundOpenInData { get; set; }
+    
+        /// <summary>
+        /// Gets or sets protect inbound data from unknown sources.
+        /// Protect incoming data from unknown source. This setting is only allowed to be True when AllowedInboundDataTransferSources is set to AllApps.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "protectInboundDataFromUnknownSources", Required = Newtonsoft.Json.Required.Default)]
+        public bool? ProtectInboundDataFromUnknownSources { get; set; }
+    
+        /// <summary>
         /// Gets or sets apps.
         /// List of apps to which the policy is deployed.
         /// </summary>

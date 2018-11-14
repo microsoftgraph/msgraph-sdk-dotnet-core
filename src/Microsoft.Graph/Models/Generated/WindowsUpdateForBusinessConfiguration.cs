@@ -112,6 +112,111 @@ namespace Microsoft.Graph
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "businessReadyUpdatesOnly", Required = Newtonsoft.Json.Required.Default)]
         public WindowsUpdateType? BusinessReadyUpdatesOnly { get; set; }
     
+        /// <summary>
+        /// Gets or sets skip checks before restart.
+        /// Set to skip all check before restart: Battery level = 40%, User presence, Display Needed, Presentation mode, Full screen mode, phone call state, game mode etc. 
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "skipChecksBeforeRestart", Required = Newtonsoft.Json.Required.Default)]
+        public bool? SkipChecksBeforeRestart { get; set; }
+    
+        /// <summary>
+        /// Gets or sets update weeks.
+        /// Scheduled the update installation on the weeks of the month
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "updateWeeks", Required = Newtonsoft.Json.Required.Default)]
+        public WindowsUpdateForBusinessUpdateWeeks? UpdateWeeks { get; set; }
+    
+        /// <summary>
+        /// Gets or sets quality updates pause start date time.
+        /// Quality Updates Pause Start datetime
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "qualityUpdatesPauseStartDateTime", Required = Newtonsoft.Json.Required.Default)]
+        public string QualityUpdatesPauseStartDateTime { get; set; }
+    
+        /// <summary>
+        /// Gets or sets feature updates pause start date time.
+        /// Feature Updates Pause Start datetime
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "featureUpdatesPauseStartDateTime", Required = Newtonsoft.Json.Required.Default)]
+        public string FeatureUpdatesPauseStartDateTime { get; set; }
+    
+        /// <summary>
+        /// Gets or sets feature updates rollback window in days.
+        /// The number of days after a Feature Update for which a rollback is valid
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "featureUpdatesRollbackWindowInDays", Required = Newtonsoft.Json.Required.Default)]
+        public Int32? FeatureUpdatesRollbackWindowInDays { get; set; }
+    
+        /// <summary>
+        /// Gets or sets quality updates will be rolled back.
+        /// Specifies whether to rollback Quality Updates on the next device check in
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "qualityUpdatesWillBeRolledBack", Required = Newtonsoft.Json.Required.Default)]
+        public bool? QualityUpdatesWillBeRolledBack { get; set; }
+    
+        /// <summary>
+        /// Gets or sets feature updates will be rolled back.
+        /// Specifies whether to rollback Feature Updates on the next device check in
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "featureUpdatesWillBeRolledBack", Required = Newtonsoft.Json.Required.Default)]
+        public bool? FeatureUpdatesWillBeRolledBack { get; set; }
+    
+        /// <summary>
+        /// Gets or sets quality updates rollback start date time.
+        /// Quality Updates Rollback Start datetime
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "qualityUpdatesRollbackStartDateTime", Required = Newtonsoft.Json.Required.Default)]
+        public DateTimeOffset? QualityUpdatesRollbackStartDateTime { get; set; }
+    
+        /// <summary>
+        /// Gets or sets feature updates rollback start date time.
+        /// Feature Updates Rollback Start datetime
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "featureUpdatesRollbackStartDateTime", Required = Newtonsoft.Json.Required.Default)]
+        public DateTimeOffset? FeatureUpdatesRollbackStartDateTime { get; set; }
+    
+        /// <summary>
+        /// Gets or sets engaged restart deadline in days.
+        /// Deadline in days before automatically scheduling and executing a pending restart outside of active hours, with valid range from 2 to 30 days
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "engagedRestartDeadlineInDays", Required = Newtonsoft.Json.Required.Default)]
+        public Int32? EngagedRestartDeadlineInDays { get; set; }
+    
+        /// <summary>
+        /// Gets or sets engaged restart snooze schedule in days.
+        /// Number of days a user can snooze Engaged Restart reminder notifications with valid range from 1 to 3 days
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "engagedRestartSnoozeScheduleInDays", Required = Newtonsoft.Json.Required.Default)]
+        public Int32? EngagedRestartSnoozeScheduleInDays { get; set; }
+    
+        /// <summary>
+        /// Gets or sets engaged restart transition schedule in days.
+        /// Number of days before transitioning from Auto Restarts scheduled outside of active hours to Engaged Restart, which requires the user to schedule, with valid range from 0 to 30 days
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "engagedRestartTransitionScheduleInDays", Required = Newtonsoft.Json.Required.Default)]
+        public Int32? EngagedRestartTransitionScheduleInDays { get; set; }
+    
+        /// <summary>
+        /// Gets or sets auto restart notification dismissal.
+        /// Specify the method by which the auto-restart required notification is dismissed
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "autoRestartNotificationDismissal", Required = Newtonsoft.Json.Required.Default)]
+        public AutoRestartNotificationDismissalMethod? AutoRestartNotificationDismissal { get; set; }
+    
+        /// <summary>
+        /// Gets or sets schedule restart warning in hours.
+        /// Specify the period for auto-restart warning reminder notifications. Supported values: 2, 4, 8, 12 or 24 (hours).
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "scheduleRestartWarningInHours", Required = Newtonsoft.Json.Required.Default)]
+        public Int32? ScheduleRestartWarningInHours { get; set; }
+    
+        /// <summary>
+        /// Gets or sets schedule imminent restart warning in minutes.
+        /// Specify the period for auto-restart imminent warning notifications. Supported values: 15, 30 or 60 (minutes).
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "scheduleImminentRestartWarningInMinutes", Required = Newtonsoft.Json.Required.Default)]
+        public Int32? ScheduleImminentRestartWarningInMinutes { get; set; }
+    
     }
 }
 

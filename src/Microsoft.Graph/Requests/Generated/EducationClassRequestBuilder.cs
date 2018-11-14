@@ -96,6 +96,29 @@ namespace Microsoft.Graph
                 return new GroupWithReferenceRequestBuilder(this.AppendSegmentToRequestUrl("group"), this.Client);
             }
         }
+
+        /// <summary>
+        /// Gets the request builder for Assignments.
+        /// </summary>
+        /// <returns>The <see cref="IEducationClassAssignmentsCollectionRequestBuilder"/>.</returns>
+        public IEducationClassAssignmentsCollectionRequestBuilder Assignments
+        {
+            get
+            {
+                return new EducationClassAssignmentsCollectionRequestBuilder(this.AppendSegmentToRequestUrl("assignments"), this.Client);
+            }
+        }
+    
+        /// <summary>
+        /// Gets the request builder for EducationClassRenew.
+        /// </summary>
+        /// <returns>The <see cref="IEducationClassRenewRequestBuilder"/>.</returns>
+        public IEducationClassRenewRequestBuilder Renew()
+        {
+            return new EducationClassRenewRequestBuilder(
+                this.AppendSegmentToRequestUrl("microsoft.graph.renew"),
+                this.Client);
+        }
     
     }
 }

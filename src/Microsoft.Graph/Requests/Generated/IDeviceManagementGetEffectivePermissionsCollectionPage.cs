@@ -14,7 +14,7 @@ namespace Microsoft.Graph
     /// The interface IDeviceManagementGetEffectivePermissionsCollectionPage.
     /// </summary>
     [JsonConverter(typeof(InterfaceConverter<DeviceManagementGetEffectivePermissionsCollectionPage>))]
-    public interface IDeviceManagementGetEffectivePermissionsCollectionPage : ICollectionPage<RolePermission>
+    public interface IDeviceManagementGetEffectivePermissionsCollectionPage : ICollectionPage<string>
     {
         /// <summary>
         /// Gets the next page <see cref="IDeviceManagementGetEffectivePermissionsRequest"/> instance.

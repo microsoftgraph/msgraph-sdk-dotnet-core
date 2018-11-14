@@ -50,6 +50,18 @@ namespace Microsoft.Graph
         }
     
         /// <summary>
+        /// Gets the request builder for GroupAssignments.
+        /// </summary>
+        /// <returns>The <see cref="ITermsAndConditionsGroupAssignmentsCollectionRequestBuilder"/>.</returns>
+        public ITermsAndConditionsGroupAssignmentsCollectionRequestBuilder GroupAssignments
+        {
+            get
+            {
+                return new TermsAndConditionsGroupAssignmentsCollectionRequestBuilder(this.AppendSegmentToRequestUrl("groupAssignments"), this.Client);
+            }
+        }
+
+        /// <summary>
         /// Gets the request builder for Assignments.
         /// </summary>
         /// <returns>The <see cref="ITermsAndConditionsAssignmentsCollectionRequestBuilder"/>.</returns>

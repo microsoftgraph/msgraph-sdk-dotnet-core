@@ -167,6 +167,21 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
+        /// Gets the request builder for EventForward.
+        /// </summary>
+        /// <returns>The <see cref="IEventForwardRequestBuilder"/>.</returns>
+        public IEventForwardRequestBuilder Forward(
+            string Comment = null,
+            IEnumerable<Recipient> ToRecipients = null)
+        {
+            return new EventForwardRequestBuilder(
+                this.AppendSegmentToRequestUrl("microsoft.graph.forward"),
+                this.Client,
+                Comment,
+                ToRecipients);
+        }
+
+        /// <summary>
         /// Gets the request builder for EventSnoozeReminder.
         /// </summary>
         /// <returns>The <see cref="IEventSnoozeReminderRequestBuilder"/>.</returns>
@@ -188,6 +203,19 @@ namespace Microsoft.Graph
             return new EventDismissReminderRequestBuilder(
                 this.AppendSegmentToRequestUrl("microsoft.graph.dismissReminder"),
                 this.Client);
+        }
+
+        /// <summary>
+        /// Gets the request builder for EventCancel.
+        /// </summary>
+        /// <returns>The <see cref="IEventCancelRequestBuilder"/>.</returns>
+        public IEventCancelRequestBuilder Cancel(
+            string Comment = null)
+        {
+            return new EventCancelRequestBuilder(
+                this.AppendSegmentToRequestUrl("microsoft.graph.cancel"),
+                this.Client,
+                Comment);
         }
     
     }

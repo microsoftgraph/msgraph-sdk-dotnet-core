@@ -43,6 +43,12 @@ namespace Microsoft.Graph
         public DateTimeOffset? ApproximateLastSignInDateTime { get; set; }
     
         /// <summary>
+        /// Gets or sets compliance expiration date time.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "complianceExpirationDateTime", Required = Newtonsoft.Json.Required.Default)]
+        public DateTimeOffset? ComplianceExpirationDateTime { get; set; }
+    
+        /// <summary>
         /// Gets or sets device id.
         /// Unique identifier set by Azure Device Registration Service at the time of registration.
         /// </summary>
@@ -120,11 +126,72 @@ namespace Microsoft.Graph
         public IEnumerable<string> PhysicalIds { get; set; }
     
         /// <summary>
+        /// Gets or sets profile type.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "profileType", Required = Newtonsoft.Json.Required.Default)]
+        public string ProfileType { get; set; }
+    
+        /// <summary>
+        /// Gets or sets system labels.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "systemLabels", Required = Newtonsoft.Json.Required.Default)]
+        public string SystemLabels { get; set; }
+    
+        /// <summary>
         /// Gets or sets trust type.
         /// Type of trust for the joined device. Read-only. Possible values: Workplace - indicates bring your own personal devicesAzureAd - Cloud only joined devicesServerAd - on-premises domain joined devices joined to Azure AD. For more details, see Introduction to device management in Azure Active Directory
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "trustType", Required = Newtonsoft.Json.Required.Default)]
         public string TrustType { get; set; }
+    
+        /// <summary>
+        /// Gets or sets name.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "Name", Required = Newtonsoft.Json.Required.Default)]
+        public string Name { get; set; }
+    
+        /// <summary>
+        /// Gets or sets manufacturer.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "Manufacturer", Required = Newtonsoft.Json.Required.Default)]
+        public string Manufacturer { get; set; }
+    
+        /// <summary>
+        /// Gets or sets model.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "Model", Required = Newtonsoft.Json.Required.Default)]
+        public string Model { get; set; }
+    
+        /// <summary>
+        /// Gets or sets kind.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "Kind", Required = Newtonsoft.Json.Required.Default)]
+        public string Kind { get; set; }
+    
+        /// <summary>
+        /// Gets or sets status.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "Status", Required = Newtonsoft.Json.Required.Default)]
+        public string Status { get; set; }
+    
+        /// <summary>
+        /// Gets or sets platform.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "Platform", Required = Newtonsoft.Json.Required.Default)]
+        public string Platform { get; set; }
+    
+        /// <summary>
+        /// Gets or sets extensions.
+        /// The collection of open extensions defined for the device. Read-only. Nullable.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "extensions", Required = Newtonsoft.Json.Required.Default)]
+        public IDeviceExtensionsCollectionPage Extensions { get; set; }
+    
+        /// <summary>
+        /// Gets or sets member of.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "memberOf", Required = Newtonsoft.Json.Required.Default)]
+        public IDeviceMemberOfCollectionWithReferencesPage MemberOf { get; set; }
     
         /// <summary>
         /// Gets or sets registered owners.
@@ -141,11 +208,16 @@ namespace Microsoft.Graph
         public IDeviceRegisteredUsersCollectionWithReferencesPage RegisteredUsers { get; set; }
     
         /// <summary>
-        /// Gets or sets extensions.
-        /// The collection of open extensions defined for the device. Read-only. Nullable.
+        /// Gets or sets transitive member of.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "extensions", Required = Newtonsoft.Json.Required.Default)]
-        public IDeviceExtensionsCollectionPage Extensions { get; set; }
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "transitiveMemberOf", Required = Newtonsoft.Json.Required.Default)]
+        public IDeviceTransitiveMemberOfCollectionWithReferencesPage TransitiveMemberOf { get; set; }
+    
+        /// <summary>
+        /// Gets or sets commands.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "commands", Required = Newtonsoft.Json.Required.Default)]
+        public IDeviceCommandsCollectionPage Commands { get; set; }
     
     }
 }

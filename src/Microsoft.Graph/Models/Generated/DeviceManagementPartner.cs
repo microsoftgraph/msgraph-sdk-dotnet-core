@@ -64,6 +64,20 @@ namespace Microsoft.Graph
         public bool? IsConfigured { get; set; }
     
         /// <summary>
+        /// Gets or sets when partner devices will be removed.
+        /// DateTime in UTC when PartnerDevices will be removed. This will become obselete soon.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "whenPartnerDevicesWillBeRemoved", Required = Newtonsoft.Json.Required.Default)]
+        public DateTimeOffset? WhenPartnerDevicesWillBeRemoved { get; set; }
+    
+        /// <summary>
+        /// Gets or sets when partner devices will be marked as non compliant.
+        /// DateTime in UTC when PartnerDevices will be marked as NonCompliant. This will become obselete soon.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "whenPartnerDevicesWillBeMarkedAsNonCompliant", Required = Newtonsoft.Json.Required.Default)]
+        public DateTimeOffset? WhenPartnerDevicesWillBeMarkedAsNonCompliant { get; set; }
+    
+        /// <summary>
         /// Gets or sets when partner devices will be removed date time.
         /// DateTime in UTC when PartnerDevices will be removed
         /// </summary>

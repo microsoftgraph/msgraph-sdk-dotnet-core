@@ -28,5 +28,10 @@ namespace Microsoft.Graph
         /// </summary>
         LicenseFile = 1,
 	
+        /// <summary>
+        /// not Configured
+        /// </summary>
+        NotConfigured = 2,
+	
     }
 }

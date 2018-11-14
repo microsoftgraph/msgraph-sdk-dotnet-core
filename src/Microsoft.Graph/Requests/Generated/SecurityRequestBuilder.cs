@@ -60,6 +60,126 @@ namespace Microsoft.Graph
                 return new SecurityAlertsCollectionRequestBuilder(this.AppendSegmentToRequestUrl("alerts"), this.Client);
             }
         }
+
+        /// <summary>
+        /// Gets the request builder for CloudAppSecurityProfiles.
+        /// </summary>
+        /// <returns>The <see cref="ISecurityCloudAppSecurityProfilesCollectionRequestBuilder"/>.</returns>
+        public ISecurityCloudAppSecurityProfilesCollectionRequestBuilder CloudAppSecurityProfiles
+        {
+            get
+            {
+                return new SecurityCloudAppSecurityProfilesCollectionRequestBuilder(this.AppendSegmentToRequestUrl("cloudAppSecurityProfiles"), this.Client);
+            }
+        }
+
+        /// <summary>
+        /// Gets the request builder for DomainSecurityProfiles.
+        /// </summary>
+        /// <returns>The <see cref="ISecurityDomainSecurityProfilesCollectionRequestBuilder"/>.</returns>
+        public ISecurityDomainSecurityProfilesCollectionRequestBuilder DomainSecurityProfiles
+        {
+            get
+            {
+                return new SecurityDomainSecurityProfilesCollectionRequestBuilder(this.AppendSegmentToRequestUrl("domainSecurityProfiles"), this.Client);
+            }
+        }
+
+        /// <summary>
+        /// Gets the request builder for FileSecurityProfiles.
+        /// </summary>
+        /// <returns>The <see cref="ISecurityFileSecurityProfilesCollectionRequestBuilder"/>.</returns>
+        public ISecurityFileSecurityProfilesCollectionRequestBuilder FileSecurityProfiles
+        {
+            get
+            {
+                return new SecurityFileSecurityProfilesCollectionRequestBuilder(this.AppendSegmentToRequestUrl("fileSecurityProfiles"), this.Client);
+            }
+        }
+
+        /// <summary>
+        /// Gets the request builder for HostSecurityProfiles.
+        /// </summary>
+        /// <returns>The <see cref="ISecurityHostSecurityProfilesCollectionRequestBuilder"/>.</returns>
+        public ISecurityHostSecurityProfilesCollectionRequestBuilder HostSecurityProfiles
+        {
+            get
+            {
+                return new SecurityHostSecurityProfilesCollectionRequestBuilder(this.AppendSegmentToRequestUrl("hostSecurityProfiles"), this.Client);
+            }
+        }
+
+        /// <summary>
+        /// Gets the request builder for IpSecurityProfiles.
+        /// </summary>
+        /// <returns>The <see cref="ISecurityIpSecurityProfilesCollectionRequestBuilder"/>.</returns>
+        public ISecurityIpSecurityProfilesCollectionRequestBuilder IpSecurityProfiles
+        {
+            get
+            {
+                return new SecurityIpSecurityProfilesCollectionRequestBuilder(this.AppendSegmentToRequestUrl("ipSecurityProfiles"), this.Client);
+            }
+        }
+
+        /// <summary>
+        /// Gets the request builder for ProviderTenantSettings.
+        /// </summary>
+        /// <returns>The <see cref="ISecurityProviderTenantSettingsCollectionRequestBuilder"/>.</returns>
+        public ISecurityProviderTenantSettingsCollectionRequestBuilder ProviderTenantSettings
+        {
+            get
+            {
+                return new SecurityProviderTenantSettingsCollectionRequestBuilder(this.AppendSegmentToRequestUrl("providerTenantSettings"), this.Client);
+            }
+        }
+
+        /// <summary>
+        /// Gets the request builder for SecureScoreControlProfiles.
+        /// </summary>
+        /// <returns>The <see cref="ISecuritySecureScoreControlProfilesCollectionRequestBuilder"/>.</returns>
+        public ISecuritySecureScoreControlProfilesCollectionRequestBuilder SecureScoreControlProfiles
+        {
+            get
+            {
+                return new SecuritySecureScoreControlProfilesCollectionRequestBuilder(this.AppendSegmentToRequestUrl("secureScoreControlProfiles"), this.Client);
+            }
+        }
+
+        /// <summary>
+        /// Gets the request builder for SecureScores.
+        /// </summary>
+        /// <returns>The <see cref="ISecuritySecureScoresCollectionRequestBuilder"/>.</returns>
+        public ISecuritySecureScoresCollectionRequestBuilder SecureScores
+        {
+            get
+            {
+                return new SecuritySecureScoresCollectionRequestBuilder(this.AppendSegmentToRequestUrl("secureScores"), this.Client);
+            }
+        }
+
+        /// <summary>
+        /// Gets the request builder for TiIndicators.
+        /// </summary>
+        /// <returns>The <see cref="ISecurityTiIndicatorsCollectionRequestBuilder"/>.</returns>
+        public ISecurityTiIndicatorsCollectionRequestBuilder TiIndicators
+        {
+            get
+            {
+                return new SecurityTiIndicatorsCollectionRequestBuilder(this.AppendSegmentToRequestUrl("tiIndicators"), this.Client);
+            }
+        }
+
+        /// <summary>
+        /// Gets the request builder for UserSecurityProfiles.
+        /// </summary>
+        /// <returns>The <see cref="ISecurityUserSecurityProfilesCollectionRequestBuilder"/>.</returns>
+        public ISecurityUserSecurityProfilesCollectionRequestBuilder UserSecurityProfiles
+        {
+            get
+            {
+                return new SecurityUserSecurityProfilesCollectionRequestBuilder(this.AppendSegmentToRequestUrl("userSecurityProfiles"), this.Client);
+            }
+        }
     
     }
 }

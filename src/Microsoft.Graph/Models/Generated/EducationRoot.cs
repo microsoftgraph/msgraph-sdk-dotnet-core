@@ -22,6 +22,12 @@ namespace Microsoft.Graph
     {
     
         /// <summary>
+        /// Gets or sets synchronization profiles.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "synchronizationProfiles", Required = Newtonsoft.Json.Required.Default)]
+        public IEducationRootSynchronizationProfilesCollectionPage SynchronizationProfiles { get; set; }
+    
+        /// <summary>
         /// Gets or sets classes.
         /// Read-only. Nullable.
         /// </summary>

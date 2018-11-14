@@ -85,11 +85,95 @@ namespace Microsoft.Graph
         public string MinimumWarningPatchVersion { get; set; }
     
         /// <summary>
+        /// Gets or sets exempted app protocols.
+        /// iOS Apps in this list will be exempt from the policy and will be able to receive data from managed apps. (iOS Only)
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "exemptedAppProtocols", Required = Newtonsoft.Json.Required.Default)]
+        public IEnumerable<KeyValuePair> ExemptedAppProtocols { get; set; }
+    
+        /// <summary>
+        /// Gets or sets exempted app packages.
+        /// Android App packages in this list will be exempt from the policy and will be able to receive data from managed apps. (Android only)
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "exemptedAppPackages", Required = Newtonsoft.Json.Required.Default)]
+        public IEnumerable<KeyValuePair> ExemptedAppPackages { get; set; }
+    
+        /// <summary>
         /// Gets or sets face id blocked.
         /// Indicates whether use of the FaceID is allowed in place of a pin if PinRequired is set to True. (iOS Only)
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "faceIdBlocked", Required = Newtonsoft.Json.Required.Default)]
         public bool? FaceIdBlocked { get; set; }
+    
+        /// <summary>
+        /// Gets or sets minimum wipe sdk version.
+        /// Versions less than the specified version will block the managed app from accessing company data.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "minimumWipeSdkVersion", Required = Newtonsoft.Json.Required.Default)]
+        public string MinimumWipeSdkVersion { get; set; }
+    
+        /// <summary>
+        /// Gets or sets minimum wipe patch version.
+        /// Android security patch level  less than or equal to the specified value will wipe the managed app and the associated company data. (Android only)
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "minimumWipePatchVersion", Required = Newtonsoft.Json.Required.Default)]
+        public string MinimumWipePatchVersion { get; set; }
+    
+        /// <summary>
+        /// Gets or sets allowed ios device models.
+        /// Semicolon seperated list of device models allowed, as a string, for the managed app to work. (iOS Only)
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "allowedIosDeviceModels", Required = Newtonsoft.Json.Required.Default)]
+        public string AllowedIosDeviceModels { get; set; }
+    
+        /// <summary>
+        /// Gets or sets app action if ios device model not allowed.
+        /// Defines a managed app behavior, either block or wipe, if the specified device model is not allowed. (iOS Only)
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "appActionIfIosDeviceModelNotAllowed", Required = Newtonsoft.Json.Required.Default)]
+        public ManagedAppRemediationAction? AppActionIfIosDeviceModelNotAllowed { get; set; }
+    
+        /// <summary>
+        /// Gets or sets allowed android device manufacturers.
+        /// Semicolon seperated list of device manufacturers allowed, as a string, for the managed app to work. (Android only)
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "allowedAndroidDeviceManufacturers", Required = Newtonsoft.Json.Required.Default)]
+        public string AllowedAndroidDeviceManufacturers { get; set; }
+    
+        /// <summary>
+        /// Gets or sets app action if android device manufacturer not allowed.
+        /// Defines a managed app behavior, either block or wipe, if the specified device manufacturer is not allowed. (Android only)
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "appActionIfAndroidDeviceManufacturerNotAllowed", Required = Newtonsoft.Json.Required.Default)]
+        public ManagedAppRemediationAction? AppActionIfAndroidDeviceManufacturerNotAllowed { get; set; }
+    
+        /// <summary>
+        /// Gets or sets third party keyboards blocked.
+        /// Defines if third party keyboards are allowed while accessing a managed app. (iOS Only)
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "thirdPartyKeyboardsBlocked", Required = Newtonsoft.Json.Required.Default)]
+        public bool? ThirdPartyKeyboardsBlocked { get; set; }
+    
+        /// <summary>
+        /// Gets or sets filter open in to only managed apps.
+        /// Defines if open-in operation is supported from the managed app to the filesharing locations selected. This setting only applies when AllowedOutboundDataTransferDestinations is set to ManagedApps and DisableProtectionOfManagedOutboundOpenInData is set to False. (iOS Only)
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "filterOpenInToOnlyManagedApps", Required = Newtonsoft.Json.Required.Default)]
+        public bool? FilterOpenInToOnlyManagedApps { get; set; }
+    
+        /// <summary>
+        /// Gets or sets disable protection of managed outbound open in data.
+        /// Disable protection of data transferred to other apps through IOS OpenIn option. This setting is only allowed to be True when AllowedOutboundDataTransferDestinations is set to ManagedApps. (iOS Only)
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "disableProtectionOfManagedOutboundOpenInData", Required = Newtonsoft.Json.Required.Default)]
+        public bool? DisableProtectionOfManagedOutboundOpenInData { get; set; }
+    
+        /// <summary>
+        /// Gets or sets protect inbound data from unknown sources.
+        /// Protect incoming data from unknown source. This setting is only allowed to be True when AllowedInboundDataTransferSources is set to AllApps. (iOS Only)
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "protectInboundDataFromUnknownSources", Required = Newtonsoft.Json.Required.Default)]
+        public bool? ProtectInboundDataFromUnknownSources { get; set; }
     
         /// <summary>
         /// Gets or sets apps.

@@ -59,6 +59,17 @@ namespace Microsoft.Graph
             }
         }
 
-        
+        /// <summary>
+        /// Gets the request builder for VppTokenGetLicensesForApp.
+        /// </summary>
+        /// <returns>The <see cref="IVppTokenGetLicensesForAppRequestBuilder"/>.</returns>
+        public IVppTokenGetLicensesForAppRequestBuilder GetLicensesForApp(
+            string bundleId = null)
+        {
+            return new VppTokenGetLicensesForAppRequestBuilder(
+                this.AppendSegmentToRequestUrl("microsoft.graph.getLicensesForApp"),
+                this.Client,
+                bundleId);
+        }
     }
 }

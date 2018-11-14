@@ -56,6 +56,18 @@ namespace Microsoft.Graph
         public SystemFacet System { get; set; }
     
         /// <summary>
+        /// Gets or sets activities.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "activities", Required = Newtonsoft.Json.Required.Default)]
+        public IDriveActivitiesCollectionPage Activities { get; set; }
+    
+        /// <summary>
+        /// Gets or sets following.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "following", Required = Newtonsoft.Json.Required.Default)]
+        public IDriveFollowingCollectionPage Following { get; set; }
+    
+        /// <summary>
         /// Gets or sets items.
         /// All items contained in the drive. Read-only. Nullable.
         /// </summary>

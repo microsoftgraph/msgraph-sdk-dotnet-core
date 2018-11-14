@@ -30,5 +30,11 @@ namespace Microsoft.Graph
         /// <returns>The built request.</returns>
         new IMicrosoftStoreForBusinessAppRequest Request(IEnumerable<Option> options);
     
+        /// <summary>
+        /// Gets the request builder for ContainedApps.
+        /// </summary>
+        /// <returns>The <see cref="IMicrosoftStoreForBusinessAppContainedAppsCollectionRequestBuilder"/>.</returns>
+        IMicrosoftStoreForBusinessAppContainedAppsCollectionRequestBuilder ContainedApps { get; }
+    
     }
 }

@@ -22,6 +22,27 @@ namespace Microsoft.Graph
     {
     
         /// <summary>
+        /// Gets or sets advanced threat protection onboarding blob.
+        /// Windows Defender AdvancedThreatProtection Onboarding Blob.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "advancedThreatProtectionOnboardingBlob", Required = Newtonsoft.Json.Required.Default)]
+        public string AdvancedThreatProtectionOnboardingBlob { get; set; }
+    
+        /// <summary>
+        /// Gets or sets advanced threat protection onboarding filename.
+        /// Name of the file from which AdvancedThreatProtectionOnboardingBlob was obtained.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "advancedThreatProtectionOnboardingFilename", Required = Newtonsoft.Json.Required.Default)]
+        public string AdvancedThreatProtectionOnboardingFilename { get; set; }
+    
+        /// <summary>
+        /// Gets or sets advanced threat protection auto populate onboarding blob.
+        /// Auto populate onboarding blob programmatically from Advanced Threat protection service
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "advancedThreatProtectionAutoPopulateOnboardingBlob", Required = Newtonsoft.Json.Required.Default)]
+        public bool? AdvancedThreatProtectionAutoPopulateOnboardingBlob { get; set; }
+    
+        /// <summary>
         /// Gets or sets allow sample sharing.
         /// Windows Defender AdvancedThreatProtection 'Allow Sample Sharing' Rule
         /// </summary>
@@ -34,6 +55,20 @@ namespace Microsoft.Graph
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "enableExpeditedTelemetryReporting", Required = Newtonsoft.Json.Required.Default)]
         public bool? EnableExpeditedTelemetryReporting { get; set; }
+    
+        /// <summary>
+        /// Gets or sets advanced threat protection offboarding blob.
+        /// Windows Defender AdvancedThreatProtection Offboarding Blob.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "advancedThreatProtectionOffboardingBlob", Required = Newtonsoft.Json.Required.Default)]
+        public string AdvancedThreatProtectionOffboardingBlob { get; set; }
+    
+        /// <summary>
+        /// Gets or sets advanced threat protection offboarding filename.
+        /// Name of the file from which AdvancedThreatProtectionOffboardingBlob was obtained.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "advancedThreatProtectionOffboardingFilename", Required = Newtonsoft.Json.Required.Default)]
+        public string AdvancedThreatProtectionOffboardingFilename { get; set; }
     
     }
 }

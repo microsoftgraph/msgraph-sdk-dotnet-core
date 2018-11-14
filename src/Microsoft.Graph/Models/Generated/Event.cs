@@ -43,11 +43,10 @@ namespace Microsoft.Graph
         public ResponseStatus ResponseStatus { get; set; }
     
         /// <summary>
-        /// Gets or sets i cal uid.
-        /// A unique identifier that is shared by all instances of an event across different calendars.
+        /// Gets or sets uid.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "iCalUId", Required = Newtonsoft.Json.Required.Default)]
-        public string ICalUId { get; set; }
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "uid", Required = Newtonsoft.Json.Required.Default)]
+        public string Uid { get; set; }
     
         /// <summary>
         /// Gets or sets reminder minutes before start.
@@ -223,6 +222,12 @@ namespace Microsoft.Graph
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "onlineMeetingUrl", Required = Newtonsoft.Json.Required.Default)]
         public string OnlineMeetingUrl { get; set; }
+    
+        /// <summary>
+        /// Gets or sets creation options.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "creationOptions", Required = Newtonsoft.Json.Required.Default)]
+        public EventCreationOptions CreationOptions { get; set; }
     
         /// <summary>
         /// Gets or sets calendar.

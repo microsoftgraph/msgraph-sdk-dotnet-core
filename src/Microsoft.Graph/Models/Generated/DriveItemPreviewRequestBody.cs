@@ -22,6 +22,24 @@ namespace Microsoft.Graph
     {
     
         /// <summary>
+        /// Gets or sets Viewer.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "viewer", Required = Newtonsoft.Json.Required.Default)]
+        public string Viewer { get; set; }
+    
+        /// <summary>
+        /// Gets or sets Chromeless.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "chromeless", Required = Newtonsoft.Json.Required.Default)]
+        public bool? Chromeless { get; set; }
+    
+        /// <summary>
+        /// Gets or sets AllowEdit.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "allowEdit", Required = Newtonsoft.Json.Required.Default)]
+        public bool? AllowEdit { get; set; }
+    
+        /// <summary>
         /// Gets or sets Page.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "page", Required = Newtonsoft.Json.Required.Default)]

@@ -24,14 +24,14 @@ namespace Microsoft.Graph
         /// <summary>
         /// Issues the GET request.
         /// </summary>
-        System.Threading.Tasks.Task<Report> GetAsync();
+        System.Threading.Tasks.Task<IReportRootGetYammerGroupsActivityDetailCollectionPage> GetAsync();
         
         /// <summary>
         /// Issues the GET request.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await for async call.</returns>
-        System.Threading.Tasks.Task<Report> GetAsync(
+        System.Threading.Tasks.Task<IReportRootGetYammerGroupsActivityDetailCollectionPage> GetAsync(
             CancellationToken cancellationToken);
   
 
@@ -39,34 +39,34 @@ namespace Microsoft.Graph
         /// <summary>
         /// Issues the PATCH request.
         /// </summary>
-        /// <param name="report">The Report object set with the properties to update.</param>
+        /// <param name="yammergroupsactivitydetail">The YammerGroupsActivityDetail object set with the properties to update.</param>
         /// <returns>The task to await for async call.</returns>
-        System.Threading.Tasks.Task<Report> PatchAsync(Report report);
+        System.Threading.Tasks.Task<IReportRootGetYammerGroupsActivityDetailCollectionPage> PatchAsync(YammerGroupsActivityDetail yammergroupsactivitydetail);
 
         /// <summary>
         /// Issues the PATCH request.
         /// </summary>
-        /// <param name="report">The Report object set with the properties to update.</param>
+        /// <param name="yammergroupsactivitydetail">The YammerGroupsActivityDetail object set with the properties to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await for async call.</returns>
-        System.Threading.Tasks.Task<Report> PatchAsync(Report report, 
+        System.Threading.Tasks.Task<IReportRootGetYammerGroupsActivityDetailCollectionPage> PatchAsync(YammerGroupsActivityDetail yammergroupsactivitydetail, 
             CancellationToken cancellationToken);
           
 
         /// <summary>
         /// Issues the PUT request.
         /// </summary>
-        /// <param name="report">The Report object to update.</param>
+        /// <param name="yammergroupsactivitydetail">The YammerGroupsActivityDetail object to update.</param>
         /// <returns>The task to await for async call.</returns>
-        System.Threading.Tasks.Task<Report> PutAsync(Report report);
+        System.Threading.Tasks.Task<IReportRootGetYammerGroupsActivityDetailCollectionPage> PutAsync(YammerGroupsActivityDetail yammergroupsactivitydetail);
 
         /// <summary>
         /// Issues the PUT request.
         /// </summary>
-        /// <param name="report">The Report object to update.</param>
+        /// <param name="yammergroupsactivitydetail">The YammerGroupsActivityDetail object to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await for async call.</returns>
-        System.Threading.Tasks.Task<Report> PutAsync(Report report, 
+        System.Threading.Tasks.Task<IReportRootGetYammerGroupsActivityDetailCollectionPage> PutAsync(YammerGroupsActivityDetail yammergroupsactivitydetail, 
             CancellationToken cancellationToken);
 
 
@@ -85,5 +85,33 @@ namespace Microsoft.Graph
         /// <param name="value">The select value.</param>
         /// <returns>The request object to send.</returns>
         IReportRootGetYammerGroupsActivityDetailRequest Select(string value);
+
+        /// <summary>
+        /// Adds the specified top value to the request.
+        /// </summary>
+        /// <param name="value">The top value.</param>
+        /// <returns>The request object to send.</returns>
+        IReportRootGetYammerGroupsActivityDetailRequest Top(int value);
+
+        /// <summary>
+        /// Adds the specified filter value to the request.
+        /// </summary>
+        /// <param name="value">The filter value.</param>
+        /// <returns>The request object to send.</returns>
+        IReportRootGetYammerGroupsActivityDetailRequest Filter(string value);
+
+        /// <summary>
+        /// Adds the specified skip value to the request.
+        /// </summary>
+        /// <param name="value">The skip value.</param>
+        /// <returns>The request object to send.</returns>
+        IReportRootGetYammerGroupsActivityDetailRequest Skip(int value);
+
+        /// <summary>
+        /// Adds the specified orderby value to the request.
+        /// </summary>
+        /// <param name="value">The orderby value.</param>
+        /// <returns>The request object to send.</returns>
+        IReportRootGetYammerGroupsActivityDetailRequest OrderBy(string value);
     }
 }

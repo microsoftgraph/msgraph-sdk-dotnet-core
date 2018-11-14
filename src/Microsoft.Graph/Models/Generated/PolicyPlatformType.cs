@@ -24,6 +24,11 @@ namespace Microsoft.Graph
         Android = 0,
 	
         /// <summary>
+        /// android For Work
+        /// </summary>
+        AndroidForWork = 1,
+	
+        /// <summary>
         /// i OS
         /// </summary>
         IOS = 2,

@@ -30,5 +30,11 @@ namespace Microsoft.Graph
         /// <returns>The built request.</returns>
         new IIosDeviceFeaturesConfigurationRequest Request(IEnumerable<Option> options);
     
+        /// <summary>
+        /// Gets the request builder for IdentityCertificateForClientAuthentication.
+        /// </summary>
+        /// <returns>The <see cref="IIosCertificateProfileBaseWithReferenceRequestBuilder"/>.</returns>
+        IIosCertificateProfileBaseWithReferenceRequestBuilder IdentityCertificateForClientAuthentication { get; }
+    
     }
 }

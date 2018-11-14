@@ -31,6 +31,18 @@ namespace Microsoft.Graph
         new IListItemRequest Request(IEnumerable<Option> options);
     
         /// <summary>
+        /// Gets the request builder for Activities.
+        /// </summary>
+        /// <returns>The <see cref="IListItemActivitiesCollectionRequestBuilder"/>.</returns>
+        IListItemActivitiesCollectionRequestBuilder Activities { get; }
+
+        /// <summary>
+        /// Gets the request builder for Analytics.
+        /// </summary>
+        /// <returns>The <see cref="IItemAnalyticsWithReferenceRequestBuilder"/>.</returns>
+        IItemAnalyticsWithReferenceRequestBuilder Analytics { get; }
+
+        /// <summary>
         /// Gets the request builder for DriveItem.
         /// </summary>
         /// <returns>The <see cref="IDriveItemRequestBuilder"/>.</returns>
@@ -47,6 +59,12 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IListItemVersionsCollectionRequestBuilder"/>.</returns>
         IListItemVersionsCollectionRequestBuilder Versions { get; }
+    
+        /// <summary>
+        /// Gets the request builder for ListItemGetActivitiesByInterval.
+        /// </summary>
+        /// <returns>The <see cref="IListItemGetActivitiesByIntervalRequestBuilder"/>.</returns>
+        IListItemGetActivitiesByIntervalRequestBuilder GetActivitiesByInterval();
     
     }
 }

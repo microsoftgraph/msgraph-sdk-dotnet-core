@@ -35,6 +35,19 @@ namespace Microsoft.Graph
         /// <returns>The <see cref="IMobileAppRequestBuilder"/>.</returns>
         IMobileAppRequestBuilder this[string id] { get; }
 
-        
+        /// <summary>
+        /// Gets the request builder for MobileAppGetMobileAppCount.
+        /// </summary>
+        /// <returns>The <see cref="IMobileAppGetMobileAppCountRequestBuilder"/>.</returns>
+        IMobileAppGetMobileAppCountRequestBuilder GetMobileAppCount(
+            string status = null);
+
+        /// <summary>
+        /// Gets the request builder for MobileAppGetTopMobileApps.
+        /// </summary>
+        /// <returns>The <see cref="IMobileAppGetTopMobileAppsRequestBuilder"/>.</returns>
+        IMobileAppGetTopMobileAppsRequestBuilder GetTopMobileApps(
+            Int64 count,
+            string status = null);
     }
 }

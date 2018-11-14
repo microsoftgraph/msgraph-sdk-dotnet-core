@@ -206,6 +206,22 @@ namespace Microsoft.Graph
             if (educationRootToInitialize != null && educationRootToInitialize.AdditionalData != null)
             {
 
+                if (educationRootToInitialize.SynchronizationProfiles != null && educationRootToInitialize.SynchronizationProfiles.CurrentPage != null)
+                {
+                    educationRootToInitialize.SynchronizationProfiles.AdditionalData = educationRootToInitialize.AdditionalData;
+
+                    object nextPageLink;
+                    educationRootToInitialize.AdditionalData.TryGetValue("synchronizationProfiles@odata.nextLink", out nextPageLink);
+                    var nextPageLinkString = nextPageLink as string;
+
+                    if (!string.IsNullOrEmpty(nextPageLinkString))
+                    {
+                        educationRootToInitialize.SynchronizationProfiles.InitializeNextPageRequest(
+                            this.Client,
+                            nextPageLinkString);
+                    }
+                }
+
                 if (educationRootToInitialize.Classes != null && educationRootToInitialize.Classes.CurrentPage != null)
                 {
                     educationRootToInitialize.Classes.AdditionalData = educationRootToInitialize.AdditionalData;

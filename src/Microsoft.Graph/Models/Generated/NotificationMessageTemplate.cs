@@ -50,6 +50,13 @@ namespace Microsoft.Graph
         public NotificationTemplateBrandingOptions? BrandingOptions { get; set; }
     
         /// <summary>
+        /// Gets or sets role scope tag ids.
+        /// List of Scope Tags for this Entity instance.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "roleScopeTagIds", Required = Newtonsoft.Json.Required.Default)]
+        public IEnumerable<string> RoleScopeTagIds { get; set; }
+    
+        /// <summary>
         /// Gets or sets localized notification messages.
         /// The list of localized messages for this Notification Message Template.
         /// </summary>

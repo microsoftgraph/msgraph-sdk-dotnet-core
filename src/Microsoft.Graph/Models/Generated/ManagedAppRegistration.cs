@@ -86,6 +86,34 @@ namespace Microsoft.Graph
         public string DeviceName { get; set; }
     
         /// <summary>
+        /// Gets or sets managed device id.
+        /// The Managed Device identifier of the host device. Value could be empty even when the host device is managed.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "managedDeviceId", Required = Newtonsoft.Json.Required.Default)]
+        public string ManagedDeviceId { get; set; }
+    
+        /// <summary>
+        /// Gets or sets azure addevice id.
+        /// The Azure Active Directory Device identifier of the host device. Value could be empty even when the host device is Azure Active Directory registered.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "azureADDeviceId", Required = Newtonsoft.Json.Required.Default)]
+        public string AzureADDeviceId { get; set; }
+    
+        /// <summary>
+        /// Gets or sets device model.
+        /// The device model for the current app registration 
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "deviceModel", Required = Newtonsoft.Json.Required.Default)]
+        public string DeviceModel { get; set; }
+    
+        /// <summary>
+        /// Gets or sets device manufacturer.
+        /// The device manufacturer for the current app registration 
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "deviceManufacturer", Required = Newtonsoft.Json.Required.Default)]
+        public string DeviceManufacturer { get; set; }
+    
+        /// <summary>
         /// Gets or sets flagged reasons.
         /// Zero or more reasons an app registration is flagged. E.g. app running on rooted device
         /// </summary>

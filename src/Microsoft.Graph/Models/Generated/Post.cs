@@ -78,6 +78,12 @@ namespace Microsoft.Graph
         public string ConversationId { get; set; }
     
         /// <summary>
+        /// Gets or sets importance.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "importance", Required = Newtonsoft.Json.Required.Default)]
+        public Importance? Importance { get; set; }
+    
+        /// <summary>
         /// Gets or sets extensions.
         /// The collection of open extensions defined for the post. Read-only. Nullable.
         /// </summary>
@@ -111,6 +117,12 @@ namespace Microsoft.Graph
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "multiValueExtendedProperties", Required = Newtonsoft.Json.Required.Default)]
         public IPostMultiValueExtendedPropertiesCollectionPage MultiValueExtendedProperties { get; set; }
+    
+        /// <summary>
+        /// Gets or sets mentions.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "mentions", Required = Newtonsoft.Json.Required.Default)]
+        public IPostMentionsCollectionPage Mentions { get; set; }
     
     }
 }

@@ -35,6 +35,11 @@ namespace Microsoft.Graph
         /// <returns>The <see cref="IGroupLifecyclePolicyRequestBuilder"/>.</returns>
         IGroupLifecyclePolicyRequestBuilder this[string id] { get; }
 
-        
+        /// <summary>
+        /// Gets the request builder for GroupLifecyclePolicyRenewGroup.
+        /// </summary>
+        /// <returns>The <see cref="IGroupLifecyclePolicyRenewGroupRequestBuilder"/>.</returns>
+        IGroupLifecyclePolicyRenewGroupRequestBuilder RenewGroup(
+            string groupId);
     }
 }

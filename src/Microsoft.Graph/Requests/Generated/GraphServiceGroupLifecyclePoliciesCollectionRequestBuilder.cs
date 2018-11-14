@@ -59,6 +59,17 @@ namespace Microsoft.Graph
             }
         }
 
-        
+        /// <summary>
+        /// Gets the request builder for GroupLifecyclePolicyRenewGroup.
+        /// </summary>
+        /// <returns>The <see cref="IGroupLifecyclePolicyRenewGroupRequestBuilder"/>.</returns>
+        public IGroupLifecyclePolicyRenewGroupRequestBuilder RenewGroup(
+            string groupId)
+        {
+            return new GroupLifecyclePolicyRenewGroupRequestBuilder(
+                this.AppendSegmentToRequestUrl("microsoft.graph.renewGroup"),
+                this.Client,
+                groupId);
+        }
     }
 }

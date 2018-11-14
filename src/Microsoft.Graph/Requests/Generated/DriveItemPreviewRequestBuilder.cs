@@ -22,15 +22,24 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="requestUrl">The URL for the request.</param>
         /// <param name="client">The <see cref="IBaseClient"/> for handling requests.</param>
+        /// <param name="viewer">A viewer parameter for the OData method call.</param>
+        /// <param name="chromeless">A chromeless parameter for the OData method call.</param>
+        /// <param name="allowEdit">A allowEdit parameter for the OData method call.</param>
         /// <param name="page">A page parameter for the OData method call.</param>
         /// <param name="zoom">A zoom parameter for the OData method call.</param>
         public DriveItemPreviewRequestBuilder(
             string requestUrl,
             IBaseClient client,
+            string viewer,
+            bool? chromeless,
+            bool? allowEdit,
             string page,
             double? zoom)
             : base(requestUrl, client)
         {
+            this.SetParameter("viewer", viewer, true);
+            this.SetParameter("chromeless", chromeless, true);
+            this.SetParameter("allowEdit", allowEdit, true);
             this.SetParameter("page", page, true);
             this.SetParameter("zoom", zoom, true);
         }
@@ -44,6 +53,21 @@ namespace Microsoft.Graph
         protected override IDriveItemPreviewRequest CreateRequest(string functionUrl, IEnumerable<Option> options)
         {
             var request = new DriveItemPreviewRequest(functionUrl, this.Client, options);
+
+            if (this.HasParameter("viewer"))
+            {
+                request.RequestBody.Viewer = this.GetParameter<string>("viewer");
+            }
+
+            if (this.HasParameter("chromeless"))
+            {
+                request.RequestBody.Chromeless = this.GetParameter<bool?>("chromeless");
+            }
+
+            if (this.HasParameter("allowEdit"))
+            {
+                request.RequestBody.AllowEdit = this.GetParameter<bool?>("allowEdit");
+            }
 
             if (this.HasParameter("page"))
             {

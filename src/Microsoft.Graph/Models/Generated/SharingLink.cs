@@ -30,6 +30,18 @@ namespace Microsoft.Graph
         public Identity Application { get; set; }
     
         /// <summary>
+        /// Gets or sets preventsDownload.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "preventsDownload", Required = Newtonsoft.Json.Required.Default)]
+        public bool? PreventsDownload { get; set; }
+    
+        /// <summary>
+        /// Gets or sets configuratorUrl.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "configuratorUrl", Required = Newtonsoft.Json.Required.Default)]
+        public string ConfiguratorUrl { get; set; }
+    
+        /// <summary>
         /// Gets or sets scope.
         /// The scope of the link represented by this permission. Value anonymous indicates the link is usable by anyone, organization indicates the link is only usable for users signed into the same tenant.
         /// </summary>
@@ -42,6 +54,13 @@ namespace Microsoft.Graph
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "type", Required = Newtonsoft.Json.Required.Default)]
         public string Type { get; set; }
+    
+        /// <summary>
+        /// Gets or sets webHtml.
+        /// For embed links, this property contains the HTML code for an &amp;lt;iframe&amp;gt; element that will embed the item in a webpage.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "webHtml", Required = Newtonsoft.Json.Required.Default)]
+        public string WebHtml { get; set; }
     
         /// <summary>
         /// Gets or sets webUrl.

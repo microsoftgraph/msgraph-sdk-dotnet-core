@@ -23,6 +23,20 @@ namespace Microsoft.Graph
     {
 
         /// <summary>
+        /// Gets or sets supportUserLicensing.
+        /// Whether the program supports the user licensing type.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "supportUserLicensing", Required = Newtonsoft.Json.Required.Default)]
+        public bool? SupportUserLicensing { get; set; }
+    
+        /// <summary>
+        /// Gets or sets supportDeviceLicensing.
+        /// Whether the program supports the device licensing type.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "supportDeviceLicensing", Required = Newtonsoft.Json.Required.Default)]
+        public bool? SupportDeviceLicensing { get; set; }
+    
+        /// <summary>
         /// Gets or sets supportsUserLicensing.
         /// Whether the program supports the user licensing type.
         /// </summary>

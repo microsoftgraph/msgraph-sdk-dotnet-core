@@ -36,11 +36,25 @@ namespace Microsoft.Graph
         public SharedPCAllowedAccountType? AllowedAccounts { get; set; }
     
         /// <summary>
+        /// Gets or sets local storage.
+        /// Specifies whether local storage is allowed on a shared PC.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "localStorage", Required = Newtonsoft.Json.Required.Default)]
+        public Enablement? LocalStorage { get; set; }
+    
+        /// <summary>
         /// Gets or sets allow local storage.
         /// Specifies whether local storage is allowed on a shared PC.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "allowLocalStorage", Required = Newtonsoft.Json.Required.Default)]
         public bool? AllowLocalStorage { get; set; }
+    
+        /// <summary>
+        /// Gets or sets set account manager.
+        /// Disables the account manager for shared PC mode.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "setAccountManager", Required = Newtonsoft.Json.Required.Default)]
+        public Enablement? SetAccountManager { get; set; }
     
         /// <summary>
         /// Gets or sets disable account manager.
@@ -50,6 +64,13 @@ namespace Microsoft.Graph
         public bool? DisableAccountManager { get; set; }
     
         /// <summary>
+        /// Gets or sets set edu policies.
+        /// Specifies whether the default shared PC education environment policies should be enabled/disabled/not configured. For Windows 10 RS2 and later, this policy will be applied without setting Enabled to true.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "setEduPolicies", Required = Newtonsoft.Json.Required.Default)]
+        public Enablement? SetEduPolicies { get; set; }
+    
+        /// <summary>
         /// Gets or sets disable edu policies.
         /// Specifies whether the default shared PC education environment policies should be disabled. For Windows 10 RS2 and later, this policy will be applied without setting Enabled to true.
         /// </summary>
@@ -57,11 +78,25 @@ namespace Microsoft.Graph
         public bool? DisableEduPolicies { get; set; }
     
         /// <summary>
+        /// Gets or sets set power policies.
+        /// Specifies whether the default shared PC power policies should be enabled/disabled.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "setPowerPolicies", Required = Newtonsoft.Json.Required.Default)]
+        public Enablement? SetPowerPolicies { get; set; }
+    
+        /// <summary>
         /// Gets or sets disable power policies.
         /// Specifies whether the default shared PC power policies should be disabled.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "disablePowerPolicies", Required = Newtonsoft.Json.Required.Default)]
         public bool? DisablePowerPolicies { get; set; }
+    
+        /// <summary>
+        /// Gets or sets sign in on resume.
+        /// Specifies the requirement to sign in whenever the device wakes up from sleep mode.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "signInOnResume", Required = Newtonsoft.Json.Required.Default)]
+        public Enablement? SignInOnResume { get; set; }
     
         /// <summary>
         /// Gets or sets disable sign in on resume.

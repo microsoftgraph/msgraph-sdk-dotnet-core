@@ -62,6 +62,20 @@ namespace Microsoft.Graph
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "settingCount", Required = Newtonsoft.Json.Required.Default)]
         public Int32? SettingCount { get; set; }
     
+        /// <summary>
+        /// Gets or sets user id.
+        /// User unique identifier, must be Guid
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "userId", Required = Newtonsoft.Json.Required.Default)]
+        public string UserId { get; set; }
+    
+        /// <summary>
+        /// Gets or sets user principal name.
+        /// User Principal Name
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "userPrincipalName", Required = Newtonsoft.Json.Required.Default)]
+        public string UserPrincipalName { get; set; }
+    
     }
 }
 

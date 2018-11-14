@@ -22,6 +22,12 @@ namespace Microsoft.Graph
     {
     
         /// <summary>
+        /// Gets or sets DeviceConfigurationGroupAssignments.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "deviceConfigurationGroupAssignments", Required = Newtonsoft.Json.Required.Default)]
+        public IEnumerable<DeviceConfigurationGroupAssignment> DeviceConfigurationGroupAssignments { get; set; }
+    
+        /// <summary>
         /// Gets or sets Assignments.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "assignments", Required = Newtonsoft.Json.Required.Default)]

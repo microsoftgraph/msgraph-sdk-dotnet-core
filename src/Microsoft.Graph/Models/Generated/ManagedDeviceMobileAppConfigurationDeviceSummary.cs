@@ -36,6 +36,13 @@ namespace Microsoft.Graph
         public Int32? NotApplicableCount { get; set; }
     
         /// <summary>
+        /// Gets or sets not applicable platform count.
+        /// Number of not applicable devices due to mismatch platform and policy
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "notApplicablePlatformCount", Required = Newtonsoft.Json.Required.Default)]
+        public Int32? NotApplicablePlatformCount { get; set; }
+    
+        /// <summary>
         /// Gets or sets success count.
         /// Number of succeeded devices
         /// </summary>
@@ -55,6 +62,13 @@ namespace Microsoft.Graph
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "failedCount", Required = Newtonsoft.Json.Required.Default)]
         public Int32? FailedCount { get; set; }
+    
+        /// <summary>
+        /// Gets or sets conflict count.
+        /// Number of devices in conflict
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "conflictCount", Required = Newtonsoft.Json.Required.Default)]
+        public Int32? ConflictCount { get; set; }
     
         /// <summary>
         /// Gets or sets last update date time.

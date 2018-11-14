@@ -206,6 +206,22 @@ namespace Microsoft.Graph
             if (termsAndConditionsToInitialize != null && termsAndConditionsToInitialize.AdditionalData != null)
             {
 
+                if (termsAndConditionsToInitialize.GroupAssignments != null && termsAndConditionsToInitialize.GroupAssignments.CurrentPage != null)
+                {
+                    termsAndConditionsToInitialize.GroupAssignments.AdditionalData = termsAndConditionsToInitialize.AdditionalData;
+
+                    object nextPageLink;
+                    termsAndConditionsToInitialize.AdditionalData.TryGetValue("groupAssignments@odata.nextLink", out nextPageLink);
+                    var nextPageLinkString = nextPageLink as string;
+
+                    if (!string.IsNullOrEmpty(nextPageLinkString))
+                    {
+                        termsAndConditionsToInitialize.GroupAssignments.InitializeNextPageRequest(
+                            this.Client,
+                            nextPageLinkString);
+                    }
+                }
+
                 if (termsAndConditionsToInitialize.Assignments != null && termsAndConditionsToInitialize.Assignments.CurrentPage != null)
                 {
                     termsAndConditionsToInitialize.Assignments.AdditionalData = termsAndConditionsToInitialize.AdditionalData;

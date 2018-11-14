@@ -120,6 +120,13 @@ namespace Microsoft.Graph
         public bool? StorageRequireEncryption { get; set; }
     
         /// <summary>
+        /// Gets or sets gatekeeper allowed app source.
+        /// System and Privacy setting that determines which download locations apps can be run from on a macOS device.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "gatekeeperAllowedAppSource", Required = Newtonsoft.Json.Required.Default)]
+        public MacOSGatekeeperAppSources? GatekeeperAllowedAppSource { get; set; }
+    
+        /// <summary>
         /// Gets or sets firewall enabled.
         /// Whether the firewall should be enabled or not.
         /// </summary>

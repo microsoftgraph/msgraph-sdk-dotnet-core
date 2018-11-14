@@ -50,6 +50,18 @@ namespace Microsoft.Graph
         public DeviceEnrollmentPlatformRestriction AndroidRestriction { get; set; }
     
         /// <summary>
+        /// Gets or sets android for work restriction.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "androidForWorkRestriction", Required = Newtonsoft.Json.Required.Default)]
+        public DeviceEnrollmentPlatformRestriction AndroidForWorkRestriction { get; set; }
+    
+        /// <summary>
+        /// Gets or sets mac restriction.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "macRestriction", Required = Newtonsoft.Json.Required.Default)]
+        public DeviceEnrollmentPlatformRestriction MacRestriction { get; set; }
+    
+        /// <summary>
         /// Gets or sets mac osrestriction.
         /// Not yet documented
         /// </summary>

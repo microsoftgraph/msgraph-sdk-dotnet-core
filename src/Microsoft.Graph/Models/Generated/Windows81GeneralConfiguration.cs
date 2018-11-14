@@ -232,6 +232,20 @@ namespace Microsoft.Graph
         public bool? StorageRequireDeviceEncryption { get; set; }
     
         /// <summary>
+        /// Gets or sets minimum auto install classification.
+        /// The minimum update classification to install automatically.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "minimumAutoInstallClassification", Required = Newtonsoft.Json.Required.Default)]
+        public UpdateClassification? MinimumAutoInstallClassification { get; set; }
+    
+        /// <summary>
+        /// Gets or sets updates minimum auto install classification.
+        /// The minimum update classification to install automatically.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "updatesMinimumAutoInstallClassification", Required = Newtonsoft.Json.Required.Default)]
+        public UpdateClassification? UpdatesMinimumAutoInstallClassification { get; set; }
+    
+        /// <summary>
         /// Gets or sets updates require automatic updates.
         /// Indicates whether or not to require automatic updates.
         /// </summary>

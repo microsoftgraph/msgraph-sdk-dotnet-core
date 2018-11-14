@@ -84,6 +84,20 @@ namespace Microsoft.Graph
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "uploadState", Required = Newtonsoft.Json.Required.Default)]
         public MobileAppContentFileUploadState? UploadState { get; set; }
     
+        /// <summary>
+        /// Gets or sets is framework file.
+        /// A value indicating whether the file is a framework file.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "isFrameworkFile", Required = Newtonsoft.Json.Required.Default)]
+        public bool? IsFrameworkFile { get; set; }
+    
+        /// <summary>
+        /// Gets or sets is dependency.
+        /// Whether the content file is a dependency for the main content file.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "isDependency", Required = Newtonsoft.Json.Required.Default)]
+        public bool? IsDependency { get; set; }
+    
     }
 }
 

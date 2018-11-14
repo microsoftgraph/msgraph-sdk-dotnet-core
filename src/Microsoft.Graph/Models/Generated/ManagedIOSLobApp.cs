@@ -63,6 +63,13 @@ namespace Microsoft.Graph
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "buildNumber", Required = Newtonsoft.Json.Required.Default)]
         public string BuildNumber { get; set; }
     
+        /// <summary>
+        /// Gets or sets identity version.
+        /// The identity version.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "identityVersion", Required = Newtonsoft.Json.Required.Default)]
+        public string IdentityVersion { get; set; }
+    
     }
 }
 

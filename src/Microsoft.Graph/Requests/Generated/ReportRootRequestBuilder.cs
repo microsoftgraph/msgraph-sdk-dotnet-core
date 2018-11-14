@@ -50,6 +50,28 @@ namespace Microsoft.Graph
         }
     
         /// <summary>
+        /// Gets the request builder for ReportRootDeviceConfigurationUserActivity.
+        /// </summary>
+        /// <returns>The <see cref="IReportRootDeviceConfigurationUserActivityRequestBuilder"/>.</returns>
+        public IReportRootDeviceConfigurationUserActivityRequestBuilder DeviceConfigurationUserActivity()
+        {
+            return new ReportRootDeviceConfigurationUserActivityRequestBuilder(
+                this.AppendSegmentToRequestUrl("microsoft.graph.deviceConfigurationUserActivity"),
+                this.Client);
+        }
+
+        /// <summary>
+        /// Gets the request builder for ReportRootDeviceConfigurationDeviceActivity.
+        /// </summary>
+        /// <returns>The <see cref="IReportRootDeviceConfigurationDeviceActivityRequestBuilder"/>.</returns>
+        public IReportRootDeviceConfigurationDeviceActivityRequestBuilder DeviceConfigurationDeviceActivity()
+        {
+            return new ReportRootDeviceConfigurationDeviceActivityRequestBuilder(
+                this.AppendSegmentToRequestUrl("microsoft.graph.deviceConfigurationDeviceActivity"),
+                this.Client);
+        }
+
+        /// <summary>
         /// Gets the request builder for ReportRootGetOffice365ActivationsUserDetail.
         /// </summary>
         /// <returns>The <see cref="IReportRootGetOffice365ActivationsUserDetailRequestBuilder"/>.</returns>
@@ -1123,25 +1145,16 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Gets the request builder for ReportRootDeviceConfigurationUserActivity.
+        /// Gets the request builder for ReportRootGetTenantSecureScores.
         /// </summary>
-        /// <returns>The <see cref="IReportRootDeviceConfigurationUserActivityRequestBuilder"/>.</returns>
-        public IReportRootDeviceConfigurationUserActivityRequestBuilder DeviceConfigurationUserActivity()
+        /// <returns>The <see cref="IReportRootGetTenantSecureScoresRequestBuilder"/>.</returns>
+        public IReportRootGetTenantSecureScoresRequestBuilder GetTenantSecureScores(
+            Int32 period)
         {
-            return new ReportRootDeviceConfigurationUserActivityRequestBuilder(
-                this.AppendSegmentToRequestUrl("microsoft.graph.deviceConfigurationUserActivity"),
-                this.Client);
-        }
-
-        /// <summary>
-        /// Gets the request builder for ReportRootDeviceConfigurationDeviceActivity.
-        /// </summary>
-        /// <returns>The <see cref="IReportRootDeviceConfigurationDeviceActivityRequestBuilder"/>.</returns>
-        public IReportRootDeviceConfigurationDeviceActivityRequestBuilder DeviceConfigurationDeviceActivity()
-        {
-            return new ReportRootDeviceConfigurationDeviceActivityRequestBuilder(
-                this.AppendSegmentToRequestUrl("microsoft.graph.deviceConfigurationDeviceActivity"),
-                this.Client);
+            return new ReportRootGetTenantSecureScoresRequestBuilder(
+                this.AppendSegmentToRequestUrl("microsoft.graph.getTenantSecureScores"),
+                this.Client,
+                period);
         }
 
         /// <summary>
@@ -1175,6 +1188,17 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
+        /// Gets the request builder for ReportRootManagedDeviceEnrollmentFailureTrends.
+        /// </summary>
+        /// <returns>The <see cref="IReportRootManagedDeviceEnrollmentFailureTrendsRequestBuilder"/>.</returns>
+        public IReportRootManagedDeviceEnrollmentFailureTrendsRequestBuilder ManagedDeviceEnrollmentFailureTrends()
+        {
+            return new ReportRootManagedDeviceEnrollmentFailureTrendsRequestBuilder(
+                this.AppendSegmentToRequestUrl("microsoft.graph.managedDeviceEnrollmentFailureTrends"),
+                this.Client);
+        }
+
+        /// <summary>
         /// Gets the request builder for ReportRootManagedDeviceEnrollmentTopFailures.
         /// </summary>
         /// <returns>The <see cref="IReportRootManagedDeviceEnrollmentTopFailuresRequestBuilder"/>.</returns>
@@ -1196,6 +1220,44 @@ namespace Microsoft.Graph
                 this.AppendSegmentToRequestUrl("microsoft.graph.managedDeviceEnrollmentTopFailures"),
                 this.Client,
                 period);
+        }
+
+        /// <summary>
+        /// Gets the request builder for ReportRootManagedDeviceEnrollmentAbandonmentSummary.
+        /// </summary>
+        /// <returns>The <see cref="IReportRootManagedDeviceEnrollmentAbandonmentSummaryRequestBuilder"/>.</returns>
+        public IReportRootManagedDeviceEnrollmentAbandonmentSummaryRequestBuilder ManagedDeviceEnrollmentAbandonmentSummary(
+            Int32? skip = null,
+            Int32? top = null,
+            string filter = null,
+            string skipToken = null)
+        {
+            return new ReportRootManagedDeviceEnrollmentAbandonmentSummaryRequestBuilder(
+                this.AppendSegmentToRequestUrl("microsoft.graph.managedDeviceEnrollmentAbandonmentSummary"),
+                this.Client,
+                skip,
+                top,
+                filter,
+                skipToken);
+        }
+
+        /// <summary>
+        /// Gets the request builder for ReportRootManagedDeviceEnrollmentAbandonmentDetails.
+        /// </summary>
+        /// <returns>The <see cref="IReportRootManagedDeviceEnrollmentAbandonmentDetailsRequestBuilder"/>.</returns>
+        public IReportRootManagedDeviceEnrollmentAbandonmentDetailsRequestBuilder ManagedDeviceEnrollmentAbandonmentDetails(
+            Int32? skip = null,
+            Int32? top = null,
+            string filter = null,
+            string skipToken = null)
+        {
+            return new ReportRootManagedDeviceEnrollmentAbandonmentDetailsRequestBuilder(
+                this.AppendSegmentToRequestUrl("microsoft.graph.managedDeviceEnrollmentAbandonmentDetails"),
+                this.Client,
+                skip,
+                top,
+                filter,
+                skipToken);
         }
     
     }

@@ -50,6 +50,18 @@ namespace Microsoft.Graph
         }
     
         /// <summary>
+        /// Gets the request builder for Categories.
+        /// </summary>
+        /// <returns>The <see cref="IManagedEBookCategoriesCollectionWithReferencesRequestBuilder"/>.</returns>
+        public IManagedEBookCategoriesCollectionWithReferencesRequestBuilder Categories
+        {
+            get
+            {
+                return new ManagedEBookCategoriesCollectionWithReferencesRequestBuilder(this.AppendSegmentToRequestUrl("categories"), this.Client);
+            }
+        }
+
+        /// <summary>
         /// Gets the request builder for Assignments.
         /// </summary>
         /// <returns>The <see cref="IManagedEBookAssignmentsCollectionRequestBuilder"/>.</returns>

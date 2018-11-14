@@ -59,6 +59,12 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IPostMultiValueExtendedPropertiesCollectionRequestBuilder"/>.</returns>
         IPostMultiValueExtendedPropertiesCollectionRequestBuilder MultiValueExtendedProperties { get; }
+
+        /// <summary>
+        /// Gets the request builder for Mentions.
+        /// </summary>
+        /// <returns>The <see cref="IPostMentionsCollectionRequestBuilder"/>.</returns>
+        IPostMentionsCollectionRequestBuilder Mentions { get; }
     
         /// <summary>
         /// Gets the request builder for PostForward.

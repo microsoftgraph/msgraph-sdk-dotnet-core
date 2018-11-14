@@ -13,7 +13,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type GroupSettingsCollectionPage.
     /// </summary>
-    public partial class GroupSettingsCollectionPage : CollectionPage<GroupSetting>, IGroupSettingsCollectionPage
+    public partial class GroupSettingsCollectionPage : CollectionPage<DirectorySetting>, IGroupSettingsCollectionPage
     {
         /// <summary>
         /// Gets the next page <see cref="IGroupSettingsCollectionRequest"/> instance.

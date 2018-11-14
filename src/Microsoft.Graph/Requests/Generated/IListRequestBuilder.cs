@@ -31,6 +31,12 @@ namespace Microsoft.Graph
         new IListRequest Request(IEnumerable<Option> options);
     
         /// <summary>
+        /// Gets the request builder for Activities.
+        /// </summary>
+        /// <returns>The <see cref="IListActivitiesCollectionRequestBuilder"/>.</returns>
+        IListActivitiesCollectionRequestBuilder Activities { get; }
+
+        /// <summary>
         /// Gets the request builder for Columns.
         /// </summary>
         /// <returns>The <see cref="IListColumnsCollectionRequestBuilder"/>.</returns>

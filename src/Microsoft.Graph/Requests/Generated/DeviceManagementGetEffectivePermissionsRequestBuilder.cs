@@ -22,6 +22,18 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="requestUrl">The URL for the request.</param>
         /// <param name="client">The <see cref="IBaseClient"/> for handling requests.</param>
+        public DeviceManagementGetEffectivePermissionsRequestBuilder(
+            string requestUrl,
+            IBaseClient client)
+            : base(requestUrl, client)
+        {
+        }
+
+        /// <summary>
+        /// Constructs a new <see cref="DeviceManagementGetEffectivePermissionsRequestBuilder"/>.
+        /// </summary>
+        /// <param name="requestUrl">The URL for the request.</param>
+        /// <param name="client">The <see cref="IBaseClient"/> for handling requests.</param>
         /// <param name="scope">A scope parameter for the OData method call.</param>
         public DeviceManagementGetEffectivePermissionsRequestBuilder(
             string requestUrl,

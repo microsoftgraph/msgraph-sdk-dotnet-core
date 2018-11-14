@@ -36,6 +36,20 @@ namespace Microsoft.Graph
         public string Description { get; set; }
     
         /// <summary>
+        /// Gets or sets scope members.
+        /// List of ids of role scope member security groups.  These are IDs from Azure Active Directory.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "scopeMembers", Required = Newtonsoft.Json.Required.Default)]
+        public IEnumerable<string> ScopeMembers { get; set; }
+    
+        /// <summary>
+        /// Gets or sets scope type.
+        /// Specifies the type of scope for a Role Assignment. Default type 'ResourceScope' allows assignment of ResourceScopes. For 'AllDevices', 'AllLicensedUsers', and 'AllDevicesAndLicensedUsers', the ResourceScopes property should be left empty.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "scopeType", Required = Newtonsoft.Json.Required.Default)]
+        public RoleAssignmentScopeType? ScopeType { get; set; }
+    
+        /// <summary>
         /// Gets or sets resource scopes.
         /// List of ids of role scope member security groups.  These are IDs from Azure Active Directory.
         /// </summary>

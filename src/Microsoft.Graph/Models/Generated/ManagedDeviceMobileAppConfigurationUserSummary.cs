@@ -57,6 +57,13 @@ namespace Microsoft.Graph
         public Int32? FailedCount { get; set; }
     
         /// <summary>
+        /// Gets or sets conflict count.
+        /// Number of users in conflict
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "conflictCount", Required = Newtonsoft.Json.Required.Default)]
+        public Int32? ConflictCount { get; set; }
+    
+        /// <summary>
         /// Gets or sets last update date time.
         /// Last update time
         /// </summary>

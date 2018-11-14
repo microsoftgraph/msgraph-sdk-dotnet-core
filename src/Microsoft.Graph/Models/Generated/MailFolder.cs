@@ -57,6 +57,12 @@ namespace Microsoft.Graph
         public Int32? TotalItemCount { get; set; }
     
         /// <summary>
+        /// Gets or sets well known name.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "wellKnownName", Required = Newtonsoft.Json.Required.Default)]
+        public string WellKnownName { get; set; }
+    
+        /// <summary>
         /// Gets or sets messages.
         /// The collection of messages in the mailFolder.
         /// </summary>
@@ -76,6 +82,12 @@ namespace Microsoft.Graph
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "childFolders", Required = Newtonsoft.Json.Required.Default)]
         public IMailFolderChildFoldersCollectionPage ChildFolders { get; set; }
+    
+        /// <summary>
+        /// Gets or sets user configurations.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "userConfigurations", Required = Newtonsoft.Json.Required.Default)]
+        public IMailFolderUserConfigurationsCollectionPage UserConfigurations { get; set; }
     
         /// <summary>
         /// Gets or sets single value extended properties.

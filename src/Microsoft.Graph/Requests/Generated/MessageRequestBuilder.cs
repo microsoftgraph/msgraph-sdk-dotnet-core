@@ -96,6 +96,18 @@ namespace Microsoft.Graph
                 return new MessageMultiValueExtendedPropertiesCollectionRequestBuilder(this.AppendSegmentToRequestUrl("multiValueExtendedProperties"), this.Client);
             }
         }
+
+        /// <summary>
+        /// Gets the request builder for Mentions.
+        /// </summary>
+        /// <returns>The <see cref="IMessageMentionsCollectionRequestBuilder"/>.</returns>
+        public IMessageMentionsCollectionRequestBuilder Mentions
+        {
+            get
+            {
+                return new MessageMentionsCollectionRequestBuilder(this.AppendSegmentToRequestUrl("mentions"), this.Client);
+            }
+        }
     
         /// <summary>
         /// Gets the request builder for MessageCopy.
@@ -127,33 +139,47 @@ namespace Microsoft.Graph
         /// Gets the request builder for MessageCreateReply.
         /// </summary>
         /// <returns>The <see cref="IMessageCreateReplyRequestBuilder"/>.</returns>
-        public IMessageCreateReplyRequestBuilder CreateReply()
+        public IMessageCreateReplyRequestBuilder CreateReply(
+            Message Message = null,
+            string Comment = null)
         {
             return new MessageCreateReplyRequestBuilder(
                 this.AppendSegmentToRequestUrl("microsoft.graph.createReply"),
-                this.Client);
+                this.Client,
+                Message,
+                Comment);
         }
 
         /// <summary>
         /// Gets the request builder for MessageCreateReplyAll.
         /// </summary>
         /// <returns>The <see cref="IMessageCreateReplyAllRequestBuilder"/>.</returns>
-        public IMessageCreateReplyAllRequestBuilder CreateReplyAll()
+        public IMessageCreateReplyAllRequestBuilder CreateReplyAll(
+            Message Message = null,
+            string Comment = null)
         {
             return new MessageCreateReplyAllRequestBuilder(
                 this.AppendSegmentToRequestUrl("microsoft.graph.createReplyAll"),
-                this.Client);
+                this.Client,
+                Message,
+                Comment);
         }
 
         /// <summary>
         /// Gets the request builder for MessageCreateForward.
         /// </summary>
         /// <returns>The <see cref="IMessageCreateForwardRequestBuilder"/>.</returns>
-        public IMessageCreateForwardRequestBuilder CreateForward()
+        public IMessageCreateForwardRequestBuilder CreateForward(
+            Message Message = null,
+            string Comment = null,
+            IEnumerable<Recipient> ToRecipients = null)
         {
             return new MessageCreateForwardRequestBuilder(
                 this.AppendSegmentToRequestUrl("microsoft.graph.createForward"),
-                this.Client);
+                this.Client,
+                Message,
+                Comment,
+                ToRecipients);
         }
 
         /// <summary>
@@ -161,11 +187,13 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IMessageReplyRequestBuilder"/>.</returns>
         public IMessageReplyRequestBuilder Reply(
+            Message Message = null,
             string Comment = null)
         {
             return new MessageReplyRequestBuilder(
                 this.AppendSegmentToRequestUrl("microsoft.graph.reply"),
                 this.Client,
+                Message,
                 Comment);
         }
 
@@ -174,11 +202,13 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IMessageReplyAllRequestBuilder"/>.</returns>
         public IMessageReplyAllRequestBuilder ReplyAll(
+            Message Message = null,
             string Comment = null)
         {
             return new MessageReplyAllRequestBuilder(
                 this.AppendSegmentToRequestUrl("microsoft.graph.replyAll"),
                 this.Client,
+                Message,
                 Comment);
         }
 
@@ -187,12 +217,14 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="IMessageForwardRequestBuilder"/>.</returns>
         public IMessageForwardRequestBuilder Forward(
+            Message Message = null,
             string Comment = null,
             IEnumerable<Recipient> ToRecipients = null)
         {
             return new MessageForwardRequestBuilder(
                 this.AppendSegmentToRequestUrl("microsoft.graph.forward"),
                 this.Client,
+                Message,
                 Comment,
                 ToRecipients);
         }
@@ -205,6 +237,17 @@ namespace Microsoft.Graph
         {
             return new MessageSendRequestBuilder(
                 this.AppendSegmentToRequestUrl("microsoft.graph.send"),
+                this.Client);
+        }
+
+        /// <summary>
+        /// Gets the request builder for MessageUnsubscribe.
+        /// </summary>
+        /// <returns>The <see cref="IMessageUnsubscribeRequestBuilder"/>.</returns>
+        public IMessageUnsubscribeRequestBuilder Unsubscribe()
+        {
+            return new MessageUnsubscribeRequestBuilder(
+                this.AppendSegmentToRequestUrl("microsoft.graph.unsubscribe"),
                 this.Client);
         }
     

@@ -49,6 +49,12 @@ namespace Microsoft.Graph
         IMailFolderChildFoldersCollectionRequestBuilder ChildFolders { get; }
 
         /// <summary>
+        /// Gets the request builder for UserConfigurations.
+        /// </summary>
+        /// <returns>The <see cref="IMailFolderUserConfigurationsCollectionRequestBuilder"/>.</returns>
+        IMailFolderUserConfigurationsCollectionRequestBuilder UserConfigurations { get; }
+
+        /// <summary>
         /// Gets the request builder for SingleValueExtendedProperties.
         /// </summary>
         /// <returns>The <see cref="IMailFolderSingleValueExtendedPropertiesCollectionRequestBuilder"/>.</returns>

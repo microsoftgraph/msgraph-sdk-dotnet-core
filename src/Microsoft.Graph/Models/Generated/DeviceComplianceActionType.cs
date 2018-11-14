@@ -53,5 +53,10 @@ namespace Microsoft.Graph
         /// </summary>
         PushNotification = 9,
 	
+        /// <summary>
+        /// remote Lock
+        /// </summary>
+        RemoteLock = 10,
+	
     }
 }

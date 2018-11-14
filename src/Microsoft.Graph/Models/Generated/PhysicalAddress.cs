@@ -23,6 +23,18 @@ namespace Microsoft.Graph
     {
 
         /// <summary>
+        /// Gets or sets type.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "type", Required = Newtonsoft.Json.Required.Default)]
+        public PhysicalAddressType? Type { get; set; }
+    
+        /// <summary>
+        /// Gets or sets postOfficeBox.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "postOfficeBox", Required = Newtonsoft.Json.Required.Default)]
+        public string PostOfficeBox { get; set; }
+    
+        /// <summary>
         /// Gets or sets street.
         /// The street.
         /// </summary>

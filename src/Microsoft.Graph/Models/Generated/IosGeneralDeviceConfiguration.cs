@@ -540,6 +540,13 @@ namespace Microsoft.Graph
         public bool? KioskModeAllowVolumeButtons { get; set; }
     
         /// <summary>
+        /// Gets or sets kiosk mode block volume buttons.
+        /// Indicates whether or not to block the volume buttons while in Kiosk Mode.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "kioskModeBlockVolumeButtons", Required = Newtonsoft.Json.Required.Default)]
+        public bool? KioskModeBlockVolumeButtons { get; set; }
+    
+        /// <summary>
         /// Gets or sets kiosk mode allow zoom settings.
         /// Indicates whether or not to allow access to the zoom settings while in kiosk mode.
         /// </summary>
@@ -937,6 +944,90 @@ namespace Microsoft.Graph
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "wiFiConnectOnlyToConfiguredNetworks", Required = Newtonsoft.Json.Required.Default)]
         public bool? WiFiConnectOnlyToConfiguredNetworks { get; set; }
+    
+        /// <summary>
+        /// Gets or sets classroom force request permission to leave classes.
+        /// Indicates whether a student enrolled in an unmanaged course via Classroom will request permission from the teacher when attempting to leave the course (iOS 11.3 and later).
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "classroomForceRequestPermissionToLeaveClasses", Required = Newtonsoft.Json.Required.Default)]
+        public bool? ClassroomForceRequestPermissionToLeaveClasses { get; set; }
+    
+        /// <summary>
+        /// Gets or sets keychain block cloud sync.
+        /// Indicates whether or not iCloud keychain synchronization is blocked.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "keychainBlockCloudSync", Required = Newtonsoft.Json.Required.Default)]
+        public bool? KeychainBlockCloudSync { get; set; }
+    
+        /// <summary>
+        /// Gets or sets pki block otaupdates.
+        /// Indicates whether or not over-the-air PKI updates are blocked. Setting this restriction to false does not disable CRL and OCSP checks (iOS 7.0 and later).
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "pkiBlockOTAUpdates", Required = Newtonsoft.Json.Required.Default)]
+        public bool? PkiBlockOTAUpdates { get; set; }
+    
+        /// <summary>
+        /// Gets or sets privacy force limit ad tracking.
+        /// Indicates if ad tracking is limited.(iOS 7.0 and later).
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "privacyForceLimitAdTracking", Required = Newtonsoft.Json.Required.Default)]
+        public bool? PrivacyForceLimitAdTracking { get; set; }
+    
+        /// <summary>
+        /// Gets or sets enterprise book block backup.
+        /// Indicates whether or not Enterprise book back up is blocked.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "enterpriseBookBlockBackup", Required = Newtonsoft.Json.Required.Default)]
+        public bool? EnterpriseBookBlockBackup { get; set; }
+    
+        /// <summary>
+        /// Gets or sets enterprise book block metadata sync.
+        /// Indicates whether or not Enterprise book notes and highlights sync is blocked.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "enterpriseBookBlockMetadataSync", Required = Newtonsoft.Json.Required.Default)]
+        public bool? EnterpriseBookBlockMetadataSync { get; set; }
+    
+        /// <summary>
+        /// Gets or sets air print blocked.
+        /// Indicates whether or not AirPrint is blocked (iOS 11.0 and later).
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "airPrintBlocked", Required = Newtonsoft.Json.Required.Default)]
+        public bool? AirPrintBlocked { get; set; }
+    
+        /// <summary>
+        /// Gets or sets air print block credentials storage.
+        /// Indicates whether or not keychain storage of username and password for Airprint is blocked (iOS 11.0 and later).
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "airPrintBlockCredentialsStorage", Required = Newtonsoft.Json.Required.Default)]
+        public bool? AirPrintBlockCredentialsStorage { get; set; }
+    
+        /// <summary>
+        /// Gets or sets air print force trusted tls.
+        /// Indicates if trusted certificates are required for TLS printing communication (iOS 11.0 and later).
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "airPrintForceTrustedTLS", Required = Newtonsoft.Json.Required.Default)]
+        public bool? AirPrintForceTrustedTLS { get; set; }
+    
+        /// <summary>
+        /// Gets or sets air print blocki beacon discovery.
+        /// Indicates whether or not iBeacon discovery of AirPrint printers is blocked. This prevents spurious AirPrint Bluetooth beacons from phishing for network traffic (iOS 11.0 and later).
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "airPrintBlockiBeaconDiscovery", Required = Newtonsoft.Json.Required.Default)]
+        public bool? AirPrintBlockiBeaconDiscovery { get; set; }
+    
+        /// <summary>
+        /// Gets or sets block system app removal.
+        /// Indicates whether or not the removal of system apps from the device is blocked on a supervised device (iOS 11.0 and later).
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "blockSystemAppRemoval", Required = Newtonsoft.Json.Required.Default)]
+        public bool? BlockSystemAppRemoval { get; set; }
+    
+        /// <summary>
+        /// Gets or sets vpn block creation.
+        /// Indicates whether or not the creation of VPN configurations is blocked (iOS 11.0 and later).
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "vpnBlockCreation", Required = Newtonsoft.Json.Required.Default)]
+        public bool? VpnBlockCreation { get; set; }
     
     }
 }

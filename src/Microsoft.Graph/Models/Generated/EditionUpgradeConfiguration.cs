@@ -49,6 +49,13 @@ namespace Microsoft.Graph
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "productKey", Required = Newtonsoft.Json.Required.Default)]
         public string ProductKey { get; set; }
     
+        /// <summary>
+        /// Gets or sets windows smode.
+        /// S mode configuration.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "windowsSMode", Required = Newtonsoft.Json.Required.Default)]
+        public WindowsSModeConfiguration? WindowsSMode { get; set; }
+    
     }
 }
 
