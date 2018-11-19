@@ -16,7 +16,9 @@ namespace Microsoft.Graph.Core.Test.Mocks
         {
             this.SetupAllProperties();
 
-            this.Setup(provider => provider.AuthenticateRequestAsync(It.IsAny<HttpRequestMessage>())).Returns(Task.FromResult(0));
+            this.Setup(
+                provider => provider.AuthenticateRequestAsync(It.IsAny<HttpRequestMessage>()))
+                .Returns(Task.FromResult(0));
         }
     }
 }
