@@ -58,14 +58,30 @@ namespace Microsoft.Graph.Core.Test.Requests
         public async Task AuthHandler_OkStatusShouldPassThrough()
         {
             var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, "http://example.org/foo");
-            var httpResponse = new HttpResponseMessage(HttpStatusCode.OK);
+            var expectedResponse = new HttpResponseMessage(HttpStatusCode.OK);
 
-            testHttpMessageHandler.SetHttpResponse(httpResponse);
+            testHttpMessageHandler.SetHttpResponse(expectedResponse);
 
             var response = await invoker.SendAsync(httpRequestMessage, new CancellationToken());
 
-            Assert.AreSame(response, httpResponse, "Doesn't return a successful response");
+            Assert.AreSame(response, expectedResponse, "Doesn't return a successful response");
             Assert.AreSame(response.RequestMessage, httpRequestMessage, "Http response message sets wrong request message");
+        }
+
+        [DataTestMethod]
+        [DataRow(HttpStatusCode.Unauthorized)]
+        public async Task AuthHandler_ShouldRetryUnAuthorizedResponse(HttpStatusCode statusCode)
+        {
+            var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, "http://example.com/bar");
+            var unAuthorizedResponse = new HttpResponseMessage(statusCode);
+            var expectedResponse = new HttpResponseMessage(HttpStatusCode.OK);
+
+            testHttpMessageHandler.SetHttpResponse(unAuthorizedResponse, expectedResponse);
+
+            var response = await invoker.SendAsync(httpRequestMessage, new CancellationToken());
+
+            Assert.AreSame(response.RequestMessage, httpRequestMessage, "Http response message sets wrong request message");
+            Assert.AreSame(response, expectedResponse, "Retry didn't happen");
         }
     }
 }

@@ -8,6 +8,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading;
 using Xunit;
+using System.Threading.Tasks;
 
 namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 {
@@ -51,7 +52,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         }
 
         [Fact]
-        public async System.Threading.Tasks.Task AuthHandler_OkStatusShouldPassThroughAsync()
+        public async Task AuthHandler_OkStatusShouldPassThroughAsync()
         {
             var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, "http://example.org/foo");
             var httpResponse = new HttpResponseMessage(HttpStatusCode.OK);
@@ -61,6 +62,22 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             var response = await invoker.SendAsync(httpRequestMessage, new CancellationToken());
 
             Assert.Equal(response.StatusCode, HttpStatusCode.OK);
+            Assert.Same(response.RequestMessage, httpRequestMessage);
+        }
+
+        [Theory]
+        [InlineData(HttpStatusCode.Unauthorized)]
+        public async Task AuthHandler_ShouldRetryUnAuthorizedResponse(HttpStatusCode statusCode)
+        {
+            var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, "http://example.com/bar");
+            var unAuthorizedResponse = new HttpResponseMessage(statusCode);
+            var expectedResponse = new HttpResponseMessage(HttpStatusCode.OK);
+
+            testHttpMessageHandler.SetHttpResponse(unAuthorizedResponse, expectedResponse);
+
+            var response = await invoker.SendAsync(httpRequestMessage, new CancellationToken());
+
+            Assert.Same(response, expectedResponse);
             Assert.Same(response.RequestMessage, httpRequestMessage);
         }
     }

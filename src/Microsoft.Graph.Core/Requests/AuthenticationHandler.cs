@@ -5,6 +5,7 @@
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Net;
 
 namespace Microsoft.Graph
 {
@@ -38,7 +39,17 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Send a HTTP request
+        /// Check's HTTP response message status code if it's unauthorized (401) or not
+        /// </summary>
+        /// <param name="httpResponseMessage"></param>
+        /// <returns></returns>
+        public bool IsUnauthorized(HttpResponseMessage httpResponseMessage)
+        {
+            return httpResponseMessage.StatusCode == HttpStatusCode.Unauthorized;
+        }
+
+        /// <summary>
+        /// Send a HTTP request and retries the request when the response if unauthorized
         /// </summary>
         /// <param name="httpRequest">The <see cref="HttpRequestMessage"/> to send.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
@@ -49,6 +60,13 @@ namespace Microsoft.Graph
             await AuthenticationProvider.AuthenticateRequestAsync(httpRequest);
 
             HttpResponseMessage response = await base.SendAsync(httpRequest, cancellationToken);
+
+            // Chcek if response is a 401
+            if (IsUnauthorized(response))
+            {
+                // re-issue the request to get a new access token
+                response = await base.SendAsync(httpRequest, cancellationToken);
+            }
 
             return response;
         }
