@@ -14,6 +14,7 @@ namespace Microsoft.Graph
     /// </summary>
     public class AuthenticationHandler: DelegatingHandler
     {
+        public int MaxRetry { get; set; } = 1;
         /// <summary>
         /// AuthenticationProvider property
         /// </summary>
@@ -39,13 +40,42 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Check's HTTP response message status code if it's unauthorized (401) or not
+        /// Check HTTP response message status code if it's unauthorized (401) or not
         /// </summary>
         /// <param name="httpResponseMessage"></param>
         /// <returns></returns>
         public bool IsUnauthorized(HttpResponseMessage httpResponseMessage)
         {
             return httpResponseMessage.StatusCode == HttpStatusCode.Unauthorized;
+        }
+
+        /// <summary>
+        /// Retry sending HTTP request
+        /// </summary>
+        /// <param name="httpResponseMessage"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        private async Task<HttpResponseMessage> SendRetryAsync(HttpResponseMessage httpResponseMessage, CancellationToken cancellationToken)
+        {
+            int retryAttempt = 0;
+            while (retryAttempt < MaxRetry)
+            {
+                var originalRequest = httpResponseMessage.RequestMessage;
+
+                // Authenticate request using AuthenticationProvider
+                await AuthenticationProvider.AuthenticateRequestAsync(originalRequest);
+                httpResponseMessage = await base.SendAsync(originalRequest, cancellationToken);
+
+                retryAttempt++;
+
+                if (!IsUnauthorized(httpResponseMessage))
+                {
+                    // Re-issue the request to get a new access token
+                    return httpResponseMessage;
+                }
+            }
+
+            return httpResponseMessage;
         }
 
         /// <summary>
@@ -58,17 +88,17 @@ namespace Microsoft.Graph
         {
             // Authenticate request using AuthenticationProvider
             await AuthenticationProvider.AuthenticateRequestAsync(httpRequest);
-
             HttpResponseMessage response = await base.SendAsync(httpRequest, cancellationToken);
 
             // Chcek if response is a 401
             if (IsUnauthorized(response))
             {
                 // re-issue the request to get a new access token
-                response = await base.SendAsync(httpRequest, cancellationToken);
+                response = await SendRetryAsync(response, cancellationToken);
             }
-
+            
             return response;
         }
+
     }
 }
