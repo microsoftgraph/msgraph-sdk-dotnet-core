@@ -2,60 +2,56 @@
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
-using Microsoft.Graph.Core.Test.Mocks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.Graph.DotnetCore.Core.Test.Mocks;
+using System;
 using System.Net;
 using System.Net.Http;
-using System.Threading.Tasks;
 using System.Threading;
+using Xunit;
 
-namespace Microsoft.Graph.Core.Test.Requests
+namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 {
-    [TestClass]
-    public class AuthenticationHandlerTests
+    public class AuthenticationHandlerTests : IDisposable
     {
         private MockRedirectHandler testHttpMessageHandler;
         private AuthenticationHandler authenticationHandler;
         private MockAuthenticationProvider mockAuthenticationProvider;
         private HttpMessageInvoker invoker;
 
-        [TestInitialize]
-        public void Setup()
+        public AuthenticationHandlerTests()
         {
-            mockAuthenticationProvider = new MockAuthenticationProvider();
             testHttpMessageHandler = new MockRedirectHandler();
+            mockAuthenticationProvider = new MockAuthenticationProvider();
             authenticationHandler = new AuthenticationHandler(mockAuthenticationProvider.Object, testHttpMessageHandler);
             invoker = new HttpMessageInvoker(authenticationHandler);
         }
 
-        [TestCleanup]
-        public void TearDown()
+        public void Dispose()
         {
             invoker.Dispose();
         }
 
-        [TestMethod]
+        [Fact]
         public void AuthHandler_DefaultConstructor()
         {
             using (AuthenticationHandler auth = new AuthenticationHandler())
             {
-                Assert.IsNull(auth.InnerHandler, "Http message handler initialized");
-                Assert.IsInstanceOfType(auth, typeof(AuthenticationHandler), "Unexpected authentication handler set");
+                Assert.Null(auth.InnerHandler);
+                Assert.Null(auth.AuthenticationProvider);
+                Assert.IsType(typeof(AuthenticationHandler), auth);
             }
         }
 
-        [TestMethod]
+        [Fact]
         public void AuthHandler_AuthProviderHttpMessageHandlerConstructor()
         {
-            Assert.IsNotNull(authenticationHandler.InnerHandler, "Http message handler not initialized");
-            Assert.IsNotNull(authenticationHandler.AuthenticationProvider, "Authentication provider not initialized");
-            Assert.AreEqual(authenticationHandler.InnerHandler, testHttpMessageHandler, "Unexpected http message handler set");
-            Assert.AreEqual(authenticationHandler.AuthenticationProvider, mockAuthenticationProvider.Object, "Unexpected auhtentication provider set");
-            Assert.IsInstanceOfType(authenticationHandler, typeof(AuthenticationHandler), "Unexpected authentication handler set");
+            Assert.NotNull(authenticationHandler.InnerHandler);
+            Assert.NotNull(authenticationHandler.AuthenticationProvider);
+            Assert.IsType(typeof(AuthenticationHandler), authenticationHandler);
         }
 
-        [TestMethod]
-        public async Task AuthHandler_OkStatusShouldPassThrough()
+        [Fact]
+        public async System.Threading.Tasks.Task AuthHandler_OkStatusShouldPassThroughAsync()
         {
             var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, "http://example.org/foo");
             var httpResponse = new HttpResponseMessage(HttpStatusCode.OK);
@@ -64,8 +60,8 @@ namespace Microsoft.Graph.Core.Test.Requests
 
             var response = await invoker.SendAsync(httpRequestMessage, new CancellationToken());
 
-            Assert.AreSame(response, httpResponse, "Doesn't return a successful response");
-            Assert.AreSame(response.RequestMessage, httpRequestMessage, "Http response message sets wrong request message");
+            Assert.Equal(response.StatusCode, HttpStatusCode.OK);
+            Assert.Same(response.RequestMessage, httpRequestMessage);
         }
     }
 }
