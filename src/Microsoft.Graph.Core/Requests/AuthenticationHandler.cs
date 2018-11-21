@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Net;
+using Microsoft.Graph.Core.Helpers;
 
 namespace Microsoft.Graph
 {
@@ -14,7 +15,11 @@ namespace Microsoft.Graph
     /// </summary>
     public class AuthenticationHandler: DelegatingHandler
     {
+        /// <summary>
+        /// MaxRetry property for 401's
+        /// </summary>
         public int MaxRetry { get; set; } = 1;
+
         /// <summary>
         /// AuthenticationProvider property
         /// </summary>
@@ -42,9 +47,9 @@ namespace Microsoft.Graph
         /// <summary>
         /// Check HTTP response message status code if it's unauthorized (401) or not
         /// </summary>
-        /// <param name="httpResponseMessage"></param>
+        /// <param name="httpResponseMessage">The <see cref="HttpResponseMessage"/>to send.</param>
         /// <returns></returns>
-        public bool IsUnauthorized(HttpResponseMessage httpResponseMessage)
+        private bool IsUnauthorized(HttpResponseMessage httpResponseMessage)
         {
             return httpResponseMessage.StatusCode == HttpStatusCode.Unauthorized;
         }
@@ -52,8 +57,8 @@ namespace Microsoft.Graph
         /// <summary>
         /// Retry sending HTTP request
         /// </summary>
-        /// <param name="httpResponseMessage"></param>
-        /// <param name="cancellationToken"></param>
+        /// <param name="httpResponseMessage">The <see cref="HttpResponseMessage"/>to send.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/>to send.</param>
         /// <returns></returns>
         private async Task<HttpResponseMessage> SendRetryAsync(HttpResponseMessage httpResponseMessage, CancellationToken cancellationToken)
         {
@@ -68,7 +73,7 @@ namespace Microsoft.Graph
 
                 retryAttempt++;
 
-                if (!IsUnauthorized(httpResponseMessage))
+                if (!IsUnauthorized(httpResponseMessage) || !ContentHelper.IsBuffered(originalRequest))
                 {
                     // Re-issue the request to get a new access token
                     return httpResponseMessage;
@@ -90,8 +95,8 @@ namespace Microsoft.Graph
             await AuthenticationProvider.AuthenticateRequestAsync(httpRequest);
             HttpResponseMessage response = await base.SendAsync(httpRequest, cancellationToken);
 
-            // Chcek if response is a 401
-            if (IsUnauthorized(response))
+            // Chcek if response is a 401 & is not a streamed body (is buffered)
+            if (IsUnauthorized(response) && ContentHelper.IsBuffered(httpRequest))
             {
                 // re-issue the request to get a new access token
                 response = await SendRetryAsync(response, cancellationToken);
@@ -99,6 +104,5 @@ namespace Microsoft.Graph
             
             return response;
         }
-
     }
 }
