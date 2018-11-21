@@ -2,14 +2,13 @@
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
-using System.Net.Http;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Net;
-using Microsoft.Graph.Core.Helpers;
-
 namespace Microsoft.Graph
 {
+    using System.Net.Http;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using System.Net;
+    using Microsoft.Graph.Core.Helpers;
     /// <summary>
     /// An <see cref="DelegatingHandler"/> implementation using standard .NET libraries.
     /// </summary>
@@ -31,6 +30,15 @@ namespace Microsoft.Graph
         public AuthenticationHandler()
         {
 
+        }
+
+        /// <summary>
+        /// Construct a new <see cref="AuthenticationHandler"/>
+        /// <param name="authenticationProvider">An authentication provider to pass to <see cref="AuthenticationHandler"/> for authenticating requests.</param>
+        /// </summary>
+        public AuthenticationHandler(IAuthenticationProvider authenticationProvider)
+        {
+            AuthenticationProvider = authenticationProvider;
         }
 
         /// <summary>
@@ -92,11 +100,15 @@ namespace Microsoft.Graph
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage httpRequest, CancellationToken cancellationToken)
         {
             // Authenticate request using AuthenticationProvider
-            await AuthenticationProvider.AuthenticateRequestAsync(httpRequest);
+            if (AuthenticationProvider != null)
+            {
+                await AuthenticationProvider.AuthenticateRequestAsync(httpRequest);
+            }
+
             HttpResponseMessage response = await base.SendAsync(httpRequest, cancellationToken);
 
             // Chcek if response is a 401 & is not a streamed body (is buffered)
-            if (IsUnauthorized(response) && ContentHelper.IsBuffered(httpRequest))
+            if (IsUnauthorized(response) && ContentHelper.IsBuffered(httpRequest) && (AuthenticationProvider != null))
             {
                 // re-issue the request to get a new access token
                 response = await SendRetryAsync(response, cancellationToken);

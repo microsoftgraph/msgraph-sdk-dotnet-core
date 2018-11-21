@@ -2,15 +2,15 @@
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
-using Microsoft.Graph.Core.Test.Mocks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
-using System.Threading;
-
 namespace Microsoft.Graph.Core.Test.Requests
 {
+    using Microsoft.Graph.Core.Test.Mocks;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using System.Net;
+    using System.Net.Http;
+    using System.Threading.Tasks;
+    using System.Threading;
+
     [TestClass]
     public class AuthenticationHandlerTests
     {
