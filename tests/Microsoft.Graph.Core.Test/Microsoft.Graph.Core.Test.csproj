@@ -79,12 +79,14 @@
     <Compile Include="Authentication\DelegateAuthenticationProviderTests.cs" />
     <Compile Include="Exceptions\ErrorTests.cs" />
     <Compile Include="Exceptions\ServiceExceptionTests.cs" />
+    <Compile Include="Extensions\RequestExtensionsTests.cs" />
     <Compile Include="Helpers\ExtractSelectHelperTest.cs" />
     <Compile Include="Helpers\StringHelperTests.cs" />
     <Compile Include="Helpers\UrlHelperTests.cs" />
     <Compile Include="Mocks\MockProgress.cs" />
     <Compile Include="Mocks\MockRedirectHandler.cs" />
     <Compile Include="Requests\AsyncMonitorTests.cs" />
+    <Compile Include="Requests\AuthenticationHandlerTests.cs" />
     <Compile Include="Requests\BaseRequestBuilderTests.cs" />
     <Compile Include="Requests\GraphClientFactoryTests.cs" />
     <Compile Include="Requests\RedirectHandlerTests.cs" />

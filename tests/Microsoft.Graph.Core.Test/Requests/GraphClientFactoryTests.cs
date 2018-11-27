@@ -19,7 +19,7 @@ namespace Microsoft.Graph.Core.Test.Requests
     [TestClass]
     public class GraphClientFactoryTests
     {
-        private DelegatingHandler[] handlers = new DelegatingHandler[2];
+        private DelegatingHandler[] handlers = new DelegatingHandler[3];
         private MockRedirectHandler testHttpMessageHandler;
 
 
@@ -29,7 +29,7 @@ namespace Microsoft.Graph.Core.Test.Requests
             this.testHttpMessageHandler = new MockRedirectHandler();
             handlers[0] = new RetryHandler();
             handlers[1] = new RedirectHandler();
-
+            handlers[2] = new AuthenticationHandler();
         }
 
         [TestCleanup]
@@ -41,15 +41,18 @@ namespace Microsoft.Graph.Core.Test.Requests
         [TestMethod]
         public void CreatePipelineWithoutHttpMessageHandlerInput()
         {
-            using (RetryHandler handler = (RetryHandler)GraphClientFactory.CreatePipeline(null, handlers))
-            using (RedirectHandler inner = (RedirectHandler)handler.InnerHandler)
-            using (HttpMessageHandler innerMost = inner.InnerHandler)
+            using (RetryHandler retryHandler = (RetryHandler)GraphClientFactory.CreatePipeline(null, handlers))
+            using (RedirectHandler redirectHandler = (RedirectHandler)retryHandler.InnerHandler)
+            using (AuthenticationHandler authenticationHandler = (AuthenticationHandler) redirectHandler.InnerHandler)
+            using (HttpMessageHandler innerMost = authenticationHandler.InnerHandler)
             {
-                Assert.IsNotNull(handler, "Create a middleware pipeline failed.");
-                Assert.IsNotNull(inner, "Create a middleware pipeline failed.");
+                Assert.IsNotNull(retryHandler, "Create a middleware pipeline failed.");
+                Assert.IsNotNull(redirectHandler, "Create a middleware pipeline failed.");
+                Assert.IsNotNull(authenticationHandler, "Create a middleware pipeline failed");
                 Assert.IsNotNull(innerMost, "Create inner most HttpMessageHandler failed.");
-                Assert.IsInstanceOfType(handler, typeof(RetryHandler), "Pass pipeline failed in first level.");
-                Assert.IsInstanceOfType(inner, typeof(RedirectHandler), "Pass pipeline failed in seconde level.");
+                Assert.IsInstanceOfType(retryHandler, typeof(RetryHandler), "Pass pipeline failed in first level.");
+                Assert.IsInstanceOfType(redirectHandler, typeof(RedirectHandler), "Pass pipeline failed in seconde level.");
+                Assert.IsInstanceOfType(authenticationHandler, typeof(AuthenticationHandler), "Pass pipeline failed in third level.");
                 Assert.IsInstanceOfType(innerMost, typeof(HttpMessageHandler), "Inner most HttpMessageHandler class error.");
             }
 
@@ -58,18 +61,20 @@ namespace Microsoft.Graph.Core.Test.Requests
         [TestMethod]
         public void CreatePipelineWithHttpMessageHandlerInput()
         {
-            using (RetryHandler handler = (RetryHandler)GraphClientFactory.CreatePipeline(this.testHttpMessageHandler, handlers))
-            using (RedirectHandler inner = (RedirectHandler)handler.InnerHandler)
-            using (MockRedirectHandler innerMost = (MockRedirectHandler)inner.InnerHandler)
+            using (RetryHandler retryHandler = (RetryHandler)GraphClientFactory.CreatePipeline(this.testHttpMessageHandler, handlers))
+            using (RedirectHandler redirectHandler = (RedirectHandler)retryHandler.InnerHandler)
+            using (AuthenticationHandler authenticationHandler = (AuthenticationHandler)redirectHandler.InnerHandler)
+            using (MockRedirectHandler innerMost = (MockRedirectHandler)authenticationHandler.InnerHandler)
             {
-                Assert.IsNotNull(handler, "Create a middleware pipeline failed.");
-                Assert.IsNotNull(inner, "Create a middleware pipeline failed.");
+                Assert.IsNotNull(retryHandler, "Create a middleware pipeline failed.");
+                Assert.IsNotNull(redirectHandler, "Create a middleware pipeline failed.");
+                Assert.IsNotNull(authenticationHandler, "Create a middleware pipeline failed.");
                 Assert.IsNotNull(innerMost, "Create inner most HttpMessageHandler failed.");
-                Assert.IsInstanceOfType(handler, typeof(RetryHandler), "Pass pipeline failed in first level.");
-                Assert.IsInstanceOfType(inner, typeof(RedirectHandler), "Pass pipeline failed in seconde level.");
+                Assert.IsInstanceOfType(retryHandler, typeof(RetryHandler), "Pass pipeline failed in first level.");
+                Assert.IsInstanceOfType(redirectHandler, typeof(RedirectHandler), "Pass pipeline failed in seconde level.");
+                Assert.IsInstanceOfType(authenticationHandler, typeof(AuthenticationHandler), "Pass pipeline failed in third level.");
                 Assert.IsInstanceOfType(innerMost, typeof(MockRedirectHandler), "Inner most HttpMessageHandler class error.");
             }
-
         }
 
 
@@ -98,7 +103,6 @@ namespace Microsoft.Graph.Core.Test.Requests
                 Assert.IsFalse(client.DefaultRequestHeaders.CacheControl.NoCache, "NoCache true.");
                 Assert.IsFalse(client.DefaultRequestHeaders.CacheControl.NoStore, "NoStore true.");
                 Assert.AreEqual(client.BaseAddress, baseAddress, "Unexpected default baseAddress set.");
-
             }
         }
 
@@ -204,13 +208,52 @@ namespace Microsoft.Graph.Core.Test.Requests
                 Assert.AreEqual(values.Count(), 1);
                 Assert.AreEqual(values.First(), 1.ToString());
             }
+        }
 
+        [TestMethod]
+        public async Task SendRequest_UnauthorizedWithNoAuthenticationProvider()
+        {
+            var httpRequestMessage = new HttpRequestMessage(HttpMethod.Put, "https://example.com/bar");
+            httpRequestMessage.Content = new StringContent("Hello World");
+
+            var unauthorizedResponse = new HttpResponseMessage(HttpStatusCode.Unauthorized);
+            var okResponse = new HttpResponseMessage(HttpStatusCode.OK);
+
+            testHttpMessageHandler.SetHttpResponse(unauthorizedResponse, okResponse);
+
+            using (HttpClient client = GraphClientFactory.CreateClient(testHttpMessageHandler, handlers))
+            {
+                var response = await client.SendAsync(httpRequestMessage, new CancellationToken());
+                Assert.AreSame(response, unauthorizedResponse);
+                Assert.AreSame(response.RequestMessage, httpRequestMessage);
+            }
+        }
+
+        [TestMethod]
+        public async Task SendRequest_UnauthorizedWithAuthenticationProvider()
+        {
+            var httpRequestMessage = new HttpRequestMessage(HttpMethod.Put, "https://example.com/bar");
+            httpRequestMessage.Content = new StringContent("Hello World");
+
+            var unauthorizedResponse = new HttpResponseMessage(HttpStatusCode.Unauthorized);
+            var okResponse = new HttpResponseMessage(HttpStatusCode.OK);
+
+            testHttpMessageHandler.SetHttpResponse(unauthorizedResponse, okResponse);
+
+            handlers[2] = new AuthenticationHandler(new MockAuthenticationProvider().Object);
+
+            using (HttpClient client = GraphClientFactory.CreateClient(testHttpMessageHandler, handlers))
+            {
+                var response = await client.SendAsync(httpRequestMessage, new CancellationToken());
+                Assert.AreSame(response, okResponse);
+                Assert.AreSame(response.RequestMessage, httpRequestMessage);
+            }
         }
 
         [TestMethod]
         public void CreateClient_WithHandlersHasExceptions()
         {
-            handlers[1] = null;
+            handlers[handlers.Length - 1] = null;
             try
             {
                 HttpClient client = GraphClientFactory.CreateClient(handlers);
@@ -220,8 +263,7 @@ namespace Microsoft.Graph.Core.Test.Requests
                 Assert.IsInstanceOfType(exception, typeof(ArgumentNullException), "Exception is not the right type");
                 Assert.AreEqual(exception.ParamName, "handlers", "ParamName not right.");
             }
-
-            handlers[1] = new RetryHandler(this.testHttpMessageHandler);
+            handlers[handlers.Length - 1] = new RetryHandler(this.testHttpMessageHandler);
             try
             {
                 HttpClient client = GraphClientFactory.CreateClient(handlers);
@@ -229,7 +271,10 @@ namespace Microsoft.Graph.Core.Test.Requests
             catch (ArgumentException exception)
             {
                 Assert.IsInstanceOfType(exception, typeof(ArgumentException), "Exception is not the right type");
-                Assert.AreEqual(exception.Message, String.Format("DelegatingHandler array has unexpected InnerHandler. {0} has unexpected InnerHandler.", handlers[1]));
+                Assert.AreEqual(
+                    exception.Message,
+                    String.Format("DelegatingHandler array has unexpected InnerHandler. {0} has unexpected InnerHandler.",
+                    handlers[handlers.Length - 1]));
 
             }
 

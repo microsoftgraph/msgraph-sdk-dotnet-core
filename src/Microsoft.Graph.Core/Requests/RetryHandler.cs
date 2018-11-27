@@ -11,6 +11,7 @@ namespace Microsoft.Graph
     using System.Net.Http;
     using System.Net;
     using System.Net.Http.Headers;
+
     /// <summary>
     /// An <see cref="DelegatingHandler"/> implementation using standard .NET libraries.
     /// </summary>
@@ -54,7 +55,7 @@ namespace Microsoft.Graph
           
             var response = await base.SendAsync(httpRequest, cancellationToken);
 
-            if (IsRetry(response) && IsBuffered(httpRequest))
+            if (IsRetry(response) && httpRequest.IsBuffered())
             {
                 response = await SendRetryAsync(response, cancellationToken);
             }
@@ -94,7 +95,7 @@ namespace Microsoft.Graph
                 // Call base.SendAsync to send the request
                 response = await base.SendAsync(request, cancellationToken);
 
-                if (!IsRetry(response) || !IsBuffered(request))
+                if (!IsRetry(response) || !request.IsBuffered())
                 {
                     return response;
                 }
@@ -126,23 +127,6 @@ namespace Microsoft.Graph
             return false;
         }
 
-        /// <summary>
-        /// Check the HTTP request's content to determine whether it can be retried or not.
-        /// </summary>
-        /// <param name="request">The <see cref="HttpRequestMessage"/>needs to be sent.</param>
-        /// <returns></returns>
-        private bool IsBuffered(HttpRequestMessage request)
-        {
-            HttpContent content = request.Content;
-
-            if ((request.Method == HttpMethod.Put || request.Method == HttpMethod.Post || request.Method.Method.Equals("PATCH")) 
-                && content != null && (content.Headers.ContentLength == null || (int)content.Headers.ContentLength == -1))
-            {
-                return false;
-            }
-            return true;
-           
-        }
 
         /// <summary>
         /// Update Retry-Attempt header in the HTTP request
