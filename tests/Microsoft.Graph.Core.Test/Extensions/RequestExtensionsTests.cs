@@ -2,41 +2,42 @@
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
-namespace Microsoft.Graph.DotnetCore.Core.Test.Helpers
+namespace Microsoft.Graph.Core.Test.Extensions
 {
-    using Microsoft.Graph.Core.Helpers;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using System.Net.Http;
-    using Xunit;
-    public class ContentHelperTests
+
+    [TestClass]
+    public class RequestExtensionsTests
     {
-        [Fact]
+        [TestMethod]
         public void IsBuffered_Get()
         {
             HttpRequestMessage httpRequest = new HttpRequestMessage(HttpMethod.Get, "http://example.com");
-            var response = ContentHelper.IsBuffered(httpRequest);
+            var response = httpRequest.IsBuffered();
 
-            Assert.True(response, "Unexpected content type");
+            Assert.IsTrue(response, "Unexpected content type");
         }
-        [Fact]
+        [TestMethod]
         public void IsBuffered_PostWithNoContent()
         {
             HttpRequestMessage httpRequest = new HttpRequestMessage(HttpMethod.Post, "http://example.com");
-            var response = ContentHelper.IsBuffered(httpRequest);
+            var response = httpRequest.IsBuffered();
 
-            Assert.True(response, "Unexpected content type");
+            Assert.IsTrue(response, "Unexpected content type");
         }
-        [Fact]
+        [TestMethod]
         public void IsBuffered_PostWithBufferStringContent()
         {
             byte[] data = new byte[] { 1, 2, 3, 4, 5 };
             HttpRequestMessage httpRequest = new HttpRequestMessage(HttpMethod.Post, "http://example.com");
             httpRequest.Content = new ByteArrayContent(data);
-            var response = ContentHelper.IsBuffered(httpRequest);
+            var response = httpRequest.IsBuffered();
 
-            Assert.True(response, "Unexpected content type");
+            Assert.IsTrue(response, "Unexpected content type");
         }
 
-        [Fact]
+        [TestMethod]
         public void IsBuffered_PutWithStreamStringContent()
         {
             var stringContent = new StringContent("Hello World");
@@ -48,20 +49,20 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Helpers
             HttpRequestMessage httpRequest = new HttpRequestMessage(HttpMethod.Put, "http://example.com");
             httpRequest.Content = mutliformDataContent;
             httpRequest.Content.Headers.ContentLength = -1;
-            var response = ContentHelper.IsBuffered(httpRequest);
+            var response = httpRequest.IsBuffered();
 
-            Assert.False(response, "Unexpected content type");
+            Assert.IsFalse(response, "Unexpected content type");
         }
 
-        [Fact]
+        [TestMethod]
         public void IsBuffered_PatchWithStreamStringContent()
         {
             HttpRequestMessage httpRequest = new HttpRequestMessage(new HttpMethod("PATCH"), "http://example.com");
             httpRequest.Content = new StringContent("Hello World");
             httpRequest.Content.Headers.ContentLength = null;
-            var response = ContentHelper.IsBuffered(httpRequest);
+            var response = httpRequest.IsBuffered();
 
-            Assert.False(response, "Unexpected content type");
+            Assert.IsFalse(response, "Unexpected content type");
         }
     }
 }

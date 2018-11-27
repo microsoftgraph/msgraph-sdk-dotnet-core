@@ -11,7 +11,6 @@ namespace Microsoft.Graph
     using System.Net.Http;
     using System.Net;
     using System.Net.Http.Headers;
-    using Microsoft.Graph.Core.Helpers;
 
     /// <summary>
     /// An <see cref="DelegatingHandler"/> implementation using standard .NET libraries.
@@ -56,7 +55,7 @@ namespace Microsoft.Graph
           
             var response = await base.SendAsync(httpRequest, cancellationToken);
 
-            if (IsRetry(response) && ContentHelper.IsBuffered(httpRequest))
+            if (IsRetry(response) && httpRequest.IsBuffered())
             {
                 response = await SendRetryAsync(response, cancellationToken);
             }
@@ -96,7 +95,7 @@ namespace Microsoft.Graph
                 // Call base.SendAsync to send the request
                 response = await base.SendAsync(request, cancellationToken);
 
-                if (!IsRetry(response) || !ContentHelper.IsBuffered(request))
+                if (!IsRetry(response) || !request.IsBuffered())
                 {
                     return response;
                 }
