@@ -103,18 +103,27 @@ namespace Microsoft.Graph
             if (AuthenticationProvider != null)
             {
                 await AuthenticationProvider.AuthenticateRequestAsync(httpRequestMessage);
+
+                HttpResponseMessage response = await base.SendAsync(httpRequestMessage, cancellationToken);
+
+                // Chcek if response is a 401 & is not a streamed body (is buffered)
+                if (IsUnauthorized(response) && httpRequestMessage.IsBuffered())
+                {
+                    // re-issue the request to get a new access token
+                    response = await SendRetryAsync(response, cancellationToken);
+                }
+
+                return response;
             }
-
-            HttpResponseMessage response = await base.SendAsync(httpRequestMessage, cancellationToken);
-
-            // Chcek if response is a 401 & is not a streamed body (is buffered)
-            if (IsUnauthorized(response) && httpRequestMessage.IsBuffered() && (AuthenticationProvider != null))
+            else
             {
-                // re-issue the request to get a new access token
-                response = await SendRetryAsync(response, cancellationToken);
+                throw new ServiceException(
+                    new Error
+                    {
+                        Code = ErrorConstants.Codes.InvalidRequest,
+                        Message = ErrorConstants.Messages.AuthenticationProviderMissing,
+                    });
             }
-            
-            return response;
         }
     }
 }

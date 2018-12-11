@@ -20,11 +20,6 @@ namespace Microsoft.Graph
     /// </summary>
     public class BaseRequest : IBaseRequest
     {
-        /// The key for the SDK version header.
-        protected string sdkVersionHeaderName;
-        /// The value for the SDK version header.
-        protected string sdkVersionHeaderValue;
-
         /// <summary>
         /// Constructs a new <see cref="BaseRequest"/>.
         /// </summary>
@@ -42,9 +37,6 @@ namespace Microsoft.Graph
             this.QueryOptions = new List<QueryOption>();
 
             this.RequestUrl = this.InitializeUrl(requestUrl);
-
-            this.sdkVersionHeaderName = CoreConstants.Headers.SdkVersionHeaderName;
-            this.SdkVersionHeaderPrefix = "Graph";
 
             if (options != null)
             {
@@ -91,11 +83,6 @@ namespace Microsoft.Graph
         /// Gets the URL for the request, without query string.
         /// </summary>
         public string RequestUrl { get; internal set; }
-        
-        /// <summary>
-        /// Gets or sets the telemetry header prefix for requests.
-        /// </summary>
-        protected string SdkVersionHeaderPrefix { get; set; }
 
         /// <summary>
         /// Sends the request.
@@ -202,22 +189,10 @@ namespace Microsoft.Graph
                     });
             }
 
-            if (this.Client.AuthenticationProvider == null)
-            {
-                throw new ServiceException(
-                    new Error
-                    {
-                        Code = ErrorConstants.Codes.InvalidRequest,
-                        Message = ErrorConstants.Messages.AuthenticationProviderMissing,
-                    });
-            }
-
             if (multipartContent != null)
             {
                 using (var request = this.GetHttpRequestMessage())
                 {
-                    await this.AuthenticateRequest(request).ConfigureAwait(false);
-
                     request.Content = multipartContent;
 
                     return await this.Client.HttpProvider.SendAsync(request, completionOption, cancellationToken).ConfigureAwait(false);
@@ -251,20 +226,8 @@ namespace Microsoft.Graph
                     });
             }
 
-            if (this.Client.AuthenticationProvider == null)
-            {
-                throw new ServiceException(
-                    new Error
-                    {
-                        Code = ErrorConstants.Codes.InvalidRequest,
-                        Message = ErrorConstants.Messages.AuthenticationProviderMissing,
-                    });
-            }
-
             using (var request = this.GetHttpRequestMessage())
             {
-                await this.AuthenticateRequest(request).ConfigureAwait(false);
-
                 if (serializableObject != null)
                 {
                     var inputStream = serializableObject as Stream;
@@ -296,9 +259,6 @@ namespace Microsoft.Graph
         {
             var queryString = this.BuildQueryString();
             var request = new HttpRequestMessage(new HttpMethod(this.Method), string.Concat(this.RequestUrl, queryString));
-
-            this.AddHeadersToRequest(request);
-
             return request;
         }
 
@@ -338,47 +298,6 @@ namespace Microsoft.Graph
             }
 
             return null;
-        }
-
-        /// <summary>
-        /// Adds all of the headers from the header collection to the request.
-        /// </summary>
-        /// <param name="request">The <see cref="HttpRequestMessage"/> representation of the request.</param>
-        private void AddHeadersToRequest(HttpRequestMessage request)
-        {
-            if (this.Headers != null)
-            {
-                foreach (var header in this.Headers)
-                {
-                    request.Headers.TryAddWithoutValidation(header.Name, header.Value);
-                }
-            }
-
-            if (string.IsNullOrEmpty(this.sdkVersionHeaderValue))
-            {
-                var assemblyVersion = this.GetType().GetTypeInfo().Assembly.GetName().Version;
-                this.sdkVersionHeaderValue = string.Format(
-                    CoreConstants.Headers.SdkVersionHeaderValueFormatString,
-                    this.SdkVersionHeaderPrefix,
-                    assemblyVersion.Major,
-                    assemblyVersion.Minor,
-                    assemblyVersion.Build);
-            }
-
-            // Append SDK version header for telemetry
-            request.Headers.Add(
-                this.sdkVersionHeaderName,
-                this.sdkVersionHeaderValue);
-        }
-
-        /// <summary>
-        /// Adds the authentication header to the request.
-        /// </summary>
-        /// <param name="request">The <see cref="HttpRequestMessage"/> representation of the request.</param>
-        /// <returns>The task to await.</returns>
-        private Task AuthenticateRequest(HttpRequestMessage request)
-        {
-            return this.Client.AuthenticationProvider.AuthenticateRequestAsync(request);
         }
 
         /// <summary>

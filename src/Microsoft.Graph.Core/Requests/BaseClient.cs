@@ -26,7 +26,7 @@ namespace Microsoft.Graph
         {
             this.BaseUrl = baseUrl;
             this.AuthenticationProvider = authenticationProvider;
-            this.HttpProvider = httpProvider ?? new HttpProvider(new Serializer());
+            this.HttpProvider = httpProvider ?? new HttpProvider(this.AuthenticationProvider, new Serializer());
         }
 
         /// <summary>

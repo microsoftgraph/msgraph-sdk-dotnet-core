@@ -18,8 +18,6 @@ namespace Microsoft.Graph
     /// </summary>
     public class HttpProvider : IHttpProvider
     {
-        private const int maxRedirects = 5;
-
         internal bool disposeHandler;
 
         internal HttpClient httpClient;
@@ -29,9 +27,10 @@ namespace Microsoft.Graph
         /// <summary>
         /// Constructs a new <see cref="HttpProvider"/>.
         /// </summary>
+        /// <param name="authenticationProvider">The <see cref="IAuthenticationProvider"/> for authenticating request messages.</param>
         /// <param name="serializer">A serializer for serializing and deserializing JSON objects.</param>
-        public HttpProvider(ISerializer serializer = null)
-            : this((HttpMessageHandler)null, true, serializer)
+        public HttpProvider(IAuthenticationProvider authenticationProvider, ISerializer serializer = null)
+            : this((HttpMessageHandler)null, true, authenticationProvider, serializer)
         {
         }
 
@@ -40,14 +39,15 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="httpClientHandler">An HTTP client handler to pass to the <see cref="HttpClient"/> for sending requests.</param>
         /// <param name="disposeHandler">Whether or not to dispose the client handler on Dispose().</param>
+        /// <param name="authenticationProvider">The <see cref="IAuthenticationProvider"/> for authenticating request messages.</param>
         /// <param name="serializer">A serializer for serializing and deserializing JSON objects.</param>
         /// <remarks>
         ///     By default, HttpProvider disables automatic redirects and handles redirects to preserve authentication headers. If providing
         ///     an <see cref="HttpClientHandler"/> to the constructor and enabling automatic redirects this could cause issues with authentication
         ///     over the redirect.
         /// </remarks>
-        public HttpProvider(HttpClientHandler httpClientHandler, bool disposeHandler, ISerializer serializer = null)
-            : this((HttpMessageHandler)httpClientHandler, disposeHandler, serializer)
+        public HttpProvider(HttpClientHandler httpClientHandler, bool disposeHandler, IAuthenticationProvider authenticationProvider, ISerializer serializer = null)
+            : this((HttpMessageHandler)httpClientHandler, disposeHandler, authenticationProvider, serializer)
         {
         }
 
@@ -56,31 +56,22 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="httpMessageHandler">An HTTP message handler to pass to the <see cref="HttpClient"/> for sending requests.</param>
         /// <param name="disposeHandler">Whether or not to dispose the client handler on Dispose().</param>
+        /// <param name="authenticationProvider">The <see cref="IAuthenticationProvider"/> for authenticating request messages.</param>
         /// <param name="serializer">A serializer for serializing and deserializing JSON objects.</param>
-        public HttpProvider(HttpMessageHandler httpMessageHandler, bool disposeHandler, ISerializer serializer)
+        public HttpProvider(HttpMessageHandler httpMessageHandler, bool disposeHandler, IAuthenticationProvider authenticationProvider, ISerializer serializer)
         {
             this.disposeHandler = disposeHandler;
             this.httpMessageHandler = httpMessageHandler ?? new HttpClientHandler { AllowAutoRedirect = false };
-            this.httpClient = new HttpClient(this.httpMessageHandler, this.disposeHandler);
-
-            this.CacheControlHeader = new CacheControlHeaderValue { NoCache = true, NoStore = true };
             this.Serializer = serializer ?? new Serializer();
-        }
 
-        /// <summary>
-        /// Gets or sets the cache control header for requests;
-        /// </summary>
-        public CacheControlHeaderValue CacheControlHeader
-        {
-            get
+            DelegatingHandler[] handlers = new DelegatingHandler[]
             {
-                return this.httpClient.DefaultRequestHeaders.CacheControl;
-            }
+                new RedirectHandler(),
+                new RetryHandler(),
+                new AuthenticationHandler(authenticationProvider)
+            };
 
-            set
-            {
-                this.httpClient.DefaultRequestHeaders.CacheControl = value;
-            }
+            this.httpClient = GraphClientFactory.CreateClient(this.httpMessageHandler, handlers);
         }
 
         /// <summary>
@@ -150,121 +141,6 @@ namespace Microsoft.Graph
             HttpCompletionOption completionOption,
             CancellationToken cancellationToken)
         {
-            var response = await this.SendRequestAsync(request, completionOption, cancellationToken).ConfigureAwait(false);
-
-            if (this.IsRedirect(response.StatusCode))
-            {
-                response = await this.HandleRedirect(response, completionOption, cancellationToken).ConfigureAwait(false);
-
-                if (response == null)
-                {
-                    throw new ServiceException(
-                        new Error
-                        {
-                            Code = ErrorConstants.Codes.GeneralException,
-                            Message = ErrorConstants.Messages.LocationHeaderNotSetOnRedirect,
-                        });
-                }
-            }
-
-            if (!response.IsSuccessStatusCode && !this.IsRedirect(response.StatusCode))
-            {
-                using (response)
-                {
-                    var errorResponse = await this.ConvertErrorResponseAsync(response).ConfigureAwait(false);
-                    Error error = null;
-                    
-                    if (errorResponse == null || errorResponse.Error == null)
-                    {
-                        if (response != null && response.StatusCode == HttpStatusCode.NotFound)
-                        {
-                            error = new Error { Code = ErrorConstants.Codes.ItemNotFound };
-                        }
-                        else
-                        {
-                            error = new Error
-                            {
-                                Code = ErrorConstants.Codes.GeneralException,
-                                Message = ErrorConstants.Messages.UnexpectedExceptionResponse,
-                            };
-                        }
-                    }
-                    else
-                    {
-                        error = errorResponse.Error;
-                    }
-
-                    if (string.IsNullOrEmpty(error.ThrowSite))
-                    {
-                        IEnumerable<string> throwsiteValues;
-
-                        if (response.Headers.TryGetValues(CoreConstants.Headers.ThrowSiteHeaderName, out throwsiteValues))
-                        {
-                            error.ThrowSite = throwsiteValues.FirstOrDefault();
-                        }
-                    }
-
-                    throw new ServiceException(error)
-                    {
-                        // Pass through the response headers to the ServiceException.
-                        ResponseHeaders = response.Headers,
-
-                        // System.Net.HttpStatusCode does not support RFC 6585, Additional HTTP Status Codes.
-                        // Throttling status code 429 is in RFC 6586. The status code 429 will be passed through.
-                        StatusCode = response.StatusCode
-                    };
-                }
-            }
-
-            return response;
-        }
-
-        internal async Task<HttpResponseMessage> HandleRedirect(
-            HttpResponseMessage initialResponse,
-            HttpCompletionOption completionOption,
-            CancellationToken cancellationToken,
-            int redirectCount = 0)
-        {
-            if (initialResponse.Headers.Location == null)
-            {
-                return null;
-            }
-
-            using (initialResponse)
-            using (var redirectRequest = new HttpRequestMessage(initialResponse.RequestMessage.Method, initialResponse.Headers.Location))
-            {
-                // Preserve headers for the next request
-                foreach (var header in initialResponse.RequestMessage.Headers)
-                {
-                    redirectRequest.Headers.Add(header.Key, header.Value);
-                }
-
-                var response = await this.SendRequestAsync(redirectRequest, completionOption, cancellationToken).ConfigureAwait(false);
-
-                if (this.IsRedirect(response.StatusCode))
-                {
-                    if (++redirectCount > HttpProvider.maxRedirects)
-                    {
-                        throw new ServiceException(
-                            new Error
-                            {
-                                Code = ErrorConstants.Codes.TooManyRedirects,
-                                Message = string.Format(ErrorConstants.Messages.TooManyRedirectsFormatString, HttpProvider.maxRedirects)
-                            });
-                    }
-
-                    return await this.HandleRedirect(response, completionOption, cancellationToken, redirectCount).ConfigureAwait(false);
-                }
-
-                return response;
-            }
-        }
-
-        internal async Task<HttpResponseMessage> SendRequestAsync(
-            HttpRequestMessage request,
-            HttpCompletionOption completionOption,
-            CancellationToken cancellationToken)
-        {
             try
             {
                 return await this.httpClient.SendAsync(request, completionOption, cancellationToken).ConfigureAwait(false);
@@ -289,33 +165,6 @@ namespace Microsoft.Graph
                         },
                         exception);
             }
-        }
-
-        /// <summary>
-        /// Converts the <see cref="HttpRequestException"/> into an <see cref="ErrorResponse"/> object;
-        /// </summary>
-        /// <param name="response">The <see cref="HttpResponseMessage"/> to convert.</param>
-        /// <returns>The <see cref="ErrorResponse"/> object.</returns>
-        private async Task<ErrorResponse> ConvertErrorResponseAsync(HttpResponseMessage response)
-        {
-            try
-            {
-                using (var responseStream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false))
-                {
-                    return this.Serializer.DeserializeObject<ErrorResponse>(responseStream);
-                }
-            }
-            catch (Exception)
-            {
-                // If there's an exception deserializing the error response return null and throw a generic
-                // ServiceException later.
-                return null;
-            }
-        }
-
-        private bool IsRedirect(HttpStatusCode statusCode)
-        {
-            return (int)statusCode >= 300 && (int)statusCode < 400 && statusCode != HttpStatusCode.NotModified;
         }
     }
 }
