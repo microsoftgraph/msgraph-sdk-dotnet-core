@@ -51,6 +51,15 @@ namespace Microsoft.Graph
             // check response status code 
             if (IsRedirect(response.StatusCode))
             {
+                if (response.Headers.Location == null)
+                {
+                    throw new ServiceException(
+                        new Error
+                        {
+                            Code = ErrorConstants.Codes.GeneralException,
+                            Message = ErrorConstants.Messages.LocationHeaderNotSetOnRedirect,
+                        });
+                }
 
                 var redirectCount = 0;
 

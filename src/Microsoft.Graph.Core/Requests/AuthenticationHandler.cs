@@ -25,14 +25,6 @@ namespace Microsoft.Graph
 
         /// <summary>
         /// Construct a new <see cref="AuthenticationHandler"/>
-        /// </summary>
-        public AuthenticationHandler()
-        {
-
-        }
-
-        /// <summary>
-        /// Construct a new <see cref="AuthenticationHandler"/>
         /// <param name="authenticationProvider">An authentication provider to pass to <see cref="AuthenticationHandler"/> for authenticating requests.</param>
         /// </summary>
         public AuthenticationHandler(IAuthenticationProvider authenticationProvider)

@@ -189,6 +189,16 @@ namespace Microsoft.Graph
                     });
             }
 
+            if (this.Client.AuthenticationProvider == null)
+            {
+                throw new ServiceException(
+                    new Error
+                    {
+                        Code = ErrorConstants.Codes.InvalidRequest,
+                        Message = ErrorConstants.Messages.AuthenticationProviderMissing,
+                    });
+            }
+
             if (multipartContent != null)
             {
                 using (var request = this.GetHttpRequestMessage())
@@ -226,6 +236,16 @@ namespace Microsoft.Graph
                     });
             }
 
+            if (this.Client.AuthenticationProvider == null)
+            {
+                throw new ServiceException(
+                    new Error
+                    {
+                        Code = ErrorConstants.Codes.InvalidRequest,
+                        Message = ErrorConstants.Messages.AuthenticationProviderMissing,
+                    });
+            }
+
             using (var request = this.GetHttpRequestMessage())
             {
                 if (serializableObject != null)
@@ -259,7 +279,23 @@ namespace Microsoft.Graph
         {
             var queryString = this.BuildQueryString();
             var request = new HttpRequestMessage(new HttpMethod(this.Method), string.Concat(this.RequestUrl, queryString));
+            this.AddHeadersToRequest(request);
             return request;
+        }
+
+        /// <summary>
+        /// Adds all of the headers from the header collection to the request.
+        /// </summary>
+        /// <param name="request">The <see cref="HttpRequestMessage"/> representation of the request.</param>
+        private void AddHeadersToRequest(HttpRequestMessage request)
+        {
+            if (this.Headers != null)
+            {
+                foreach (var header in this.Headers)
+                {
+                    request.Headers.TryAddWithoutValidation(header.Name, header.Value);
+                }
+            }
         }
 
         /// <summary>

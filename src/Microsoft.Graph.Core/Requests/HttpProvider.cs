@@ -30,7 +30,7 @@ namespace Microsoft.Graph
         /// <param name="authenticationProvider">The <see cref="IAuthenticationProvider"/> for authenticating request messages.</param>
         /// <param name="serializer">A serializer for serializing and deserializing JSON objects.</param>
         public HttpProvider(IAuthenticationProvider authenticationProvider, ISerializer serializer = null)
-            : this((HttpMessageHandler)null, true, authenticationProvider, serializer)
+            : this(authenticationProvider, (HttpMessageHandler)null, true, serializer)
         {
         }
 
@@ -46,8 +46,8 @@ namespace Microsoft.Graph
         ///     an <see cref="HttpClientHandler"/> to the constructor and enabling automatic redirects this could cause issues with authentication
         ///     over the redirect.
         /// </remarks>
-        public HttpProvider(HttpClientHandler httpClientHandler, bool disposeHandler, IAuthenticationProvider authenticationProvider, ISerializer serializer = null)
-            : this((HttpMessageHandler)httpClientHandler, disposeHandler, authenticationProvider, serializer)
+        public HttpProvider(IAuthenticationProvider authenticationProvider, HttpClientHandler httpClientHandler, bool disposeHandler, ISerializer serializer = null)
+            : this(authenticationProvider, (HttpMessageHandler)httpClientHandler, disposeHandler, serializer)
         {
         }
 
@@ -58,7 +58,7 @@ namespace Microsoft.Graph
         /// <param name="disposeHandler">Whether or not to dispose the client handler on Dispose().</param>
         /// <param name="authenticationProvider">The <see cref="IAuthenticationProvider"/> for authenticating request messages.</param>
         /// <param name="serializer">A serializer for serializing and deserializing JSON objects.</param>
-        public HttpProvider(HttpMessageHandler httpMessageHandler, bool disposeHandler, IAuthenticationProvider authenticationProvider, ISerializer serializer)
+        public HttpProvider(IAuthenticationProvider authenticationProvider, HttpMessageHandler httpMessageHandler, bool disposeHandler, ISerializer serializer)
         {
             this.disposeHandler = disposeHandler;
             this.httpMessageHandler = httpMessageHandler ?? new HttpClientHandler { AllowAutoRedirect = false };
@@ -72,35 +72,6 @@ namespace Microsoft.Graph
             };
 
             this.httpClient = GraphClientFactory.CreateClient(this.httpMessageHandler, handlers);
-        }
-
-        /// <summary>
-        /// Gets or sets the overall request timeout.
-        /// </summary>
-        public TimeSpan OverallTimeout
-        {
-            get
-            {
-                return this.httpClient.Timeout;
-            }
-
-            set
-            {
-                try
-                {
-                    this.httpClient.Timeout = value;
-                }
-                catch (InvalidOperationException exception)
-                {
-                    throw new ServiceException(
-                        new Error
-                        {
-                            Code = ErrorConstants.Codes.NotAllowed,
-                            Message = ErrorConstants.Messages.OverallTimeoutCannotBeSet,
-                        },
-                        exception);
-                }
-            }
         }
 
         /// <summary>
@@ -141,6 +112,65 @@ namespace Microsoft.Graph
             HttpCompletionOption completionOption,
             CancellationToken cancellationToken)
         {
+            var response = await this.SendRequestAsync(request, completionOption, cancellationToken).ConfigureAwait(false);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                using (response)
+                {
+                    var errorResponse = await this.ConvertErrorResponseAsync(response).ConfigureAwait(false);
+                    Error error = null;
+
+                    if (errorResponse == null || errorResponse.Error == null)
+                    {
+                        if (response != null && response.StatusCode == HttpStatusCode.NotFound)
+                        {
+                            error = new Error { Code = ErrorConstants.Codes.ItemNotFound };
+                        }
+                        else
+                        {
+                            error = new Error
+                            {
+                                Code = ErrorConstants.Codes.GeneralException,
+                                Message = ErrorConstants.Messages.UnexpectedExceptionResponse,
+                            };
+                        }
+                    }
+                    else
+                    {
+                        error = errorResponse.Error;
+                    }
+
+                    if (string.IsNullOrEmpty(error.ThrowSite))
+                    {
+                        IEnumerable<string> throwsiteValues;
+
+                        if (response.Headers.TryGetValues(CoreConstants.Headers.ThrowSiteHeaderName, out throwsiteValues))
+                        {
+                            error.ThrowSite = throwsiteValues.FirstOrDefault();
+                        }
+                    }
+
+                    throw new ServiceException(error)
+                    {
+                        // Pass through the response headers to the ServiceException.
+                        ResponseHeaders = response.Headers,
+
+                        // System.Net.HttpStatusCode does not support RFC 6585, Additional HTTP Status Codes.
+                        // Throttling status code 429 is in RFC 6586. The status code 429 will be passed through.
+                        StatusCode = response.StatusCode
+                    };
+                }
+            }
+
+            return response;
+        }
+
+        internal async Task<HttpResponseMessage> SendRequestAsync(
+            HttpRequestMessage request,
+            HttpCompletionOption completionOption,
+            CancellationToken cancellationToken)
+        {
             try
             {
                 return await this.httpClient.SendAsync(request, completionOption, cancellationToken).ConfigureAwait(false);
@@ -155,6 +185,10 @@ namespace Microsoft.Graph
                         },
                         exception);
             }
+            catch(ServiceException exception)
+            {
+                throw exception;
+            }
             catch (Exception exception)
             {
                 throw new ServiceException(
@@ -166,5 +200,28 @@ namespace Microsoft.Graph
                         exception);
             }
         }
+
+        /// <summary>
+        /// Converts the <see cref="HttpRequestException"/> into an <see cref="ErrorResponse"/> object;
+        /// </summary>
+        /// <param name="response">The <see cref="HttpResponseMessage"/> to convert.</param>
+        /// <returns>The <see cref="ErrorResponse"/> object.</returns>
+        private async Task<ErrorResponse> ConvertErrorResponseAsync(HttpResponseMessage response)
+        {
+            try
+            {
+                using (var responseStream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false))
+                {
+                    return this.Serializer.DeserializeObject<ErrorResponse>(responseStream);
+                }
+            }
+            catch (Exception)
+            {
+                // If there's an exception deserializing the error response return null and throw a generic
+                // ServiceException later.
+                return null;
+            }
+        }
+
     }
 }

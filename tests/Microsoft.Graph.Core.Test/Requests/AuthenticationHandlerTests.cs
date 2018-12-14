@@ -35,12 +35,12 @@ namespace Microsoft.Graph.Core.Test.Requests
         }
 
         [TestMethod]
-        public void AuthHandler_DefaultConstructor()
+        public void AuthHandler_AuthProviderConstructor()
         {
-            using (AuthenticationHandler auth = new AuthenticationHandler())
+            using (AuthenticationHandler auth = new AuthenticationHandler(mockAuthenticationProvider.Object))
             {
                 Assert.IsNull(auth.InnerHandler, "Http message handler initialized");
-                Assert.IsNull(auth.AuthenticationProvider, "Authentication provider initialized");
+                Assert.IsNotNull(auth.AuthenticationProvider, "Authentication provider initialized");
                 Assert.IsInstanceOfType(auth, typeof(AuthenticationHandler), "Unexpected authentication handler set");
             }
         }

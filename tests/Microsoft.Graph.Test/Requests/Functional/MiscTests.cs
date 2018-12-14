@@ -48,22 +48,22 @@ namespace Microsoft.Graph.Test.Requests.Functional
         /// I set the autoresponder latency to 10 seconds, and the client's timeout to 7 sec (2 minutes).
         /// You'll need to remove the Ignore attribute to run this as well. 
         /// </summary>
-        [TestMethod]
-        [Ignore]
-        public async Async.Task ManualAdHocTimeoutTest()
-        {
-            graphClient.HttpProvider.OverallTimeout = new TimeSpan(0, 0, 7);
-            try
-            {
-                User me = await graphClient.Me.Request().GetAsync();
+        //[TestMethod]
+        //[Ignore]
+        //public async Async.Task ManualAdHocTimeoutTest()
+        //{
+        //    graphClient.HttpProvider.OverallTimeout = new TimeSpan(0, 0, 7);
+        //    try
+        //    {
+        //        User me = await graphClient.Me.Request().GetAsync();
 
-                Assert.Fail("Expected an exception if this was setup correctly.");
-            }
-            catch (ServiceException ex)
-            {
-                Assert.IsInstanceOfType(ex.InnerException, typeof(Async.TaskCanceledException), "Unexpected inner exception thrown.");
-            }
-        }
+        //        Assert.Fail("Expected an exception if this was setup correctly.");
+        //    }
+        //    catch (ServiceException ex)
+        //    {
+        //        Assert.IsInstanceOfType(ex.InnerException, typeof(Async.TaskCanceledException), "Unexpected inner exception thrown.");
+        //    }
+        //}
     }
 }
 

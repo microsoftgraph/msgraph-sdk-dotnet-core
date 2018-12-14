@@ -33,12 +33,12 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         }
 
         [Fact]
-        public void AuthHandler_DefaultConstructor()
+        public void AuthHandler_AuthProviderConstructor()
         {
-            using (AuthenticationHandler auth = new AuthenticationHandler())
+            using (AuthenticationHandler auth = new AuthenticationHandler(mockAuthenticationProvider.Object))
             {
                 Assert.Null(auth.InnerHandler);
-                Assert.Null(auth.AuthenticationProvider);
+                Assert.NotNull(auth.AuthenticationProvider);
                 Assert.IsType(typeof(AuthenticationHandler), auth);
             }
         }
