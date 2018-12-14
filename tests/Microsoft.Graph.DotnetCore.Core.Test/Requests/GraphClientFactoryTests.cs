@@ -276,7 +276,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             {
                 HttpClient client = GraphClientFactory.CreateClient(handlers);
             }
-            catch (Exception exception)
+            catch (ArgumentException exception)
             {
                 Assert.IsType(typeof(ArgumentException), exception);
                 Assert.Equal(exception.Message, String.Format("DelegatingHandler array has unexpected InnerHandler. {0} has unexpected InnerHandler.", handlers[handlers.Length - 1]));
