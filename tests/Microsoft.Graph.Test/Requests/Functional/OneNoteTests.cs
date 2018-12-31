@@ -358,9 +358,6 @@ namespace Microsoft.Graph.Test.Requests.Functional
                 HttpRequestMessage hrm = new HttpRequestMessage(HttpMethod.Post, requestUrl);
                 hrm.Content = new StringContent(htmlBody, System.Text.Encoding.UTF8, "text/html");
 
-                // Authenticate (add access token) our HttpRequestMessage
-                await graphClient.AuthenticationProvider.AuthenticateRequestAsync(hrm);
-
                 // Send the request and get the response.
                 HttpResponseMessage response = await graphClient.HttpProvider.SendAsync(hrm);
 
@@ -426,9 +423,6 @@ namespace Microsoft.Graph.Test.Requests.Functional
                     // Create the request message and add the content.
                     HttpRequestMessage hrm = new HttpRequestMessage(HttpMethod.Post, requestUrl);
                     hrm.Content = body;
-
-                    // Authenticate (add access token to) our HttpRequestMessage
-                    await graphClient.AuthenticationProvider.AuthenticateRequestAsync(hrm);
 
                     // Send the request and get the response.
                     response = await graphClient.HttpProvider.SendAsync(hrm);
@@ -516,9 +510,6 @@ namespace Microsoft.Graph.Test.Requests.Functional
                     HttpRequestMessage hrm = new HttpRequestMessage(HttpMethod.Post, requestUrl);
                     hrm.Content = multiPartContent;
 
-                    // Authenticate (add access token to) our HttpRequestMessage
-                    await graphClient.AuthenticationProvider.AuthenticateRequestAsync(hrm);
-
                     // Send the request and get the response.
                     response = await graphClient.HttpProvider.SendAsync(hrm);
                 }
@@ -603,9 +594,6 @@ namespace Microsoft.Graph.Test.Requests.Functional
                 string updateBodyCommandString = graphClient.HttpProvider.Serializer.SerializeObject(commands);
                 hrm.Content = new StringContent(updateBodyCommandString);
                 hrm.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-
-                // Authenticate (add access token to) our request
-                await graphClient.AuthenticationProvider.AuthenticateRequestAsync(hrm);
 
                 // Send the request and get the response.
                 HttpResponseMessage response = await graphClient.HttpProvider.SendAsync(hrm);

@@ -189,16 +189,6 @@ namespace Microsoft.Graph
                     });
             }
 
-            if (this.Client.AuthenticationProvider == null)
-            {
-                throw new ServiceException(
-                    new Error
-                    {
-                        Code = ErrorConstants.Codes.InvalidRequest,
-                        Message = ErrorConstants.Messages.AuthenticationProviderMissing,
-                    });
-            }
-
             if (multipartContent != null)
             {
                 using (var request = this.GetHttpRequestMessage())
@@ -233,16 +223,6 @@ namespace Microsoft.Graph
                     {
                         Code = ErrorConstants.Codes.InvalidRequest,
                         Message = ErrorConstants.Messages.RequestUrlMissing,
-                    });
-            }
-
-            if (this.Client.AuthenticationProvider == null)
-            {
-                throw new ServiceException(
-                    new Error
-                    {
-                        Code = ErrorConstants.Codes.InvalidRequest,
-                        Message = ErrorConstants.Messages.AuthenticationProviderMissing,
                     });
             }
 

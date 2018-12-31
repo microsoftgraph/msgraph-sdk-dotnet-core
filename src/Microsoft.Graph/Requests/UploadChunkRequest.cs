@@ -153,11 +153,6 @@ namespace Microsoft.Graph
                 throw new ArgumentNullException(nameof(this.RequestUrl), "Session Upload URL cannot be null or empty.");
             }
 
-            if (this.Client.AuthenticationProvider == null)
-            {
-                throw new ArgumentNullException(nameof(this.Client.AuthenticationProvider), "Client.AuthenticationProvider must not be null.");
-            }
-
             using (var request = this.GetHttpRequestMessage())
             {
                 request.Content = new StreamContent(stream);

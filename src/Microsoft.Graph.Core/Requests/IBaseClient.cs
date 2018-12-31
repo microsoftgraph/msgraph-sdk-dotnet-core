@@ -10,11 +10,6 @@ namespace Microsoft.Graph
     public interface IBaseClient
     {
         /// <summary>
-        /// Gets the <see cref="IAuthenticationProvider"/> for authenticating HTTP requests.
-        /// </summary>
-        IAuthenticationProvider AuthenticationProvider { get; }
-
-        /// <summary>
         /// Gets the base URL for requests of the client.
         /// </summary>
         string BaseUrl { get; }
