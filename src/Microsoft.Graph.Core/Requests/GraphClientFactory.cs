@@ -40,8 +40,13 @@ namespace Microsoft.Graph
         private static readonly string _baseAddress = "https://graph.microsoft.com/";
 
         /// Microsoft Graph service nationa cloud endpoints
-        private static readonly Dictionary<string, string> cloudList;
-
+        private static readonly Dictionary<string, string> cloudList = new Dictionary<string, string>
+            {
+                { Global_Cloud, "https://graph.microsoft.com" },
+                { USGOV_Cloud, "https://graph.microsoft.com" },
+                { China_Cloud, "https://microsoftgraph.chinacloudapi.cn" },
+                { Germany_Cloud, "https://graph.microsoft.de" }
+            };
 
         /// Global endpoint
         public const string Global_Cloud = "Global";
@@ -52,98 +57,22 @@ namespace Microsoft.Graph
         /// Germany endpoint
         public const string Germany_Cloud = "Germany";
 
-        static GraphClientFactory()
-        {
-            cloudList = new Dictionary<string, string>();
-            cloudList.Add(Global_Cloud, "https://graph.microsoft.com");
-            cloudList.Add(USGOV_Cloud, "https://graph.microsoft.com");
-            cloudList.Add(China_Cloud, "https://microsoftgraph.chinacloudapi.cn");
-            cloudList.Add(Germany_Cloud, "https://graph.microsoft.de");
-        }
-
-       
-        /// Property Version for version value
-        public static string Version { set; get; } = "v1.0";
+        /// <summary>
+        /// Proxy to be used with created clients 
+        /// </summary>
+        public static IWebProxy Proxy { get; set; }
 
         /// <summary>
-        /// Creates a new <see cref="HttpClient"/> instance configured with the handlers provided.
+        /// DefaultHandler is a Func that returns the HttpMessageHandler for actually making the HTTP calls.
+        /// The default implementation returns a new instance of HttpClientHandler for each HttpClient. 
         /// </summary>
-        /// <param name="handlers">An ordered list of <see cref="DelegatingHandler"/> instances to be invoked as an 
-        /// <see cref="HttpRequestMessage"/> travels from the <see cref="HttpClient"/> to the network and an 
-        /// <see cref="HttpResponseMessage"/> travels from the network back to <see cref="HttpClient"/>.
-        /// The handlers are invoked in a top-down fashion. That is, the first entry is invoked first for 
-        /// an outbound request message but last for an inbound response message.</param>
-        /// <returns>An <see cref="HttpClient"/> instance with the configured handlers.</returns>
-        public static HttpClient CreateClient(params DelegatingHandler[] handlers)
-        {
-            return Create(null, handlers);
-        }
-
-        /// <summary>
-        /// Creates a new <see cref="HttpClient"/> instance configured with the handlers provided.
-        /// </summary>
-        /// <param name="innerHandler">The inner handler represents the destination of the HTTP message channel.</param>
-        /// <param name="handlers">An ordered list of <see cref="DelegatingHandler"/> instances to be invoked as an 
-        /// <see cref="HttpRequestMessage"/> travels from the <see cref="HttpClient"/> to the network and an 
-        /// <see cref="HttpResponseMessage"/> travels from the network back to <see cref="HttpClient"/>.
-        /// The handlers are invoked in a top-down fashion. That is, the first entry is invoked first for 
-        /// an outbound request message but last for an inbound response message.</param>
-        /// <returns>An <see cref="HttpClient"/> instance with the configured handlers.</returns>
-        public static HttpClient CreateClient(HttpMessageHandler innerHandler, params DelegatingHandler[] handlers)
-        {
-            return Create(innerHandler, handlers);
-        }
-        /// <summary>
-        /// Creates a new <see cref="HttpClient"/> instance configured with the handlers provided.
-        /// </summary>
-        /// <param name="sovereignCloud">The <see cref="string"/>value to pass the national cloud root endpoint to client.</param>
-        /// <param name="handlers">An ordered list of <see cref="DelegatingHandler"/> instances to be invoked as an 
-        /// <see cref="HttpRequestMessage"/> travels from the <see cref="HttpClient"/> to the network and an 
-        /// <see cref="HttpResponseMessage"/> travels from the network back to <see cref="HttpClient"/>.
-        /// The handlers are invoked in a top-down fashion. That is, the first entry is invoked first for 
-        /// an outbound request message but last for an inbound response message.</param>
-        /// <returns>An <see cref="HttpClient"/> instance with the configured handlers.</returns>
-        public static HttpClient CreateClient(string sovereignCloud, params DelegatingHandler[] handlers)
-        {
-            if (sovereignCloud == null)
+        public static Func<HttpMessageHandler> DefaultHttpHandler = () => {
+            return new HttpClientHandler
             {
-                throw new ArgumentNullException(String.Format("{0} is null.", sovereignCloud, "sovereignCloud"));
-            }
-            string cloud = "";
-            if (!cloudList.TryGetValue(sovereignCloud, out cloud))
-            {
-                throw new ArgumentException(String.Format("{0} is an unexpected national cloud.", sovereignCloud, "sovereignCloud"));
-            }
-            string cloudAddress = cloud + "/" + Version;
-            Uri address = new Uri(cloudAddress);
-            HttpClient client = Create(null, handlers);
-            client.BaseAddress = address;
-            return client;
-        }
-
-        /// <summary>
-        /// Creates a new <see cref="HttpClient"/> instance configured with the handlers, timeout, baseAddress,
-        /// cacheControlHeaderValue and proxy provided.
-        /// </summary>
-        /// <param name="proxy">A <see cref="IWebProxy"/> object to be passed to client to configure InnderHandler's proxy property.</param>
-        /// <param name="handlers">An ordered list of <see cref="DelegatingHandler"/> instances to be invoked as an 
-        /// <see cref="HttpRequestMessage"/> travels from the <see cref="HttpClient"/> to the network and an 
-        /// <see cref="HttpResponseMessage"/> travels from the network back to <see cref="HttpClient"/>.
-        /// The handlers are invoked in a top-down fashion. That is, the first entry is invoked first for 
-        /// an outbound request message but last for an inbound response message.</param>
-        /// <returns>An <see cref="HttpClient"/> instance with the configured handlers.</returns>
-        public static HttpClient CreateClient(IWebProxy proxy = null, params DelegatingHandler[] handlers)
-        {
-            HttpClientHandler handler = new HttpClientHandler();
-            if (proxy != null)
-            {
-                handler.Proxy = proxy;
-            }
-
-            return Create(handler, handlers);
-
-        }
-
+                Proxy = Proxy
+            };
+        };
+            
 
         /// <summary>
         /// Creates a new <see cref="HttpClient"/> instance configured with the handlers provided and with the
@@ -156,19 +85,49 @@ namespace Microsoft.Graph
         /// The handlers are invoked in a top-down fashion. That is, the first entry is invoked first for 
         /// an outbound request message but last for an inbound response message.</param>
         /// <returns>An <see cref="HttpClient"/> instance with the configured handlers.</returns>
-        private static HttpClient Create(HttpMessageHandler innerHandler, params DelegatingHandler[] handlers)
+        public static HttpClient Create(string version = "v1.0", string nationalCloud = Global_Cloud, IEnumerable<DelegatingHandler> handlers = null)
         {
-            HttpMessageHandler pipeline = CreatePipeline(innerHandler, handlers);
+            HttpMessageHandler pipeline;
+            if (handlers == null)
+            {
+                pipeline = CreatePipeline(CreateDefaultHandlers(), DefaultHttpHandler());
+            } else
+            {
+                pipeline = CreatePipeline(handlers,DefaultHttpHandler());
+            }
+
             HttpClient client = new HttpClient(pipeline);
             client.DefaultRequestHeaders.Add(SdkVersionHeaderName, SdkVersionHeaderValue);
             client.Timeout = defaultTimeout;
-            string address = _baseAddress + Version;
-            client.BaseAddress = new Uri(address);
+            client.BaseAddress = DetermineBaseAddress(nationalCloud, version);
             client.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue { NoCache = true, NoStore = true };
             return client;
         }
 
+        /// <summary>
+        /// Create a default set of middleware for calling Microsoft Graph
+        /// </summary>
+        /// <returns></returns>
+        public static IEnumerable<DelegatingHandler> CreateDefaultHandlers()
+        {
+            return new List<DelegatingHandler> {
+                new RetryHandler(),
+                new RedirectHandler()
+            }; 
+        }
 
+        private static Uri DetermineBaseAddress(string nationalCloud, string version)
+        {
+            string cloud = "";
+            if (!cloudList.TryGetValue(nationalCloud, out cloud))
+            {
+                throw new ArgumentException(String.Format("{0} is an unexpected national cloud.", nationalCloud, "nationalCloud"));
+            }
+            string cloudAddress = cloud + "/" + version;
+            return new Uri(cloudAddress);
+
+        }
+               
         /// <summary>
         /// Creates an instance of an <see cref="HttpMessageHandler"/> using the <see cref="DelegatingHandler"/> instances
         /// provided by <paramref name="handlers"/>. The resulting pipeline can be used to manually create <see cref="HttpClient"/>
@@ -180,11 +139,11 @@ namespace Microsoft.Graph
         /// The handlers are invoked in a top-down fashion. That is, the first entry is invoked first for 
         /// an outbound request message but last for an inbound response message.</param>
         /// <returns>The HTTP message channel.</returns>
-        public static HttpMessageHandler CreatePipeline(HttpMessageHandler innerHandler, IEnumerable<DelegatingHandler> handlers)
+        public static HttpMessageHandler CreatePipeline(IEnumerable<DelegatingHandler> handlers, HttpMessageHandler innerHandler = null )
         {
             if (innerHandler == null)
             {
-                innerHandler = new HttpClientHandler();
+                innerHandler = DefaultHttpHandler();
             }
 
             if (handlers == null)
@@ -214,35 +173,36 @@ namespace Microsoft.Graph
         }
 
 
-        /// <summary>
-        /// Configure an instance of an <see cref="HttpClient"/>
-        /// </summary>
-        /// <param name="client">The <see cref="HttpClient"/> client instance need to be configured.</param>
-        /// <param name="timeout">A <see cref="TimeSpan"/> value for the HTTP client timeout property.</param>
-        /// <param name="baseAddress">A <see cref="Uri"/> value to set the HTTP client BaseAddress property.</param>
-        /// <param name="cacheControlHeaderValue">A <see cref="CacheControlHeaderValue"/> value to set HTTP client DefaultRequestHeaders property.</param>
-        /// <returns></returns>
-        public static HttpClient Configure(HttpClient client, TimeSpan timeout, Uri baseAddress, CacheControlHeaderValue cacheControlHeaderValue)
-        {
-            try
-            {
-                client.Timeout = timeout;
-            }
-            catch (InvalidOperationException exception)
-            {
-                throw new ServiceException(
-                    new Error
-                    {
-                        Code = ErrorConstants.Codes.NotAllowed,
-                        Message = ErrorConstants.Messages.OverallTimeoutCannotBeSet,
-                    },
-                    exception);
-            }
 
-            client.BaseAddress = baseAddress == null ? new Uri(_baseAddress + Version) : baseAddress;
-            client.DefaultRequestHeaders.CacheControl = cacheControlHeaderValue ?? new CacheControlHeaderValue { NoCache = true, NoStore = true };
-            return client;
-        }
+        ///// <summary>
+        ///// Configure an instance of an <see cref="HttpClient"/>
+        ///// </summary>
+        ///// <param name="client">The <see cref="HttpClient"/> client instance need to be configured.</param>
+        ///// <param name="timeout">A <see cref="TimeSpan"/> value for the HTTP client timeout property.</param>
+        ///// <param name="baseAddress">A <see cref="Uri"/> value to set the HTTP client BaseAddress property.</param>
+        ///// <param name="cacheControlHeaderValue">A <see cref="CacheControlHeaderValue"/> value to set HTTP client DefaultRequestHeaders property.</param>
+        ///// <returns></returns>
+        //public static HttpClient Configure(HttpClient client, TimeSpan timeout, Uri baseAddress, CacheControlHeaderValue cacheControlHeaderValue)
+        //{
+        //    try
+        //    {
+        //        client.Timeout = timeout;
+        //    }
+        //    catch (InvalidOperationException exception)
+        //    {
+        //        throw new ServiceException(
+        //            new Error
+        //            {
+        //                Code = ErrorConstants.Codes.NotAllowed,
+        //                Message = ErrorConstants.Messages.OverallTimeoutCannotBeSet,
+        //            },
+        //            exception);
+        //    }
+
+        //    client.BaseAddress = baseAddress == null ? new Uri(_baseAddress + Version) : baseAddress;
+        //    client.DefaultRequestHeaders.CacheControl = cacheControlHeaderValue ?? new CacheControlHeaderValue { NoCache = true, NoStore = true };
+        //    return client;
+        //}
 
     }
 }
