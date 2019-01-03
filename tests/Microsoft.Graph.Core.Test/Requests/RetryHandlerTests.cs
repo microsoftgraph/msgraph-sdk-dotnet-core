@@ -40,6 +40,17 @@ namespace Microsoft.Graph.Core.Test.Requests
         }
 
         [TestMethod]
+        public void RedtryHandler_Constructor()
+        {
+            using (RetryHandler retry = new RetryHandler())
+            {
+                Assert.IsNull(retry.InnerHandler, "HttpMessageHandler initialized.");
+                Assert.IsInstanceOfType(retry, typeof(RetryHandler), "Unexpected redtry handler set.");
+            }
+        }
+
+
+        [TestMethod]
         public void retryHandler_HttpMessageHandlerConstructor()
         {
             Assert.IsNotNull(retryHandler.InnerHandler, "HttpMessageHandler not initialized.");

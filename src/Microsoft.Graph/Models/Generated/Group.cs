@@ -23,6 +23,7 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets classification.
+        /// Describes a classification for the group (such as low, medium or high business impact). Valid values for this property are defined by creating a ClassificationList setting value, based on the template definition.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "classification", Required = Newtonsoft.Json.Required.Default)]
         public string Classification { get; set; }
@@ -57,7 +58,7 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets mail.
-        /// The SMTP address for the group, for example, "serviceadmins@contoso.onmicrosoft.com". Read-only. Supports $filter.
+        /// The SMTP address for the group, for example, 'serviceadmins@contoso.onmicrosoft.com'. Read-only. Supports $filter.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "mail", Required = Newtonsoft.Json.Required.Default)]
         public string Mail { get; set; }
@@ -85,6 +86,7 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets on premises provisioning errors.
+        /// Errors when using Microsoft synchronization product during provisioning.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "onPremisesProvisioningErrors", Required = Newtonsoft.Json.Required.Default)]
         public IEnumerable<OnPremisesProvisioningError> OnPremisesProvisioningErrors { get; set; }
@@ -126,7 +128,7 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets visibility.
-        /// Specifies the visibility of an Office 365 group. Possible values are: Private, Public, or empty (which is interpreted as Public).
+        /// Specifies the visibility of an Office 365 group. Possible values are: private, public, or hiddenmembership; blank values are treated as public.  See Group visibility options to learn more.Visibility can be set only when a group is created; it is not editable.Visibility is supported only for unified groups; it is not supported for security groups.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "visibility", Required = Newtonsoft.Json.Required.Default)]
         public string Visibility { get; set; }
@@ -154,10 +156,16 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets unseen count.
-        /// Count of posts that the current  user has not seen since his last visit.
+        /// Count of conversations that have been delivered one or more new posts since the signed-in user's last visit to the group.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "unseenCount", Required = Newtonsoft.Json.Required.Default)]
         public Int32? UnseenCount { get; set; }
+    
+        /// <summary>
+        /// Gets or sets is archived.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "isArchived", Required = Newtonsoft.Json.Required.Default)]
+        public bool? IsArchived { get; set; }
     
         /// <summary>
         /// Gets or sets members.
@@ -266,13 +274,14 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets drive.
-        /// The group's drive. Read-only.
+        /// The group's default drive. Read-only.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "drive", Required = Newtonsoft.Json.Required.Default)]
         public Drive Drive { get; set; }
     
         /// <summary>
         /// Gets or sets drives.
+        /// The group's drives. Read-only.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "drives", Required = Newtonsoft.Json.Required.Default)]
         public IGroupDrivesCollectionPage Drives { get; set; }
@@ -300,9 +309,16 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets group lifecycle policies.
+        /// The collection of lifecycle policies for this group. Read-only. Nullable.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "groupLifecyclePolicies", Required = Newtonsoft.Json.Required.Default)]
         public IGroupGroupLifecyclePoliciesCollectionPage GroupLifecyclePolicies { get; set; }
+    
+        /// <summary>
+        /// Gets or sets team.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "team", Required = Newtonsoft.Json.Required.Default)]
+        public Team Team { get; set; }
     
     }
 }

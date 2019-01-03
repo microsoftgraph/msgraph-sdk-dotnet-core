@@ -30,6 +30,7 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets alternative security ids.
+        /// For internal use only. Not nullable.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "alternativeSecurityIds", Required = Newtonsoft.Json.Required.Default)]
         public IEnumerable<AlternativeSecurityId> AlternativeSecurityIds { get; set; }
@@ -71,14 +72,14 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets is compliant.
-        /// true if the device complies with Mobile Device Management (MDM) policies; otherwise, false. Read-only.
+        /// true if the device complies with Mobile Device Management (MDM) policies; otherwise, false. Read-only. This can only be updated by Intune for any device OS type or by an approved MDM app for Windows OS devices.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "isCompliant", Required = Newtonsoft.Json.Required.Default)]
         public bool? IsCompliant { get; set; }
     
         /// <summary>
         /// Gets or sets is managed.
-        /// true if the device is managed by a Mobile Device Management (MDM) app; otherwise, false.
+        /// true if the device is managed by a Mobile Device Management (MDM) app; otherwise, false. This can only be updated by Intune for any device OS type or by an approved MDM app for Windows OS devices.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "isManaged", Required = Newtonsoft.Json.Required.Default)]
         public bool? IsManaged { get; set; }
@@ -124,6 +125,13 @@ namespace Microsoft.Graph
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "trustType", Required = Newtonsoft.Json.Required.Default)]
         public string TrustType { get; set; }
+    
+        /// <summary>
+        /// Gets or sets member of.
+        /// Groups that this group is a member of. HTTP Methods: GET (supported for all groups). Read-only. Nullable.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "memberOf", Required = Newtonsoft.Json.Required.Default)]
+        public IDeviceMemberOfCollectionWithReferencesPage MemberOf { get; set; }
     
         /// <summary>
         /// Gets or sets registered owners.
