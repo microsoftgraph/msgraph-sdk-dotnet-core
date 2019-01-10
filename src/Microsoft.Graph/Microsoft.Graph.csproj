@@ -13,7 +13,7 @@
     <PackageId>Microsoft.Graph</PackageId>
     <PackageTags>Microsoft Office365;Graph;GraphServiceClient;Outlook;OneDrive;AzureAD;GraphAPI;Productivity;SharePoint;Intune;SDK</PackageTags>
     <PackageReleaseNotes>
-December 2018 Release Summary (version 1.13.0)
+January 2019 Release Summary (version 1.13.0-preview.2)
 
 New functionality
 - Added new Teams API functionality.
@@ -25,6 +25,7 @@ Updated functionality
 - Device is updated with the MemberOf relationship.
 - Group is updated with the isArchived property and Team relationship.
 - User is updated with the JoinedTeams relationship.
+- Removed Newtonsoft.Json package reference upper bound limitation.
     </PackageReleaseNotes>
     <PackageProjectUrl>https://developer.microsoft.com/graph</PackageProjectUrl>
     <PackageLicenseUrl>http://aka.ms/devservicesagreement</PackageLicenseUrl>
@@ -44,7 +45,7 @@ Updated functionality
     <DelaySign>false</DelaySign>
     <AssemblyOriginatorKeyFile>35MSSharedLib1024.snk</AssemblyOriginatorKeyFile>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <Version>1.13.0-preview</Version>
+    <Version>1.13.0-preview.2</Version>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard1.1|AnyCPU'">
     <DocumentationFile>bin\Release\Microsoft.Graph.xml</DocumentationFile>
@@ -57,7 +58,7 @@ Updated functionality
     <Reference Include="System" />
     <Reference Include="System.Net.Http" />
     <Reference Include="Microsoft.CSharp" />
-    <PackageReference Include="Newtonsoft.Json" Version="[6.0.1,12)" />
+    <PackageReference Include="Newtonsoft.Json" Version="6.0.1" />
   </ItemGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.1' ">
     <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />

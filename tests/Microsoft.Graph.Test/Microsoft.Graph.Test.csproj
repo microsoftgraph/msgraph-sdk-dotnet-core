@@ -105,6 +105,7 @@
     <Compile Include="Requests\Functional\ContactTests.cs" />
     <Compile Include="Requests\Functional\EventTests.cs" />
     <Compile Include="Requests\Functional\GraphTestBase.cs" />
+    <Compile Include="Requests\Functional\GroupTests.cs" />
     <Compile Include="Requests\Functional\MailTests.cs" />
     <Compile Include="Requests\Functional\OneDriveTests.cs" />
     <Compile Include="Requests\Functional\ErrorTests.cs" />
