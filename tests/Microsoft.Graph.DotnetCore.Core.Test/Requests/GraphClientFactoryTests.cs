@@ -19,10 +19,16 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
     public class GraphClientFactoryTests : IDisposable
     {
         private MockRedirectHandler testHttpMessageHandler;
+        private DelegatingHandler[] handlers;
 
         public GraphClientFactoryTests()
         {
             this.testHttpMessageHandler = new MockRedirectHandler();
+            handlers = handlers = new DelegatingHandler[3];
+            handlers[0] = new RetryHandler();
+            handlers[1] = new RedirectHandler();
+            handlers[2] = new AuthenticationHandler();
+
         }
 
         public void Dispose()
@@ -33,7 +39,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         [Fact]
         public void CreatePipelineWithoutHttpMessageHandlerInput()
         {
-            using (RetryHandler retryHandler = (RetryHandler)GraphClientFactory.CreateDefaultHandlers())
+            using (RetryHandler retryHandler = (RetryHandler)GraphClientFactory.CreatePipeline(handlers))
             using (RedirectHandler redirectHandler = (RedirectHandler)retryHandler.InnerHandler)
             using (AuthenticationHandler authenticationHandler = (AuthenticationHandler)redirectHandler.InnerHandler)
             using (HttpClientHandler innerMost = (HttpClientHandler)authenticationHandler.InnerHandler)
@@ -53,7 +59,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         [Fact]
         public void CreatePipelineWithHttpMessageHandlerInput()
         {
-            using (RetryHandler retryHandler = (RetryHandler)GraphClientFactory.CreatePipeline(null, this.testHttpMessageHandler))
+            using (RetryHandler retryHandler = (RetryHandler)GraphClientFactory.CreatePipeline(handlers, this.testHttpMessageHandler))
             using (RedirectHandler redirectHandler = (RedirectHandler)retryHandler.InnerHandler)
             using (AuthenticationHandler authenticationHandler = (AuthenticationHandler)redirectHandler.InnerHandler)
             using (MockRedirectHandler innerMost = (MockRedirectHandler)authenticationHandler.InnerHandler)
@@ -234,11 +240,10 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 
             testHttpMessageHandler.SetHttpResponse(unauthorizedResponse, okResponse);
 
-            var authHandler = new AuthenticationHandler(new MockAuthenticationProvider().Object);
-            var pipeline = GraphClientFactory.CreateDefaultHandlers();
+            handlers[2] = new AuthenticationHandler(new MockAuthenticationProvider().Object);
 
             GraphClientFactory.DefaultHttpHandler = () => this.testHttpMessageHandler;
-            using (HttpClient client = GraphClientFactory.Create())
+            using (HttpClient client = GraphClientFactory.Create(handlers: handlers))
             {
                 var response = await client.SendAsync(httpRequestMessage, new CancellationToken());
                 Assert.Same(response, okResponse);
