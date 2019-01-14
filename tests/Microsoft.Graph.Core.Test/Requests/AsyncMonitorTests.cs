@@ -43,7 +43,6 @@ namespace Microsoft.Graph.Core.Test.Requests
 
             this.client = new Mock<IBaseClient>(MockBehavior.Strict);
             this.client.SetupAllProperties();
-            this.client.SetupGet(client => client.AuthenticationProvider).Returns(this.authenticationProvider.Object);
             this.client.SetupGet(client => client.HttpProvider).Returns(this.httpProvider.Object);
 
             this.progress = new MockProgress();
@@ -94,16 +93,6 @@ namespace Microsoft.Graph.Core.Test.Requests
                 Assert.IsTrue(called, "Progress not called");
                 Assert.IsNotNull(item, "No item returned.");
                 Assert.AreEqual("id", item.Id, "Unexpected item returned.");
-                
-                this.authenticationProvider.Verify(
-                    provider => provider.AuthenticateRequestAsync(
-                        It.Is<HttpRequestMessage>(message => message.RequestUri.ToString().Equals(AsyncMonitorTests.monitorUrl))),
-                    Times.Once);
-
-                this.authenticationProvider.Verify(
-                    provider => provider.AuthenticateRequestAsync(
-                        It.Is<HttpRequestMessage>(message => message.RequestUri.ToString().Equals(AsyncMonitorTests.itemUrl))),
-                    Times.Once);
             }
         }
 

@@ -52,7 +52,7 @@ namespace Microsoft.Graph.Test.Requests.Functional
         [Ignore]
         public async Async.Task ManualAdHocTimeoutTest()
         {
-            graphClient.HttpProvider.OverallTimeout = new TimeSpan(0, 0, 7);
+            // graphClient.HttpProvider.OverallTimeout = new TimeSpan(0, 0, 7);
             try
             {
                 User me = await graphClient.Me.Request().GetAsync();

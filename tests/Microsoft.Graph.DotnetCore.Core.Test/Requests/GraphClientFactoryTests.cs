@@ -20,6 +20,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
     {
         private DelegatingHandler[] handlers = new DelegatingHandler[3];
         private MockRedirectHandler testHttpMessageHandler;
+        private MockAuthenticationProvider mockAuthenticationProvider = new MockAuthenticationProvider();
 
 
         public GraphClientFactoryTests()
@@ -27,7 +28,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             this.testHttpMessageHandler = new MockRedirectHandler();
             handlers[0] = new RetryHandler();
             handlers[1] = new RedirectHandler();
-            handlers[2] = new AuthenticationHandler();
+            handlers[2] = new AuthenticationHandler(mockAuthenticationProvider.Object);
         }
 
         public void Dispose()
@@ -209,7 +210,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         }
 
         [Fact]
-        public async Task SendRequest_UnauthorizedWithNoAuthenticationProvider()
+        public async Task SendRequest_UnauthorizedWithNullAuthenticationProvider()
         {
             var httpRequestMessage = new HttpRequestMessage(HttpMethod.Put, "https://example.com/bar");
             httpRequestMessage.Content = new StringContent("Hello World");
@@ -219,11 +220,21 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 
             testHttpMessageHandler.SetHttpResponse(unauthorizedResponse, okResponse);
 
-            using (HttpClient client = GraphClientFactory.CreateClient(testHttpMessageHandler, handlers))
+            handlers[2] = new AuthenticationHandler(null);
+
+            try
             {
-                var response = await client.SendAsync(httpRequestMessage, new CancellationToken());
-                Assert.Same(response, unauthorizedResponse);
-                Assert.Same(response.RequestMessage, httpRequestMessage);
+                using (HttpClient client = GraphClientFactory.CreateClient(testHttpMessageHandler, handlers))
+                {
+                    var response = await client.SendAsync(httpRequestMessage, new CancellationToken());
+                    Assert.Same(response, unauthorizedResponse);
+                    Assert.Same(response.RequestMessage, httpRequestMessage);
+                }
+            }
+            catch (Exception exception)
+            {
+                Assert.IsType(typeof(ServiceException), exception);
+                Assert.Contains(ErrorConstants.Messages.AuthenticationProviderMissing, exception.Message);
             }
         }
 
@@ -237,8 +248,6 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             var okResponse = new HttpResponseMessage(HttpStatusCode.OK);
 
             testHttpMessageHandler.SetHttpResponse(unauthorizedResponse, okResponse);
-
-            handlers[2] = new AuthenticationHandler(new MockAuthenticationProvider().Object);
 
             using (HttpClient client = GraphClientFactory.CreateClient(testHttpMessageHandler, handlers))
             {

@@ -24,9 +24,6 @@ namespace Microsoft.Graph.Test.Requests.Functional
                 string getOffice365ActiveUserCountsRequestUrl = graphClient.Reports.GetOffice365ActiveUserCounts("D7").Request().RequestUrl;
                 HttpRequestMessage hrm = new HttpRequestMessage(HttpMethod.Get, getOffice365ActiveUserCountsRequestUrl);
 
-                // Inject the access token into the request.
-                await graphClient.AuthenticationProvider.AuthenticateRequestAsync(hrm);
-
                 // Send the request and get the response. It will automatically follow the redirect to get the Report file.
                 HttpResponseMessage response = await graphClient.HttpProvider.SendAsync(hrm);
 

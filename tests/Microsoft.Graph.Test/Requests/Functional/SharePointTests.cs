@@ -119,9 +119,6 @@ namespace Microsoft.Graph.Test.Requests.Functional
                 string requestUrlToGetSiteRootInfo = String.Format("{0}{1}", graphClient.Sites.Request().RequestUrl, "/root");
                 HttpRequestMessage hrm = new HttpRequestMessage(HttpMethod.Get, requestUrlToGetSiteRootInfo);
 
-                // Authenticate (add access token) to our HttpRequestMessage
-                await graphClient.AuthenticationProvider.AuthenticateRequestAsync(hrm);
-
                 HttpResponseMessage response = await graphClient.HttpProvider.SendAsync(hrm);
 
                 Site site;

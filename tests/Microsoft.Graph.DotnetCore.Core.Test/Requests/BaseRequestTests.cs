@@ -77,11 +77,6 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                 httpRequestMessage.RequestUri.GetComponents(UriComponents.AbsoluteUri & ~UriComponents.Port, UriFormat.Unescaped));
             Assert.Equal("value1", httpRequestMessage.Headers.GetValues("header1").First());
             Assert.Equal("value2", httpRequestMessage.Headers.GetValues("header2").First());
-
-            var expectedVersion = typeof(BaseRequest).GetTypeInfo().Assembly.GetName().Version;
-            Assert.Equal(
-                string.Format("Graph-dotnet-{0}.{1}.{2}", expectedVersion.Major, expectedVersion.Minor, expectedVersion.Build),
-                httpRequestMessage.Headers.GetValues(CoreConstants.Headers.SdkVersionHeaderName).First());
         }
 
         [Fact]
@@ -95,29 +90,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             Assert.Equal(HttpMethod.Delete, httpRequestMessage.Method);
             Assert.Equal(requestUrl,
                 httpRequestMessage.RequestUri.GetComponents(UriComponents.AbsoluteUri & ~UriComponents.Port, UriFormat.Unescaped));
-            Assert.Equal(1, httpRequestMessage.Headers.Count());
-
-            var expectedVersion = typeof(BaseRequest).GetTypeInfo().Assembly.GetName().Version;
-            Assert.Equal(
-                string.Format("Graph-dotnet-{0}.{1}.{2}", expectedVersion.Major, expectedVersion.Minor, expectedVersion.Build),
-                httpRequestMessage.Headers.GetValues(CoreConstants.Headers.SdkVersionHeaderName).First());
-        }
-
-        [Fact]
-        public void GetWebRequest_OverrideCustomTelemetryHeader()
-        {
-            var requestUrl = string.Concat(this.baseUrl, "/me/drive/items/id");
-
-            var baseRequest = new CustomRequest(requestUrl, this.baseClient);
-
-            var httpRequestMessage = baseRequest.GetHttpRequestMessage();
-
-            Assert.Equal(
-                CustomRequest.SdkHeaderValue,
-                httpRequestMessage.Headers.GetValues(CustomRequest.SdkHeaderName).First());
-
-            Assert.False(
-                httpRequestMessage.Headers.Contains(CoreConstants.Headers.SdkVersionHeaderName));
+            Assert.Equal(0, httpRequestMessage.Headers.Count());
         }
 
         [Fact]
@@ -155,8 +128,6 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 
                 Assert.NotNull(responseItem);
                 Assert.Equal(expectedResponseItem.Id, responseItem.Id);
-
-                this.authenticationProvider.Verify(provider => provider.AuthenticateRequestAsync(It.IsAny<HttpRequestMessage>()), Times.Once);
             }
         }
 
@@ -207,8 +178,6 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                     .Returns(string.Empty);
 
                 await baseRequest.SendAsync("string", CancellationToken.None);
-
-                this.authenticationProvider.Verify(provider => provider.AuthenticateRequestAsync(It.IsAny<HttpRequestMessage>()), Times.Once);
             }
         }
 
@@ -239,8 +208,6 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                 var instance = await baseRequest.SendAsync<DerivedTypeClass>("string", CancellationToken.None);
 
                 Assert.Null(instance);
-
-                this.authenticationProvider.Verify(provider => provider.AuthenticateRequestAsync(It.IsAny<HttpRequestMessage>()), Times.Once);
             }
         }
 

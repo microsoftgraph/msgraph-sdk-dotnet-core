@@ -21,6 +21,7 @@ namespace Microsoft.Graph.Core.Test.Requests
     {
         private DelegatingHandler[] handlers = new DelegatingHandler[3];
         private MockRedirectHandler testHttpMessageHandler;
+        private MockAuthenticationProvider authenticationProvider = new MockAuthenticationProvider();
 
 
         [TestInitialize]
@@ -29,7 +30,7 @@ namespace Microsoft.Graph.Core.Test.Requests
             this.testHttpMessageHandler = new MockRedirectHandler();
             handlers[0] = new RetryHandler();
             handlers[1] = new RedirectHandler();
-            handlers[2] = new AuthenticationHandler();
+            handlers[2] = new AuthenticationHandler(authenticationProvider.Object);
         }
 
         [TestCleanup]
@@ -211,7 +212,7 @@ namespace Microsoft.Graph.Core.Test.Requests
         }
 
         [TestMethod]
-        public async Task SendRequest_UnauthorizedWithNoAuthenticationProvider()
+        public async Task SendRequest_UnauthorizedWithNullAuthenticationProvider()
         {
             var httpRequestMessage = new HttpRequestMessage(HttpMethod.Put, "https://example.com/bar");
             httpRequestMessage.Content = new StringContent("Hello World");
@@ -221,11 +222,19 @@ namespace Microsoft.Graph.Core.Test.Requests
 
             testHttpMessageHandler.SetHttpResponse(unauthorizedResponse, okResponse);
 
+            handlers[2] = new AuthenticationHandler(null);
+
             using (HttpClient client = GraphClientFactory.CreateClient(testHttpMessageHandler, handlers))
             {
-                var response = await client.SendAsync(httpRequestMessage, new CancellationToken());
-                Assert.AreSame(response, unauthorizedResponse);
-                Assert.AreSame(response.RequestMessage, httpRequestMessage);
+                try
+                {
+                    var response = await client.SendAsync(httpRequestMessage, new CancellationToken());
+                }
+                catch (ServiceException exception)
+                {
+                    Assert.AreSame(exception.Error.Message, ErrorConstants.Messages.AuthenticationProviderMissing);
+                    Assert.IsTrue(exception.IsMatch(ErrorConstants.Codes.InvalidRequest));
+                }
             }
         }
 
@@ -239,8 +248,6 @@ namespace Microsoft.Graph.Core.Test.Requests
             var okResponse = new HttpResponseMessage(HttpStatusCode.OK);
 
             testHttpMessageHandler.SetHttpResponse(unauthorizedResponse, okResponse);
-
-            handlers[2] = new AuthenticationHandler(new MockAuthenticationProvider().Object);
 
             using (HttpClient client = GraphClientFactory.CreateClient(testHttpMessageHandler, handlers))
             {

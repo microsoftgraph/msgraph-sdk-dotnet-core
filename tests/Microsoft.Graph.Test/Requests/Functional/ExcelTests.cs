@@ -502,9 +502,6 @@ namespace Microsoft.Graph.Test.Requests.Functional
 
                 HttpRequestMessage hrm = new HttpRequestMessage(HttpMethod.Get, urlToGetImageFromChart);
 
-                // Authenticate (add access token) our HttpRequestMessage
-                await graphClient.AuthenticationProvider.AuthenticateRequestAsync(hrm);
-
                 // Send the request and get the response.
                 HttpResponseMessage response = await graphClient.HttpProvider.SendAsync(hrm);
 
