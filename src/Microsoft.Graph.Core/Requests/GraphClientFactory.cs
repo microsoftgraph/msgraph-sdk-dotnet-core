@@ -11,14 +11,14 @@ namespace Microsoft.Graph
     using System.Reflection;
     using System.Net.Http.Headers;
 
-   
+
     /// <summary>
     /// GraphClientFactory class to create the HTTP client
     /// </summary>
-    public static class GraphClientFactory
+    internal static class GraphClientFactory
     {
 
-        
+
         /// The key for the SDK version header.
         private static readonly string SdkVersionHeaderName = CoreConstants.Headers.SdkVersionHeaderName;
 
@@ -58,13 +58,13 @@ namespace Microsoft.Graph
         public const string Germany_Cloud = "Germany";
 
         /// <summary>
-        /// Proxy to be used with created clients 
+        /// Proxy to be used with created clients
         /// </summary>
         public static IWebProxy Proxy { get; set; }
 
         /// <summary>
         /// DefaultHandler is a Func that returns the HttpMessageHandler for actually making the HTTP calls.
-        /// The default implementation returns a new instance of HttpClientHandler for each HttpClient. 
+        /// The default implementation returns a new instance of HttpClientHandler for each HttpClient.
         /// </summary>
         public static Func<HttpMessageHandler> DefaultHttpHandler = () => {
             return new HttpClientHandler
@@ -72,17 +72,17 @@ namespace Microsoft.Graph
                 Proxy = Proxy
             };
         };
-            
+
 
         /// <summary>
         /// Creates a new <see cref="HttpClient"/> instance configured with the handlers provided and with the
         /// provided <paramref name="innerHandler"/> as the innermost handler.
         /// </summary>
         /// <param name="innerHandler">The inner handler represents the destination of the HTTP message channel.</param>
-        /// <param name="handlers">An ordered list of <see cref="DelegatingHandler"/> instances to be invoked as an 
-        /// <see cref="HttpRequestMessage"/> travels from the <see cref="HttpClient"/> to the network and an 
+        /// <param name="handlers">An ordered list of <see cref="DelegatingHandler"/> instances to be invoked as an
+        /// <see cref="HttpRequestMessage"/> travels from the <see cref="HttpClient"/> to the network and an
         /// <see cref="HttpResponseMessage"/> travels from the network back to <see cref="HttpClient"/>.
-        /// The handlers are invoked in a top-down fashion. That is, the first entry is invoked first for 
+        /// The handlers are invoked in a top-down fashion. That is, the first entry is invoked first for
         /// an outbound request message but last for an inbound response message.</param>
         /// <returns>An <see cref="HttpClient"/> instance with the configured handlers.</returns>
         public static HttpClient Create(string version = "v1.0", string nationalCloud = Global_Cloud, IEnumerable<DelegatingHandler> handlers = null)
@@ -113,7 +113,7 @@ namespace Microsoft.Graph
             return new List<DelegatingHandler> {
                 new RetryHandler(),
                 new RedirectHandler()
-            }; 
+            };
         }
 
         private static Uri DetermineBaseAddress(string nationalCloud, string version)
@@ -127,16 +127,16 @@ namespace Microsoft.Graph
             return new Uri(cloudAddress);
 
         }
-               
+
         /// <summary>
         /// Creates an instance of an <see cref="HttpMessageHandler"/> using the <see cref="DelegatingHandler"/> instances
         /// provided by <paramref name="handlers"/>. The resulting pipeline can be used to manually create <see cref="HttpClient"/>
         /// or <see cref="HttpMessageInvoker"/> instances with customized message handlers.
         /// </summary>
         /// <param name="innerHandler">The inner handler represents the destination of the HTTP message channel.</param>
-        /// <param name="handlers">An ordered list of <see cref="DelegatingHandler"/> instances to be invoked as part 
+        /// <param name="handlers">An ordered list of <see cref="DelegatingHandler"/> instances to be invoked as part
         /// of sending an <see cref="HttpRequestMessage"/> and receiving an <see cref="HttpResponseMessage"/>.
-        /// The handlers are invoked in a top-down fashion. That is, the first entry is invoked first for 
+        /// The handlers are invoked in a top-down fashion. That is, the first entry is invoked first for
         /// an outbound request message but last for an inbound response message.</param>
         /// <returns>The HTTP message channel.</returns>
         public static HttpMessageHandler CreatePipeline(IEnumerable<DelegatingHandler> handlers, HttpMessageHandler innerHandler = null )
