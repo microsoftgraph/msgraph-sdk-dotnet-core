@@ -79,7 +79,7 @@ namespace Microsoft.Graph
                 new AuthenticationHandler(authenticationProvider)
             };
 
-            GraphClientFactory.DefaultHttpHandler = () => httpMessageHandler;
+            GraphClientFactory.DefaultHttpHandler = () => this.httpMessageHandler;
             this.httpClient = GraphClientFactory.Create("v1.0", GraphClientFactory.Global_Cloud, handlers);
         }
 
