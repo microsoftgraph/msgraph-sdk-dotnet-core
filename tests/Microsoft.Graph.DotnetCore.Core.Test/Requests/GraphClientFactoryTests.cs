@@ -25,7 +25,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         public GraphClientFactoryTests()
         {
             this.testHttpMessageHandler = new MockRedirectHandler();
-            handlers = handlers = new DelegatingHandler[3];
+            handlers = new DelegatingHandler[3];
             handlers[0] = new RetryHandler();
             handlers[1] = new RedirectHandler();
             handlers[2] = new AuthenticationHandler(authenticationProvider.Object);
@@ -37,16 +37,19 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             this.testHttpMessageHandler.Dispose();
         }
 
+        // Note:
+        // 1. Xunit's IsType doesn't consider inheritance behind the classes.
+        // 2. We can't control the order of execution for the tests
+        // and 'GraphClientFactory.DefaultHttpHandler' can easily be modified
+        // by other tests since it's a static delegate.
         [Fact]
         public void CreatePipelineWithoutHttpMessageHandlerInput()
         {
             using (RetryHandler retryHandler = (RetryHandler)GraphClientFactory.CreatePipeline(handlers))
             using (RedirectHandler redirectHandler = (RedirectHandler)retryHandler.InnerHandler)
             using (AuthenticationHandler authenticationHandler = (AuthenticationHandler)redirectHandler.InnerHandler)
-            using (HttpClientHandler innerMost = (HttpClientHandler)authenticationHandler.InnerHandler)
+            using (HttpMessageHandler innerMost = authenticationHandler.InnerHandler)
             {
-                System.Diagnostics.Debug.WriteLine("InvalidCast: " + authenticationHandler.InnerHandler.GetType().ToString());
-
                 Assert.NotNull(retryHandler);
                 Assert.NotNull(redirectHandler);
                 Assert.NotNull(authenticationHandler);
@@ -54,7 +57,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                 Assert.IsType(typeof(RetryHandler), retryHandler);
                 Assert.IsType(typeof(RedirectHandler), redirectHandler);
                 Assert.IsType(typeof(AuthenticationHandler), authenticationHandler);
-                Assert.IsType(typeof(HttpClientHandler), innerMost);
+                Assert.True(innerMost is HttpMessageHandler);
             }
 
         }

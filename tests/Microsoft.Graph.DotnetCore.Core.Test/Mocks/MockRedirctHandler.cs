@@ -23,13 +23,13 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Mocks
             {
                 _response1Sent = true;
                 _response1.RequestMessage = request;
-                return _response1;
+                return await Task.FromResult(_response1);
             }
             else
             {
                 _response1Sent = false;
                 _response2.RequestMessage = request;
-                return _response2;
+                return await Task.FromResult(_response2);
             }
         }
 

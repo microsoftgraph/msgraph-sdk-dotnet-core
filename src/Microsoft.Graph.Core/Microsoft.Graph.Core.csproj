@@ -13,10 +13,12 @@
     <PackageId>Microsoft.Graph.Core</PackageId>
     <PackageTags>Microsoft Office365;Graph;GraphServiceClient;Outlook;OneDrive;AzureAD;GraphAPI;Productivity;SharePoint;Intune;SDK</PackageTags>
     <PackageReleaseNotes>
-January 2019 Release Summary (version 1.13.0-preview.2)
+January 2019 Release Summary (version 1.13.0)
 
 - Authentication handler added.
 - Removed Newtonsoft.Json package reference upper bound limitation.
+- Makes GraphClientFactory internal.
+- HttpProvider uses GraphClientFactory.
     </PackageReleaseNotes>
     <PackageProjectUrl>https://developer.microsoft.com/graph</PackageProjectUrl>
     <PackageLicenseUrl>http://aka.ms/devservicesagreement</PackageLicenseUrl>
@@ -36,7 +38,7 @@ January 2019 Release Summary (version 1.13.0-preview.2)
     <DelaySign>false</DelaySign>
     <AssemblyOriginatorKeyFile>35MSSharedLib1024.snk</AssemblyOriginatorKeyFile>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <Version>1.13.0-preview.2</Version>
+    <Version>1.13.0</Version>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard1.1|AnyCPU'">
     <DocumentationFile>bin\Release\netstandard1.1\Microsoft.Graph.Core.xml</DocumentationFile>
