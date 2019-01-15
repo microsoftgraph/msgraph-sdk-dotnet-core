@@ -93,7 +93,7 @@ namespace Microsoft.Graph
                 pipeline = CreatePipeline(CreateDefaultHandlers(), DefaultHttpHandler());
             } else
             {
-                pipeline = CreatePipeline(handlers,DefaultHttpHandler());
+                pipeline = CreatePipeline(handlers, DefaultHttpHandler());
             }
 
             HttpClient client = new HttpClient(pipeline);

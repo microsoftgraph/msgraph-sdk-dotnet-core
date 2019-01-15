@@ -20,6 +20,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
     {
         private MockRedirectHandler testHttpMessageHandler;
         private DelegatingHandler[] handlers;
+        private MockAuthenticationProvider authenticationProvider = new MockAuthenticationProvider();
 
         public GraphClientFactoryTests()
         {
@@ -27,7 +28,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             handlers = handlers = new DelegatingHandler[3];
             handlers[0] = new RetryHandler();
             handlers[1] = new RedirectHandler();
-            handlers[2] = new AuthenticationHandler();
+            handlers[2] = new AuthenticationHandler(authenticationProvider.Object);
 
         }
 

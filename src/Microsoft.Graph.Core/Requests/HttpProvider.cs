@@ -79,7 +79,24 @@ namespace Microsoft.Graph
                 new AuthenticationHandler(authenticationProvider)
             };
 
-            this.httpClient = GraphClientFactory.CreateClient(this.httpMessageHandler, handlers);
+            GraphClientFactory.DefaultHttpHandler = () => httpMessageHandler;
+            this.httpClient = GraphClientFactory.Create("v1.0", GraphClientFactory.Global_Cloud, handlers);
+        }
+
+        /// <summary>
+        /// Gets or sets the cache control header for requests;
+        /// </summary>
+        public CacheControlHeaderValue CacheControlHeader
+        {
+            get
+            {
+                return this.httpClient.DefaultRequestHeaders.CacheControl;
+            }
+
+            set
+            {
+                this.httpClient.DefaultRequestHeaders.CacheControl = value;
+            }
         }
 
         /// <summary>

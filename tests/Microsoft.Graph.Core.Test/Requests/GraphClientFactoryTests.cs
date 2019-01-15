@@ -21,7 +21,7 @@ namespace Microsoft.Graph.Core.Test.Requests
     {
         private DelegatingHandler[] handlers = new DelegatingHandler[3];
         private MockRedirectHandler testHttpMessageHandler;
-
+        private MockAuthenticationProvider authenticationProvider = new MockAuthenticationProvider();
 
         [TestInitialize]
         public void Setup()
@@ -29,7 +29,7 @@ namespace Microsoft.Graph.Core.Test.Requests
             this.testHttpMessageHandler = new MockRedirectHandler();
             handlers[0] = new RetryHandler();
             handlers[1] = new RedirectHandler();
-            handlers[2] = new AuthenticationHandler();
+            handlers[2] = new AuthenticationHandler(authenticationProvider.Object);
         }
 
         [TestCleanup]
