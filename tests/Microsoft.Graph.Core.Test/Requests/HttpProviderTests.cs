@@ -43,9 +43,8 @@ namespace Microsoft.Graph.Core.Test.Requests
         {
             var timeout = TimeSpan.FromSeconds(200);
             var cacheHeader = new CacheControlHeaderValue();
-            using (var defaultHttpProvider = new HttpProvider(authProvider.Object, null))
+            using (var defaultHttpProvider = new HttpProvider(null) { CacheControlHeader = cacheHeader, OverallTimeout = timeout })
             {
-                GraphClientFactory.Configure(defaultHttpProvider.httpClient, timeout, null, cacheHeader);
                 Assert.IsFalse(defaultHttpProvider.httpClient.DefaultRequestHeaders.CacheControl.NoCache, "NoCache true.");
                 Assert.IsFalse(defaultHttpProvider.httpClient.DefaultRequestHeaders.CacheControl.NoStore, "NoStore true.");
 
@@ -111,7 +110,7 @@ namespace Microsoft.Graph.Core.Test.Requests
 
             try
             {
-                GraphClientFactory.Configure(this.httpProvider.httpClient, new TimeSpan(0, 0, 30), null, null);
+                this.httpProvider.OverallTimeout = new TimeSpan(0, 0, 30);
             }
             catch (ServiceException serviceException)
             {

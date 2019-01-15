@@ -41,10 +41,8 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         {
             var timeout = TimeSpan.FromSeconds(200);
             var cacheHeader = new CacheControlHeaderValue();
-            using (var defaultHttpProvider = new HttpProvider(authProvider.Object, null))
+            using (var defaultHttpProvider = new HttpProvider(null) { CacheControlHeader = cacheHeader, OverallTimeout = timeout })
             {
-                GraphClientFactory.Configure(defaultHttpProvider.httpClient, timeout, null, cacheHeader);
-
                 Assert.False(defaultHttpProvider.httpClient.DefaultRequestHeaders.CacheControl.NoCache);
                 Assert.False(defaultHttpProvider.httpClient.DefaultRequestHeaders.CacheControl.NoStore);
 
@@ -103,21 +101,20 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             {
                 this.testHttpMessageHandler.AddResponseMapping(httpRequestMessage.RequestUri.ToString(), httpResponseMessage);
                 var returnedResponseMessage = await this.httpProvider.SendAsync(httpRequestMessage);
-            }
 
-            try
-            {
-                Assert.Throws<ServiceException>( () => GraphClientFactory.Configure(this.httpProvider.httpClient, new TimeSpan(0, 0,30), null, null));
-            }
-            catch (ServiceException serviceException)
-            {
-                Assert.True(serviceException.IsMatch(ErrorConstants.Codes.NotAllowed));
-                Assert.Equal(
-                    ErrorConstants.Messages.OverallTimeoutCannotBeSet,
-                    serviceException.Error.Message);
-                Assert.IsType(typeof(InvalidOperationException), serviceException.InnerException);
-
-                throw;
+                try
+                {
+                    Assert.Throws<ServiceException>(() => this.httpProvider.OverallTimeout = new TimeSpan(0, 0, 30));
+                }
+                catch (ServiceException serviceException)
+                {
+                    Assert.True(serviceException.IsMatch(ErrorConstants.Codes.NotAllowed));
+                    Assert.Equal(
+                        ErrorConstants.Messages.OverallTimeoutCannotBeSet,
+                        serviceException.Error.Message);
+                    Assert.IsType(typeof(InvalidOperationException), serviceException.InnerException);
+                    throw;
+                }
             }
         }
 
