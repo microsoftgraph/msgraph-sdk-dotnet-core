@@ -45,6 +45,8 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             using (AuthenticationHandler authenticationHandler = (AuthenticationHandler)redirectHandler.InnerHandler)
             using (HttpClientHandler innerMost = (HttpClientHandler)authenticationHandler.InnerHandler)
             {
+                System.Diagnostics.Debug.WriteLine("InvalidCast: " + authenticationHandler.InnerHandler.GetType().ToString());
+
                 Assert.NotNull(retryHandler);
                 Assert.NotNull(redirectHandler);
                 Assert.NotNull(authenticationHandler);
