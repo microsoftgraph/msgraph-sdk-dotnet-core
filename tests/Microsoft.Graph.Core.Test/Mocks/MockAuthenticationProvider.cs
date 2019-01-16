@@ -5,6 +5,7 @@
 namespace Microsoft.Graph.Core.Test.Mocks
 {
     using System.Net.Http;
+    using System.Net.Http.Headers;
     using System.Threading.Tasks;
 
     using Moq;
@@ -18,6 +19,7 @@ namespace Microsoft.Graph.Core.Test.Mocks
 
             this.Setup(
                 provider => provider.AuthenticateRequestAsync(It.IsAny<HttpRequestMessage>()))
+                .Callback<HttpRequestMessage>(r => r.Headers.Authorization = new AuthenticationHeaderValue(CoreConstants.Headers.Bearer, "Token"))
                 .Returns(Task.FromResult(0));
         }
     }

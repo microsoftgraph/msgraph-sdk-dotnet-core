@@ -44,8 +44,6 @@ namespace Microsoft.Graph
             {
                 using (var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, this.monitorUrl))
                 {
-                    await this.client.AuthenticationProvider.AuthenticateRequestAsync(httpRequestMessage).ConfigureAwait(false);
-
                     using (var responseMessage = await this.client.HttpProvider.SendAsync(httpRequestMessage).ConfigureAwait(false))
                     {
                         // The monitor service will return an Accepted status for any monitor operation that hasn't completed.

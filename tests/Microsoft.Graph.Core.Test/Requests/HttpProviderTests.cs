@@ -23,12 +23,13 @@ namespace Microsoft.Graph.Core.Test.Requests
         private HttpProvider httpProvider;
         private MockSerializer serializer = new MockSerializer();
         private TestHttpMessageHandler testHttpMessageHandler;
+        private MockAuthenticationProvider authProvider = new MockAuthenticationProvider();
 
         [TestInitialize]
         public void Setup()
         {
             this.testHttpMessageHandler = new TestHttpMessageHandler();
-            this.httpProvider = new HttpProvider(this.testHttpMessageHandler, true, this.serializer.Object);
+            this.httpProvider = new HttpProvider(authProvider.Object, this.testHttpMessageHandler, true, this.serializer.Object);
         }
 
         [TestCleanup]
@@ -57,7 +58,7 @@ namespace Microsoft.Graph.Core.Test.Requests
         public void HttpProvider_CustomHttpClientHandler()
         {
             using (var httpClientHandler = new HttpClientHandler())
-            using (var httpProvider = new HttpProvider(httpClientHandler, false, null))
+            using (var httpProvider = new HttpProvider(authProvider.Object, httpClientHandler, false, null))
             {
                 Assert.AreEqual(httpClientHandler, httpProvider.httpMessageHandler, "Unexpected message handler set.");
                 Assert.IsFalse(httpProvider.disposeHandler, "Dispose handler set to true.");
@@ -67,7 +68,7 @@ namespace Microsoft.Graph.Core.Test.Requests
         [TestMethod]
         public void HttpProvider_DefaultConstructor()
         {
-            using (var defaultHttpProvider = new HttpProvider())
+            using (var defaultHttpProvider = new HttpProvider(authProvider.Object))
             {
                 Assert.IsTrue(defaultHttpProvider.httpClient.DefaultRequestHeaders.CacheControl.NoCache, "NoCache false.");
                 Assert.IsTrue(defaultHttpProvider.httpClient.DefaultRequestHeaders.CacheControl.NoStore, "NoStore false.");
@@ -86,7 +87,7 @@ namespace Microsoft.Graph.Core.Test.Requests
         public void HttpProvider_HttpMessageHandlerConstructor()
         {
            
-            using (var httpProvider = new HttpProvider(this.testHttpMessageHandler, true, null))
+            using (var httpProvider = new HttpProvider(authProvider.Object, this.testHttpMessageHandler, true, null))
             {
                 Assert.IsNotNull(httpProvider.httpMessageHandler, "HttpMessageHandler not initialized");
                 Assert.AreEqual(httpProvider.httpMessageHandler, this.testHttpMessageHandler, "Unexpected message handler set.");
@@ -146,7 +147,7 @@ namespace Microsoft.Graph.Core.Test.Requests
                 this.httpProvider.Dispose();
 
                 var clientException = new Exception();
-                this.httpProvider = new HttpProvider(new ExceptionHttpMessageHandler(clientException), /* disposeHandler */ true, null);
+                this.httpProvider = new HttpProvider(authProvider.Object, new ExceptionHttpMessageHandler(clientException), /* disposeHandler */ true, null);
 
                 try
                 {
@@ -172,7 +173,7 @@ namespace Microsoft.Graph.Core.Test.Requests
                 this.httpProvider.Dispose();
 
                 var clientException = new TaskCanceledException();
-                this.httpProvider = new HttpProvider(new ExceptionHttpMessageHandler(clientException), /* disposeHandler */ true, null);
+                this.httpProvider = new HttpProvider(authProvider.Object, new ExceptionHttpMessageHandler(clientException), /* disposeHandler */ true, null);
 
                 try
                 {
@@ -182,7 +183,7 @@ namespace Microsoft.Graph.Core.Test.Requests
                 {
                     Assert.IsTrue(exception.IsMatch(ErrorConstants.Codes.Timeout), "Unexpected error code returned.");
                     Assert.AreEqual(ErrorConstants.Messages.RequestTimedOut, exception.Error.Message, "Unexpected error message.");
-                    Assert.AreEqual(clientException, exception.InnerException, "Inner exception not set.");
+                    Assert.AreEqual(clientException.Message, exception.InnerException.Message, "Inner exception not set.");
 
                     throw;
                 }
@@ -225,9 +226,7 @@ namespace Microsoft.Graph.Core.Test.Requests
             using (var redirectResponseMessage = new HttpResponseMessage())
             using (var finalResponseMessage = new HttpResponseMessage())
             {
-                httpRequestMessage.Headers.Authorization = new AuthenticationHeaderValue("bearer", "token");
                 httpRequestMessage.Headers.Add("testHeader", "testValue");
-                httpRequestMessage.Headers.CacheControl = new CacheControlHeaderValue { NoCache = true, NoStore = true };
 
                 redirectResponseMessage.StatusCode = HttpStatusCode.Redirect;
                 redirectResponseMessage.Headers.Location = new Uri("https://localhost/redirect");
@@ -238,7 +237,7 @@ namespace Microsoft.Graph.Core.Test.Requests
 
                 var returnedResponseMessage = await this.httpProvider.SendAsync(httpRequestMessage);
 
-                Assert.AreEqual(3, finalResponseMessage.RequestMessage.Headers.Count(), "Unexpected number of headers on redirect request message.");
+                Assert.AreEqual(4, finalResponseMessage.RequestMessage.Headers.Count(), "Unexpected number of headers on redirect request message.");
                 
                 foreach (var header in httpRequestMessage.Headers)
                 {
@@ -265,21 +264,19 @@ namespace Microsoft.Graph.Core.Test.Requests
                 redirectResponseMessage.StatusCode = HttpStatusCode.Redirect;
                 redirectResponseMessage.Headers.Location = new Uri("https://localhost/redirect");
                 tooManyRedirectsResponseMessage.StatusCode = HttpStatusCode.Redirect;
+                tooManyRedirectsResponseMessage.Headers.Location = new Uri("https://localhost");
 
                 redirectResponseMessage.RequestMessage = httpRequestMessage;
 
                 this.testHttpMessageHandler.AddResponseMapping(httpRequestMessage.RequestUri.ToString(), redirectResponseMessage);
                 this.testHttpMessageHandler.AddResponseMapping(redirectResponseMessage.Headers.Location.ToString(), tooManyRedirectsResponseMessage);
 
-                httpRequestMessage.Headers.Authorization = new AuthenticationHeaderValue(CoreConstants.Headers.Bearer, "ticket");
-
                 try
                 {
-                    await this.httpProvider.HandleRedirect(
-                        redirectResponseMessage,
+                    await this.httpProvider.SendAsync(
+                        httpRequestMessage,
                         HttpCompletionOption.ResponseContentRead,
-                        CancellationToken.None,
-                        5);
+                        CancellationToken.None);
                 }
                 catch (ServiceException exception)
                 {

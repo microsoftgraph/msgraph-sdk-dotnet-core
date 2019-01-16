@@ -23,11 +23,12 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         private HttpProvider httpProvider;
         private MockSerializer serializer = new MockSerializer();
         private TestHttpMessageHandler testHttpMessageHandler;
+        private MockAuthenticationProvider authProvider = new MockAuthenticationProvider();
 
         public HttpProviderTests()
         {
             this.testHttpMessageHandler = new TestHttpMessageHandler();
-            this.httpProvider = new HttpProvider(this.testHttpMessageHandler, true, this.serializer.Object);
+            this.httpProvider = new HttpProvider(authProvider.Object, this.testHttpMessageHandler, true, this.serializer.Object);
         }
 
         public void Dispose()
@@ -55,7 +56,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         public void HttpProvider_CustomHttpClientHandler()
         {
             using (var httpClientHandler = new HttpClientHandler())
-            using (var httpProvider = new HttpProvider(httpClientHandler, false, null))
+            using (var httpProvider = new HttpProvider(authProvider.Object, httpClientHandler, false, null))
             {
                 Assert.Equal(httpClientHandler, httpProvider.httpMessageHandler);
                 Assert.False(httpProvider.disposeHandler);
@@ -65,7 +66,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         [Fact]
         public void HttpProvider_DefaultConstructor()
         {
-            using (var defaultHttpProvider = new HttpProvider())
+            using (var defaultHttpProvider = new HttpProvider(authProvider.Object))
             {
                 Assert.True(defaultHttpProvider.httpClient.DefaultRequestHeaders.CacheControl.NoCache);
                 Assert.True(defaultHttpProvider.httpClient.DefaultRequestHeaders.CacheControl.NoStore);
@@ -83,7 +84,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         [Fact]
         public void HttpProvider_HttpMessageHandlerConstructor() {
            
-            using (var httpProvider = new HttpProvider(this.testHttpMessageHandler, false, null))
+            using (var httpProvider = new HttpProvider(authProvider.Object, this.testHttpMessageHandler, false, null))
             {
                 Assert.NotNull(httpProvider.httpMessageHandler);
                 Assert.Equal(httpProvider.httpMessageHandler, this.testHttpMessageHandler);
@@ -100,21 +101,20 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             {
                 this.testHttpMessageHandler.AddResponseMapping(httpRequestMessage.RequestUri.ToString(), httpResponseMessage);
                 var returnedResponseMessage = await this.httpProvider.SendAsync(httpRequestMessage);
-            }
 
-            try
-            {
-                Assert.Throws<ServiceException>( () => this.httpProvider.OverallTimeout = new TimeSpan(0, 0, 30));
-            }
-            catch (ServiceException serviceException)
-            {
-                Assert.True(serviceException.IsMatch(ErrorConstants.Codes.NotAllowed));
-                Assert.Equal(
-                    ErrorConstants.Messages.OverallTimeoutCannotBeSet,
-                    serviceException.Error.Message);
-                Assert.IsType(typeof(InvalidOperationException), serviceException.InnerException);
-
-                throw;
+                try
+                {
+                    Assert.Throws<ServiceException>(() => this.httpProvider.OverallTimeout = new TimeSpan(0, 0, 30));
+                }
+                catch (ServiceException serviceException)
+                {
+                    Assert.True(serviceException.IsMatch(ErrorConstants.Codes.NotAllowed));
+                    Assert.Equal(
+                        ErrorConstants.Messages.OverallTimeoutCannotBeSet,
+                        serviceException.Error.Message);
+                    Assert.IsType(typeof(InvalidOperationException), serviceException.InnerException);
+                    throw;
+                }
             }
         }
 
@@ -139,7 +139,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                 this.httpProvider.Dispose();
 
                 var clientException = new Exception();
-                this.httpProvider = new HttpProvider(new ExceptionHttpMessageHandler(clientException), /* disposeHandler */ true, null);
+                this.httpProvider = new HttpProvider(authProvider.Object, new ExceptionHttpMessageHandler(clientException), /* disposeHandler */ true, null);
 
                 try
                 {
@@ -166,7 +166,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                 this.httpProvider.Dispose();
 
                 var clientException = new TaskCanceledException();
-                this.httpProvider = new HttpProvider(new ExceptionHttpMessageHandler(clientException), /* disposeHandler */ true, null);
+                this.httpProvider = new HttpProvider(authProvider.Object, new ExceptionHttpMessageHandler(clientException), /* disposeHandler */ true, null);
 
                 try
                 {
@@ -218,9 +218,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             using (var redirectResponseMessage = new HttpResponseMessage())
             using (var finalResponseMessage = new HttpResponseMessage())
             {
-                httpRequestMessage.Headers.Authorization = new AuthenticationHeaderValue("bearer", "token");
                 httpRequestMessage.Headers.Add("testHeader", "testValue");
-                httpRequestMessage.Headers.CacheControl = new CacheControlHeaderValue { NoCache = true, NoStore = true };
 
                 redirectResponseMessage.StatusCode = HttpStatusCode.Redirect;
                 redirectResponseMessage.Headers.Location = new Uri("https://localhost/redirect");
@@ -267,11 +265,10 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 
                 try
                 {
-                    await Assert.ThrowsAsync<ServiceException>(async () => await this.httpProvider.HandleRedirect(
-                        redirectResponseMessage,
+                    await Assert.ThrowsAsync<ServiceException>(async () => await this.httpProvider.SendAsync(
+                        httpRequestMessage,
                         HttpCompletionOption.ResponseContentRead,
-                        CancellationToken.None,
-                        5));
+                        CancellationToken.None));
                 }
                 catch (ServiceException exception)
                 {

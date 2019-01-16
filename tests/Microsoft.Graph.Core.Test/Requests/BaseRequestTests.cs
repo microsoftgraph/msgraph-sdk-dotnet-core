@@ -13,7 +13,7 @@ namespace Microsoft.Graph.Core.Test.Requests
     using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
-    
+    using Microsoft.Graph.Core.Test.Mocks;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using TestModels;
@@ -82,11 +82,6 @@ namespace Microsoft.Graph.Core.Test.Requests
                 "Unexpected base URL in request.");
             Assert.AreEqual("value1", httpRequestMessage.Headers.GetValues("header1").First(), "Unexpected first header in request.");
             Assert.AreEqual("value2", httpRequestMessage.Headers.GetValues("header2").First(), "Unexpected second header in request.");
-
-            var expectedVersion = typeof(BaseRequest).GetTypeInfo().Assembly.GetName().Version;
-            Assert.AreEqual(
-                string.Format("Graph-dotnet-{0}.{1}.{2}", expectedVersion.Major, expectedVersion.Minor, expectedVersion.Build),
-                httpRequestMessage.Headers.GetValues(CoreConstants.Headers.SdkVersionHeaderName).First(), "Unexpected request stats header.");
         }
 
         [TestMethod]
@@ -101,29 +96,7 @@ namespace Microsoft.Graph.Core.Test.Requests
             Assert.AreEqual(requestUrl,
                 httpRequestMessage.RequestUri.GetComponents(UriComponents.AbsoluteUri & ~UriComponents.Port, UriFormat.Unescaped),
                 "Unexpected base URL in request.");
-            Assert.AreEqual(1, httpRequestMessage.Headers.Count(), "Unexpected headers in request.");
-
-            var expectedVersion = typeof(BaseRequest).GetTypeInfo().Assembly.GetName().Version;
-            Assert.AreEqual(
-                string.Format("Graph-dotnet-{0}.{1}.{2}", expectedVersion.Major, expectedVersion.Minor, expectedVersion.Build),
-                httpRequestMessage.Headers.GetValues(CoreConstants.Headers.SdkVersionHeaderName).First(), "Unexpected request stats header.");
-        }
-
-        [TestMethod]
-        public void GetWebRequest_OverrideCustomTelemetryHeader()
-        {
-            var requestUrl = string.Concat(this.baseUrl, "/me/drive/items/id");
-
-            var baseRequest = new CustomRequest(requestUrl, this.baseClient);
-
-            var httpRequestMessage = baseRequest.GetHttpRequestMessage();
-
-            Assert.AreEqual(
-                CustomRequest.SdkHeaderValue,
-                httpRequestMessage.Headers.GetValues(CustomRequest.SdkHeaderName).First(), "Unexpected request stats header.");
-
-            Assert.IsFalse(
-                httpRequestMessage.Headers.Contains(CoreConstants.Headers.SdkVersionHeaderName), "Unexpected request stats header present.");
+            Assert.AreEqual(0, httpRequestMessage.Headers.Count(), "Unexpected headers in request.");
         }
 
         [TestMethod]
@@ -161,8 +134,6 @@ namespace Microsoft.Graph.Core.Test.Requests
 
                 Assert.IsNotNull(responseItem, "DerivedTypeClass not returned.");
                 Assert.AreEqual(expectedResponseItem.Id, responseItem.Id, "Unexpected ID.");
-
-                this.authenticationProvider.Verify(provider => provider.AuthenticateRequestAsync(It.IsAny<HttpRequestMessage>()), Times.Once);
             }
         }
 
@@ -174,7 +145,7 @@ namespace Microsoft.Graph.Core.Test.Requests
             var baseRequest = new BaseRequest(requestUrl, this.baseClient) { ContentType = "application/json" };
 
             var data = "{\"data\"}";
-            
+
             using (var httpResponseMessage = new HttpResponseMessage())
             using (var responseStream = new MemoryStream(Encoding.ASCII.GetBytes(data)))
             using (var streamContent = new StreamContent(responseStream))
@@ -192,10 +163,10 @@ namespace Microsoft.Graph.Core.Test.Requests
                         CancellationToken.None))
                         .Returns(Task.FromResult(httpResponseMessage));
 
-                Dictionary<string, object> additionalData = new Dictionary<string,object>();
+                Dictionary<string, object> additionalData = new Dictionary<string, object>();
                 additionalData["responseHeaders"] = new Dictionary<string, List<string>>() { { "key", new List<string>() { "value" } } };
 
-                var expectedResponseItem = new DerivedTypeClass { Id = "id" , AdditionalData = additionalData };
+                var expectedResponseItem = new DerivedTypeClass { Id = "id", AdditionalData = additionalData };
 
                 this.serializer.Setup(
                     serializer => serializer.DeserializeObject<DerivedTypeClass>(It.IsAny<string>()))
@@ -252,14 +223,12 @@ namespace Microsoft.Graph.Core.Test.Requests
                         HttpCompletionOption.ResponseContentRead,
                         CancellationToken.None))
                     .Returns(Task.FromResult(httpResponseMessage));
-                
+
                 this.serializer.Setup(
                     serializer => serializer.SerializeObject(It.IsAny<string>()))
                     .Returns(string.Empty);
 
                 await baseRequest.SendAsync("string", CancellationToken.None);
-
-                this.authenticationProvider.Verify(provider => provider.AuthenticateRequestAsync(It.IsAny<HttpRequestMessage>()), Times.Once);
             }
         }
 
@@ -290,8 +259,6 @@ namespace Microsoft.Graph.Core.Test.Requests
                 var instance = await baseRequest.SendAsync<DerivedTypeClass>("string", CancellationToken.None);
 
                 Assert.IsNull(instance, "Unexpected object returned.");
-
-                this.authenticationProvider.Verify(provider => provider.AuthenticateRequestAsync(It.IsAny<HttpRequestMessage>()), Times.Once);
             }
         }
 
@@ -327,7 +294,7 @@ namespace Microsoft.Graph.Core.Test.Requests
             using (var streamContent = new StreamContent(responseStream))
             {
                 httpResponseMessage.Content = streamContent;
-                
+
                 this.httpProvider.Setup(
                     provider => provider.SendAsync(
                         It.Is<HttpRequestMessage>(
