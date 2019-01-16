@@ -16,7 +16,12 @@ namespace Microsoft.Graph
         /// <summary>
         /// MaxRetry property for 401's
         /// </summary>
-        public int MaxRetry { get; set; } = 1;
+        private int MaxRetry { get; set; } = 1;
+
+        /// <summary>
+        /// AuthOption property
+        /// </summary>
+        internal AuthOption AuthOption { get; set; }
 
         /// <summary>
         /// AuthenticationProvider property
@@ -27,9 +32,11 @@ namespace Microsoft.Graph
         /// Construct a new <see cref="AuthenticationHandler"/>
         /// <param name="authenticationProvider">An authentication provider to pass to <see cref="AuthenticationHandler"/> for authenticating requests.</param>
         /// </summary>
-        public AuthenticationHandler(IAuthenticationProvider authenticationProvider)
+        /// <param name="authOption">An OPTIONAL <see cref="Microsoft.Graph.AuthOption"/> to configure <see cref="AuthenticationHandler"/></param>
+        public AuthenticationHandler(IAuthenticationProvider authenticationProvider, AuthOption authOption = null)
         {
             AuthenticationProvider = authenticationProvider;
+            AuthOption = authOption ?? new AuthOption();
         }
 
         /// <summary>
@@ -37,7 +44,9 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="authenticationProvider">An authentication provider to pass to <see cref="AuthenticationHandler"/> for authenticating requests.</param>
         /// <param name="innerHandler">A HTTP message handler to pass to the <see cref="AuthenticationHandler"/> for sending requests.</param>
-        public AuthenticationHandler(IAuthenticationProvider authenticationProvider, HttpMessageHandler innerHandler)
+        /// <param name="authOption">An OPTIONAL <see cref="Microsoft.Graph.AuthOption"/> to configure <see cref="AuthenticationHandler"/></param>
+        public AuthenticationHandler(IAuthenticationProvider authenticationProvider, HttpMessageHandler innerHandler, AuthOption authOption = null)
+            :this(authenticationProvider, authOption)
         {
             InnerHandler = innerHandler;
             AuthenticationProvider = authenticationProvider;
@@ -94,6 +103,8 @@ namespace Microsoft.Graph
             // Authenticate request using AuthenticationProvider
             if (AuthenticationProvider != null)
             {
+                AuthOption = httpRequestMessage.GetMiddlewareOption<AuthOption>() ?? AuthOption;
+
                 await AuthenticationProvider.AuthenticateRequestAsync(httpRequestMessage);
 
                 HttpResponseMessage response = await base.SendAsync(httpRequestMessage, cancellationToken);

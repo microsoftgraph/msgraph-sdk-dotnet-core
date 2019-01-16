@@ -42,6 +42,8 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             using (RetryHandler retry = new RetryHandler())
             {
                 Assert.Null(retry.InnerHandler);
+                Assert.NotNull(retry.RetryOption);
+                Assert.Equal(10, retry.RetryOption.MaxRetry); // default MaxRetry is 10
                 Assert.IsType(typeof(RetryHandler), retry);
             }
         }
@@ -51,8 +53,22 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         public void retryHandler_HttpMessageHandlerConstructor()
         {
             Assert.NotNull(retryHandler.InnerHandler);
+            Assert.NotNull(retryHandler.RetryOption);
+            Assert.Equal(10, retryHandler.RetryOption.MaxRetry); // default MaxRetry is 10
             Assert.Equal(retryHandler.InnerHandler, testHttpMessageHandler);
             Assert.IsType(typeof(RetryHandler), retryHandler);
+        }
+
+        [Fact]
+        public void retryHandler_RetryOptionConstructor()
+        {
+            using (RetryHandler retry = new RetryHandler(new RetryOption { MaxRetry = 5, ShouldRetry = (response) => true }))
+            {
+                Assert.Null(retry.InnerHandler);
+                Assert.NotNull(retry.RetryOption);
+                Assert.Equal(5, retry.RetryOption.MaxRetry);
+                Assert.IsType(typeof(RetryHandler), retry);
+            }
         }
 
         [Fact]

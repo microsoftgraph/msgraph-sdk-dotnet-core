@@ -45,6 +45,8 @@ namespace Microsoft.Graph.Core.Test.Requests
             using (RetryHandler retry = new RetryHandler())
             {
                 Assert.IsNull(retry.InnerHandler, "HttpMessageHandler initialized.");
+                Assert.IsNotNull(retry.RetryOption, "Retry option not initialized");
+                Assert.AreEqual(10, retry.RetryOption.MaxRetry, "Unexpected max retry set"); // default MaxRetry is 10
                 Assert.IsInstanceOfType(retry, typeof(RetryHandler), "Unexpected redtry handler set.");
             }
         }
@@ -54,8 +56,22 @@ namespace Microsoft.Graph.Core.Test.Requests
         public void retryHandler_HttpMessageHandlerConstructor()
         {
             Assert.IsNotNull(retryHandler.InnerHandler, "HttpMessageHandler not initialized.");
+            Assert.IsNotNull(retryHandler.RetryOption, "Retry option not initialized");
+            Assert.AreEqual(10, retryHandler.RetryOption.MaxRetry, "Unexpected max retry set"); // default MaxRetry is 10
             Assert.AreEqual(retryHandler.InnerHandler, testHttpMessageHandler, "Unexpected message handler set.");
             Assert.IsInstanceOfType(retryHandler, typeof(RetryHandler), "Unexpected redirect handler set.");
+        }
+
+        [TestMethod]
+        public void retryHandler_RetryOptionConstructor()
+        {
+            using (RetryHandler retry = new RetryHandler(new RetryOption { MaxRetry = 5, ShouldRetry = (response) => true }))
+            {
+                Assert.IsNull(retry.InnerHandler, "HttpMessageHandler initialized");
+                Assert.IsNotNull(retry.RetryOption, "Retry option not initialized");
+                Assert.AreEqual(5, retry.RetryOption.MaxRetry, "Unexpected max retry set");
+                Assert.IsInstanceOfType(retry, typeof(RetryHandler), "Unexpected redirect handler set");
+            }
         }
 
         [TestMethod]

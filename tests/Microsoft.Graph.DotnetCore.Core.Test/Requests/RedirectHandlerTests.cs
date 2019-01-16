@@ -38,6 +38,8 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             using (RedirectHandler redirect = new RedirectHandler())
             {
                 Assert.Null(redirect.InnerHandler);
+                Assert.NotNull(redirect.RedirectOption);
+                Assert.Equal(5, redirect.RedirectOption.MaxRedirects); // default MaxRedirects is 5
                 Assert.IsType(typeof(RedirectHandler), redirect);
             }
         }
@@ -46,8 +48,22 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         public void RedirectHandler_HttpMessageHandlerConstructor()
         {
             Assert.NotNull(this.redirectHandler.InnerHandler);
+            Assert.NotNull(redirectHandler.RedirectOption);
+            Assert.Equal(5, redirectHandler.RedirectOption.MaxRedirects); // default MaxRedirects is 5
             Assert.Equal(this.redirectHandler.InnerHandler, this.testHttpMessageHandler);
             Assert.IsType(typeof(RedirectHandler), this.redirectHandler);
+        }
+
+        [Fact]
+        public void RedirectHandler_RedirectOptionConstructor()
+        {
+            using (RedirectHandler redirect = new RedirectHandler(new RedirectOption { MaxRedirects = 2 }))
+            {
+                Assert.Null(redirect.InnerHandler);
+                Assert.NotNull(redirect.RedirectOption);
+                Assert.Equal(2, redirect.RedirectOption.MaxRedirects);
+                Assert.IsType(typeof(RedirectHandler), redirect);
+            }
         }
 
         [Fact]
