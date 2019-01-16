@@ -104,7 +104,7 @@ namespace Microsoft.Graph
         /// <param name="baseRequest">The <see cref="BaseRequest"/> for the request.</param>
         /// <param name="maxRedirects">Maximum number of redirects allowed for the request</param>
         /// <returns></returns>
-        public static T WithMaxRedirect<T>(this T baseRequest, int maxRedirects) where T : IBaseRequest
+        public static T WithMaxRedirects<T>(this T baseRequest, int maxRedirects) where T : IBaseRequest
         {
             string redirectOptionKey = typeof(RedirectOption).ToString();
             if (baseRequest.MiddlewareOptions.ContainsKey(redirectOptionKey))

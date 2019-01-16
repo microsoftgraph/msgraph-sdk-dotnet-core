@@ -35,7 +35,7 @@ namespace Microsoft.Graph
             this.Client = client;
             this.Headers = new List<HeaderOption>();
             this.QueryOptions = new List<QueryOption>();
-
+            this.MiddlewareOptions = new Dictionary<string, IMiddlewareOption>();
             this.RequestUrl = this.InitializeUrl(requestUrl);
 
             if (options != null)
@@ -196,7 +196,7 @@ namespace Microsoft.Graph
 
             if (multipartContent != null)
             {
-                using (var request = this.GetHttpRequestMessage())
+                using (var request = this.GetHttpRequestMessage(cancellationToken))
                 {
                     request.Content = multipartContent;
 
@@ -231,7 +231,7 @@ namespace Microsoft.Graph
                     });
             }
 
-            using (var request = this.GetHttpRequestMessage())
+            using (var request = this.GetHttpRequestMessage(cancellationToken))
             {
                 if (serializableObject != null)
                 {

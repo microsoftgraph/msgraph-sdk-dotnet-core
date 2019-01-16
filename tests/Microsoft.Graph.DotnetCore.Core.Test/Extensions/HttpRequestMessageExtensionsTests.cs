@@ -4,9 +4,10 @@
 
 namespace Microsoft.Graph.DotnetCore.Core.Test.Extensions
 {
+    using Microsoft.Graph.DotnetCore.Core.Test.Requests;
     using System.Net.Http;
     using Xunit;
-    public class RequestExtensionsTests
+    public class HttpRequestMessageExtensionsTests: BaseRequestTests
     {
         [Fact]
         public void IsBuffered_Get()
@@ -61,6 +62,30 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Extensions
             var response = httpRequest.IsBuffered();
 
             Assert.False(response, "Unexpected content type");
+        }
+
+        [Fact]
+        public void GetRequestContext_ShouldReturnRequestContext()
+        {
+            string requestUrl = "https://foo.bar";
+            var baseRequest = new BaseRequest(requestUrl, this.baseClient);
+
+            HttpRequestMessage httpRequestMessage = baseRequest.GetHttpRequestMessage();
+
+            Assert.NotNull(httpRequestMessage.GetRequestContext());
+        }
+
+        [Fact]
+        public void GetMiddlewareControl_ShouldReturnIMiddlewareControlObject()
+        {
+            string requestUrl = "https://localhost/v2";
+            var baseRequest = new BaseRequest(requestUrl, this.baseClient);
+            baseRequest.WithForceRefresh(true);
+
+            HttpRequestMessage httpRequestMessage = baseRequest.GetHttpRequestMessage();
+
+            Assert.NotNull(httpRequestMessage.GetMiddlewareOption<AuthOption>());
+            Assert.True(httpRequestMessage.GetMiddlewareOption<AuthOption>().ForceRefresh);
         }
     }
 }

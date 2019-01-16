@@ -4,11 +4,12 @@
 
 namespace Microsoft.Graph.Core.Test.Extensions
 {
+    using Microsoft.Graph.Core.Test.Requests;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using System.Net.Http;
 
     [TestClass]
-    public class RequestExtensionsTests
+    public class HttpRequestMessageExtensionsTests: BaseRequestTests
     {
         [TestMethod]
         public void IsBuffered_Get()
@@ -63,6 +64,30 @@ namespace Microsoft.Graph.Core.Test.Extensions
             var response = httpRequest.IsBuffered();
 
             Assert.IsFalse(response, "Unexpected content type");
+        }
+
+        [TestMethod]
+        public void GetRequestContext_ShouldReturnRequestContext()
+        {
+            string requestUrl = "https://foo.bar";
+            var baseRequest = new BaseRequest(requestUrl, this.baseClient);
+
+            HttpRequestMessage httpRequestMessage = baseRequest.GetHttpRequestMessage();
+
+            Assert.IsNotNull(httpRequestMessage.GetRequestContext(), "Unexpected request context");
+        }
+
+        [TestMethod]
+        public void GetMiddlewareControl_ShouldReturnIMiddlewareControlObject()
+        {
+            string requestUrl = "https://localhost/v2";
+            var baseRequest = new BaseRequest(requestUrl, this.baseClient);
+            baseRequest.WithForceRefresh(true);
+
+            HttpRequestMessage httpRequestMessage = baseRequest.GetHttpRequestMessage();
+
+            Assert.IsNotNull(httpRequestMessage.GetMiddlewareOption<AuthOption>(), "Unexpected auth option");
+            Assert.IsTrue(httpRequestMessage.GetMiddlewareOption<AuthOption>().ForceRefresh, "Unexpected force refresh value");
         }
     }
 }
