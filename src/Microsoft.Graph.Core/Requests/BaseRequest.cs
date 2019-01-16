@@ -85,6 +85,11 @@ namespace Microsoft.Graph
         public string RequestUrl { get; internal set; }
 
         /// <summary>
+        /// Gets or sets middleware options for the request.
+        /// </summary>
+        public IDictionary<string, IMiddlewareOption> MiddlewareOptions { get; private set; }
+
+        /// <summary>
         /// Sends the request.
         /// </summary>
         /// <param name="serializableObject">The serializable object to send.</param>
@@ -254,13 +259,24 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets the <see cref="HttpRequestMessage"/> representation of the request.
         /// </summary>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The <see cref="HttpRequestMessage"/> representation of the request.</returns>
-        public HttpRequestMessage GetHttpRequestMessage()
+        public HttpRequestMessage GetHttpRequestMessage(CancellationToken cancellationToken)
         {
             var queryString = this.BuildQueryString();
             var request = new HttpRequestMessage(new HttpMethod(this.Method), string.Concat(this.RequestUrl, queryString));
             this.AddHeadersToRequest(request);
+            this.AddRequestContextToRequest(request, cancellationToken);
             return request;
+        }
+
+        /// <summary>
+        /// Gets the <see cref="HttpRequestMessage"/> representation of the request.
+        /// </summary>
+        /// <returns>The <see cref="HttpRequestMessage"/> representation of the request.</returns>
+        public HttpRequestMessage GetHttpRequestMessage()
+        {
+            return this.GetHttpRequestMessage(CancellationToken.None);
         }
 
         /// <summary>
@@ -276,6 +292,23 @@ namespace Microsoft.Graph
                     request.Headers.TryAddWithoutValidation(header.Name, header.Value);
                 }
             }
+        }
+
+        /// <summary>
+        /// Adds a <see cref="RequestContext"/> to <see cref="HttpRequestMessage"/> property bag
+        /// </summary>
+        /// <param name="httpRequestMessage">A <see cref="HttpRequestMessage"/></param>
+        /// <param name="cancellationToken">A <see cref="CancellationToken"/></param>
+        private void AddRequestContextToRequest(HttpRequestMessage httpRequestMessage, CancellationToken cancellationToken)
+        {
+            var requestContext = new RequestContext
+            {
+                MiddlewareOptions = MiddlewareOptions,
+                ClientRequestId = Guid.NewGuid().ToString(),
+                CancellationToken = cancellationToken
+            };
+
+            httpRequestMessage.Properties.Add(typeof(RequestContext).ToString(), requestContext);
         }
 
         /// <summary>
