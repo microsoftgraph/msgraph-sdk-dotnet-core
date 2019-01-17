@@ -85,6 +85,38 @@ namespace Microsoft.Graph.Core.Test.Requests
         }
 
         [TestMethod]
+        public void GetRequestContextWithClientRequestIdHeader()
+        {
+            string requestUrl = string.Concat(this.baseUrl, "foo/bar");
+            string clientRequestId = Guid.NewGuid().ToString();
+            var headers = new List<HeaderOption>
+            {
+                new HeaderOption(CoreConstants.Headers.ClientRequestId, clientRequestId)
+            };
+
+            var baseRequest = new BaseRequest(requestUrl, this.baseClient, headers) { Method = "PUT" };
+
+            var httpRequestMessage = baseRequest.GetHttpRequestMessage();
+
+            Assert.AreEqual(HttpMethod.Put, httpRequestMessage.Method, "Unexpected HTTP method in request");
+            Assert.AreSame(clientRequestId, httpRequestMessage.GetRequestContext().ClientRequestId, "Unexpected client request id");
+        }
+
+        [TestMethod]
+        public void GetRequestContextWithClientRequestId()
+        {
+            string requestUrl = string.Concat(this.baseUrl, "foo/bar");
+            string clientRequestId = Guid.NewGuid().ToString();
+
+            var baseRequest = new BaseRequest(requestUrl, this.baseClient) { Method = "PUT" };
+
+            var httpRequestMessage = baseRequest.GetHttpRequestMessage();
+
+            Assert.AreEqual(HttpMethod.Put, httpRequestMessage.Method, "Unexpected HTTP method in request");
+            Assert.IsNotNull(httpRequestMessage.GetRequestContext().ClientRequestId, "Unexpected client request id");
+        }
+
+        [TestMethod]
         public void GetWebRequestNoOptions()
         {
             var requestUrl = string.Concat(this.baseUrl, "/me/drive/items/id");

@@ -33,6 +33,9 @@ namespace Microsoft.Graph
 
             /// Throw-site header
             public const string ThrowSiteHeaderName = "X-ThrowSite";
+
+            /// Client Request Id
+            public const string ClientRequestId = "client-request-id";
         }
 
         /// <summary>
@@ -42,6 +45,19 @@ namespace Microsoft.Graph
         {
             /// OData type
             public const string ODataType = "@odata.type";
+        }
+
+        /// <summary>
+        /// Feature usage constants
+        /// </summary>
+        public static class FeatureUsage
+        {
+            /// Redirect handler
+            public const int RedirectHandler = 0x00000001;
+            /// Retry handler
+            public const int RetryHandler = 0x00000002;
+            /// Auth handler
+            public const int AuthHandler = 0x00000004;
         }
     }
 }

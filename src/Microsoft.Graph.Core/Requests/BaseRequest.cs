@@ -304,7 +304,7 @@ namespace Microsoft.Graph
             var requestContext = new RequestContext
             {
                 MiddlewareOptions = MiddlewareOptions,
-                ClientRequestId = Guid.NewGuid().ToString(),
+                ClientRequestId = GetHeaderValue(httpRequestMessage, CoreConstants.Headers.ClientRequestId) ?? Guid.NewGuid().ToString(),
                 CancellationToken = cancellationToken
             };
 
@@ -429,6 +429,27 @@ namespace Microsoft.Graph
             }
 
             return responseContent;
+        }
+
+        /// <summary>
+        /// Gets a specified header value from <see cref="HttpRequestMessage"/>
+        /// </summary>
+        /// <param name="requestMessage">A <see cref="HttpRequestMessage"/></param>
+        /// <param name="headerName">The name, or key, of the header option.</param>
+        /// <returns>Header value</returns>
+        private string GetHeaderValue(HttpRequestMessage requestMessage, string headerName)
+        {
+            string headerValue = null;
+
+            if (requestMessage.Headers != null)
+            {
+                if (requestMessage.Headers.TryGetValues(headerName, out var values))
+                {
+                    headerValue = values.FirstOrDefault();
+                }
+            }
+
+            return headerValue;
         }
     }
 }

@@ -80,6 +80,38 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         }
 
         [Fact]
+        public void GetRequestContextWithClientRequestIdHeader()
+        {
+            string requestUrl = string.Concat(this.baseUrl, "foo/bar");
+            string clientRequestId = Guid.NewGuid().ToString();
+            var headers = new List<HeaderOption>
+            {
+                new HeaderOption(CoreConstants.Headers.ClientRequestId, clientRequestId)
+            };
+
+            var baseRequest = new BaseRequest(requestUrl, this.baseClient, headers) { Method = "PUT" };
+
+            var httpRequestMessage = baseRequest.GetHttpRequestMessage();
+
+            Assert.Equal(HttpMethod.Put, httpRequestMessage.Method);
+            Assert.Same(clientRequestId, httpRequestMessage.GetRequestContext().ClientRequestId);
+        }
+
+        [Fact]
+        public void GetRequestContextWithClientRequestId()
+        {
+            string requestUrl = string.Concat(this.baseUrl, "foo/bar");
+            string clientRequestId = Guid.NewGuid().ToString();
+
+            var baseRequest = new BaseRequest(requestUrl, this.baseClient) { Method = "PUT" };
+
+            var httpRequestMessage = baseRequest.GetHttpRequestMessage();
+
+            Assert.Equal(HttpMethod.Put, httpRequestMessage.Method);
+            Assert.NotNull(httpRequestMessage.GetRequestContext().ClientRequestId);
+        }
+
+        [Fact]
         public void GetWebRequestNoOptions()
         {
             var requestUrl = string.Concat(this.baseUrl, "/me/drive/items/id");
