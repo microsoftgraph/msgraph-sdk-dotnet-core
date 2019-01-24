@@ -304,12 +304,17 @@ namespace Microsoft.Graph
             // Adds authentication AuthProvider middleware options
             this.WithAuthProvider(this.Client.AuthenticationProvider);
 
+            // Retreive feature flags
+            IEnumerable<string> featureFlags = new List<string>();
+            httpRequestMessage.Headers.TryGetValues(CoreConstants.Headers.FeatureFlag, out featureFlags);
+
             // Creates a request context object
             var requestContext = new GraphRequestContext
             {
                 MiddlewareOptions = MiddlewareOptions,
                 ClientRequestId = GetHeaderValue(httpRequestMessage, CoreConstants.Headers.ClientRequestId) ?? Guid.NewGuid().ToString(),
-                CancellationToken = cancellationToken
+                CancellationToken = cancellationToken,
+                FeatureUsage = featureFlags.ToList()
             };
 
             httpRequestMessage.Properties.Add(typeof(GraphRequestContext).ToString(), requestContext);

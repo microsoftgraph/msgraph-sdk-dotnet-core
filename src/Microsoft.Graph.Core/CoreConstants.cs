@@ -59,19 +59,19 @@ namespace Microsoft.Graph
             public const string RedirectHandler = "0x00000001";
             /// Retry Handler
             public const string RetryHandler = "0x00000002";
-            /// Auth Handstring
+            /// Auth Handler
             public const string AuthHandler = "0x00000003";
-            /// Custom HtstringProvider
+            /// Default Handler
             public const string DefaultHttpProvider = "0x00000004";
-            /// Logging Hstringler
+            /// Logging Handler
             public const string LoggingHandler = "0x00000008";
-            /// Service Dstringovery Handler
+            /// Service Discovery Handler
             public const string ServiceDiscoveryHandler = "0x00000010";
-            /// CompressistringHandler
+            /// Compression Handler
             public const string CompressionHandler = "0x00000020";
-            /// ConnnectistringPool Manager
+            /// Connection Pool Manager
             public const string ConnectionPoolManager = "0x00000040";
-            /// Long Runnstring Operation Handler 
+            /// Long Running Operation Handler 
             public const string LongRunnungOperationHandler = "0x00000080";
         }
     }
