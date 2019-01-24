@@ -25,5 +25,10 @@ namespace Microsoft.Graph
         /// A ForceRefresh property
         /// </summary>
         public bool ForceRefresh { get; set; }
+
+        /// <summary>
+        /// An Authentication Provider
+        /// </summary>
+        internal IAuthenticationProvider AuthenticationProvider { get; set; }
     }
 }

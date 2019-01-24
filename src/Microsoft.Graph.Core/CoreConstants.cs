@@ -36,6 +36,9 @@ namespace Microsoft.Graph
 
             /// Client Request Id
             public const string ClientRequestId = "client-request-id";
+
+            /// Feature Flag
+            public const string FeatureFlag = "FeatureFlag";
         }
 
         /// <summary>
@@ -48,16 +51,28 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Feature usage constants
+        /// Feature Flag constants
         /// </summary>
-        public static class FeatureUsage
+        public static class FeatureFlags
         {
-            /// Redirect handler
-            public const int RedirectHandler = 0x00000001;
-            /// Retry handler
-            public const int RetryHandler = 0x00000002;
-            /// Auth handler
-            public const int AuthHandler = 0x00000004;
+            /// Redirect Handler
+            public const string RedirectHandler = "0x00000001";
+            /// Retry Handler
+            public const string RetryHandler = "0x00000002";
+            /// Auth Handstring
+            public const string AuthHandler = "0x00000003";
+            /// Custom HtstringProvider
+            public const string DefaultHttpProvider = "0x00000004";
+            /// Logging Hstringler
+            public const string LoggingHandler = "0x00000008";
+            /// Service Dstringovery Handler
+            public const string ServiceDiscoveryHandler = "0x00000010";
+            /// CompressistringHandler
+            public const string CompressionHandler = "0x00000020";
+            /// ConnnectistringPool Manager
+            public const string ConnectionPoolManager = "0x00000040";
+            /// Long Runnstring Operation Handler 
+            public const string LongRunnungOperationHandler = "0x00000080";
         }
     }
 }

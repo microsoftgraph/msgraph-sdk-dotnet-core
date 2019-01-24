@@ -134,5 +134,26 @@ namespace Microsoft.Graph
 
             return baseRequest;
         }
+
+        /// <summary>
+        /// Sets Authentication Handlers Authprovider property for the request.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="baseRequest">The <see cref="BaseRequest"/> for the request.</param>
+        /// <param name="authenticationProvider">A <see cref="IAuthenticationProvider"/></param>
+        /// <returns></returns>
+        internal static T WithAuthProvider<T>(this T baseRequest, IAuthenticationProvider authenticationProvider) where T : IBaseRequest
+        {
+            string authOptionKey = typeof(AuthOption).ToString();
+            if (baseRequest.MiddlewareOptions.ContainsKey(authOptionKey))
+            {
+                (baseRequest.MiddlewareOptions[authOptionKey] as AuthOption).AuthenticationProvider = authenticationProvider;
+            }
+            else
+            {
+                baseRequest.MiddlewareOptions.Add(authOptionKey, new AuthOption { AuthenticationProvider = authenticationProvider });
+            }
+            return baseRequest;
+        }
     }
 }

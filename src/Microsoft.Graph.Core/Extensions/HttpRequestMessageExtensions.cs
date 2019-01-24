@@ -27,16 +27,16 @@ namespace Microsoft.Graph
             return true;
         }
         /// <summary>
-        /// Gets a <see cref="RequestContext"/> from <see cref="HttpRequestMessage"/>
+        /// Gets a <see cref="GraphRequestContext"/> from <see cref="HttpRequestMessage"/>
         /// </summary>
         /// <param name="httpRequestMessage">The <see cref="HttpRequestMessage"/> representation of the request.</param>
         /// <returns></returns>
-        public static RequestContext GetRequestContext(this HttpRequestMessage httpRequestMessage)
+        public static GraphRequestContext GetRequestContext(this HttpRequestMessage httpRequestMessage)
         {
-            RequestContext requestContext = new RequestContext();
-            if (httpRequestMessage.Properties.TryGetValue(typeof(RequestContext).ToString(), out var requestContextObject))
+            GraphRequestContext requestContext = new GraphRequestContext();
+            if (httpRequestMessage.Properties.TryGetValue(typeof(GraphRequestContext).ToString(), out var requestContextObject))
             {
-                requestContext = (RequestContext)requestContextObject;
+                requestContext = (GraphRequestContext)requestContextObject;
             }
             return requestContext;
         }
@@ -50,7 +50,7 @@ namespace Microsoft.Graph
         public static T GetMiddlewareOption<T>(this HttpRequestMessage httpRequestMessage) where T : IMiddlewareOption
         {
             IMiddlewareOption option = null;
-            RequestContext requestContext = httpRequestMessage.GetRequestContext();
+            GraphRequestContext requestContext = httpRequestMessage.GetRequestContext();
             if (requestContext.MiddlewareOptions != null)
             {
                 requestContext.MiddlewareOptions.TryGetValue(typeof(T).ToString(), out option);

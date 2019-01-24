@@ -295,20 +295,24 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Adds a <see cref="RequestContext"/> to <see cref="HttpRequestMessage"/> property bag
+        /// Adds a <see cref="GraphRequestContext"/> to <see cref="HttpRequestMessage"/> property bag
         /// </summary>
         /// <param name="httpRequestMessage">A <see cref="HttpRequestMessage"/></param>
         /// <param name="cancellationToken">A <see cref="CancellationToken"/></param>
         private void AddRequestContextToRequest(HttpRequestMessage httpRequestMessage, CancellationToken cancellationToken)
         {
-            var requestContext = new RequestContext
+            // Adds authentication AuthProvider middleware options
+            this.WithAuthProvider(this.Client.AuthenticationProvider);
+
+            // Creates a request context object
+            var requestContext = new GraphRequestContext
             {
                 MiddlewareOptions = MiddlewareOptions,
                 ClientRequestId = GetHeaderValue(httpRequestMessage, CoreConstants.Headers.ClientRequestId) ?? Guid.NewGuid().ToString(),
                 CancellationToken = cancellationToken
             };
 
-            httpRequestMessage.Properties.Add(typeof(RequestContext).ToString(), requestContext);
+            httpRequestMessage.Properties.Add(typeof(GraphRequestContext).ToString(), requestContext);
         }
 
         /// <summary>

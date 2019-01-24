@@ -48,6 +48,8 @@ namespace Microsoft.Graph
                 { Germany_Cloud, "https://graph.microsoft.de" }
             };
 
+        private static List<string> featureFlags = new List<string>();
+
         /// Global endpoint
         public const string Global_Cloud = "Global";
         /// US_GOV endpoint
@@ -93,11 +95,12 @@ namespace Microsoft.Graph
                 pipeline = CreatePipeline(CreateDefaultHandlers(), DefaultHttpHandler());
             } else
             {
-                pipeline = CreatePipeline(handlers,DefaultHttpHandler());
+                pipeline = CreatePipeline(handlers, DefaultHttpHandler());
             }
 
             HttpClient client = new HttpClient(pipeline);
             client.DefaultRequestHeaders.Add(SdkVersionHeaderName, SdkVersionHeaderValue);
+            client.SetFeatureFlags(featureFlags);
             client.Timeout = defaultTimeout;
             client.BaseAddress = DetermineBaseAddress(nationalCloud, version);
             client.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue { NoCache = true, NoStore = true };
@@ -110,6 +113,8 @@ namespace Microsoft.Graph
         /// <returns></returns>
         public static IEnumerable<DelegatingHandler> CreateDefaultHandlers()
         {
+            featureFlags.AddRange(new string[] { CoreConstants.FeatureFlags.RetryHandler, CoreConstants.FeatureFlags.RedirectHandler });
+
             return new List<DelegatingHandler> {
                 new RetryHandler(),
                 new RedirectHandler()

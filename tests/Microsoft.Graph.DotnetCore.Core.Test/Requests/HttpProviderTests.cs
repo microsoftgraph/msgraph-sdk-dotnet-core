@@ -3,7 +3,6 @@
 // ------------------------------------------------------------------------------
 
 using Microsoft.Graph.DotnetCore.Core.Test.Mocks;
-using Microsoft.Graph;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -23,12 +22,13 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         private HttpProvider httpProvider;
         private MockSerializer serializer = new MockSerializer();
         private TestHttpMessageHandler testHttpMessageHandler;
-        private MockAuthenticationProvider authProvider = new MockAuthenticationProvider();
+        private MockAuthenticationProvider authProvider;
 
         public HttpProviderTests()
         {
             this.testHttpMessageHandler = new TestHttpMessageHandler();
-            this.httpProvider = new HttpProvider(authProvider.Object, this.testHttpMessageHandler, true, this.serializer.Object);
+            this.authProvider = new MockAuthenticationProvider();
+            this.httpProvider = new HttpProvider(this.testHttpMessageHandler, true, this.serializer.Object);
         }
 
         public void Dispose()
@@ -45,7 +45,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             {
                 Assert.False(defaultHttpProvider.httpClient.DefaultRequestHeaders.CacheControl.NoCache);
                 Assert.False(defaultHttpProvider.httpClient.DefaultRequestHeaders.CacheControl.NoStore);
-
+                Assert.True(defaultHttpProvider.httpClient.DefaultRequestHeaders.Contains(CoreConstants.Headers.FeatureFlag));
                 Assert.Equal(timeout, defaultHttpProvider.httpClient.Timeout);
                 Assert.NotNull(defaultHttpProvider.Serializer);
                 Assert.IsType(typeof(Serializer), defaultHttpProvider.Serializer);
@@ -56,9 +56,10 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         public void HttpProvider_CustomHttpClientHandler()
         {
             using (var httpClientHandler = new HttpClientHandler())
-            using (var httpProvider = new HttpProvider(authProvider.Object, httpClientHandler, false, null))
+            using (var httpProvider = new HttpProvider(httpClientHandler, false, null))
             {
                 Assert.Equal(httpClientHandler, httpProvider.httpMessageHandler);
+                Assert.True(httpProvider.httpClient.DefaultRequestHeaders.Contains(CoreConstants.Headers.FeatureFlag));
                 Assert.False(httpProvider.disposeHandler);
             }
         }
@@ -66,11 +67,11 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         [Fact]
         public void HttpProvider_DefaultConstructor()
         {
-            using (var defaultHttpProvider = new HttpProvider(authProvider.Object))
+            using (var defaultHttpProvider = new HttpProvider())
             {
                 Assert.True(defaultHttpProvider.httpClient.DefaultRequestHeaders.CacheControl.NoCache);
                 Assert.True(defaultHttpProvider.httpClient.DefaultRequestHeaders.CacheControl.NoStore);
-
+                Assert.True(defaultHttpProvider.httpClient.DefaultRequestHeaders.Contains(CoreConstants.Headers.FeatureFlag));
                 Assert.True(defaultHttpProvider.disposeHandler);
                 Assert.NotNull(defaultHttpProvider.httpMessageHandler);
                 Assert.False(((HttpClientHandler)defaultHttpProvider.httpMessageHandler).AllowAutoRedirect);
@@ -84,9 +85,10 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         [Fact]
         public void HttpProvider_HttpMessageHandlerConstructor() {
            
-            using (var httpProvider = new HttpProvider(authProvider.Object, this.testHttpMessageHandler, false, null))
+            using (var httpProvider = new HttpProvider(this.testHttpMessageHandler, false, null))
             {
                 Assert.NotNull(httpProvider.httpMessageHandler);
+                Assert.True(httpProvider.httpClient.DefaultRequestHeaders.Contains(CoreConstants.Headers.FeatureFlag));
                 Assert.Equal(httpProvider.httpMessageHandler, this.testHttpMessageHandler);
                 Assert.False(httpProvider.disposeHandler);
                 Assert.IsType(typeof(Serializer), httpProvider.Serializer);
@@ -100,6 +102,8 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             using (var httpResponseMessage = new HttpResponseMessage())
             {
                 this.testHttpMessageHandler.AddResponseMapping(httpRequestMessage.RequestUri.ToString(), httpResponseMessage);
+                this.AddGraphRequestContextToRequest(httpRequestMessage);
+
                 var returnedResponseMessage = await this.httpProvider.SendAsync(httpRequestMessage);
 
                 try
@@ -125,8 +129,9 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             using (var httpResponseMessage = new HttpResponseMessage())
             {
                 this.testHttpMessageHandler.AddResponseMapping(httpRequestMessage.RequestUri.ToString(), httpResponseMessage);
+                this.AddGraphRequestContextToRequest(httpRequestMessage);
                 var returnedResponseMessage = await this.httpProvider.SendAsync(httpRequestMessage);
-
+                Assert.True(returnedResponseMessage.RequestMessage.Headers.Contains(CoreConstants.Headers.FeatureFlag));
                 Assert.Equal(httpResponseMessage, returnedResponseMessage);
             }
         }
@@ -139,7 +144,8 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                 this.httpProvider.Dispose();
 
                 var clientException = new Exception();
-                this.httpProvider = new HttpProvider(authProvider.Object, new ExceptionHttpMessageHandler(clientException), /* disposeHandler */ true, null);
+                this.httpProvider = new HttpProvider(new ExceptionHttpMessageHandler(clientException), /* disposeHandler */ true, null);
+                this.AddGraphRequestContextToRequest(httpRequestMessage);
 
                 try
                 {
@@ -166,8 +172,8 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                 this.httpProvider.Dispose();
 
                 var clientException = new TaskCanceledException();
-                this.httpProvider = new HttpProvider(authProvider.Object, new ExceptionHttpMessageHandler(clientException), /* disposeHandler */ true, null);
-
+                this.httpProvider = new HttpProvider(new ExceptionHttpMessageHandler(clientException), /* disposeHandler */ true, null);
+                this.AddGraphRequestContextToRequest(httpRequestMessage);
                 try
                 {
                     await Assert.ThrowsAsync<ServiceException>(async () => await this.httpProvider.SendRequestAsync(
@@ -194,7 +200,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                 httpResponseMessage.RequestMessage = httpRequestMessage;
 
                 this.testHttpMessageHandler.AddResponseMapping(httpRequestMessage.RequestUri.ToString(), httpResponseMessage);
-
+                this.AddGraphRequestContextToRequest(httpRequestMessage);
                 try
                 {
                     await Assert.ThrowsAsync<ServiceException>(async () => await this.httpProvider.SendAsync(httpRequestMessage));
@@ -226,10 +232,11 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 
                 this.testHttpMessageHandler.AddResponseMapping(httpRequestMessage.RequestUri.ToString(), redirectResponseMessage);
                 this.testHttpMessageHandler.AddResponseMapping(redirectResponseMessage.Headers.Location.ToString(), finalResponseMessage);
+                this.AddGraphRequestContextToRequest(httpRequestMessage);
 
                 var returnedResponseMessage = await this.httpProvider.SendAsync(httpRequestMessage);
 
-                Assert.Equal(3, finalResponseMessage.RequestMessage.Headers.Count());
+                Assert.Equal(4, finalResponseMessage.RequestMessage.Headers.Count());
 
                 foreach (var header in httpRequestMessage.Headers)
                 {
@@ -262,7 +269,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                 this.testHttpMessageHandler.AddResponseMapping(redirectResponseMessage.Headers.Location.ToString(), tooManyRedirectsResponseMessage);
 
                 httpRequestMessage.Headers.Authorization = new AuthenticationHeaderValue(CoreConstants.Headers.Bearer, "ticket");
-
+                this.AddGraphRequestContextToRequest(httpRequestMessage);
                 try
                 {
                     await Assert.ThrowsAsync<ServiceException>(async () => await this.httpProvider.SendAsync(
@@ -293,7 +300,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                 httpResponseMessage.StatusCode = HttpStatusCode.NotFound;
 
                 this.testHttpMessageHandler.AddResponseMapping(httpRequestMessage.RequestUri.ToString(), httpResponseMessage);
-
+                this.AddGraphRequestContextToRequest(httpRequestMessage);
                 this.serializer.Setup(
                     serializer => serializer.DeserializeObject<ErrorResponse>(
                         It.IsAny<Stream>()))
@@ -324,7 +331,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                 httpResponseMessage.StatusCode = HttpStatusCode.InternalServerError;
 
                 this.testHttpMessageHandler.AddResponseMapping(httpRequestMessage.RequestUri.ToString(), httpResponseMessage);
-
+                this.AddGraphRequestContextToRequest(httpRequestMessage);
                 var expectedError = new ErrorResponse
                 {
                     Error = new Error
@@ -363,6 +370,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                 httpResponseMessage.RequestMessage = httpRequestMessage;
 
                 this.testHttpMessageHandler.AddResponseMapping(httpRequestMessage.RequestUri.ToString(), httpResponseMessage);
+                this.AddGraphRequestContextToRequest(httpRequestMessage);
 
                 this.serializer.Setup(
                     serializer => serializer.DeserializeObject<ErrorResponse>(
@@ -402,6 +410,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                 httpResponseMessage.RequestMessage = httpRequestMessage;
 
                 this.testHttpMessageHandler.AddResponseMapping(httpRequestMessage.RequestUri.ToString(), httpResponseMessage);
+                this.AddGraphRequestContextToRequest(httpRequestMessage);
 
                 this.serializer.Setup(
                     serializer => serializer.DeserializeObject<ErrorResponse>(
@@ -422,6 +431,21 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                     throw;
                 }
             }
+        }
+
+        private void AddGraphRequestContextToRequest(HttpRequestMessage httpRequestMessage)
+        {
+            var requestContext = new GraphRequestContext
+            {
+                MiddlewareOptions = new Dictionary<string, IMiddlewareOption>() {
+                    {
+                        typeof(AuthOption).ToString(),
+                        new AuthOption { AuthenticationProvider = authProvider .Object }
+                    }
+                },
+                ClientRequestId = "client-request-id"
+            };
+            httpRequestMessage.Properties.Add(typeof(GraphRequestContext).ToString(), requestContext);
         }
     }
 }

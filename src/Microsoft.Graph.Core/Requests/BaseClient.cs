@@ -25,8 +25,14 @@ namespace Microsoft.Graph
             IHttpProvider httpProvider = null)
         {
             this.BaseUrl = baseUrl;
-            this.HttpProvider = httpProvider ?? new HttpProvider(authenticationProvider, new Serializer());
+            this.AuthenticationProvider = authenticationProvider;
+            this.HttpProvider = httpProvider ?? new HttpProvider(new Serializer());
         }
+
+        /// <summary>
+        /// Gets the <see cref="IAuthenticationProvider"/> for authenticating requests.
+        /// </summary>
+        public IAuthenticationProvider AuthenticationProvider { get; set; }
 
         /// <summary>
         /// Gets or sets the base URL for requests of the client.

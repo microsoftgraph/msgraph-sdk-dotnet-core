@@ -100,12 +100,15 @@ namespace Microsoft.Graph
         /// <returns></returns>
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage httpRequestMessage, CancellationToken cancellationToken)
         {
+            // If default auth provider is not set, use the option
+            var authProvider = AuthenticationProvider ?? httpRequestMessage.GetMiddlewareOption<AuthOption>()?.AuthenticationProvider;
+
             // Authenticate request using AuthenticationProvider
-            if (AuthenticationProvider != null)
+            if (authProvider != null)
             {
                 AuthOption = httpRequestMessage.GetMiddlewareOption<AuthOption>() ?? AuthOption;
 
-                await AuthenticationProvider.AuthenticateRequestAsync(httpRequestMessage);
+                await authProvider.AuthenticateRequestAsync(httpRequestMessage);
 
                 HttpResponseMessage response = await base.SendAsync(httpRequestMessage, cancellationToken);
 

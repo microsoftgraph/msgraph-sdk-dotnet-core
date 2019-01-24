@@ -6,20 +6,15 @@
     public class BaseRequestExtensionsTests: RequestTestBase
     {
         string requestUrl = "https://foo.bar";
-        BaseRequest baseRequest;
-        public BaseRequestExtensionsTests()
-        {
-            baseRequest = new BaseRequest(requestUrl, this.baseClient);
-        }
 
         [Fact]
         public void WithScopes_ShouldAddScopesToAuthOption()
         {
             string[] scopes = new string[] { "foo.bar", "user.bar", "user.foo"};
-
+            var baseRequest = new BaseRequest(requestUrl, this.baseClient);
             baseRequest.WithScopes(scopes);
 
-            Assert.IsType<RequestContext>(baseRequest.GetHttpRequestMessage().Properties[typeof(RequestContext).ToString()]);
+            Assert.IsType<GraphRequestContext>(baseRequest.GetHttpRequestMessage().Properties[typeof(GraphRequestContext).ToString()]);
             Assert.Same(scopes, baseRequest.GetHttpRequestMessage().GetMiddlewareOption<AuthOption>().Scopes);
         }
 
@@ -27,12 +22,12 @@
         public void WithScopes_ShouldOnlyAddScopesToExistingAuthOption()
         {
             string[] scopes = new string[] { "foo.bar", "user.bar", "user.foo" };
-
+            var baseRequest = new BaseRequest(requestUrl, this.baseClient);
             baseRequest
                 .WithForceRefresh(false)
                 .WithScopes(scopes);
 
-            Assert.IsType<RequestContext>(baseRequest.GetHttpRequestMessage().Properties[typeof(RequestContext).ToString()]);
+            Assert.IsType<GraphRequestContext>(baseRequest.GetHttpRequestMessage().Properties[typeof(GraphRequestContext).ToString()]);
             Assert.Equal(false, baseRequest.GetHttpRequestMessage().GetMiddlewareOption<AuthOption>().ForceRefresh);
             Assert.Same(scopes, baseRequest.GetHttpRequestMessage().GetMiddlewareOption<AuthOption>().Scopes);
         }
@@ -45,7 +40,7 @@
 
             request.WithForceRefresh(true);
 
-            Assert.IsType<RequestContext>(request.GetHttpRequestMessage().Properties[typeof(RequestContext).ToString()]);
+            Assert.IsType<GraphRequestContext>(request.GetHttpRequestMessage().Properties[typeof(GraphRequestContext).ToString()]);
             Assert.True(request.GetHttpRequestMessage().GetMiddlewareOption<AuthOption>().ForceRefresh);
         }
 
@@ -53,28 +48,30 @@
         public void WithShouldRetry_ShouldDelegateToRetryOption()
         {
             HttpResponseMessage httpResponseMessage = new HttpResponseMessage();
-
+            var baseRequest = new BaseRequest(requestUrl, this.baseClient);
             baseRequest.WithShouldRetry((response) => true);
 
-            Assert.IsType<RequestContext>(baseRequest.GetHttpRequestMessage().Properties[typeof(RequestContext).ToString()]);
+            Assert.IsType<GraphRequestContext>(baseRequest.GetHttpRequestMessage().Properties[typeof(GraphRequestContext).ToString()]);
             Assert.True(baseRequest.GetHttpRequestMessage().GetMiddlewareOption<RetryOption>().ShouldRetry(httpResponseMessage));
         }
 
         [Fact]
         public void WithMaxRetry_ShouldAddMaxRetryToRetryOption()
         {
+            var baseRequest = new BaseRequest(requestUrl, this.baseClient);
             baseRequest.WithMaxRetry(3);
 
-            Assert.IsType<RequestContext>(baseRequest.GetHttpRequestMessage().Properties[typeof(RequestContext).ToString()]);
+            Assert.IsType<GraphRequestContext>(baseRequest.GetHttpRequestMessage().Properties[typeof(GraphRequestContext).ToString()]);
             Assert.Equal(3, baseRequest.GetHttpRequestMessage().GetMiddlewareOption<RetryOption>().MaxRetry);
         }
 
         [Fact]
         public void WithMaxRedirects_ShouldAddMaxRedirectsToRedirectOption()
         {
+            var baseRequest = new BaseRequest(requestUrl, this.baseClient);
             baseRequest.WithMaxRedirects(4);
 
-            Assert.IsType<RequestContext>(baseRequest.GetHttpRequestMessage().Properties[typeof(RequestContext).ToString()]);
+            Assert.IsType<GraphRequestContext>(baseRequest.GetHttpRequestMessage().Properties[typeof(GraphRequestContext).ToString()]);
             Assert.Equal(4, baseRequest.GetHttpRequestMessage().GetMiddlewareOption<RedirectOption>().MaxRedirects);
         }
 
@@ -91,7 +88,7 @@
 
             request.AddMiddlewareOptions(middlewareOptions);
 
-            Assert.IsType<RequestContext>(request.GetHttpRequestMessage().Properties[typeof(RequestContext).ToString()]);
+            Assert.IsType<GraphRequestContext>(request.GetHttpRequestMessage().Properties[typeof(GraphRequestContext).ToString()]);
             Assert.Equal(middlewareOptions.Length, request.GetHttpRequestMessage().GetRequestContext().MiddlewareOptions.Count);
             Assert.Same(middlewareOptions[1], request.GetHttpRequestMessage().GetMiddlewareOption<AuthOption>());
         }

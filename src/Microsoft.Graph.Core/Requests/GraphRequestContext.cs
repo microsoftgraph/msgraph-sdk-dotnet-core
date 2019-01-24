@@ -10,7 +10,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The graph request context class
     /// </summary>
-    public class RequestContext
+    public class GraphRequestContext
     {
         /// <summary>
         /// A ClientRequestId property
