@@ -74,23 +74,5 @@
             Assert.IsType<GraphRequestContext>(baseRequest.GetHttpRequestMessage().Properties[typeof(GraphRequestContext).ToString()]);
             Assert.Equal(4, baseRequest.GetHttpRequestMessage().GetMiddlewareOption<RedirectOption>().MaxRedirects);
         }
-
-        [Fact]
-        public void AddMiddlewareOptions_ShouldAddMiddlewareOptionsToTheRequestContext()
-        {
-            var request = new BaseRequest("http://localhost.bar", this.baseClient);
-            var middlewareOptions = new IMiddlewareOption[]
-            {
-                new RetryOption { MaxRetry = 10, ShouldRetry = (response) => true },
-                new AuthOption { ForceRefresh = false, Scopes = new string[] { "foo.bar", "user.read" } },
-                new RedirectOption { MaxRedirects = 6 }
-            };
-
-            request.AddMiddlewareOptions(middlewareOptions);
-
-            Assert.IsType<GraphRequestContext>(request.GetHttpRequestMessage().Properties[typeof(GraphRequestContext).ToString()]);
-            Assert.Equal(middlewareOptions.Length, request.GetHttpRequestMessage().GetRequestContext().MiddlewareOptions.Count);
-            Assert.Same(middlewareOptions[1], request.GetHttpRequestMessage().GetMiddlewareOption<AuthOption>());
-        }
     }
 }

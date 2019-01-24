@@ -52,6 +52,9 @@ namespace Microsoft.Graph
                     ((List<QueryOption>)this.QueryOptions).AddRange(queryOptions);
                 }
             }
+
+            // Adds base clients authentication provider middleware options (Default auth provider)
+            this.WithAuthProvider(this.Client.AuthenticationProvider);
         }
 
         /// <summary>
@@ -301,12 +304,8 @@ namespace Microsoft.Graph
         /// <param name="cancellationToken">A <see cref="CancellationToken"/></param>
         private void AddRequestContextToRequest(HttpRequestMessage httpRequestMessage, CancellationToken cancellationToken)
         {
-            // Adds authentication AuthProvider middleware options
-            this.WithAuthProvider(this.Client.AuthenticationProvider);
-
             // Retreive feature flags
-            IEnumerable<string> featureFlags = new List<string>();
-            httpRequestMessage.Headers.TryGetValues(CoreConstants.Headers.FeatureFlag, out featureFlags);
+            httpRequestMessage.Headers.TryGetValues(CoreConstants.Headers.FeatureFlag, out IEnumerable<string> featureFlags);
 
             // Creates a request context object
             var requestContext = new GraphRequestContext
@@ -314,7 +313,7 @@ namespace Microsoft.Graph
                 MiddlewareOptions = MiddlewareOptions,
                 ClientRequestId = GetHeaderValue(httpRequestMessage, CoreConstants.Headers.ClientRequestId) ?? Guid.NewGuid().ToString(),
                 CancellationToken = cancellationToken,
-                FeatureUsage = featureFlags.ToList()
+                FeatureUsage = featureFlags
             };
 
             httpRequestMessage.Properties.Add(typeof(GraphRequestContext).ToString(), requestContext);

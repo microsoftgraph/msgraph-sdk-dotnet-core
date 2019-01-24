@@ -56,6 +56,27 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
+        /// Sets Authentication Handlers Authprovider property for the request.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="baseRequest">The <see cref="BaseRequest"/> for the request.</param>
+        /// <param name="authenticationProvider">A <see cref="IAuthenticationProvider"/></param>
+        /// <returns></returns>
+        public static T WithAuthProvider<T>(this T baseRequest, IAuthenticationProvider authenticationProvider) where T : IBaseRequest
+        {
+            string authOptionKey = typeof(AuthOption).ToString();
+            if (baseRequest.MiddlewareOptions.ContainsKey(authOptionKey))
+            {
+                (baseRequest.MiddlewareOptions[authOptionKey] as AuthOption).AuthenticationProvider = authenticationProvider;
+            }
+            else
+            {
+                baseRequest.MiddlewareOptions.Add(authOptionKey, new AuthOption { AuthenticationProvider = authenticationProvider });
+            }
+            return baseRequest;
+        }
+
+        /// <summary>
         /// Sets <see cref="Func{HttpResponseMessage, Boolean}"/> delegate to the request.
         /// </summary>
         /// <typeparam name="T"></typeparam>
@@ -114,44 +135,6 @@ namespace Microsoft.Graph
             else
             {
                 baseRequest.MiddlewareOptions.Add(redirectOptionKey, new RedirectOption { MaxRedirects = maxRedirects });
-            }
-            return baseRequest;
-        }
-
-        /// <summary>
-        /// Adds a collection of middleware options to the request.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="baseRequest">The <see cref="BaseRequest"/> for the request.</param>
-        /// <param name="middlewareOptions">A collection of <see cref="IMiddlewareOption"/>.</param>
-        /// <returns></returns>
-        public static T AddMiddlewareOptions<T>(this T baseRequest, IMiddlewareOption[] middlewareOptions) where T: IBaseRequest
-        {
-            foreach (IMiddlewareOption option in middlewareOptions)
-            {
-                baseRequest.MiddlewareOptions.Add(option.GetType().ToString(), option);
-            }
-
-            return baseRequest;
-        }
-
-        /// <summary>
-        /// Sets Authentication Handlers Authprovider property for the request.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="baseRequest">The <see cref="BaseRequest"/> for the request.</param>
-        /// <param name="authenticationProvider">A <see cref="IAuthenticationProvider"/></param>
-        /// <returns></returns>
-        internal static T WithAuthProvider<T>(this T baseRequest, IAuthenticationProvider authenticationProvider) where T : IBaseRequest
-        {
-            string authOptionKey = typeof(AuthOption).ToString();
-            if (baseRequest.MiddlewareOptions.ContainsKey(authOptionKey))
-            {
-                (baseRequest.MiddlewareOptions[authOptionKey] as AuthOption).AuthenticationProvider = authenticationProvider;
-            }
-            else
-            {
-                baseRequest.MiddlewareOptions.Add(authOptionKey, new AuthOption { AuthenticationProvider = authenticationProvider });
             }
             return baseRequest;
         }

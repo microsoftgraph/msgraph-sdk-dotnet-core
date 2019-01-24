@@ -67,8 +67,9 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="httpResponseMessage">The <see cref="HttpResponseMessage"/>to send.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/>to send.</param>
+        /// <param name="authProvider">An authentication provider to pass to <see cref="AuthenticationHandler"/> for authenticating requests.</param>
         /// <returns></returns>
-        private async Task<HttpResponseMessage> SendRetryAsync(HttpResponseMessage httpResponseMessage, CancellationToken cancellationToken)
+        private async Task<HttpResponseMessage> SendRetryAsync(HttpResponseMessage httpResponseMessage, IAuthenticationProvider authProvider, CancellationToken cancellationToken)
         {
             int retryAttempt = 0;
             while (retryAttempt < MaxRetry)
@@ -76,7 +77,7 @@ namespace Microsoft.Graph
                 var originalRequest = httpResponseMessage.RequestMessage;
 
                 // Authenticate request using AuthenticationProvider
-                await AuthenticationProvider.AuthenticateRequestAsync(originalRequest);
+                await authProvider.AuthenticateRequestAsync(originalRequest);
                 httpResponseMessage = await base.SendAsync(originalRequest, cancellationToken);
 
                 retryAttempt++;
@@ -100,14 +101,14 @@ namespace Microsoft.Graph
         /// <returns></returns>
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage httpRequestMessage, CancellationToken cancellationToken)
         {
+            AuthOption = httpRequestMessage.GetMiddlewareOption<AuthOption>() ?? AuthOption;
+
             // If default auth provider is not set, use the option
-            var authProvider = AuthenticationProvider ?? httpRequestMessage.GetMiddlewareOption<AuthOption>()?.AuthenticationProvider;
+            var authProvider = AuthOption.AuthenticationProvider ?? AuthenticationProvider;
 
             // Authenticate request using AuthenticationProvider
             if (authProvider != null)
             {
-                AuthOption = httpRequestMessage.GetMiddlewareOption<AuthOption>() ?? AuthOption;
-
                 await authProvider.AuthenticateRequestAsync(httpRequestMessage);
 
                 HttpResponseMessage response = await base.SendAsync(httpRequestMessage, cancellationToken);
@@ -116,7 +117,7 @@ namespace Microsoft.Graph
                 if (IsUnauthorized(response) && httpRequestMessage.IsBuffered())
                 {
                     // re-issue the request to get a new access token
-                    response = await SendRetryAsync(response, cancellationToken);
+                    response = await SendRetryAsync(response, authProvider, cancellationToken);
                 }
 
                 return response;
