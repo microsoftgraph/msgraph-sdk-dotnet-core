@@ -13,7 +13,9 @@ namespace Microsoft.Graph
     public static class BaseRequestExtensions
     {
         /// <summary>
-        /// Updates the Microsoft Graph scopes for the request (incremental conscent)
+        /// Sets Microsoft Graph's scopes to the default Authentication Middleware Handler for this request in order to perform incremental conscent.
+        /// This only works with the default authentication handler and default set of Microsoft graph authentication providers.
+        /// If you use a custom authentication handler or authentication provider, you have to handle it's retreival in your implementation.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="baseRequest">The <see cref="BaseRequest"/> for the request.</param>
@@ -34,7 +36,9 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Sets MSAL's ForceRefresh property for the request.
+        /// Sets MSAL's ForceRefresh property to the default Authentication Middleware Handler for this request.
+        /// This only works with the default authentication handler and default set of Microsoft graph authentication providers.
+        /// If you use a custom authentication handler or authentication provider, you have to handle it's retreival in your implementation.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="baseRequest">The <see cref="BaseRequest"/> for the request.</param>
@@ -56,7 +60,9 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Sets Authentication Handlers Authprovider property for the request.
+        /// Sets an authentication provider to the default Authentication Middleware Handler for this request.
+        /// This only works with the default authentication handler.
+        /// If you use a custom authentication handler, you have to handle it's retreival in your implementation.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="baseRequest">The <see cref="BaseRequest"/> for the request.</param>
@@ -77,7 +83,9 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Sets <see cref="Func{HttpResponseMessage, Boolean}"/> delegate to the request.
+        /// Sets a ShouldRetry <see cref="Func{HttpResponseMessage, Boolean}"/> delegate to the default Retry Middleware Handler for this request.
+        /// This only works with the default Retry Middleware Handler.
+        /// If you use a custom Retry Middleware Handler, you have to handle it's retreival in your implementation.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="baseRequest">The <see cref="BaseRequest"/> for the request.</param>
@@ -98,7 +106,9 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Sets maximum retry to the request.
+        /// Sets the maximum number of retries to the default Retry Middleware Handler for this request.
+        /// This only works with the default Retry Middleware Handler.
+        /// If you use a custom Retry Middleware Handler, you have to handle it's retreival in your implementation.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="baseRequest">The <see cref="BaseRequest"/> for the request.</param>
@@ -119,7 +129,9 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Sets the maximum number of redirects for the request.
+        /// Sets the maximum number of redirects to the default Redirect Middleware Handler for this request.
+        /// This only works with the default Redirect Middleware Handler.
+        /// If you use a custom Redirect Middleware Handler, you have to handle it's retreival in your implementation.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="baseRequest">The <see cref="BaseRequest"/> for the request.</param>

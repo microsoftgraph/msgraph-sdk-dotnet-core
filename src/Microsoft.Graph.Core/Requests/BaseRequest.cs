@@ -304,16 +304,13 @@ namespace Microsoft.Graph
         /// <param name="cancellationToken">A <see cref="CancellationToken"/></param>
         private void AddRequestContextToRequest(HttpRequestMessage httpRequestMessage, CancellationToken cancellationToken)
         {
-            // Retreive feature flags
-            httpRequestMessage.Headers.TryGetValues(CoreConstants.Headers.FeatureFlag, out IEnumerable<string> featureFlags);
-
             // Creates a request context object
             var requestContext = new GraphRequestContext
             {
                 MiddlewareOptions = MiddlewareOptions,
                 ClientRequestId = GetHeaderValue(httpRequestMessage, CoreConstants.Headers.ClientRequestId) ?? Guid.NewGuid().ToString(),
                 CancellationToken = cancellationToken,
-                FeatureUsage = featureFlags
+                FeatureUsage = httpRequestMessage.GetFeatureFlags()
             };
 
             httpRequestMessage.Properties.Add(typeof(GraphRequestContext).ToString(), requestContext);
@@ -448,8 +445,15 @@ namespace Microsoft.Graph
         private string GetHeaderValue(HttpRequestMessage requestMessage, string headerName)
         {
             string headerValue = null;
+            var requestHeader = this.Headers.FirstOrDefault((h) => h.Name.Equals(headerName));
 
-            if (requestMessage.Headers != null)
+            // Check request headers first
+            if (requestHeader != null)
+            {
+                headerValue = requestHeader.Value;
+            }
+            // If not found, check http client default headers + request headers
+            else if (requestMessage.Headers != null)
             {
                 if (requestMessage.Headers.TryGetValues(headerName, out var values))
                 {

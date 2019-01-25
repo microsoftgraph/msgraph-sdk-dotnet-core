@@ -70,13 +70,8 @@ namespace Microsoft.Graph
 
             GraphClientFactory.DefaultHttpHandler = () => this.httpMessageHandler;
             this.httpClient = GraphClientFactory.Create("v1.0", GraphClientFactory.Global_Cloud, handlers);
-            this.httpClient.SetFeatureFlags(new string[]
-            {
-                CoreConstants.FeatureFlags.RedirectHandler,
-                CoreConstants.FeatureFlags.RetryHandler,
-                CoreConstants.FeatureFlags.AuthHandler,
-                CoreConstants.FeatureFlags.DefaultHttpProvider
-            });
+            this.httpClient.SetFeatureFlags(FeatureFlag.RedirectHandler | FeatureFlag.RetryHandler | FeatureFlag.AuthHandler |
+                FeatureFlag.DefaultHttpProvider);
         }
 
         /// <summary>

@@ -4,7 +4,11 @@
 
 namespace Microsoft.Graph
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Net.Http;
+
     /// <summary>
     /// Contains extension methods for <see cref="HttpRequestMessage"/>
     /// </summary>
@@ -56,6 +60,23 @@ namespace Microsoft.Graph
                 requestContext.MiddlewareOptions.TryGetValue(typeof(T).ToString(), out option);
             }
             return (T)option;
+        }
+
+        /// <summary>
+        /// Get's feature request header value from the incoming <see cref="HttpRequestMessage"/>
+        /// </summary>
+        /// <param name="httpRequestMessage">The <see cref="HttpRequestMessage"/> object</param>
+        /// <returns></returns>
+        internal static FeatureFlag GetFeatureFlags(this HttpRequestMessage httpRequestMessage)
+        {
+            httpRequestMessage.Headers.TryGetValues(CoreConstants.Headers.FeatureFlag, out IEnumerable<string> flags);
+
+            if (!Enum.TryParse(flags?.FirstOrDefault(), out FeatureFlag featureFlag))
+            {
+                featureFlag = FeatureFlag.None;
+            }
+
+            return featureFlag;
         }
     }
 }

@@ -2,6 +2,8 @@
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
+using System;
+
 namespace Microsoft.Graph
 {
     /// <summary>
@@ -48,31 +50,6 @@ namespace Microsoft.Graph
         {
             /// OData type
             public const string ODataType = "@odata.type";
-        }
-
-        /// <summary>
-        /// Feature Flag constants
-        /// </summary>
-        public static class FeatureFlags
-        {
-            /// Redirect Handler
-            public const string RedirectHandler = "0x00000001";
-            /// Retry Handler
-            public const string RetryHandler = "0x00000002";
-            /// Auth Handler
-            public const string AuthHandler = "0x00000003";
-            /// Default Handler
-            public const string DefaultHttpProvider = "0x00000004";
-            /// Logging Handler
-            public const string LoggingHandler = "0x00000008";
-            /// Service Discovery Handler
-            public const string ServiceDiscoveryHandler = "0x00000010";
-            /// Compression Handler
-            public const string CompressionHandler = "0x00000020";
-            /// Connection Pool Manager
-            public const string ConnectionPoolManager = "0x00000040";
-            /// Long Running Operation Handler 
-            public const string LongRunnungOperationHandler = "0x00000080";
         }
     }
 }

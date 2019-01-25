@@ -30,6 +30,6 @@ namespace Microsoft.Graph
         /// <summary>
         /// A FeatureUsage property
         /// </summary>
-        public IEnumerable<string> FeatureUsage { get; set; }
+        public FeatureFlag FeatureUsage { get; set; }
     }
 }

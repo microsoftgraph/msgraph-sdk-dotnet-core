@@ -4,22 +4,13 @@
 
 namespace Microsoft.Graph
 {
-    using System.Collections.Generic;
     using System.Net.Http;
 
     internal static class HttpClientExtensions
     {
-        internal static void SetFeatureFlags(this HttpClient httpClient, IEnumerable<string> flags)
+        internal static void SetFeatureFlags(this HttpClient httpClient, FeatureFlag featureFlag)
         {
-            httpClient.DefaultRequestHeaders.Add(CoreConstants.Headers.FeatureFlag, flags);
-        }
-
-        internal static IEnumerable<string> GetFeatureFlags(this HttpClient httpClient)
-        {
-            IEnumerable<string> flags = new List<string>();
-            httpClient.DefaultRequestHeaders.TryGetValues(CoreConstants.Headers.FeatureFlag, out flags);
-
-            return flags;
+            httpClient.DefaultRequestHeaders.Add(CoreConstants.Headers.FeatureFlag, featureFlag.ToString());
         }
     }
 }

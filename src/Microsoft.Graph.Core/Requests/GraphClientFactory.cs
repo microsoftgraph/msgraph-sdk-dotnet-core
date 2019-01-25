@@ -48,7 +48,7 @@ namespace Microsoft.Graph
                 { Germany_Cloud, "https://graph.microsoft.de" }
             };
 
-        private static List<string> featureFlags = new List<string>();
+        private static FeatureFlag featureFlags;
 
         /// Global endpoint
         public const string Global_Cloud = "Global";
@@ -113,7 +113,7 @@ namespace Microsoft.Graph
         /// <returns></returns>
         public static IEnumerable<DelegatingHandler> CreateDefaultHandlers()
         {
-            featureFlags.AddRange(new string[] { CoreConstants.FeatureFlags.RetryHandler, CoreConstants.FeatureFlags.RedirectHandler });
+            featureFlags = FeatureFlag.RetryHandler | FeatureFlag.RedirectHandler;
 
             return new List<DelegatingHandler> {
                 new RetryHandler(),
