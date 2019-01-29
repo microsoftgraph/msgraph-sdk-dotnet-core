@@ -13,6 +13,28 @@ namespace Microsoft.Graph
     public static class BaseRequestExtensions
     {
         /// <summary>
+        /// Sets the default authentication provider to the default Authentication Middleware Handler for this request.
+        /// This only works with the default authentication handler.
+        /// If you use a custom authentication handler, you have to handle it's retreival in your implementation.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="baseRequest">The <see cref="BaseRequest"/> for the request.</param>
+        /// <returns></returns>
+        internal static T WithDefaultAuthProvider<T>(this T baseRequest) where T : IBaseRequest
+        {
+            string authOptionKey = typeof(AuthOption).ToString();
+            if (baseRequest.MiddlewareOptions.ContainsKey(authOptionKey))
+            {
+                (baseRequest.MiddlewareOptions[authOptionKey] as AuthOption).AuthenticationProvider = baseRequest.Client.AuthenticationProvider;
+            }
+            else
+            {
+                baseRequest.MiddlewareOptions.Add(authOptionKey, new AuthOption { AuthenticationProvider = baseRequest.Client.AuthenticationProvider });
+            }
+            return baseRequest;
+        }
+
+        /// <summary>
         /// Sets Microsoft Graph's scopes to the default Authentication Middleware Handler for this request in order to perform incremental conscent.
         /// This only works with the default authentication handler and default set of Microsoft graph authentication providers.
         /// If you use a custom authentication handler or authentication provider, you have to handle it's retreival in your implementation.
@@ -60,24 +82,27 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Sets an authentication provider to the default Authentication Middleware Handler for this request.
+        /// Sets the PerRequestAuthProvider delegate handler to the default Authentication Middleware Handler to authenticate a single request.
+        /// The PerRequestAuthProvider delegate handler must be set to the GraphServiceClient instance before using this extension method otherwise, it defaults to the default authentication provider.
         /// This only works with the default authentication handler.
         /// If you use a custom authentication handler, you have to handle it's retreival in your implementation.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="baseRequest">The <see cref="BaseRequest"/> for the request.</param>
-        /// <param name="authenticationProvider">A <see cref="IAuthenticationProvider"/></param>
         /// <returns></returns>
-        public static T WithAuthProvider<T>(this T baseRequest, IAuthenticationProvider authenticationProvider) where T : IBaseRequest
+        public static T WithPerRequestAuthProvider<T>(this T baseRequest) where T : IBaseRequest
         {
-            string authOptionKey = typeof(AuthOption).ToString();
-            if (baseRequest.MiddlewareOptions.ContainsKey(authOptionKey))
+            if (baseRequest.Client.PerRequestAuthProvider != null)
             {
-                (baseRequest.MiddlewareOptions[authOptionKey] as AuthOption).AuthenticationProvider = authenticationProvider;
-            }
-            else
-            {
-                baseRequest.MiddlewareOptions.Add(authOptionKey, new AuthOption { AuthenticationProvider = authenticationProvider });
+                string authOptionKey = typeof(AuthOption).ToString();
+                if (baseRequest.MiddlewareOptions.ContainsKey(authOptionKey))
+                {
+                    (baseRequest.MiddlewareOptions[authOptionKey] as AuthOption).AuthenticationProvider = baseRequest.Client.PerRequestAuthProvider();
+                }
+                else
+                {
+                    baseRequest.MiddlewareOptions.Add(authOptionKey, new AuthOption { AuthenticationProvider = baseRequest.Client.PerRequestAuthProvider() });
+                }
             }
             return baseRequest;
         }

@@ -77,10 +77,10 @@ namespace Microsoft.Graph
 
 
         /// <summary>
-        /// Creates a new <see cref="HttpClient"/> instance configured with the handlers provided and with the
-        /// provided <paramref name="innerHandler"/> as the innermost handler.
+        /// Creates a new <see cref="HttpClient"/> instance configured with the handlers provided.
         /// </summary>
-        /// <param name="innerHandler">The inner handler represents the destination of the HTTP message channel.</param>
+        /// <param name="version">The graph version to use.</param>
+        /// <param name="nationalCloud">The national cloud endpoint to use.</param>
         /// <param name="handlers">An ordered list of <see cref="DelegatingHandler"/> instances to be invoked as an
         /// <see cref="HttpRequestMessage"/> travels from the <see cref="HttpClient"/> to the network and an
         /// <see cref="HttpResponseMessage"/> travels from the network back to <see cref="HttpClient"/>.

@@ -53,8 +53,9 @@ namespace Microsoft.Graph
                 }
             }
 
-            // Adds base clients authentication provider middleware options (Default auth provider)
-            this.WithAuthProvider(this.Client.AuthenticationProvider);
+            // Adds the default authentication provider for this request. 
+            // This can be changed can be changed by the user by calling WithPerRequestAuthProvider extension method.
+            this.WithDefaultAuthProvider();
         }
 
         /// <summary>

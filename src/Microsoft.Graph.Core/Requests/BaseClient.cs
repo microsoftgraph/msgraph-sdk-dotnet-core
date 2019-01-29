@@ -4,7 +4,7 @@
 
 namespace Microsoft.Graph
 {
-    using System.Threading.Tasks;
+    using System;
 
     /// <summary>
     /// A default <see cref="IBaseClient"/> implementation.
@@ -60,5 +60,10 @@ namespace Microsoft.Graph
         /// Gets the <see cref="IHttpProvider"/> for sending HTTP requests.
         /// </summary>
         public IHttpProvider HttpProvider { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets the <see cref="IAuthenticationProvider"/> for authenticating a single HTTP requests. 
+        /// </summary>
+        public Func<IAuthenticationProvider> PerRequestAuthProvider { get; set; }
     }
 }

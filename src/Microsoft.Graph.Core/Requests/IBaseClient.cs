@@ -4,6 +4,8 @@
 
 namespace Microsoft.Graph
 {
+    using System;
+
     /// <summary>
     /// Interface for the base client.
     /// </summary>
@@ -23,5 +25,10 @@ namespace Microsoft.Graph
         /// Gets the <see cref="IHttpProvider"/> for sending HTTP requests.
         /// </summary>
         IHttpProvider HttpProvider { get; }
+
+        /// <summary>
+        /// Gets or Sets the <see cref="IAuthenticationProvider"/> for authenticating a single HTTP requests. 
+        /// </summary>
+        Func<IAuthenticationProvider> PerRequestAuthProvider { get; set; }
     }
 }
