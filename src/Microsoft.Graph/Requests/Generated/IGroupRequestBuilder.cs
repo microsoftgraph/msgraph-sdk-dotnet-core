@@ -43,6 +43,12 @@ namespace Microsoft.Graph
         IGroupMemberOfCollectionWithReferencesRequestBuilder MemberOf { get; }
 
         /// <summary>
+        /// Gets the request builder for MembersWithLicenseErrors.
+        /// </summary>
+        /// <returns>The <see cref="IGroupMembersWithLicenseErrorsCollectionWithReferencesRequestBuilder"/>.</returns>
+        IGroupMembersWithLicenseErrorsCollectionWithReferencesRequestBuilder MembersWithLicenseErrors { get; }
+
+        /// <summary>
         /// Gets the request builder for TransitiveMembers.
         /// </summary>
         /// <returns>The <see cref="IGroupTransitiveMembersCollectionWithReferencesRequestBuilder"/>.</returns>

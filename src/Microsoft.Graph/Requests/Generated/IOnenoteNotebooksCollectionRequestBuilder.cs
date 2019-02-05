@@ -36,6 +36,13 @@ namespace Microsoft.Graph
         INotebookRequestBuilder this[string id] { get; }
 
         /// <summary>
+        /// Gets the request builder for NotebookGetNotebookFromWebUrl.
+        /// </summary>
+        /// <returns>The <see cref="INotebookGetNotebookFromWebUrlRequestBuilder"/>.</returns>
+        INotebookGetNotebookFromWebUrlRequestBuilder GetNotebookFromWebUrl(
+            string webUrl = null);
+
+        /// <summary>
         /// Gets the request builder for NotebookGetRecentNotebooks.
         /// </summary>
         /// <returns>The <see cref="INotebookGetRecentNotebooksRequestBuilder"/>.</returns>

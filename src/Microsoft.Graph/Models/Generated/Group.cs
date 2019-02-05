@@ -22,6 +22,13 @@ namespace Microsoft.Graph
     {
     
         /// <summary>
+        /// Gets or sets assigned licenses.
+        /// The licenses that are assigned to the group. Returned only on $select. Read-only.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "assignedLicenses", Required = Newtonsoft.Json.Required.Default)]
+        public IEnumerable<AssignedLicense> AssignedLicenses { get; set; }
+    
+        /// <summary>
         /// Gets or sets classification.
         /// Describes a classification for the group (such as low, medium or high business impact). Valid values for this property are defined by creating a ClassificationList setting value, based on the template definition.Returned by default.
         /// </summary>
@@ -50,11 +57,25 @@ namespace Microsoft.Graph
         public string DisplayName { get; set; }
     
         /// <summary>
+        /// Gets or sets has members with license errors.
+        /// Indicates whether there are members in this group that have license errors from its group-based license assignment. This property is never returned on a GET operation. You can use it as a $filter argument to get groups that have members with license errors (that is, filter for this property being true). See an example.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "hasMembersWithLicenseErrors", Required = Newtonsoft.Json.Required.Default)]
+        public bool? HasMembersWithLicenseErrors { get; set; }
+    
+        /// <summary>
         /// Gets or sets group types.
         /// Specifies the type of group to create. Possible values are Unified to create an Office 365 group, or DynamicMembership for dynamic groups.  For all other group types, like security-enabled groups and email-enabled security groups, do not set this property. Returned by default. Supports $filter.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "groupTypes", Required = Newtonsoft.Json.Required.Default)]
         public IEnumerable<string> GroupTypes { get; set; }
+    
+        /// <summary>
+        /// Gets or sets license processing state.
+        /// Indicates status of the group license assignment to all members of the group. Default value is false. Read-only. Possible values: QueuedForProcessing, ProcessingInProgress, and ProcessingComplete.Returned only on $select. Read-only.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "licenseProcessingState", Required = Newtonsoft.Json.Required.Default)]
+        public LicenseProcessingState LicenseProcessingState { get; set; }
     
         /// <summary>
         /// Gets or sets mail.
@@ -180,6 +201,13 @@ namespace Microsoft.Graph
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "memberOf", Required = Newtonsoft.Json.Required.Default)]
         public IGroupMemberOfCollectionWithReferencesPage MemberOf { get; set; }
+    
+        /// <summary>
+        /// Gets or sets members with license errors.
+        /// A list of group members with license errors from this group-based license assignment. Read-only.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "membersWithLicenseErrors", Required = Newtonsoft.Json.Required.Default)]
+        public IGroupMembersWithLicenseErrorsCollectionWithReferencesPage MembersWithLicenseErrors { get; set; }
     
         /// <summary>
         /// Gets or sets transitive members.

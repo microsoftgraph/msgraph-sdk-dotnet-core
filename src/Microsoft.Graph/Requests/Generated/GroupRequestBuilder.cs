@@ -74,6 +74,18 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
+        /// Gets the request builder for MembersWithLicenseErrors.
+        /// </summary>
+        /// <returns>The <see cref="IGroupMembersWithLicenseErrorsCollectionWithReferencesRequestBuilder"/>.</returns>
+        public IGroupMembersWithLicenseErrorsCollectionWithReferencesRequestBuilder MembersWithLicenseErrors
+        {
+            get
+            {
+                return new GroupMembersWithLicenseErrorsCollectionWithReferencesRequestBuilder(this.AppendSegmentToRequestUrl("membersWithLicenseErrors"), this.Client);
+            }
+        }
+
+        /// <summary>
         /// Gets the request builder for TransitiveMembers.
         /// </summary>
         /// <returns>The <see cref="IGroupTransitiveMembersCollectionWithReferencesRequestBuilder"/>.</returns>
