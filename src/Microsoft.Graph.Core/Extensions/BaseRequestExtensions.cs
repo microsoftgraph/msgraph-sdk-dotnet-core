@@ -12,6 +12,7 @@ namespace Microsoft.Graph
     /// </summary>
     public static class BaseRequestExtensions
     {
+
         /// <summary>
         /// Sets the default authentication provider to the default Authentication Middleware Handler for this request.
         /// This only works with the default authentication handler.
@@ -30,53 +31,6 @@ namespace Microsoft.Graph
             else
             {
                 baseRequest.MiddlewareOptions.Add(authOptionKey, new AuthOption { AuthenticationProvider = baseRequest.Client.AuthenticationProvider });
-            }
-            return baseRequest;
-        }
-
-        /// <summary>
-        /// Sets Microsoft Graph's scopes to the default Authentication Middleware Handler for this request in order to perform incremental conscent.
-        /// This only works with the default authentication handler and default set of Microsoft graph authentication providers.
-        /// If you use a custom authentication handler or authentication provider, you have to handle it's retreival in your implementation.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="baseRequest">The <see cref="BaseRequest"/> for the request.</param>
-        /// <param name="scopes">Scopes required to access a protected API.</param>
-        /// <returns></returns>
-        public static T WithScopes<T>(this T baseRequest, string[] scopes) where T : IBaseRequest
-        {
-            string authOptionKey = typeof(AuthOption).ToString();
-            if (baseRequest.MiddlewareOptions.ContainsKey(authOptionKey))
-            {
-                (baseRequest.MiddlewareOptions[authOptionKey] as AuthOption).Scopes = scopes;
-            }
-            else
-            {
-                baseRequest.MiddlewareOptions.Add(authOptionKey, new AuthOption { Scopes = scopes });
-            }
-            return baseRequest;
-        }
-
-        /// <summary>
-        /// Sets MSAL's ForceRefresh property to the default Authentication Middleware Handler for this request.
-        /// This only works with the default authentication handler and default set of Microsoft graph authentication providers.
-        /// If you use a custom authentication handler or authentication provider, you have to handle it's retreival in your implementation.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="baseRequest">The <see cref="BaseRequest"/> for the request.</param>
-        /// <param name="forceRefresh">If <c>true</c>, ignore any access token in the cache and attempt to acquire new access token
-        /// using the refresh token for the account if this one is available.</param>
-        /// <returns></returns>
-        public static T WithForceRefresh<T>(this T baseRequest, bool forceRefresh) where T : IBaseRequest
-        {
-            string authOptionKey = typeof(AuthOption).ToString();
-            if (baseRequest.MiddlewareOptions.ContainsKey(authOptionKey))
-            {
-                (baseRequest.MiddlewareOptions[authOptionKey] as AuthOption).ForceRefresh = forceRefresh;
-            }
-            else
-            {
-                baseRequest.MiddlewareOptions.Add(authOptionKey, new AuthOption { ForceRefresh = forceRefresh });
             }
             return baseRequest;
         }

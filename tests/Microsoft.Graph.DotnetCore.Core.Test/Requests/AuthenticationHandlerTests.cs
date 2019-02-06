@@ -40,8 +40,6 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                 Assert.Null(auth.InnerHandler);
                 Assert.NotNull(auth.AuthenticationProvider);
                 Assert.NotNull(auth.AuthOption);
-                Assert.False(auth.AuthOption.ForceRefresh); // default is false
-                Assert.Null(auth.AuthOption.Scopes); // default is null
                 Assert.IsType(typeof(AuthenticationHandler), auth);
             }
         }
@@ -52,8 +50,6 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             Assert.NotNull(authenticationHandler.InnerHandler);
             Assert.NotNull(authenticationHandler.AuthenticationProvider);
             Assert.NotNull(authenticationHandler.AuthOption);
-            Assert.False(authenticationHandler.AuthOption.ForceRefresh); // default is false
-            Assert.Null(authenticationHandler.AuthOption.Scopes); // default is null
             Assert.IsType(typeof(AuthenticationHandler), authenticationHandler);
         }
 
@@ -62,13 +58,11 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         {
             var scopes = new string[] { "foo.bar" };
             using (AuthenticationHandler auth = new AuthenticationHandler(mockAuthenticationProvider.Object,
-                new AuthOption { ForceRefresh = true, Scopes = scopes}))
+                new AuthOption()))
             {
                 Assert.Null(auth.InnerHandler);
                 Assert.NotNull(auth.AuthenticationProvider);
                 Assert.NotNull(auth.AuthOption);
-                Assert.True(auth.AuthOption.ForceRefresh);
-                Assert.Same(scopes, auth.AuthOption.Scopes);
                 Assert.IsType(typeof(AuthenticationHandler), auth);
             }
         }

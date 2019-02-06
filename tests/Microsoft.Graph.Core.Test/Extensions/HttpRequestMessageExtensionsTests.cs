@@ -76,18 +76,5 @@ namespace Microsoft.Graph.Core.Test.Extensions
 
             Assert.IsNotNull(httpRequestMessage.GetRequestContext(), "Unexpected request context");
         }
-
-        [TestMethod]
-        public void GetMiddlewareControl_ShouldReturnIMiddlewareControlObject()
-        {
-            string requestUrl = "https://localhost/v2";
-            var baseRequest = new BaseRequest(requestUrl, this.baseClient);
-            baseRequest.WithForceRefresh(true);
-
-            HttpRequestMessage httpRequestMessage = baseRequest.GetHttpRequestMessage();
-
-            Assert.IsNotNull(httpRequestMessage.GetMiddlewareOption<AuthOption>(), "Unexpected auth option");
-            Assert.IsTrue(httpRequestMessage.GetMiddlewareOption<AuthOption>().ForceRefresh, "Unexpected force refresh value");
-        }
     }
 }

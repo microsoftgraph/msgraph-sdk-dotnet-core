@@ -76,16 +76,14 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Extensions
         }
 
         [Fact]
-        public void GetMiddlewareControl_ShouldReturnIMiddlewareControlObject()
+        public void GetMiddlewareControl_ShouldReturnIMiddlewareOptionObject()
         {
             string requestUrl = "https://localhost/v2";
             var baseRequest = new BaseRequest(requestUrl, this.baseClient);
-            baseRequest.WithForceRefresh(true);
 
             HttpRequestMessage httpRequestMessage = baseRequest.GetHttpRequestMessage();
 
             Assert.NotNull(httpRequestMessage.GetMiddlewareOption<AuthOption>());
-            Assert.True(httpRequestMessage.GetMiddlewareOption<AuthOption>().ForceRefresh);
         }
     }
 }

@@ -10,43 +10,6 @@
         string requestUrl = "https://foo.bar";
 
         [TestMethod]
-        public void WithScopes_ShouldAddScopesToAuthOption()
-        {
-            string[] scopes = new string[] { "foo.bar", "user.bar", "user.foo" };
-            var baseRequest = new BaseRequest(requestUrl, this.baseClient);
-            baseRequest.WithScopes(scopes);
-
-            Assert.IsInstanceOfType(baseRequest.GetHttpRequestMessage().Properties[typeof(GraphRequestContext).ToString()], typeof(GraphRequestContext), "Unexpected request context.");
-            Assert.AreSame(scopes, baseRequest.GetHttpRequestMessage().GetMiddlewareOption<AuthOption>().Scopes, "Unexpected scope value.");
-        }
-
-        [TestMethod]
-        public void WithScopes_ShouldOnlyAddScopesToExistingAuthOption()
-        {
-            string[] scopes = new string[] { "foo.bar", "user.bar", "user.foo" };
-            var baseRequest = new BaseRequest(requestUrl, this.baseClient);
-            baseRequest
-                .WithForceRefresh(false)
-                .WithScopes(scopes);
-
-            Assert.IsInstanceOfType(baseRequest.GetHttpRequestMessage().Properties[typeof(GraphRequestContext).ToString()], typeof(GraphRequestContext), "Unexpected request context.");
-            Assert.AreEqual(false, baseRequest.GetHttpRequestMessage().GetMiddlewareOption<AuthOption>().ForceRefresh, "Unexpected force refresh value.");
-            Assert.AreSame(scopes, baseRequest.GetHttpRequestMessage().GetMiddlewareOption<AuthOption>().Scopes, "Unexpected scope value.");
-        }
-
-        [TestMethod]
-        public void WithForceRefresh_ShouldAddForceRefreshToAuthOption()
-        {
-            string requestUrl = "https://foo.bar";
-            var request = new BaseRequest(requestUrl, this.baseClient);
-
-            request.WithForceRefresh(true);
-
-            Assert.IsInstanceOfType(request.GetHttpRequestMessage().Properties[typeof(GraphRequestContext).ToString()], typeof(GraphRequestContext), "Unexpected request context.");
-            Assert.IsTrue(request.GetHttpRequestMessage().GetMiddlewareOption<AuthOption>().ForceRefresh, "Unexpected force refresh value.");
-        }
-
-        [TestMethod]
         public void WithShouldRetry_ShouldDelegateToRetryOption()
         {
             HttpResponseMessage httpResponseMessage = new HttpResponseMessage();

@@ -42,8 +42,6 @@ namespace Microsoft.Graph.Core.Test.Requests
                 Assert.IsNull(auth.InnerHandler, "Http message handler initialized");
                 Assert.IsNotNull(auth.AuthenticationProvider, "Authentication provider not initialized");
                 Assert.IsNotNull(auth.AuthOption, "Auth option not initialized");
-                Assert.IsFalse(auth.AuthOption.ForceRefresh, "Unexpected force refresh set"); // default is false
-                Assert.IsNull(auth.AuthOption.Scopes, "Unexpected scopes set"); // default is null
                 Assert.IsInstanceOfType(auth, typeof(AuthenticationHandler), "Unexpected authentication handler set");
             }
         }
@@ -56,8 +54,6 @@ namespace Microsoft.Graph.Core.Test.Requests
             Assert.AreEqual(authenticationHandler.InnerHandler, testHttpMessageHandler, "Unexpected http message handler set");
             Assert.AreEqual(authenticationHandler.AuthenticationProvider, mockAuthenticationProvider.Object, "Unexpected auhtentication provider set");
             Assert.IsNotNull(authenticationHandler.AuthOption, "Auth option not initialized");
-            Assert.IsFalse(authenticationHandler.AuthOption.ForceRefresh, "Unexpected force refresh set"); // default is false
-            Assert.IsNull(authenticationHandler.AuthOption.Scopes, "Unexpected scopes set"); // default is null
             Assert.IsInstanceOfType(authenticationHandler, typeof(AuthenticationHandler), "Unexpected authentication handler set");
         }
 
@@ -66,13 +62,11 @@ namespace Microsoft.Graph.Core.Test.Requests
         {
             var scopes = new string[] { "foo.bar" };
             using (AuthenticationHandler auth = new AuthenticationHandler(mockAuthenticationProvider.Object,
-                new AuthOption { ForceRefresh = true, Scopes = scopes }))
+                new AuthOption()))
             {
                 Assert.IsNull(auth.InnerHandler, "Http message handler initialized");
                 Assert.IsNotNull(auth.AuthenticationProvider, "Authentication provider not initialized");
                 Assert.IsNotNull(auth.AuthOption, "Auth option not initialized");
-                Assert.IsTrue(auth.AuthOption.ForceRefresh, "Unexpected force refresh set");
-                Assert.AreSame(scopes, auth.AuthOption.Scopes, "Unexpected scopes set");
                 Assert.IsInstanceOfType(auth, typeof(AuthenticationHandler), "Unexpected authentication handler set");
             }
         }

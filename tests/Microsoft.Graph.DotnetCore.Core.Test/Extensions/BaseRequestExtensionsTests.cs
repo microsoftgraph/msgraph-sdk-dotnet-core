@@ -8,43 +8,6 @@
         string requestUrl = "https://foo.bar";
 
         [Fact]
-        public void WithScopes_ShouldAddScopesToAuthOption()
-        {
-            string[] scopes = new string[] { "foo.bar", "user.bar", "user.foo"};
-            var baseRequest = new BaseRequest(requestUrl, this.baseClient);
-            baseRequest.WithScopes(scopes);
-
-            Assert.IsType<GraphRequestContext>(baseRequest.GetHttpRequestMessage().Properties[typeof(GraphRequestContext).ToString()]);
-            Assert.Same(scopes, baseRequest.GetHttpRequestMessage().GetMiddlewareOption<AuthOption>().Scopes);
-        }
-
-        [Fact]
-        public void WithScopes_ShouldOnlyAddScopesToExistingAuthOption()
-        {
-            string[] scopes = new string[] { "foo.bar", "user.bar", "user.foo" };
-            var baseRequest = new BaseRequest(requestUrl, this.baseClient);
-            baseRequest
-                .WithForceRefresh(false)
-                .WithScopes(scopes);
-
-            Assert.IsType<GraphRequestContext>(baseRequest.GetHttpRequestMessage().Properties[typeof(GraphRequestContext).ToString()]);
-            Assert.Equal(false, baseRequest.GetHttpRequestMessage().GetMiddlewareOption<AuthOption>().ForceRefresh);
-            Assert.Same(scopes, baseRequest.GetHttpRequestMessage().GetMiddlewareOption<AuthOption>().Scopes);
-        }
-
-        [Fact]
-        public void WithForceRefresh_ShouldAddForceRefreshToAuthOption()
-        {
-            string requestUrl = "https://foo.bar";
-            var request = new BaseRequest(requestUrl, this.baseClient);
-
-            request.WithForceRefresh(true);
-
-            Assert.IsType<GraphRequestContext>(request.GetHttpRequestMessage().Properties[typeof(GraphRequestContext).ToString()]);
-            Assert.True(request.GetHttpRequestMessage().GetMiddlewareOption<AuthOption>().ForceRefresh);
-        }
-
-        [Fact]
         public void WithShouldRetry_ShouldDelegateToRetryOption()
         {
             HttpResponseMessage httpResponseMessage = new HttpResponseMessage();
