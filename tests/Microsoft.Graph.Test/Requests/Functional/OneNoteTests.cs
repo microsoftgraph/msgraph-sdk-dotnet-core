@@ -17,9 +17,7 @@ namespace Microsoft.Graph.Test.Requests.Functional
         private Notebook testNotebook;
         private static string firstSectionID;
 
-        [ClassInitialize]
-        public static void GetTestSectionId(TestContext c)
-        {
+        public OneNoteTests() : base() {
             // Get a page of OneNote sections.
             IOnenoteSectionsCollectionPage sectionPage = graphClient.Me
                                                                     .Onenote
@@ -31,7 +29,7 @@ namespace Microsoft.Graph.Test.Requests.Functional
             // Get a handle to the first section.
             firstSectionID = sectionPage[0].Id;
         }
-
+        
         public async void TestPageCleanUp()
         {
             await graphClient.Me.Onenote.Pages[testPage.Id].Request().DeleteAsync();
@@ -729,6 +727,27 @@ namespace Microsoft.Graph.Test.Requests.Functional
             catch (Exception e)
             {
                 Assert.Fail("Error code: {0}", e.Message);
+            }
+        }
+
+        /// <summary>
+        /// Test the custom 'Root' partial request builder and accessing Onenote notebook collection.
+        /// </summary>
+        /// <returns></returns>
+        [TestMethod]
+        public async Async.Task It_accesses_a_sites_OneNote_notebooks()
+        {
+            try
+            {
+                Site site = await graphClient.Sites.Root.Request().GetAsync();
+                Assert.IsNotNull(site);
+
+                IOnenoteNotebooksCollectionPage notebooks = await graphClient.Sites[site.Id].Onenote.Notebooks.Request().GetAsync();
+                Assert.IsNotNull(notebooks);
+            }
+            catch (Exception)
+            {
+                Assert.Fail("An unexpected exception was thrown. This test case failed.");
             }
         }
     }
