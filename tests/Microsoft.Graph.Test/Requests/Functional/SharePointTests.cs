@@ -187,9 +187,6 @@ namespace Microsoft.Graph.Test.Requests.Functional
 
                 var sites = await graphClient.Sites.Request(new List<Option>() {new QueryOption("search", "*")}).GetAsync();
                 
-                //var sites = await graphClient.Sites[$"{RootSiteId}"].Sites.Request().GetAsync();
-
-
                 Assert.IsNotNull(site);
             }
             catch (Microsoft.Graph.ServiceException e)
