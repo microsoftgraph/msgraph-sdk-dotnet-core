@@ -185,8 +185,6 @@ namespace Microsoft.Graph.Test.Requests.Functional
             {
                 Site site = await graphClient.Shares[UrlToSharingToken("https://m365x462896.sharepoint.com/sites/portals2")].Site.Request().GetAsync();
 
-                var sites = await graphClient.Sites.Request(new List<Option>() {new QueryOption("search", "*")}).GetAsync();
-                
                 Assert.IsNotNull(site);
             }
             catch (Microsoft.Graph.ServiceException e)
