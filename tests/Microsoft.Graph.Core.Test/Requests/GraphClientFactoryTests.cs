@@ -206,9 +206,10 @@ namespace Microsoft.Graph.Core.Test.Requests
                 var response = await client.SendAsync(httpRequestMessage, new CancellationToken());
                 Assert.AreSame(response, response_2);
                 IEnumerable<string> values;
-                Assert.IsTrue(httpRequestMessage.Headers.TryGetValues("Retry-Attempt", out values), "Don't set Retry-Attemp Header");
+                Assert.IsTrue(response.RequestMessage.Headers.TryGetValues("Retry-Attempt", out values), "Don't set Retry-Attemp Header");
                 Assert.AreEqual(values.Count(), 1);
                 Assert.AreEqual(values.First(), 1.ToString());
+                Assert.AreNotSame(response.RequestMessage, httpRequestMessage);
             }
         }
 
@@ -251,7 +252,7 @@ namespace Microsoft.Graph.Core.Test.Requests
             {
                 var response = await client.SendAsync(httpRequestMessage, new CancellationToken());
                 Assert.AreSame(response, okResponse);
-                Assert.AreSame(response.RequestMessage, httpRequestMessage);
+                Assert.AreNotSame(response.RequestMessage, httpRequestMessage);
             }
         }
 

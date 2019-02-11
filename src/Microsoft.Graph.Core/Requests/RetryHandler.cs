@@ -71,19 +71,15 @@ namespace Microsoft.Graph
         /// <returns></returns>
         public async Task<HttpResponseMessage> SendRetryAsync(HttpResponseMessage response, CancellationToken cancellationToken)
         {
-
-
             int retryCount = 0;
 
-          
             while (retryCount < MaxRetry)
             {
-
                 // Call Delay method to get delay time from response's Retry-After header or by exponential backoff 
                 Task delay = Delay(response, retryCount, cancellationToken);
 
-                // Get the original request
-                var request = response.RequestMessage;
+                // general clone request with internal CloneAsync (see CloneAsync for details) extension method 
+                var request = await response.RequestMessage.CloneAsync();
 
                 // Increase retryCount and then update Retry-Attempt in request header
                 retryCount++;
@@ -110,8 +106,6 @@ namespace Microsoft.Graph
 
         }
 
-
-
         /// <summary>
         /// Check the HTTP response's status to determine whether it should be retried or not.
         /// </summary>
@@ -126,7 +120,6 @@ namespace Microsoft.Graph
             }
             return false;
         }
-
 
         /// <summary>
         /// Update Retry-Attempt header in the HTTP request
