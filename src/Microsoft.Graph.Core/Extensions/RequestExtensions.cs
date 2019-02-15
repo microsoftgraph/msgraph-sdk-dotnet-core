@@ -5,6 +5,8 @@
 namespace Microsoft.Graph
 {
     using System.Net.Http;
+    using System.Threading.Tasks;
+
     /// <summary>
     /// Contains extension methods for <see cref="HttpRequestMessage"/>
     /// </summary>
@@ -25,6 +27,37 @@ namespace Microsoft.Graph
                 return false;
             }
             return true;
+        }
+
+        /// <summary>
+        /// Create a new HTTP request by copying previous HTTP request's headers and properties from response's request message.
+        /// </summary>
+        /// <param name="originalRequest">The previous <see cref="HttpRequestMessage"/> needs to be copy.</param>
+        /// <returns>The <see cref="HttpRequestMessage"/>.</returns>
+        /// <remarks>
+        /// Re-issue a new HTTP request with the previous request's headers and properities
+        /// </remarks>
+        internal static async Task<HttpRequestMessage> CloneAsync(this HttpRequestMessage originalRequest)
+        {
+            var newRequest = new HttpRequestMessage(originalRequest.Method, originalRequest.RequestUri);
+
+            foreach (var header in originalRequest.Headers)
+            {
+                newRequest.Headers.TryAddWithoutValidation(header.Key, header.Value);
+            }
+
+            foreach (var property in originalRequest.Properties)
+            {
+                newRequest.Properties.Add(property);
+            }
+
+            // Set Content if previous request contains
+            if (originalRequest.Content != null && originalRequest.Content.Headers.ContentLength != 0)
+            {
+                newRequest.Content = new StreamContent(await originalRequest.Content.ReadAsStreamAsync());
+            }
+
+            return newRequest;
         }
     }
 }
