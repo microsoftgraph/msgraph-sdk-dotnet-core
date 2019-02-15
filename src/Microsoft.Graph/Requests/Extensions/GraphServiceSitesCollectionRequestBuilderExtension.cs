@@ -27,5 +27,16 @@ namespace Microsoft.Graph
                 string.Format("{0}/{1}:{2}", this.RequestUrl, hostname, siteRelativePath),
                 this.Client);
         }
+
+        /// <summary>
+        /// Gets a request builder for accessing a sites.
+        /// </summary>
+        public ISiteRequestBuilder Root
+        {
+            get
+            {
+                return new SiteRequestBuilder(this.AppendSegmentToRequestUrl("root"), this.Client);
+            }
+        }
     }
 }
