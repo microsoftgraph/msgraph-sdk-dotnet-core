@@ -7,7 +7,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The auth middleware option class
     /// </summary>
-    public class AuthOption : IMiddlewareOption
+    public class AuthenticationHandlerOption : IMiddlewareOption
     {
         /// <summary>
         /// An Authentication Provider

@@ -60,7 +60,7 @@ namespace Microsoft.Graph.Core.Test.Requests
             Assert.IsTrue(baseRequest.Headers[0].Name.Equals("header") && baseRequest.Headers[0].Value.Equals("value"), "Unexpected header option.");
             Assert.IsNotNull(baseRequest.Client.AuthenticationProvider, "Authentication provider not set.");
             Assert.IsNotNull(baseRequest.GetHttpRequestMessage().GetRequestContext().ClientRequestId, "Client request id not set.");
-            Assert.AreEqual(baseRequest.GetHttpRequestMessage().GetMiddlewareOption<AuthOption>().AuthenticationProvider,
+            Assert.AreEqual(baseRequest.GetHttpRequestMessage().GetMiddlewareOption<AuthenticationHandlerOption>().AuthenticationProvider,
                 baseRequest.Client.AuthenticationProvider, "Unexpected authentication provider set.");
         }
 
@@ -137,7 +137,7 @@ namespace Microsoft.Graph.Core.Test.Requests
 
             Assert.AreEqual(HttpMethod.Put, httpRequestMessage.Method, "Unexpected HTTP method in request");
             Assert.IsNotNull(httpRequestMessage.GetRequestContext().ClientRequestId, "Unexpected client request id");
-            Assert.IsNull(httpRequestMessage.GetMiddlewareOption<AuthOption>().AuthenticationProvider, "Unexpected authentication provider set.");
+            Assert.IsNull(httpRequestMessage.GetMiddlewareOption<AuthenticationHandlerOption>().AuthenticationProvider, "Unexpected authentication provider set.");
         }
 
         [TestMethod]

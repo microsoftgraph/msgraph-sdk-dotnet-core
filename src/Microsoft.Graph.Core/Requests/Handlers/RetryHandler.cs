@@ -26,23 +26,23 @@ namespace Microsoft.Graph
         /// <summary>
         /// RetryOption property
         /// </summary>
-        internal RetryOption RetryOption { get; set; }
+        internal RetryHandlerOption RetryOption { get; set; }
 
         /// <summary>
         /// Construct a new <see cref="RetryHandler"/>
         /// </summary>
-        /// <param name="retryOption">An OPTIONAL <see cref="Microsoft.Graph.RetryOption"/> to configure <see cref="RetryHandler"/></param>
-        public RetryHandler(RetryOption retryOption = null)
+        /// <param name="retryOption">An OPTIONAL <see cref="Microsoft.Graph.RetryHandlerOption"/> to configure <see cref="RetryHandler"/></param>
+        public RetryHandler(RetryHandlerOption retryOption = null)
         {
-            RetryOption = retryOption ?? new RetryOption();
+            RetryOption = retryOption ?? new RetryHandlerOption();
         }
 
         /// <summary>
         /// Construct a new <see cref="RetryHandler"/>
         /// </summary>
         /// <param name="innerHandler">An HTTP message handler to pass to the <see cref="HttpMessageHandler"/> for sending requests.</param>
-        /// <param name="retryOption">An OPTIONAL <see cref="Microsoft.Graph.RetryOption"/> to configure <see cref="RetryHandler"/></param>
-        public RetryHandler(HttpMessageHandler innerHandler, RetryOption retryOption = null)
+        /// <param name="retryOption">An OPTIONAL <see cref="Microsoft.Graph.RetryHandlerOption"/> to configure <see cref="RetryHandler"/></param>
+        public RetryHandler(HttpMessageHandler innerHandler, RetryHandlerOption retryOption = null)
             :this(retryOption)
         {
             InnerHandler = innerHandler;
@@ -56,7 +56,7 @@ namespace Microsoft.Graph
         /// <returns></returns>
         protected async override Task<HttpResponseMessage> SendAsync(HttpRequestMessage httpRequest, CancellationToken cancellationToken)
         {
-            RetryOption = httpRequest.GetMiddlewareOption<RetryOption>() ?? RetryOption;
+            RetryOption = httpRequest.GetMiddlewareOption<RetryHandlerOption>() ?? RetryOption;
 
             var response = await base.SendAsync(httpRequest, cancellationToken);
 

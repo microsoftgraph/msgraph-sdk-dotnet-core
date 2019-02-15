@@ -236,7 +236,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 
                 var returnedResponseMessage = await this.httpProvider.SendAsync(httpRequestMessage);
 
-                Assert.Equal(4, finalResponseMessage.RequestMessage.Headers.Count());
+                Assert.Equal(5, finalResponseMessage.RequestMessage.Headers.Count());
 
                 foreach (var header in httpRequestMessage.Headers)
                 {
@@ -439,8 +439,8 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             {
                 MiddlewareOptions = new Dictionary<string, IMiddlewareOption>() {
                     {
-                        typeof(AuthOption).ToString(),
-                        new AuthOption { AuthenticationProvider = authProvider .Object }
+                        typeof(AuthenticationHandlerOption).ToString(),
+                        new AuthenticationHandlerOption { AuthenticationProvider = authProvider .Object }
                     }
                 },
                 ClientRequestId = "client-request-id"

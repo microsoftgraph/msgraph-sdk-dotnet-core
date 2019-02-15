@@ -23,14 +23,14 @@ namespace Microsoft.Graph
         /// <returns></returns>
         internal static T WithDefaultAuthProvider<T>(this T baseRequest) where T : IBaseRequest
         {
-            string authOptionKey = typeof(AuthOption).ToString();
+            string authOptionKey = typeof(AuthenticationHandlerOption).ToString();
             if (baseRequest.MiddlewareOptions.ContainsKey(authOptionKey))
             {
-                (baseRequest.MiddlewareOptions[authOptionKey] as AuthOption).AuthenticationProvider = baseRequest.Client.AuthenticationProvider;
+                (baseRequest.MiddlewareOptions[authOptionKey] as AuthenticationHandlerOption).AuthenticationProvider = baseRequest.Client.AuthenticationProvider;
             }
             else
             {
-                baseRequest.MiddlewareOptions.Add(authOptionKey, new AuthOption { AuthenticationProvider = baseRequest.Client.AuthenticationProvider });
+                baseRequest.MiddlewareOptions.Add(authOptionKey, new AuthenticationHandlerOption { AuthenticationProvider = baseRequest.Client.AuthenticationProvider });
             }
             return baseRequest;
         }
@@ -48,14 +48,14 @@ namespace Microsoft.Graph
         {
             if (baseRequest.Client.PerRequestAuthProvider != null)
             {
-                string authOptionKey = typeof(AuthOption).ToString();
+                string authOptionKey = typeof(AuthenticationHandlerOption).ToString();
                 if (baseRequest.MiddlewareOptions.ContainsKey(authOptionKey))
                 {
-                    (baseRequest.MiddlewareOptions[authOptionKey] as AuthOption).AuthenticationProvider = baseRequest.Client.PerRequestAuthProvider();
+                    (baseRequest.MiddlewareOptions[authOptionKey] as AuthenticationHandlerOption).AuthenticationProvider = baseRequest.Client.PerRequestAuthProvider();
                 }
                 else
                 {
-                    baseRequest.MiddlewareOptions.Add(authOptionKey, new AuthOption { AuthenticationProvider = baseRequest.Client.PerRequestAuthProvider() });
+                    baseRequest.MiddlewareOptions.Add(authOptionKey, new AuthenticationHandlerOption { AuthenticationProvider = baseRequest.Client.PerRequestAuthProvider() });
                 }
             }
             return baseRequest;
@@ -72,14 +72,14 @@ namespace Microsoft.Graph
         /// <returns></returns>
         public static T WithShouldRetry<T>(this T baseRequest, Func<HttpResponseMessage, bool> shouldRetry) where T : IBaseRequest
         {
-            string retryOptionKey = typeof(RetryOption).ToString();
+            string retryOptionKey = typeof(RetryHandlerOption).ToString();
             if (baseRequest.MiddlewareOptions.ContainsKey(retryOptionKey))
             {
-                (baseRequest.MiddlewareOptions[retryOptionKey] as RetryOption).ShouldRetry = shouldRetry;
+                (baseRequest.MiddlewareOptions[retryOptionKey] as RetryHandlerOption).ShouldRetry = shouldRetry;
             }
             else
             {
-                baseRequest.MiddlewareOptions.Add(retryOptionKey, new RetryOption { ShouldRetry = shouldRetry });
+                baseRequest.MiddlewareOptions.Add(retryOptionKey, new RetryHandlerOption { ShouldRetry = shouldRetry });
             }
             return baseRequest;
         }
@@ -95,14 +95,14 @@ namespace Microsoft.Graph
         /// <returns></returns>
         public static T WithMaxRetry<T>(this T baseRequest, int maxRetry) where T : IBaseRequest
         {
-            string retryOptionKey = typeof(RetryOption).ToString();
+            string retryOptionKey = typeof(RetryHandlerOption).ToString();
             if (baseRequest.MiddlewareOptions.ContainsKey(retryOptionKey))
             {
-                (baseRequest.MiddlewareOptions[retryOptionKey] as RetryOption).MaxRetry = maxRetry;
+                (baseRequest.MiddlewareOptions[retryOptionKey] as RetryHandlerOption).MaxRetry = maxRetry;
             }
             else
             {
-                baseRequest.MiddlewareOptions.Add(retryOptionKey, new RetryOption { MaxRetry = maxRetry });
+                baseRequest.MiddlewareOptions.Add(retryOptionKey, new RetryHandlerOption { MaxRetry = maxRetry });
             }
             return baseRequest;
         }
@@ -118,14 +118,14 @@ namespace Microsoft.Graph
         /// <returns></returns>
         public static T WithMaxRedirects<T>(this T baseRequest, int maxRedirects) where T : IBaseRequest
         {
-            string redirectOptionKey = typeof(RedirectOption).ToString();
+            string redirectOptionKey = typeof(RedirectHandlerOption).ToString();
             if (baseRequest.MiddlewareOptions.ContainsKey(redirectOptionKey))
             {
-                (baseRequest.MiddlewareOptions[redirectOptionKey] as RedirectOption).MaxRedirects = maxRedirects;
+                (baseRequest.MiddlewareOptions[redirectOptionKey] as RedirectHandlerOption).MaxRedirects = maxRedirects;
             }
             else
             {
-                baseRequest.MiddlewareOptions.Add(redirectOptionKey, new RedirectOption { MaxRedirects = maxRedirects });
+                baseRequest.MiddlewareOptions.Add(redirectOptionKey, new RedirectHandlerOption { MaxRedirects = maxRedirects });
             }
             return baseRequest;
         }

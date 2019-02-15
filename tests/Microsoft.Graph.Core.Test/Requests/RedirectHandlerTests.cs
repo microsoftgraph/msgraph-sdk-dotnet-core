@@ -60,7 +60,7 @@ namespace Microsoft.Graph.Core.Test.Requests
         [TestMethod]
         public void RedirectHandler_RedirectOptionConstructor()
         {
-            using (RedirectHandler redirect = new RedirectHandler(new RedirectOption { MaxRedirects = 2 }))
+            using (RedirectHandler redirect = new RedirectHandler(new RedirectHandlerOption { MaxRedirects = 2 }))
             {
                 Assert.IsNull(redirect.InnerHandler, "HttpMessageHandler initialized");
                 Assert.IsNotNull(redirect.RedirectOption, "Redirect option not initialized");

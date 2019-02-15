@@ -56,7 +56,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             Assert.True(baseRequest.Headers[0].Name.Equals("header") && baseRequest.Headers[0].Value.Equals("value"));
             Assert.NotNull(baseRequest.Client.AuthenticationProvider);
             Assert.NotNull(baseRequest.GetHttpRequestMessage().GetRequestContext().ClientRequestId);
-            Assert.Equal(baseRequest.GetHttpRequestMessage().GetMiddlewareOption<AuthOption>().AuthenticationProvider, baseRequest.Client.AuthenticationProvider);
+            Assert.Equal(baseRequest.GetHttpRequestMessage().GetMiddlewareOption<AuthenticationHandlerOption>().AuthenticationProvider, baseRequest.Client.AuthenticationProvider);
         }
 
         [Fact]
@@ -128,7 +128,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 
             Assert.Equal(HttpMethod.Put, httpRequestMessage.Method);
             Assert.NotNull(httpRequestMessage.GetRequestContext().ClientRequestId);
-            Assert.Null(httpRequestMessage.GetMiddlewareOption<AuthOption>().AuthenticationProvider);
+            Assert.Null(httpRequestMessage.GetMiddlewareOption<AuthenticationHandlerOption>().AuthenticationProvider);
         }
 
         [Fact]
@@ -182,7 +182,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                 Assert.Equal(expectedResponseItem.Id, responseItem.Id);
                 Assert.NotNull(baseRequest.Client.AuthenticationProvider);
                 Assert.NotNull(baseRequest.GetHttpRequestMessage().GetRequestContext().ClientRequestId);
-                Assert.Equal(baseRequest.GetHttpRequestMessage().GetMiddlewareOption<AuthOption>().AuthenticationProvider,
+                Assert.Equal(baseRequest.GetHttpRequestMessage().GetMiddlewareOption<AuthenticationHandlerOption>().AuthenticationProvider,
                     baseRequest.Client.AuthenticationProvider);
             }
         }

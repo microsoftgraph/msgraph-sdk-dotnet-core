@@ -7,12 +7,12 @@ namespace Microsoft.Graph
     /// <summary>
     /// The redirect middleware option class
     /// </summary>
-    public class RedirectOption : IMiddlewareOption
+    public class RedirectHandlerOption : IMiddlewareOption
     {
         /// <summary>
-        /// Constructs a new <see cref="RedirectOption"/>
+        /// Constructs a new <see cref="RedirectHandlerOption"/>
         /// </summary>
-        public RedirectOption()
+        public RedirectHandlerOption()
         {
 
         }

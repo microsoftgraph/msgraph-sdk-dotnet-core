@@ -18,23 +18,23 @@ namespace Microsoft.Graph
         /// <summary>
         /// RedirectOption property
         /// </summary>
-        internal RedirectOption RedirectOption { get; set; }
+        internal RedirectHandlerOption RedirectOption { get; set; }
 
         /// <summary>
         /// Constructs a new <see cref="RedirectHandler"/> 
         /// </summary>
-        /// <param name="redirectOption">An OPTIONAL <see cref="Microsoft.Graph.RedirectOption"/> to configure <see cref="RedirectHandler"/></param>
-        public RedirectHandler(RedirectOption redirectOption = null)
+        /// <param name="redirectOption">An OPTIONAL <see cref="Microsoft.Graph.RedirectHandlerOption"/> to configure <see cref="RedirectHandler"/></param>
+        public RedirectHandler(RedirectHandlerOption redirectOption = null)
         {
-            RedirectOption = redirectOption ?? new RedirectOption();
+            RedirectOption = redirectOption ?? new RedirectHandlerOption();
         }
 
         /// <summary>
         /// Constructs a new <see cref="RedirectHandler"/> 
         /// </summary>
         /// <param name="innerHandler">An HTTP message handler to pass to the <see cref="HttpMessageHandler"/> for sending requests.</param>
-        /// <param name="redirectOption">An OPTIONAL <see cref="Microsoft.Graph.RedirectOption"/> to configure <see cref="RedirectHandler"/></param>
-        public RedirectHandler(HttpMessageHandler innerHandler, RedirectOption redirectOption = null)
+        /// <param name="redirectOption">An OPTIONAL <see cref="Microsoft.Graph.RedirectHandlerOption"/> to configure <see cref="RedirectHandler"/></param>
+        public RedirectHandler(HttpMessageHandler innerHandler, RedirectHandlerOption redirectOption = null)
             :this(redirectOption)
         {
             InnerHandler = innerHandler;
@@ -48,7 +48,7 @@ namespace Microsoft.Graph
         /// <returns>The <see cref="HttpResponseMessage"/>.</returns>
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            RedirectOption = request.GetMiddlewareOption<RedirectOption>() ?? RedirectOption;
+            RedirectOption = request.GetMiddlewareOption<RedirectHandlerOption>() ?? RedirectOption;
 
             // send request first time to get response
             var response = await base.SendAsync(request, cancellationToken);

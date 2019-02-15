@@ -83,7 +83,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Extensions
 
             HttpRequestMessage httpRequestMessage = baseRequest.GetHttpRequestMessage();
 
-            Assert.NotNull(httpRequestMessage.GetMiddlewareOption<AuthOption>());
+            Assert.NotNull(httpRequestMessage.GetMiddlewareOption<AuthenticationHandlerOption>());
         }
     }
 }

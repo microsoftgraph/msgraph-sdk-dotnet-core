@@ -466,8 +466,8 @@ namespace Microsoft.Graph.Core.Test.Requests
             {
                 MiddlewareOptions = new Dictionary<string, IMiddlewareOption>() {
                     {
-                        typeof(AuthOption).ToString(),
-                        new AuthOption { AuthenticationProvider = authProvider .Object }
+                        typeof(AuthenticationHandlerOption).ToString(),
+                        new AuthenticationHandlerOption { AuthenticationProvider = authProvider .Object }
                     }
                 },
                 ClientRequestId = "client-request-id"

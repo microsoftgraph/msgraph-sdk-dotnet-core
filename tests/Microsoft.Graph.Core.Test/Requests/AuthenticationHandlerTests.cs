@@ -62,7 +62,7 @@ namespace Microsoft.Graph.Core.Test.Requests
         {
             var scopes = new string[] { "foo.bar" };
             using (AuthenticationHandler auth = new AuthenticationHandler(mockAuthenticationProvider.Object,
-                new AuthOption()))
+                new AuthenticationHandlerOption()))
             {
                 Assert.IsNull(auth.InnerHandler, "Http message handler initialized");
                 Assert.IsNotNull(auth.AuthenticationProvider, "Authentication provider not initialized");

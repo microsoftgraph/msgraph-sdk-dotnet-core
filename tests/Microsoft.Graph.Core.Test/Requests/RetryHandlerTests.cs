@@ -65,7 +65,7 @@ namespace Microsoft.Graph.Core.Test.Requests
         [TestMethod]
         public void retryHandler_RetryOptionConstructor()
         {
-            using (RetryHandler retry = new RetryHandler(new RetryOption { MaxRetry = 5, ShouldRetry = (response) => true }))
+            using (RetryHandler retry = new RetryHandler(new RetryHandlerOption { MaxRetry = 5, ShouldRetry = (response) => true }))
             {
                 Assert.IsNull(retry.InnerHandler, "HttpMessageHandler initialized");
                 Assert.IsNotNull(retry.RetryOption, "Retry option not initialized");

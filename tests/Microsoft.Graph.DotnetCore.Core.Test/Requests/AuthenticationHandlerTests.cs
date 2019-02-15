@@ -58,7 +58,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         {
             var scopes = new string[] { "foo.bar" };
             using (AuthenticationHandler auth = new AuthenticationHandler(mockAuthenticationProvider.Object,
-                new AuthOption()))
+                new AuthenticationHandlerOption()))
             {
                 Assert.Null(auth.InnerHandler);
                 Assert.NotNull(auth.AuthenticationProvider);

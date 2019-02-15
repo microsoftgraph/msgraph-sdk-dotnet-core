@@ -21,7 +21,7 @@ namespace Microsoft.Graph
         /// <summary>
         /// AuthOption property
         /// </summary>
-        internal AuthOption AuthOption { get; set; }
+        internal AuthenticationHandlerOption AuthOption { get; set; }
 
         /// <summary>
         /// AuthenticationProvider property
@@ -32,11 +32,11 @@ namespace Microsoft.Graph
         /// Construct a new <see cref="AuthenticationHandler"/>
         /// <param name="authenticationProvider">An authentication provider to pass to <see cref="AuthenticationHandler"/> for authenticating requests.</param>
         /// </summary>
-        /// <param name="authOption">An OPTIONAL <see cref="Microsoft.Graph.AuthOption"/> to configure <see cref="AuthenticationHandler"/></param>
-        public AuthenticationHandler(IAuthenticationProvider authenticationProvider, AuthOption authOption = null)
+        /// <param name="authOption">An OPTIONAL <see cref="Microsoft.Graph.AuthenticationHandlerOption"/> to configure <see cref="AuthenticationHandler"/></param>
+        public AuthenticationHandler(IAuthenticationProvider authenticationProvider, AuthenticationHandlerOption authOption = null)
         {
             AuthenticationProvider = authenticationProvider;
-            AuthOption = authOption ?? new AuthOption();
+            AuthOption = authOption ?? new AuthenticationHandlerOption();
         }
 
         /// <summary>
@@ -44,8 +44,8 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="authenticationProvider">An authentication provider to pass to <see cref="AuthenticationHandler"/> for authenticating requests.</param>
         /// <param name="innerHandler">A HTTP message handler to pass to the <see cref="AuthenticationHandler"/> for sending requests.</param>
-        /// <param name="authOption">An OPTIONAL <see cref="Microsoft.Graph.AuthOption"/> to configure <see cref="AuthenticationHandler"/></param>
-        public AuthenticationHandler(IAuthenticationProvider authenticationProvider, HttpMessageHandler innerHandler, AuthOption authOption = null)
+        /// <param name="authOption">An OPTIONAL <see cref="Microsoft.Graph.AuthenticationHandlerOption"/> to configure <see cref="AuthenticationHandler"/></param>
+        public AuthenticationHandler(IAuthenticationProvider authenticationProvider, HttpMessageHandler innerHandler, AuthenticationHandlerOption authOption = null)
             :this(authenticationProvider, authOption)
         {
             InnerHandler = innerHandler;
@@ -101,7 +101,7 @@ namespace Microsoft.Graph
         /// <returns></returns>
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage httpRequestMessage, CancellationToken cancellationToken)
         {
-            AuthOption = httpRequestMessage.GetMiddlewareOption<AuthOption>() ?? AuthOption;
+            AuthOption = httpRequestMessage.GetMiddlewareOption<AuthenticationHandlerOption>() ?? AuthOption;
 
             // If default auth provider is not set, use the option
             var authProvider = AuthOption.AuthenticationProvider ?? AuthenticationProvider;

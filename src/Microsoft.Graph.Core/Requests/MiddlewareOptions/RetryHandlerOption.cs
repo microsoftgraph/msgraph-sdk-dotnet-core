@@ -11,12 +11,12 @@ namespace Microsoft.Graph
     /// <summary>
     /// The retry middleware option class
     /// </summary>
-    public class RetryOption : IMiddlewareOption
+    public class RetryHandlerOption : IMiddlewareOption
     {
         /// <summary>
-        /// Constructs a new <see cref="RetryOption"/>
+        /// Constructs a new <see cref="RetryHandlerOption"/>
         /// </summary>
-        public RetryOption()
+        public RetryHandlerOption()
         {
             ShouldRetry = (response) => IsRetry(response);
         }

@@ -62,7 +62,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         [Fact]
         public void retryHandler_RetryOptionConstructor()
         {
-            using (RetryHandler retry = new RetryHandler(new RetryOption { MaxRetry = 5, ShouldRetry = (response) => true }))
+            using (RetryHandler retry = new RetryHandler(new RetryHandlerOption { MaxRetry = 5, ShouldRetry = (response) => true }))
             {
                 Assert.Null(retry.InnerHandler);
                 Assert.NotNull(retry.RetryOption);

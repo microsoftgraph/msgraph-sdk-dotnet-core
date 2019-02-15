@@ -57,7 +57,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         [Fact]
         public void RedirectHandler_RedirectOptionConstructor()
         {
-            using (RedirectHandler redirect = new RedirectHandler(new RedirectOption { MaxRedirects = 2 }))
+            using (RedirectHandler redirect = new RedirectHandler(new RedirectHandlerOption { MaxRedirects = 2 }))
             {
                 Assert.Null(redirect.InnerHandler);
                 Assert.NotNull(redirect.RedirectOption);
