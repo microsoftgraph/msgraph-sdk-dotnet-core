@@ -15,5 +15,10 @@ namespace Microsoft.Graph
         /// </summary>
         /// <returns>The <see cref="ISiteRequestBuilder"/>.</returns>
         ISiteRequestBuilder GetByPath(string siteRelativePath, string hostname);
+
+        /// <summary>
+        /// Gets a request builder for accessing a site's root. This is how we can provide a request builder for structural properties.
+        /// </summary>
+        ISiteRequestBuilder Root { get; }
     }
 }

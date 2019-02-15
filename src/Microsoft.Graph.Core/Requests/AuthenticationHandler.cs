@@ -64,15 +64,16 @@ namespace Microsoft.Graph
             int retryAttempt = 0;
             while (retryAttempt < MaxRetry)
             {
-                var originalRequest = httpResponseMessage.RequestMessage;
+                // general clone request with internal CloneAsync (see CloneAsync for details) extension method 
+                var newRequest = await httpResponseMessage.RequestMessage.CloneAsync();
 
                 // Authenticate request using AuthenticationProvider
-                await AuthenticationProvider.AuthenticateRequestAsync(originalRequest);
-                httpResponseMessage = await base.SendAsync(originalRequest, cancellationToken);
+                await AuthenticationProvider.AuthenticateRequestAsync(newRequest);
+                httpResponseMessage = await base.SendAsync(newRequest, cancellationToken);
 
                 retryAttempt++;
 
-                if (!IsUnauthorized(httpResponseMessage) || !originalRequest.IsBuffered())
+                if (!IsUnauthorized(httpResponseMessage) || !newRequest.IsBuffered())
                 {
                     // Re-issue the request to get a new access token
                     return httpResponseMessage;

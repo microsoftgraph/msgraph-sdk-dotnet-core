@@ -8,11 +8,11 @@ namespace Microsoft.Graph.Test.Requests.Functional
 {
     [Ignore]
     [TestClass]
-    public class SharePointTests : GraphTestBase
+    public class Given_a_valid_SharePoint_Site : GraphTestBase
     {
         // Test search a SharePoint site.
         [TestMethod]
-        public async Async.Task SharePointSearchSites()
+        public async Async.Task It_searches_the_SharePoint_Site_and_returns_results()
         {
             try
             {
@@ -34,9 +34,9 @@ namespace Microsoft.Graph.Test.Requests.Functional
             }
         }
 
-        // Test accessing the default document libraries for a SharePoint site.
+        // Test accessing the document libraries for a SharePoint site.
         [TestMethod]
-        public async Async.Task SharePointGetDocumentLibraries()
+        public async Async.Task It_gets_the_sites_drives()
         {
             try
             {
@@ -64,7 +64,7 @@ namespace Microsoft.Graph.Test.Requests.Functional
 
         // Test accessing the non-default document library on a SharePoint site.
         [TestMethod]
-        public async Async.Task SharePointGetNonDefaultDocumentLibraries()
+        public async Async.Task It_gets_the_sites_drives_root_children()
         {
             try
             {
@@ -110,7 +110,7 @@ namespace Microsoft.Graph.Test.Requests.Functional
         /// 
         [Ignore] // Need reset test data  in demo tenant
         [TestMethod]
-        public async Async.Task SharePointGetSiteWithPath()
+        public async Async.Task It_gets_a_site_by_path()
         {
             try
             {
@@ -156,16 +156,35 @@ namespace Microsoft.Graph.Test.Requests.Functional
                 Assert.Fail("Something happened, check out a trace. Error code: {0}", e.Error.Code);
             }
         }
-        
+
+        /// <summary>
+        /// Test the custom 'Root' partial request builder.
+        /// </summary>
+        /// <returns></returns>
+        [TestMethod]
+        public async Async.Task It_gets_the_root_site()
+        {
+            try
+            {
+                Site site = await graphClient.Sites.Root.Request().GetAsync();
+                Assert.IsNotNull(site);
+            }
+            catch (Exception)
+            {
+                Assert.Fail("An unexpected exception was thrown. This test case failed.");
+            }
+        }
+
         /// <summary>
         /// Test to get information about a SharePoint site by its URL.
         /// </summary>
         [TestMethod]
-        public async Async.Task SharePointAccessSiteByUrl()
+        public async Async.Task It_gets_a_site_by_URL()
         {
             try
             {
                 Site site = await graphClient.Shares[UrlToSharingToken("https://m365x462896.sharepoint.com/sites/portals2")].Site.Request().GetAsync();
+
                 Assert.IsNotNull(site);
             }
             catch (Microsoft.Graph.ServiceException e)
