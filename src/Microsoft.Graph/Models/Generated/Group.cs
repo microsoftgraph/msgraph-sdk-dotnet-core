@@ -23,6 +23,7 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets assigned licenses.
+        /// The licenses that are assigned to the group. Returned only on $select. Read-only.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "assignedLicenses", Required = Newtonsoft.Json.Required.Default)]
         public IEnumerable<AssignedLicense> AssignedLicenses { get; set; }
@@ -57,6 +58,7 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets has members with license errors.
+        /// Indicates whether there are members in this group that have license errors from its group-based license assignment. This property is never returned on a GET operation. You can use it as a $filter argument to get groups that have members with license errors (that is, filter for this property being true). See an example.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "hasMembersWithLicenseErrors", Required = Newtonsoft.Json.Required.Default)]
         public bool? HasMembersWithLicenseErrors { get; set; }
@@ -70,6 +72,7 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets license processing state.
+        /// Indicates status of the group license assignment to all members of the group. Default value is false. Read-only. Possible values: QueuedForProcessing, ProcessingInProgress, and ProcessingComplete.Returned only on $select. Read-only.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "licenseProcessingState", Required = Newtonsoft.Json.Required.Default)]
         public LicenseProcessingState LicenseProcessingState { get; set; }
@@ -201,6 +204,7 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets members with license errors.
+        /// A list of group members with license errors from this group-based license assignment. Read-only.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "membersWithLicenseErrors", Required = Newtonsoft.Json.Required.Default)]
         public IGroupMembersWithLicenseErrorsCollectionWithReferencesPage MembersWithLicenseErrors { get; set; }
