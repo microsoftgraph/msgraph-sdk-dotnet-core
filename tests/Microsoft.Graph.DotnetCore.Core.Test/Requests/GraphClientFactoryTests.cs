@@ -208,7 +208,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                 var response = await client.SendAsync(httpRequestMessage, new CancellationToken());
                 Assert.Same(response, response_2);
                 IEnumerable<string> values;
-                Assert.True(httpRequestMessage.Headers.TryGetValues("Retry-Attempt", out values), "Don't set Retry-Attemp Header");
+                Assert.True(response.RequestMessage.Headers.TryGetValues("Retry-Attempt", out values), "Don't set Retry-Attemp Header");
                 Assert.Equal(values.Count(), 1);
                 Assert.Equal(values.First(), 1.ToString());
             }
@@ -253,7 +253,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             {
                 var response = await client.SendAsync(httpRequestMessage, new CancellationToken());
                 Assert.Same(response, okResponse);
-                Assert.Same(response.RequestMessage, httpRequestMessage);
+                Assert.NotSame(response.RequestMessage, httpRequestMessage);
             }
         }
 

@@ -79,6 +79,7 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets related contacts.
+        /// Set of contacts related to the user.  This optional property must be specified in a $select clause and can only be retrieved for an individual user.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "relatedContacts", Required = Newtonsoft.Json.Required.Default)]
         public IEnumerable<EducationRelatedContact> RelatedContacts { get; set; }

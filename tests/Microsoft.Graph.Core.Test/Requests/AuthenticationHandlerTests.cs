@@ -87,8 +87,8 @@ namespace Microsoft.Graph.Core.Test.Requests
 
             var response = await invoker.SendAsync(httpRequestMessage, new CancellationToken());
 
-            Assert.AreSame(response, expectedResponse, "Doesn't return a successful response");
-            Assert.AreSame(response.RequestMessage, httpRequestMessage, "Http response message sets wrong request message");
+            Assert.AreSame(response, expectedResponse, "Doesn't return a successful response.");
+            Assert.AreSame(response.RequestMessage, httpRequestMessage, "Reissued a new http request.");
         }
 
         [TestMethod]
@@ -102,9 +102,9 @@ namespace Microsoft.Graph.Core.Test.Requests
 
             var response = await invoker.SendAsync(httpRequestMessage, new CancellationToken());
 
-            Assert.AreSame(response.RequestMessage, httpRequestMessage, "Http response message sets wrong request message");
-            Assert.AreSame(response, expectedResponse, "Retry didn't happen");
-            Assert.IsNull(response.RequestMessage.Content, "Content is not null");
+            Assert.AreNotSame(response.RequestMessage, httpRequestMessage, "Doesn't reissue a new http request.");
+            Assert.AreSame(response, expectedResponse, "Retry didn't happen.");
+            Assert.IsNull(response.RequestMessage.Content, "Content is not null.");
         }
 
         [TestMethod]
@@ -118,9 +118,9 @@ namespace Microsoft.Graph.Core.Test.Requests
 
             var response = await invoker.SendAsync(httpRequestMessage, new CancellationToken());
 
-            Assert.AreSame(response.RequestMessage, httpRequestMessage, "Http response message sets wrong request message");
-            Assert.AreSame(response, expectedResponse, "Retry didn't happen");
-            Assert.IsNull(response.RequestMessage.Content, "Content is not null");
+            Assert.AreNotSame(response.RequestMessage, httpRequestMessage, "Doesn't reissue a new http request.");
+            Assert.AreSame(response, expectedResponse, "Retry didn't happen.");
+            Assert.IsNull(response.RequestMessage.Content, "Content is not null.");
         }
 
         [TestMethod]
@@ -136,10 +136,11 @@ namespace Microsoft.Graph.Core.Test.Requests
 
             var response = await invoker.SendAsync(httpRequestMessage, new CancellationToken());
 
-            Assert.AreSame(response, okResponse, "Retry didn't happen");
-            Assert.AreNotSame(response, unauthorizedResponse, "Retry didn't happen");
-            Assert.IsNotNull(response.RequestMessage.Content, "The request content is null");
-            Assert.AreEqual(response.RequestMessage.Content.ReadAsStringAsync().Result, "Hello World!", "Content changed");
+            Assert.AreNotSame(response.RequestMessage, httpRequestMessage, "Doesn't reissue a new http request.");
+            Assert.AreSame(response, okResponse, "Retry didn't happen.");
+            Assert.AreNotSame(response, unauthorizedResponse, "Retry didn't happen.");
+            Assert.IsNotNull(response.RequestMessage.Content, "The request content is null.");
+            Assert.AreEqual(response.RequestMessage.Content.ReadAsStringAsync().Result, "Hello World!", "Content changed.");
         }
 
         [TestMethod]
@@ -155,10 +156,11 @@ namespace Microsoft.Graph.Core.Test.Requests
 
             var response = await invoker.SendAsync(httpRequestMessage, new CancellationToken());
 
-            Assert.AreSame(response, okResponse, "Retry didn't happen");
-            Assert.AreNotSame(response, unauthorizedResponse, "Retry didn't happen");
-            Assert.IsNotNull(response.RequestMessage.Content, "The request content is null");
-            Assert.AreEqual(response.RequestMessage.Content.ReadAsStringAsync().Result, "Hello World!", "Content changed");
+            Assert.AreNotSame(response.RequestMessage, httpRequestMessage, "Doesn't reissue a new http request.");
+            Assert.AreSame(response, okResponse, "Retry didn't happen.");
+            Assert.AreNotSame(response, unauthorizedResponse, "Retry didn't happen.");
+            Assert.IsNotNull(response.RequestMessage.Content, "The request content is null.");
+            Assert.AreEqual(response.RequestMessage.Content.ReadAsStringAsync().Result, "Hello World!", "Content changed.");
         }
 
         [TestMethod]
@@ -175,10 +177,11 @@ namespace Microsoft.Graph.Core.Test.Requests
 
             var response = await invoker.SendAsync(httpRequestMessage, new CancellationToken());
 
-            Assert.AreNotSame(response, okResponse, "Unexpected retry");
-            Assert.AreSame(response, unauthorizedResponse, "Unexpected retry");
-            Assert.IsNotNull(response.RequestMessage.Content, "Request content is null");
-            Assert.AreEqual(response.RequestMessage.Content.Headers.ContentLength, -1, "Request content length changed");
+            Assert.AreSame(response.RequestMessage, httpRequestMessage, "Reissued a new http request.");
+            Assert.AreNotSame(response, okResponse, "Unexpected retry.");
+            Assert.AreSame(response, unauthorizedResponse, "Unexpected retry.");
+            Assert.IsNotNull(response.RequestMessage.Content, "Request content is null.");
+            Assert.AreEqual(response.RequestMessage.Content.Headers.ContentLength, -1, "Request content length changed.");
         }
 
         [TestMethod]
@@ -195,10 +198,11 @@ namespace Microsoft.Graph.Core.Test.Requests
 
             var response = await invoker.SendAsync(httpRequestMessage, new CancellationToken());
 
-            Assert.AreNotSame(response, okResponse, "Unexpected retry");
-            Assert.AreSame(response, unauthorizedResponse, "Unexpected retry");
-            Assert.IsNotNull(response.RequestMessage.Content, "Request content is null");
-            Assert.AreEqual(response.RequestMessage.Content.Headers.ContentLength, -1, "Request content length changed");
+            Assert.AreSame(response.RequestMessage, httpRequestMessage, "Reissued a new http request.");
+            Assert.AreNotSame(response, okResponse, "Unexpected retry.");
+            Assert.AreSame(response, unauthorizedResponse, "Unexpected retry.");
+            Assert.IsNotNull(response.RequestMessage.Content, "Request content is null.");
+            Assert.AreEqual(response.RequestMessage.Content.Headers.ContentLength, -1, "Request content length changed.");
         }
 
         [TestMethod]
@@ -213,7 +217,8 @@ namespace Microsoft.Graph.Core.Test.Requests
 
             var response = await invoker.SendAsync(httpRequestMessage, new CancellationToken());
 
-            Assert.AreSame(response, expectedResponse, "Unexpected code returned");
+            Assert.AreNotSame(response.RequestMessage, httpRequestMessage, "Doesn't reissued a new http request.");
+            Assert.AreSame(response, expectedResponse, "Unexpected code returned.");
             Assert.AreEqual(response.RequestMessage.Content.ReadAsStringAsync().Result, "Hello Mars!");
         }
     }

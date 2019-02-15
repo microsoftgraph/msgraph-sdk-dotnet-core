@@ -99,7 +99,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             var response = await invoker.SendAsync(httpRequestMessage, new CancellationToken());
 
             Assert.Same(response, expectedResponse);
-            Assert.Same(response.RequestMessage, httpRequestMessage);
+            Assert.NotSame(response.RequestMessage, httpRequestMessage);
             Assert.Null(response.RequestMessage.Content);
         }
 
@@ -114,6 +114,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 
             var response = await invoker.SendAsync(httpRequestMessage, new CancellationToken());
 
+            Assert.NotSame(response.RequestMessage, httpRequestMessage);
             Assert.Same(response, expectedResponse);
             Assert.NotSame(response, unauthorizedResponse);
             Assert.Null(response.RequestMessage.Content);
@@ -132,6 +133,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 
             var response = await invoker.SendAsync(httpRequestMessage, new CancellationToken());
 
+            Assert.NotSame(response.RequestMessage, httpRequestMessage);
             Assert.Same(response, okResponse);
             Assert.NotSame(response, unauthorizedResponse);
             Assert.NotNull(response.RequestMessage.Content);
@@ -151,6 +153,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 
             var response = await invoker.SendAsync(httpRequestMessage, new CancellationToken());
 
+            Assert.NotSame(response.RequestMessage, httpRequestMessage);
             Assert.Same(response, okResponse);
             Assert.NotSame(response, unauthorizedResponse);
             Assert.NotNull(response.RequestMessage.Content);
@@ -171,6 +174,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 
             var response = await invoker.SendAsync(httpRequestMessage, new CancellationToken());
 
+            Assert.Same(response.RequestMessage, httpRequestMessage);
             Assert.NotSame(response, okResponse);
             Assert.Same(response, unauthorizedResponse);
             Assert.NotNull(response.RequestMessage.Content);
@@ -191,6 +195,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 
             var response = await invoker.SendAsync(httpRequestMessage, new CancellationToken());
 
+            Assert.Same(response.RequestMessage, httpRequestMessage);
             Assert.NotSame(response, okResponse);
             Assert.Same(response, unauthorizedResponse);
             Assert.NotNull(response.RequestMessage.Content);
@@ -210,6 +215,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 
             var response = await invoker.SendAsync(httpRequestMessage, new CancellationToken());
 
+            Assert.NotSame(response.RequestMessage, httpRequestMessage);
             Assert.Same(response, expectedResponse);
             Assert.Equal(response.RequestMessage.Content.ReadAsStringAsync().Result, "Hello Mars!");
         }

@@ -24,7 +24,7 @@ namespace Microsoft.Graph
 
         /// <summary>
         /// Gets or sets contentType.
-        /// The type of the content. Possible values are Text and HTML.
+        /// The type of the content. Possible values are text and HTML.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "contentType", Required = Newtonsoft.Json.Required.Default)]
         public BodyType? ContentType { get; set; }

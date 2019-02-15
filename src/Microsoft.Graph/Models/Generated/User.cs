@@ -99,6 +99,20 @@ namespace Microsoft.Graph
         public string DisplayName { get; set; }
     
         /// <summary>
+        /// Gets or sets employee id.
+        /// The employee identifier assigned to the user by the organization. Supports $filter.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "employeeId", Required = Newtonsoft.Json.Required.Default)]
+        public string EmployeeId { get; set; }
+    
+        /// <summary>
+        /// Gets or sets fax number.
+        /// The fax number of the user.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "faxNumber", Required = Newtonsoft.Json.Required.Default)]
+        public string FaxNumber { get; set; }
+    
+        /// <summary>
         /// Gets or sets given name.
         /// The given name (first name) of the user. Supports $filter.
         /// </summary>
@@ -127,6 +141,13 @@ namespace Microsoft.Graph
         public string LegalAgeGroupClassification { get; set; }
     
         /// <summary>
+        /// Gets or sets license assignment states.
+        /// State of license assignments for this user. Read-only.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "licenseAssignmentStates", Required = Newtonsoft.Json.Required.Default)]
+        public IEnumerable<LicenseAssignmentState> LicenseAssignmentStates { get; set; }
+    
+        /// <summary>
         /// Gets or sets mail.
         /// The SMTP address for the user, for example, 'jeff@contoso.onmicrosoft.com'. Read-Only. Supports $filter.
         /// </summary>
@@ -146,6 +167,13 @@ namespace Microsoft.Graph
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "mobilePhone", Required = Newtonsoft.Json.Required.Default)]
         public string MobilePhone { get; set; }
+    
+        /// <summary>
+        /// Gets or sets on premises distinguished name.
+        /// Contains the on-premises Active Directory distinguished name or DN. The property is only populated for customers who are synchronizing their on-premises directory to Azure Active Directory via Azure AD Connect. Read-only.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "onPremisesDistinguishedName", Required = Newtonsoft.Json.Required.Default)]
+        public string OnPremisesDistinguishedName { get; set; }
     
         /// <summary>
         /// Gets or sets on premises extension attributes.
@@ -211,6 +239,13 @@ namespace Microsoft.Graph
         public string OnPremisesUserPrincipalName { get; set; }
     
         /// <summary>
+        /// Gets or sets other mails.
+        /// A list of additional email addresses for the user; for example: ['bob@contoso.com', 'Robert@fabrikam.com']. Supports $filter.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "otherMails", Required = Newtonsoft.Json.Required.Default)]
+        public IEnumerable<string> OtherMails { get; set; }
+    
+        /// <summary>
         /// Gets or sets password policies.
         /// Specifies password policies for the user. This value is an enumeration with one possible value being 'DisableStrongPassword', which allows weaker passwords than the default policy to be specified. 'DisablePasswordExpiration' can also be specified. The two may be specified together; for example: 'DisablePasswordExpiration, DisableStrongPassword'.
         /// </summary>
@@ -258,6 +293,13 @@ namespace Microsoft.Graph
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "proxyAddresses", Required = Newtonsoft.Json.Required.Default)]
         public IEnumerable<string> ProxyAddresses { get; set; }
+    
+        /// <summary>
+        /// Gets or sets show in address list.
+        /// true if the Outlook global address list should contain this user, otherwise false. If not set, this will be treated as true. For users invited through the invitation manager, this property will be set to false.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "showInAddressList", Required = Newtonsoft.Json.Required.Default)]
+        public bool? ShowInAddressList { get; set; }
     
         /// <summary>
         /// Gets or sets state.
@@ -440,6 +482,12 @@ namespace Microsoft.Graph
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "licenseDetails", Required = Newtonsoft.Json.Required.Default)]
         public IUserLicenseDetailsCollectionPage LicenseDetails { get; set; }
+    
+        /// <summary>
+        /// Gets or sets transitive member of.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "transitiveMemberOf", Required = Newtonsoft.Json.Required.Default)]
+        public IUserTransitiveMemberOfCollectionWithReferencesPage TransitiveMemberOf { get; set; }
     
         /// <summary>
         /// Gets or sets extensions.

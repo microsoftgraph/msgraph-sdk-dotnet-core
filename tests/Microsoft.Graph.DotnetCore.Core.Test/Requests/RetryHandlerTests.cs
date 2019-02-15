@@ -103,7 +103,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             var response = await invoker.SendAsync(httpRequestMessage, new CancellationToken());
 
             Assert.Same(response, response_2);
-            Assert.Same(response.RequestMessage, httpRequestMessage);
+            Assert.NotSame(response.RequestMessage, httpRequestMessage);
             Assert.NotNull(response.RequestMessage.Headers);
             Assert.True(response.RequestMessage.Headers.Contains(RETRY_ATTEMPT));
             IEnumerable<string> values;
@@ -130,6 +130,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             var response = await invoker.SendAsync(httpRequestMessage, new CancellationToken());
 
             Assert.Same(response, response_2);
+            Assert.NotSame(response.RequestMessage, httpRequestMessage);
             Assert.NotNull(response.RequestMessage.Content);
             Assert.NotNull(response.RequestMessage.Content.Headers.ContentLength);
             Assert.Equal(response.RequestMessage.Content.ReadAsStringAsync().Result, "Hello World");
@@ -155,6 +156,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 
             Assert.NotEqual(response, response_2);
             Assert.Same(response, retryResponse);
+            Assert.Same(response.RequestMessage, httpRequestMessage);
             Assert.NotNull(response.RequestMessage.Content);
             Assert.NotNull(response.RequestMessage.Content.Headers.ContentLength);
             Assert.Equal(response.RequestMessage.Content.Headers.ContentLength, -1);
@@ -180,6 +182,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             var response = await invoker.SendAsync(httpRequestMessage, new CancellationToken());
 
             Assert.NotEqual(response, response_2);
+            Assert.Same(response.RequestMessage, httpRequestMessage);
             Assert.Same(response, retryResponse);
             Assert.NotNull(response.RequestMessage.Content);
             Assert.Null(response.RequestMessage.Content.Headers.ContentLength);
@@ -266,11 +269,10 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 
             Assert.Same(response, response_2);
             IEnumerable<string> values;
-            Assert.True(httpRequestMessage.Headers.TryGetValues(RETRY_ATTEMPT, out values), "Don't set Retry-Attemp Header");
+            Assert.True(response.RequestMessage.Headers.TryGetValues(RETRY_ATTEMPT, out values), "Don't set Retry-Attempt Header");
             Assert.Equal(values.Count(), 1);
             Assert.Equal(values.First(), 1.ToString());
-           
-
+            Assert.NotSame(response.RequestMessage, httpRequestMessage);
         }
 
         private async Task DelayTestWithMessage(HttpResponseMessage response, int count, string message)

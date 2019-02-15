@@ -60,6 +60,19 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
+        /// Gets the request builder for NotebookGetNotebookFromWebUrl.
+        /// </summary>
+        /// <returns>The <see cref="INotebookGetNotebookFromWebUrlRequestBuilder"/>.</returns>
+        public INotebookGetNotebookFromWebUrlRequestBuilder GetNotebookFromWebUrl(
+            string webUrl = null)
+        {
+            return new NotebookGetNotebookFromWebUrlRequestBuilder(
+                this.AppendSegmentToRequestUrl("microsoft.graph.getNotebookFromWebUrl"),
+                this.Client,
+                webUrl);
+        }
+
+        /// <summary>
         /// Gets the request builder for NotebookGetRecentNotebooks.
         /// </summary>
         /// <returns>The <see cref="INotebookGetRecentNotebooksRequestBuilder"/>.</returns>
