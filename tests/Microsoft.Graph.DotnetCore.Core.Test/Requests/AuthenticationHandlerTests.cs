@@ -39,6 +39,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             {
                 Assert.Null(auth.InnerHandler);
                 Assert.NotNull(auth.AuthenticationProvider);
+                Assert.NotNull(auth.AuthOption);
                 Assert.IsType(typeof(AuthenticationHandler), auth);
             }
         }
@@ -48,7 +49,22 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         {
             Assert.NotNull(authenticationHandler.InnerHandler);
             Assert.NotNull(authenticationHandler.AuthenticationProvider);
+            Assert.NotNull(authenticationHandler.AuthOption);
             Assert.IsType(typeof(AuthenticationHandler), authenticationHandler);
+        }
+
+        [Fact]
+        public void AuthHandler_AuthProviderAuthOptionConstructor()
+        {
+            var scopes = new string[] { "foo.bar" };
+            using (AuthenticationHandler auth = new AuthenticationHandler(mockAuthenticationProvider.Object,
+                new AuthenticationHandlerOption()))
+            {
+                Assert.Null(auth.InnerHandler);
+                Assert.NotNull(auth.AuthenticationProvider);
+                Assert.NotNull(auth.AuthOption);
+                Assert.IsType(typeof(AuthenticationHandler), auth);
+            }
         }
 
         [Theory]

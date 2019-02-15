@@ -40,7 +40,8 @@ namespace Microsoft.Graph.Core.Test.Requests
             using (AuthenticationHandler auth = new AuthenticationHandler(mockAuthenticationProvider.Object))
             {
                 Assert.IsNull(auth.InnerHandler, "Http message handler initialized");
-                Assert.IsNotNull(auth.AuthenticationProvider, "Authentication provider initialized");
+                Assert.IsNotNull(auth.AuthenticationProvider, "Authentication provider not initialized");
+                Assert.IsNotNull(auth.AuthOption, "Auth option not initialized");
                 Assert.IsInstanceOfType(auth, typeof(AuthenticationHandler), "Unexpected authentication handler set");
             }
         }
@@ -52,7 +53,22 @@ namespace Microsoft.Graph.Core.Test.Requests
             Assert.IsNotNull(authenticationHandler.AuthenticationProvider, "Authentication provider not initialized");
             Assert.AreEqual(authenticationHandler.InnerHandler, testHttpMessageHandler, "Unexpected http message handler set");
             Assert.AreEqual(authenticationHandler.AuthenticationProvider, mockAuthenticationProvider.Object, "Unexpected auhtentication provider set");
+            Assert.IsNotNull(authenticationHandler.AuthOption, "Auth option not initialized");
             Assert.IsInstanceOfType(authenticationHandler, typeof(AuthenticationHandler), "Unexpected authentication handler set");
+        }
+
+        [TestMethod]
+        public void AuthHandler_AuthProviderAuthOptionConstructor()
+        {
+            var scopes = new string[] { "foo.bar" };
+            using (AuthenticationHandler auth = new AuthenticationHandler(mockAuthenticationProvider.Object,
+                new AuthenticationHandlerOption()))
+            {
+                Assert.IsNull(auth.InnerHandler, "Http message handler initialized");
+                Assert.IsNotNull(auth.AuthenticationProvider, "Authentication provider not initialized");
+                Assert.IsNotNull(auth.AuthOption, "Auth option not initialized");
+                Assert.IsInstanceOfType(auth, typeof(AuthenticationHandler), "Unexpected authentication handler set");
+            }
         }
 
         [DataTestMethod]

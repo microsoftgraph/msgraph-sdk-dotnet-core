@@ -54,7 +54,8 @@
     <Compile Include="Authentication\DelegateAuthenticationProviderTests.cs" />
     <Compile Include="Exceptions\ErrorTests.cs" />
     <Compile Include="Exceptions\ServiceExceptionTests.cs" />
-    <Compile Include="Extensions\RequestExtensionsTests.cs" />
+    <Compile Include="Extensions\BaseRequestExtensionsTests.cs" />
+    <Compile Include="Extensions\HttpRequestMessageExtensionsTests.cs" />
     <Compile Include="Helpers\ExtractSelectHelperTest.cs" />
     <Compile Include="Helpers\StringHelperTests.cs" />
     <Compile Include="Helpers\UrlHelperTests.cs" />

@@ -54,6 +54,9 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             Assert.True(baseRequest.QueryOptions[2].Name.Equals("key3") && baseRequest.QueryOptions[2].Value.Equals("value3"));
             Assert.Equal(1, baseRequest.Headers.Count);
             Assert.True(baseRequest.Headers[0].Name.Equals("header") && baseRequest.Headers[0].Value.Equals("value"));
+            Assert.NotNull(baseRequest.Client.AuthenticationProvider);
+            Assert.NotNull(baseRequest.GetHttpRequestMessage().GetRequestContext().ClientRequestId);
+            Assert.Equal(baseRequest.GetHttpRequestMessage().GetMiddlewareOption<AuthenticationHandlerOption>().AuthenticationProvider, baseRequest.Client.AuthenticationProvider);
         }
 
         [Fact]
@@ -77,6 +80,55 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                 httpRequestMessage.RequestUri.GetComponents(UriComponents.AbsoluteUri & ~UriComponents.Port, UriFormat.Unescaped));
             Assert.Equal("value1", httpRequestMessage.Headers.GetValues("header1").First());
             Assert.Equal("value2", httpRequestMessage.Headers.GetValues("header2").First());
+            Assert.NotNull(baseRequest.GetHttpRequestMessage().GetRequestContext().ClientRequestId);
+        }
+
+        [Fact]
+        public void GetRequestContextWithClientRequestIdHeader()
+        {
+            string requestUrl = string.Concat(this.baseUrl, "foo/bar");
+            string clientRequestId = Guid.NewGuid().ToString();
+            var headers = new List<HeaderOption>
+            {
+                new HeaderOption(CoreConstants.Headers.ClientRequestId, clientRequestId)
+            };
+
+            var baseRequest = new BaseRequest(requestUrl, this.baseClient, headers) { Method = "PUT" };
+
+            var httpRequestMessage = baseRequest.GetHttpRequestMessage();
+
+            Assert.Equal(HttpMethod.Put, httpRequestMessage.Method);
+            Assert.Same(clientRequestId, httpRequestMessage.GetRequestContext().ClientRequestId);
+        }
+
+        [Fact]
+        public void GetRequestContextWithClientRequestId()
+        {
+            string requestUrl = string.Concat(this.baseUrl, "foo/bar");
+            string clientRequestId = Guid.NewGuid().ToString();
+
+            var baseRequest = new BaseRequest(requestUrl, this.baseClient) { Method = "PUT" };
+
+            var httpRequestMessage = baseRequest.GetHttpRequestMessage();
+
+            Assert.Equal(HttpMethod.Put, httpRequestMessage.Method);
+            Assert.NotNull(httpRequestMessage.GetRequestContext().ClientRequestId);
+        }
+
+        [Fact]
+        public void GetRequestNoAuthProvider()
+        {
+            string requestUrl = string.Concat(this.baseUrl, "foo/bar");
+            string clientRequestId = Guid.NewGuid().ToString();
+
+            var client = new BaseClient("http://localhost.foo", null);
+            var baseRequest = new BaseRequest(requestUrl, client) { Method = "PUT" };
+
+            var httpRequestMessage = baseRequest.GetHttpRequestMessage();
+
+            Assert.Equal(HttpMethod.Put, httpRequestMessage.Method);
+            Assert.NotNull(httpRequestMessage.GetRequestContext().ClientRequestId);
+            Assert.Null(httpRequestMessage.GetMiddlewareOption<AuthenticationHandlerOption>().AuthenticationProvider);
         }
 
         [Fact]
@@ -128,6 +180,10 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 
                 Assert.NotNull(responseItem);
                 Assert.Equal(expectedResponseItem.Id, responseItem.Id);
+                Assert.NotNull(baseRequest.Client.AuthenticationProvider);
+                Assert.NotNull(baseRequest.GetHttpRequestMessage().GetRequestContext().ClientRequestId);
+                Assert.Equal(baseRequest.GetHttpRequestMessage().GetMiddlewareOption<AuthenticationHandlerOption>().AuthenticationProvider,
+                    baseRequest.Client.AuthenticationProvider);
             }
         }
 
@@ -178,6 +234,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                     .Returns(string.Empty);
 
                 await baseRequest.SendAsync("string", CancellationToken.None);
+                Assert.NotNull(baseRequest.Client.AuthenticationProvider);
             }
         }
 

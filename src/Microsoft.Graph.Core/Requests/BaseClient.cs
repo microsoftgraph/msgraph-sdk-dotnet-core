@@ -4,7 +4,7 @@
 
 namespace Microsoft.Graph
 {
-    using System.Threading.Tasks;
+    using System;
 
     /// <summary>
     /// A default <see cref="IBaseClient"/> implementation.
@@ -25,8 +25,14 @@ namespace Microsoft.Graph
             IHttpProvider httpProvider = null)
         {
             this.BaseUrl = baseUrl;
-            this.HttpProvider = httpProvider ?? new HttpProvider(authenticationProvider, new Serializer());
+            this.AuthenticationProvider = authenticationProvider;
+            this.HttpProvider = httpProvider ?? new HttpProvider(new Serializer());
         }
+
+        /// <summary>
+        /// Gets the <see cref="IAuthenticationProvider"/> for authenticating requests.
+        /// </summary>
+        public IAuthenticationProvider AuthenticationProvider { get; set; }
 
         /// <summary>
         /// Gets or sets the base URL for requests of the client.
@@ -54,5 +60,10 @@ namespace Microsoft.Graph
         /// Gets the <see cref="IHttpProvider"/> for sending HTTP requests.
         /// </summary>
         public IHttpProvider HttpProvider { get; private set; }
+
+        /// <summary>
+        /// Gets or Sets the <see cref="IAuthenticationProvider"/> for authenticating a single HTTP requests. 
+        /// </summary>
+        public Func<IAuthenticationProvider> PerRequestAuthProvider { get; set; }
     }
 }

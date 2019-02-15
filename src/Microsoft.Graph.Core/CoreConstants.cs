@@ -2,6 +2,8 @@
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
+using System;
+
 namespace Microsoft.Graph
 {
     /// <summary>
@@ -33,6 +35,12 @@ namespace Microsoft.Graph
 
             /// Throw-site header
             public const string ThrowSiteHeaderName = "X-ThrowSite";
+
+            /// Client Request Id
+            public const string ClientRequestId = "client-request-id";
+
+            /// Feature Flag
+            public const string FeatureFlag = "FeatureFlag";
         }
 
         /// <summary>

@@ -35,7 +35,7 @@ namespace Microsoft.Graph
             this.Client = client;
             this.Headers = new List<HeaderOption>();
             this.QueryOptions = new List<QueryOption>();
-
+            this.MiddlewareOptions = new Dictionary<string, IMiddlewareOption>();
             this.RequestUrl = this.InitializeUrl(requestUrl);
 
             if (options != null)
@@ -52,6 +52,10 @@ namespace Microsoft.Graph
                     ((List<QueryOption>)this.QueryOptions).AddRange(queryOptions);
                 }
             }
+
+            // Adds the default authentication provider for this request. 
+            // This can be changed can be changed by the user by calling WithPerRequestAuthProvider extension method.
+            this.WithDefaultAuthProvider();
         }
 
         /// <summary>
@@ -83,6 +87,11 @@ namespace Microsoft.Graph
         /// Gets the URL for the request, without query string.
         /// </summary>
         public string RequestUrl { get; internal set; }
+
+        /// <summary>
+        /// Gets or sets middleware options for the request.
+        /// </summary>
+        public IDictionary<string, IMiddlewareOption> MiddlewareOptions { get; private set; }
 
         /// <summary>
         /// Sends the request.
@@ -191,7 +200,7 @@ namespace Microsoft.Graph
 
             if (multipartContent != null)
             {
-                using (var request = this.GetHttpRequestMessage())
+                using (var request = this.GetHttpRequestMessage(cancellationToken))
                 {
                     request.Content = multipartContent;
 
@@ -226,7 +235,7 @@ namespace Microsoft.Graph
                     });
             }
 
-            using (var request = this.GetHttpRequestMessage())
+            using (var request = this.GetHttpRequestMessage(cancellationToken))
             {
                 if (serializableObject != null)
                 {
@@ -254,13 +263,24 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets the <see cref="HttpRequestMessage"/> representation of the request.
         /// </summary>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The <see cref="HttpRequestMessage"/> representation of the request.</returns>
-        public HttpRequestMessage GetHttpRequestMessage()
+        public HttpRequestMessage GetHttpRequestMessage(CancellationToken cancellationToken)
         {
             var queryString = this.BuildQueryString();
             var request = new HttpRequestMessage(new HttpMethod(this.Method), string.Concat(this.RequestUrl, queryString));
             this.AddHeadersToRequest(request);
+            this.AddRequestContextToRequest(request, cancellationToken);
             return request;
+        }
+
+        /// <summary>
+        /// Gets the <see cref="HttpRequestMessage"/> representation of the request.
+        /// </summary>
+        /// <returns>The <see cref="HttpRequestMessage"/> representation of the request.</returns>
+        public HttpRequestMessage GetHttpRequestMessage()
+        {
+            return this.GetHttpRequestMessage(CancellationToken.None);
         }
 
         /// <summary>
@@ -276,6 +296,25 @@ namespace Microsoft.Graph
                     request.Headers.TryAddWithoutValidation(header.Name, header.Value);
                 }
             }
+        }
+
+        /// <summary>
+        /// Adds a <see cref="GraphRequestContext"/> to <see cref="HttpRequestMessage"/> property bag
+        /// </summary>
+        /// <param name="httpRequestMessage">A <see cref="HttpRequestMessage"/></param>
+        /// <param name="cancellationToken">A <see cref="CancellationToken"/></param>
+        private void AddRequestContextToRequest(HttpRequestMessage httpRequestMessage, CancellationToken cancellationToken)
+        {
+            // Creates a request context object
+            var requestContext = new GraphRequestContext
+            {
+                MiddlewareOptions = MiddlewareOptions,
+                ClientRequestId = GetHeaderValue(httpRequestMessage, CoreConstants.Headers.ClientRequestId) ?? Guid.NewGuid().ToString(),
+                CancellationToken = cancellationToken,
+                FeatureUsage = httpRequestMessage.GetFeatureFlags()
+            };
+
+            httpRequestMessage.Properties.Add(typeof(GraphRequestContext).ToString(), requestContext);
         }
 
         /// <summary>
@@ -396,6 +435,34 @@ namespace Microsoft.Graph
             }
 
             return responseContent;
+        }
+
+        /// <summary>
+        /// Gets a specified header value from <see cref="HttpRequestMessage"/>
+        /// </summary>
+        /// <param name="requestMessage">A <see cref="HttpRequestMessage"/></param>
+        /// <param name="headerName">The name, or key, of the header option.</param>
+        /// <returns>Header value</returns>
+        private string GetHeaderValue(HttpRequestMessage requestMessage, string headerName)
+        {
+            string headerValue = null;
+            var requestHeader = this.Headers.FirstOrDefault((h) => h.Name.Equals(headerName));
+
+            // Check request headers first
+            if (requestHeader != null)
+            {
+                headerValue = requestHeader.Value;
+            }
+            // If not found, check http client default headers + request headers
+            else if (requestMessage.Headers != null)
+            {
+                if (requestMessage.Headers.TryGetValues(headerName, out var values))
+                {
+                    headerValue = values.FirstOrDefault();
+                }
+            }
+
+            return headerValue;
         }
     }
 }

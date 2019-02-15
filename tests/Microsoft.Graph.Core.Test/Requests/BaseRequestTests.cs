@@ -58,6 +58,10 @@ namespace Microsoft.Graph.Core.Test.Requests
             Assert.IsTrue(baseRequest.QueryOptions[2].Name.Equals("key3") && baseRequest.QueryOptions[2].Value.Equals("value3"), "Unexpected third query option.");
             Assert.AreEqual(1, baseRequest.Headers.Count, "Unexpected number of header options.");
             Assert.IsTrue(baseRequest.Headers[0].Name.Equals("header") && baseRequest.Headers[0].Value.Equals("value"), "Unexpected header option.");
+            Assert.IsNotNull(baseRequest.Client.AuthenticationProvider, "Authentication provider not set.");
+            Assert.IsNotNull(baseRequest.GetHttpRequestMessage().GetRequestContext().ClientRequestId, "Client request id not set.");
+            Assert.AreEqual(baseRequest.GetHttpRequestMessage().GetMiddlewareOption<AuthenticationHandlerOption>().AuthenticationProvider,
+                baseRequest.Client.AuthenticationProvider, "Unexpected authentication provider set.");
         }
 
         [TestMethod]
@@ -82,6 +86,58 @@ namespace Microsoft.Graph.Core.Test.Requests
                 "Unexpected base URL in request.");
             Assert.AreEqual("value1", httpRequestMessage.Headers.GetValues("header1").First(), "Unexpected first header in request.");
             Assert.AreEqual("value2", httpRequestMessage.Headers.GetValues("header2").First(), "Unexpected second header in request.");
+
+            Assert.IsNotNull(httpRequestMessage.GetRequestContext().ClientRequestId, "Client request id not set.");
+        }
+
+        [TestMethod]
+        public void GetRequestContextWithClientRequestIdHeader()
+        {
+            string requestUrl = string.Concat(this.baseUrl, "foo/bar");
+            string clientRequestId = Guid.NewGuid().ToString();
+            var headers = new List<HeaderOption>
+            {
+                new HeaderOption(CoreConstants.Headers.ClientRequestId, clientRequestId)
+            };
+
+            var baseRequest = new BaseRequest(requestUrl, this.baseClient, headers) { Method = "PUT" };
+
+            var httpRequestMessage = baseRequest.GetHttpRequestMessage();
+
+            Assert.AreEqual(HttpMethod.Put, httpRequestMessage.Method, "Unexpected HTTP method in request");
+            Assert.AreSame(clientRequestId, httpRequestMessage.GetRequestContext().ClientRequestId, "Unexpected client request id");
+
+            Assert.IsNotNull(httpRequestMessage.GetRequestContext().ClientRequestId, "Client request id not set.");
+        }
+
+        [TestMethod]
+        public void GetRequestContextWithClientRequestId()
+        {
+            string requestUrl = string.Concat(this.baseUrl, "foo/bar");
+            string clientRequestId = Guid.NewGuid().ToString();
+
+            var baseRequest = new BaseRequest(requestUrl, this.baseClient) { Method = "PUT" };
+
+            var httpRequestMessage = baseRequest.GetHttpRequestMessage();
+
+            Assert.AreEqual(HttpMethod.Put, httpRequestMessage.Method, "Unexpected HTTP method in request");
+            Assert.IsNotNull(httpRequestMessage.GetRequestContext().ClientRequestId, "Unexpected client request id");
+        }
+
+        [TestMethod]
+        public void GetRequestNoAuthProvider()
+        {
+            string requestUrl = string.Concat(this.baseUrl, "foo/bar");
+            string clientRequestId = Guid.NewGuid().ToString();
+
+            var client = new BaseClient("http://localhost.foo", null);
+            var baseRequest = new BaseRequest(requestUrl, client) { Method = "PUT" };
+
+            var httpRequestMessage = baseRequest.GetHttpRequestMessage();
+
+            Assert.AreEqual(HttpMethod.Put, httpRequestMessage.Method, "Unexpected HTTP method in request");
+            Assert.IsNotNull(httpRequestMessage.GetRequestContext().ClientRequestId, "Unexpected client request id");
+            Assert.IsNull(httpRequestMessage.GetMiddlewareOption<AuthenticationHandlerOption>().AuthenticationProvider, "Unexpected authentication provider set.");
         }
 
         [TestMethod]
@@ -131,7 +187,8 @@ namespace Microsoft.Graph.Core.Test.Requests
                     .Returns(expectedResponseItem);
 
                 var responseItem = await baseRequest.SendAsync<DerivedTypeClass>("string", CancellationToken.None);
-
+                Assert.IsNotNull(baseRequest.Client.AuthenticationProvider, "Authentication provider not set.");
+                Assert.IsNotNull(baseRequest.GetHttpRequestMessage().GetRequestContext().ClientRequestId, "Client request id not set.");
                 Assert.IsNotNull(responseItem, "DerivedTypeClass not returned.");
                 Assert.AreEqual(expectedResponseItem.Id, responseItem.Id, "Unexpected ID.");
             }
@@ -177,6 +234,8 @@ namespace Microsoft.Graph.Core.Test.Requests
 
                 var responseItem = await baseRequest.SendAsync<DerivedTypeClass>("string", CancellationToken.None);
                 Assert.IsNotNull(responseItem.AdditionalData["responseHeaders"], "No response headers available");
+                Assert.IsNotNull(baseRequest.Client.AuthenticationProvider, "Authentication provider not set.");
+                Assert.IsNotNull(baseRequest.GetHttpRequestMessage().GetRequestContext().ClientRequestId, "Client request id not set.");
                 Assert.AreEqual(expectedResponseItem.AdditionalData["responseHeaders"], responseItem.AdditionalData["responseHeaders"], "Unexpected response headers");
             }
         }
@@ -229,6 +288,8 @@ namespace Microsoft.Graph.Core.Test.Requests
                     .Returns(string.Empty);
 
                 await baseRequest.SendAsync("string", CancellationToken.None);
+
+                Assert.IsNotNull(baseRequest.Client.AuthenticationProvider, "Authentication provider not set.");
             }
         }
 

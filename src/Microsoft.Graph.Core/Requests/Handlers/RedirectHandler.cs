@@ -15,26 +15,30 @@ namespace Microsoft.Graph
     /// </summary>
     public class RedirectHandler : DelegatingHandler
     {
-
-        private const int maxRedirects = 5;
-
+        /// <summary>
+        /// RedirectOption property
+        /// </summary>
+        internal RedirectHandlerOption RedirectOption { get; set; }
 
         /// <summary>
         /// Constructs a new <see cref="RedirectHandler"/> 
         /// </summary>
-        public RedirectHandler()
+        /// <param name="redirectOption">An OPTIONAL <see cref="Microsoft.Graph.RedirectHandlerOption"/> to configure <see cref="RedirectHandler"/></param>
+        public RedirectHandler(RedirectHandlerOption redirectOption = null)
         {
+            RedirectOption = redirectOption ?? new RedirectHandlerOption();
         }
 
         /// <summary>
         /// Constructs a new <see cref="RedirectHandler"/> 
         /// </summary>
         /// <param name="innerHandler">An HTTP message handler to pass to the <see cref="HttpMessageHandler"/> for sending requests.</param>
-        public RedirectHandler(HttpMessageHandler innerHandler)
+        /// <param name="redirectOption">An OPTIONAL <see cref="Microsoft.Graph.RedirectHandlerOption"/> to configure <see cref="RedirectHandler"/></param>
+        public RedirectHandler(HttpMessageHandler innerHandler, RedirectHandlerOption redirectOption = null)
+            :this(redirectOption)
         {
             InnerHandler = innerHandler;
         }
-
         
         /// <summary>
         /// Sends the Request 
@@ -44,7 +48,8 @@ namespace Microsoft.Graph
         /// <returns>The <see cref="HttpResponseMessage"/>.</returns>
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            
+            RedirectOption = request.GetMiddlewareOption<RedirectHandlerOption>() ?? RedirectOption;
+
             // send request first time to get response
             var response = await base.SendAsync(request, cancellationToken);
 
@@ -63,7 +68,7 @@ namespace Microsoft.Graph
 
                 var redirectCount = 0;
 
-                while (redirectCount < maxRedirects)
+                while (redirectCount < RedirectOption.MaxRedirects)
                 {
                     // general clone request with internal CloneAsync (see CloneAsync for details) extension method 
                     var newRequest = await response.RequestMessage.CloneAsync();
@@ -104,9 +109,7 @@ namespace Microsoft.Graph
 
             }
             return response;
-
         }
-
 
         /// <summary>
         /// Checks whether <see cref="HttpStatusCode"/> is redirected

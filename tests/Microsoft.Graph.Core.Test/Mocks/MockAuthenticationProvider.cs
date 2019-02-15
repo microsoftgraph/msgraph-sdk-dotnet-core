@@ -12,14 +12,14 @@ namespace Microsoft.Graph.Core.Test.Mocks
 
     public class MockAuthenticationProvider : Mock<IAuthenticationProvider>
     {
-        public MockAuthenticationProvider()
+        public MockAuthenticationProvider(string accessToken = null)
             : base(MockBehavior.Strict)
         {
             this.SetupAllProperties();
 
             this.Setup(
                 provider => provider.AuthenticateRequestAsync(It.IsAny<HttpRequestMessage>()))
-                .Callback<HttpRequestMessage>(r => r.Headers.Authorization = new AuthenticationHeaderValue(CoreConstants.Headers.Bearer, "Token"))
+                .Callback<HttpRequestMessage>(r => r.Headers.Authorization = new AuthenticationHeaderValue(CoreConstants.Headers.Bearer, accessToken ?? "Default-Token"))
                 .Returns(Task.FromResult(0));
         }
     }

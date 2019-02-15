@@ -41,6 +41,8 @@ namespace Microsoft.Graph.Core.Test.Requests
             using (RedirectHandler redirect = new RedirectHandler())
             {
                 Assert.IsNull(redirect.InnerHandler, "HttpMessageHandler initialized.");
+                Assert.IsNotNull(redirect.RedirectOption, "redirect option not initialized");
+                Assert.AreEqual(5, redirect.RedirectOption.MaxRedirects, "Unexpected max redirect set"); // default MaxRedirects is 5
                 Assert.IsInstanceOfType(redirect, typeof(RedirectHandler), "Unexpected redirect handler set.");
             }
         }
@@ -50,7 +52,21 @@ namespace Microsoft.Graph.Core.Test.Requests
         {
             Assert.IsNotNull(redirectHandler.InnerHandler, "HttpMessageHandler not initialized.");
             Assert.AreEqual(redirectHandler.InnerHandler, testHttpMessageHandler, "Unexpected message handler set.");
+            Assert.IsNotNull(redirectHandler.RedirectOption, "Redirect option not initialized");
+            Assert.AreEqual(5, redirectHandler.RedirectOption.MaxRedirects, "Unexpected max redirect set"); // default MaxRedirects is 5
             Assert.IsInstanceOfType(redirectHandler, typeof(RedirectHandler), "Unexpected redirect handler set.");
+        }
+
+        [TestMethod]
+        public void RedirectHandler_RedirectOptionConstructor()
+        {
+            using (RedirectHandler redirect = new RedirectHandler(new RedirectHandlerOption { MaxRedirects = 2 }))
+            {
+                Assert.IsNull(redirect.InnerHandler, "HttpMessageHandler initialized");
+                Assert.IsNotNull(redirect.RedirectOption, "Redirect option not initialized");
+                Assert.AreEqual(2, redirect.RedirectOption.MaxRedirects, "Unexpected max redirects set");
+                Assert.IsInstanceOfType(redirect, typeof(RedirectHandler), "Unexpected redirect handler set");
+            }
         }
 
         [TestMethod]

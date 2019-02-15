@@ -4,13 +4,16 @@
 
 namespace Microsoft.Graph
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Net.Http;
     using System.Threading.Tasks;
 
     /// <summary>
     /// Contains extension methods for <see cref="HttpRequestMessage"/>
     /// </summary>
-    internal static class RequestExtensions
+    public static class HttpRequestMessageExtensions
     {
         /// <summary>
         /// Checks the HTTP request's content to determine if it's buffered or streamed content.
@@ -27,6 +30,23 @@ namespace Microsoft.Graph
                 return false;
             }
             return true;
+        }
+
+        /// <summary>
+        /// Get's feature request header value from the incoming <see cref="HttpRequestMessage"/>
+        /// </summary>
+        /// <param name="httpRequestMessage">The <see cref="HttpRequestMessage"/> object</param>
+        /// <returns></returns>
+        internal static FeatureFlag GetFeatureFlags(this HttpRequestMessage httpRequestMessage)
+        {
+            httpRequestMessage.Headers.TryGetValues(CoreConstants.Headers.FeatureFlag, out IEnumerable<string> flags);
+
+            if (!Enum.TryParse(flags?.FirstOrDefault(), out FeatureFlag featureFlag))
+            {
+                featureFlag = FeatureFlag.None;
+            }
+
+            return featureFlag;
         }
 
         /// <summary>
@@ -59,5 +79,38 @@ namespace Microsoft.Graph
 
             return newRequest;
         }
+
+        /// <summary>
+        /// Gets a <see cref="GraphRequestContext"/> from <see cref="HttpRequestMessage"/>
+        /// </summary>
+        /// <param name="httpRequestMessage">The <see cref="HttpRequestMessage"/> representation of the request.</param>
+        /// <returns></returns>
+        public static GraphRequestContext GetRequestContext(this HttpRequestMessage httpRequestMessage)
+        {
+            GraphRequestContext requestContext = new GraphRequestContext();
+            if (httpRequestMessage.Properties.TryGetValue(typeof(GraphRequestContext).ToString(), out var requestContextObject))
+            {
+                requestContext = (GraphRequestContext)requestContextObject;
+            }
+            return requestContext;
+        }
+
+        /// <summary>
+        /// Gets a <see cref="IMiddlewareOption"/> from <see cref="HttpRequestMessage"/>
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="httpRequestMessage">The <see cref="HttpRequestMessage"/> representation of the request.</param>
+        /// <returns>A middleware option</returns>
+        public static T GetMiddlewareOption<T>(this HttpRequestMessage httpRequestMessage) where T : IMiddlewareOption
+        {
+            IMiddlewareOption option = null;
+            GraphRequestContext requestContext = httpRequestMessage.GetRequestContext();
+            if (requestContext.MiddlewareOptions != null)
+            {
+                requestContext.MiddlewareOptions.TryGetValue(typeof(T).ToString(), out option);
+            }
+            return (T)option;
+        }
+
     }
 }

@@ -27,7 +27,6 @@ namespace Microsoft.Graph.Core.Test.Requests
             this.serializer = new MockSerializer();
             this.httpResponseMessage = new HttpResponseMessage();
             this.testHttpMessageHandler = new TestHttpMessageHandler();
-            //this.httpProvider = new HttpProvider(authenticationProvider.Object, this.testHttpMessageHandler, true, this.serializer.Object);
             this.httpProvider = new MockHttpProvider(this.httpResponseMessage, this.serializer.Object);
 
             this.baseClient = new BaseClient(

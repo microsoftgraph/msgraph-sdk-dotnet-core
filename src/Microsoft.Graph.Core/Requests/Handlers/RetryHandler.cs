@@ -24,22 +24,26 @@ namespace Microsoft.Graph
         private double m_pow = 1;
 
         /// <summary>
-        /// MaxRetry property
+        /// RetryOption property
         /// </summary>
-        public int MaxRetry { set; get; } = 10;
+        internal RetryHandlerOption RetryOption { get; set; }
 
         /// <summary>
         /// Construct a new <see cref="RetryHandler"/>
         /// </summary>
-        public RetryHandler()
+        /// <param name="retryOption">An OPTIONAL <see cref="Microsoft.Graph.RetryHandlerOption"/> to configure <see cref="RetryHandler"/></param>
+        public RetryHandler(RetryHandlerOption retryOption = null)
         {
+            RetryOption = retryOption ?? new RetryHandlerOption();
         }
 
         /// <summary>
         /// Construct a new <see cref="RetryHandler"/>
         /// </summary>
         /// <param name="innerHandler">An HTTP message handler to pass to the <see cref="HttpMessageHandler"/> for sending requests.</param>
-        public RetryHandler(HttpMessageHandler innerHandler)
+        /// <param name="retryOption">An OPTIONAL <see cref="Microsoft.Graph.RetryHandlerOption"/> to configure <see cref="RetryHandler"/></param>
+        public RetryHandler(HttpMessageHandler innerHandler, RetryHandlerOption retryOption = null)
+            :this(retryOption)
         {
             InnerHandler = innerHandler;
         }
@@ -52,10 +56,11 @@ namespace Microsoft.Graph
         /// <returns></returns>
         protected async override Task<HttpResponseMessage> SendAsync(HttpRequestMessage httpRequest, CancellationToken cancellationToken)
         {
-          
+            RetryOption = httpRequest.GetMiddlewareOption<RetryHandlerOption>() ?? RetryOption;
+
             var response = await base.SendAsync(httpRequest, cancellationToken);
 
-            if (IsRetry(response) && httpRequest.IsBuffered())
+            if (RetryOption.ShouldRetry(response) && httpRequest.IsBuffered())
             {
                 response = await SendRetryAsync(response, cancellationToken);
             }
@@ -72,8 +77,7 @@ namespace Microsoft.Graph
         public async Task<HttpResponseMessage> SendRetryAsync(HttpResponseMessage response, CancellationToken cancellationToken)
         {
             int retryCount = 0;
-
-            while (retryCount < MaxRetry)
+            while (retryCount < RetryOption.MaxRetry)
             {
                 // Call Delay method to get delay time from response's Retry-After header or by exponential backoff 
                 Task delay = Delay(response, retryCount, cancellationToken);
@@ -91,7 +95,7 @@ namespace Microsoft.Graph
                 // Call base.SendAsync to send the request
                 response = await base.SendAsync(request, cancellationToken);
 
-                if (!IsRetry(response) || !request.IsBuffered())
+                if (!RetryOption.ShouldRetry(response) || !request.IsBuffered())
                 {
                     return response;
                 }
@@ -104,21 +108,6 @@ namespace Microsoft.Graph
                              Message = string.Format(ErrorConstants.Messages.TooManyRetriesFormatString, retryCount)
                          });
 
-        }
-
-        /// <summary>
-        /// Check the HTTP response's status to determine whether it should be retried or not.
-        /// </summary>
-        /// <param name="response">The <see cref="HttpResponseMessage"/>returned.</param>
-        /// <returns></returns>
-        public bool IsRetry(HttpResponseMessage response)
-        {
-            if ((response.StatusCode == HttpStatusCode.ServiceUnavailable ||
-                response.StatusCode == (HttpStatusCode)429))
-            {
-                return true;
-            }
-            return false;
         }
 
         /// <summary>

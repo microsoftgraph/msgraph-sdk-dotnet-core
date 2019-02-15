@@ -29,17 +29,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="serializer">A serializer for serializing and deserializing JSON objects.</param>
         public HttpProvider(ISerializer serializer = null)
-            : this(null, (HttpMessageHandler)null, true, serializer)
-        {
-        }
-
-        /// <summary>
-        /// Constructs a new <see cref="HttpProvider"/>.
-        /// </summary>
-        /// <param name="authenticationProvider">The <see cref="IAuthenticationProvider"/> for authenticating request messages.</param>
-        /// <param name="serializer">A serializer for serializing and deserializing JSON objects.</param>
-        public HttpProvider(IAuthenticationProvider authenticationProvider, ISerializer serializer = null)
-            : this(authenticationProvider, (HttpMessageHandler)null, true, serializer)
+            : this((HttpMessageHandler)null, true, serializer)
         {
         }
 
@@ -55,7 +45,7 @@ namespace Microsoft.Graph
         ///     over the redirect.
         /// </remarks>
         public HttpProvider(HttpClientHandler httpClientHandler, bool disposeHandler, ISerializer serializer = null)
-            : this(null, (HttpMessageHandler)httpClientHandler, disposeHandler, serializer)
+            : this((HttpMessageHandler)httpClientHandler, disposeHandler, serializer)
         {
         }
 
@@ -64,9 +54,8 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="httpMessageHandler">An HTTP message handler to pass to the <see cref="HttpClient"/> for sending requests.</param>
         /// <param name="disposeHandler">Whether or not to dispose the client handler on Dispose().</param>
-        /// <param name="authenticationProvider">The <see cref="IAuthenticationProvider"/> for authenticating request messages.</param>
         /// <param name="serializer">A serializer for serializing and deserializing JSON objects.</param>
-        public HttpProvider(IAuthenticationProvider authenticationProvider, HttpMessageHandler httpMessageHandler, bool disposeHandler, ISerializer serializer)
+        public HttpProvider(HttpMessageHandler httpMessageHandler, bool disposeHandler, ISerializer serializer)
         {
             this.disposeHandler = disposeHandler;
             this.httpMessageHandler = httpMessageHandler ?? new HttpClientHandler { AllowAutoRedirect = false };
@@ -76,11 +65,13 @@ namespace Microsoft.Graph
             {
                 new RedirectHandler(),
                 new RetryHandler(),
-                new AuthenticationHandler(authenticationProvider)
+                new AuthenticationHandler(null)
             };
 
             GraphClientFactory.DefaultHttpHandler = () => this.httpMessageHandler;
             this.httpClient = GraphClientFactory.Create("v1.0", GraphClientFactory.Global_Cloud, handlers);
+            this.httpClient.SetFeatureFlags(FeatureFlag.RedirectHandler | FeatureFlag.RetryHandler | FeatureFlag.AuthHandler |
+                FeatureFlag.DefaultHttpProvider);
         }
 
         /// <summary>

@@ -48,6 +48,8 @@ namespace Microsoft.Graph
                 { Germany_Cloud, "https://graph.microsoft.de" }
             };
 
+        private static FeatureFlag featureFlags;
+
         /// Global endpoint
         public const string Global_Cloud = "Global";
         /// US_GOV endpoint
@@ -75,10 +77,10 @@ namespace Microsoft.Graph
 
 
         /// <summary>
-        /// Creates a new <see cref="HttpClient"/> instance configured with the handlers provided and with the
-        /// provided <paramref name="innerHandler"/> as the innermost handler.
+        /// Creates a new <see cref="HttpClient"/> instance configured with the handlers provided.
         /// </summary>
-        /// <param name="innerHandler">The inner handler represents the destination of the HTTP message channel.</param>
+        /// <param name="version">The graph version to use.</param>
+        /// <param name="nationalCloud">The national cloud endpoint to use.</param>
         /// <param name="handlers">An ordered list of <see cref="DelegatingHandler"/> instances to be invoked as an
         /// <see cref="HttpRequestMessage"/> travels from the <see cref="HttpClient"/> to the network and an
         /// <see cref="HttpResponseMessage"/> travels from the network back to <see cref="HttpClient"/>.
@@ -93,11 +95,12 @@ namespace Microsoft.Graph
                 pipeline = CreatePipeline(CreateDefaultHandlers(), DefaultHttpHandler());
             } else
             {
-                pipeline = CreatePipeline(handlers,DefaultHttpHandler());
+                pipeline = CreatePipeline(handlers, DefaultHttpHandler());
             }
 
             HttpClient client = new HttpClient(pipeline);
             client.DefaultRequestHeaders.Add(SdkVersionHeaderName, SdkVersionHeaderValue);
+            client.SetFeatureFlags(featureFlags);
             client.Timeout = defaultTimeout;
             client.BaseAddress = DetermineBaseAddress(nationalCloud, version);
             client.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue { NoCache = true, NoStore = true };
@@ -110,6 +113,8 @@ namespace Microsoft.Graph
         /// <returns></returns>
         public static IEnumerable<DelegatingHandler> CreateDefaultHandlers()
         {
+            featureFlags = FeatureFlag.RetryHandler | FeatureFlag.RedirectHandler;
+
             return new List<DelegatingHandler> {
                 new RetryHandler(),
                 new RedirectHandler()
