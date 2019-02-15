@@ -15,26 +15,42 @@ namespace Microsoft.Graph
     using Newtonsoft.Json;
 
     /// <summary>
-    /// The type ItemBody.
+    /// The type LicenseAssignmentState.
     /// </summary>
     [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     [JsonConverter(typeof(DerivedTypeConverter))]
-    public partial class ItemBody
+    public partial class LicenseAssignmentState
     {
 
         /// <summary>
-        /// Gets or sets contentType.
-        /// The type of the content. Possible values are text and HTML.
+        /// Gets or sets skuId.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "contentType", Required = Newtonsoft.Json.Required.Default)]
-        public BodyType? ContentType { get; set; }
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "skuId", Required = Newtonsoft.Json.Required.Default)]
+        public Guid? SkuId { get; set; }
     
         /// <summary>
-        /// Gets or sets content.
-        /// The content of the item.
+        /// Gets or sets disabledPlans.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "content", Required = Newtonsoft.Json.Required.Default)]
-        public string Content { get; set; }
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "disabledPlans", Required = Newtonsoft.Json.Required.Default)]
+        public IEnumerable<Guid> DisabledPlans { get; set; }
+    
+        /// <summary>
+        /// Gets or sets assignedByGroup.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "assignedByGroup", Required = Newtonsoft.Json.Required.Default)]
+        public string AssignedByGroup { get; set; }
+    
+        /// <summary>
+        /// Gets or sets state.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "state", Required = Newtonsoft.Json.Required.Default)]
+        public string State { get; set; }
+    
+        /// <summary>
+        /// Gets or sets error.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "error", Required = Newtonsoft.Json.Required.Default)]
+        public string Error { get; set; }
     
         /// <summary>
         /// Gets or sets additional data.

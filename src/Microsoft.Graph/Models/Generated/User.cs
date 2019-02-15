@@ -139,6 +139,12 @@ namespace Microsoft.Graph
         public string LegalAgeGroupClassification { get; set; }
     
         /// <summary>
+        /// Gets or sets license assignment states.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "licenseAssignmentStates", Required = Newtonsoft.Json.Required.Default)]
+        public IEnumerable<LicenseAssignmentState> LicenseAssignmentStates { get; set; }
+    
+        /// <summary>
         /// Gets or sets mail.
         /// The SMTP address for the user, for example, 'jeff@contoso.onmicrosoft.com'. Read-Only. Supports $filter.
         /// </summary>
