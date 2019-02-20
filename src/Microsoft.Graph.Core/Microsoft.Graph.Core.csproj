@@ -3,9 +3,9 @@
     <Description>Microsoft Graph Core Client Library implements core functionality used by Microsoft Graph Client Libraries.</Description>
     <Copyright>© Microsoft Corporation. All rights reserved.</Copyright>
     <AssemblyTitle>Microsoft Graph Core Client Library</AssemblyTitle>
-    <VersionPrefix>1.13.0</VersionPrefix>
-    <FileVersion>1.13.0</FileVersion>
-    <AssemblyVersion>1.13.0</AssemblyVersion>
+    <VersionPrefix>1.14.0</VersionPrefix>
+    <FileVersion>1.14.0</FileVersion>
+    <AssemblyVersion>1.14.0</AssemblyVersion>
     <Authors>Microsoft</Authors>
     <TargetFrameworks>netstandard1.1;net45</TargetFrameworks>
     <PreserveCompilationContext>false</PreserveCompilationContext>
@@ -13,7 +13,7 @@
     <PackageId>Microsoft.Graph.Core</PackageId>
     <PackageTags>Microsoft Office365;Graph;GraphServiceClient;Outlook;OneDrive;AzureAD;GraphAPI;Productivity;SharePoint;Intune;SDK</PackageTags>
     <PackageReleaseNotes>
-January 2019 Release Summary (version 1.13.0)
+February 2019 Release Summary (version 1.14.0-preview)
 
 - Authentication handler added.
 - Removed Newtonsoft.Json package reference upper bound limitation.
@@ -38,7 +38,7 @@ January 2019 Release Summary (version 1.13.0)
     <DelaySign>false</DelaySign>
     <AssemblyOriginatorKeyFile>35MSSharedLib1024.snk</AssemblyOriginatorKeyFile>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <Version>1.13.0</Version>
+    <Version>1.14.0-preview</Version>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard1.1|AnyCPU'">
     <DocumentationFile>bin\Release\netstandard1.1\Microsoft.Graph.Core.xml</DocumentationFile>
