@@ -37,11 +37,13 @@
         {
             using (HttpResponseMessage httpResponseMessage = new HttpResponseMessage())
             {
+                int delay = 1;
+                int attempt = 1;
                 var baseRequest = new BaseRequest(requestUrl, baseClient);
-                baseRequest.WithShouldRetry((response) => true);
+                baseRequest.WithShouldRetry((d, a, r) => false);
 
                 Assert.IsType<GraphRequestContext>(baseRequest.GetHttpRequestMessage().Properties[typeof(GraphRequestContext).ToString()]);
-                Assert.True(baseRequest.GetHttpRequestMessage().GetMiddlewareOption<RetryHandlerOption>().ShouldRetry(httpResponseMessage));
+                Assert.False(baseRequest.GetHttpRequestMessage().GetMiddlewareOption<RetryHandlerOption>().ShouldRetry(delay, attempt, httpResponseMessage));
             }
         }
 
@@ -62,7 +64,7 @@
             baseRequest.WithMaxRedirects(4);
 
             Assert.IsType<GraphRequestContext>(baseRequest.GetHttpRequestMessage().Properties[typeof(GraphRequestContext).ToString()]);
-            Assert.Equal(4, baseRequest.GetHttpRequestMessage().GetMiddlewareOption<RedirectHandlerOption>().MaxRedirects);
+            Assert.Equal(4, baseRequest.GetHttpRequestMessage().GetMiddlewareOption<RedirectHandlerOption>().MaxRedirect);
         }
 
         [Fact]

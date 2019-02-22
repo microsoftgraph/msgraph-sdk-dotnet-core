@@ -22,7 +22,7 @@ namespace Microsoft.Graph
 
             internal static string TooManyRetries = "tooManyRetries";
 
-           
+            internal static string MaximumValueExceeded = "MaximumValueExceeded";
         }
 
         internal static class Messages
@@ -53,6 +53,7 @@ namespace Microsoft.Graph
 
             internal static string UnexpectedExceptionResponse = "Unexpected exception returned from the service.";
 
+            internal static string MaximumValueExceeded = "{0} exceeds the maximum value of {1}.";
         }
     }
 }

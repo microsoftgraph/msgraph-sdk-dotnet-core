@@ -18,7 +18,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         private MockRedirectHandler testHttpMessageHandler;
         private RedirectHandler redirectHandler;
         private HttpMessageInvoker invoker;
-        
+
 
         public RedirectHandlerTests()
         {
@@ -39,7 +39,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             {
                 Assert.Null(redirect.InnerHandler);
                 Assert.NotNull(redirect.RedirectOption);
-                Assert.Equal(5, redirect.RedirectOption.MaxRedirects); // default MaxRedirects is 5
+                Assert.Equal(5, redirect.RedirectOption.MaxRedirect); // default MaxRedirects is 5
                 Assert.IsType(typeof(RedirectHandler), redirect);
             }
         }
@@ -49,7 +49,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         {
             Assert.NotNull(this.redirectHandler.InnerHandler);
             Assert.NotNull(redirectHandler.RedirectOption);
-            Assert.Equal(5, redirectHandler.RedirectOption.MaxRedirects); // default MaxRedirects is 5
+            Assert.Equal(5, redirectHandler.RedirectOption.MaxRedirect); // default MaxRedirects is 5
             Assert.Equal(this.redirectHandler.InnerHandler, this.testHttpMessageHandler);
             Assert.IsType(typeof(RedirectHandler), this.redirectHandler);
         }
@@ -57,11 +57,11 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         [Fact]
         public void RedirectHandler_RedirectOptionConstructor()
         {
-            using (RedirectHandler redirect = new RedirectHandler(new RedirectHandlerOption { MaxRedirects = 2 }))
+            using (RedirectHandler redirect = new RedirectHandler(new RedirectHandlerOption { MaxRedirect = 2 }))
             {
                 Assert.Null(redirect.InnerHandler);
                 Assert.NotNull(redirect.RedirectOption);
-                Assert.Equal(2, redirect.RedirectOption.MaxRedirects);
+                Assert.Equal(2, redirect.RedirectOption.MaxRedirect);
                 Assert.IsType(typeof(RedirectHandler), redirect);
             }
         }
@@ -74,7 +74,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             var redirectResponse = new HttpResponseMessage(HttpStatusCode.OK);
             this.testHttpMessageHandler.SetHttpResponse(redirectResponse);
 
-            var response =await this.invoker.SendAsync(httpRequestMessage, new CancellationToken());
+            var response = await this.invoker.SendAsync(httpRequestMessage, new CancellationToken());
 
             Assert.Equal(response.StatusCode, HttpStatusCode.OK);
             Assert.Same(response.RequestMessage, httpRequestMessage);
@@ -179,7 +179,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             this.testHttpMessageHandler.SetHttpResponse(redirectResponse, new HttpResponseMessage(HttpStatusCode.OK));
 
             var response = await invoker.SendAsync(httpRequestMessage, new CancellationToken());
-            
+
             Assert.NotSame(response.RequestMessage, httpRequestMessage);
             Assert.Equal(response.RequestMessage.RequestUri.Host, httpRequestMessage.RequestUri.Host);
             Assert.NotNull(response.RequestMessage.Headers.Authorization);
@@ -197,15 +197,13 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             _response2.Headers.Location = new Uri("http://example.org/foo");
 
             this.testHttpMessageHandler.SetHttpResponse(_response1, _response2);
-           
-            ServiceException exception = await Assert.ThrowsAsync<ServiceException> (async () => await this.invoker.SendAsync(
-                    httpRequestMessage, CancellationToken.None));
-  
+
+            ServiceException exception = await Assert.ThrowsAsync<ServiceException>(async () => await this.invoker.SendAsync(
+                   httpRequestMessage, CancellationToken.None));
+
             Assert.True(exception.IsMatch(ErrorConstants.Codes.TooManyRedirects));
             Assert.Equal(String.Format(ErrorConstants.Messages.TooManyRedirectsFormatString, 5), exception.Error.Message);
             Assert.IsType(typeof(ServiceException), exception);
         }
-
-
     }
 }

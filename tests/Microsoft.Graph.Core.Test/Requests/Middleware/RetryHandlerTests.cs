@@ -46,7 +46,7 @@ namespace Microsoft.Graph.Core.Test.Requests
             {
                 Assert.IsNull(retry.InnerHandler, "HttpMessageHandler initialized.");
                 Assert.IsNotNull(retry.RetryOption, "Retry option not initialized");
-                Assert.AreEqual(10, retry.RetryOption.MaxRetry, "Unexpected max retry set"); // default MaxRetry is 10
+                Assert.AreEqual(RetryHandlerOption.DEFAULT_MAX_RETRY, retry.RetryOption.MaxRetry, "Unexpected max retry set");
                 Assert.IsInstanceOfType(retry, typeof(RetryHandler), "Unexpected redtry handler set.");
             }
         }
@@ -57,7 +57,7 @@ namespace Microsoft.Graph.Core.Test.Requests
         {
             Assert.IsNotNull(retryHandler.InnerHandler, "HttpMessageHandler not initialized.");
             Assert.IsNotNull(retryHandler.RetryOption, "Retry option not initialized");
-            Assert.AreEqual(10, retryHandler.RetryOption.MaxRetry, "Unexpected max retry set"); // default MaxRetry is 10
+            Assert.AreEqual(RetryHandlerOption.DEFAULT_MAX_RETRY, retryHandler.RetryOption.MaxRetry, "Unexpected max retry set"); // default MaxRetry is 10
             Assert.AreEqual(retryHandler.InnerHandler, testHttpMessageHandler, "Unexpected message handler set.");
             Assert.IsInstanceOfType(retryHandler, typeof(RetryHandler), "Unexpected redirect handler set.");
         }
@@ -65,7 +65,7 @@ namespace Microsoft.Graph.Core.Test.Requests
         [TestMethod]
         public void retryHandler_RetryOptionConstructor()
         {
-            using (RetryHandler retry = new RetryHandler(new RetryHandlerOption { MaxRetry = 5, ShouldRetry = (response) => true }))
+            using (RetryHandler retry = new RetryHandler(new RetryHandlerOption { MaxRetry = 5, ShouldRetry = (retryInSeconds, attemptCount, response) => true }))
             {
                 Assert.IsNull(retry.InnerHandler, "HttpMessageHandler initialized");
                 Assert.IsNotNull(retry.RetryOption, "Retry option not initialized");
@@ -219,9 +219,6 @@ namespace Microsoft.Graph.Core.Test.Requests
                 Assert.AreEqual(values.Count(), 1, "There are multiple values for Retry-Attemp header.");
                 Assert.AreEqual(values.First(), 10.ToString(), "The value of  Retry-Attemp header is wrong.");
             }
-
-           
-
         }
 
         [DataTestMethod]
@@ -278,12 +275,12 @@ namespace Microsoft.Graph.Core.Test.Requests
 
         }
 
-        private async Task DelayTestWithMessage(HttpResponseMessage response, int count, string message)
+        private async Task DelayTestWithMessage(HttpResponseMessage response, int count, string message, int delay = RetryHandlerOption.MAX_DELAY)
         {
             Message = message;
             await Task.Run(async () =>
             {
-                await this.retryHandler.Delay(response, count, new CancellationToken());
+                await this.retryHandler.Delay(response, count, delay, new CancellationToken());
                 Message += " Work " + count.ToString();
             });
 

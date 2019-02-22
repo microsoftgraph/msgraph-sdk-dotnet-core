@@ -5,14 +5,18 @@
 namespace Microsoft.Graph
 {
     /// <summary>
-    /// An interface used to pass auth provider options in a request.
-    /// Auth providers will be incharge of implementing this interface and providing <see cref="IBaseRequest"/> extensions to set it's values.
+    /// The auth middleware option class
     /// </summary>
-    public interface IAuthProviderOption
+    public class AuthenticationHandlerOption : IMiddlewareOption
     {
         /// <summary>
-        /// Microsoft Graph scopes property.
+        /// An authentication provider
         /// </summary>
-        string[] Scopes { get; set; }
+        internal IAuthenticationProvider AuthenticationProvider { get; set; }
+
+        /// <summary>
+        /// An authentication provider option.
+        /// </summary>
+        public IAuthenticationProviderOption AuthenticationProviderOption { get; set; }
     }
 }

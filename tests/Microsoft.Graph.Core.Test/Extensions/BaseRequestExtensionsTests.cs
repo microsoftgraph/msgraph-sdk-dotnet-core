@@ -38,11 +38,13 @@
         {
             using (HttpResponseMessage httpResponseMessage = new HttpResponseMessage())
             {
+                int delay = 1;
+                int attempt = 1;
                 var baseRequest = new BaseRequest(requestUrl, baseClient);
-                baseRequest.WithShouldRetry((response) => true);
+                baseRequest.WithShouldRetry((d, a, r) => false);
 
                 Assert.IsInstanceOfType(baseRequest.GetHttpRequestMessage().Properties[typeof(GraphRequestContext).ToString()], typeof(GraphRequestContext), "Unexpected request context.");
-                Assert.IsTrue(baseRequest.GetHttpRequestMessage().GetMiddlewareOption<RetryHandlerOption>().ShouldRetry(httpResponseMessage), "Unexpected middleware option.");
+                Assert.IsFalse(baseRequest.GetHttpRequestMessage().GetMiddlewareOption<RetryHandlerOption>().ShouldRetry(delay, attempt, httpResponseMessage), "Unexpected middleware option.");
             }
         }
 
@@ -63,7 +65,7 @@
             baseRequest.WithMaxRedirects(4);
 
             Assert.IsInstanceOfType(baseRequest.GetHttpRequestMessage().Properties[typeof(GraphRequestContext).ToString()], typeof(GraphRequestContext), "Unexpected request context");
-            Assert.AreEqual(4, baseRequest.GetHttpRequestMessage().GetMiddlewareOption<RedirectHandlerOption>().MaxRedirects, "Unexpected max redirects value.");
+            Assert.AreEqual(4, baseRequest.GetHttpRequestMessage().GetMiddlewareOption<RedirectHandlerOption>().MaxRedirect, "Unexpected max redirects value.");
         }
 
         [TestMethod]
