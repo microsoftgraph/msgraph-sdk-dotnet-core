@@ -31,5 +31,10 @@ namespace Microsoft.Graph
         /// A FeatureUsage property
         /// </summary>
         public FeatureFlag FeatureUsage { get; set; }
+
+        /// <summary>
+        /// A <see cref="GraphUserAccount"/> property representing the logged in user
+        /// </summary>
+        public GraphUserAccount User { get; set; }
     }
 }
