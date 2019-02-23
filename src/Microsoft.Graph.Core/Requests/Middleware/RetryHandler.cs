@@ -60,7 +60,7 @@ namespace Microsoft.Graph
 
             var response = await base.SendAsync(httpRequest, cancellationToken);
 
-            if(IsRetry(response) && httpRequest.IsBuffered() && RetryOption.MaxRetry > 0 && RetryOption.ShouldRetry(RetryOption.Delay, 0, response))
+            if(ShouldRetry(response) && httpRequest.IsBuffered() && RetryOption.MaxRetry > 0 && RetryOption.ShouldRetry(RetryOption.Delay, 0, response))
             {
                 response = await SendRetryAsync(response, cancellationToken);
             }
@@ -95,7 +95,7 @@ namespace Microsoft.Graph
                 // Call base.SendAsync to send the request
                 response = await base.SendAsync(request, cancellationToken);
 
-                if (!IsRetry(response) || !request.IsBuffered() || !RetryOption.ShouldRetry(RetryOption.Delay, retryCount, response))
+                if (!ShouldRetry(response) || !request.IsBuffered() || !RetryOption.ShouldRetry(RetryOption.Delay, retryCount, response))
                 {
                     return response;
                 }
@@ -133,7 +133,6 @@ namespace Microsoft.Graph
         /// <returns>The <see cref="Task"/> for delay operation.</returns>
         public Task Delay(HttpResponseMessage response, int retry_count, int delay, CancellationToken cancellationToken)
         {
-            //TimeSpan delayTimeSpan = TimeSpan.FromMilliseconds(0);
             HttpHeaders headers = response.Headers;
             double delayInSeconds = RetryOption.Delay;
             if (headers.TryGetValues(RETRY_AFTER, out IEnumerable<string> values))
@@ -161,7 +160,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="response">The <see cref="HttpResponseMessage"/>returned.</param>
         /// <returns></returns>
-        private bool IsRetry(HttpResponseMessage response)
+        private bool ShouldRetry(HttpResponseMessage response)
         {
             if ((response.StatusCode == HttpStatusCode.ServiceUnavailable ||
                 response.StatusCode == (HttpStatusCode)429))
