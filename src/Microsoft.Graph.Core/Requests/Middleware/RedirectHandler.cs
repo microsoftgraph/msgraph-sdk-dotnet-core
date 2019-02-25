@@ -53,8 +53,8 @@ namespace Microsoft.Graph
             // send request first time to get response
             var response = await base.SendAsync(request, cancellationToken);
 
-            // check response status code 
-            if (IsRedirect(response.StatusCode))
+            // check response status code and redirect handler option
+            if (IsRedirect(response.StatusCode) && RedirectOption.ShouldRedirect(response) && RedirectOption.MaxRedirect > 0)
             {
                 if (response.Headers.Location == null)
                 {
@@ -68,7 +68,7 @@ namespace Microsoft.Graph
 
                 var redirectCount = 0;
 
-                while (redirectCount < RedirectOption.MaxRedirects)
+                while (redirectCount < RedirectOption.MaxRedirect)
                 {
                     // general clone request with internal CloneAsync (see CloneAsync for details) extension method 
                     var newRequest = await response.RequestMessage.CloneAsync();
@@ -100,6 +100,7 @@ namespace Microsoft.Graph
                     }
                     redirectCount++;
                 }
+
                 throw new ServiceException(
                         new Error
                         {

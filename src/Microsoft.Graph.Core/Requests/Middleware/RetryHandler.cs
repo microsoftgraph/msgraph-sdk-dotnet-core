@@ -60,7 +60,7 @@ namespace Microsoft.Graph
 
             var response = await base.SendAsync(httpRequest, cancellationToken);
 
-            if (RetryOption.ShouldRetry(response) && httpRequest.IsBuffered())
+            if(ShouldRetry(response) && httpRequest.IsBuffered() && RetryOption.MaxRetry > 0 && RetryOption.ShouldRetry(RetryOption.Delay, 0, response))
             {
                 response = await SendRetryAsync(response, cancellationToken);
             }
@@ -74,13 +74,13 @@ namespace Microsoft.Graph
         /// <param name="response">The <see cref="HttpResponseMessage"/> which is returned and includes the HTTP request needs to be retried.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the retry.</param>
         /// <returns></returns>
-        public async Task<HttpResponseMessage> SendRetryAsync(HttpResponseMessage response, CancellationToken cancellationToken)
+        private async Task<HttpResponseMessage> SendRetryAsync(HttpResponseMessage response, CancellationToken cancellationToken)
         {
             int retryCount = 0;
             while (retryCount < RetryOption.MaxRetry)
             {
                 // Call Delay method to get delay time from response's Retry-After header or by exponential backoff 
-                Task delay = Delay(response, retryCount, cancellationToken);
+                Task delay = Delay(response, retryCount, RetryOption.Delay, cancellationToken);
 
                 // general clone request with internal CloneAsync (see CloneAsync for details) extension method 
                 var request = await response.RequestMessage.CloneAsync();
@@ -95,11 +95,10 @@ namespace Microsoft.Graph
                 // Call base.SendAsync to send the request
                 response = await base.SendAsync(request, cancellationToken);
 
-                if (!RetryOption.ShouldRetry(response) || !request.IsBuffered())
+                if (!ShouldRetry(response) || !request.IsBuffered() || !RetryOption.ShouldRetry(RetryOption.Delay, retryCount, response))
                 {
                     return response;
                 }
-
             }
             throw new ServiceException(
                          new Error
@@ -129,34 +128,46 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="response">The <see cref="HttpResponseMessage"/>returned.</param>
         /// <param name="retry_count">The retry counts</param>
+        /// <param name="delay">Delay value in seconds.</param>
         /// <param name="cancellationToken">The cancellationToken for the Http request</param>
         /// <returns>The <see cref="Task"/> for delay operation.</returns>
-        public Task Delay(HttpResponseMessage response, int retry_count, CancellationToken cancellationToken)
+        public Task Delay(HttpResponseMessage response, int retry_count, int delay, CancellationToken cancellationToken)
         {
-            
-            TimeSpan delay = TimeSpan.FromMilliseconds(0);
             HttpHeaders headers = response.Headers;
+            double delayInSeconds = RetryOption.Delay;
             if (headers.TryGetValues(RETRY_AFTER, out IEnumerable<string> values))
             {
                 string retry_after = values.First();    
                 if (Int32.TryParse(retry_after, out int delay_seconds))
                 {
-                    delay = TimeSpan.FromSeconds(delay_seconds);
+                    delayInSeconds = delay_seconds;
                 }
             }
             else
             {
-
-                m_pow = Math.Pow(2, retry_count); // m_pow = Pow(2, retry_count)
-
-                double delay_time = m_pow * DELAY_MILLISECONDS;
-              
-                delay = TimeSpan.FromMilliseconds(delay_time);
+                m_pow = Math.Pow(2, retry_count);
+                delayInSeconds = m_pow * RetryOption.Delay;
             }
-            return Task.Delay(delay, cancellationToken);
+
+            TimeSpan delayTimeSpan = TimeSpan.FromSeconds(Math.Min(delayInSeconds, RetryHandlerOption.MAX_DELAY));
+
+            return Task.Delay(delayTimeSpan, cancellationToken);
 
         }
 
-
+        /// <summary>
+        /// Check the HTTP response's status to determine whether it should be retried or not.
+        /// </summary>
+        /// <param name="response">The <see cref="HttpResponseMessage"/>returned.</param>
+        /// <returns></returns>
+        private bool ShouldRetry(HttpResponseMessage response)
+        {
+            if ((response.StatusCode == HttpStatusCode.ServiceUnavailable ||
+                response.StatusCode == (HttpStatusCode)429))
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }

@@ -62,7 +62,7 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Sets a ShouldRetry <see cref="Func{HttpResponseMessage, Boolean}"/> delegate to the default Retry Middleware Handler for this request.
+        /// Sets a ShouldRetry <see cref="Func{HttpResponseMessage httpResponseMessage, Boolean}"/> delegate to the default Retry Middleware Handler for this request.
         /// This only works with the default Retry Middleware Handler.
         /// If you use a custom Retry Middleware Handler, you have to handle it's retreival in your implementation.
         /// </summary>
@@ -70,7 +70,7 @@ namespace Microsoft.Graph
         /// <param name="baseRequest">The <see cref="BaseRequest"/> for the request.</param>
         /// <param name="shouldRetry">A <see cref="Func{HttpResponseMessage, Boolean}"/> for the request.</param>
         /// <returns></returns>
-        public static T WithShouldRetry<T>(this T baseRequest, Func<HttpResponseMessage, bool> shouldRetry) where T : IBaseRequest
+        public static T WithShouldRetry<T>(this T baseRequest, Func<int, int, HttpResponseMessage, bool> shouldRetry) where T : IBaseRequest
         {
             string retryOptionKey = typeof(RetryHandlerOption).ToString();
             if (baseRequest.MiddlewareOptions.ContainsKey(retryOptionKey))
@@ -121,11 +121,11 @@ namespace Microsoft.Graph
             string redirectOptionKey = typeof(RedirectHandlerOption).ToString();
             if (baseRequest.MiddlewareOptions.ContainsKey(redirectOptionKey))
             {
-                (baseRequest.MiddlewareOptions[redirectOptionKey] as RedirectHandlerOption).MaxRedirects = maxRedirects;
+                (baseRequest.MiddlewareOptions[redirectOptionKey] as RedirectHandlerOption).MaxRedirect = maxRedirects;
             }
             else
             {
-                baseRequest.MiddlewareOptions.Add(redirectOptionKey, new RedirectHandlerOption { MaxRedirects = maxRedirects });
+                baseRequest.MiddlewareOptions.Add(redirectOptionKey, new RedirectHandlerOption { MaxRedirect = maxRedirects });
             }
             return baseRequest;
         }

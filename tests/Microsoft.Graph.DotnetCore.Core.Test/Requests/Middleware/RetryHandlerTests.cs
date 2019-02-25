@@ -43,7 +43,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             {
                 Assert.Null(retry.InnerHandler);
                 Assert.NotNull(retry.RetryOption);
-                Assert.Equal(10, retry.RetryOption.MaxRetry); // default MaxRetry is 10
+                Assert.Equal(RetryHandlerOption.DEFAULT_MAX_RETRY, retry.RetryOption.MaxRetry);
                 Assert.IsType(typeof(RetryHandler), retry);
             }
         }
@@ -54,7 +54,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         {
             Assert.NotNull(retryHandler.InnerHandler);
             Assert.NotNull(retryHandler.RetryOption);
-            Assert.Equal(10, retryHandler.RetryOption.MaxRetry); // default MaxRetry is 10
+            Assert.Equal(RetryHandlerOption.DEFAULT_MAX_RETRY, retryHandler.RetryOption.MaxRetry);
             Assert.Equal(retryHandler.InnerHandler, testHttpMessageHandler);
             Assert.IsType(typeof(RetryHandler), retryHandler);
         }
@@ -62,7 +62,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         [Fact]
         public void retryHandler_RetryOptionConstructor()
         {
-            using (RetryHandler retry = new RetryHandler(new RetryHandlerOption { MaxRetry = 5, ShouldRetry = (response) => true }))
+            using (RetryHandler retry = new RetryHandler(new RetryHandlerOption { MaxRetry = 5, ShouldRetry = (d, a, r) => true }))
             {
                 Assert.Null(retry.InnerHandler);
                 Assert.NotNull(retry.RetryOption);
@@ -275,12 +275,12 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             Assert.NotSame(response.RequestMessage, httpRequestMessage);
         }
 
-        private async Task DelayTestWithMessage(HttpResponseMessage response, int count, string message)
+        private async Task DelayTestWithMessage(HttpResponseMessage response, int count, string message, int delay = RetryHandlerOption.MAX_DELAY)
         {
             Message = message;
             await Task.Run(async () =>
             {
-                await this.retryHandler.Delay(response, count, new CancellationToken());
+                await this.retryHandler.Delay(response, count, delay, new CancellationToken());
                 Message += " Work " + count.ToString();
             });
 
