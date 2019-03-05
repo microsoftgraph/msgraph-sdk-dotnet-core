@@ -23,14 +23,14 @@ namespace Microsoft.Graph
 
         /// <summary>
         /// Gets or sets lowerAddress.
-        /// Lower IP Address
+        /// Lower address
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "lowerAddress", Required = Newtonsoft.Json.Required.Default)]
         public string LowerAddress { get; set; }
     
         /// <summary>
         /// Gets or sets upperAddress.
-        /// Upper IP Address
+        /// Upper address
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "upperAddress", Required = Newtonsoft.Json.Required.Default)]
         public string UpperAddress { get; set; }

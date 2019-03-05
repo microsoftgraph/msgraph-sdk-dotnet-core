@@ -1066,14 +1066,14 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets edge block search suggestions.
-        /// Indicates whether or not to Block the user from using the search suggestions in the address bar.
+        /// Indicates whether or not to block the user from using the search suggestions in the address bar.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "edgeBlockSearchSuggestions", Required = Newtonsoft.Json.Required.Default)]
         public bool? EdgeBlockSearchSuggestions { get; set; }
     
         /// <summary>
         /// Gets or sets edge block sending intranet traffic to internet explorer.
-        /// Indicates whether or not to Block the user from sending Intranet traffic to Internet Explorer from Edge.
+        /// Indicates whether or not to switch the intranet traffic from Edge to Internet Explorer. Note: the name of this property is misleading; the property is obsolete, use EdgeSendIntranetTrafficToInternetExplorer instead.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "edgeBlockSendingIntranetTrafficToInternetExplorer", Required = Newtonsoft.Json.Required.Default)]
         public bool? EdgeBlockSendingIntranetTrafficToInternetExplorer { get; set; }

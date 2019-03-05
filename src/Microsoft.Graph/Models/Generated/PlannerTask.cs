@@ -135,7 +135,7 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets active checklist item count.
-        /// Number of checklist items with value set to 'false', representing incomplete items.
+        /// Number of checklist items with value set to false, representing incomplete items.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "activeChecklistItemCount", Required = Newtonsoft.Json.Required.Default)]
         public Int32? ActiveChecklistItemCount { get; set; }
