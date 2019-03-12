@@ -65,7 +65,7 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets company name.
-        /// The company name which the user is associated. Read-only.
+        /// The company name which the user is associated. This property can be useful for describing the company that an external user comes from.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "companyName", Required = Newtonsoft.Json.Required.Default)]
         public string CompanyName { get; set; }
@@ -125,6 +125,13 @@ namespace Microsoft.Graph
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "imAddresses", Required = Newtonsoft.Json.Required.Default)]
         public IEnumerable<string> ImAddresses { get; set; }
+    
+        /// <summary>
+        /// Gets or sets is resource account.
+        /// true if the user is a resource account; otherwise, false. Null value should be considered false.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "isResourceAccount", Required = Newtonsoft.Json.Required.Default)]
+        public bool? IsResourceAccount { get; set; }
     
         /// <summary>
         /// Gets or sets job title.

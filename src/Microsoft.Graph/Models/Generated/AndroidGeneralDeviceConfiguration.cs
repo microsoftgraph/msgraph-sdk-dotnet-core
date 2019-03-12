@@ -198,7 +198,7 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets password sign in failure count before factory reset.
-        /// Number of sign in failures allowed before factory reset. Valid values 4 to 11
+        /// Number of sign in failures allowed before factory reset. Valid values 1 to 16
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "passwordSignInFailureCountBeforeFactoryReset", Required = Newtonsoft.Json.Required.Default)]
         public Int32? PasswordSignInFailureCountBeforeFactoryReset { get; set; }

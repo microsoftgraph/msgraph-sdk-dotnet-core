@@ -49,6 +49,12 @@ namespace Microsoft.Graph
         public IWorkbookWorksheetsCollectionPage Worksheets { get; set; }
     
         /// <summary>
+        /// Gets or sets comments.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "comments", Required = Newtonsoft.Json.Required.Default)]
+        public IWorkbookCommentsCollectionPage Comments { get; set; }
+    
+        /// <summary>
         /// Gets or sets functions.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "functions", Required = Newtonsoft.Json.Required.Default)]

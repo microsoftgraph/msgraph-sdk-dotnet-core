@@ -51,14 +51,14 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets password expiration days.
-        /// Number of days before the password expires. Valid values 1 to 65535
+        /// Number of days before the password expires. Valid values 1 to 365
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "passwordExpirationDays", Required = Newtonsoft.Json.Required.Default)]
         public Int32? PasswordExpirationDays { get; set; }
     
         /// <summary>
         /// Gets or sets password previous password block count.
-        /// Number of previous passwords to block.
+        /// Number of previous passwords to block. Valid values 1 to 24
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "passwordPreviousPasswordBlockCount", Required = Newtonsoft.Json.Required.Default)]
         public Int32? PasswordPreviousPasswordBlockCount { get; set; }

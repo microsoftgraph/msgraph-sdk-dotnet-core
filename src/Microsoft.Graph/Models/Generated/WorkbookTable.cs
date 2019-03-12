@@ -36,6 +36,13 @@ namespace Microsoft.Graph
         public bool? HighlightLastColumn { get; set; }
     
         /// <summary>
+        /// Gets or sets legacy id.
+        /// Legacy Id used in older Excle clients. The value of the identifier remains the same even when the table is renamed. This property should be interpreted as an opaque string value and should not be parsed to any other type. Read-only.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "legacyId", Required = Newtonsoft.Json.Required.Default)]
+        public string LegacyId { get; set; }
+    
+        /// <summary>
         /// Gets or sets name.
         /// Name of the table.
         /// </summary>

@@ -79,14 +79,14 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets os minimum version.
-        /// Minimum IOS version.
+        /// Minimum MacOS version.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "osMinimumVersion", Required = Newtonsoft.Json.Required.Default)]
         public string OsMinimumVersion { get; set; }
     
         /// <summary>
         /// Gets or sets os maximum version.
-        /// Maximum IOS version.
+        /// Maximum MacOS version.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "osMaximumVersion", Required = Newtonsoft.Json.Required.Default)]
         public string OsMaximumVersion { get; set; }
@@ -100,7 +100,7 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets device threat protection enabled.
-        /// Require that devices have enabled device threat protection .
+        /// Require that devices have enabled device threat protection.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "deviceThreatProtectionEnabled", Required = Newtonsoft.Json.Required.Default)]
         public bool? DeviceThreatProtectionEnabled { get; set; }

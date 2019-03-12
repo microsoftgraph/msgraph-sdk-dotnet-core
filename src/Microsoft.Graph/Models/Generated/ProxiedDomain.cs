@@ -31,7 +31,7 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets proxy.
-        /// Proxy IP
+        /// Proxy IP or FQDN
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "proxy", Required = Newtonsoft.Json.Required.Default)]
         public string Proxy { get; set; }

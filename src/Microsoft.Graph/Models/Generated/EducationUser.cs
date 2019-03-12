@@ -78,13 +78,6 @@ namespace Microsoft.Graph
         public IdentitySet CreatedBy { get; set; }
     
         /// <summary>
-        /// Gets or sets related contacts.
-        /// Set of contacts related to the user.  This optional property must be specified in a $select clause and can only be retrieved for an individual user.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "relatedContacts", Required = Newtonsoft.Json.Required.Default)]
-        public IEnumerable<EducationRelatedContact> RelatedContacts { get; set; }
-    
-        /// <summary>
         /// Gets or sets account enabled.
         /// True if the account is enabled; otherwise, false. This property is required when a user is created. Supports $filter.
         /// </summary>
