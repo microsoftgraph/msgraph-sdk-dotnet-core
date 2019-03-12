@@ -79,7 +79,7 @@ namespace Microsoft.Graph
 
                 // Authenticate request using AuthenticationProvider
 
-                await AuthenticationProvider.AuthenticateRequestAsync(newRequest);
+                await authProvider.AuthenticateRequestAsync(newRequest);
                 httpResponseMessage = await base.SendAsync(newRequest, cancellationToken);
 
                 retryAttempt++;

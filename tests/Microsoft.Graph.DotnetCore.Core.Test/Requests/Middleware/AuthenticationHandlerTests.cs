@@ -11,6 +11,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
     using System.Threading;
     using Xunit;
     using System.Threading.Tasks;
+    using System.Collections.Generic;
 
     public class AuthenticationHandlerTests : IDisposable
     {
@@ -30,6 +31,8 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         public void Dispose()
         {
             invoker.Dispose();
+            authenticationHandler.Dispose();
+            testHttpMessageHandler.Dispose();
         }
 
         [Fact]
@@ -101,6 +104,34 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             Assert.Same(response, expectedResponse);
             Assert.NotSame(response.RequestMessage, httpRequestMessage);
             Assert.Null(response.RequestMessage.Content);
+        }
+
+        [Fact]
+        public async Task AuthHandler_ShouldRetryUnauthorizedGetRequestUsingAuthHandlerOption()
+        {
+            DelegatingHandler authHandler = new AuthenticationHandler(null, testHttpMessageHandler);
+            using (HttpMessageInvoker msgInvoker = new HttpMessageInvoker(authHandler))
+            using (var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, "http://example.com/bar"))
+            using (var unauthorizedResponse = new HttpResponseMessage(HttpStatusCode.Unauthorized))
+            using (var expectedResponse = new HttpResponseMessage(HttpStatusCode.OK))
+            {
+                httpRequestMessage.Properties.Add(typeof(GraphRequestContext).ToString(), new GraphRequestContext
+                {
+                    MiddlewareOptions = new Dictionary<string, IMiddlewareOption>() {
+                        {
+                            typeof(AuthenticationHandlerOption).ToString(),
+                            new AuthenticationHandlerOption { AuthenticationProvider = mockAuthenticationProvider.Object }
+                        }
+                    }
+                });
+                testHttpMessageHandler.SetHttpResponse(unauthorizedResponse, expectedResponse);
+
+                var response = await msgInvoker.SendAsync(httpRequestMessage, new CancellationToken());
+
+                Assert.NotSame(response.RequestMessage, httpRequestMessage);
+                Assert.Same(response, expectedResponse);
+                Assert.Null(response.RequestMessage.Content);
+            }
         }
 
         [Fact]
@@ -218,6 +249,24 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             Assert.NotSame(response.RequestMessage, httpRequestMessage);
             Assert.Same(response, expectedResponse);
             Assert.Equal(response.RequestMessage.Content.ReadAsStringAsync().Result, "Hello Mars!");
+        }
+
+        [Fact]
+        public async Task AuthHandler_ShouldThrowExceptionWhenAuthProviderIsNotSet()
+        {
+            DelegatingHandler authHandler = new AuthenticationHandler(null, testHttpMessageHandler);
+            using (HttpMessageInvoker msgInvoker = new HttpMessageInvoker(authHandler))
+            using (var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, "http://example.com/bar"))
+            using (var unauthorizedResponse = new HttpResponseMessage(HttpStatusCode.Unauthorized))
+            using (var expectedResponse = new HttpResponseMessage(HttpStatusCode.OK))
+            {
+                testHttpMessageHandler.SetHttpResponse(unauthorizedResponse, expectedResponse);
+
+                ServiceException ex = await Assert.ThrowsAsync<ServiceException>(() => msgInvoker.SendAsync(httpRequestMessage, new CancellationToken()));
+
+                Assert.Same(ex.Error.Code, ErrorConstants.Codes.InvalidRequest);
+                Assert.Same(ex.Error.Message, ErrorConstants.Messages.AuthenticationProviderMissing);
+            }
         }
     }
 }
