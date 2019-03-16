@@ -10,6 +10,7 @@ namespace Microsoft.Graph.Core.Test.Requests
     using System.Net.Http;
     using System.Threading.Tasks;
     using System.Threading;
+    using System.Collections.Generic;
 
     [TestClass]
     public class AuthenticationHandlerTests
@@ -32,6 +33,8 @@ namespace Microsoft.Graph.Core.Test.Requests
         public void TearDown()
         {
             invoker.Dispose();
+            authenticationHandler.Dispose();
+            testHttpMessageHandler.Dispose();
         }
 
         [TestMethod]
@@ -105,6 +108,35 @@ namespace Microsoft.Graph.Core.Test.Requests
             Assert.AreNotSame(response.RequestMessage, httpRequestMessage, "Doesn't reissue a new http request.");
             Assert.AreSame(response, expectedResponse, "Retry didn't happen.");
             Assert.IsNull(response.RequestMessage.Content, "Content is not null.");
+        }
+
+
+        [TestMethod]
+        public async Task AuthHandler_ShouldRetryUnauthorizedGetRequestUsingAuthHandlerOption()
+        {
+            DelegatingHandler authHandler = new AuthenticationHandler(null, testHttpMessageHandler);
+            using (HttpMessageInvoker msgInvoker = new HttpMessageInvoker(authHandler))
+            using (var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, "http://example.com/bar"))
+            using (var unauthorizedResponse = new HttpResponseMessage(HttpStatusCode.Unauthorized))
+            using (var expectedResponse = new HttpResponseMessage(HttpStatusCode.OK))
+            {
+                httpRequestMessage.Properties.Add(typeof(GraphRequestContext).ToString(), new GraphRequestContext
+                {
+                    MiddlewareOptions = new Dictionary<string, IMiddlewareOption>() {
+                        {
+                            typeof(AuthenticationHandlerOption).ToString(),
+                            new AuthenticationHandlerOption { AuthenticationProvider = mockAuthenticationProvider.Object }
+                        }
+                    }
+                });
+                testHttpMessageHandler.SetHttpResponse(unauthorizedResponse, expectedResponse);
+
+                var response = await msgInvoker.SendAsync(httpRequestMessage, new CancellationToken());
+
+                Assert.AreNotSame(response.RequestMessage, httpRequestMessage, "Doesn't reissue a new http request.");
+                Assert.AreSame(response, expectedResponse, "Retry didn't happen.");
+                Assert.IsNull(response.RequestMessage.Content, "Content is not null.");
+            }
         }
 
         [TestMethod]
@@ -220,6 +252,24 @@ namespace Microsoft.Graph.Core.Test.Requests
             Assert.AreNotSame(response.RequestMessage, httpRequestMessage, "Doesn't reissued a new http request.");
             Assert.AreSame(response, expectedResponse, "Unexpected code returned.");
             Assert.AreEqual(response.RequestMessage.Content.ReadAsStringAsync().Result, "Hello Mars!");
+        }
+
+        [TestMethod]
+        public async Task AuthHandler_ShouldThrowExceptionWhenAuthProviderIsNotSet()
+        {
+            DelegatingHandler authHandler = new AuthenticationHandler(null, testHttpMessageHandler);
+            using (HttpMessageInvoker msgInvoker = new HttpMessageInvoker(authHandler))
+            using (var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, "http://example.com/bar"))
+            using (var unauthorizedResponse = new HttpResponseMessage(HttpStatusCode.Unauthorized))
+            using (var expectedResponse = new HttpResponseMessage(HttpStatusCode.OK))
+            {
+                testHttpMessageHandler.SetHttpResponse(unauthorizedResponse, expectedResponse);
+
+                ServiceException ex = await Assert.ThrowsExceptionAsync<ServiceException>(() => msgInvoker.SendAsync(httpRequestMessage, new CancellationToken()));
+
+                Assert.AreSame(ex.Error.Code, ErrorConstants.Codes.InvalidRequest, "Unexpected exception code set.");
+                Assert.AreSame(ex.Error.Message, ErrorConstants.Messages.AuthenticationProviderMissing, "Unexpected exception message set.");
+            }
         }
     }
 }
