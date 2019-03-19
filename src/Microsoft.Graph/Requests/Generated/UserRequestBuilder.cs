@@ -515,33 +515,6 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Gets the request builder for UserFindMeetingTimes.
-        /// </summary>
-        /// <returns>The <see cref="IUserFindMeetingTimesRequestBuilder"/>.</returns>
-        public IUserFindMeetingTimesRequestBuilder FindMeetingTimes(
-            IEnumerable<AttendeeBase> Attendees = null,
-            LocationConstraint LocationConstraint = null,
-            TimeConstraint TimeConstraint = null,
-            Duration MeetingDuration = null,
-            Int32? MaxCandidates = null,
-            bool? IsOrganizerOptional = null,
-            bool? ReturnSuggestionReasons = null,
-            double? MinimumAttendeePercentage = null)
-        {
-            return new UserFindMeetingTimesRequestBuilder(
-                this.AppendSegmentToRequestUrl("microsoft.graph.findMeetingTimes"),
-                this.Client,
-                Attendees,
-                LocationConstraint,
-                TimeConstraint,
-                MeetingDuration,
-                MaxCandidates,
-                IsOrganizerOptional,
-                ReturnSuggestionReasons,
-                MinimumAttendeePercentage);
-        }
-
-        /// <summary>
         /// Gets the request builder for UserGetMailTips.
         /// </summary>
         /// <returns>The <see cref="IUserGetMailTipsRequestBuilder"/>.</returns>
@@ -554,6 +527,33 @@ namespace Microsoft.Graph
                 this.Client,
                 EmailAddresses,
                 MailTipsOptions);
+        }
+
+        /// <summary>
+        /// Gets the request builder for UserFindMeetingTimes.
+        /// </summary>
+        /// <returns>The <see cref="IUserFindMeetingTimesRequestBuilder"/>.</returns>
+        public IUserFindMeetingTimesRequestBuilder FindMeetingTimes(
+            IEnumerable<AttendeeBase> attendees = null,
+            LocationConstraint locationConstraint = null,
+            TimeConstraint timeConstraint = null,
+            Duration meetingDuration = null,
+            Int32? maxCandidates = null,
+            bool? isOrganizerOptional = null,
+            bool? returnSuggestionReasons = null,
+            double? minimumAttendeePercentage = null)
+        {
+            return new UserFindMeetingTimesRequestBuilder(
+                this.AppendSegmentToRequestUrl("microsoft.graph.findMeetingTimes"),
+                this.Client,
+                attendees,
+                locationConstraint,
+                timeConstraint,
+                meetingDuration,
+                maxCandidates,
+                isOrganizerOptional,
+                returnSuggestionReasons,
+                minimumAttendeePercentage);
         }
 
         /// <summary>

@@ -24,49 +24,49 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets or sets Attendees.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "Attendees", Required = Newtonsoft.Json.Required.Default)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "attendees", Required = Newtonsoft.Json.Required.Default)]
         public IEnumerable<AttendeeBase> Attendees { get; set; }
     
         /// <summary>
         /// Gets or sets LocationConstraint.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "LocationConstraint", Required = Newtonsoft.Json.Required.Default)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "locationConstraint", Required = Newtonsoft.Json.Required.Default)]
         public LocationConstraint LocationConstraint { get; set; }
     
         /// <summary>
         /// Gets or sets TimeConstraint.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "TimeConstraint", Required = Newtonsoft.Json.Required.Default)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "timeConstraint", Required = Newtonsoft.Json.Required.Default)]
         public TimeConstraint TimeConstraint { get; set; }
     
         /// <summary>
         /// Gets or sets MeetingDuration.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "MeetingDuration", Required = Newtonsoft.Json.Required.Default)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "meetingDuration", Required = Newtonsoft.Json.Required.Default)]
         public Duration MeetingDuration { get; set; }
     
         /// <summary>
         /// Gets or sets MaxCandidates.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "MaxCandidates", Required = Newtonsoft.Json.Required.Default)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "maxCandidates", Required = Newtonsoft.Json.Required.Default)]
         public Int32? MaxCandidates { get; set; }
     
         /// <summary>
         /// Gets or sets IsOrganizerOptional.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "IsOrganizerOptional", Required = Newtonsoft.Json.Required.Default)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "isOrganizerOptional", Required = Newtonsoft.Json.Required.Default)]
         public bool? IsOrganizerOptional { get; set; }
     
         /// <summary>
         /// Gets or sets ReturnSuggestionReasons.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "ReturnSuggestionReasons", Required = Newtonsoft.Json.Required.Default)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "returnSuggestionReasons", Required = Newtonsoft.Json.Required.Default)]
         public bool? ReturnSuggestionReasons { get; set; }
     
         /// <summary>
         /// Gets or sets MinimumAttendeePercentage.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "MinimumAttendeePercentage", Required = Newtonsoft.Json.Required.Default)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "minimumAttendeePercentage", Required = Newtonsoft.Json.Required.Default)]
         public double? MinimumAttendeePercentage { get; set; }
     
     }

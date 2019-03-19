@@ -30,11 +30,10 @@ namespace Microsoft.Graph
         public ActivityDomain? ActivityDomain { get; set; }
     
         /// <summary>
-        /// Gets or sets timeslots.
-        /// An array of time periods.
+        /// Gets or sets timeSlots.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "timeslots", Required = Newtonsoft.Json.Required.Default)]
-        public IEnumerable<TimeSlot> Timeslots { get; set; }
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "timeSlots", Required = Newtonsoft.Json.Required.Default)]
+        public IEnumerable<TimeSlot> TimeSlots { get; set; }
     
         /// <summary>
         /// Gets or sets additional data.

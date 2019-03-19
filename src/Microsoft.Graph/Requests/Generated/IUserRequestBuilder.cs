@@ -265,26 +265,26 @@ namespace Microsoft.Graph
             bool? SaveToSentItems = null);
 
         /// <summary>
-        /// Gets the request builder for UserFindMeetingTimes.
-        /// </summary>
-        /// <returns>The <see cref="IUserFindMeetingTimesRequestBuilder"/>.</returns>
-        IUserFindMeetingTimesRequestBuilder FindMeetingTimes(
-            IEnumerable<AttendeeBase> Attendees = null,
-            LocationConstraint LocationConstraint = null,
-            TimeConstraint TimeConstraint = null,
-            Duration MeetingDuration = null,
-            Int32? MaxCandidates = null,
-            bool? IsOrganizerOptional = null,
-            bool? ReturnSuggestionReasons = null,
-            double? MinimumAttendeePercentage = null);
-
-        /// <summary>
         /// Gets the request builder for UserGetMailTips.
         /// </summary>
         /// <returns>The <see cref="IUserGetMailTipsRequestBuilder"/>.</returns>
         IUserGetMailTipsRequestBuilder GetMailTips(
             IEnumerable<string> EmailAddresses,
             MailTipsType? MailTipsOptions = null);
+
+        /// <summary>
+        /// Gets the request builder for UserFindMeetingTimes.
+        /// </summary>
+        /// <returns>The <see cref="IUserFindMeetingTimesRequestBuilder"/>.</returns>
+        IUserFindMeetingTimesRequestBuilder FindMeetingTimes(
+            IEnumerable<AttendeeBase> attendees = null,
+            LocationConstraint locationConstraint = null,
+            TimeConstraint timeConstraint = null,
+            Duration meetingDuration = null,
+            Int32? maxCandidates = null,
+            bool? isOrganizerOptional = null,
+            bool? returnSuggestionReasons = null,
+            double? minimumAttendeePercentage = null);
 
         /// <summary>
         /// Gets the request builder for UserRemoveAllDevicesFromManagement.

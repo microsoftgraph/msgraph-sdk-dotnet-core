@@ -23,18 +23,17 @@ namespace Microsoft.Graph
     {
 
         /// <summary>
-        /// Gets or sets meetingTimeSlot.
-        /// A time period suggested for the meeting.
-        /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "meetingTimeSlot", Required = Newtonsoft.Json.Required.Default)]
-        public TimeSlot MeetingTimeSlot { get; set; }
-    
-        /// <summary>
         /// Gets or sets confidence.
         /// A percentage that represents the likelhood of all the attendees attending.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "confidence", Required = Newtonsoft.Json.Required.Default)]
         public double? Confidence { get; set; }
+    
+        /// <summary>
+        /// Gets or sets order.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "order", Required = Newtonsoft.Json.Required.Default)]
+        public Int32? Order { get; set; }
     
         /// <summary>
         /// Gets or sets organizerAvailability.
@@ -63,6 +62,13 @@ namespace Microsoft.Graph
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "suggestionReason", Required = Newtonsoft.Json.Required.Default)]
         public string SuggestionReason { get; set; }
+    
+        /// <summary>
+        /// Gets or sets meetingTimeSlot.
+        /// A time period suggested for the meeting.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "meetingTimeSlot", Required = Newtonsoft.Json.Required.Default)]
+        public TimeSlot MeetingTimeSlot { get; set; }
     
         /// <summary>
         /// Gets or sets additional data.

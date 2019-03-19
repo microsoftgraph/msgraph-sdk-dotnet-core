@@ -55,6 +55,12 @@ namespace Microsoft.Graph
         IWorkbookWorksheetsCollectionRequestBuilder Worksheets { get; }
 
         /// <summary>
+        /// Gets the request builder for Comments.
+        /// </summary>
+        /// <returns>The <see cref="IWorkbookCommentsCollectionRequestBuilder"/>.</returns>
+        IWorkbookCommentsCollectionRequestBuilder Comments { get; }
+
+        /// <summary>
         /// Gets the request builder for Functions.
         /// </summary>
         /// <returns>The <see cref="IWorkbookFunctionsRequestBuilder"/>.</returns>

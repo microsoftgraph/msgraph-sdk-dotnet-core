@@ -294,6 +294,17 @@ namespace Microsoft.Graph
         }
     
         /// <summary>
+        /// Gets the GraphServiceIdentityProviders request builder.
+        /// </summary>
+        public IGraphServiceIdentityProvidersCollectionRequestBuilder IdentityProviders
+        {
+            get
+            {
+                return new GraphServiceIdentityProvidersCollectionRequestBuilder(this.BaseUrl + "/identityProviders", this);
+            }
+        }
+    
+        /// <summary>
         /// Gets the GraphServiceMe request builder.
         /// </summary>
         public IUserRequestBuilder Me

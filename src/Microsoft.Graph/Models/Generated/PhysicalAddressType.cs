@@ -12,51 +12,31 @@ namespace Microsoft.Graph
     using Newtonsoft.Json;
 
     /// <summary>
-    /// The enum EducationContactRelationship.
+    /// The enum PhysicalAddressType.
     /// </summary>
     [JsonConverter(typeof(EnumConverter))]
-    public enum EducationContactRelationship
+    public enum PhysicalAddressType
     {
     
         /// <summary>
-        /// parent
+        /// unknown
         /// </summary>
-        Parent = 0,
+        Unknown = 0,
 	
         /// <summary>
-        /// relative
+        /// home
         /// </summary>
-        Relative = 1,
+        Home = 1,
 	
         /// <summary>
-        /// aide
+        /// business
         /// </summary>
-        Aide = 2,
-	
-        /// <summary>
-        /// doctor
-        /// </summary>
-        Doctor = 3,
-	
-        /// <summary>
-        /// guardian
-        /// </summary>
-        Guardian = 4,
-	
-        /// <summary>
-        /// child
-        /// </summary>
-        Child = 5,
+        Business = 2,
 	
         /// <summary>
         /// other
         /// </summary>
-        Other = 6,
-	
-        /// <summary>
-        /// unknown Future Value
-        /// </summary>
-        UnknownFutureValue = 7,
+        Other = 3,
 	
     }
 }
