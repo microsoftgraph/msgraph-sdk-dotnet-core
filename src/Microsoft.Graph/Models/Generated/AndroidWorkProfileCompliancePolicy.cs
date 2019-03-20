@@ -58,7 +58,7 @@ namespace Microsoft.Graph
     
         /// <summary>
         /// Gets or sets password previous password block count.
-        /// Number of previous passwords to block.
+        /// Number of previous passwords to block. Valid values 1 to 24
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "passwordPreviousPasswordBlockCount", Required = Newtonsoft.Json.Required.Default)]
         public Int32? PasswordPreviousPasswordBlockCount { get; set; }
