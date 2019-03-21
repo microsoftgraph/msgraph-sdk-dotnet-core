@@ -8,25 +8,43 @@ namespace Microsoft.Graph
     using Newtonsoft.Json.Linq;
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
+    using System.Net;
     using System.Net.Http;
     using System.Net.Http.Headers;
     using System.Text;
     using System.Threading.Tasks;
-    public class BatchRequestContent
+
+    /// <summary>
+    /// A <see cref="HttpContent"/> implementation to handle json batch requests.
+    /// </summary>
+    public class BatchRequestContent: HttpContent
     {
         private const int MAX_NUMBER_OF_REQUESTS = 20;
+
+        /// <summary>
+        /// A BatchRequestSteps property.
+        /// </summary>
         public IDictionary<string, BatchRequestStep> BatchRequestSteps { get; private set; }
 
+        /// <summary>
+        /// Constructs a new <see cref="BatchRequestContent"/>.
+        /// </summary>
         public BatchRequestContent()
+            :this(new List<BatchRequestStep>())
         {
-            BatchRequestSteps = new Dictionary<string, BatchRequestStep>();
         }
 
+        /// <summary>
+        /// Constructs a new <see cref="BatchRequestContent"/>.
+        /// </summary>
+        /// <param name="batchRequestSteps">A list of <see cref="BatchRequestStep"/> to add to the batch request content.</param>
         public BatchRequestContent(IList<BatchRequestStep> batchRequestSteps)
         {
-            // TODO: Handle null case
-            if(batchRequestSteps.Count() > MAX_NUMBER_OF_REQUESTS)
+            this.Headers.Add("Content-Type", "application/json");
+            // TODO: Handle null or empty case
+            if (batchRequestSteps.Count() > MAX_NUMBER_OF_REQUESTS)
                 throw new ArgumentException("Number of batch request steps cannot exceed " + MAX_NUMBER_OF_REQUESTS);
 
             BatchRequestSteps = new Dictionary<string, BatchRequestStep>();
@@ -34,6 +52,11 @@ namespace Microsoft.Graph
                 AddBatchRequestStep(requestStep);
         }
 
+        /// <summary>
+        /// Adds a <see cref="BatchRequestStep"/> to batch request content if doesn't exists.
+        /// </summary>
+        /// <param name="batchRequestStep">A <see cref="BatchRequestStep"/> to add.</param>
+        /// <returns>True or false based on addition or not addition of the provided <see cref="BatchRequestStep"/>. </returns>
         public bool AddBatchRequestStep(BatchRequestStep batchRequestStep)
         {
             if (BatchRequestSteps.ContainsKey(batchRequestStep.RequestId))
@@ -42,6 +65,11 @@ namespace Microsoft.Graph
             return true;
         }
 
+        /// <summary>
+        /// Removes a <see cref="BatchRequestStep"/> from batch request content for the specified id.
+        /// </summary>
+        /// <param name="requestId">A batch request id to remove.</param>
+        /// <returns>True or false based on removal or not removal of a <see cref="BatchRequestStep"/>.</returns>
         public bool RemoveBatchRequestStepWithId(string requestId)
         {
             bool isRemoved = false;
@@ -57,24 +85,36 @@ namespace Microsoft.Graph
             return isRemoved;
         }
 
-        public async Task<JObject> GetBatchRequestContentAsync(BatchRequestStep batchRequestStep)
+        private async Task<JObject> GetBatchRequestContentAsync()
+        {
+            JObject batchRequest = new JObject();
+            JArray batchRequestItems = new JArray();
+
+            foreach (KeyValuePair<string, BatchRequestStep> batchRequestStep in BatchRequestSteps)
+                batchRequestItems.Add(await GetBatchRequestContentFromStepAsync(batchRequestStep.Value));
+
+            batchRequest.Add("requests", batchRequestItems);
+
+            return batchRequest;
+        }
+
+        private async Task<JObject> GetBatchRequestContentFromStepAsync(BatchRequestStep batchRequestStep)
         {
             JObject jRequestContent = new JObject();
             jRequestContent.Add("id", batchRequestStep.RequestId);
             jRequestContent.Add("url", GetRelativeUrl(batchRequestStep.Request.RequestUri));
             jRequestContent.Add("method", batchRequestStep.Request.Method.Method);
-
-            if(batchRequestStep.Request.Headers != null && batchRequestStep.Request.Headers.Count() > 0)
-                jRequestContent.Add("headers", GetRequestHeader(batchRequestStep.Request.Headers));
-
             if (batchRequestStep.DependsOn != null && batchRequestStep.DependsOn.Count() > 0)
                 jRequestContent.Add("dependsOn", new JArray(batchRequestStep.DependsOn));
+
+            if (batchRequestStep.Request.Content?.Headers != null && batchRequestStep.Request.Content.Headers.Count() > 0)
+                jRequestContent.Add("headers", GetContentHeader(batchRequestStep.Request.Content.Headers));
 
             if(batchRequestStep.Request != null && batchRequestStep.Request.Content != null)
             {
                 try
                 {
-                    jRequestContent.Add("body", await GetRequestBodyAsync(batchRequestStep.Request));
+                    jRequestContent.Add("body", await GetRequestContentAsync(batchRequestStep.Request));
                 }
                 catch (Exception ex)
                 {
@@ -86,14 +126,14 @@ namespace Microsoft.Graph
             return jRequestContent;
         }
 
-        private async Task<JObject> GetRequestBodyAsync(HttpRequestMessage request)
+        private async Task<JObject> GetRequestContentAsync(HttpRequestMessage request)
         {
             HttpRequestMessage clonedRequest = await request.CloneAsync();
             byte[] content = await clonedRequest.Content.ReadAsByteArrayAsync();
             return JsonConvert.DeserializeObject<JObject>(Encoding.UTF8.GetString(content, 0, content.Length));
         }
 
-        private JObject GetRequestHeader(HttpRequestHeaders headers)
+        private JObject GetContentHeader(HttpContentHeaders headers)
         {
             JObject jHeaders = new JObject();
             foreach (KeyValuePair<string, IEnumerable<string>> header in headers)
@@ -112,7 +152,6 @@ namespace Microsoft.Graph
             StringBuilder builder = new StringBuilder();
             foreach (string headerValue in headerValues)
             {
-                builder.Append(";");
                 builder.Append(headerValue);
             }
 
@@ -126,6 +165,22 @@ namespace Microsoft.Graph
                 version = "beta";
 
             return requestUri.AbsoluteUri.Substring(requestUri.AbsoluteUri.IndexOf(version) + version.ToCharArray().Count());
+        }
+
+        protected override async Task SerializeToStreamAsync(Stream stream, TransportContext context)
+        {
+            using (StreamWriter streamWritter = new StreamWriter(stream))
+            using (JsonTextWriter textWritter = new JsonTextWriter(streamWritter))
+            {
+                JObject batchContent = await GetBatchRequestContentAsync();
+                batchContent.WriteTo(textWritter);
+            }
+        }
+
+        protected override bool TryComputeLength(out long length)
+        {
+            length = -1;
+            return false;
         }
     }
 }
