@@ -196,15 +196,10 @@ namespace Microsoft.Graph
                         }
                     }
 
-                    throw new ServiceException(error)
-                    {
-                        // Pass through the response headers to the ServiceException.
-                        ResponseHeaders = response.Headers,
-
-                        // System.Net.HttpStatusCode does not support RFC 6585, Additional HTTP Status Codes.
-                        // Throttling status code 429 is in RFC 6586. The status code 429 will be passed through.
-                        StatusCode = response.StatusCode
-                    };
+                    // Pass through the response headers and status code to the ServiceException.
+                    // System.Net.HttpStatusCode does not support RFC 6585, Additional HTTP Status Codes.
+                    // Throttling status code 429 is in RFC 6586. The status code 429 will be passed through.
+                    throw new ServiceException(error, response.Headers, response.StatusCode);
                 }
             }
 
