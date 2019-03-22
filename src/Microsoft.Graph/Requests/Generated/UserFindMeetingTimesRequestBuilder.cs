@@ -22,35 +22,35 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="requestUrl">The URL for the request.</param>
         /// <param name="client">The <see cref="IBaseClient"/> for handling requests.</param>
-        /// <param name="Attendees">A Attendees parameter for the OData method call.</param>
-        /// <param name="LocationConstraint">A LocationConstraint parameter for the OData method call.</param>
-        /// <param name="TimeConstraint">A TimeConstraint parameter for the OData method call.</param>
-        /// <param name="MeetingDuration">A MeetingDuration parameter for the OData method call.</param>
-        /// <param name="MaxCandidates">A MaxCandidates parameter for the OData method call.</param>
-        /// <param name="IsOrganizerOptional">A IsOrganizerOptional parameter for the OData method call.</param>
-        /// <param name="ReturnSuggestionReasons">A ReturnSuggestionReasons parameter for the OData method call.</param>
-        /// <param name="MinimumAttendeePercentage">A MinimumAttendeePercentage parameter for the OData method call.</param>
+        /// <param name="attendees">A attendees parameter for the OData method call.</param>
+        /// <param name="locationConstraint">A locationConstraint parameter for the OData method call.</param>
+        /// <param name="timeConstraint">A timeConstraint parameter for the OData method call.</param>
+        /// <param name="meetingDuration">A meetingDuration parameter for the OData method call.</param>
+        /// <param name="maxCandidates">A maxCandidates parameter for the OData method call.</param>
+        /// <param name="isOrganizerOptional">A isOrganizerOptional parameter for the OData method call.</param>
+        /// <param name="returnSuggestionReasons">A returnSuggestionReasons parameter for the OData method call.</param>
+        /// <param name="minimumAttendeePercentage">A minimumAttendeePercentage parameter for the OData method call.</param>
         public UserFindMeetingTimesRequestBuilder(
             string requestUrl,
             IBaseClient client,
-            IEnumerable<AttendeeBase> Attendees,
-            LocationConstraint LocationConstraint,
-            TimeConstraint TimeConstraint,
-            Duration MeetingDuration,
-            Int32? MaxCandidates,
-            bool? IsOrganizerOptional,
-            bool? ReturnSuggestionReasons,
-            double? MinimumAttendeePercentage)
+            IEnumerable<AttendeeBase> attendees,
+            LocationConstraint locationConstraint,
+            TimeConstraint timeConstraint,
+            Duration meetingDuration,
+            Int32? maxCandidates,
+            bool? isOrganizerOptional,
+            bool? returnSuggestionReasons,
+            double? minimumAttendeePercentage)
             : base(requestUrl, client)
         {
-            this.SetParameter("attendees", Attendees, true);
-            this.SetParameter("locationConstraint", LocationConstraint, true);
-            this.SetParameter("timeConstraint", TimeConstraint, true);
-            this.SetParameter("meetingDuration", MeetingDuration, true);
-            this.SetParameter("maxCandidates", MaxCandidates, true);
-            this.SetParameter("isOrganizerOptional", IsOrganizerOptional, true);
-            this.SetParameter("returnSuggestionReasons", ReturnSuggestionReasons, true);
-            this.SetParameter("minimumAttendeePercentage", MinimumAttendeePercentage, true);
+            this.SetParameter("attendees", attendees, true);
+            this.SetParameter("locationConstraint", locationConstraint, true);
+            this.SetParameter("timeConstraint", timeConstraint, true);
+            this.SetParameter("meetingDuration", meetingDuration, true);
+            this.SetParameter("maxCandidates", maxCandidates, true);
+            this.SetParameter("isOrganizerOptional", isOrganizerOptional, true);
+            this.SetParameter("returnSuggestionReasons", returnSuggestionReasons, true);
+            this.SetParameter("minimumAttendeePercentage", minimumAttendeePercentage, true);
         }
 
         /// <summary>
