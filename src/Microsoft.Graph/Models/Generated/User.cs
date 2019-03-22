@@ -127,6 +127,13 @@ namespace Microsoft.Graph
         public IEnumerable<string> ImAddresses { get; set; }
     
         /// <summary>
+        /// Gets or sets is resource account.
+        /// true if the user is a resource account; otherwise, false. Null value should be considered false.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "isResourceAccount", Required = Newtonsoft.Json.Required.Default)]
+        public bool? IsResourceAccount { get; set; }
+    
+        /// <summary>
         /// Gets or sets job title.
         /// The user’s job title. Supports $filter.
         /// </summary>

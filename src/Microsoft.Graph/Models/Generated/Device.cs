@@ -43,6 +43,13 @@ namespace Microsoft.Graph
         public DateTimeOffset? ApproximateLastSignInDateTime { get; set; }
     
         /// <summary>
+        /// Gets or sets compliance expiration date time.
+        /// The timestamp when the device is no longer deemed compliant. The timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'. Read-only.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "complianceExpirationDateTime", Required = Newtonsoft.Json.Required.Default)]
+        public DateTimeOffset? ComplianceExpirationDateTime { get; set; }
+    
+        /// <summary>
         /// Gets or sets device id.
         /// Unique identifier set by Azure Device Registration Service at the time of registration.
         /// </summary>
@@ -118,6 +125,20 @@ namespace Microsoft.Graph
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "physicalIds", Required = Newtonsoft.Json.Required.Default)]
         public IEnumerable<string> PhysicalIds { get; set; }
+    
+        /// <summary>
+        /// Gets or sets profile type.
+        /// The profile type of the device. Possible values:RegisteredDevice (default)SecureVMPrinterSharedIoT
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "profileType", Required = Newtonsoft.Json.Required.Default)]
+        public string ProfileType { get; set; }
+    
+        /// <summary>
+        /// Gets or sets system labels.
+        /// List of labels applied to the device by the system.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "systemLabels", Required = Newtonsoft.Json.Required.Default)]
+        public IEnumerable<string> SystemLabels { get; set; }
     
         /// <summary>
         /// Gets or sets trust type.

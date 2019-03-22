@@ -131,6 +131,11 @@ namespace Microsoft.Graph
         IGraphServiceDataPolicyOperationsCollectionRequestBuilder DataPolicyOperations { get; }
     
         /// <summary>
+        /// Gets the GraphServiceIdentityProviders request builder.
+        /// </summary>
+        IGraphServiceIdentityProvidersCollectionRequestBuilder IdentityProviders { get; }
+    
+        /// <summary>
         /// Gets the GraphServiceMe request builder.
         /// </summary>
         IUserRequestBuilder Me { get; }

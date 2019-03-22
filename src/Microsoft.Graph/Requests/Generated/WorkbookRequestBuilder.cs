@@ -98,6 +98,18 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
+        /// Gets the request builder for Comments.
+        /// </summary>
+        /// <returns>The <see cref="IWorkbookCommentsCollectionRequestBuilder"/>.</returns>
+        public IWorkbookCommentsCollectionRequestBuilder Comments
+        {
+            get
+            {
+                return new WorkbookCommentsCollectionRequestBuilder(this.AppendSegmentToRequestUrl("comments"), this.Client);
+            }
+        }
+
+        /// <summary>
         /// Gets the request builder for Functions.
         /// </summary>
         /// <returns>The <see cref="IWorkbookFunctionsRequestBuilder"/>.</returns>

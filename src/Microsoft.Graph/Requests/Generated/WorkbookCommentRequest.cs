@@ -16,17 +16,17 @@ namespace Microsoft.Graph
     using System.Linq.Expressions;
 
     /// <summary>
-    /// The type WorkbookRequest.
+    /// The type WorkbookCommentRequest.
     /// </summary>
-    public partial class WorkbookRequest : BaseRequest, IWorkbookRequest
+    public partial class WorkbookCommentRequest : BaseRequest, IWorkbookCommentRequest
     {
         /// <summary>
-        /// Constructs a new WorkbookRequest.
+        /// Constructs a new WorkbookCommentRequest.
         /// </summary>
         /// <param name="requestUrl">The URL for the built request.</param>
         /// <param name="client">The <see cref="IBaseClient"/> for handling requests.</param>
         /// <param name="options">Query and header option name value pairs for the request.</param>
-        public WorkbookRequest(
+        public WorkbookCommentRequest(
             string requestUrl,
             IBaseClient client,
             IEnumerable<Option> options)
@@ -35,32 +35,32 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Creates the specified Workbook using POST.
+        /// Creates the specified WorkbookComment using POST.
         /// </summary>
-        /// <param name="workbookToCreate">The Workbook to create.</param>
-        /// <returns>The created Workbook.</returns>
-        public System.Threading.Tasks.Task<Workbook> CreateAsync(Workbook workbookToCreate)
+        /// <param name="workbookCommentToCreate">The WorkbookComment to create.</param>
+        /// <returns>The created WorkbookComment.</returns>
+        public System.Threading.Tasks.Task<WorkbookComment> CreateAsync(WorkbookComment workbookCommentToCreate)
         {
-            return this.CreateAsync(workbookToCreate, CancellationToken.None);
+            return this.CreateAsync(workbookCommentToCreate, CancellationToken.None);
         }
 
         /// <summary>
-        /// Creates the specified Workbook using POST.
+        /// Creates the specified WorkbookComment using POST.
         /// </summary>
-        /// <param name="workbookToCreate">The Workbook to create.</param>
+        /// <param name="workbookCommentToCreate">The WorkbookComment to create.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
-        /// <returns>The created Workbook.</returns>
-        public async System.Threading.Tasks.Task<Workbook> CreateAsync(Workbook workbookToCreate, CancellationToken cancellationToken)
+        /// <returns>The created WorkbookComment.</returns>
+        public async System.Threading.Tasks.Task<WorkbookComment> CreateAsync(WorkbookComment workbookCommentToCreate, CancellationToken cancellationToken)
         {
             this.ContentType = "application/json";
             this.Method = "POST";
-            var newEntity = await this.SendAsync<Workbook>(workbookToCreate, cancellationToken).ConfigureAwait(false);
+            var newEntity = await this.SendAsync<WorkbookComment>(workbookCommentToCreate, cancellationToken).ConfigureAwait(false);
             this.InitializeCollectionProperties(newEntity);
             return newEntity;
         }
 
         /// <summary>
-        /// Deletes the specified Workbook.
+        /// Deletes the specified WorkbookComment.
         /// </summary>
         /// <returns>The task to await.</returns>
         public System.Threading.Tasks.Task DeleteAsync()
@@ -69,59 +69,59 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Deletes the specified Workbook.
+        /// Deletes the specified WorkbookComment.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The task to await.</returns>
         public async System.Threading.Tasks.Task DeleteAsync(CancellationToken cancellationToken)
         {
             this.Method = "DELETE";
-            await this.SendAsync<Workbook>(null, cancellationToken).ConfigureAwait(false);
+            await this.SendAsync<WorkbookComment>(null, cancellationToken).ConfigureAwait(false);
         }
 
         /// <summary>
-        /// Gets the specified Workbook.
+        /// Gets the specified WorkbookComment.
         /// </summary>
-        /// <returns>The Workbook.</returns>
-        public System.Threading.Tasks.Task<Workbook> GetAsync()
+        /// <returns>The WorkbookComment.</returns>
+        public System.Threading.Tasks.Task<WorkbookComment> GetAsync()
         {
             return this.GetAsync(CancellationToken.None);
         }
 
         /// <summary>
-        /// Gets the specified Workbook.
+        /// Gets the specified WorkbookComment.
         /// </summary>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
-        /// <returns>The Workbook.</returns>
-        public async System.Threading.Tasks.Task<Workbook> GetAsync(CancellationToken cancellationToken)
+        /// <returns>The WorkbookComment.</returns>
+        public async System.Threading.Tasks.Task<WorkbookComment> GetAsync(CancellationToken cancellationToken)
         {
             this.Method = "GET";
-            var retrievedEntity = await this.SendAsync<Workbook>(null, cancellationToken).ConfigureAwait(false);
+            var retrievedEntity = await this.SendAsync<WorkbookComment>(null, cancellationToken).ConfigureAwait(false);
             this.InitializeCollectionProperties(retrievedEntity);
             return retrievedEntity;
         }
 
         /// <summary>
-        /// Updates the specified Workbook using PATCH.
+        /// Updates the specified WorkbookComment using PATCH.
         /// </summary>
-        /// <param name="workbookToUpdate">The Workbook to update.</param>
-        /// <returns>The updated Workbook.</returns>
-        public System.Threading.Tasks.Task<Workbook> UpdateAsync(Workbook workbookToUpdate)
+        /// <param name="workbookCommentToUpdate">The WorkbookComment to update.</param>
+        /// <returns>The updated WorkbookComment.</returns>
+        public System.Threading.Tasks.Task<WorkbookComment> UpdateAsync(WorkbookComment workbookCommentToUpdate)
         {
-            return this.UpdateAsync(workbookToUpdate, CancellationToken.None);
+            return this.UpdateAsync(workbookCommentToUpdate, CancellationToken.None);
         }
 
         /// <summary>
-        /// Updates the specified Workbook using PATCH.
+        /// Updates the specified WorkbookComment using PATCH.
         /// </summary>
-        /// <param name="workbookToUpdate">The Workbook to update.</param>
+        /// <param name="workbookCommentToUpdate">The WorkbookComment to update.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
-        /// <returns>The updated Workbook.</returns>
-        public async System.Threading.Tasks.Task<Workbook> UpdateAsync(Workbook workbookToUpdate, CancellationToken cancellationToken)
+        /// <returns>The updated WorkbookComment.</returns>
+        public async System.Threading.Tasks.Task<WorkbookComment> UpdateAsync(WorkbookComment workbookCommentToUpdate, CancellationToken cancellationToken)
         {
             this.ContentType = "application/json";
             this.Method = "PATCH";
-            var updatedEntity = await this.SendAsync<Workbook>(workbookToUpdate, cancellationToken).ConfigureAwait(false);
+            var updatedEntity = await this.SendAsync<WorkbookComment>(workbookCommentToUpdate, cancellationToken).ConfigureAwait(false);
             this.InitializeCollectionProperties(updatedEntity);
             return updatedEntity;
         }
@@ -131,7 +131,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="value">The expand value.</param>
         /// <returns>The request object to send.</returns>
-        public IWorkbookRequest Expand(string value)
+        public IWorkbookCommentRequest Expand(string value)
         {
             this.QueryOptions.Add(new QueryOption("$expand", value));
             return this;
@@ -142,7 +142,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="expandExpression">The expression from which to calculate the expand value.</param>
         /// <returns>The request object to send.</returns>
-        public IWorkbookRequest Expand(Expression<Func<Workbook, object>> expandExpression)
+        public IWorkbookCommentRequest Expand(Expression<Func<WorkbookComment, object>> expandExpression)
         {
 		    if (expandExpression == null)
             {
@@ -166,7 +166,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="value">The select value.</param>
         /// <returns>The request object to send.</returns>
-        public IWorkbookRequest Select(string value)
+        public IWorkbookCommentRequest Select(string value)
         {
             this.QueryOptions.Add(new QueryOption("$select", value));
             return this;
@@ -177,7 +177,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="selectExpression">The expression from which to calculate the select value.</param>
         /// <returns>The request object to send.</returns>
-        public IWorkbookRequest Select(Expression<Func<Workbook, object>> selectExpression)
+        public IWorkbookCommentRequest Select(Expression<Func<WorkbookComment, object>> selectExpression)
         {
             if (selectExpression == null)
             {
@@ -199,72 +199,24 @@ namespace Microsoft.Graph
         /// <summary>
         /// Initializes any collection properties after deserialization, like next requests for paging.
         /// </summary>
-        /// <param name="workbookToInitialize">The <see cref="Workbook"/> with the collection properties to initialize.</param>
-        private void InitializeCollectionProperties(Workbook workbookToInitialize)
+        /// <param name="workbookCommentToInitialize">The <see cref="WorkbookComment"/> with the collection properties to initialize.</param>
+        private void InitializeCollectionProperties(WorkbookComment workbookCommentToInitialize)
         {
 
-            if (workbookToInitialize != null && workbookToInitialize.AdditionalData != null)
+            if (workbookCommentToInitialize != null && workbookCommentToInitialize.AdditionalData != null)
             {
 
-                if (workbookToInitialize.Names != null && workbookToInitialize.Names.CurrentPage != null)
+                if (workbookCommentToInitialize.Replies != null && workbookCommentToInitialize.Replies.CurrentPage != null)
                 {
-                    workbookToInitialize.Names.AdditionalData = workbookToInitialize.AdditionalData;
+                    workbookCommentToInitialize.Replies.AdditionalData = workbookCommentToInitialize.AdditionalData;
 
                     object nextPageLink;
-                    workbookToInitialize.AdditionalData.TryGetValue("names@odata.nextLink", out nextPageLink);
+                    workbookCommentToInitialize.AdditionalData.TryGetValue("replies@odata.nextLink", out nextPageLink);
                     var nextPageLinkString = nextPageLink as string;
 
                     if (!string.IsNullOrEmpty(nextPageLinkString))
                     {
-                        workbookToInitialize.Names.InitializeNextPageRequest(
-                            this.Client,
-                            nextPageLinkString);
-                    }
-                }
-
-                if (workbookToInitialize.Tables != null && workbookToInitialize.Tables.CurrentPage != null)
-                {
-                    workbookToInitialize.Tables.AdditionalData = workbookToInitialize.AdditionalData;
-
-                    object nextPageLink;
-                    workbookToInitialize.AdditionalData.TryGetValue("tables@odata.nextLink", out nextPageLink);
-                    var nextPageLinkString = nextPageLink as string;
-
-                    if (!string.IsNullOrEmpty(nextPageLinkString))
-                    {
-                        workbookToInitialize.Tables.InitializeNextPageRequest(
-                            this.Client,
-                            nextPageLinkString);
-                    }
-                }
-
-                if (workbookToInitialize.Worksheets != null && workbookToInitialize.Worksheets.CurrentPage != null)
-                {
-                    workbookToInitialize.Worksheets.AdditionalData = workbookToInitialize.AdditionalData;
-
-                    object nextPageLink;
-                    workbookToInitialize.AdditionalData.TryGetValue("worksheets@odata.nextLink", out nextPageLink);
-                    var nextPageLinkString = nextPageLink as string;
-
-                    if (!string.IsNullOrEmpty(nextPageLinkString))
-                    {
-                        workbookToInitialize.Worksheets.InitializeNextPageRequest(
-                            this.Client,
-                            nextPageLinkString);
-                    }
-                }
-
-                if (workbookToInitialize.Comments != null && workbookToInitialize.Comments.CurrentPage != null)
-                {
-                    workbookToInitialize.Comments.AdditionalData = workbookToInitialize.AdditionalData;
-
-                    object nextPageLink;
-                    workbookToInitialize.AdditionalData.TryGetValue("comments@odata.nextLink", out nextPageLink);
-                    var nextPageLinkString = nextPageLink as string;
-
-                    if (!string.IsNullOrEmpty(nextPageLinkString))
-                    {
-                        workbookToInitialize.Comments.InitializeNextPageRequest(
+                        workbookCommentToInitialize.Replies.InitializeNextPageRequest(
                             this.Client,
                             nextPageLinkString);
                     }
