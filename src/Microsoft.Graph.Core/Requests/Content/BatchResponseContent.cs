@@ -27,8 +27,11 @@ namespace Microsoft.Graph
         /// <param name="httpResponseMessage">A <see cref="HttpResponseMessage"/> of a batch request execution.</param>
         public BatchResponseContent(HttpResponseMessage httpResponseMessage)
         {
-            // TODO: Throw right exception
-            this.batchResponseMessage = httpResponseMessage ?? throw new ArgumentNullException("httpResponseMessage", "httpResponseMessage cannot be null.");
+            this.batchResponseMessage = httpResponseMessage ?? throw new ServiceException(new Error
+            {
+                Code = ErrorConstants.Codes.InvalidRequest,
+                Message = string.Format(ErrorConstants.Messages.NullParameter, "httpResponseMessage")
+            });
         }
 
         /// <summary>
@@ -130,10 +133,13 @@ namespace Microsoft.Graph
                 string content = await this.batchResponseMessage.Content.ReadAsStringAsync();
                 return JsonConvert.DeserializeObject<JObject>(content);
             }
-            catch (JsonReaderException ex)
+            catch (Exception ex)
             {
-                // TODO: Throw proper exception
-                throw new ServiceException(new Error { Code = "Invalid json response", Message = "Invalid json response" }, ex);
+                throw new ServiceException(new Error
+                {
+                    Code = ErrorConstants.Codes.InvalidRequest,
+                    Message = ErrorConstants.Messages.UnableToDeserializexContent
+                }, ex);
             }
         }
     }

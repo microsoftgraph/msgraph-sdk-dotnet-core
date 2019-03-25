@@ -20,8 +20,8 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
         {
             BatchRequestContent batchRequestContent = new BatchRequestContent();
 
-            Assert.IsNotNull(batchRequestContent.BatchRequestSteps);
-            Assert.IsTrue(batchRequestContent.BatchRequestSteps.Count.Equals(0));
+            Assert.IsNotNull(batchRequestContent.BatchRequestSteps, "BatchRequestSteps not initialized.");
+            Assert.IsTrue(batchRequestContent.BatchRequestSteps.Count.Equals(0), "Unexpected batchRequestSteps set.");
         }
 
         [TestMethod]
@@ -35,8 +35,8 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
 
             BatchRequestContent batchRequestContent = new BatchRequestContent(requestSteps);
 
-            Assert.IsNotNull(batchRequestContent.BatchRequestSteps);
-            Assert.IsTrue(batchRequestContent.BatchRequestSteps.Count.Equals(5));
+            Assert.IsNotNull(batchRequestContent.BatchRequestSteps, "BatchRequestSteps not initialized.");
+            Assert.IsTrue(batchRequestContent.BatchRequestSteps.Count.Equals(5), "Unexpected batchRequestSteps set.");
         }
 
         [TestMethod]
@@ -46,9 +46,9 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
             BatchRequestContent batchRequestContent = new BatchRequestContent();
             bool isSuccess = batchRequestContent.AddBatchRequestStep(batchRequestStep);
 
-            Assert.IsTrue(isSuccess);
-            Assert.IsNotNull(batchRequestContent.BatchRequestSteps);
-            Assert.IsTrue(batchRequestContent.BatchRequestSteps.Count.Equals(1));
+            Assert.IsTrue(isSuccess, "Failed to add batch request step.");
+            Assert.IsNotNull(batchRequestContent.BatchRequestSteps, "BatchRequestSteps not initialized.");
+            Assert.IsTrue(batchRequestContent.BatchRequestSteps.Count.Equals(1), "Unexpected batchRequestSteps set.");
         }
 
         [TestMethod]
@@ -58,9 +58,9 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
             BatchRequestContent batchRequestContent = new BatchRequestContent(new List<BatchRequestStep> { batchRequestStep });
             bool isSuccess = batchRequestContent.AddBatchRequestStep(batchRequestStep);
 
-            Assert.IsFalse(isSuccess);
-            Assert.IsNotNull(batchRequestContent.BatchRequestSteps);
-            Assert.IsTrue(batchRequestContent.BatchRequestSteps.Count.Equals(1));
+            Assert.IsFalse(isSuccess, "Failed to add batch request step.");
+            Assert.IsNotNull(batchRequestContent.BatchRequestSteps, "BatchRequestSteps not initialized.");
+            Assert.IsTrue(batchRequestContent.BatchRequestSteps.Count.Equals(1), "Unexpected batchRequestSteps set.");
         }
 
         [TestMethod]
@@ -71,9 +71,9 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
 
             bool isSuccess = batchRequestContent.AddBatchRequestStep(null);
 
-            Assert.IsFalse(isSuccess);
-            Assert.IsNotNull(batchRequestContent.BatchRequestSteps);
-            Assert.IsTrue(batchRequestContent.BatchRequestSteps.Count.Equals(1));
+            Assert.IsFalse(isSuccess, "Failed to add batch request step.");
+            Assert.IsNotNull(batchRequestContent.BatchRequestSteps, "BatchRequestSteps not initialized.");
+            Assert.IsTrue(batchRequestContent.BatchRequestSteps.Count.Equals(1), "Unexpected batchRequestSteps set.");
         }
 
         [TestMethod]
@@ -86,9 +86,9 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
 
             bool isSuccess = batchRequestContent.RemoveBatchRequestStepWithId("1");
 
-            Assert.IsTrue(isSuccess);
-            Assert.IsTrue(batchRequestContent.BatchRequestSteps.Count.Equals(1));
-            Assert.IsTrue(batchRequestContent.BatchRequestSteps["2"].DependsOn.Count.Equals(0));
+            Assert.IsTrue(isSuccess, "Failed to remove batch request step.");
+            Assert.IsTrue(batchRequestContent.BatchRequestSteps.Count.Equals(1), "Unexpected batchRequestSteps set.");
+            Assert.IsTrue(batchRequestContent.BatchRequestSteps["2"].DependsOn.Count.Equals(0), "Unexpected batchRequestSteps set.");
         }
 
         [TestMethod]
@@ -101,9 +101,9 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
 
             bool isSuccess = batchRequestContent.RemoveBatchRequestStepWithId("5");
 
-            Assert.IsFalse(isSuccess);
-            Assert.IsTrue(batchRequestContent.BatchRequestSteps.Count.Equals(2));
-            Assert.AreSame(batchRequestStep2.DependsOn.First(), batchRequestContent.BatchRequestSteps["2"].DependsOn.First());
+            Assert.IsFalse(isSuccess, "Failed to remove batch request step.");
+            Assert.IsTrue(batchRequestContent.BatchRequestSteps.Count.Equals(2), "Unexpected batchRequestSteps set.");
+            Assert.AreSame(batchRequestStep2.DependsOn.First(), batchRequestContent.BatchRequestSteps["2"].DependsOn.First(), "Unexpected depends on set.");
         }
 
         [TestMethod]
@@ -123,9 +123,9 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
 
             JObject requestContent = await batchRequestContent.GetBatchRequestContentAsync();
 
-            Assert.IsNotNull(requestContent);
-            Assert.IsTrue(batchRequestContent.BatchRequestSteps.Count.Equals(1));
-            Assert.AreEqual(expectedContent.ToString(), requestContent.ToString());
+            Assert.IsNotNull(requestContent, "Unexpected response content returned.");
+            Assert.IsTrue(batchRequestContent.BatchRequestSteps.Count.Equals(1), "Unexpected batchRequestSteps set.");
+            Assert.AreEqual(expectedContent.ToString(), requestContent.ToString(), "Unexpected response content returned.");
         }
     }
 }

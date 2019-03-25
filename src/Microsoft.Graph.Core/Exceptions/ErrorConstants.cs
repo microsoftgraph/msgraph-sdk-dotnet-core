@@ -54,6 +54,10 @@ namespace Microsoft.Graph
             internal static string UnexpectedExceptionResponse = "Unexpected exception returned from the service.";
 
             internal static string MaximumValueExceeded = "{0} exceeds the maximum value of {1}.";
+
+            internal static string NullParameter = "{0} parameter cannot be null.";
+
+            internal static string UnableToDeserializexContent = "Unable to deserialize content.";
         }
     }
 }

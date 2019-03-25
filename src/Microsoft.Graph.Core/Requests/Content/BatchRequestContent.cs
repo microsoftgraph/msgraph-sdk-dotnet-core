@@ -42,14 +42,20 @@ namespace Microsoft.Graph
         /// <param name="batchRequestSteps">A list of <see cref="BatchRequestStep"/> to add to the batch request content.</param>
         public BatchRequestContent(IList<BatchRequestStep> batchRequestSteps)
         {
-            // TODO: Throw right exception
             if(batchRequestSteps == null)
-                throw new ArgumentNullException("batchRequestSteps", "batchRequestSteps cannot be null.");
+                throw new ServiceException(new Error
+                {
+                    Code = ErrorConstants.Codes.InvalidRequest,
+                    Message = string.Format(ErrorConstants.Messages.NullParameter, "batchRequestSteps")
+                });
 
             this.Headers.Add("Content-Type", "application/json");
-            // TODO: Handle null or empty case
+
             if (batchRequestSteps.Count() > MAX_NUMBER_OF_REQUESTS)
-                throw new ArgumentException("Number of batch request steps cannot exceed " + MAX_NUMBER_OF_REQUESTS);
+                throw new ServiceException(new Error {
+                    Code = ErrorConstants.Codes.MaximumValueExceeded,
+                    Message = string.Format(ErrorConstants.Messages.MaximumValueExceeded, "Number of batch request steps", MAX_NUMBER_OF_REQUESTS)
+                });
 
             BatchRequestSteps = new Dictionary<string, BatchRequestStep>();
             foreach (BatchRequestStep requestStep in batchRequestSteps)
@@ -116,15 +122,7 @@ namespace Microsoft.Graph
 
             if(batchRequestStep.Request != null && batchRequestStep.Request.Content != null)
             {
-                try
-                {
-                    jRequestContent.Add("body", await GetRequestContentAsync(batchRequestStep.Request));
-                }
-                catch (Exception ex)
-                {
-                    // TODO: Throw right exception
-                    throw;
-                }
+                jRequestContent.Add("body", await GetRequestContentAsync(batchRequestStep.Request));
             }
 
             return jRequestContent;
@@ -132,9 +130,20 @@ namespace Microsoft.Graph
 
         private async Task<JObject> GetRequestContentAsync(HttpRequestMessage request)
         {
-            HttpRequestMessage clonedRequest = await request.CloneAsync();
-            byte[] content = await clonedRequest.Content.ReadAsByteArrayAsync();
-            return JsonConvert.DeserializeObject<JObject>(Encoding.UTF8.GetString(content, 0, content.Length));
+            try
+            {
+                HttpRequestMessage clonedRequest = await request.CloneAsync();
+                byte[] content = await clonedRequest.Content.ReadAsByteArrayAsync();
+                return JsonConvert.DeserializeObject<JObject>(Encoding.UTF8.GetString(content, 0, content.Length));
+            }
+            catch (Exception ex)
+            {
+                throw new ServiceException(new Error
+                {
+                    Code = ErrorConstants.Codes.InvalidRequest,
+                    Message = ErrorConstants.Messages.UnableToDeserializexContent
+                }, ex);
+            }
         }
 
         private JObject GetContentHeader(HttpContentHeaders headers)
@@ -144,7 +153,6 @@ namespace Microsoft.Graph
             {
                 jHeaders.Add(header.Key, GetHeaderValuesAsString(header.Value));
             }
-
             return jHeaders;
         }
 

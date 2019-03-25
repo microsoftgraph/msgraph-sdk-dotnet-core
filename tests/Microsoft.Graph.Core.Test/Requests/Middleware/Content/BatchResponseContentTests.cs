@@ -23,9 +23,9 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
             Dictionary<string, HttpResponseMessage> responses = await batchResponseContent.GetResponsesAsync();
             HttpResponseMessage httpResponse = await batchResponseContent.GetResponseByIdAsync("1");
 
-            Assert.IsNotNull(responses);
-            Assert.IsNull(httpResponse);
-            Assert.IsTrue(responses.Count.Equals(0));
+            Assert.IsNotNull(responses, "Unexpected http responses returned.");
+            Assert.IsTrue(responses.Count.Equals(0), "Unexpected number of http responses returned.");
+            Assert.IsNull(httpResponse, "Unexpected http response returned.");
         }
 
         [TestMethod]
@@ -41,16 +41,18 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
             Dictionary<string, HttpResponseMessage> responses = await batchResponseContent.GetResponsesAsync();
             HttpResponseMessage httpResponse = await batchResponseContent.GetResponseByIdAsync("1");
 
-            Assert.IsNotNull(responses);
-            Assert.IsNull(httpResponse);
-            Assert.IsTrue(responses.Count.Equals(0));
+            Assert.IsNotNull(responses, "Unexpected http responses returned.");
+            Assert.IsNull(httpResponse, "Unexpected http response returned.");
+            Assert.IsTrue(responses.Count.Equals(0), "Unexpected number of http responses returned.");
         }
 
         [TestMethod]
         public void BatchResponseContent_InitializeWithNullResponseMessage()
         {
-            // TODO: Expound test
-            ArgumentNullException ex = Assert.ThrowsException<ArgumentNullException>(() => new BatchResponseContent(null));
+            ServiceException ex = Assert.ThrowsException<ServiceException>(() => new BatchResponseContent(null));
+
+            Assert.AreEqual(ErrorConstants.Codes.InvalidRequest, ex.Error.Code, "Unexpected error code set.");
+            Assert.AreEqual(string.Format(ErrorConstants.Messages.NullParameter, "httpResponseMessage"), ex.Error.Message, "Unexpected error message set.");
         }
 
         [TestMethod]
@@ -84,12 +86,12 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
 
             Dictionary<string, HttpResponseMessage> responses = await batchResponseContent.GetResponsesAsync();
 
-            Assert.IsNotNull(responses);
-            Assert.IsTrue(responses.Count.Equals(3));
-            Assert.IsFalse(responses["1"].Headers.CacheControl.NoStore);
-            Assert.IsTrue(responses["2"].Headers.CacheControl.NoCache);
-            Assert.IsTrue(responses["2"].Headers.CacheControl.NoStore);
-            Assert.AreEqual(responses["3"].StatusCode, HttpStatusCode.Created);
+            Assert.IsNotNull(responses, "Unexpected http responses returned.");
+            Assert.IsTrue(responses.Count.Equals(3), "Unexpected number of http responses returned.");
+            Assert.IsFalse(responses["1"].Headers.CacheControl.NoStore, "Unexpected http header set.");
+            Assert.IsTrue(responses["2"].Headers.CacheControl.NoCache, "Unexpected http header set.");
+            Assert.IsTrue(responses["2"].Headers.CacheControl.NoStore, "Unexpected http header set.");
+            Assert.AreEqual(responses["3"].StatusCode, HttpStatusCode.Created, "Unexpected http status code set.");
         }
 
         [TestMethod]
@@ -117,9 +119,9 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
 
             HttpResponseMessage response = await batchResponseContent.GetResponseByIdAsync("2");
 
-            Assert.IsNotNull(response);
-            Assert.AreEqual(response.StatusCode, HttpStatusCode.Conflict);
-            Assert.IsTrue(response.Headers.CacheControl.NoCache);
+            Assert.IsNotNull(response, "Unexpected http responses returned.");
+            Assert.AreEqual(response.StatusCode, HttpStatusCode.Conflict, "Unexpected http status code set.");
+            Assert.IsTrue(response.Headers.CacheControl.NoCache, "Unexpected http header set.");
         }
     }
 }

@@ -34,9 +34,18 @@ namespace Microsoft.Graph
         /// <param name="dependsOn">An OPTIONAL array of batch request ids specifying the order of execution for individual batch requests.</param>
         public BatchRequestStep(string requestId, HttpRequestMessage httpRequestMessage, List<string> dependsOn = null)
         {
-            // TODO: Throw right exception
-            RequestId = requestId ?? throw new ArgumentNullException("requestId", "requestId cannot be null."); ;
-            Request = httpRequestMessage ?? throw new ArgumentNullException("httpRequestMessage", "httpRequestMessage cannot be null."); ;
+            RequestId = requestId ?? throw new ServiceException(new Error
+            {
+                Code = ErrorConstants.Codes.InvalidRequest,
+                Message = string.Format(ErrorConstants.Messages.NullParameter, "requestId")
+            });
+
+            Request = httpRequestMessage ?? throw new ServiceException(new Error
+            {
+                Code = ErrorConstants.Codes.InvalidRequest,
+                Message = string.Format(ErrorConstants.Messages.NullParameter, "httpRequestMessage")
+            });
+
             DependsOn = dependsOn;
         }
     }

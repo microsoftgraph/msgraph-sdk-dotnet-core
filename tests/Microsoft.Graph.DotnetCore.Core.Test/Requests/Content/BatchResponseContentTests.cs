@@ -48,8 +48,10 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
         [Fact]
         public void BatchResponseContent_InitializeWithNullResponseMessage()
         {
-            // TODO: Expound test
-            ArgumentNullException ex = Assert.Throws<ArgumentNullException>(() => new BatchResponseContent(null));
+            ServiceException ex = Assert.Throws<ServiceException>(() => new BatchResponseContent(null));
+
+            Assert.Equal(ErrorConstants.Codes.InvalidRequest, ex.Error.Code);
+            Assert.Equal(string.Format(ErrorConstants.Messages.NullParameter, "httpResponseMessage"), ex.Error.Message);
         }
 
         [Fact]
