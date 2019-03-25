@@ -14,12 +14,12 @@ namespace Microsoft.Graph
     using System.Text;
     using System.Threading.Tasks;
     /// <summary>
-    /// A class that handles batch request responses.
+    /// Handles batch request responses.
     /// </summary>
     public class BatchResponseContent
     {
-        private HttpResponseMessage batchResponseMessage;
         private JObject jBatchResponseObject;
+        private HttpResponseMessage batchResponseMessage;
 
         /// <summary>
         /// Constructs a new <see cref="BatchResponseContent"/>
@@ -27,6 +27,7 @@ namespace Microsoft.Graph
         /// <param name="httpResponseMessage">A <see cref="HttpResponseMessage"/> of a batch request execution.</param>
         public BatchResponseContent(HttpResponseMessage httpResponseMessage)
         {
+            // TODO: Throw right exception
             this.batchResponseMessage = httpResponseMessage ?? throw new ArgumentNullException("httpResponseMessage", "httpResponseMessage cannot be null.");
         }
 
@@ -36,11 +37,10 @@ namespace Microsoft.Graph
         /// <returns>A Dictionary of id and <see cref="HttpResponseMessage"/> representing batch responses.</returns>
         public async Task<Dictionary<string, HttpResponseMessage>> GetResponsesAsync()
         {
+            Dictionary<string, HttpResponseMessage> responseMessages = new Dictionary<string, HttpResponseMessage>();
             jBatchResponseObject = jBatchResponseObject ?? await GetBatchResponseContentAsync();
             if (jBatchResponseObject == null)
-                return null;
-
-            Dictionary<string, HttpResponseMessage> responseMessages = new Dictionary<string, HttpResponseMessage>();
+                return responseMessages;
 
             if(jBatchResponseObject.TryGetValue("responses", out JToken jResponses))
             {
@@ -125,8 +125,16 @@ namespace Microsoft.Graph
             if (this.batchResponseMessage.Content == null)
                 return null;
 
-            string content = await this.batchResponseMessage.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<JObject>(content);
+            try
+            {
+                string content = await this.batchResponseMessage.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<JObject>(content);
+            }
+            catch (JsonReaderException ex)
+            {
+                // TODO: Throw proper exception
+                throw new ServiceException(new Error { Code = "Invalid json response", Message = "Invalid json response" }, ex);
+            }
         }
     }
 }

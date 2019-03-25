@@ -42,6 +42,10 @@ namespace Microsoft.Graph
         /// <param name="batchRequestSteps">A list of <see cref="BatchRequestStep"/> to add to the batch request content.</param>
         public BatchRequestContent(IList<BatchRequestStep> batchRequestSteps)
         {
+            // TODO: Throw right exception
+            if(batchRequestSteps == null)
+                throw new ArgumentNullException("batchRequestSteps", "batchRequestSteps cannot be null.");
+
             this.Headers.Add("Content-Type", "application/json");
             // TODO: Handle null or empty case
             if (batchRequestSteps.Count() > MAX_NUMBER_OF_REQUESTS)
@@ -59,7 +63,7 @@ namespace Microsoft.Graph
         /// <returns>True or false based on addition or not addition of the provided <see cref="BatchRequestStep"/>. </returns>
         public bool AddBatchRequestStep(BatchRequestStep batchRequestStep)
         {
-            if (BatchRequestSteps.ContainsKey(batchRequestStep.RequestId))
+            if (batchRequestStep == null || BatchRequestSteps.ContainsKey(batchRequestStep.RequestId))
                 return false;
             BatchRequestSteps.Add(batchRequestStep.RequestId, batchRequestStep);
             return true;
@@ -85,7 +89,7 @@ namespace Microsoft.Graph
             return isRemoved;
         }
 
-        private async Task<JObject> GetBatchRequestContentAsync()
+        internal async Task<JObject> GetBatchRequestContentAsync()
         {
             JObject batchRequest = new JObject();
             JArray batchRequestItems = new JArray();
