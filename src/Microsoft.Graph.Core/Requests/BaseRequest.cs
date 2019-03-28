@@ -202,6 +202,10 @@ namespace Microsoft.Graph
             {
                 using (var request = this.GetHttpRequestMessage(cancellationToken))
                 {
+                    // Only call `AuthenticateRequestAsync` when a custom IHttpProvider is used.
+                    if (this.Client.HttpProvider.GetType() != typeof(HttpProvider))
+                        await this.AuthenticateRequestAsync(request);
+
                     request.Content = multipartContent;
 
                     return await this.Client.HttpProvider.SendAsync(request, completionOption, cancellationToken).ConfigureAwait(false);
@@ -237,6 +241,10 @@ namespace Microsoft.Graph
 
             using (var request = this.GetHttpRequestMessage(cancellationToken))
             {
+                // Only call `AuthenticateRequestAsync` when a custom IHttpProvider is used.
+                if (this.Client.HttpProvider.GetType() != typeof(HttpProvider))
+                    await this.AuthenticateRequestAsync(request);
+
                 if (serializableObject != null)
                 {
                     var inputStream = serializableObject as Stream;
@@ -353,6 +361,26 @@ namespace Microsoft.Graph
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// Adds the authentication header to the request. This is a patch to support request authentication for custom HttpProviders.
+        /// </summary>
+        /// <param name="request">The <see cref="HttpRequestMessage"/> representation of the request.</param>
+        /// <returns>The task to await.</returns>
+        private async Task AuthenticateRequestAsync(HttpRequestMessage request)
+        {
+            if (this.Client.AuthenticationProvider == null)
+            {
+                throw new ServiceException(
+                    new Error
+                    {
+                        Code = ErrorConstants.Codes.InvalidRequest,
+                        Message = ErrorConstants.Messages.AuthenticationProviderMissing,
+                    });
+            }
+
+            await Client.AuthenticationProvider.AuthenticateRequestAsync(request);
         }
 
         /// <summary>
