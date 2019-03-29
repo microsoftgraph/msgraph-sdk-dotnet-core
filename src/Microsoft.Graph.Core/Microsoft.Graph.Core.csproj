@@ -15,6 +15,7 @@
     <PackageReleaseNotes>
 March 2019 Release Summary (version 1.14.1)
 
+- Fixes #413 - Slow middleware handler requests.
 - Fixes #417 - Custom IHttpProvider uses IAuthenticationProvider set in the GraphServiceClient constructor.
     </PackageReleaseNotes>
     <PackageProjectUrl>https://developer.microsoft.com/graph</PackageProjectUrl>

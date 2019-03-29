@@ -59,6 +59,7 @@
     <Compile Include="Helpers\ExtractSelectHelperTest.cs" />
     <Compile Include="Helpers\StringHelperTests.cs" />
     <Compile Include="Helpers\UrlHelperTests.cs" />
+    <Compile Include="Mocks\MockCustomHttpProvider.cs" />
     <Compile Include="Mocks\MockProgress.cs" />
     <Compile Include="Mocks\MockRedirectHandler.cs" />
     <Compile Include="Requests\AsyncMonitorTests.cs" />
