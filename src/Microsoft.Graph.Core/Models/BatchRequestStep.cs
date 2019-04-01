@@ -17,10 +17,12 @@ namespace Microsoft.Graph
         /// A unique batch request id property.
         /// </summary>
         public string RequestId { get; private set; }
+
         /// <summary>
         /// A http request message for an individual batch request operation.
         /// </summary>
         public HttpRequestMessage Request { get; private set; }
+
         /// <summary>
         /// An OPTIONAL array of batch request ids specifying the order of execution for individual batch requests.
         /// </summary>

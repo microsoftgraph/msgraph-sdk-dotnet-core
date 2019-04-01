@@ -39,6 +39,18 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
         }
 
         [Fact]
+        public void BatchRequestContent_InitializeWithInvalidDependsOnIds()
+        {
+            BatchRequestStep batchRequestStep1 = new BatchRequestStep("1", new HttpRequestMessage(HttpMethod.Get, REQUEST_URL));
+            BatchRequestStep batchRequestStep2 = new BatchRequestStep("2", new HttpRequestMessage(HttpMethod.Get, REQUEST_URL), new List<string> { "3" });
+
+            ClientException ex = Assert.Throws<ClientException>(() => new BatchRequestContent(batchRequestStep1, batchRequestStep2));
+
+            Assert.Equal(ErrorConstants.Codes.InvalidArgument, ex.Error.Code);
+            Assert.Equal(ErrorConstants.Messages.InvalidDependsOnRequestId, ex.Error.Message);
+        }
+
+        [Fact]
         public void BatchRequestContent_AddBatchRequestStepWithNewRequestStep()
         {
             BatchRequestStep batchRequestStep = new BatchRequestStep("1", new HttpRequestMessage(HttpMethod.Get, REQUEST_URL));

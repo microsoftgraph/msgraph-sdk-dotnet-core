@@ -56,8 +56,19 @@ namespace Microsoft.Graph
             this.Headers.Add(CoreConstants.Headers.ContentTypeHeaderName, CoreConstants.Headers.JsonContentType);
 
             BatchRequestSteps = new Dictionary<string, BatchRequestStep>();
+
             foreach (BatchRequestStep requestStep in batchRequestSteps)
+            {
+                if(requestStep.DependsOn != null && !ContainsCorrespondingRequestId(requestStep.DependsOn))
+                {
+                    throw new ClientException(new Error
+                    {
+                        Code = ErrorConstants.Codes.InvalidArgument,
+                        Message = ErrorConstants.Messages.InvalidDependsOnRequestId
+                    });
+                }
                 AddBatchRequestStep(requestStep);
+            }
         }
 
         /// <summary>
@@ -112,6 +123,16 @@ namespace Microsoft.Graph
             batchRequest.Add(CoreConstants.BatchRequest.Requests, batchRequestItems);
 
             return batchRequest;
+        }
+
+        private bool ContainsCorrespondingRequestId(IList<string> dependsOn)
+        {
+            foreach (string requestId in dependsOn)
+            {
+                if(!BatchRequestSteps.ContainsKey(requestId))
+                    return false;
+            }
+            return true;
         }
 
         private async Task<JObject> GetBatchRequestContentFromStepAsync(BatchRequestStep batchRequestStep)
