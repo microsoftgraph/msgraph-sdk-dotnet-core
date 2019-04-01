@@ -8,6 +8,7 @@ namespace Microsoft.Graph
     using Newtonsoft.Json.Linq;
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
@@ -27,10 +28,10 @@ namespace Microsoft.Graph
         /// <param name="httpResponseMessage">A <see cref="HttpResponseMessage"/> of a batch request execution.</param>
         public BatchResponseContent(HttpResponseMessage httpResponseMessage)
         {
-            this.batchResponseMessage = httpResponseMessage ?? throw new ServiceException(new Error
+            this.batchResponseMessage = httpResponseMessage ?? throw new ClientException(new Error
             {
-                Code = ErrorConstants.Codes.InvalidRequest,
-                Message = string.Format(ErrorConstants.Messages.NullParameter, "httpResponseMessage")
+                Code = ErrorConstants.Codes.InvalidArgument,
+                Message = string.Format(ErrorConstants.Messages.NullParameter, nameof(httpResponseMessage))
             });
         }
 
@@ -45,10 +46,10 @@ namespace Microsoft.Graph
             if (jBatchResponseObject == null)
                 return responseMessages;
 
-            if(jBatchResponseObject.TryGetValue("responses", out JToken jResponses))
+            if(jBatchResponseObject.TryGetValue(CoreConstants.BatchRequest.Responses, out JToken jResponses))
             {
                 foreach (JObject jResponseItem in jResponses)
-                    responseMessages.Add(jResponseItem.GetValue("id").ToString(), GetResponseMessageFromJObject(jResponseItem));
+                    responseMessages.Add(jResponseItem.GetValue(CoreConstants.BatchRequest.Id).ToString(), GetResponseMessageFromJObject(jResponseItem));
             }
             return responseMessages;
         }
@@ -66,9 +67,9 @@ namespace Microsoft.Graph
 
             JObject jResponseItem = null;
 
-            if (jBatchResponseObject.TryGetValue("responses", out JToken jResponses))
+            if (jBatchResponseObject.TryGetValue(CoreConstants.BatchRequest.Responses, out JToken jResponses))
             {
-                jResponseItem = jResponses.FirstOrDefault((jtoken) => jtoken.Value<string>("id").Equals(requestId)) as JObject;
+                jResponseItem = jResponses.FirstOrDefault((jtoken) => jtoken.Value<string>(CoreConstants.BatchRequest.Id).Equals(requestId)) as JObject;
             }
 
             return GetResponseMessageFromJObject(jResponseItem);
@@ -84,7 +85,7 @@ namespace Microsoft.Graph
             if (jBatchResponseObject == null)
                 return null;
 
-            return jBatchResponseObject.GetValue("@nextLink")?.ToString();
+            return jBatchResponseObject.GetValue(CoreConstants.BatchRequest.ODataNextLink)?.ToString();
         }
 
         /// <summary>
@@ -99,17 +100,17 @@ namespace Microsoft.Graph
 
             HttpResponseMessage responseMessage = new HttpResponseMessage();
 
-            if (jResponseItem.TryGetValue("status", out JToken status))
+            if (jResponseItem.TryGetValue(CoreConstants.BatchRequest.Status, out JToken status))
             {
                 responseMessage.StatusCode = (HttpStatusCode)int.Parse(status.ToString());
             }
 
-            if (jResponseItem.TryGetValue("body", out JToken body))
+            if (jResponseItem.TryGetValue(CoreConstants.BatchRequest.Body, out JToken body))
             {
-                responseMessage.Content = new StringContent(body.ToString(), Encoding.UTF8, "application/json");
+                responseMessage.Content = new StringContent(body.ToString(), Encoding.UTF8, CoreConstants.Headers.JsonContentType);
             }
 
-            if (jResponseItem.TryGetValue("headers", out JToken headers))
+            if (jResponseItem.TryGetValue(CoreConstants.BatchRequest.Headers, out JToken headers))
             {
                 foreach (KeyValuePair<string, string> headerKeyValue in headers.ToObject<Dictionary<string, string>>())
                 {
@@ -130,12 +131,13 @@ namespace Microsoft.Graph
 
             try
             {
-                string content = await this.batchResponseMessage.Content.ReadAsStringAsync();
-                return JsonConvert.DeserializeObject<JObject>(content);
+                Stream streamContent = await this.batchResponseMessage.Content.ReadAsStreamAsync();
+                StreamReader streamReader = new StreamReader(streamContent);
+                return JObject.Load(new JsonTextReader(streamReader));
             }
             catch (Exception ex)
             {
-                throw new ServiceException(new Error
+                throw new ClientException(new Error
                 {
                     Code = ErrorConstants.Codes.InvalidRequest,
                     Message = ErrorConstants.Messages.UnableToDeserializexContent

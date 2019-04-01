@@ -41,6 +41,12 @@ namespace Microsoft.Graph
 
             /// Feature Flag
             public const string FeatureFlag = "FeatureFlag";
+
+            /// Contnet type header name
+            public const string ContentTypeHeaderName = "Content-Type";
+
+            /// JSON content type value
+            public const string JsonContentType = "application/json";
         }
 
         /// <summary>
@@ -50,6 +56,38 @@ namespace Microsoft.Graph
         {
             /// OData type
             public const string ODataType = "@odata.type";
+        }
+
+        /// <summary>
+        /// Batch request constants.
+        /// </summary>
+        public static class BatchRequest
+        {
+            /// <summary>
+            /// Maximum number of individual requests.
+            /// </summary>
+            public const int MaxNumberOfRequests = 20;
+
+            internal const string ODataNextLink = "@nextLink";
+
+            internal const string Id = "id";
+
+            internal const string Url = "url";
+
+            internal const string Body = "body";
+
+            internal const string DependsOn = "dependsOn";
+
+            internal const string Method = "method";
+
+            internal const string Requests = "requests";
+
+            internal const string Responses = "responses";
+
+            internal const string Status = "status";
+
+            internal const string Headers = "headers";
+
         }
     }
 }

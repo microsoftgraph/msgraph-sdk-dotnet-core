@@ -23,6 +23,8 @@ namespace Microsoft.Graph
             internal static string TooManyRetries = "tooManyRetries";
 
             internal static string MaximumValueExceeded = "MaximumValueExceeded";
+
+            internal static string InvalidArgument = "invalidArgument";
         }
 
         internal static class Messages

@@ -48,9 +48,9 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
         [Fact]
         public void BatchResponseContent_InitializeWithNullResponseMessage()
         {
-            ServiceException ex = Assert.Throws<ServiceException>(() => new BatchResponseContent(null));
+            ClientException ex = Assert.Throws<ClientException>(() => new BatchResponseContent(null));
 
-            Assert.Equal(ErrorConstants.Codes.InvalidRequest, ex.Error.Code);
+            Assert.Equal(ErrorConstants.Codes.InvalidArgument, ex.Error.Code);
             Assert.Equal(string.Format(ErrorConstants.Messages.NullParameter, "httpResponseMessage"), ex.Error.Message);
         }
 

@@ -65,8 +65,6 @@
     <Compile Include="Requests\Middleware\AuthenticationHandlerTests.cs" />
     <Compile Include="Requests\BaseRequestBuilderTests.cs" />
     <Compile Include="Requests\GraphClientFactoryTests.cs" />
-    <Compile Include="Requests\Middleware\Content\BatchRequestContentTests.cs" />
-    <Compile Include="Requests\Middleware\Content\BatchResponseContentTests.cs" />
     <Compile Include="Requests\Middleware\Options\RedirectHandlerOptionTests.cs" />
     <Compile Include="Requests\Middleware\Options\RetrytHandlerOptionTests.cs" />
     <Compile Include="Requests\Middleware\RedirectHandlerTests.cs" />

@@ -14,13 +14,13 @@ namespace Microsoft.Graph
     public class BatchRequestStep
     {
         /// <summary>
-        /// A batch request id property.
+        /// A unique batch request id property.
         /// </summary>
-        public string RequestId { get; set; }
+        public string RequestId { get; private set; }
         /// <summary>
         /// A http request message for an individual batch request operation.
         /// </summary>
-        public HttpRequestMessage Request { get; set; }
+        public HttpRequestMessage Request { get; private set; }
         /// <summary>
         /// An OPTIONAL array of batch request ids specifying the order of execution for individual batch requests.
         /// </summary>
@@ -29,21 +29,22 @@ namespace Microsoft.Graph
         /// <summary>
         /// Constructs a new <see cref="BatchRequestStep"/>.
         /// </summary>
-        /// <param name="requestId">A batch request id.</param>
+        /// <param name="requestId">A unique batch request id.</param>
         /// <param name="httpRequestMessage">A http request message for an individual batch request operation.</param>
         /// <param name="dependsOn">An OPTIONAL array of batch request ids specifying the order of execution for individual batch requests.</param>
         public BatchRequestStep(string requestId, HttpRequestMessage httpRequestMessage, List<string> dependsOn = null)
         {
-            RequestId = requestId ?? throw new ServiceException(new Error
-            {
-                Code = ErrorConstants.Codes.InvalidRequest,
-                Message = string.Format(ErrorConstants.Messages.NullParameter, "requestId")
-            });
+            RequestId = (!string.IsNullOrEmpty(requestId)) ? requestId : throw new ClientException(
+                new Error
+                {
+                    Code = ErrorConstants.Codes.InvalidArgument,
+                    Message = string.Format(ErrorConstants.Messages.NullParameter, nameof(requestId))
+                });
 
-            Request = httpRequestMessage ?? throw new ServiceException(new Error
+            Request = httpRequestMessage ?? throw new ClientException(new Error
             {
-                Code = ErrorConstants.Codes.InvalidRequest,
-                Message = string.Format(ErrorConstants.Messages.NullParameter, "httpRequestMessage")
+                Code = ErrorConstants.Codes.InvalidArgument,
+                Message = string.Format(ErrorConstants.Messages.NullParameter, nameof(httpRequestMessage))
             });
 
             DependsOn = dependsOn;

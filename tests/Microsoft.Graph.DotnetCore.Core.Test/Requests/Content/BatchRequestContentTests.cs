@@ -32,7 +32,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
                 requestSteps.Add(new BatchRequestStep(i.ToString(), new HttpRequestMessage(HttpMethod.Get, REQUEST_URL)));
             }
 
-            BatchRequestContent batchRequestContent = new BatchRequestContent(requestSteps);
+            BatchRequestContent batchRequestContent = new BatchRequestContent(requestSteps.ToArray());
 
             Assert.NotNull(batchRequestContent.BatchRequestSteps);
             Assert.True(batchRequestContent.BatchRequestSteps.Count.Equals(5));
@@ -54,7 +54,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
         public void BatchRequestContent_AddBatchRequestStepWithExistingRequestStep()
         {
             BatchRequestStep batchRequestStep = new BatchRequestStep("1", new HttpRequestMessage(HttpMethod.Get, REQUEST_URL));
-            BatchRequestContent batchRequestContent = new BatchRequestContent(new List<BatchRequestStep> { batchRequestStep });
+            BatchRequestContent batchRequestContent = new BatchRequestContent(batchRequestStep);
             bool isSuccess = batchRequestContent.AddBatchRequestStep(batchRequestStep);
 
             Assert.False(isSuccess);
@@ -66,7 +66,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
         public void BatchRequestContent_AddBatchRequestStepWithNullRequestStep()
         {
             BatchRequestStep batchRequestStep = new BatchRequestStep("1", new HttpRequestMessage(HttpMethod.Get, REQUEST_URL));
-            BatchRequestContent batchRequestContent = new BatchRequestContent(new List<BatchRequestStep> { batchRequestStep });
+            BatchRequestContent batchRequestContent = new BatchRequestContent(batchRequestStep);
 
             bool isSuccess = batchRequestContent.AddBatchRequestStep(null);
 
@@ -81,7 +81,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
             BatchRequestStep batchRequestStep1 = new BatchRequestStep("1", new HttpRequestMessage(HttpMethod.Get, REQUEST_URL));
             BatchRequestStep batchRequestStep2 = new BatchRequestStep("2", new HttpRequestMessage(HttpMethod.Get, REQUEST_URL), new List<string> { "1" });
 
-            BatchRequestContent batchRequestContent = new BatchRequestContent(new List<BatchRequestStep> { batchRequestStep1, batchRequestStep2 });
+            BatchRequestContent batchRequestContent = new BatchRequestContent(batchRequestStep1, batchRequestStep2);
 
             bool isSuccess = batchRequestContent.RemoveBatchRequestStepWithId("1");
 
@@ -96,7 +96,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
             BatchRequestStep batchRequestStep1 = new BatchRequestStep("1", new HttpRequestMessage(HttpMethod.Get, REQUEST_URL));
             BatchRequestStep batchRequestStep2 = new BatchRequestStep("2", new HttpRequestMessage(HttpMethod.Get, REQUEST_URL), new List<string> { "1" });
 
-            BatchRequestContent batchRequestContent = new BatchRequestContent(new List<BatchRequestStep> { batchRequestStep1, batchRequestStep2 });
+            BatchRequestContent batchRequestContent = new BatchRequestContent(batchRequestStep1, batchRequestStep2);
 
             bool isSuccess = batchRequestContent.RemoveBatchRequestStepWithId("5");
 

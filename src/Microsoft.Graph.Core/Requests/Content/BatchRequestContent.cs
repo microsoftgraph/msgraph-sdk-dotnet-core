@@ -21,18 +21,16 @@ namespace Microsoft.Graph
     /// </summary>
     public class BatchRequestContent: HttpContent
     {
-        private const int MAX_NUMBER_OF_REQUESTS = 20;
-
         /// <summary>
         /// A BatchRequestSteps property.
         /// </summary>
-        public IDictionary<string, BatchRequestStep> BatchRequestSteps { get; private set; }
+        public IReadOnlyDictionary<string, BatchRequestStep> BatchRequestSteps { get; private set; }
 
         /// <summary>
         /// Constructs a new <see cref="BatchRequestContent"/>.
         /// </summary>
         public BatchRequestContent()
-            :this(new List<BatchRequestStep>())
+            :this(new BatchRequestStep[] { })
         {
         }
 
@@ -40,22 +38,22 @@ namespace Microsoft.Graph
         /// Constructs a new <see cref="BatchRequestContent"/>.
         /// </summary>
         /// <param name="batchRequestSteps">A list of <see cref="BatchRequestStep"/> to add to the batch request content.</param>
-        public BatchRequestContent(IList<BatchRequestStep> batchRequestSteps)
+        public BatchRequestContent(params BatchRequestStep[] batchRequestSteps)
         {
-            if(batchRequestSteps == null)
-                throw new ServiceException(new Error
+            if (batchRequestSteps == null)
+                throw new ClientException(new Error
                 {
-                    Code = ErrorConstants.Codes.InvalidRequest,
-                    Message = string.Format(ErrorConstants.Messages.NullParameter, "batchRequestSteps")
+                    Code = ErrorConstants.Codes.InvalidArgument,
+                    Message = string.Format(ErrorConstants.Messages.NullParameter, nameof(batchRequestSteps))
                 });
 
-            this.Headers.Add("Content-Type", "application/json");
-
-            if (batchRequestSteps.Count() > MAX_NUMBER_OF_REQUESTS)
-                throw new ServiceException(new Error {
+            if (batchRequestSteps.Count() > CoreConstants.BatchRequest.MaxNumberOfRequests)
+                throw new ClientException(new Error {
                     Code = ErrorConstants.Codes.MaximumValueExceeded,
-                    Message = string.Format(ErrorConstants.Messages.MaximumValueExceeded, "Number of batch request steps", MAX_NUMBER_OF_REQUESTS)
+                    Message = string.Format(ErrorConstants.Messages.MaximumValueExceeded, "Number of batch request steps", CoreConstants.BatchRequest.MaxNumberOfRequests)
                 });
+
+            this.Headers.Add(CoreConstants.Headers.ContentTypeHeaderName, CoreConstants.Headers.JsonContentType);
 
             BatchRequestSteps = new Dictionary<string, BatchRequestStep>();
             foreach (BatchRequestStep requestStep in batchRequestSteps)
@@ -71,20 +69,28 @@ namespace Microsoft.Graph
         {
             if (batchRequestStep == null || BatchRequestSteps.ContainsKey(batchRequestStep.RequestId))
                 return false;
-            BatchRequestSteps.Add(batchRequestStep.RequestId, batchRequestStep);
+            (BatchRequestSteps as IDictionary<string, BatchRequestStep>).Add(batchRequestStep.RequestId, batchRequestStep);
             return true;
         }
 
         /// <summary>
         /// Removes a <see cref="BatchRequestStep"/> from batch request content for the specified id.
         /// </summary>
-        /// <param name="requestId">A batch request id to remove.</param>
+        /// <param name="requestId">A unique batch request id to remove.</param>
         /// <returns>True or false based on removal or not removal of a <see cref="BatchRequestStep"/>.</returns>
         public bool RemoveBatchRequestStepWithId(string requestId)
         {
+            if (string.IsNullOrEmpty(requestId))
+                throw new ClientException(
+                    new Error
+                        {
+                            Code = ErrorConstants.Codes.InvalidArgument,
+                            Message = string.Format(ErrorConstants.Messages.NullParameter, nameof(requestId))
+                        });
+
             bool isRemoved = false;
             if (BatchRequestSteps.ContainsKey(requestId)) {
-                BatchRequestSteps.Remove(requestId);
+                (BatchRequestSteps as IDictionary<string, BatchRequestStep>).Remove(requestId);
                 isRemoved = true;
                 foreach (KeyValuePair<string, BatchRequestStep> batchRequestStep in BatchRequestSteps)
                 {
@@ -103,26 +109,28 @@ namespace Microsoft.Graph
             foreach (KeyValuePair<string, BatchRequestStep> batchRequestStep in BatchRequestSteps)
                 batchRequestItems.Add(await GetBatchRequestContentFromStepAsync(batchRequestStep.Value));
 
-            batchRequest.Add("requests", batchRequestItems);
+            batchRequest.Add(CoreConstants.BatchRequest.Requests, batchRequestItems);
 
             return batchRequest;
         }
 
         private async Task<JObject> GetBatchRequestContentFromStepAsync(BatchRequestStep batchRequestStep)
         {
-            JObject jRequestContent = new JObject();
-            jRequestContent.Add("id", batchRequestStep.RequestId);
-            jRequestContent.Add("url", GetRelativeUrl(batchRequestStep.Request.RequestUri));
-            jRequestContent.Add("method", batchRequestStep.Request.Method.Method);
+            JObject jRequestContent = new JObject
+            {
+                { CoreConstants.BatchRequest.Id, batchRequestStep.RequestId },
+                { CoreConstants.BatchRequest.Url, GetRelativeUrl(batchRequestStep.Request.RequestUri) },
+                { CoreConstants.BatchRequest.Method, batchRequestStep.Request.Method.Method }
+            };
             if (batchRequestStep.DependsOn != null && batchRequestStep.DependsOn.Count() > 0)
-                jRequestContent.Add("dependsOn", new JArray(batchRequestStep.DependsOn));
+                jRequestContent.Add(CoreConstants.BatchRequest.DependsOn, new JArray(batchRequestStep.DependsOn));
 
             if (batchRequestStep.Request.Content?.Headers != null && batchRequestStep.Request.Content.Headers.Count() > 0)
-                jRequestContent.Add("headers", GetContentHeader(batchRequestStep.Request.Content.Headers));
+                jRequestContent.Add(CoreConstants.BatchRequest.Headers, GetContentHeader(batchRequestStep.Request.Content.Headers));
 
             if(batchRequestStep.Request != null && batchRequestStep.Request.Content != null)
             {
-                jRequestContent.Add("body", await GetRequestContentAsync(batchRequestStep.Request));
+                jRequestContent.Add(CoreConstants.BatchRequest.Body, await GetRequestContentAsync(batchRequestStep.Request));
             }
 
             return jRequestContent;
@@ -133,12 +141,14 @@ namespace Microsoft.Graph
             try
             {
                 HttpRequestMessage clonedRequest = await request.CloneAsync();
-                byte[] content = await clonedRequest.Content.ReadAsByteArrayAsync();
-                return JsonConvert.DeserializeObject<JObject>(Encoding.UTF8.GetString(content, 0, content.Length));
+                
+                Stream streamContent = await clonedRequest.Content.ReadAsStreamAsync();
+                StreamReader streamReader = new StreamReader(streamContent);
+                return JObject.Load(new JsonTextReader(streamReader));
             }
             catch (Exception ex)
             {
-                throw new ServiceException(new Error
+                throw new ClientException(new Error
                 {
                     Code = ErrorConstants.Codes.InvalidRequest,
                     Message = ErrorConstants.Messages.UnableToDeserializexContent
