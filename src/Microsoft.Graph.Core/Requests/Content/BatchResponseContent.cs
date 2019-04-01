@@ -37,6 +37,7 @@ namespace Microsoft.Graph
 
         /// <summary>
         /// Gets all batch responses <see cref="Dictionary{String, HttpResponseMessage}"/>.
+        /// All <see cref="HttpResponseMessage"/> in the dictionary MUST be disposed since they implement <see cref="IDisposable"/>.
         /// </summary>
         /// <returns>A Dictionary of id and <see cref="HttpResponseMessage"/> representing batch responses.</returns>
         public async Task<Dictionary<string, HttpResponseMessage>> GetResponsesAsync()
@@ -56,6 +57,7 @@ namespace Microsoft.Graph
 
         /// <summary>
         /// Gets a batch response as <see cref="HttpResponseMessage"/> for the specified batch request id.
+        /// The returned <see cref="HttpResponseMessage"/> MUST be disposed since it implements an <see cref="IDisposable"/>.
         /// </summary>
         /// <param name="requestId">A batch request id.</param>
         /// <returns>A <see cref="HttpResponseMessage"/> response object for a batch request.</returns>
