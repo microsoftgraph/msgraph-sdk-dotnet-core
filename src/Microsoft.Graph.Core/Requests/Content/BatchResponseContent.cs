@@ -133,9 +133,12 @@ namespace Microsoft.Graph
 
             try
             {
-                Stream streamContent = await this.batchResponseMessage.Content.ReadAsStreamAsync();
-                StreamReader streamReader = new StreamReader(streamContent);
-                return JObject.Load(new JsonTextReader(streamReader));
+                using (Stream streamContent = await this.batchResponseMessage.Content.ReadAsStreamAsync())
+                using (StreamReader streamReader = new StreamReader(streamContent))
+                using (JsonTextReader jsonTextReader = new JsonTextReader(streamReader))
+                {
+                    return JObject.Load(jsonTextReader);
+                }
             }
             catch (Exception ex)
             {

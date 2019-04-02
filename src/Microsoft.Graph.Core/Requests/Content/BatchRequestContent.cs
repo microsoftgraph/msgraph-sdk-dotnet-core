@@ -127,12 +127,7 @@ namespace Microsoft.Graph
 
         private bool ContainsCorrespondingRequestId(IList<string> dependsOn)
         {
-            foreach (string requestId in dependsOn)
-            {
-                if(!BatchRequestSteps.ContainsKey(requestId))
-                    return false;
-            }
-            return true;
+        	return dependsOn.All(requestId => BatchRequestSteps.ContainsKey(requestId));
         }
 
         private async Task<JObject> GetBatchRequestContentFromStepAsync(BatchRequestStep batchRequestStep)
@@ -162,10 +157,13 @@ namespace Microsoft.Graph
             try
             {
                 HttpRequestMessage clonedRequest = await request.CloneAsync();
-                
-                Stream streamContent = await clonedRequest.Content.ReadAsStreamAsync();
-                StreamReader streamReader = new StreamReader(streamContent);
-                return JObject.Load(new JsonTextReader(streamReader));
+
+                using (Stream streamContent = await clonedRequest.Content.ReadAsStreamAsync())
+                using (StreamReader streamReader = new StreamReader(streamContent))
+                using (JsonTextReader jsonTextReader = new JsonTextReader(streamReader))
+                {
+                    return JObject.Load(jsonTextReader);
+                }
             }
             catch (Exception ex)
             {
