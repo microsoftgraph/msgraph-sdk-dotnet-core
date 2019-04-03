@@ -42,11 +42,18 @@ namespace Microsoft.Graph
             /// Feature Flag
             public const string FeatureFlag = "FeatureFlag";
 
-            /// Contnet type header name
-            public const string ContentTypeHeaderName = "Content-Type";
+        }
 
-            /// JSON content type value
-            public const string JsonContentType = "application/json";
+        /// <summary>
+        /// MimeType constants.
+        /// </summary>
+        public static class MimeTypeNames
+        {
+            public static class Application
+            {
+                /// JSON content type value
+                public const string Json = "application/json";
+            }
         }
 
         /// <summary>
@@ -56,6 +63,9 @@ namespace Microsoft.Graph
         {
             /// OData type
             public const string ODataType = "@odata.type";
+
+            /// OData next link
+            internal const string ODataNextLink = "@nextLink";
         }
 
         /// <summary>
@@ -67,8 +77,6 @@ namespace Microsoft.Graph
             /// Maximum number of individual requests.
             /// </summary>
             public const int MaxNumberOfRequests = 20;
-
-            internal const string ODataNextLink = "@nextLink";
 
             internal const string Id = "id";
 

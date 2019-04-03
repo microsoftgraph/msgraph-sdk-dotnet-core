@@ -53,7 +53,7 @@ namespace Microsoft.Graph
                     Message = string.Format(ErrorConstants.Messages.MaximumValueExceeded, "Number of batch request steps", CoreConstants.BatchRequest.MaxNumberOfRequests)
                 });
 
-            this.Headers.Add(CoreConstants.Headers.ContentTypeHeaderName, CoreConstants.Headers.JsonContentType);
+            this.Headers.ContentType = new MediaTypeHeaderValue(CoreConstants.MimeTypeNames.Application.Json);
 
             BatchRequestSteps = new Dictionary<string, BatchRequestStep>();
 

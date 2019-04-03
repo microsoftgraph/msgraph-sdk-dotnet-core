@@ -87,7 +87,7 @@ namespace Microsoft.Graph
             if (jBatchResponseObject == null)
                 return null;
 
-            return jBatchResponseObject.GetValue(CoreConstants.BatchRequest.ODataNextLink)?.ToString();
+            return jBatchResponseObject.GetValue(CoreConstants.Serialization.ODataNextLink)?.ToString();
         }
 
         /// <summary>
@@ -109,7 +109,7 @@ namespace Microsoft.Graph
 
             if (jResponseItem.TryGetValue(CoreConstants.BatchRequest.Body, out JToken body))
             {
-                responseMessage.Content = new StringContent(body.ToString(), Encoding.UTF8, CoreConstants.Headers.JsonContentType);
+                responseMessage.Content = new StringContent(body.ToString(), Encoding.UTF8, CoreConstants.MimeTypeNames.Application.Json);
             }
 
             if (jResponseItem.TryGetValue(CoreConstants.BatchRequest.Headers, out JToken headers))
