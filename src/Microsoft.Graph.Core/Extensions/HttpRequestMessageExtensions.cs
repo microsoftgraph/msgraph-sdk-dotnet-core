@@ -75,8 +75,9 @@ namespace Microsoft.Graph
                 newRequest.Content = new StreamContent(await originalRequest.Content.ReadAsStreamAsync());
 
                 // Copy content headers.
-                foreach (var contentHeader in originalRequest.Content.Headers)
-                    newRequest.Content.Headers.TryAddWithoutValidation(contentHeader.Key, contentHeader.Value);
+                if (originalRequest.Content.Headers != null)
+                    foreach (var contentHeader in originalRequest.Content.Headers)
+                        newRequest.Content.Headers.TryAddWithoutValidation(contentHeader.Key, contentHeader.Value);
             }
 
             return newRequest;
