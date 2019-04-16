@@ -51,5 +51,14 @@ namespace Microsoft.Graph
             /// OData type
             public const string ODataType = "@odata.type";
         }
+
+        /// <summary>
+        /// Encoding constants
+        /// </summary>
+        public static class Encoding
+        {
+            /// gzip encoding.
+            public const string GZip = "gzip";
+        }
     }
 }

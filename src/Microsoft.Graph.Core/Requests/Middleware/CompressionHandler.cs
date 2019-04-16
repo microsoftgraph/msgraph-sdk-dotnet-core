@@ -10,34 +10,48 @@ namespace Microsoft.Graph
     using System.Net.Http.Headers;
     using System.IO.Compression;
 
+    /// <summary>
+    /// A <see cref="DelegatingHandler"/> implementation that handles compression.
+    /// </summary>
     public class CompressionHandler: DelegatingHandler
     {
-        internal CompressionHandlerOption CompressionOptions { get; set; }
-        public CompressionHandler(CompressionHandlerOption compressionHandlerOption = null)
+        /// <summary>
+        /// Constructs a new <see cref="CompressionHandler"/>.
+        /// </summary>
+        public CompressionHandler()
         {
-            CompressionOptions = compressionHandlerOption ?? new CompressionHandlerOption();
         }
 
-        public CompressionHandler(HttpMessageHandler innerHandler, CompressionHandlerOption compressionHandlerOption = null)
-            :this(compressionHandlerOption)
+        /// <summary>
+        /// Constructs a new <see cref="CompressionHandler"/>.
+        /// </summary>
+        /// <param name="innerHandler">An HTTP message handler to pass to the <see cref="HttpMessageHandler"/> for sending requests.</param>
+        public CompressionHandler(HttpMessageHandler innerHandler)
+            :this()
         {
             InnerHandler = innerHandler;
         }
 
-        protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+        /// <summary>
+        /// Sends a HTTP request.
+        /// </summary>
+        /// <param name="httpRequest">The <see cref="HttpRequestMessage"/> to be sent.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns></returns>
+        protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage httpRequest, CancellationToken cancellationToken)
         {
-            StringWithQualityHeaderValue gzipQHeaderValue = new StringWithQualityHeaderValue("gzip");
+            StringWithQualityHeaderValue gzipQHeaderValue = new StringWithQualityHeaderValue(CoreConstants.Encoding.GZip);
 
             // Add Accept-encoding: gzip header to incoming request if it doesn't have one.
-            if (!request.Headers.AcceptEncoding.Contains(gzipQHeaderValue))
+            if (!httpRequest.Headers.AcceptEncoding.Contains(gzipQHeaderValue))
             {
-                request.Headers.AcceptEncoding.Add(gzipQHeaderValue);
+                httpRequest.Headers.AcceptEncoding.Add(gzipQHeaderValue);
             }
 
-            HttpResponseMessage response = await base.SendAsync(request, cancellationToken);
+            HttpResponseMessage response = await base.SendAsync(httpRequest, cancellationToken);
 
             // Decompress response content when Content-Encoding: gzip header is present.
-            if (IsDecompressContent(response) && CompressionOptions.ShouldDecompressResponseContent(response))
+            if (ShouldDecompressContent(response))
             {
                 response.Content = new StreamContent(new GZipStream(await response.Content.ReadAsStreamAsync(), CompressionMode.Decompress));
             }
@@ -45,9 +59,14 @@ namespace Microsoft.Graph
             return response;
         }
 
-        private bool IsDecompressContent(HttpResponseMessage response)
+        /// <summary>
+        /// Checks if a <see cref="HttpResponseMessage"/> contains a Content-Encoding: gzip header.
+        /// </summary>
+        /// <param name="httpResponse">The <see cref="HttpResponseMessage"/> to check for header.</param>
+        /// <returns></returns>
+        private bool ShouldDecompressContent(HttpResponseMessage httpResponse)
         {
-            return response.Content != null && response.Content.Headers.ContentEncoding.Contains("gzip");
+            return httpResponse.Content != null && httpResponse.Content.Headers.ContentEncoding.Contains(CoreConstants.Encoding.GZip);
         }
     }
 }

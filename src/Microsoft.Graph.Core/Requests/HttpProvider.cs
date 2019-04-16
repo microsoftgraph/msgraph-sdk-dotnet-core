@@ -63,9 +63,10 @@ namespace Microsoft.Graph
 
             DelegatingHandler[] handlers = new DelegatingHandler[]
             {
-                new RedirectHandler(),
+                new AuthenticationHandler(null),
+                new CompressionHandler(),
                 new RetryHandler(),
-                new AuthenticationHandler(null)
+                new RedirectHandler()
             };
 
             GraphClientFactory.DefaultHttpHandler = () => this.httpMessageHandler;
