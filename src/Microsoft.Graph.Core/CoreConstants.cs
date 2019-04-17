@@ -97,5 +97,14 @@ namespace Microsoft.Graph
             internal const string Headers = "headers";
 
         }
+
+        /// <summary>
+        /// Encoding constants
+        /// </summary>
+        public static class Encoding
+        {
+            /// gzip encoding.
+            public const string GZip = "gzip";
+        }
     }
 }
