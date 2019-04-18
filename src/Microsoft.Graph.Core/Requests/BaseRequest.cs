@@ -20,6 +20,8 @@ namespace Microsoft.Graph
     /// </summary>
     public class BaseRequest : IBaseRequest
     {
+        private ResponseHandler responseHandler;
+
         /// <summary>
         /// Constructs a new <see cref="BaseRequest"/>.
         /// </summary>
@@ -33,6 +35,7 @@ namespace Microsoft.Graph
         {
             this.Method = "GET";
             this.Client = client;
+            this.responseHandler = new ResponseHandler(client.HttpProvider.Serializer);
             this.Headers = new List<HeaderOption>();
             this.QueryOptions = new List<QueryOption>();
             this.MiddlewareOptions = new Dictionary<string, IMiddlewareOption>();
@@ -125,16 +128,10 @@ namespace Microsoft.Graph
         {
             using (var response = await this.SendRequestAsync(serializableObject, cancellationToken, completionOption).ConfigureAwait(false))
             {
-                if (response.Content != null)
-                {
-                    var responseString = await GetResponseString(response);
-                    return this.Client.HttpProvider.Serializer.DeserializeObject<T>(responseString);
-                }
-
-                return default(T);
+                return await this.responseHandler.HandleResponse<T>(response);
             }
         }
-
+        
         /// <summary>
         /// Sends the multipart request.
         /// </summary>
@@ -150,13 +147,7 @@ namespace Microsoft.Graph
         {
             using (var response = await this.SendMultiPartRequestAsync(multipartContent, cancellationToken, completionOption).ConfigureAwait(false))
             {
-                if (response.Content != null)
-                {
-                    var responseString = await GetResponseString(response);
-                    return this.Client.HttpProvider.Serializer.DeserializeObject<T>(responseString);
-                }
-
-                return default(T);
+                return await this.responseHandler.HandleResponse<T>(response);
             }
         }
 
@@ -437,33 +428,6 @@ namespace Microsoft.Graph
             return new UriBuilder(uri) { Query = string.Empty }.ToString();
         }
 
-        /// <summary>
-        /// Get the response content string
-        /// </summary>
-        /// <param name="hrm">The response object</param>
-        /// <returns>The full response string to return</returns>
-        private async Task<string> GetResponseString(HttpResponseMessage hrm)
-        {
-            var responseContent = "";
-
-            var content = await hrm.Content.ReadAsStringAsync().ConfigureAwait(false);
-
-            //Only add headers if we are going to return a response body
-            if (content.Length > 0)
-            {
-                var responseHeaders = hrm.Headers;
-                var statusCode = hrm.StatusCode;
-
-                Dictionary<string, string[]> headerDictionary = responseHeaders.ToDictionary(x => x.Key, x => x.Value.ToArray());
-                var responseHeaderString = this.Client.HttpProvider.Serializer.SerializeObject(headerDictionary);
-
-                responseContent = content.Substring(0, content.Length - 1) + ", ";
-                responseContent += "\"responseHeaders\": " + responseHeaderString + ", ";
-                responseContent += "\"statusCode\": \"" + statusCode + "\"}";
-            }
-
-            return responseContent;
-        }
 
         /// <summary>
         /// Gets a specified header value from <see cref="HttpRequestMessage"/>

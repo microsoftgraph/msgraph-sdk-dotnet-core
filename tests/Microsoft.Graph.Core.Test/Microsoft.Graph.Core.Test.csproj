@@ -70,6 +70,7 @@
     <Compile Include="Requests\Middleware\Options\RetrytHandlerOptionTests.cs" />
     <Compile Include="Requests\Middleware\RedirectHandlerTests.cs" />
     <Compile Include="Requests\Middleware\RetryHandlerTests.cs" />
+    <Compile Include="Requests\ResponseHandlerTests.cs" />
     <Compile Include="Serialization\DurationConverterTests.cs" />
     <Compile Include="TestModels\AbstractEntityType.cs" />
     <Compile Include="TestModels\ClassWithJson.cs" />
