@@ -11,14 +11,11 @@ namespace Microsoft.Graph
     using System.Reflection;
     using System.Net.Http.Headers;
 
-
     /// <summary>
     /// GraphClientFactory class to create the HTTP client
     /// </summary>
-    internal static class GraphClientFactory
+    public static class GraphClientFactory
     {
-
-
         /// The key for the SDK version header.
         private static readonly string SdkVersionHeaderName = CoreConstants.Headers.SdkVersionHeaderName;
 
@@ -43,7 +40,7 @@ namespace Microsoft.Graph
         private static readonly Dictionary<string, string> cloudList = new Dictionary<string, string>
             {
                 { Global_Cloud, "https://graph.microsoft.com" },
-                { USGOV_Cloud, "https://graph.microsoft.com" },
+                { USGOV_Cloud, "https://graph.microsoft.us" },
                 { China_Cloud, "https://microsoftgraph.chinacloudapi.cn" },
                 { Germany_Cloud, "https://graph.microsoft.de" }
             };
@@ -75,6 +72,18 @@ namespace Microsoft.Graph
             };
         };
 
+        /// <summary>
+        /// Creates a new <see cref="HttpClient"/> instance configured with the handlers provided.
+        /// </summary>
+        /// <param name="authenticationProvider">The <see cref="IAuthenticationProvider"/> to authenticate requests.</param>
+        /// <param name="version">The graph version to use.</param>
+        /// <param name="nationalCloud">The national cloud endpoint to use.</param>
+        /// <returns></returns>
+        public static HttpClient Create(IAuthenticationProvider authenticationProvider, string version = "v1.0", string nationalCloud = Global_Cloud)
+        {
+            HttpMessageHandler pipeline = CreatePipeline(CreateDefaultHandlers(authenticationProvider));
+            return Create(pipeline, version, nationalCloud);
+        }
 
         /// <summary>
         /// Creates a new <see cref="HttpClient"/> instance configured with the handlers provided.
@@ -87,20 +96,24 @@ namespace Microsoft.Graph
         /// The handlers are invoked in a top-down fashion. That is, the first entry is invoked first for
         /// an outbound request message but last for an inbound response message.</param>
         /// <returns>An <see cref="HttpClient"/> instance with the configured handlers.</returns>
-        public static HttpClient Create(string version = "v1.0", string nationalCloud = Global_Cloud, IEnumerable<DelegatingHandler> handlers = null)
+        public static HttpClient Create(IEnumerable<DelegatingHandler> handlers, string version = "v1.0", string nationalCloud = Global_Cloud)
         {
-            HttpMessageHandler pipeline;
-            if (handlers == null)
-            {
-                pipeline = CreatePipeline(CreateDefaultHandlers(), DefaultHttpHandler());
-            } else
-            {
-                pipeline = CreatePipeline(handlers, DefaultHttpHandler());
-            }
+            HttpMessageHandler pipeline = CreatePipeline(handlers);
+            return Create(pipeline, version, nationalCloud);
+        }
 
+        /// <summary>
+        /// Creates a new <see cref="HttpClient"/> instance configured with the handlers provided.
+        /// </summary>
+        /// <param name="pipeline">The message handler that represents the HTTP pipeline.</param>
+        /// <param name="version">The graph version to use.</param>
+        /// <param name="nationalCloud">The national cloud endpoint to use.</param>
+        /// <returns></returns>
+        internal static HttpClient Create(HttpMessageHandler pipeline, string version = "v1.0", string nationalCloud = Global_Cloud)
+        {
             HttpClient client = new HttpClient(pipeline);
             client.DefaultRequestHeaders.Add(SdkVersionHeaderName, SdkVersionHeaderValue);
-            client.SetFeatureFlags(featureFlags);
+            client.SetFeatureFlag(featureFlags);
             client.Timeout = defaultTimeout;
             client.BaseAddress = DetermineBaseAddress(nationalCloud, version);
             client.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue { NoCache = true, NoStore = true };
@@ -110,12 +123,14 @@ namespace Microsoft.Graph
         /// <summary>
         /// Create a default set of middleware for calling Microsoft Graph
         /// </summary>
+        /// <param name="authenticationProvider">The <see cref="IAuthenticationProvider"/> to authenticate requests.</param>
         /// <returns></returns>
-        public static IEnumerable<DelegatingHandler> CreateDefaultHandlers()
+        public static IList<DelegatingHandler> CreateDefaultHandlers(IAuthenticationProvider authenticationProvider)
         {
-            featureFlags = FeatureFlag.CompressionHandler | FeatureFlag.RetryHandler | FeatureFlag.RedirectHandler;
+            featureFlags = FeatureFlag.AuthHandler | FeatureFlag.CompressionHandler | FeatureFlag.RetryHandler | FeatureFlag.RedirectHandler;
 
             return new List<DelegatingHandler> {
+                new AuthenticationHandler(authenticationProvider),
                 new CompressionHandler(),
                 new RetryHandler(),
                 new RedirectHandler()
@@ -177,38 +192,5 @@ namespace Microsoft.Graph
 
             return pipeline;
         }
-
-
-
-        ///// <summary>
-        ///// Configure an instance of an <see cref="HttpClient"/>
-        ///// </summary>
-        ///// <param name="client">The <see cref="HttpClient"/> client instance need to be configured.</param>
-        ///// <param name="timeout">A <see cref="TimeSpan"/> value for the HTTP client timeout property.</param>
-        ///// <param name="baseAddress">A <see cref="Uri"/> value to set the HTTP client BaseAddress property.</param>
-        ///// <param name="cacheControlHeaderValue">A <see cref="CacheControlHeaderValue"/> value to set HTTP client DefaultRequestHeaders property.</param>
-        ///// <returns></returns>
-        //public static HttpClient Configure(HttpClient client, TimeSpan timeout, Uri baseAddress, CacheControlHeaderValue cacheControlHeaderValue)
-        //{
-        //    try
-        //    {
-        //        client.Timeout = timeout;
-        //    }
-        //    catch (InvalidOperationException exception)
-        //    {
-        //        throw new ServiceException(
-        //            new Error
-        //            {
-        //                Code = ErrorConstants.Codes.NotAllowed,
-        //                Message = ErrorConstants.Messages.OverallTimeoutCannotBeSet,
-        //            },
-        //            exception);
-        //    }
-
-        //    client.BaseAddress = baseAddress == null ? new Uri(_baseAddress + Version) : baseAddress;
-        //    client.DefaultRequestHeaders.CacheControl = cacheControlHeaderValue ?? new CacheControlHeaderValue { NoCache = true, NoStore = true };
-        //    return client;
-        //}
-
     }
 }

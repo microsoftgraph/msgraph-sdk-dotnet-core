@@ -97,7 +97,7 @@ namespace Microsoft.Graph.Core.Test.Requests
             var cacheHeader = new CacheControlHeaderValue();
             GraphClientFactory.Proxy = new WebProxy("http://127.0.0.1:8888");
 
-            using (HttpClient client = GraphClientFactory.Create())
+            using (HttpClient client = GraphClientFactory.Create(authenticationProvider.Object))
             {
                 client.Timeout = timeout;
                 client.BaseAddress = baseAddress;
@@ -110,7 +110,7 @@ namespace Microsoft.Graph.Core.Test.Requests
         [TestMethod]
         public void CreateClient_SelectedCloudAndVersion()
         {
-            using (HttpClient httpClient = GraphClientFactory.Create(version: "beta", nationalCloud: GraphClientFactory.Germany_Cloud))
+            using (HttpClient httpClient = GraphClientFactory.Create(authenticationProvider: authenticationProvider.Object, version: "beta", nationalCloud: GraphClientFactory.Germany_Cloud))
             {
                 Assert.IsNotNull(httpClient, "Create Http client failed.");
                 Uri clouldEndpoint = new Uri("https://graph.microsoft.de/beta");
@@ -125,7 +125,7 @@ namespace Microsoft.Graph.Core.Test.Requests
             string nation = "Canada";
             try
             {
-                HttpClient httpClient = GraphClientFactory.Create(nationalCloud: nation);
+                HttpClient httpClient = GraphClientFactory.Create(authenticationProvider: authenticationProvider.Object, nationalCloud: nation);
             }
             catch (ArgumentException exception)
             {
@@ -138,7 +138,7 @@ namespace Microsoft.Graph.Core.Test.Requests
         public void CreateClient_WithInnerHandler()
         {
             GraphClientFactory.DefaultHttpHandler = () => this.testHttpMessageHandler;
-            using (HttpClient httpClient = GraphClientFactory.Create())
+            using (HttpClient httpClient = GraphClientFactory.Create(authenticationProvider.Object))
             {
                 Assert.IsNotNull(httpClient, "Create Http client failed.");
                 Assert.IsTrue(httpClient.DefaultRequestHeaders.Contains(CoreConstants.Headers.SdkVersionHeaderName), "SDK version not set.");
@@ -160,7 +160,7 @@ namespace Microsoft.Graph.Core.Test.Requests
         [TestMethod]
         public void CreateClient_WithHandlers()
         {
-            using (HttpClient client = GraphClientFactory.Create())
+            using (HttpClient client = GraphClientFactory.Create(authenticationProvider.Object))
             {
                 Assert.IsNotNull(client, "Create Http client failed.");
             }
@@ -178,7 +178,7 @@ namespace Microsoft.Graph.Core.Test.Requests
             this.testHttpMessageHandler.SetHttpResponse(redirectResponse, oKResponse);
             GraphClientFactory.DefaultHttpHandler = () => this.testHttpMessageHandler;
 
-            using (HttpClient client = GraphClientFactory.Create())
+            using (HttpClient client = GraphClientFactory.Create(authenticationProvider.Object))
             {
                 var response = await client.SendAsync(httpRequestMessage, new CancellationToken());
                 Assert.AreEqual(response, oKResponse, "Middleware pipeline not work.");
@@ -201,7 +201,7 @@ namespace Microsoft.Graph.Core.Test.Requests
             this.testHttpMessageHandler.SetHttpResponse(retryResponse, response_2);
             GraphClientFactory.DefaultHttpHandler = () => this.testHttpMessageHandler;
 
-            using (HttpClient client = GraphClientFactory.Create())
+            using (HttpClient client = GraphClientFactory.Create(authenticationProvider.Object))
             {
                 var response = await client.SendAsync(httpRequestMessage, new CancellationToken());
                 Assert.AreSame(response, response_2);
@@ -214,7 +214,7 @@ namespace Microsoft.Graph.Core.Test.Requests
         }
 
         [TestMethod]
-        public async Task SendRequest_UnauthorizedWithNoAuthenticationProvider()
+        public async Task SendRequest_UnauthorizedWithNoAuthenticationHandler()
         {
             var httpRequestMessage = new HttpRequestMessage(HttpMethod.Put, "https://example.com/bar");
             httpRequestMessage.Content = new StringContent("Hello World");
@@ -225,7 +225,12 @@ namespace Microsoft.Graph.Core.Test.Requests
             testHttpMessageHandler.SetHttpResponse(unauthorizedResponse, okResponse);
             GraphClientFactory.DefaultHttpHandler = () => this.testHttpMessageHandler;
 
-            using (HttpClient client = GraphClientFactory.Create())
+            IList<DelegatingHandler> handlersWithNoAuth = GraphClientFactory.CreateDefaultHandlers(null);
+
+            // Remove auth hander.
+            handlersWithNoAuth.RemoveAt(0);
+
+            using (HttpClient client = GraphClientFactory.Create(handlersWithNoAuth))
             {
                 var response = await client.SendAsync(httpRequestMessage, new CancellationToken());
                 Assert.AreSame(response, unauthorizedResponse);
@@ -234,7 +239,7 @@ namespace Microsoft.Graph.Core.Test.Requests
         }
 
         [TestMethod]
-        public async Task SendRequest_UnauthorizedWithAuthenticationProvider()
+        public async Task SendRequest_UnauthorizedWithAuthenticationHandler()
         {
             var httpRequestMessage = new HttpRequestMessage(HttpMethod.Put, "https://example.com/bar");
             httpRequestMessage.Content = new StringContent("Hello World");

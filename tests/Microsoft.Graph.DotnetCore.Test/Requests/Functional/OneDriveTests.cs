@@ -74,7 +74,6 @@ namespace Microsoft.Graph.DotnetCore.Test.Requests.Functional
         //}
         //}
 
-
         [Fact(Skip = "No CI set up for functional tests")]
         public async System.Threading.Tasks.Task OneDriveNextPageRequest()
         {
