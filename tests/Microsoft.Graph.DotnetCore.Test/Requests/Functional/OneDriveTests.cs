@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net.Http;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -74,26 +73,6 @@ namespace Microsoft.Graph.DotnetCore.Test.Requests.Functional
         //    Assert.True(false, "Something happened, check out a trace. Error code: " + e.Error.Code);
         //}
         //}
-
-        [Fact]
-        public async System.Threading.Tasks.Task GetItem()
-        {
-            try
-            {
-                HttpClient client = new HttpClient();
-                client.BaseAddress = new Uri("https://graph.microsoft.com/v1.0");
-
-                HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, "/me");
-                await client.SendAsync(request);
-
-                HttpRequestMessage request2 = new HttpRequestMessage(HttpMethod.Get, "https://graph.microsoft.com/beta/me");
-                await client.SendAsync(request2);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
 
         [Fact(Skip = "No CI set up for functional tests")]
         public async System.Threading.Tasks.Task OneDriveNextPageRequest()
