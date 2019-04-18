@@ -9,8 +9,15 @@ namespace Microsoft.Graph
 
     internal static class HttpClientExtensions
     {
-        internal static void SetFeatureFlags(this HttpClient httpClient, FeatureFlag featureFlag)
+        internal static void SetFeatureFlag(this HttpClient httpClient, FeatureFlag featureFlag)
         {
+            if (httpClient.DefaultRequestHeaders.TryGetValues(CoreConstants.Headers.FeatureFlag, out var flags))
+            {
+                foreach (var flag in flags)
+                    if (Enum.TryParse(flag, out FeatureFlag targetFeatureFlag))
+                        featureFlag |= targetFeatureFlag;
+            }
+
             httpClient.DefaultRequestHeaders.Add(CoreConstants.Headers.FeatureFlag, Enum.Format(typeof(FeatureFlag), featureFlag, "x"));
         }
     }

@@ -11,14 +11,11 @@ namespace Microsoft.Graph
     using System.Reflection;
     using System.Net.Http.Headers;
 
-
     /// <summary>
     /// GraphClientFactory class to create the HTTP client
     /// </summary>
     internal static class GraphClientFactory
     {
-
-
         /// The key for the SDK version header.
         private static readonly string SdkVersionHeaderName = CoreConstants.Headers.SdkVersionHeaderName;
 
@@ -75,6 +72,18 @@ namespace Microsoft.Graph
             };
         };
 
+        /// <summary>
+        /// Creates a new <see cref="HttpClient"/> instance configured with the handlers provided.
+        /// </summary>
+        /// <param name="authenticationProvider">The <see cref="IAuthenticationProvider"/> to authenticate requests.</param>
+        /// <param name="version">The graph version to use.</param>
+        /// <param name="nationalCloud">The national cloud endpoint to use.</param>
+        /// <returns></returns>
+        public static HttpClient Create(IAuthenticationProvider authenticationProvider, string version = "v1.0", string nationalCloud = Global_Cloud)
+        {
+            HttpMessageHandler pipeline = CreatePipeline(CreateDefaultHandlers(authenticationProvider));
+            return Create(pipeline, version, nationalCloud);
+        }
 
         /// <summary>
         /// Creates a new <see cref="HttpClient"/> instance configured with the handlers provided.
@@ -87,20 +96,24 @@ namespace Microsoft.Graph
         /// The handlers are invoked in a top-down fashion. That is, the first entry is invoked first for
         /// an outbound request message but last for an inbound response message.</param>
         /// <returns>An <see cref="HttpClient"/> instance with the configured handlers.</returns>
-        public static HttpClient Create(string version = "v1.0", string nationalCloud = Global_Cloud, IEnumerable<DelegatingHandler> handlers = null)
+        public static HttpClient Create(IEnumerable<DelegatingHandler> handlers, string version = "v1.0", string nationalCloud = Global_Cloud)
         {
-            HttpMessageHandler pipeline;
-            if (handlers == null)
-            {
-                pipeline = CreatePipeline(CreateDefaultHandlers(), DefaultHttpHandler());
-            } else
-            {
-                pipeline = CreatePipeline(handlers, DefaultHttpHandler());
-            }
+            HttpMessageHandler pipeline = CreatePipeline(handlers);
+            return Create(pipeline, version, nationalCloud);
+        }
 
+        /// <summary>
+        /// Creates a new <see cref="HttpClient"/> instance configured with the handlers provided.
+        /// </summary>
+        /// <param name="pipeline">The message handler that represents the HTTP pipeline.</param>
+        /// <param name="version">The graph version to use.</param>
+        /// <param name="nationalCloud">The national cloud endpoint to use.</param>
+        /// <returns></returns>
+        internal static HttpClient Create(HttpMessageHandler pipeline, string version = "v1.0", string nationalCloud = Global_Cloud)
+        {
             HttpClient client = new HttpClient(pipeline);
             client.DefaultRequestHeaders.Add(SdkVersionHeaderName, SdkVersionHeaderValue);
-            client.SetFeatureFlags(featureFlags);
+            client.SetFeatureFlag(featureFlags);
             client.Timeout = defaultTimeout;
             client.BaseAddress = DetermineBaseAddress(nationalCloud, version);
             client.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue { NoCache = true, NoStore = true };
@@ -110,12 +123,14 @@ namespace Microsoft.Graph
         /// <summary>
         /// Create a default set of middleware for calling Microsoft Graph
         /// </summary>
+        /// <param name="authenticationProvider">The <see cref="IAuthenticationProvider"/> to authenticate requests.</param>
         /// <returns></returns>
-        public static IEnumerable<DelegatingHandler> CreateDefaultHandlers()
+        public static IList<DelegatingHandler> CreateDefaultHandlers(IAuthenticationProvider authenticationProvider)
         {
-            featureFlags = FeatureFlag.CompressionHandler | FeatureFlag.RetryHandler | FeatureFlag.RedirectHandler;
+            featureFlags = FeatureFlag.AuthHandler | FeatureFlag.CompressionHandler | FeatureFlag.RetryHandler | FeatureFlag.RedirectHandler;
 
             return new List<DelegatingHandler> {
+                new AuthenticationHandler(authenticationProvider),
                 new CompressionHandler(),
                 new RetryHandler(),
                 new RedirectHandler()
