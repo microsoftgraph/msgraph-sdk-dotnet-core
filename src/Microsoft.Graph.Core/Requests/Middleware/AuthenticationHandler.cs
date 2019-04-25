@@ -126,12 +126,9 @@ namespace Microsoft.Graph
             }
             else
             {
-                throw new ServiceException(
-                    new Error
-                    {
-                        Code = ErrorConstants.Codes.InvalidRequest,
-                        Message = ErrorConstants.Messages.AuthenticationProviderMissing,
-                    });
+                // NOTE: In order to support HttpProvider, we'll skip authentication if no provider is set.
+                // We will add this check once we re-write a new HttpProvider.
+                return await base.SendAsync(httpRequestMessage, cancellationToken);
             }
         }
     }

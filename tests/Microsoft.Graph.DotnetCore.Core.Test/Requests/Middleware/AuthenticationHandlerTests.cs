@@ -251,7 +251,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             Assert.Equal(response.RequestMessage.Content.ReadAsStringAsync().Result, "Hello Mars!");
         }
 
-        [Fact]
+        [Fact(Skip = "In order to support HttpProvider, we'll skip authentication if no provider is set. We will add enable this once we re-write a new HttpProvider.")]
         public async Task AuthHandler_ShouldThrowExceptionWhenAuthProviderIsNotSet()
         {
             DelegatingHandler authHandler = new AuthenticationHandler(null, testHttpMessageHandler);

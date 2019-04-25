@@ -28,7 +28,11 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         {
             this.testHttpMessageHandler = new TestHttpMessageHandler();
             this.authProvider = new MockAuthenticationProvider();
-            this.httpProvider = new HttpProvider(this.testHttpMessageHandler, true, this.serializer.Object);
+
+            var defaultHandlers = GraphClientFactory.CreateDefaultHandlers(authProvider.Object);
+            var pipeline = GraphClientFactory.CreatePipeline(defaultHandlers, this.testHttpMessageHandler);
+
+            this.httpProvider = new HttpProvider(pipeline, true, this.serializer.Object);
         }
 
         public void Dispose()
@@ -236,7 +240,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 
                 var returnedResponseMessage = await this.httpProvider.SendAsync(httpRequestMessage);
 
-                Assert.Equal(6, finalResponseMessage.RequestMessage.Headers.Count());
+                Assert.Equal(4, finalResponseMessage.RequestMessage.Headers.Count());
 
                 foreach (var header in httpRequestMessage.Headers)
                 {
@@ -447,5 +451,43 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             };
             httpRequestMessage.Properties.Add(typeof(GraphRequestContext).ToString(), requestContext);
         }
+
+        [Fact]
+        public async Task SendAsync_WithCustomHandler()
+        {
+            string expectedToken = "send_with_custom_handler";
+            var authHandler = new AuthenticationHandler(new MockAuthenticationProvider(expectedToken).Object, this.testHttpMessageHandler);
+            using (var myHttpProvider = new HttpProvider(authHandler, true, new Serializer()))
+            {
+                var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, "https://localhost");
+                var httpResponseMessage = new HttpResponseMessage();
+                this.testHttpMessageHandler.AddResponseMapping(httpRequestMessage.RequestUri.ToString(), httpResponseMessage);
+
+                var returnedResponseMessage = await myHttpProvider.SendAsync(httpRequestMessage);
+
+                Assert.Equal(httpResponseMessage, returnedResponseMessage);
+                Assert.NotNull(returnedResponseMessage.RequestMessage.Headers.Authorization);
+                Assert.Equal(expectedToken, returnedResponseMessage.RequestMessage.Headers.Authorization.Parameter);
+            }
+        }
+
+        //[Fact]
+        //public async Task HttpProvider()
+        //{
+        //    string expectedToken = "send_with_custom_handler";
+        //    var authHandler = new AuthenticationHandler(new MockAuthenticationProvider(expectedToken).Object, this.testHttpMessageHandler);
+        //    using (var myHttpProvider = new HttpProvider(authHandler, true, new Serializer()))
+        //    {
+        //        var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, "https://localhost");
+        //        var httpResponseMessage = new HttpResponseMessage();
+        //        this.testHttpMessageHandler.AddResponseMapping(httpRequestMessage.RequestUri.ToString(), httpResponseMessage);
+
+        //        var returnedResponseMessage = await myHttpProvider.SendAsync(httpRequestMessage);
+
+        //        Assert.Equal(httpResponseMessage, returnedResponseMessage);
+        //        Assert.NotNull(returnedResponseMessage.RequestMessage.Headers.Authorization);
+        //        Assert.Equal(expectedToken, returnedResponseMessage.RequestMessage.Headers.Authorization.Parameter);
+        //    }
+        //}
     }
 }

@@ -33,8 +33,6 @@ namespace Microsoft.Graph
         /// The default value for the overall request timeout.
         private static readonly TimeSpan defaultTimeout = TimeSpan.FromSeconds(100);
 
-        /// The default value for the baseAddress of HTTP client
-        private static readonly string _baseAddress = "https://graph.microsoft.com/";
 
         /// Microsoft Graph service nationa cloud endpoints
         private static readonly Dictionary<string, string> cloudList = new Dictionary<string, string>
@@ -57,32 +55,24 @@ namespace Microsoft.Graph
         public const string Germany_Cloud = "Germany";
 
         /// <summary>
-        /// Proxy to be used with created clients
-        /// </summary>
-        public static IWebProxy Proxy { get; set; }
-
-        /// <summary>
-        /// DefaultHandler is a Func that returns the HttpMessageHandler for actually making the HTTP calls.
-        /// The default implementation returns a new instance of HttpClientHandler for each HttpClient.
-        /// </summary>
-        public static Func<HttpMessageHandler> DefaultHttpHandler = () => {
-            return new HttpClientHandler
-            {
-                Proxy = Proxy
-            };
-        };
-
-        /// <summary>
         /// Creates a new <see cref="HttpClient"/> instance configured with the handlers provided.
         /// </summary>
         /// <param name="authenticationProvider">The <see cref="IAuthenticationProvider"/> to authenticate requests.</param>
         /// <param name="version">The graph version to use.</param>
         /// <param name="nationalCloud">The national cloud endpoint to use.</param>
+        /// <param name="proxy">The proxy to be used with created client.</param>
+        /// <param name="innerHandler">The last HttpMessageHandler to HTTP calls.
+        /// The default implementation creates a new instance of <see cref="HttpClientHandler"/> for each HttpClient.</param>
         /// <returns></returns>
-        public static HttpClient Create(IAuthenticationProvider authenticationProvider, string version = "v1.0", string nationalCloud = Global_Cloud)
+        public static HttpClient Create(
+            IAuthenticationProvider authenticationProvider,
+            string version = "v1.0",
+            string nationalCloud = Global_Cloud,
+            IWebProxy proxy = null,
+            HttpMessageHandler innerHandler = null)
         {
-            HttpMessageHandler pipeline = CreatePipeline(CreateDefaultHandlers(authenticationProvider));
-            return Create(pipeline, version, nationalCloud);
+            IList<DelegatingHandler> handlers = CreateDefaultHandlers(authenticationProvider);
+            return Create(handlers, version, nationalCloud, proxy, innerHandler);
         }
 
         /// <summary>
@@ -95,22 +85,30 @@ namespace Microsoft.Graph
         /// <see cref="HttpResponseMessage"/> travels from the network back to <see cref="HttpClient"/>.
         /// The handlers are invoked in a top-down fashion. That is, the first entry is invoked first for
         /// an outbound request message but last for an inbound response message.</param>
+        /// <param name="proxy">The proxy to be used with created client.</param>
+        /// <param name="innerHandler">The last HttpMessageHandler to HTTP calls.</param>
         /// <returns>An <see cref="HttpClient"/> instance with the configured handlers.</returns>
-        public static HttpClient Create(IEnumerable<DelegatingHandler> handlers, string version = "v1.0", string nationalCloud = Global_Cloud)
+        public static HttpClient Create(
+            IEnumerable<DelegatingHandler> handlers,
+            string version = "v1.0",
+            string nationalCloud = Global_Cloud,
+            IWebProxy proxy = null,
+            HttpMessageHandler innerHandler = null)
         {
-            HttpMessageHandler pipeline = CreatePipeline(handlers);
-            return Create(pipeline, version, nationalCloud);
-        }
+            if (innerHandler == null)
+                innerHandler = new HttpClientHandler { Proxy = proxy, AllowAutoRedirect = false };
+            else if ((innerHandler is HttpClientHandler) && (innerHandler as HttpClientHandler).Proxy == null && proxy != null)
+                (innerHandler as HttpClientHandler).Proxy = proxy;
+            else if ((innerHandler is HttpClientHandler) && (innerHandler as HttpClientHandler).Proxy != null && proxy != null)
+            {
+                throw new ClientException(new Error
+                {
+                    Code = ErrorConstants.Codes.InvalidArgument,
+                    Message = "Proxy can only be set on the proxy or defaultHttpHandler argument and not both."
+                });
+            }
 
-        /// <summary>
-        /// Creates a new <see cref="HttpClient"/> instance configured with the handlers provided.
-        /// </summary>
-        /// <param name="pipeline">The message handler that represents the HTTP pipeline.</param>
-        /// <param name="version">The graph version to use.</param>
-        /// <param name="nationalCloud">The national cloud endpoint to use.</param>
-        /// <returns></returns>
-        internal static HttpClient Create(HttpMessageHandler pipeline, string version = "v1.0", string nationalCloud = Global_Cloud)
-        {
+            HttpMessageHandler pipeline = CreatePipeline(handlers, innerHandler);
             HttpClient client = new HttpClient(pipeline);
             client.DefaultRequestHeaders.Add(SdkVersionHeaderName, SdkVersionHeaderValue);
             client.SetFeatureFlag(featureFlags);
@@ -137,17 +135,6 @@ namespace Microsoft.Graph
             };
         }
 
-        private static Uri DetermineBaseAddress(string nationalCloud, string version)
-        {
-            string cloud = "";
-            if (!cloudList.TryGetValue(nationalCloud, out cloud))
-            {
-                throw new ArgumentException(String.Format("{0} is an unexpected national cloud.", nationalCloud, "nationalCloud"));
-            }
-            string cloudAddress = cloud + "/" + version;
-            return new Uri(cloudAddress);
-
-        }
 
         /// <summary>
         /// Creates an instance of an <see cref="HttpMessageHandler"/> using the <see cref="DelegatingHandler"/> instances
@@ -160,11 +147,11 @@ namespace Microsoft.Graph
         /// The handlers are invoked in a top-down fashion. That is, the first entry is invoked first for
         /// an outbound request message but last for an inbound response message.</param>
         /// <returns>The HTTP message channel.</returns>
-        public static HttpMessageHandler CreatePipeline(IEnumerable<DelegatingHandler> handlers, HttpMessageHandler innerHandler = null )
+        public static HttpMessageHandler CreatePipeline(IEnumerable<DelegatingHandler> handlers, HttpMessageHandler innerHandler = null)
         {
             if (innerHandler == null)
             {
-                innerHandler = DefaultHttpHandler();
+                innerHandler = new HttpClientHandler();
             }
 
             if (handlers == null)
@@ -191,6 +178,18 @@ namespace Microsoft.Graph
             }
 
             return pipeline;
+        }
+
+        private static Uri DetermineBaseAddress(string nationalCloud, string version)
+        {
+            string cloud = "";
+            if (!cloudList.TryGetValue(nationalCloud, out cloud))
+            {
+                throw new ArgumentException(String.Format("{0} is an unexpected national cloud.", nationalCloud, "nationalCloud"));
+            }
+            string cloudAddress = cloud + "/" + version;
+            return new Uri(cloudAddress);
+
         }
     }
 }

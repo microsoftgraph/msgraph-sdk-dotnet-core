@@ -254,6 +254,7 @@ namespace Microsoft.Graph.Core.Test.Requests
             Assert.AreEqual(response.RequestMessage.Content.ReadAsStringAsync().Result, "Hello Mars!");
         }
 
+        [Ignore("In order to support HttpProvider, we'll skip authentication if no provider is set. We will add enable this once we re-write a new HttpProvider.")]
         [TestMethod]
         public async Task AuthHandler_ShouldThrowExceptionWhenAuthProviderIsNotSet()
         {

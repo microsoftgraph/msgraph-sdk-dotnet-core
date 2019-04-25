@@ -32,7 +32,10 @@ namespace Microsoft.Graph.Core.Test.Requests
             this.testHttpMessageHandler = new TestHttpMessageHandler();
             this.authProvider = new MockAuthenticationProvider();
 
-            this.httpProvider = new HttpProvider(this.testHttpMessageHandler, true, this.serializer.Object);
+            var defaultHandlers = GraphClientFactory.CreateDefaultHandlers(authProvider.Object);
+            var pipeline = GraphClientFactory.CreatePipeline(defaultHandlers, this.testHttpMessageHandler);
+
+            this.httpProvider = new HttpProvider(pipeline, true, this.serializer.Object);
         }
 
         [TestCleanup]
@@ -251,7 +254,7 @@ namespace Microsoft.Graph.Core.Test.Requests
 
                 var returnedResponseMessage = await this.httpProvider.SendAsync(httpRequestMessage);
 
-                Assert.AreEqual(6, finalResponseMessage.RequestMessage.Headers.Count(), "Unexpected number of headers on redirect request message.");
+                Assert.AreEqual(4, finalResponseMessage.RequestMessage.Headers.Count(), "Unexpected number of headers on redirect request message.");
                 
                 foreach (var header in httpRequestMessage.Headers)
                 {

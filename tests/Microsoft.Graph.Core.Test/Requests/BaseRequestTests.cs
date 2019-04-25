@@ -240,6 +240,7 @@ namespace Microsoft.Graph.Core.Test.Requests
             }
         }
 
+        [Ignore("In order to support HttpProvider, we'll skip authentication if no provider is set. We will add enable this once we re-write a new HttpProvider.")]
         [TestMethod]
         [ExpectedException(typeof(ServiceException))]
         public async Task SendAsync_AuthenticationProviderNotSet()

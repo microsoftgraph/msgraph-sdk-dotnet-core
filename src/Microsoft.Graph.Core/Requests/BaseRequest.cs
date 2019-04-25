@@ -193,8 +193,8 @@ namespace Microsoft.Graph
             {
                 using (var request = this.GetHttpRequestMessage(cancellationToken))
                 {
-                    // Only call `AuthenticateRequestAsync` when a custom IHttpProvider is used.
-                    if (this.Client.HttpProvider.GetType() != typeof(HttpProvider))
+                    // Only call `AuthenticateRequestAsync` when a custom IHttpProvider is used or our HttpProvider is used without an auth handler.
+                    if (ShouldAuthenticateRequest())
                         await this.AuthenticateRequestAsync(request);
 
                     request.Content = multipartContent;
@@ -232,8 +232,8 @@ namespace Microsoft.Graph
 
             using (var request = this.GetHttpRequestMessage(cancellationToken))
             {
-                // Only call `AuthenticateRequestAsync` when a custom IHttpProvider is used.
-                if (this.Client.HttpProvider.GetType() != typeof(HttpProvider))
+                // Only call `AuthenticateRequestAsync` when a custom IHttpProvider is used or our HttpProvider is used without an auth handler.
+                if (ShouldAuthenticateRequest())
                     await this.AuthenticateRequestAsync(request);
 
                 if (serializableObject != null)
@@ -428,7 +428,6 @@ namespace Microsoft.Graph
             return new UriBuilder(uri) { Query = string.Empty }.ToString();
         }
 
-
         /// <summary>
         /// Gets a specified header value from <see cref="HttpRequestMessage"/>
         /// </summary>
@@ -455,6 +454,18 @@ namespace Microsoft.Graph
             }
 
             return headerValue;
+        }
+
+        /// <summary>
+        /// Checks if a custom IHttpProvider is used or our HttpProvider is used without an auth handler (flag).
+        /// </summary>
+        /// <returns></returns>
+        private bool ShouldAuthenticateRequest()
+        {
+            if (this.Client.HttpProvider.GetType() != typeof(HttpProvider))
+                return true;
+            else
+                return !(this.Client.HttpProvider as HttpProvider).httpClient.ContainsFeatureFlag(FeatureFlag.AuthHandler);
         }
     }
 }

@@ -141,9 +141,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         [Fact]
         public void CreateClient_WithInnerHandler()
         {
-            GraphClientFactory.DefaultHttpHandler = () => this.testHttpMessageHandler;
-
-            using (HttpClient httpClient = GraphClientFactory.Create(testAuthenticationProvider.Object))
+            using (HttpClient httpClient = GraphClientFactory.Create(authenticationProvider: testAuthenticationProvider.Object, innerHandler: this.testHttpMessageHandler))
             {
                 Assert.NotNull(httpClient);
                 Assert.True(httpClient.DefaultRequestHeaders.Contains(CoreConstants.Headers.SdkVersionHeaderName), "SDK version not set.");
@@ -179,9 +177,8 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             redirectResponse.Headers.Location = new Uri("http://example.org/bar");
             var oKResponse = new HttpResponseMessage(HttpStatusCode.OK);
             this.testHttpMessageHandler.SetHttpResponse(redirectResponse, oKResponse);
-            GraphClientFactory.DefaultHttpHandler = () => this.testHttpMessageHandler;
 
-            using (HttpClient client = GraphClientFactory.Create(testAuthenticationProvider.Object))
+            using (HttpClient client = GraphClientFactory.Create(authenticationProvider: testAuthenticationProvider.Object, innerHandler: this.testHttpMessageHandler))
             {
                 var response = await client.SendAsync(httpRequestMessage, new CancellationToken());
                 Assert.Equal(response, oKResponse);
@@ -202,9 +199,8 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             var response_2 = new HttpResponseMessage(HttpStatusCode.OK);
 
             this.testHttpMessageHandler.SetHttpResponse(retryResponse, response_2);
-            GraphClientFactory.DefaultHttpHandler = () => this.testHttpMessageHandler;
 
-            using (HttpClient client = GraphClientFactory.Create(testAuthenticationProvider.Object))
+            using (HttpClient client = GraphClientFactory.Create(authenticationProvider: testAuthenticationProvider.Object, innerHandler: this.testHttpMessageHandler))
             {
                 var response = await client.SendAsync(httpRequestMessage, new CancellationToken());
                 Assert.Same(response, response_2);
@@ -216,7 +212,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 
         }
 
-        [Fact]
+        [Fact(Skip = "In order to support HttpProvider, we'll skip authentication if no provider is set. We will add enable this once we re-write a new HttpProvider.")]
         public async Task SendRequest_UnauthorizedWithNoAuthenticationProvider()
         {
             var httpRequestMessage = new HttpRequestMessage(HttpMethod.Put, "https://example.com/bar");
@@ -229,8 +225,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 
             IList<DelegatingHandler> handlersWithNoAuthProvider = GraphClientFactory.CreateDefaultHandlers(null);
 
-            GraphClientFactory.DefaultHttpHandler = () => testHttpMessageHandler;
-            using (HttpClient client = GraphClientFactory.Create(handlersWithNoAuthProvider))
+            using (HttpClient client = GraphClientFactory.Create(handlers: handlersWithNoAuthProvider, innerHandler: this.testHttpMessageHandler))
             {
                 ServiceException ex = await Assert.ThrowsAsync<ServiceException>(() => client.SendAsync(httpRequestMessage, new CancellationToken()));
                 Assert.Equal(ErrorConstants.Codes.InvalidRequest, ex.Error.Code);
@@ -249,8 +244,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 
             testHttpMessageHandler.SetHttpResponse(unauthorizedResponse, okResponse);
 
-            GraphClientFactory.DefaultHttpHandler = () => this.testHttpMessageHandler;
-            using (HttpClient client = GraphClientFactory.Create(handlers: handlers))
+            using (HttpClient client = GraphClientFactory.Create(handlers: handlers, innerHandler: this.testHttpMessageHandler))
             {
                 var response = await client.SendAsync(httpRequestMessage, new CancellationToken());
                 Assert.Same(response, okResponse);
