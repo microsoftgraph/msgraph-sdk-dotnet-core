@@ -97,13 +97,7 @@ namespace Microsoft.Graph
             else if ((innerHandler is HttpClientHandler) && (innerHandler as HttpClientHandler).Proxy == null && proxy != null)
                 (innerHandler as HttpClientHandler).Proxy = proxy;
             else if ((innerHandler is HttpClientHandler) && (innerHandler as HttpClientHandler).Proxy != null && proxy != null)
-            {
-                throw new ClientException(new Error
-                {
-                    Code = ErrorConstants.Codes.InvalidArgument,
-                    Message = ErrorConstants.Messages.InvalidProxyArgument
-                });
-            }
+                throw new ArgumentException(ErrorConstants.Messages.InvalidProxyArgument);
 
             var pipelineWithFlags = CreatePipelineWithFeatureFlags(handlers, innerHandler);
             HttpClient client = new HttpClient(pipelineWithFlags.Pipeline);
@@ -172,6 +166,7 @@ namespace Microsoft.Graph
 
             HttpMessageHandler httpPipeline = innerHandler;
             IEnumerable<DelegatingHandler> reversedHandlers = handlers.Reverse();
+            HashSet<Type> existingHandlerTypes = new HashSet<Type>();
             foreach (DelegatingHandler handler in reversedHandlers)
             {
                 if (handler == null)
@@ -183,6 +178,10 @@ namespace Microsoft.Graph
                 {
                     throw new ArgumentException(String.Format("DelegatingHandler array has unexpected InnerHandler. {0} has unexpected InnerHandler.", handler, "handler"));
                 }
+
+                // Add duplicate check based on handler type.
+                if (!existingHandlerTypes.Add(handler.GetType()))
+                    throw new ArgumentException($"DelegatingHandler array has a dupliacate handler. {handler} has a duplicate handler.", "handlers");
 
                 handler.InnerHandler = httpPipeline;
                 httpPipeline = handler;
@@ -201,17 +200,16 @@ namespace Microsoft.Graph
         /// <returns>Delegating handler feature flag.</returns>
         private static FeatureFlag GetHandlerFeatureFlag(DelegatingHandler delegatingHandler)
         {
-            FeatureFlag featureFlag = FeatureFlag.None;
             if (delegatingHandler is AuthenticationHandler)
-                featureFlag |= FeatureFlag.AuthHandler;
+                return FeatureFlag.AuthHandler;
             else if (delegatingHandler is CompressionHandler)
-                featureFlag |= FeatureFlag.CompressionHandler;
+                return FeatureFlag.CompressionHandler;
             else if (delegatingHandler is RetryHandler)
-                featureFlag |= FeatureFlag.RetryHandler;
+                return FeatureFlag.RetryHandler;
             else if (delegatingHandler is RedirectHandler)
-                featureFlag |= FeatureFlag.RedirectHandler;
-
-            return featureFlag;
+                return FeatureFlag.RedirectHandler;
+            else
+                return FeatureFlag.None;
         }
 
         private static Uri DetermineBaseAddress(string nationalCloud, string version)

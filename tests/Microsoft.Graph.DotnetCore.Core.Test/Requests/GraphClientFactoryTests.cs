@@ -95,6 +95,17 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         }
 
         [Fact]
+        public void CreatePipeline_Should_Throw_Exception_With_Duplicate_Handlers()
+        {
+            var handlers = GraphClientFactory.CreateDefaultHandlers(testAuthenticationProvider.Object);
+            handlers.Add(new AuthenticationHandler(testAuthenticationProvider.Object));
+
+            ArgumentException exception =  Assert.Throws<ArgumentException>(() => GraphClientFactory.CreatePipeline(handlers));
+
+            Assert.Contains($"{typeof(AuthenticationHandler)} has a duplicate handler.", exception.Message);
+        }
+
+        [Fact]
         public void CreateClient_CustomHttpHandlingBehaviors()
         {
             var timeout = TimeSpan.FromSeconds(200);
