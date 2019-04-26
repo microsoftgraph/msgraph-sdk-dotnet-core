@@ -33,8 +33,7 @@ namespace Microsoft.Graph
         /// The default value for the overall request timeout.
         private static readonly TimeSpan defaultTimeout = TimeSpan.FromSeconds(100);
 
-
-        /// Microsoft Graph service nationa cloud endpoints
+        /// Microsoft Graph service national cloud endpoints
         private static readonly Dictionary<string, string> cloudList = new Dictionary<string, string>
             {
                 { Global_Cloud, "https://graph.microsoft.com" },
@@ -42,8 +41,6 @@ namespace Microsoft.Graph
                 { China_Cloud, "https://microsoftgraph.chinacloudapi.cn" },
                 { Germany_Cloud, "https://graph.microsoft.de" }
             };
-
-        private static FeatureFlag featureFlags;
 
         /// Global endpoint
         public const string Global_Cloud = "Global";
@@ -108,10 +105,10 @@ namespace Microsoft.Graph
                 });
             }
 
-            HttpMessageHandler pipeline = CreatePipeline(handlers, innerHandler);
-            HttpClient client = new HttpClient(pipeline);
+            var pipelineWithFlags = CreatePipelineWithFeatureFlags(handlers, innerHandler);
+            HttpClient client = new HttpClient(pipelineWithFlags.Pipeline);
             client.DefaultRequestHeaders.Add(SdkVersionHeaderName, SdkVersionHeaderValue);
-            client.SetFeatureFlag(featureFlags);
+            client.SetFeatureFlag(pipelineWithFlags.FeatureFlags);
             client.Timeout = defaultTimeout;
             client.BaseAddress = DetermineBaseAddress(nationalCloud, version);
             client.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue { NoCache = true, NoStore = true };
@@ -125,8 +122,6 @@ namespace Microsoft.Graph
         /// <returns></returns>
         public static IList<DelegatingHandler> CreateDefaultHandlers(IAuthenticationProvider authenticationProvider)
         {
-            featureFlags = FeatureFlag.AuthHandler | FeatureFlag.CompressionHandler | FeatureFlag.RetryHandler | FeatureFlag.RedirectHandler;
-
             return new List<DelegatingHandler> {
                 new AuthenticationHandler(authenticationProvider),
                 new CompressionHandler(),
@@ -134,7 +129,6 @@ namespace Microsoft.Graph
                 new RedirectHandler()
             };
         }
-
 
         /// <summary>
         /// Creates an instance of an <see cref="HttpMessageHandler"/> using the <see cref="DelegatingHandler"/> instances
@@ -149,6 +143,12 @@ namespace Microsoft.Graph
         /// <returns>The HTTP message channel.</returns>
         public static HttpMessageHandler CreatePipeline(IEnumerable<DelegatingHandler> handlers, HttpMessageHandler innerHandler = null)
         {
+            return CreatePipelineWithFeatureFlags(handlers, innerHandler).Pipeline;
+        }
+
+        internal static (HttpMessageHandler Pipeline, FeatureFlag FeatureFlags) CreatePipelineWithFeatureFlags(IEnumerable<DelegatingHandler> handlers, HttpMessageHandler innerHandler = null)
+        {
+            FeatureFlag handlerFlags = FeatureFlag.None;
             if (innerHandler == null)
             {
                 innerHandler = new HttpClientHandler { AllowAutoRedirect = false };
@@ -156,10 +156,10 @@ namespace Microsoft.Graph
 
             if (handlers == null)
             {
-                return innerHandler;
+                return (Pipeline: innerHandler, FeatureFlags: handlerFlags);
             }
 
-            HttpMessageHandler pipeline = innerHandler;
+            HttpMessageHandler httpPipeline = innerHandler;
             IEnumerable<DelegatingHandler> reversedHandlers = handlers.Reverse();
             foreach (DelegatingHandler handler in reversedHandlers)
             {
@@ -173,11 +173,30 @@ namespace Microsoft.Graph
                     throw new ArgumentException(String.Format("DelegatingHandler array has unexpected InnerHandler. {0} has unexpected InnerHandler.", handler, "handler"));
                 }
 
-                handler.InnerHandler = pipeline;
-                pipeline = handler;
+                handler.InnerHandler = httpPipeline;
+                httpPipeline = handler;
+
+                // Register feature flag for the handler.
+                handlerFlags |= GetHandlerFeatureFlag(handler);
             }
 
-            return pipeline;
+            return (Pipeline: httpPipeline, FeatureFlags: handlerFlags);
+        }
+
+
+        private static FeatureFlag GetHandlerFeatureFlag(DelegatingHandler delegatingHandler)
+        {
+            FeatureFlag featureFlag = FeatureFlag.None;
+            if (delegatingHandler is AuthenticationHandler)
+                featureFlag |= FeatureFlag.AuthHandler;
+            else if (delegatingHandler is CompressionHandler)
+                featureFlag |= FeatureFlag.CompressionHandler;
+            else if (delegatingHandler is RetryHandler)
+                featureFlag |= FeatureFlag.RetryHandler;
+            else if (delegatingHandler is RedirectHandler)
+                featureFlag |= FeatureFlag.RedirectHandler;
+
+            return featureFlag;
         }
 
         private static Uri DetermineBaseAddress(string nationalCloud, string version)
