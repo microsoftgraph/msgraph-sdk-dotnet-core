@@ -104,7 +104,7 @@ namespace Microsoft.Graph
                 throw new ClientException(new Error
                 {
                     Code = ErrorConstants.Codes.InvalidArgument,
-                    Message = "Proxy can only be set on the proxy or defaultHttpHandler argument and not both."
+                    Message = ErrorConstants.Messages.InvalidProxyArgument
                 });
             }
 
@@ -151,7 +151,7 @@ namespace Microsoft.Graph
         {
             if (innerHandler == null)
             {
-                innerHandler = new HttpClientHandler();
+                innerHandler = new HttpClientHandler { AllowAutoRedirect = false };
             }
 
             if (handlers == null)

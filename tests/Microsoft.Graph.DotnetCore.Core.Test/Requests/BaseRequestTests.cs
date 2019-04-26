@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
@@ -348,6 +349,48 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             var queryString = baseRequest.BuildQueryString();
 
             Assert.Null(queryString);
+        }
+
+        [Fact]
+        public async Task BaseRequest_Should_Call_HttpProvider_Concurrently()
+        {
+            var tasks = Enumerable.Range(1, 1).Select(index =>
+            {
+                return Task.Run(async () =>
+                {
+
+                    string expectedToken = Guid.NewGuid().ToString();
+                    var authProviderTriggered = 0;
+                    var authProvider = new DelegateAuthenticationProvider(message =>
+                    {
+                        authProviderTriggered++;
+                        message.Headers.Authorization = new AuthenticationHeaderValue("bearer", expectedToken);
+                        return Task.CompletedTask;
+                    });
+
+                    var validationHandlerTriggered = 0;
+                    var validationHandler = new TestHttpMessageHandler(message =>
+                    {
+                        validationHandlerTriggered++;
+                        Assert.Equal(expectedToken, message.Headers?.Authorization?.Parameter);
+                        Assert.Equal("https://test/users", message.RequestUri.AbsoluteUri);
+                    });
+
+                    var httpProvider = new HttpProvider(
+                        validationHandler,
+                        true,
+                        new Serializer());
+
+                    var client = new BaseClient("https://Test", authProvider, httpProvider);
+                    var baseRequest = new BaseRequest("https://Test/users", client);
+                    await baseRequest.SendAsync(new object(), CancellationToken.None);
+
+                    Assert.Equal(1, validationHandlerTriggered);
+                    Assert.Equal(1, authProviderTriggered);
+                });
+            });
+
+            await Task.WhenAll(tasks).ConfigureAwait(false);
         }
     }
 }

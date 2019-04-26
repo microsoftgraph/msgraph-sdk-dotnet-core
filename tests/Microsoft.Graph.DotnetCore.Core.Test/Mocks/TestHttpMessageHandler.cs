@@ -13,10 +13,12 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Mocks
 {
     public class TestHttpMessageHandler : HttpMessageHandler
     {
+        private Action<HttpRequestMessage> requestMessageDelegate;
         private Dictionary<string, HttpResponseMessage> responseMessages;
 
-        public TestHttpMessageHandler()
+        public TestHttpMessageHandler(Action<HttpRequestMessage> requestMessage = null)
         {
+            this.requestMessageDelegate = requestMessage ?? DefaultRequestHandler;
             this.responseMessages = new Dictionary<string, HttpResponseMessage>();
         }
 
@@ -29,13 +31,20 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Mocks
         {
             HttpResponseMessage responseMessage;
 
+            requestMessageDelegate(request);
+
             if (this.responseMessages.TryGetValue(request.RequestUri.ToString(), out responseMessage))
             {
                 responseMessage.RequestMessage = request;
                 return Task.FromResult(responseMessage);
             }
 
-            return Task.FromResult<HttpResponseMessage>(null);
+            return Task.FromResult<HttpResponseMessage>(new HttpResponseMessage());
+        }
+
+        private void DefaultRequestHandler(HttpRequestMessage httpRequest)
+        {
+
         }
     }
 }

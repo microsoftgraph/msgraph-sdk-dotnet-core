@@ -6,6 +6,7 @@ namespace Microsoft.Graph
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.Net.Http;
     using System.Threading.Tasks;
@@ -72,7 +73,13 @@ namespace Microsoft.Graph
             // Set Content if previous request had one.
             if (originalRequest.Content != null)
             {
-                newRequest.Content = new StreamContent(await originalRequest.Content.ReadAsStreamAsync());
+                // HttpClient doesn't rewind streams and we have to explicitly do so.
+                await originalRequest.Content.ReadAsStreamAsync().ContinueWith(t => {
+                    if (t.Result.CanSeek)
+                        t.Result.Seek(0, SeekOrigin.Begin);
+
+                    newRequest.Content = new StreamContent(t.Result);
+                });
 
                 // Copy content headers.
                 if (originalRequest.Content.Headers != null)

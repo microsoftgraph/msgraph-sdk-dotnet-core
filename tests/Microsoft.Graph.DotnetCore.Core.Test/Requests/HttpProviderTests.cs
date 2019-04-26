@@ -470,24 +470,5 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                 Assert.Equal(expectedToken, returnedResponseMessage.RequestMessage.Headers.Authorization.Parameter);
             }
         }
-
-        //[Fact]
-        //public async Task HttpProvider()
-        //{
-        //    string expectedToken = "send_with_custom_handler";
-        //    var authHandler = new AuthenticationHandler(new MockAuthenticationProvider(expectedToken).Object, this.testHttpMessageHandler);
-        //    using (var myHttpProvider = new HttpProvider(authHandler, true, new Serializer()))
-        //    {
-        //        var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, "https://localhost");
-        //        var httpResponseMessage = new HttpResponseMessage();
-        //        this.testHttpMessageHandler.AddResponseMapping(httpRequestMessage.RequestUri.ToString(), httpResponseMessage);
-
-        //        var returnedResponseMessage = await myHttpProvider.SendAsync(httpRequestMessage);
-
-        //        Assert.Equal(httpResponseMessage, returnedResponseMessage);
-        //        Assert.NotNull(returnedResponseMessage.RequestMessage.Headers.Authorization);
-        //        Assert.Equal(expectedToken, returnedResponseMessage.RequestMessage.Headers.Authorization.Parameter);
-        //    }
-        //}
     }
 }

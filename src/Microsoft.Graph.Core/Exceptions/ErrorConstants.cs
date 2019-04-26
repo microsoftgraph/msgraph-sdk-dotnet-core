@@ -63,6 +63,8 @@ namespace Microsoft.Graph
 
             internal static string InvalidDependsOnRequestId = "Corresponding batch request id not found for the specified dependsOn relation.";
 
+            internal static string InvalidProxyArgument = "Proxy cannot be set more once. Proxy can only be set on the proxy or defaultHttpHandler argument and not both.";
+
         }
     }
 }
