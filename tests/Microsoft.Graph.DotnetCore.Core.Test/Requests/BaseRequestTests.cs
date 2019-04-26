@@ -354,7 +354,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         [Fact]
         public async Task BaseRequest_Should_Call_HttpProvider_Concurrently()
         {
-            var tasks = Enumerable.Range(1, 1).Select(index =>
+            var tasks = Enumerable.Range(1, 50).Select(index =>
             {
                 return Task.Run(async () =>
                 {
