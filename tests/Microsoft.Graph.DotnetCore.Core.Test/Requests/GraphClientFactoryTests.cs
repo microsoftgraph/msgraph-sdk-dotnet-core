@@ -280,5 +280,29 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             }
 
         }
+
+        [Fact]
+        public void CreatePipelineWithFeatureFlags_Should_Set_FeatureFlag_For_Default_Handlers()
+        {
+            FeatureFlag expectedFlag = FeatureFlag.AuthHandler | FeatureFlag.CompressionHandler | FeatureFlag.RetryHandler | FeatureFlag.RedirectHandler;
+            string expectedFlagHeaderValue = Enum.Format(typeof(FeatureFlag), expectedFlag, "x");
+            var handlers = GraphClientFactory.CreateDefaultHandlers(null);
+            var pipelineWithHandlers = GraphClientFactory.CreatePipelineWithFeatureFlags(handlers);
+
+            Assert.NotNull(pipelineWithHandlers.Pipeline);
+            Assert.True(pipelineWithHandlers.FeatureFlags.HasFlag(expectedFlag));
+        }
+
+        [Fact]
+        public void CreatePipelineWithFeatureFlags_Should_Set_FeatureFlag_For_Speficied_Handlers()
+        {
+            FeatureFlag expectedFlag = FeatureFlag.AuthHandler | FeatureFlag.CompressionHandler | FeatureFlag.RetryHandler;
+            var handlers = GraphClientFactory.CreateDefaultHandlers(null);
+            handlers.RemoveAt(3);
+            var pipelineWithHandlers = GraphClientFactory.CreatePipelineWithFeatureFlags(handlers);
+
+            Assert.NotNull(pipelineWithHandlers.Pipeline);
+            Assert.True(pipelineWithHandlers.FeatureFlags.HasFlag(expectedFlag));
+        }
     }
 }
