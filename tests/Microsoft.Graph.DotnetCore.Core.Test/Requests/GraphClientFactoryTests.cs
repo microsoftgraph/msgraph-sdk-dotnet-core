@@ -128,7 +128,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             using (HttpClient httpClient = GraphClientFactory.Create(testAuthenticationProvider.Object, version: "beta", nationalCloud: GraphClientFactory.Germany_Cloud))
             {
                 Assert.NotNull(httpClient);
-                Uri clouldEndpoint = new Uri("https://graph.microsoft.de/beta");
+                Uri clouldEndpoint = new Uri("https://graph.microsoft.de/beta/");
                 Assert.Equal(httpClient.BaseAddress, clouldEndpoint);
                 Assert.Equal(httpClient.Timeout, TimeSpan.FromSeconds(100));
             }
@@ -152,7 +152,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         [Fact]
         public void CreateClient_WithInnerHandler()
         {
-            using (HttpClient httpClient = GraphClientFactory.Create(authenticationProvider: testAuthenticationProvider.Object, innerHandler: this.testHttpMessageHandler))
+            using (HttpClient httpClient = GraphClientFactory.Create(authenticationProvider: testAuthenticationProvider.Object, finalHandler: this.testHttpMessageHandler))
             {
                 Assert.NotNull(httpClient);
                 Assert.True(httpClient.DefaultRequestHeaders.Contains(CoreConstants.Headers.SdkVersionHeaderName), "SDK version not set.");
@@ -189,7 +189,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             var oKResponse = new HttpResponseMessage(HttpStatusCode.OK);
             this.testHttpMessageHandler.SetHttpResponse(redirectResponse, oKResponse);
 
-            using (HttpClient client = GraphClientFactory.Create(authenticationProvider: testAuthenticationProvider.Object, innerHandler: this.testHttpMessageHandler))
+            using (HttpClient client = GraphClientFactory.Create(authenticationProvider: testAuthenticationProvider.Object, finalHandler: this.testHttpMessageHandler))
             {
                 var response = await client.SendAsync(httpRequestMessage, new CancellationToken());
                 Assert.Equal(response, oKResponse);
@@ -211,7 +211,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 
             this.testHttpMessageHandler.SetHttpResponse(retryResponse, response_2);
 
-            using (HttpClient client = GraphClientFactory.Create(authenticationProvider: testAuthenticationProvider.Object, innerHandler: this.testHttpMessageHandler))
+            using (HttpClient client = GraphClientFactory.Create(authenticationProvider: testAuthenticationProvider.Object, finalHandler: this.testHttpMessageHandler))
             {
                 var response = await client.SendAsync(httpRequestMessage, new CancellationToken());
                 Assert.Same(response, response_2);
@@ -236,7 +236,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 
             IList<DelegatingHandler> handlersWithNoAuthProvider = GraphClientFactory.CreateDefaultHandlers(null);
 
-            using (HttpClient client = GraphClientFactory.Create(handlers: handlersWithNoAuthProvider, innerHandler: this.testHttpMessageHandler))
+            using (HttpClient client = GraphClientFactory.Create(handlers: handlersWithNoAuthProvider, finalHandler: this.testHttpMessageHandler))
             {
                 ServiceException ex = await Assert.ThrowsAsync<ServiceException>(() => client.SendAsync(httpRequestMessage, new CancellationToken()));
                 Assert.Equal(ErrorConstants.Codes.InvalidRequest, ex.Error.Code);
@@ -255,7 +255,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 
             testHttpMessageHandler.SetHttpResponse(unauthorizedResponse, okResponse);
 
-            using (HttpClient client = GraphClientFactory.Create(handlers: handlers, innerHandler: this.testHttpMessageHandler))
+            using (HttpClient client = GraphClientFactory.Create(handlers: handlers, finalHandler: this.testHttpMessageHandler))
             {
                 var response = await client.SendAsync(httpRequestMessage, new CancellationToken());
                 Assert.Same(response, okResponse);

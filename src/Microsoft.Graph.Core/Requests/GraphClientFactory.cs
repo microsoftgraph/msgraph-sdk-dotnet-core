@@ -58,7 +58,7 @@ namespace Microsoft.Graph
         /// <param name="version">The graph version to use.</param>
         /// <param name="nationalCloud">The national cloud endpoint to use.</param>
         /// <param name="proxy">The proxy to be used with created client.</param>
-        /// <param name="innerHandler">The last HttpMessageHandler to HTTP calls.
+        /// <param name="finalHandler">The last HttpMessageHandler to HTTP calls.
         /// The default implementation creates a new instance of <see cref="HttpClientHandler"/> for each HttpClient.</param>
         /// <returns></returns>
         public static HttpClient Create(
@@ -66,10 +66,10 @@ namespace Microsoft.Graph
             string version = "v1.0",
             string nationalCloud = Global_Cloud,
             IWebProxy proxy = null,
-            HttpMessageHandler innerHandler = null)
+            HttpMessageHandler finalHandler = null)
         {
             IList<DelegatingHandler> handlers = CreateDefaultHandlers(authenticationProvider);
-            return Create(handlers, version, nationalCloud, proxy, innerHandler);
+            return Create(handlers, version, nationalCloud, proxy, finalHandler);
         }
 
         /// <summary>
@@ -83,23 +83,23 @@ namespace Microsoft.Graph
         /// The handlers are invoked in a top-down fashion. That is, the first entry is invoked first for
         /// an outbound request message but last for an inbound response message.</param>
         /// <param name="proxy">The proxy to be used with created client.</param>
-        /// <param name="innerHandler">The last HttpMessageHandler to HTTP calls.</param>
+        /// <param name="finalHandler">The last HttpMessageHandler to HTTP calls.</param>
         /// <returns>An <see cref="HttpClient"/> instance with the configured handlers.</returns>
         public static HttpClient Create(
             IEnumerable<DelegatingHandler> handlers,
             string version = "v1.0",
             string nationalCloud = Global_Cloud,
             IWebProxy proxy = null,
-            HttpMessageHandler innerHandler = null)
+            HttpMessageHandler finalHandler = null)
         {
-            if (innerHandler == null)
-                innerHandler = new HttpClientHandler { Proxy = proxy, AllowAutoRedirect = false };
-            else if ((innerHandler is HttpClientHandler) && (innerHandler as HttpClientHandler).Proxy == null && proxy != null)
-                (innerHandler as HttpClientHandler).Proxy = proxy;
-            else if ((innerHandler is HttpClientHandler) && (innerHandler as HttpClientHandler).Proxy != null && proxy != null)
+            if (finalHandler == null)
+                finalHandler = new HttpClientHandler { Proxy = proxy, AllowAutoRedirect = false };
+            else if ((finalHandler is HttpClientHandler) && (finalHandler as HttpClientHandler).Proxy == null && proxy != null)
+                (finalHandler as HttpClientHandler).Proxy = proxy;
+            else if ((finalHandler is HttpClientHandler) && (finalHandler as HttpClientHandler).Proxy != null && proxy != null)
                 throw new ArgumentException(ErrorConstants.Messages.InvalidProxyArgument);
 
-            var pipelineWithFlags = CreatePipelineWithFeatureFlags(handlers, innerHandler);
+            var pipelineWithFlags = CreatePipelineWithFeatureFlags(handlers, finalHandler);
             HttpClient client = new HttpClient(pipelineWithFlags.Pipeline);
             client.DefaultRequestHeaders.Add(SdkVersionHeaderName, SdkVersionHeaderValue);
             client.SetFeatureFlag(pipelineWithFlags.FeatureFlags);
@@ -129,15 +129,15 @@ namespace Microsoft.Graph
         /// provided by <paramref name="handlers"/>. The resulting pipeline can be used to manually create <see cref="HttpClient"/>
         /// or <see cref="HttpMessageInvoker"/> instances with customized message handlers.
         /// </summary>
-        /// <param name="innerHandler">The inner handler represents the destination of the HTTP message channel.</param>
+        /// <param name="finalHandler">The inner handler represents the destination of the HTTP message channel.</param>
         /// <param name="handlers">An ordered list of <see cref="DelegatingHandler"/> instances to be invoked as part
         /// of sending an <see cref="HttpRequestMessage"/> and receiving an <see cref="HttpResponseMessage"/>.
         /// The handlers are invoked in a top-down fashion. That is, the first entry is invoked first for
         /// an outbound request message but last for an inbound response message.</param>
         /// <returns>The HTTP message channel.</returns>
-        public static HttpMessageHandler CreatePipeline(IEnumerable<DelegatingHandler> handlers, HttpMessageHandler innerHandler = null)
+        public static HttpMessageHandler CreatePipeline(IEnumerable<DelegatingHandler> handlers, HttpMessageHandler finalHandler = null)
         {
-            return CreatePipelineWithFeatureFlags(handlers, innerHandler).Pipeline;
+            return CreatePipelineWithFeatureFlags(handlers, finalHandler).Pipeline;
         }
 
         /// <summary>
@@ -145,26 +145,26 @@ namespace Microsoft.Graph
         /// provided by <paramref name="handlers"/>. The resulting pipeline can be used to manually create <see cref="HttpClient"/>
         /// or <see cref="HttpMessageInvoker"/> instances with customized message handlers.
         /// </summary>
-        /// <param name="innerHandler">The inner handler represents the destination of the HTTP message channel.</param>
+        /// <param name="finalHandler">The inner handler represents the destination of the HTTP message channel.</param>
         /// <param name="handlers">An ordered list of <see cref="DelegatingHandler"/> instances to be invoked as part
         /// of sending an <see cref="HttpRequestMessage"/> and receiving an <see cref="HttpResponseMessage"/>.
         /// The handlers are invoked in a top-down fashion. That is, the first entry is invoked first for
         /// an outbound request message but last for an inbound response message.</param>
         /// <returns>A tuple with The HTTP message channel and FeatureFlag for the handlers.</returns>
-        internal static (HttpMessageHandler Pipeline, FeatureFlag FeatureFlags) CreatePipelineWithFeatureFlags(IEnumerable<DelegatingHandler> handlers, HttpMessageHandler innerHandler = null)
+        internal static (HttpMessageHandler Pipeline, FeatureFlag FeatureFlags) CreatePipelineWithFeatureFlags(IEnumerable<DelegatingHandler> handlers, HttpMessageHandler finalHandler = null)
         {
             FeatureFlag handlerFlags = FeatureFlag.None;
-            if (innerHandler == null)
+            if (finalHandler == null)
             {
-                innerHandler = new HttpClientHandler { AllowAutoRedirect = false };
+                finalHandler = new HttpClientHandler { AllowAutoRedirect = false };
             }
 
             if (handlers == null)
             {
-                return (Pipeline: innerHandler, FeatureFlags: handlerFlags);
+                return (Pipeline: finalHandler, FeatureFlags: handlerFlags);
             }
 
-            HttpMessageHandler httpPipeline = innerHandler;
+            HttpMessageHandler httpPipeline = finalHandler;
             IEnumerable<DelegatingHandler> reversedHandlers = handlers.Reverse();
             HashSet<Type> existingHandlerTypes = new HashSet<Type>();
             foreach (DelegatingHandler handler in reversedHandlers)
@@ -181,7 +181,7 @@ namespace Microsoft.Graph
 
                 // Add duplicate check based on handler type.
                 if (!existingHandlerTypes.Add(handler.GetType()))
-                    throw new ArgumentException($"DelegatingHandler array has a dupliacate handler. {handler} has a duplicate handler.", "handlers");
+                    throw new ArgumentException($"DelegatingHandler array has a duplicate handler. {handler} has a duplicate handler.", "handlers");
 
                 handler.InnerHandler = httpPipeline;
                 httpPipeline = handler;
@@ -219,7 +219,7 @@ namespace Microsoft.Graph
             {
                 throw new ArgumentException(String.Format("{0} is an unexpected national cloud.", nationalCloud, "nationalCloud"));
             }
-            string cloudAddress = cloud + "/" + version;
+            string cloudAddress = $"{cloud}/{version}/";
             return new Uri(cloudAddress);
 
         }

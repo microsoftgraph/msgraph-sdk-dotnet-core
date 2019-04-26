@@ -81,7 +81,7 @@ namespace Microsoft.Graph.Core.Test.Requests
         [TestMethod]
         public void CreatePipelineWithoutPipeline()
         {
-            using (RetryHandler handler = (RetryHandler)GraphClientFactory.CreatePipeline(handlers: handlers, innerHandler: this.testHttpMessageHandler))
+            using (RetryHandler handler = (RetryHandler)GraphClientFactory.CreatePipeline(handlers: handlers, finalHandler: this.testHttpMessageHandler))
             {
                 Assert.IsNotNull(handler, "Create a middleware pipeline failed.");
                 Assert.IsInstanceOfType(handler, typeof(RetryHandler), "Inner most HttpMessageHandler class error.");
@@ -112,7 +112,7 @@ namespace Microsoft.Graph.Core.Test.Requests
             using (HttpClient httpClient = GraphClientFactory.Create(authenticationProvider: authenticationProvider.Object, version: "beta", nationalCloud: GraphClientFactory.Germany_Cloud))
             {
                 Assert.IsNotNull(httpClient, "Create Http client failed.");
-                Uri clouldEndpoint = new Uri("https://graph.microsoft.de/beta");
+                Uri clouldEndpoint = new Uri("https://graph.microsoft.de/beta/");
                 Assert.AreEqual(httpClient.BaseAddress, clouldEndpoint, "Unexpected endpoint set.");
                 Assert.AreEqual(httpClient.Timeout, TimeSpan.FromSeconds(100), "Default timeout not set.");
             }
@@ -136,7 +136,7 @@ namespace Microsoft.Graph.Core.Test.Requests
         [TestMethod]
         public void CreateClient_WithInnerHandler()
         {
-            using (HttpClient httpClient = GraphClientFactory.Create(authenticationProvider: authenticationProvider.Object, innerHandler: this.testHttpMessageHandler))
+            using (HttpClient httpClient = GraphClientFactory.Create(authenticationProvider: authenticationProvider.Object, finalHandler: this.testHttpMessageHandler))
             {
                 Assert.IsNotNull(httpClient, "Create Http client failed.");
                 Assert.IsTrue(httpClient.DefaultRequestHeaders.Contains(CoreConstants.Headers.SdkVersionHeaderName), "SDK version not set.");
@@ -175,7 +175,7 @@ namespace Microsoft.Graph.Core.Test.Requests
             var oKResponse = new HttpResponseMessage(HttpStatusCode.OK);
             this.testHttpMessageHandler.SetHttpResponse(redirectResponse, oKResponse);
 
-            using (HttpClient client = GraphClientFactory.Create(authenticationProvider: authenticationProvider.Object, innerHandler: this.testHttpMessageHandler))
+            using (HttpClient client = GraphClientFactory.Create(authenticationProvider: authenticationProvider.Object, finalHandler: this.testHttpMessageHandler))
             {
                 var response = await client.SendAsync(httpRequestMessage, new CancellationToken());
                 Assert.AreEqual(response, oKResponse, "Middleware pipeline not work.");
@@ -197,7 +197,7 @@ namespace Microsoft.Graph.Core.Test.Requests
 
             this.testHttpMessageHandler.SetHttpResponse(retryResponse, response_2);
 
-            using (HttpClient client = GraphClientFactory.Create(authenticationProvider: authenticationProvider.Object, innerHandler: this.testHttpMessageHandler))
+            using (HttpClient client = GraphClientFactory.Create(authenticationProvider: authenticationProvider.Object, finalHandler: this.testHttpMessageHandler))
             {
                 var response = await client.SendAsync(httpRequestMessage, new CancellationToken());
                 Assert.AreSame(response, response_2);
@@ -224,7 +224,7 @@ namespace Microsoft.Graph.Core.Test.Requests
             // Remove auth hander.
             handlersWithNoAuth.RemoveAt(0);
 
-            using (HttpClient client = GraphClientFactory.Create(handlers: handlersWithNoAuth, innerHandler: this.testHttpMessageHandler))
+            using (HttpClient client = GraphClientFactory.Create(handlers: handlersWithNoAuth, finalHandler: this.testHttpMessageHandler))
             {
                 var response = await client.SendAsync(httpRequestMessage, new CancellationToken());
                 Assert.AreSame(response, unauthorizedResponse);
@@ -245,7 +245,7 @@ namespace Microsoft.Graph.Core.Test.Requests
 
             handlers[2] = new AuthenticationHandler(new MockAuthenticationProvider().Object);
 
-            using (HttpClient client = GraphClientFactory.Create( handlers: handlers, innerHandler: this.testHttpMessageHandler))
+            using (HttpClient client = GraphClientFactory.Create( handlers: handlers, finalHandler: this.testHttpMessageHandler))
             {
                 var response = await client.SendAsync(httpRequestMessage, new CancellationToken());
                 Assert.AreSame(response, okResponse);

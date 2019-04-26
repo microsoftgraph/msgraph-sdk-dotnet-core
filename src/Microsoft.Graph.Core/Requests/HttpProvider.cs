@@ -66,7 +66,7 @@ namespace Microsoft.Graph
             if (this.httpMessageHandler == null)
             {
                 this.httpMessageHandler = new HttpClientHandler { AllowAutoRedirect = false };
-                this.httpClient = GraphClientFactory.Create(authenticationProvider: null, version: "v1.0", nationalCloud: GraphClientFactory.Global_Cloud, innerHandler: httpMessageHandler);
+                this.httpClient = GraphClientFactory.Create(authenticationProvider: null, version: "v1.0", nationalCloud: GraphClientFactory.Global_Cloud, finalHandler: httpMessageHandler);
             }
             else
             {
