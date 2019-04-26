@@ -23,7 +23,11 @@
         {
             defaultAuthProvider = new MockAuthenticationProvider(defaultAuthHeader);
             testHttpMessageHandler = new TestHttpMessageHandler();
-            httpProvider = new HttpProvider(testHttpMessageHandler, true, serializer.Object);
+
+            var defaultHandlers = GraphClientFactory.CreateDefaultHandlers(defaultAuthProvider.Object);
+            var pipeline = GraphClientFactory.CreatePipeline(defaultHandlers, this.testHttpMessageHandler);
+
+            httpProvider = new HttpProvider(pipeline, true, serializer.Object);
             baseClient = new BaseClient("https://localhost/v1.0", defaultAuthProvider.Object, httpProvider);
         }
 

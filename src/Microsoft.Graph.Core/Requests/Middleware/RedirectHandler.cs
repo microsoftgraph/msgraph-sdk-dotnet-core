@@ -70,6 +70,12 @@ namespace Microsoft.Graph
 
                 while (redirectCount < RedirectOption.MaxRedirect)
                 {
+                    // Drain response content to free responses.
+                    if (response.Content != null)
+                    {
+                        await response.Content.ReadAsByteArrayAsync();
+                    }
+
                     // general clone request with internal CloneAsync (see CloneAsync for details) extension method 
                     var newRequest = await response.RequestMessage.CloneAsync();
 

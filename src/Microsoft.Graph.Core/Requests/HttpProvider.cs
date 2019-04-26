@@ -58,11 +58,21 @@ namespace Microsoft.Graph
         public HttpProvider(HttpMessageHandler httpMessageHandler, bool disposeHandler, ISerializer serializer)
         {
             this.disposeHandler = disposeHandler;
-            this.httpMessageHandler = httpMessageHandler ?? new HttpClientHandler { AllowAutoRedirect = false };
+            this.httpMessageHandler = httpMessageHandler;
             this.Serializer = serializer ?? new Serializer();
 
-            GraphClientFactory.DefaultHttpHandler = () => this.httpMessageHandler;
-            this.httpClient = GraphClientFactory.Create((IAuthenticationProvider)null, "v1.0", GraphClientFactory.Global_Cloud);
+            // NOTE: Override our pipeline when a httpMessageHandler is provided - httpMessageHandler can implement custom pipeline.
+            // This check won't be needed once we re-write the HttpProvider to work with GraphClientFactory.
+            if (this.httpMessageHandler == null)
+            {
+                this.httpMessageHandler = new HttpClientHandler { AllowAutoRedirect = false };
+                this.httpClient = GraphClientFactory.Create(authenticationProvider: null, version: "v1.0", nationalCloud: GraphClientFactory.Global_Cloud, finalHandler: httpMessageHandler);
+            }
+            else
+            {
+                this.httpClient = new HttpClient(this.httpMessageHandler, this.disposeHandler);
+            } 
+
             this.httpClient.SetFeatureFlag(FeatureFlag.DefaultHttpProvider);
         }
 

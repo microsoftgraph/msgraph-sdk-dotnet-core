@@ -20,22 +20,14 @@
     <AssemblyOriginatorKeyFile>35MSSharedLib1024.snk</AssemblyOriginatorKeyFile>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <VersionPrefix>1.15.0</VersionPrefix>
-    <VersionSuffix>preview.1</VersionSuffix>
-    <PackageReleaseNotes>April 2019 Release Summary (version 1.15.0 preview.1)
-
-New Features:
-Added Graph client factory to create HTTP clients that are pre-configured to make requests to Graph APIs.
-Added batch request content that make is easy to create payloads for a Graph batch request.
-Added batch response content to process batch responses from Graph.
-Added compression middleware handler to request, detect and decompress response bodies from Graph service.
-Added response handler to process native HTTP response messages to strongly typed Graph objects.
+    <VersionSuffix>preview.2</VersionSuffix>
+    <PackageReleaseNotes>April 2019 Release Summary (version 1.15.0 preview.2)
 
 Fixes:
-Fixed issue #136.
-Fixed issue #205.
-Fixed issue #401.
-Fixed issue #431.
+Fixed issue #413.
 Fixed issue #435.
+Fixed issue #447.
+Fixed issue #449.
 </PackageReleaseNotes>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard1.1|AnyCPU'">
@@ -66,5 +58,8 @@ Fixed issue #435.
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="System.ValueTuple" Version="4.3.0" />
   </ItemGroup>
 </Project>

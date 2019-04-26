@@ -3,10 +3,6 @@
 // ------------------------------------------------------------------------------
 
 using Microsoft.Graph.DotnetCore.Core.Test.Mocks;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
