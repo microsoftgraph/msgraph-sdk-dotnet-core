@@ -457,15 +457,15 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Checks if a custom IHttpProvider is used or our HttpProvider is used without an auth handler (flag).
+        /// Determins whether or not <see cref="BaseRequest"/> should authenticate the request or let <see cref="AuthenticationHandler"/> authenticate the request.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>
+        /// TRUE: If a CUSTOM <see cref="IHttpProvider"/> or DEFAULT <see cref="HttpProvider"/> is used WITHOUT an <see cref="AuthenticationHandler"/>.
+        /// FALSE: If our DEFAULT <see cref="HttpProvider"/> is used WITH an <see cref="AuthenticationHandler"/>.
+        /// </returns>
         private bool ShouldAuthenticateRequest()
         {
-            if (this.Client.HttpProvider.GetType() != typeof(HttpProvider))
-                return true;
-            else
-                return !(this.Client.HttpProvider as HttpProvider).httpClient.ContainsFeatureFlag(FeatureFlag.AuthHandler);
+            return !(this.Client.HttpProvider is HttpProvider && (this.Client.HttpProvider as HttpProvider).httpClient.ContainsFeatureFlag(FeatureFlag.AuthHandler));
         }
     }
 }

@@ -61,7 +61,7 @@ namespace Microsoft.Graph
             this.httpMessageHandler = httpMessageHandler;
             this.Serializer = serializer ?? new Serializer();
 
-            // NOTE: Overide our pipeline when a httpMessageHandler is provided - httpMessageHandler can implement custom pipeline.
+            // NOTE: Override our pipeline when a httpMessageHandler is provided - httpMessageHandler can implement custom pipeline.
             // This check won't be needed once we re-write the HttpProvider to work with GraphClientFactory.
             if (this.httpMessageHandler == null)
             {
