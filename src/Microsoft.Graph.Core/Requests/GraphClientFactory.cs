@@ -146,6 +146,17 @@ namespace Microsoft.Graph
             return CreatePipelineWithFeatureFlags(handlers, innerHandler).Pipeline;
         }
 
+        /// <summary>
+        /// Creates an instance of an <see cref="HttpMessageHandler"/> using the <see cref="DelegatingHandler"/> instances
+        /// provided by <paramref name="handlers"/>. The resulting pipeline can be used to manually create <see cref="HttpClient"/>
+        /// or <see cref="HttpMessageInvoker"/> instances with customized message handlers.
+        /// </summary>
+        /// <param name="innerHandler">The inner handler represents the destination of the HTTP message channel.</param>
+        /// <param name="handlers">An ordered list of <see cref="DelegatingHandler"/> instances to be invoked as part
+        /// of sending an <see cref="HttpRequestMessage"/> and receiving an <see cref="HttpResponseMessage"/>.
+        /// The handlers are invoked in a top-down fashion. That is, the first entry is invoked first for
+        /// an outbound request message but last for an inbound response message.</param>
+        /// <returns>A tuple with The HTTP message channel and FeatureFlag for the handlers.</returns>
         internal static (HttpMessageHandler Pipeline, FeatureFlag FeatureFlags) CreatePipelineWithFeatureFlags(IEnumerable<DelegatingHandler> handlers, HttpMessageHandler innerHandler = null)
         {
             FeatureFlag handlerFlags = FeatureFlag.None;
@@ -183,7 +194,11 @@ namespace Microsoft.Graph
             return (Pipeline: httpPipeline, FeatureFlags: handlerFlags);
         }
 
-
+        /// <summary>
+        /// Gets feature flag for the specified handler.
+        /// </summary>
+        /// <param name="delegatingHandler">The <see cref="DelegatingHandler"/> to get its feaure flag.</param>
+        /// <returns>Delegating handler feature flag.</returns>
         private static FeatureFlag GetHandlerFeatureFlag(DelegatingHandler delegatingHandler)
         {
             FeatureFlag featureFlag = FeatureFlag.None;
