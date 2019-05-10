@@ -13,7 +13,7 @@
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
   </PropertyGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp1.0' ">
+  <ItemGroup>
     <ProjectReference Include="..\..\src\Microsoft.Graph.Core\Microsoft.Graph.Core.csproj" />
   </ItemGroup>
 
