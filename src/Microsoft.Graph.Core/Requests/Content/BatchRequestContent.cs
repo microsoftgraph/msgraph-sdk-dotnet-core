@@ -210,7 +210,7 @@ namespace Microsoft.Graph
 
         protected override async Task SerializeToStreamAsync(Stream stream, TransportContext context)
         {
-            using (StreamWriter streamWritter = new StreamWriter(stream))
+            using (StreamWriter streamWritter = new StreamWriter(stream, new UTF8Encoding(), 1024, true))
             using (JsonTextWriter textWritter = new JsonTextWriter(streamWritter))
             {
                 JObject batchContent = await GetBatchRequestContentAsync();
