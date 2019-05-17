@@ -2,12 +2,11 @@
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
-using Microsoft.Graph.DotnetCore.Test.Mocks;
-using System;
-using System.Net.Http;
-
 namespace Microsoft.Graph.DotnetCore.Test.Requests
 {
+    using Microsoft.Graph.DotnetCore.Test.Mocks;
+    using System;
+    using System.Net.Http;
     public class RequestTestBase : IDisposable
     {
         protected string graphBaseUrl = string.Format(Constants.Url.GraphBaseUrlFormatString, "v1.0");
