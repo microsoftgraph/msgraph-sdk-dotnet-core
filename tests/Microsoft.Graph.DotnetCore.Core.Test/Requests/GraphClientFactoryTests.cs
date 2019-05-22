@@ -224,7 +224,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 
         }
 
-        [Fact(Skip = "In order to support HttpProvider, we'll skip authentication if no provider is set. We will add enable this once we re-write a new HttpProvider.")]
+        [Fact(Skip = "In order to support HttpProvider, we'll skip authentication if no provider is set. We will enable this once we re-write HttpProvider.")]
         public async Task SendRequest_UnauthorizedWithNoAuthenticationProvider()
         {
             var httpRequestMessage = new HttpRequestMessage(HttpMethod.Put, "https://example.com/bar");

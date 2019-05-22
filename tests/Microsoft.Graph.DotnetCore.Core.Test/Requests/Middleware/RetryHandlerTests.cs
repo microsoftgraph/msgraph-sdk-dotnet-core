@@ -21,7 +21,6 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         private const string RETRY_AFTER = "Retry-After";
         private const string RETRY_ATTEMPT = "Retry-Attempt";
 
-
         public RetryHandlerTests()
         {
             this.testHttpMessageHandler = new MockRedirectHandler();
@@ -86,6 +85,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         }
 
         [Theory]
+        [InlineData(HttpStatusCode.GatewayTimeout)]  // 504
         [InlineData(HttpStatusCode.ServiceUnavailable)]  // 503
         [InlineData(429)] // 429
         public async Task ShouldRetryWithAddRetryAttemptHeader(HttpStatusCode statusCode)
@@ -112,6 +112,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 
 
         [Theory]
+        [InlineData(HttpStatusCode.GatewayTimeout)]  // 504
         [InlineData(HttpStatusCode.ServiceUnavailable)]  // 503
         [InlineData(429)] // 429
         public async Task ShouldRetryWithBuffedContent(HttpStatusCode statusCode)
@@ -136,6 +137,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         }
 
         [Theory]
+        [InlineData(HttpStatusCode.GatewayTimeout)]  // 504
         [InlineData(HttpStatusCode.ServiceUnavailable)]  // 503
         [InlineData(429)] // 429
         public async Task ShouldNotRetryWithPostStreaming(HttpStatusCode statusCode)
@@ -163,6 +165,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 
 
         [Theory]
+        [InlineData(HttpStatusCode.GatewayTimeout)]  // 504
         [InlineData(HttpStatusCode.ServiceUnavailable)]  // 503
         [InlineData(429)] // 429
         public async Task ShouldNotRetryWithPutStreaming(HttpStatusCode statusCode)
@@ -189,6 +192,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 
       
         [Theory(Skip = "skip test")]
+        [InlineData(HttpStatusCode.GatewayTimeout)]  // 504
         [InlineData(HttpStatusCode.ServiceUnavailable)]  // 503
         [InlineData(429)] // 429
         public async Task ExceedMaxRetryShouldReturn(HttpStatusCode statusCode)
@@ -218,6 +222,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         }
 
         [Theory]
+        [InlineData(HttpStatusCode.GatewayTimeout)]  // 504
         [InlineData(HttpStatusCode.ServiceUnavailable)]  // 503
         [InlineData(429)] // 429
         public async Task ShouldDelayBasedOnRetryAfterHeader(HttpStatusCode statusCode)
@@ -233,6 +238,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 
 
         [Theory]
+        [InlineData(HttpStatusCode.GatewayTimeout)]  // 504
         [InlineData(HttpStatusCode.ServiceUnavailable)]  // 503
         [InlineData(429)] // 429
         public async Task ShouldDelayBasedOnExponentialBackOff(HttpStatusCode statusCode)
@@ -249,6 +255,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         }
 
         [Theory]
+        [InlineData(HttpStatusCode.GatewayTimeout)]  // 504
         [InlineData(HttpStatusCode.ServiceUnavailable)]  // 503
         [InlineData(429)] // 429
         public async Task ShouldRetrytBasedOnRetryAfter(HttpStatusCode statusCode)

@@ -17,10 +17,8 @@ namespace Microsoft.Graph
     /// </summary>
     public class RetryHandler : DelegatingHandler
     {
-
         private const string RETRY_AFTER = "Retry-After";
         private const string RETRY_ATTEMPT = "Retry-Attempt";
-        private const int DELAY_MILLISECONDS = 10000;
         private double m_pow = 1;
 
         /// <summary>
@@ -168,12 +166,9 @@ namespace Microsoft.Graph
         /// <returns></returns>
         private bool ShouldRetry(HttpResponseMessage response)
         {
-            if ((response.StatusCode == HttpStatusCode.ServiceUnavailable ||
-                response.StatusCode == (HttpStatusCode)429))
-            {
-                return true;
-            }
-            return false;
+            return (response.StatusCode == HttpStatusCode.ServiceUnavailable ||
+                response.StatusCode == HttpStatusCode.GatewayTimeout ||
+                response.StatusCode == (HttpStatusCode)429);
         }
     }
 }
