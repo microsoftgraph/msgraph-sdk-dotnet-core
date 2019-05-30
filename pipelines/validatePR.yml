@@ -43,7 +43,7 @@ steps:
     targetType: filePath
     filePath: 'scripts\ValidateUpdatedNugetVersion.ps1'
     arguments: '-packageName "$(PACKAGE_NAME)" -projectPath "$(PROJECT_PATH)"'
-  enabled: true
+  enabled: false
 
 - task: NuGetCommand@2
   displayName: 'NuGet restore'
