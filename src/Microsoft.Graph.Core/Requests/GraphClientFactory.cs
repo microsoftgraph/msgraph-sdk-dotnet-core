@@ -10,7 +10,6 @@ namespace Microsoft.Graph
     using System.Net.Http;
     using System.Reflection;
     using System.Net.Http.Headers;
-
     /// <summary>
     /// GraphClientFactory class to create the HTTP client
     /// </summary>
@@ -93,11 +92,17 @@ namespace Microsoft.Graph
             HttpMessageHandler finalHandler = null)
         {
             if (finalHandler == null)
-                finalHandler = new HttpClientHandler { Proxy = proxy, AllowAutoRedirect = false };
+            {
+                finalHandler = GetPlatformFinalHttpHandler(proxy);
+            }
             else if ((finalHandler is HttpClientHandler) && (finalHandler as HttpClientHandler).Proxy == null && proxy != null)
+            {
                 (finalHandler as HttpClientHandler).Proxy = proxy;
+            }
             else if ((finalHandler is HttpClientHandler) && (finalHandler as HttpClientHandler).Proxy != null && proxy != null)
+            {
                 throw new ArgumentException(ErrorConstants.Messages.InvalidProxyArgument);
+            }
 
             var pipelineWithFlags = CreatePipelineWithFeatureFlags(handlers, finalHandler);
             HttpClient client = new HttpClient(pipelineWithFlags.Pipeline);
@@ -156,7 +161,7 @@ namespace Microsoft.Graph
             FeatureFlag handlerFlags = FeatureFlag.None;
             if (finalHandler == null)
             {
-                finalHandler = new HttpClientHandler { AllowAutoRedirect = false };
+                finalHandler = GetPlatformFinalHttpHandler();
             }
 
             if (handlers == null)
@@ -222,6 +227,26 @@ namespace Microsoft.Graph
             string cloudAddress = $"{cloud}/{version}/";
             return new Uri(cloudAddress);
 
+        }
+
+        private static HttpMessageHandler GetPlatformFinalHttpHandler(IWebProxy proxy = null)
+        {
+#if iOS
+            // See https://docs.microsoft.com/en-us/xamarin/cross-platform/macios/http-stack#nsurlsession for details
+            // This will do a >= check for the specified version.
+            if (UIKit.UIDevice.CurrentDevice.CheckSystemVersion(7, 0))
+            {
+                return new NSUrlSessionHandler() { AllowAutoRedirect = false };
+            }
+            else
+            {
+                return new HttpClientHandler { Proxy = proxy, AllowAutoRedirect = false, AutomaticDecompression = DecompressionMethods.None };
+            }
+#elif ANDROID
+            return new Xamarin.Android.Net.AndroidClientHandler { Proxy = proxy, AllowAutoRedirect = false, AutomaticDecompression = DecompressionMethods.None };
+#else
+            return new HttpClientHandler { Proxy = proxy, AllowAutoRedirect = false, AutomaticDecompression = DecompressionMethods.None };
+#endif
         }
     }
 }

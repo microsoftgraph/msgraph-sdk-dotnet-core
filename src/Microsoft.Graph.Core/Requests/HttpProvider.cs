@@ -65,8 +65,8 @@ namespace Microsoft.Graph
             // This check won't be needed once we re-write the HttpProvider to work with GraphClientFactory.
             if (this.httpMessageHandler == null)
             {
-                this.httpMessageHandler = new HttpClientHandler { AllowAutoRedirect = false };
-                this.httpClient = GraphClientFactory.Create(authenticationProvider: null, version: "v1.0", nationalCloud: GraphClientFactory.Global_Cloud, finalHandler: httpMessageHandler);
+                // Platform specific final handler will be set by the factory's Create method if non is provided.
+                this.httpClient = GraphClientFactory.Create(authenticationProvider: null, version: "v1.0", nationalCloud: GraphClientFactory.Global_Cloud);
             }
             else
             {
