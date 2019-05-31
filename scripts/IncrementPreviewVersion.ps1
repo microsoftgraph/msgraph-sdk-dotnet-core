@@ -4,7 +4,7 @@
 <#
 .Synopsis
     Set or increment the preview version string based on whether there exists
-    a publicly release preview version.
+    a publicly released preview version.
 
 .Parameter packageName
     Specifies the package name of the package. For example, 'microsoft.graph.core'

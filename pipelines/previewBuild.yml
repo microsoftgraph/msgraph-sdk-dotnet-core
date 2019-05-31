@@ -8,19 +8,22 @@ trigger:
     include:
     - dev
   paths:
+    include:
+      - src/*
+      - tests/*
     exclude:
-        - .github/*
-        - build/*
-        - docs/*
-        - pipelines/*
-        - scripts/*
-        - .gitignore
-        - CONTRIBUTING.md
-        - LICENSE.txt
-        - Microsoft.Graph.Core.sln
-        - README.md
-        - THIRD PARTY NOTICES
-        - appveyor.yml
+      - .github/*
+      - build/*
+      - docs/*
+      - pipelines/*
+      - scripts/*
+      - .gitignore
+      - CONTRIBUTING.md
+      - LICENSE.txt
+      - Microsoft.Graph.Core.sln
+      - README.md
+      - THIRD PARTY NOTICES
+      - appveyor.yml
 
 pr: none
 
@@ -192,7 +195,6 @@ steps:
      scripts\GetLatestCommitSHA.ps1
     TargetFolder: '$(Build.ArtifactStagingDirectory) '
 
-steps:
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: Microsoft.Graph.Core.nupkg and release pipeline scripts'
   inputs:
