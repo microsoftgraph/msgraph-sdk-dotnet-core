@@ -93,7 +93,7 @@ namespace Microsoft.Graph
         {
             if (finalHandler == null)
             {
-                finalHandler = GetPlatformFinalHttpHandler(proxy);
+                finalHandler = GetPlatformsNativeHttpHandler(proxy);
             }
             else if ((finalHandler is HttpClientHandler) && (finalHandler as HttpClientHandler).Proxy == null && proxy != null)
             {
@@ -161,7 +161,7 @@ namespace Microsoft.Graph
             FeatureFlag handlerFlags = FeatureFlag.None;
             if (finalHandler == null)
             {
-                finalHandler = GetPlatformFinalHttpHandler();
+                finalHandler = GetPlatformsNativeHttpHandler();
             }
 
             if (handlers == null)
@@ -197,6 +197,34 @@ namespace Microsoft.Graph
 
             return (Pipeline: httpPipeline, FeatureFlags: handlerFlags);
         }
+        /// <summary>
+        /// Gets a platform's native http handler.
+        /// </summary>
+        /// <param name="proxy">The proxy to be used with created client.</param>
+        /// <returns>
+        /// 1. NSUrlSessionHandler for Xamarin.iOS 
+        /// 2. AndroidClientHandler for Xamarin.Android.
+        /// 3. HttpClientHandler for other platforms.
+        /// </returns>
+        internal static HttpMessageHandler GetPlatformsNativeHttpHandler(IWebProxy proxy = null)
+        {
+#if iOS
+            // See https://docs.microsoft.com/en-us/xamarin/cross-platform/macios/http-stack#nsurlsession for details
+            // This will do a >= check for the specified version.
+            if (UIKit.UIDevice.CurrentDevice.CheckSystemVersion(7, 0))
+            {
+                return new NSUrlSessionHandler() { AllowAutoRedirect = false };
+            }
+            else
+            {
+                return new HttpClientHandler { Proxy = proxy, AllowAutoRedirect = false, AutomaticDecompression = DecompressionMethods.None };
+            }
+#elif ANDROID
+            return new Xamarin.Android.Net.AndroidClientHandler { Proxy = proxy, AllowAutoRedirect = false, AutomaticDecompression = DecompressionMethods.None };
+#else
+            return new HttpClientHandler { Proxy = proxy, AllowAutoRedirect = false, AutomaticDecompression = DecompressionMethods.None };
+#endif
+        }
 
         /// <summary>
         /// Gets feature flag for the specified handler.
@@ -227,26 +255,6 @@ namespace Microsoft.Graph
             string cloudAddress = $"{cloud}/{version}/";
             return new Uri(cloudAddress);
 
-        }
-
-        private static HttpMessageHandler GetPlatformFinalHttpHandler(IWebProxy proxy = null)
-        {
-#if iOS
-            // See https://docs.microsoft.com/en-us/xamarin/cross-platform/macios/http-stack#nsurlsession for details
-            // This will do a >= check for the specified version.
-            if (UIKit.UIDevice.CurrentDevice.CheckSystemVersion(7, 0))
-            {
-                return new NSUrlSessionHandler() { AllowAutoRedirect = false };
-            }
-            else
-            {
-                return new HttpClientHandler { Proxy = proxy, AllowAutoRedirect = false, AutomaticDecompression = DecompressionMethods.None };
-            }
-#elif ANDROID
-            return new Xamarin.Android.Net.AndroidClientHandler { Proxy = proxy, AllowAutoRedirect = false, AutomaticDecompression = DecompressionMethods.None };
-#else
-            return new HttpClientHandler { Proxy = proxy, AllowAutoRedirect = false, AutomaticDecompression = DecompressionMethods.None };
-#endif
         }
     }
 }
