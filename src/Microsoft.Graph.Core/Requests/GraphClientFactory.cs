@@ -93,7 +93,7 @@ namespace Microsoft.Graph
         {
             if (finalHandler == null)
             {
-                finalHandler = GetPlatformNativeHttpHandler(proxy);
+                finalHandler = GetNativePlatformHttpHandler(proxy);
             }
             else if ((finalHandler is HttpClientHandler) && (finalHandler as HttpClientHandler).Proxy == null && proxy != null)
             {
@@ -161,7 +161,7 @@ namespace Microsoft.Graph
             FeatureFlag handlerFlags = FeatureFlag.None;
             if (finalHandler == null)
             {
-                finalHandler = GetPlatformNativeHttpHandler();
+                finalHandler = GetNativePlatformHttpHandler();
             }
 
             if (handlers == null)
@@ -214,7 +214,7 @@ namespace Microsoft.Graph
         /// 2. AndroidClientHandler for Xamarin.Android.
         /// 3. HttpClientHandler for other platforms.
         /// </returns>
-        internal static HttpMessageHandler GetPlatformNativeHttpHandler(IWebProxy proxy = null)
+        internal static HttpMessageHandler GetNativePlatformHttpHandler(IWebProxy proxy = null)
         {
 #if iOS
             return new NSUrlSessionHandler { AllowAutoRedirect = false };
