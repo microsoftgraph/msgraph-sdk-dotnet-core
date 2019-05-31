@@ -57,11 +57,17 @@ steps:
 - task: MSBuild@1
   displayName: 'Build solution to run tests'
   inputs:
-    configuration: release
+    configuration: debug
     clean: true
 
 - task: VSTest@2
   displayName: 'Run enabled tests'
+
+- task: MSBuild@1
+  displayName: 'Build solution for preview release signing'
+  inputs:
+    configuration: release
+    clean: true
 
 - task: PowerShell@2
   displayName: 'Enable signing'
