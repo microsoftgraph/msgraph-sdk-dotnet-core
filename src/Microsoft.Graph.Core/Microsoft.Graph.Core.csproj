@@ -42,7 +42,7 @@ Fixed issue #447.
 Fixed issue #449.
     </PackageReleaseNotes>
   </PropertyGroup>
-  <!--We manually configure LanguageTargets for Xamarin due to .Net SDK TMFs limitation https://github.com/dotnet/sdk/issues/491 -->
+  <!--We manually configure LanguageTargets for Xamarin due to .Net SDK TFMs limitation https://github.com/dotnet/sdk/issues/491 -->
   <PropertyGroup Condition="'$(TargetFramework)' == 'Xamarin.iOS10'">
     <TargetFrameworkIdentifier>Xamarin.iOS</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v1.0</TargetFrameworkVersion>

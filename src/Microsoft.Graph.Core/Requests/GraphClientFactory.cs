@@ -93,7 +93,7 @@ namespace Microsoft.Graph
         {
             if (finalHandler == null)
             {
-                finalHandler = GetPlatformsNativeHttpHandler(proxy);
+                finalHandler = GetPlatformNativeHttpHandler(proxy);
             }
             else if ((finalHandler is HttpClientHandler) && (finalHandler as HttpClientHandler).Proxy == null && proxy != null)
             {
@@ -161,14 +161,21 @@ namespace Microsoft.Graph
             FeatureFlag handlerFlags = FeatureFlag.None;
             if (finalHandler == null)
             {
-                finalHandler = GetPlatformsNativeHttpHandler();
+                finalHandler = GetPlatformNativeHttpHandler();
             }
 
             if (handlers == null)
             {
                 return (Pipeline: finalHandler, FeatureFlags: handlerFlags);
             }
-
+#if iOS
+            // We remove CompressionHandler because NSUrlSessionHandler automatically handles decompression and it can't be turned off.
+            // See issue https://github.com/microsoftgraph/msgraph-sdk-dotnet/issues/481 for more details.
+            if (finalHandler.GetType() == typeof(NSUrlSessionHandler))
+            {
+                RemoveHandler(handlers.ToList(), typeof(CompressionHandler));
+            }
+#endif
             HttpMessageHandler httpPipeline = finalHandler;
             IEnumerable<DelegatingHandler> reversedHandlers = handlers.Reverse();
             HashSet<Type> existingHandlerTypes = new HashSet<Type>();
@@ -184,7 +191,7 @@ namespace Microsoft.Graph
                     throw new ArgumentException(String.Format("DelegatingHandler array has unexpected InnerHandler. {0} has unexpected InnerHandler.", handler, "handler"));
                 }
 
-                // Add duplicate check based on handler type.
+                // Check for handler duplicate by type.
                 if (!existingHandlerTypes.Add(handler.GetType()))
                     throw new ArgumentException($"DelegatingHandler array has a duplicate handler. {handler} has a duplicate handler.", "handlers");
 
@@ -197,8 +204,9 @@ namespace Microsoft.Graph
 
             return (Pipeline: httpPipeline, FeatureFlags: handlerFlags);
         }
+
         /// <summary>
-        /// Gets a platform's native http handler.
+        /// Gets a platform's native http handler i.e. NSUrlSessionHandler for Xamarin.iOS, AndroidClientHandler for Xamarin.Android and HttpClientHandler for others.
         /// </summary>
         /// <param name="proxy">The proxy to be used with created client.</param>
         /// <returns>
@@ -206,24 +214,31 @@ namespace Microsoft.Graph
         /// 2. AndroidClientHandler for Xamarin.Android.
         /// 3. HttpClientHandler for other platforms.
         /// </returns>
-        internal static HttpMessageHandler GetPlatformsNativeHttpHandler(IWebProxy proxy = null)
+        internal static HttpMessageHandler GetPlatformNativeHttpHandler(IWebProxy proxy = null)
         {
 #if iOS
-            // See https://docs.microsoft.com/en-us/xamarin/cross-platform/macios/http-stack#nsurlsession for details
-            // This will do a >= check for the specified version.
-            if (UIKit.UIDevice.CurrentDevice.CheckSystemVersion(7, 0))
-            {
-                return new NSUrlSessionHandler() { AllowAutoRedirect = false };
-            }
-            else
-            {
-                return new HttpClientHandler { Proxy = proxy, AllowAutoRedirect = false, AutomaticDecompression = DecompressionMethods.None };
-            }
+            return new NSUrlSessionHandler { AllowAutoRedirect = false };
 #elif ANDROID
             return new Xamarin.Android.Net.AndroidClientHandler { Proxy = proxy, AllowAutoRedirect = false, AutomaticDecompression = DecompressionMethods.None };
 #else
             return new HttpClientHandler { Proxy = proxy, AllowAutoRedirect = false, AutomaticDecompression = DecompressionMethods.None };
 #endif
+        }
+
+        /// <summary>
+        /// Removes the specified targetHandlerType from the provided list of delegatingHandlers.
+        /// </summary>
+        /// <param name="delegatingHandlers">The list of <see cref="DelegatingHandler"/> to remove a <see cref="DelegatingHandler"/> type from.</param>
+        /// <param name="targetHandlerType">The <see cref="DelegatingHandler"/> type to remove.</param>
+        /// <returns></returns>
+        internal static bool RemoveHandler(IList<DelegatingHandler> delegatingHandlers, Type targetHandlerType)
+        {
+            if (delegatingHandlers == null)
+            {
+                throw new ArgumentNullException(nameof(delegatingHandlers), "DelegatingHandler list contains null item.");
+            }
+
+            return delegatingHandlers.Remove(delegatingHandlers.FirstOrDefault((h) => h.GetType().Equals(targetHandlerType)));
         }
 
         /// <summary>

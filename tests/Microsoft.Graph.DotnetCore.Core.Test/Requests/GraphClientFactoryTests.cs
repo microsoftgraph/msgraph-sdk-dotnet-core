@@ -316,5 +316,27 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             Assert.NotNull(pipelineWithHandlers.Pipeline);
             Assert.True(pipelineWithHandlers.FeatureFlags.HasFlag(expectedFlag));
         }
+
+        [Fact]
+        public void RemoveHandler_Should_Remove_Handler_From_List()
+        {
+            IList<DelegatingHandler> defaultHandlers = GraphClientFactory.CreateDefaultHandlers(testAuthenticationProvider.Object);
+
+            bool isSuccessful = GraphClientFactory.RemoveHandler(defaultHandlers, typeof(AuthenticationHandler));
+
+            Assert.True(isSuccessful);
+            Assert.Equal(3, defaultHandlers.Count);
+        }
+
+        [Fact]
+        public void RemoveHandler_Should_Return_False_When_List_Is_Empty()
+        {
+            IList<DelegatingHandler> defaultHandlers = new List<DelegatingHandler>();
+
+            bool isSuccessful = GraphClientFactory.RemoveHandler(defaultHandlers, typeof(AuthenticationHandler));
+
+            Assert.False(isSuccessful);
+            Assert.Equal(0, defaultHandlers.Count);
+        }
     }
 }

@@ -65,7 +65,7 @@ namespace Microsoft.Graph
             // This check won't be needed once we re-write the HttpProvider to work with GraphClientFactory.
             if (this.httpMessageHandler == null)
             {
-                this.httpMessageHandler = GraphClientFactory.GetPlatformsNativeHttpHandler();
+                this.httpMessageHandler = GraphClientFactory.GetPlatformNativeHttpHandler();
                 this.httpClient = GraphClientFactory.Create(authenticationProvider: null, version: "v1.0", nationalCloud: GraphClientFactory.Global_Cloud, finalHandler: this.httpMessageHandler);
             }
             else
