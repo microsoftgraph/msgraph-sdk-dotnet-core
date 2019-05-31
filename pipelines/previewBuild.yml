@@ -82,6 +82,7 @@ steps:
 - task: MSBuild@1
   displayName: 'Build solution for preview release signing'
   inputs:
+    solution: src/**/Microsoft.Graph.Core.csproj
     configuration: release
     clean: true
 
