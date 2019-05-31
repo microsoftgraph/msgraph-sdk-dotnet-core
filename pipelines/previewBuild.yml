@@ -49,7 +49,7 @@ steps:
     targetType: filePath
     filePath: 'scripts\ValidateUpdatedNugetVersion.ps1'
     arguments: '-packageName "$(PACKAGE_NAME)" -projectPath "$(PROJECT_PATH)"'
-  enabled: true
+  enabled: false
 
 - task: NuGetCommand@2
   displayName: 'NuGet restore'
@@ -209,4 +209,4 @@ steps:
     title: '$(Build.DefinitionName) failure notification'
     text: 'This pipeline has failed. View the build details for further information. This is a blocking failure.'
   condition: failed()
-  enabled: true
+  enabled: false
