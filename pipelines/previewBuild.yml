@@ -63,12 +63,6 @@ steps:
 - task: VSTest@2
   displayName: 'Run enabled tests'
 
-- task: MSBuild@1
-  displayName: 'Build solution for preview release signing'
-  inputs:
-    configuration: release
-    clean: true
-
 - task: PowerShell@2
   displayName: 'Enable signing'
   inputs:
@@ -84,6 +78,12 @@ steps:
     filePath: 'scripts\IncrementPreviewVersion.ps1'
     arguments: '-packageName "$(PACKAGE_NAME)" -projectPath "$(PROJECT_PATH)"'
   enabled: true
+
+- task: MSBuild@1
+  displayName: 'Build solution for preview release signing'
+  inputs:
+    configuration: release
+    clean: true
 
 - task: SFP.build-tasks.custom-build-task-1.EsrpCodeSigning@1
   displayName: 'ESRP DLL Strong Name (Microsoft.Graph.Core)'
