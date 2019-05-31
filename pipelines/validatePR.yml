@@ -67,4 +67,4 @@ steps:
     title: '$(Build.DefinitionName) failure notification'
     text: 'This pipeline has failed. View the build details for further information. This is a blocking failure. '
   condition: failed()
-  enabled: true
+  enabled: false
