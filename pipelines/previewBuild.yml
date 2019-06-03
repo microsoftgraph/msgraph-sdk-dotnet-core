@@ -2,7 +2,6 @@
 # Licensed under the MIT License.
 
 # Create a preview build artifact from the HEAD of the dev branch.
-
 trigger:
   branches:
     include:
@@ -10,7 +9,6 @@ trigger:
   paths:
     include:
       - src/*
-      - tests/*
     exclude:
       - .github/*
       - build/*
