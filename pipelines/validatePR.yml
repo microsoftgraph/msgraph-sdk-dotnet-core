@@ -62,6 +62,9 @@ steps:
 
 - task: VSTest@2
   displayName: 'Run enabled tests'
+  inputs:
+    testAssemblyVer2: |
+      **\Microsoft.Graph.DotnetCore.Core.Test.dll
 
 - task: YodLabs.O365PostMessage.O365PostMessageBuild.O365PostMessageBuild@0
   displayName: 'Graph Client Tooling pipeline fail notification'

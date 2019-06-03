@@ -64,6 +64,9 @@ steps:
 
 - task: VSTest@2
   displayName: 'Run enabled tests'
+  inputs:
+    testAssemblyVer2: |
+      **\Microsoft.Graph.DotnetCore.Core.Test.dll
 
 - task: PowerShell@2
   displayName: 'Enable signing'
