@@ -57,7 +57,7 @@ steps:
 - task: MSBuild@1
   displayName: 'Build solution to run tests'
   inputs:
-    configuration: debug
+    configuration: release
     clean: true
 
 - task: VSTest@2
