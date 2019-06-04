@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Description>Microsoft Graph Core Client Library implements core functionality used by Microsoft Graph client libraries.</Description>
-    <Copyright>© Microsoft Corporation. All rights reserved.</Copyright>
+    <Copyright>&#169; Microsoft Corporation. All rights reserved.</Copyright>
     <AssemblyTitle>Microsoft Graph Core Client Library</AssemblyTitle>
     <Authors>Microsoft</Authors>
     <TargetFrameworks>netstandard1.1;net45</TargetFrameworks>
@@ -21,7 +21,9 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <VersionPrefix>1.16.0</VersionPrefix>
     <VersionSuffix></VersionSuffix>
-    <PackageReleaseNotes></PackageReleaseNotes>
+    <PackageReleaseNotes>- Retry handler handles 504.
+  - Fix #470. Keep StreamWriter open for NetCore 2.x.
+    </PackageReleaseNotes>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard1.1|AnyCPU'">
     <DocumentationFile>bin\Release\netstandard1.1\Microsoft.Graph.Core.xml</DocumentationFile>
