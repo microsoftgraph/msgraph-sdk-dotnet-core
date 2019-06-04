@@ -87,7 +87,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         [Theory]
         [InlineData(HttpStatusCode.GatewayTimeout)]  // 504
         [InlineData(HttpStatusCode.ServiceUnavailable)]  // 503
-        [InlineData(429)] // 429
+        [InlineData((HttpStatusCode)429)] // 429
         public async Task ShouldRetryWithAddRetryAttemptHeader(HttpStatusCode statusCode)
         {
             var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, "http://example.org/foo");
@@ -114,7 +114,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         [Theory]
         [InlineData(HttpStatusCode.GatewayTimeout)]  // 504
         [InlineData(HttpStatusCode.ServiceUnavailable)]  // 503
-        [InlineData(429)] // 429
+        [InlineData((HttpStatusCode)429)] // 429
         public async Task ShouldRetryWithBuffedContent(HttpStatusCode statusCode)
         {
             var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, "http://example.org/foo");
@@ -139,7 +139,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         [Theory]
         [InlineData(HttpStatusCode.GatewayTimeout)]  // 504
         [InlineData(HttpStatusCode.ServiceUnavailable)]  // 503
-        [InlineData(429)] // 429
+        [InlineData((HttpStatusCode)429)] // 429
         public async Task ShouldNotRetryWithPostStreaming(HttpStatusCode statusCode)
         {
             var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, "http://example.org/foo");
@@ -160,19 +160,17 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             Assert.NotNull(response.RequestMessage.Content);
             Assert.NotNull(response.RequestMessage.Content.Headers.ContentLength);
             Assert.Equal(response.RequestMessage.Content.Headers.ContentLength, -1);
-
         }
-
 
         [Theory]
         [InlineData(HttpStatusCode.GatewayTimeout)]  // 504
         [InlineData(HttpStatusCode.ServiceUnavailable)]  // 503
-        [InlineData(429)] // 429
+        [InlineData((HttpStatusCode)429)] // 429
         public async Task ShouldNotRetryWithPutStreaming(HttpStatusCode statusCode)
         {
             var httpRequestMessage = new HttpRequestMessage(HttpMethod.Put, "http://example.org/foo");
             httpRequestMessage.Content = new StringContent("Test Content");
-            httpRequestMessage.Content.Headers.ContentLength = null;
+            httpRequestMessage.Content.Headers.ContentLength = -1;
 
             var retryResponse = new HttpResponseMessage(statusCode);
 
@@ -186,15 +184,14 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             Assert.Same(response.RequestMessage, httpRequestMessage);
             Assert.Same(response, retryResponse);
             Assert.NotNull(response.RequestMessage.Content);
-            Assert.Null(response.RequestMessage.Content.Headers.ContentLength);
-          
+            Assert.Equal(response.RequestMessage.Content.Headers.ContentLength, -1);
         }
 
       
         [Theory(Skip = "skip test")]
         [InlineData(HttpStatusCode.GatewayTimeout)]  // 504
         [InlineData(HttpStatusCode.ServiceUnavailable)]  // 503
-        [InlineData(429)] // 429
+        [InlineData((HttpStatusCode)429)] // 429
         public async Task ExceedMaxRetryShouldReturn(HttpStatusCode statusCode)
         {
             var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, "http://example.org/foo");
@@ -217,14 +214,12 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                 Assert.Equal(values.Count(), 1);
                 Assert.Equal(values.First(), 10.ToString());
             }
-         
-
         }
 
         [Theory]
         [InlineData(HttpStatusCode.GatewayTimeout)]  // 504
         [InlineData(HttpStatusCode.ServiceUnavailable)]  // 503
-        [InlineData(429)] // 429
+        [InlineData((HttpStatusCode)429)] // 429
         public async Task ShouldDelayBasedOnRetryAfterHeader(HttpStatusCode statusCode)
         {
             var retryResponse = new HttpResponseMessage(statusCode);
@@ -233,14 +228,13 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             await DelayTestWithMessage(retryResponse, 1, "Init");
         
             Assert.Equal(Message, "Init Work 1");
-            
         }
 
 
         [Theory]
         [InlineData(HttpStatusCode.GatewayTimeout)]  // 504
         [InlineData(HttpStatusCode.ServiceUnavailable)]  // 503
-        [InlineData(429)] // 429
+        [InlineData((HttpStatusCode)429)] // 429
         public async Task ShouldDelayBasedOnExponentialBackOff(HttpStatusCode statusCode)
         {
             var retryResponse = new HttpResponseMessage(statusCode);
@@ -251,13 +245,12 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                 await DelayTestWithMessage(retryResponse, count, "Init");
                 Assert.Equal(Message, compareMessage + count.ToString());
             }
-
         }
 
         [Theory]
         [InlineData(HttpStatusCode.GatewayTimeout)]  // 504
         [InlineData(HttpStatusCode.ServiceUnavailable)]  // 503
-        [InlineData(429)] // 429
+        [InlineData((HttpStatusCode)429)] // 429
         public async Task ShouldRetrytBasedOnRetryAfter(HttpStatusCode statusCode)
         {
             var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, "http://example.org/foo");
@@ -288,10 +281,8 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                 await this.retryHandler.Delay(response, count, delay, new CancellationToken());
                 Message += " Work " + count.ToString();
             });
-
         }
 
         public string Message { get; private set; }
     }
 }
-

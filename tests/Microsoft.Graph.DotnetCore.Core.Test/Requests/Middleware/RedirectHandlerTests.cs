@@ -83,7 +83,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         [InlineData(HttpStatusCode.MovedPermanently)]  // 301
         [InlineData(HttpStatusCode.Found)]  // 302
         [InlineData(HttpStatusCode.TemporaryRedirect)]  // 307
-        [InlineData(308)] // 308
+        [InlineData((HttpStatusCode)308)] // 308
         public async Task ShouldRedirectSameMethodAndContent(HttpStatusCode statusCode)
         {
             var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, "http://example.org/foo");

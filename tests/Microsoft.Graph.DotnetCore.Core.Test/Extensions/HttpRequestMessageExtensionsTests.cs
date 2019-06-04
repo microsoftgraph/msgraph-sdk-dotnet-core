@@ -60,7 +60,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Extensions
         {
             HttpRequestMessage httpRequest = new HttpRequestMessage(new HttpMethod("PATCH"), "http://example.com");
             httpRequest.Content = new StringContent("Hello World");
-            httpRequest.Content.Headers.ContentLength = null;
+            httpRequest.Content.Headers.ContentLength = -1;
             var response = httpRequest.IsBuffered();
 
             Assert.False(response, "Unexpected content type");
