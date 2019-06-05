@@ -169,7 +169,7 @@ namespace Microsoft.Graph
                 return (Pipeline: finalHandler, FeatureFlags: handlerFlags);
             }
 #if iOS
-            // We remove CompressionHandler because NSUrlSessionHandler automatically handles decompression and it can't be turned off.
+            // Remove CompressionHandler because NSUrlSessionHandler automatically handles decompression and it can't be turned off.
             // See issue https://github.com/microsoftgraph/msgraph-sdk-dotnet/issues/481 for more details.
             if (finalHandler.GetType() == typeof(NSUrlSessionHandler))
             {
@@ -191,7 +191,7 @@ namespace Microsoft.Graph
                     throw new ArgumentException(String.Format("DelegatingHandler array has unexpected InnerHandler. {0} has unexpected InnerHandler.", handler, "handler"));
                 }
 
-                // Check for handler duplicate by type.
+                // Check for duplicate handler by type.
                 if (!existingHandlerTypes.Add(handler.GetType()))
                     throw new ArgumentException($"DelegatingHandler array has a duplicate handler. {handler} has a duplicate handler.", "handlers");
 
@@ -235,7 +235,7 @@ namespace Microsoft.Graph
         {
             if (delegatingHandlers == null)
             {
-                throw new ArgumentNullException(nameof(delegatingHandlers), "DelegatingHandler list contains null item.");
+                throw new ArgumentNullException(nameof(delegatingHandlers), "DelegatingHandler list is null.");
             }
 
             return delegatingHandlers.Remove(delegatingHandlers.FirstOrDefault((h) => h.GetType().Equals(targetHandlerType)));
