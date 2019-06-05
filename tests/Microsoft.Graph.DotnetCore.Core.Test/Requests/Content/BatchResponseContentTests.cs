@@ -89,7 +89,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
             Assert.False(responses["1"].Headers.CacheControl.NoStore);
             Assert.True(responses["2"].Headers.CacheControl.NoCache);
             Assert.True(responses["2"].Headers.CacheControl.NoStore);
-            Assert.Equal(responses["3"].StatusCode, HttpStatusCode.Created);
+            Assert.Equal(HttpStatusCode.Created, responses["3"].StatusCode);
         }
 
         [Fact]
@@ -118,7 +118,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
             HttpResponseMessage response = await batchResponseContent.GetResponseByIdAsync("2");
 
             Assert.NotNull(response);
-            Assert.Equal(response.StatusCode, HttpStatusCode.Conflict);
+            Assert.Equal(HttpStatusCode.Conflict, response.StatusCode);
             Assert.True(response.Headers.CacheControl.NoCache);
         }
     }

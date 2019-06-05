@@ -91,7 +91,7 @@ Fixed issue #449.
 	<Reference Include="System.Core" />
 	<Reference Include="System.Xml" />
 	<Reference Include="Microsoft.CSharp" />
-	<PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
+	<PackageReference Include="Newtonsoft.Json" Version="11.0.1" />
 	<PackageReference Include="System.Net.Http" Version="4.3.3" />
   </ItemGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'MonoAndroid70' ">
@@ -100,7 +100,7 @@ Fixed issue #449.
 	<Reference Include="System.Core" />
 	<Reference Include="System.Xml" />
 	<Reference Include="Microsoft.CSharp" />
-	<PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
+	<PackageReference Include="Newtonsoft.Json" Version="11.0.1" />
 	<PackageReference Include="System.Net.Http" Version="4.3.3" />
 	<PackageReference Include="System.ValueTuple" Version="4.3.0" />
   </ItemGroup>

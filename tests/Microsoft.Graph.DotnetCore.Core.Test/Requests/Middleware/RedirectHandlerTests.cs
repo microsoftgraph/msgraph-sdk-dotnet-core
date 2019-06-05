@@ -39,7 +39,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                 Assert.Null(redirect.InnerHandler);
                 Assert.NotNull(redirect.RedirectOption);
                 Assert.Equal(5, redirect.RedirectOption.MaxRedirect); // default MaxRedirects is 5
-                Assert.IsType(typeof(RedirectHandler), redirect);
+                Assert.IsType<RedirectHandler>(redirect);
             }
         }
 
@@ -50,7 +50,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             Assert.NotNull(redirectHandler.RedirectOption);
             Assert.Equal(5, redirectHandler.RedirectOption.MaxRedirect); // default MaxRedirects is 5
             Assert.Equal(this.redirectHandler.InnerHandler, this.testHttpMessageHandler);
-            Assert.IsType(typeof(RedirectHandler), this.redirectHandler);
+            Assert.IsType<RedirectHandler>(this.redirectHandler);
         }
 
         [Fact]
@@ -61,7 +61,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                 Assert.Null(redirect.InnerHandler);
                 Assert.NotNull(redirect.RedirectOption);
                 Assert.Equal(2, redirect.RedirectOption.MaxRedirect);
-                Assert.IsType(typeof(RedirectHandler), redirect);
+                Assert.IsType<RedirectHandler>(redirect);
             }
         }
 
@@ -75,7 +75,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 
             var response = await this.invoker.SendAsync(httpRequestMessage, new CancellationToken());
 
-            Assert.Equal(response.StatusCode, HttpStatusCode.OK);
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             Assert.Same(response.RequestMessage, httpRequestMessage);
         }
 
@@ -99,7 +99,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             Assert.Equal(response.RequestMessage.Method, httpRequestMessage.Method);
             Assert.NotSame(response.RequestMessage, httpRequestMessage);
             Assert.NotNull(response.RequestMessage.Content);
-            Assert.Equal(response.RequestMessage.Content.ReadAsStringAsync().Result, "Hello World");
+            Assert.Equal("Hello World", response.RequestMessage.Content.ReadAsStringAsync().Result);
 
         }
 
@@ -202,7 +202,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 
             Assert.True(exception.IsMatch(ErrorConstants.Codes.TooManyRedirects));
             Assert.Equal(String.Format(ErrorConstants.Messages.TooManyRedirectsFormatString, 5), exception.Error.Message);
-            Assert.IsType(typeof(ServiceException), exception);
+            Assert.IsType<ServiceException>(exception);
         }
     }
 }

@@ -43,7 +43,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                 Assert.Null(auth.InnerHandler);
                 Assert.NotNull(auth.AuthenticationProvider);
                 Assert.NotNull(auth.AuthOption);
-                Assert.IsType(typeof(AuthenticationHandler), auth);
+                Assert.IsType<AuthenticationHandler>(auth);
             }
         }
 
@@ -53,7 +53,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             Assert.NotNull(authenticationHandler.InnerHandler);
             Assert.NotNull(authenticationHandler.AuthenticationProvider);
             Assert.NotNull(authenticationHandler.AuthOption);
-            Assert.IsType(typeof(AuthenticationHandler), authenticationHandler);
+            Assert.IsType<AuthenticationHandler>(authenticationHandler);
         }
 
         [Fact]
@@ -66,7 +66,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                 Assert.Null(auth.InnerHandler);
                 Assert.NotNull(auth.AuthenticationProvider);
                 Assert.NotNull(auth.AuthOption);
-                Assert.IsType(typeof(AuthenticationHandler), auth);
+                Assert.IsType<AuthenticationHandler>(auth);
             }
         }
 
@@ -168,7 +168,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             Assert.Same(response, okResponse);
             Assert.NotSame(response, unauthorizedResponse);
             Assert.NotNull(response.RequestMessage.Content);
-            Assert.Equal(response.RequestMessage.Content.ReadAsStringAsync().Result, "Hello World!");
+            Assert.Equal("Hello World!", response.RequestMessage.Content.ReadAsStringAsync().Result);
         }
 
         [Fact]
@@ -188,7 +188,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             Assert.Same(response, okResponse);
             Assert.NotSame(response, unauthorizedResponse);
             Assert.NotNull(response.RequestMessage.Content);
-            Assert.Equal(response.RequestMessage.Content.ReadAsStringAsync().Result, "Hello World!");
+            Assert.Equal("Hello World!", response.RequestMessage.Content.ReadAsStringAsync().Result);
         }
 
         [Fact]
@@ -248,7 +248,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 
             Assert.NotSame(response.RequestMessage, httpRequestMessage);
             Assert.Same(response, expectedResponse);
-            Assert.Equal(response.RequestMessage.Content.ReadAsStringAsync().Result, "Hello Mars!");
+            Assert.Equal("Hello Mars!", response.RequestMessage.Content.ReadAsStringAsync().Result);
         }
 
         [Fact(Skip = "In order to support HttpProvider, we'll skip authentication if no provider is set. We will add enable this once we re-write a new HttpProvider.")]

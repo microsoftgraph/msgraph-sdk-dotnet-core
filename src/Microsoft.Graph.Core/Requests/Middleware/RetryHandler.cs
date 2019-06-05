@@ -13,7 +13,7 @@ namespace Microsoft.Graph
     using System.Net.Http.Headers;
 
     /// <summary>
-    /// An <see cref="DelegatingHandler"/> implementation using standard .NET libraries.
+    /// A <see cref="DelegatingHandler"/> implementation using standard .NET libraries.
     /// </summary>
     public class RetryHandler : DelegatingHandler
     {

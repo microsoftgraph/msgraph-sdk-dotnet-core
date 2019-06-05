@@ -41,7 +41,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                 Assert.Null(retry.InnerHandler);
                 Assert.NotNull(retry.RetryOption);
                 Assert.Equal(RetryHandlerOption.DEFAULT_MAX_RETRY, retry.RetryOption.MaxRetry);
-                Assert.IsType(typeof(RetryHandler), retry);
+                Assert.IsType<RetryHandler>(retry);
             }
         }
 
@@ -53,7 +53,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             Assert.NotNull(retryHandler.RetryOption);
             Assert.Equal(RetryHandlerOption.DEFAULT_MAX_RETRY, retryHandler.RetryOption.MaxRetry);
             Assert.Equal(retryHandler.InnerHandler, testHttpMessageHandler);
-            Assert.IsType(typeof(RetryHandler), retryHandler);
+            Assert.IsType<RetryHandler>(retryHandler);
         }
 
         [Fact]
@@ -64,7 +64,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                 Assert.Null(retry.InnerHandler);
                 Assert.NotNull(retry.RetryOption);
                 Assert.Equal(5, retry.RetryOption.MaxRetry);
-                Assert.IsType(typeof(RetryHandler), retry);
+                Assert.IsType<RetryHandler>(retry);
             }
         }
 
@@ -106,7 +106,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             Assert.True(response.RequestMessage.Headers.Contains(RETRY_ATTEMPT));
             IEnumerable<string> values;
             Assert.True(response.RequestMessage.Headers.TryGetValues(RETRY_ATTEMPT, out values));
-            Assert.Equal(values.Count(), 1);
+            Assert.Single(values);
             Assert.Equal(values.First(), 1.ToString());
         }
 
@@ -132,7 +132,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             Assert.NotSame(response.RequestMessage, httpRequestMessage);
             Assert.NotNull(response.RequestMessage.Content);
             Assert.NotNull(response.RequestMessage.Content.Headers.ContentLength);
-            Assert.Equal(response.RequestMessage.Content.ReadAsStringAsync().Result, "Hello World");
+            Assert.Equal("Hello World", response.RequestMessage.Content.ReadAsStringAsync().Result);
 
         }
 
@@ -208,10 +208,10 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             {
                 Assert.True(exception.IsMatch(ErrorConstants.Codes.TooManyRetries), "Unexpected error code returned.");
                 Assert.Equal(String.Format(ErrorConstants.Messages.TooManyRetriesFormatString, 10), exception.Error.Message);
-                Assert.IsType(typeof(ServiceException), exception);
+                Assert.IsType<ServiceException>(exception);
                 IEnumerable<string> values;
                 Assert.True(httpRequestMessage.Headers.TryGetValues(RETRY_ATTEMPT, out values), "Don't set Retry-Attemp Header");
-                Assert.Equal(values.Count(), 1);
+                Assert.Single(values);
                 Assert.Equal(values.First(), 10.ToString());
             }
         }
@@ -227,7 +227,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
            
             await DelayTestWithMessage(retryResponse, 1, "Init");
         
-            Assert.Equal(Message, "Init Work 1");
+            Assert.Equal("Init Work 1", Message);
         }
 
 
@@ -268,7 +268,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             Assert.Same(response, response_2);
             IEnumerable<string> values;
             Assert.True(response.RequestMessage.Headers.TryGetValues(RETRY_ATTEMPT, out values), "Don't set Retry-Attempt Header");
-            Assert.Equal(values.Count(), 1);
+            Assert.Single(values);
             Assert.Equal(values.First(), 1.ToString());
             Assert.NotSame(response.RequestMessage, httpRequestMessage);
         }

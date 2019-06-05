@@ -136,7 +136,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             Assert.Equal(HttpMethod.Delete, httpRequestMessage.Method);
             Assert.Equal(requestUrl,
                 httpRequestMessage.RequestUri.GetComponents(UriComponents.AbsoluteUri & ~UriComponents.Port, UriFormat.Unescaped));
-            Assert.Equal(0, httpRequestMessage.Headers.Count());
+            Assert.Empty(httpRequestMessage.Headers);
         }
 
         [Fact]
@@ -354,7 +354,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 
                 Assert.Equal(httpResponseMessage, returnedResponse);
                 Assert.NotNull(returnedResponse.RequestMessage.Headers);
-                Assert.Equal(returnedResponse.RequestMessage.Headers.Authorization.Parameter, "Default-Token");
+                Assert.Equal("Default-Token", returnedResponse.RequestMessage.Headers.Authorization.Parameter);
             }
         }
 
