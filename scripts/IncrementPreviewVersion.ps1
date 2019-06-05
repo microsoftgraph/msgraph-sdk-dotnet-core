@@ -23,7 +23,8 @@ Param(
     [string]$projectPath
 )
 
-[xml]$xmlDoc = Get-Content $projectPath
+$xmlDoc = New-Object System.Xml.XmlDocument
+$xmlDoc.Load($projectPath)
 
 # Assumption: VersionSuffix is set in the first property group.
 $versionSuffixString = $xmlDoc.Project.PropertyGroup[0].VersionSuffix
