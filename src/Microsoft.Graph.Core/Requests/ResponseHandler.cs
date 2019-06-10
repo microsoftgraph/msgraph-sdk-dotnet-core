@@ -9,10 +9,16 @@ namespace Microsoft.Graph
     using System.Net.Http;
     using System.Threading.Tasks;
 
+    /// <summary>
+    /// Provides method(s) to deserialize raw HTTP responses into strong types.
+    /// </summary>
     public class ResponseHandler
     {
         private readonly ISerializer serializer;
-
+        /// <summary>
+        /// Constructs a new <see cref="ResponseHandler"/>.
+        /// </summary>
+        /// <param name="serializer"></param>
         public ResponseHandler(ISerializer serializer)
         {
             this.serializer = serializer;

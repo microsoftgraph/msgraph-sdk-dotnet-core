@@ -51,7 +51,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                 Assert.True(defaultHttpProvider.httpClient.DefaultRequestHeaders.Contains(CoreConstants.Headers.FeatureFlag));
                 Assert.Equal(timeout, defaultHttpProvider.httpClient.Timeout);
                 Assert.NotNull(defaultHttpProvider.Serializer);
-                Assert.IsType(typeof(Serializer), defaultHttpProvider.Serializer);
+                Assert.IsType<Serializer>(defaultHttpProvider.Serializer);
             }
         }
 
@@ -77,11 +77,18 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                 Assert.True(defaultHttpProvider.httpClient.DefaultRequestHeaders.Contains(CoreConstants.Headers.FeatureFlag));
                 Assert.True(defaultHttpProvider.disposeHandler);
                 Assert.NotNull(defaultHttpProvider.httpMessageHandler);
-                Assert.False(((HttpClientHandler)defaultHttpProvider.httpMessageHandler).AllowAutoRedirect);
-
                 Assert.Equal(TimeSpan.FromSeconds(100), defaultHttpProvider.httpClient.Timeout);
-
-                Assert.IsType(typeof(Serializer), defaultHttpProvider.Serializer);
+                Assert.IsType<Serializer>(defaultHttpProvider.Serializer);
+#if ANDROID
+                Assert.IsType<Xamarin.Android.Net.AndroidClientHandler>(defaultHttpProvider.httpMessageHandler);
+                Assert.False((defaultHttpProvider.httpMessageHandler as Xamarin.Android.Net.AndroidClientHandler).AllowAutoRedirect);
+#elif iOS
+                Assert.IsType<NSUrlSessionHandler>(defaultHttpProvider.httpMessageHandler);
+                Assert.False((defaultHttpProvider.httpMessageHandler as NSUrlSessionHandler).AllowAutoRedirect);
+#else
+                Assert.IsType<HttpClientHandler>(defaultHttpProvider.httpMessageHandler);
+                Assert.False((defaultHttpProvider.httpMessageHandler as HttpClientHandler).AllowAutoRedirect);
+#endif
             }
         }
 
@@ -94,34 +101,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                 Assert.True(httpProvider.httpClient.DefaultRequestHeaders.Contains(CoreConstants.Headers.FeatureFlag));
                 Assert.Equal(httpProvider.httpMessageHandler, this.testHttpMessageHandler);
                 Assert.False(httpProvider.disposeHandler);
-                Assert.IsType(typeof(Serializer), httpProvider.Serializer);
-            }
-        }
-
-        [Fact]
-        public async Task OverallTimeout_RequestAlreadySent()
-        {
-            using (var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, "https://localhost"))
-            using (var httpResponseMessage = new HttpResponseMessage())
-            {
-                this.testHttpMessageHandler.AddResponseMapping(httpRequestMessage.RequestUri.ToString(), httpResponseMessage);
-                this.AddGraphRequestContextToRequest(httpRequestMessage);
-
-                var returnedResponseMessage = await this.httpProvider.SendAsync(httpRequestMessage);
-
-                try
-                {
-                    Assert.Throws<ServiceException>(() => this.httpProvider.OverallTimeout = new TimeSpan(0, 0, 30));
-                }
-                catch (ServiceException serviceException)
-                {
-                    Assert.True(serviceException.IsMatch(ErrorConstants.Codes.NotAllowed));
-                    Assert.Equal(
-                        ErrorConstants.Messages.OverallTimeoutCannotBeSet,
-                        serviceException.Error.Message);
-                    Assert.IsType(typeof(InvalidOperationException), serviceException.InnerException);
-                    throw;
-                }
+                Assert.IsType<Serializer>(httpProvider.Serializer);
             }
         }
 
@@ -150,20 +130,12 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                 this.httpProvider = new HttpProvider(new ExceptionHttpMessageHandler(clientException), /* disposeHandler */ true, null);
                 this.AddGraphRequestContextToRequest(httpRequestMessage);
 
-                try
-                {
-                    await Assert.ThrowsAsync<ServiceException>(async () => await this.httpProvider.SendRequestAsync(
-                        httpRequestMessage, HttpCompletionOption.ResponseContentRead, CancellationToken.None));
-                }
-                catch (ServiceException exception)
-                {
-                    
-                    Assert.True(exception.IsMatch(ErrorConstants.Codes.GeneralException));
-                    Assert.Equal(ErrorConstants.Messages.UnexpectedExceptionOnSend, exception.Error.Message);
-                    Assert.Equal(clientException, exception.InnerException);
+                ServiceException exception = await Assert.ThrowsAsync<ServiceException>(async () => await this.httpProvider.SendRequestAsync(
+                    httpRequestMessage, HttpCompletionOption.ResponseContentRead, CancellationToken.None));
 
-                    throw;
-                }
+                Assert.True(exception.IsMatch(ErrorConstants.Codes.GeneralException));
+                Assert.Equal(ErrorConstants.Messages.UnexpectedExceptionOnSend, exception.Error.Message);
+                Assert.Equal(clientException, exception.InnerException);
             }
         }
 
@@ -177,19 +149,13 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                 var clientException = new TaskCanceledException();
                 this.httpProvider = new HttpProvider(new ExceptionHttpMessageHandler(clientException), /* disposeHandler */ true, null);
                 this.AddGraphRequestContextToRequest(httpRequestMessage);
-                try
-                {
-                    await Assert.ThrowsAsync<ServiceException>(async () => await this.httpProvider.SendRequestAsync(
-                        httpRequestMessage, HttpCompletionOption.ResponseContentRead, CancellationToken.None));
-                }
-                catch (ServiceException exception)
-                {
-                    Assert.True(exception.IsMatch(ErrorConstants.Codes.Timeout));
-                    Assert.Equal(ErrorConstants.Messages.RequestTimedOut, exception.Error.Message);
-                    Assert.Equal(clientException, exception.InnerException);
 
-                    throw;
-                }
+                ServiceException exception = await Assert.ThrowsAsync<ServiceException>(async () => await this.httpProvider.SendRequestAsync(
+                        httpRequestMessage, HttpCompletionOption.ResponseContentRead, CancellationToken.None));
+
+                Assert.True(exception.IsMatch(ErrorConstants.Codes.Timeout));
+                Assert.Equal(ErrorConstants.Messages.RequestTimedOut, exception.Error.Message);
+                Assert.Equal(clientException, exception.InnerException);
             }
         }
 
@@ -204,19 +170,12 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 
                 this.testHttpMessageHandler.AddResponseMapping(httpRequestMessage.RequestUri.ToString(), httpResponseMessage);
                 this.AddGraphRequestContextToRequest(httpRequestMessage);
-                try
-                {
-                    await Assert.ThrowsAsync<ServiceException>(async () => await this.httpProvider.SendAsync(httpRequestMessage));
-                }
-                catch (ServiceException exception)
-                {
-                    Assert.True(exception.IsMatch(ErrorConstants.Codes.GeneralException));
-                    Assert.Equal(
-                        ErrorConstants.Messages.LocationHeaderNotSetOnRedirect,
-                        exception.Error.Message);
 
-                    throw;
-                }
+                ServiceException exception = await Assert.ThrowsAsync<ServiceException>(async () => await this.httpProvider.SendAsync(httpRequestMessage));
+                Assert.True(exception.IsMatch(ErrorConstants.Codes.GeneralException));
+                Assert.Equal(
+                    ErrorConstants.Messages.LocationHeaderNotSetOnRedirect,
+                    exception.Error.Message);
             }
         }
 
@@ -249,7 +208,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 
                     foreach (var headerValue in header.Value)
                     {
-                        Assert.True(actualValues.Contains(headerValue));
+                        Assert.Contains(headerValue, actualValues);
                     }
                 }
             }
@@ -265,6 +224,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                 redirectResponseMessage.StatusCode = HttpStatusCode.Redirect;
                 redirectResponseMessage.Headers.Location = new Uri("https://localhost/redirect");
                 tooManyRedirectsResponseMessage.StatusCode = HttpStatusCode.Redirect;
+                tooManyRedirectsResponseMessage.Headers.Location = new Uri("https://localhost");
 
                 redirectResponseMessage.RequestMessage = httpRequestMessage;
 
@@ -273,22 +233,15 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 
                 httpRequestMessage.Headers.Authorization = new AuthenticationHeaderValue(CoreConstants.Headers.Bearer, "ticket");
                 this.AddGraphRequestContextToRequest(httpRequestMessage);
-                try
-                {
-                    await Assert.ThrowsAsync<ServiceException>(async () => await this.httpProvider.SendAsync(
+
+                ServiceException exception = await Assert.ThrowsAsync<ServiceException>(async () => await this.httpProvider.SendAsync(
                         httpRequestMessage,
                         HttpCompletionOption.ResponseContentRead,
                         CancellationToken.None));
-                }
-                catch (ServiceException exception)
-                {
-                    Assert.True(exception.IsMatch(ErrorConstants.Codes.TooManyRedirects));
-                    Assert.Equal(
-                        string.Format(ErrorConstants.Messages.TooManyRedirectsFormatString, "5"),
-                        exception.Error.Message);
-
-                    throw;
-                }
+                Assert.True(exception.IsMatch(ErrorConstants.Codes.TooManyRedirects));
+                Assert.Equal(
+                    string.Format(ErrorConstants.Messages.TooManyRedirectsFormatString, "5"),
+                    exception.Error.Message);
             }
         }
 
@@ -309,17 +262,9 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                         It.IsAny<Stream>()))
                     .Returns((ErrorResponse)null);
 
-                try
-                {
-                    await Assert.ThrowsAsync<ServiceException>(async () => await this.httpProvider.SendAsync(httpRequestMessage));
-                }
-                catch (ServiceException exception)
-                {
-                    Assert.True(exception.IsMatch(ErrorConstants.Codes.ItemNotFound));
-                    Assert.True(string.IsNullOrEmpty(exception.Error.Message));
-
-                    throw;
-                }
+                ServiceException exception = await Assert.ThrowsAsync<ServiceException>(async () => await this.httpProvider.SendAsync(httpRequestMessage));
+                Assert.True(exception.IsMatch(ErrorConstants.Codes.ItemNotFound));
+                Assert.True(string.IsNullOrEmpty(exception.Error.Message));
             }
         }
 
@@ -346,17 +291,9 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 
                 this.serializer.Setup(serializer => serializer.DeserializeObject<ErrorResponse>(It.IsAny<Stream>())).Returns(expectedError);
 
-                try
-                {
-                    await Assert.ThrowsAsync<ServiceException>(async () => await this.httpProvider.SendAsync(httpRequestMessage));
-                }
-                catch (ServiceException exception)
-                {
-                    Assert.Equal(expectedError.Error.Code, exception.Error.Code);
-                    Assert.Equal(expectedError.Error.Message, exception.Error.Message);
-
-                    throw;
-                }
+                ServiceException exception = await Assert.ThrowsAsync<ServiceException>(async () => await this.httpProvider.SendAsync(httpRequestMessage));
+                Assert.Equal(expectedError.Error.Code, exception.Error.Code);
+                Assert.Equal(expectedError.Error.Message, exception.Error.Message);
             }
         }
 
@@ -380,19 +317,9 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                         It.IsAny<Stream>()))
                     .Returns(new ErrorResponse { Error = new Error() });
 
-                try
-                {
-                    await Assert.ThrowsAsync<ServiceException>(async () => await this.httpProvider.SendAsync(httpRequestMessage));
-                }
-                catch (ServiceException exception)
-                {
-                    Assert.NotNull(exception.Error);
-                    Assert.Equal(
-                        throwSite,
-                        exception.Error.ThrowSite);
-
-                    throw;
-                }
+                ServiceException exception = await Assert.ThrowsAsync<ServiceException>(async () => await this.httpProvider.SendAsync(httpRequestMessage));
+                Assert.NotNull(exception.Error);
+                Assert.Equal(throwSite, exception.Error.ThrowSite);
             }
         }
 
@@ -420,35 +347,10 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                         It.IsAny<Stream>()))
                     .Returns(new ErrorResponse { Error = new Error { ThrowSite = throwSiteBodyValue } });
 
-                try
-                {
-                    await Assert.ThrowsAsync<ServiceException>(async () => await this.httpProvider.SendAsync(httpRequestMessage));
-                }
-                catch (ServiceException exception)
-                {
-                    Assert.NotNull(exception.Error);
-                    Assert.Equal(
-                        throwSiteBodyValue,
-                        exception.Error.ThrowSite);
-
-                    throw;
-                }
+                ServiceException exception = await Assert.ThrowsAsync<ServiceException>(async () => await this.httpProvider.SendAsync(httpRequestMessage));
+                Assert.NotNull(exception.Error);
+                Assert.Equal(throwSiteBodyValue, exception.Error.ThrowSite);
             }
-        }
-
-        private void AddGraphRequestContextToRequest(HttpRequestMessage httpRequestMessage)
-        {
-            var requestContext = new GraphRequestContext
-            {
-                MiddlewareOptions = new Dictionary<string, IMiddlewareOption>() {
-                    {
-                        typeof(AuthenticationHandlerOption).ToString(),
-                        new AuthenticationHandlerOption { AuthenticationProvider = authProvider .Object }
-                    }
-                },
-                ClientRequestId = "client-request-id"
-            };
-            httpRequestMessage.Properties.Add(typeof(GraphRequestContext).ToString(), requestContext);
         }
 
         [Fact]
@@ -469,5 +371,78 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                 Assert.Equal(expectedToken, returnedResponseMessage.RequestMessage.Headers.Authorization.Parameter);
             }
         }
+
+        private void AddGraphRequestContextToRequest(HttpRequestMessage httpRequestMessage)
+        {
+            var requestContext = new GraphRequestContext
+            {
+                MiddlewareOptions = new Dictionary<string, IMiddlewareOption>() {
+                    {
+                        typeof(AuthenticationHandlerOption).ToString(),
+                        new AuthenticationHandlerOption { AuthenticationProvider = authProvider .Object }
+                    }
+                },
+                ClientRequestId = "client-request-id"
+            };
+            httpRequestMessage.Properties.Add(typeof(GraphRequestContext).ToString(), requestContext);
+        }
+
+        #region NETCORE
+        // Skip this test for Xamain since it never throws an exception.
+#if NETCORE
+        [Fact]
+        public async Task OverallTimeout_RequestAlreadySent()
+        {
+            using (var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, "https://localhost"))
+            using (var httpResponseMessage = new HttpResponseMessage())
+            {
+                this.testHttpMessageHandler.AddResponseMapping(httpRequestMessage.RequestUri.ToString(), httpResponseMessage);
+                this.AddGraphRequestContextToRequest(httpRequestMessage);
+                var returnedResponseMessage = await this.httpProvider.SendAsync(httpRequestMessage);
+            }
+
+            ServiceException serviceException = Assert.Throws<ServiceException>(() => this.httpProvider.OverallTimeout = new TimeSpan(0, 0, 30));
+            Assert.True(serviceException.IsMatch(ErrorConstants.Codes.NotAllowed));
+            Assert.Equal(
+                ErrorConstants.Messages.OverallTimeoutCannotBeSet,
+                serviceException.Error.Message);
+            Assert.IsType<InvalidOperationException>(serviceException.InnerException);
+        }
+#endif
+        #endregion
+
+        #region ANDROID
+#if ANDROID
+        [Fact]
+        public void HttpProvider_CustomAndroidClientHandler()
+        {
+            var proxy = new WebProxy("https://test.com");
+            using (var httpClientHandler = new Xamarin.Android.Net.AndroidClientHandler { Proxy = proxy })
+            using (var httpProvider = new HttpProvider(httpClientHandler, false, null))
+            {
+                Assert.Equal(httpClientHandler, httpProvider.httpMessageHandler);
+                Assert.True(httpProvider.httpClient.DefaultRequestHeaders.Contains(CoreConstants.Headers.FeatureFlag));
+                Assert.False(httpProvider.disposeHandler);
+                Assert.Same((httpProvider.httpMessageHandler as Xamarin.Android.Net.AndroidClientHandler).Proxy, proxy);
+            }
+        }
+#endif
+        #endregion
+
+        #region iOS
+#if iOS
+        [Fact]
+        public void HttpProvider_CustomNSUrlSessionHandler()
+        {
+            using (var httpClientHandler = new NSUrlSessionHandler())
+            using (var httpProvider = new HttpProvider(httpClientHandler, false, null))
+            {
+                Assert.Equal(httpClientHandler, httpProvider.httpMessageHandler);
+                Assert.True(httpProvider.httpClient.DefaultRequestHeaders.Contains(CoreConstants.Headers.FeatureFlag));
+                Assert.False(httpProvider.disposeHandler);
+            }
+        }
+#endif
+        #endregion
     }
 }

@@ -54,10 +54,10 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                 Assert.NotNull(retryHandler);
                 Assert.NotNull(redirectHandler);
                 Assert.NotNull(innerMost);
-                Assert.IsType(typeof(AuthenticationHandler), authenticationHandler);
-                Assert.IsType(typeof(CompressionHandler), compressionHandler);
-                Assert.IsType(typeof(RetryHandler), retryHandler);
-                Assert.IsType(typeof(RedirectHandler), redirectHandler);
+                Assert.IsType<AuthenticationHandler>(authenticationHandler);
+                Assert.IsType<CompressionHandler>(compressionHandler);
+                Assert.IsType<RetryHandler>(retryHandler);
+                Assert.IsType<RedirectHandler>(redirectHandler);
                 Assert.True(innerMost is HttpMessageHandler);
             }
         }
@@ -76,11 +76,11 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                 Assert.NotNull(retryHandler);
                 Assert.NotNull(redirectHandler);
                 Assert.NotNull(innerMost);
-                Assert.IsType(typeof(AuthenticationHandler), authenticationHandler);
-                Assert.IsType(typeof(CompressionHandler), compressionHandler);
-                Assert.IsType(typeof(RetryHandler), retryHandler);
-                Assert.IsType(typeof(RedirectHandler), redirectHandler);
-                Assert.IsType(typeof(MockRedirectHandler), innerMost);
+                Assert.IsType<AuthenticationHandler>(authenticationHandler);
+                Assert.IsType<CompressionHandler>(compressionHandler);
+                Assert.IsType<RetryHandler>(retryHandler);
+                Assert.IsType<RedirectHandler>(redirectHandler);
+                Assert.IsType<MockRedirectHandler>(innerMost);
             }
         }
 
@@ -90,7 +90,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             using (MockRedirectHandler handler = (MockRedirectHandler)GraphClientFactory.CreatePipeline(null, this.testHttpMessageHandler))
             {
                 Assert.NotNull(handler);
-                Assert.IsType(typeof(MockRedirectHandler), handler);
+                Assert.IsType<MockRedirectHandler>(handler);
             }
         }
 
@@ -144,7 +144,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             }
             catch (ArgumentException exception)
             {
-                Assert.IsType(typeof(ArgumentException), exception);
+                Assert.IsType<ArgumentException>(exception);
                 Assert.Equal(exception.Message, String.Format("{0} is an unexpected national cloud.", nation));
             }
         }
@@ -165,7 +165,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                     assemblyVersion.Build);
                 IEnumerable<string> values;
                 Assert.True(httpClient.DefaultRequestHeaders.TryGetValues(CoreConstants.Headers.SdkVersionHeaderName, out values), "SDK version value not set");
-                Assert.Equal(values.Count(), 1);
+                Assert.Single(values);
                 Assert.Equal(values.First(), value);
             }
         }
@@ -217,7 +217,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                 Assert.Same(response, response_2);
                 IEnumerable<string> values;
                 Assert.True(response.RequestMessage.Headers.TryGetValues("Retry-Attempt", out values), "Don't set Retry-Attemp Header");
-                Assert.Equal(values.Count(), 1);
+                Assert.Single(values);
                 Assert.Equal(values.First(), 1.ToString());
                 Assert.NotSame(response.RequestMessage, httpRequestMessage);
             }
@@ -275,8 +275,8 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             }
             catch (ArgumentNullException exception)
             {
-                Assert.IsType(typeof(ArgumentNullException), exception);
-                Assert.Equal(exception.ParamName, "handlers");
+                Assert.IsType<ArgumentNullException>(exception);
+                Assert.Equal("handlers", exception.ParamName);
             }
 
             pipelineHandlers[pipelineHandlers.Length - 1] = new RetryHandler(this.testHttpMessageHandler);
@@ -286,7 +286,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             }
             catch (ArgumentException exception)
             {
-                Assert.IsType(typeof(ArgumentException), exception);
+                Assert.IsType<ArgumentException>(exception);
                 Assert.Equal(exception.Message, String.Format("DelegatingHandler array has unexpected InnerHandler. {0} has unexpected InnerHandler.", pipelineHandlers[pipelineHandlers.Length - 1]));
 
             }
@@ -315,6 +315,28 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 
             Assert.NotNull(pipelineWithHandlers.Pipeline);
             Assert.True(pipelineWithHandlers.FeatureFlags.HasFlag(expectedFlag));
+        }
+
+        [Fact]
+        public void RemoveHandler_Should_Remove_Handler_From_List()
+        {
+            IList<DelegatingHandler> defaultHandlers = GraphClientFactory.CreateDefaultHandlers(testAuthenticationProvider.Object);
+
+            bool isSuccessful = GraphClientFactory.RemoveHandler(defaultHandlers, typeof(AuthenticationHandler));
+
+            Assert.True(isSuccessful);
+            Assert.Equal(3, defaultHandlers.Count);
+        }
+
+        [Fact]
+        public void RemoveHandler_Should_Return_False_When_List_Is_Empty()
+        {
+            IList<DelegatingHandler> defaultHandlers = new List<DelegatingHandler>();
+
+            bool isSuccessful = GraphClientFactory.RemoveHandler(defaultHandlers, typeof(AuthenticationHandler));
+
+            Assert.False(isSuccessful);
+            Assert.Equal(0, defaultHandlers.Count);
         }
     }
 }

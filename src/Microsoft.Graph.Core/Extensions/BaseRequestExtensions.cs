@@ -62,13 +62,13 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Sets a ShouldRetry <see cref="Func{HttpResponseMessage httpResponseMessage, Boolean}"/> delegate to the default Retry Middleware Handler for this request.
+        /// Sets a ShouldRetry delegate to the default Retry Middleware Handler for this request.
         /// This only works with the default Retry Middleware Handler.
         /// If you use a custom Retry Middleware Handler, you have to handle it's retreival in your implementation.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="baseRequest">The <see cref="BaseRequest"/> for the request.</param>
-        /// <param name="shouldRetry">A <see cref="Func{HttpResponseMessage, Boolean}"/> for the request.</param>
+        /// <param name="shouldRetry">A <see cref="Func{Int32, Int32, HttpResponseMessage, Boolean}"/> for the request.</param>
         /// <returns></returns>
         public static T WithShouldRetry<T>(this T baseRequest, Func<int, int, HttpResponseMessage, bool> shouldRetry) where T : IBaseRequest
         {

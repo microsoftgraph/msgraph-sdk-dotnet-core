@@ -49,6 +49,9 @@ namespace Microsoft.Graph
         /// </summary>
         public static class MimeTypeNames
         {
+            /// <summary>
+            /// MimeTypeNames.Application constants.
+            /// </summary>
             public static class Application
             {
                 /// JSON content type value

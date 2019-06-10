@@ -169,7 +169,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             }
         }
 
-        public void ProgressCallback(AsyncOperationStatus asyncOperationStatus, out bool called)
+        private void ProgressCallback(AsyncOperationStatus asyncOperationStatus, out bool called)
         {
             this.httpResponseMessage.StatusCode = HttpStatusCode.OK;
             this.asyncMonitor.monitorUrl = AsyncMonitorTests.itemUrl;

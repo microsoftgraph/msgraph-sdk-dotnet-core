@@ -14,9 +14,9 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Extensions
         public void SetFeatureFlag_should_add_new_flag_to_featureflag_header()
         {
             HttpClient client = new HttpClient();
-            client.SetFeatureFlag(FeatureFlag.LongRunnungOperationHandler);
+            client.SetFeatureFlag(FeatureFlag.LongRunningOperationHandler);
 
-            string expectedHeaderValue = Enum.Format(typeof(FeatureFlag), FeatureFlag.LongRunnungOperationHandler, "x");
+            string expectedHeaderValue = Enum.Format(typeof(FeatureFlag), FeatureFlag.LongRunningOperationHandler, "x");
 
             Assert.True(client.DefaultRequestHeaders.Contains(CoreConstants.Headers.FeatureFlag));
             Assert.True(client.DefaultRequestHeaders.GetValues(CoreConstants.Headers.FeatureFlag).Count().Equals(1));

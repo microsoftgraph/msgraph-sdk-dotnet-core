@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-/**
+/*
 
 Spec
     https://github.com/microsoftgraph/msgraph-sdk-design/blob/master/tasks/PageIteratorTask.md
-**/
+*/
 
 namespace Microsoft.Graph
 {

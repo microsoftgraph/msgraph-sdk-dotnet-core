@@ -48,7 +48,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Middleware
             HttpResponseMessage response = await this.invoker.SendAsync(httpRequestMessage, new CancellationToken());
 
             Assert.Same(httpRequestMessage, response.RequestMessage);
-            Assert.True(response.RequestMessage.Headers.AcceptEncoding.Contains(new StringWithQualityHeaderValue(CoreConstants.Encoding.GZip)));
+            Assert.Contains(new StringWithQualityHeaderValue(CoreConstants.Encoding.GZip), response.RequestMessage.Headers.AcceptEncoding);
         }
 
         [Fact]

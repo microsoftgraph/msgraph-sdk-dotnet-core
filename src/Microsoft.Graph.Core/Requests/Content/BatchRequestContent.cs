@@ -208,6 +208,12 @@ namespace Microsoft.Graph
             return requestUri.AbsoluteUri.Substring(requestUri.AbsoluteUri.IndexOf(version) + version.ToCharArray().Count());
         }
 
+        /// <summary>
+        /// Serialize the HTTP content to a stream as an asynchronous operation.
+        /// </summary>
+        /// <param name="stream">The target stream.</param>
+        /// <param name="context">Information about the transport (channel binding token, for example). This parameter may be null.</param>
+        /// <returns></returns>
         protected override async Task SerializeToStreamAsync(Stream stream, TransportContext context)
         {
             using (StreamWriter streamWritter = new StreamWriter(stream, new UTF8Encoding(), 1024, true))
@@ -218,6 +224,11 @@ namespace Microsoft.Graph
             }
         }
 
+        /// <summary>
+        /// Determines whether the HTTP content has a valid length in bytes.
+        /// </summary>
+        /// <param name="length">The length in bytes of the HHTP content.</param>
+        /// <returns></returns>
         protected override bool TryComputeLength(out long length)
         {
             length = -1;
