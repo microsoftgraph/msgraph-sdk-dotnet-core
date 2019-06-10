@@ -29,6 +29,6 @@ namespace Microsoft.Graph
         /// Connection Pool Manager
         ConnectionPoolManager = 0x00000080,
         /// Long Running Operation Handler 
-        LongRunnungOperationHandler = 0x00000100
+        LongRunningOperationHandler = 0x00000100
     }
 }
