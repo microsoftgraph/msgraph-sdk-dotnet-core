@@ -25,6 +25,8 @@ namespace Microsoft.Graph
             internal static string MaximumValueExceeded = "MaximumValueExceeded";
 
             internal static string InvalidArgument = "invalidArgument";
+
+            internal static string MaximumRetryTimeReached = "maximumRetryTimeReached";
         }
 
         internal static class Messages
@@ -64,6 +66,8 @@ namespace Microsoft.Graph
             internal static string InvalidDependsOnRequestId = "Corresponding batch request id not found for the specified dependsOn relation.";
 
             public static string InvalidProxyArgument = "Proxy cannot be set more once. Proxy can only be set on the proxy or defaultHttpHandler argument and not both.";
+
+            internal static string MaximumRetryTimeReached = "Maximum time for request retries reached.";
         }
     }
 }
