@@ -20,6 +20,7 @@ namespace Microsoft.Graph
         private const string RETRY_AFTER = "Retry-After";
         private const string RETRY_ATTEMPT = "Retry-Attempt";
         private double m_pow = 1;
+        private double cumulativeDelay = 0.0;
 
         /// <summary>
         /// RetryOption property
@@ -75,7 +76,8 @@ namespace Microsoft.Graph
         private async Task<HttpResponseMessage> SendRetryAsync(HttpResponseMessage response, CancellationToken cancellationToken)
         {
             int retryCount = 0;
-            while (retryCount < RetryOption.MaxRetry)
+            cumulativeDelay = 0.0;
+            while (cumulativeDelay < RetryOption.MaxRetryTime)
             {
                 // Drain response content to free responses.
                 if (response.Content != null)
@@ -107,8 +109,8 @@ namespace Microsoft.Graph
             throw new ServiceException(
                          new Error
                          {
-                             Code = ErrorConstants.Codes.TooManyRetries,
-                             Message = string.Format(ErrorConstants.Messages.TooManyRetriesFormatString, retryCount)
+                             Code = ErrorConstants.Codes.MaximumRetryTimeReached,
+                             Message = string.Format(ErrorConstants.Messages.MaximumRetryTimeReached, retryCount)
                          });
 
         }
@@ -152,6 +154,8 @@ namespace Microsoft.Graph
                 m_pow = Math.Pow(2, retry_count);
                 delayInSeconds = m_pow * RetryOption.Delay;
             }
+
+            cumulativeDelay += delayInSeconds;
 
             TimeSpan delayTimeSpan = TimeSpan.FromSeconds(Math.Min(delayInSeconds, RetryHandlerOption.MAX_DELAY));
 
