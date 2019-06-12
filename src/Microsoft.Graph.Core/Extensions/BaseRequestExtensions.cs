@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
@@ -103,6 +103,29 @@ namespace Microsoft.Graph
             else
             {
                 baseRequest.MiddlewareOptions.Add(retryOptionKey, new RetryHandlerOption { MaxRetry = maxRetry });
+            }
+            return baseRequest;
+        }
+
+        /// <summary>
+        /// Sets the maximum time for request retries to the default Retry Middleware Handler for this request.
+        /// This only works with the default Retry Middleware Handler.
+        /// If you use a custom Retry Middleware Handler, you have to handle it's retrieval in your implementation.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="baseRequest">The <see cref="BaseRequest"/> for the request.</param>
+        /// <param name="maxRetryTime">The maxRetryTime for the request.</param>
+        /// <returns></returns>
+        public static T WithMaxRetryTime<T>(this T baseRequest, int maxRetryTime) where T : IBaseRequest
+        {
+            string retryOptionKey = typeof(RetryHandlerOption).ToString();
+            if (baseRequest.MiddlewareOptions.ContainsKey(retryOptionKey))
+            {
+                (baseRequest.MiddlewareOptions[retryOptionKey] as RetryHandlerOption).MaxRetryTime = maxRetryTime;
+            }
+            else
+            {
+                baseRequest.MiddlewareOptions.Add(retryOptionKey, new RetryHandlerOption { MaxRetryTime = maxRetryTime });
             }
             return baseRequest;
         }
