@@ -156,12 +156,12 @@ steps:
      ]
     SessionTimeout: 20
 
-- task: DotNetCoreCLI@2
-  displayName: 'dotnet pack (no build, create NuGet)'
+- task: MSBuild@1
+  displayName: 'Create NuGet package for production release'
   inputs:
-    command: pack
-    packagesToPack: '**\Microsoft.Graph.Core.csproj'
-    nobuild: true
+    solution: '**/Microsoft.Graph.Core.csproj'
+    configuration: 'release'
+    msbuildArguments: '-t:pack /p:NoBuild=true /p:PackageOutputPath=$(Build.ArtifactStagingDirectory)''
 
 - task: SFP.build-tasks.custom-build-task-1.EsrpCodeSigning@1
   displayName: 'ESRP NuGet CodeSigning'
