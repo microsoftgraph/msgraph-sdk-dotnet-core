@@ -161,7 +161,7 @@ steps:
   inputs:
     solution: '**/Microsoft.Graph.Core.csproj'
     configuration: 'release'
-    msbuildArguments: '-t:pack /p:NoBuild=true /p:PackageOutputPath=$(Build.ArtifactStagingDirectory)''
+    msbuildArguments: '-t:pack /p:NoBuild=true /p:PackageOutputPath=$(Build.ArtifactStagingDirectory)'
 
 - task: SFP.build-tasks.custom-build-task-1.EsrpCodeSigning@1
   displayName: 'ESRP NuGet CodeSigning'
@@ -187,7 +187,6 @@ steps:
                   "toolVersion": "1.0"
               }
           ]
-
     SessionTimeout: 20
 
 - task: CopyFiles@2
@@ -212,5 +211,5 @@ steps:
     serviceEndpointName: 'microsoftgraph pipeline status'
     title: '$(Build.DefinitionName) failure notification'
     text: 'This pipeline has failed. View the build details for further information. This is a blocking failure.'
-  condition: failed()
+  condition: and(failed(), ne(variables['Build.Reason'], 'Manual'))
   enabled: true
