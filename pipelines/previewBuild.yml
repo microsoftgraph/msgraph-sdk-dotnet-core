@@ -195,7 +195,6 @@ steps:
                   "toolVersion": "1.0"
               }
           ]
-
     SessionTimeout: 20
 
 - task: CopyFiles@2
