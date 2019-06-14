@@ -46,12 +46,12 @@ if ($versionSuffixString -eq $null) {
 
 # API is case-sensitive
 $packageName = $packageName.ToLower()
-$url = "https://api.nuget.org/v3/registration3/$packageName/index.json"
+$url = "https://api.nuget.org/v3-flatcontainer/$packageName/index.json"
 
 # Call the NuGet API for the package and get the highest SemVer 2.0.0 version for the package.
 # Per rules https://semver.org/spec/v2.0.0.html#spec-item-11
 $nugetIndex = Invoke-RestMethod -Uri $url -Method Get
-$highestPublishedVersion = $nugetIndex.items[0].upper
+$highestPublishedVersion = $nugetIndex.versions[$nugetIndex.versions.Length - 1]
 
 # We do need to make sure it is listed. For example, we didn't properly suffix M.G.A so the
 # highest reported version is incorrect.
