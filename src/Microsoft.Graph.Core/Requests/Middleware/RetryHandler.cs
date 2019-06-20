@@ -77,7 +77,7 @@ namespace Microsoft.Graph
         {
             int retryCount = 0;
             cumulativeDelay = 0.0;
-            while (cumulativeDelay < RetryOption.MaxRetryTime)
+            while (cumulativeDelay < RetryOption.RetryTimeLimit)
             {
                 // Drain response content to free responses.
                 if (response.Content != null)

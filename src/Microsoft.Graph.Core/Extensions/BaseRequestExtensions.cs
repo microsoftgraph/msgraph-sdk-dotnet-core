@@ -121,11 +121,11 @@ namespace Microsoft.Graph
             string retryOptionKey = typeof(RetryHandlerOption).ToString();
             if (baseRequest.MiddlewareOptions.ContainsKey(retryOptionKey))
             {
-                (baseRequest.MiddlewareOptions[retryOptionKey] as RetryHandlerOption).MaxRetryTime = maxRetryTime;
+                (baseRequest.MiddlewareOptions[retryOptionKey] as RetryHandlerOption).RetryTimeLimit = maxRetryTime;
             }
             else
             {
-                baseRequest.MiddlewareOptions.Add(retryOptionKey, new RetryHandlerOption { MaxRetryTime = maxRetryTime });
+                baseRequest.MiddlewareOptions.Add(retryOptionKey, new RetryHandlerOption { RetryTimeLimit = maxRetryTime });
             }
             return baseRequest;
         }
