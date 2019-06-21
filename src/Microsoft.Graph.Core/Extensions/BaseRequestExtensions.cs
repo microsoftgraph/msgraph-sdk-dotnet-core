@@ -116,7 +116,7 @@ namespace Microsoft.Graph
         /// <param name="baseRequest">The <see cref="BaseRequest"/> for the request.</param>
         /// <param name="maxRetryTime">The maxRetryTime for the request.</param>
         /// <returns></returns>
-        public static T WithMaxRetryTime<T>(this T baseRequest, int maxRetryTime) where T : IBaseRequest
+        public static T WithRetriesTimeLimit<T>(this T baseRequest, int maxRetryTime) where T : IBaseRequest
         {
             string retryOptionKey = typeof(RetryHandlerOption).ToString();
             if (baseRequest.MiddlewareOptions.ContainsKey(retryOptionKey))
