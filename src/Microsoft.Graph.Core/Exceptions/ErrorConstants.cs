@@ -26,7 +26,7 @@ namespace Microsoft.Graph
 
             internal static string InvalidArgument = "invalidArgument";
 
-            internal static string MaximumRetryTimeReached = "maximumRetryTimeReached";
+            internal static string MaximumRetriesTimeLimitReached = "maximumRetriesTimeLimitReached";
         }
 
         internal static class Messages
@@ -67,7 +67,7 @@ namespace Microsoft.Graph
 
             public static string InvalidProxyArgument = "Proxy cannot be set more once. Proxy can only be set on the proxy or defaultHttpHandler argument and not both.";
 
-            internal static string MaximumRetryTimeReached = "Maximum time for request retries reached.";
+            internal static string MaximumRetriesTimeLimitReached = "Maximum time of {0} for request retries reached.";
         }
     }
 }
