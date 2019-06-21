@@ -276,9 +276,10 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         private async Task DelayTestWithMessage(HttpResponseMessage response, int count, string message, int delay = RetryHandlerOption.MAX_DELAY)
         {
             Message = message;
+            double cumulativeDelay = 0.0;
             await Task.Run(async () =>
             {
-                await this.retryHandler.Delay(response, count, delay, new CancellationToken());
+                await this.retryHandler.Delay(response, count, delay, out double delayInSeconds, ref cumulativeDelay, new CancellationToken());
                 Message += " Work " + count.ToString();
             });
         }
