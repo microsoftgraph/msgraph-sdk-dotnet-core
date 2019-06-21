@@ -251,6 +251,26 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         [InlineData(HttpStatusCode.GatewayTimeout)]  // 504
         [InlineData(HttpStatusCode.ServiceUnavailable)]  // 503
         [InlineData((HttpStatusCode)429)] // 429
+        public async Task ShoulReturnSameStatusCodeWhenDelayIsGreaterThanRetryTimeLimit(HttpStatusCode statusCode)
+        {
+            var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, "http://example.org/foo");
+            httpRequestMessage.Content = new StringContent("Hello World");
+
+            var retryResponse = new HttpResponseMessage(statusCode);
+            retryResponse.Headers.TryAddWithoutValidation(RETRY_AFTER, 20.ToString());
+            retryHandler.RetryOption.RetriesTimeLimit = 10;
+
+            this.testHttpMessageHandler.SetHttpResponse(retryResponse);
+
+            var response = await invoker.SendAsync(httpRequestMessage, new CancellationToken());
+
+            Assert.Same(response, retryResponse);
+        }
+
+        [Theory]
+        [InlineData(HttpStatusCode.GatewayTimeout)]  // 504
+        [InlineData(HttpStatusCode.ServiceUnavailable)]  // 503
+        [InlineData((HttpStatusCode)429)] // 429
         public async Task ShouldRetrytBasedOnRetryAfter(HttpStatusCode statusCode)
         {
             var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, "http://example.org/foo");
