@@ -73,29 +73,10 @@ namespace Microsoft.Graph
             }
         }
 
-        private int _retriesTimeLimit = RETRIES_TIME_LIMIT;
         /// <summary>
         /// The maximum time allowed for request retries. This defaults to 180
         /// </summary>
-        public int RetriesTimeLimit
-        {
-            get
-            {
-                return _retriesTimeLimit;
-            }
-            set
-            {
-                if(value > RETRIES_TIME_LIMIT)
-                {
-                    throw new ServiceException(
-                        new Error
-                        {
-                            Code = ErrorConstants.Codes.MaximumValueExceeded,
-                            Message = string.Format(ErrorConstants.Messages.MaximumValueExceeded, "MaxRetryTime", RETRIES_TIME_LIMIT)
-                        });
-                }
-            }
-        }
+        public int RetriesTimeLimit { get; set; } = RETRIES_TIME_LIMIT;
 
         /// <summary>
         /// A delegate that's called to determine whether a request should be retried or not.
