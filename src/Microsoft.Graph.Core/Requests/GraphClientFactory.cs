@@ -168,14 +168,7 @@ namespace Microsoft.Graph
             {
                 return (Pipeline: finalHandler, FeatureFlags: handlerFlags);
             }
-#if iOS
-            // Remove CompressionHandler because NSUrlSessionHandler automatically handles decompression and it can't be turned off.
-            // See issue https://github.com/microsoftgraph/msgraph-sdk-dotnet/issues/481 for more details.
-            if (finalHandler.GetType() == typeof(NSUrlSessionHandler))
-            {
-                RemoveHandler(handlers.ToList(), typeof(CompressionHandler));
-            }
-#endif
+
             HttpMessageHandler httpPipeline = finalHandler;
             IEnumerable<DelegatingHandler> reversedHandlers = handlers.Reverse();
             HashSet<Type> existingHandlerTypes = new HashSet<Type>();
@@ -190,10 +183,20 @@ namespace Microsoft.Graph
                 {
                     throw new ArgumentException(String.Format("DelegatingHandler array has unexpected InnerHandler. {0} has unexpected InnerHandler.", handler, "handler"));
                 }
-
+#if iOS
+                // Skip CompressionHandler since NSUrlSessionHandler automatically handles decompression on iOS and it can't be turned off.
+                // See issue https://github.com/microsoftgraph/msgraph-sdk-dotnet/issues/481 for more details.
+                if (finalHandler.GetType().Equals(typeof(NSUrlSessionHandler)) && handler.GetType().Equals(typeof(CompressionHandler)))
+                {
+                    // Skip chaining of CompressionHandler.
+                    continue;
+                }
+#endif
                 // Check for duplicate handler by type.
                 if (!existingHandlerTypes.Add(handler.GetType()))
+                {
                     throw new ArgumentException($"DelegatingHandler array has a duplicate handler. {handler} has a duplicate handler.", "handlers");
+                }
 
                 handler.InnerHandler = httpPipeline;
                 httpPipeline = handler;
@@ -223,22 +226,6 @@ namespace Microsoft.Graph
 #else
             return new HttpClientHandler { Proxy = proxy, AllowAutoRedirect = false, AutomaticDecompression = DecompressionMethods.None };
 #endif
-        }
-
-        /// <summary>
-        /// Removes the specified targetHandlerType from the provided list of delegatingHandlers.
-        /// </summary>
-        /// <param name="delegatingHandlers">The list of <see cref="DelegatingHandler"/> to remove a <see cref="DelegatingHandler"/> type from.</param>
-        /// <param name="targetHandlerType">The <see cref="DelegatingHandler"/> type to remove.</param>
-        /// <returns></returns>
-        internal static bool RemoveHandler(IList<DelegatingHandler> delegatingHandlers, Type targetHandlerType)
-        {
-            if (delegatingHandlers == null)
-            {
-                throw new ArgumentNullException(nameof(delegatingHandlers), "DelegatingHandler list is null.");
-            }
-
-            return delegatingHandlers.Remove(delegatingHandlers.FirstOrDefault((h) => h.GetType().Equals(targetHandlerType)));
         }
 
         /// <summary>
