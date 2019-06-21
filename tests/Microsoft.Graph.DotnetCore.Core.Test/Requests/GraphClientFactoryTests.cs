@@ -40,8 +40,29 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         // 2. We can't control the order of execution for the tests
         // and 'GraphClientFactory.DefaultHttpHandler' can easily be modified
         // by other tests since it's a static delegate.
+
+#if iOS
         [Fact]
-        public void CreatePipelineWithoutHttpMessageHandlerInput()
+        public void Should_CreatePipeline_Without_CompressionHandler()
+        {
+            using (AuthenticationHandler authenticationHandler = (AuthenticationHandler)GraphClientFactory.CreatePipeline(handlers))
+            using (RetryHandler retryHandler = (RetryHandler)authenticationHandler.InnerHandler)
+            using (RedirectHandler redirectHandler = (RedirectHandler)retryHandler.InnerHandler)
+            using (NSUrlSessionHandler innerMost = (NSUrlSessionHandler)redirectHandler.InnerHandler)
+            {
+                Assert.NotNull(authenticationHandler);
+                Assert.NotNull(retryHandler);
+                Assert.NotNull(redirectHandler);
+                Assert.NotNull(innerMost);
+                Assert.IsType<AuthenticationHandler>(authenticationHandler);
+                Assert.IsType<RetryHandler>(retryHandler);
+                Assert.IsType<RedirectHandler>(redirectHandler);
+                Assert.IsType<NSUrlSessionHandler>(innerMost);
+            }
+        }
+#else
+        [Fact]
+        public void Should_CreatePipeline_Without_HttpMessageHandlerInput()
         {
             using (AuthenticationHandler authenticationHandler = (AuthenticationHandler)GraphClientFactory.CreatePipeline(handlers))
             using (CompressionHandler compressionHandler = (CompressionHandler)authenticationHandler.InnerHandler)
@@ -61,6 +82,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                 Assert.True(innerMost is HttpMessageHandler);
             }
         }
+#endif
 
         [Fact]
         public void CreatePipelineWithHttpMessageHandlerInput()
@@ -290,7 +312,6 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                 Assert.Equal(exception.Message, String.Format("DelegatingHandler array has unexpected InnerHandler. {0} has unexpected InnerHandler.", pipelineHandlers[pipelineHandlers.Length - 1]));
 
             }
-
         }
 
         [Fact]
@@ -315,28 +336,6 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 
             Assert.NotNull(pipelineWithHandlers.Pipeline);
             Assert.True(pipelineWithHandlers.FeatureFlags.HasFlag(expectedFlag));
-        }
-
-        [Fact]
-        public void RemoveHandler_Should_Remove_Handler_From_List()
-        {
-            IList<DelegatingHandler> defaultHandlers = GraphClientFactory.CreateDefaultHandlers(testAuthenticationProvider.Object);
-
-            bool isSuccessful = GraphClientFactory.RemoveHandler(defaultHandlers, typeof(AuthenticationHandler));
-
-            Assert.True(isSuccessful);
-            Assert.Equal(3, defaultHandlers.Count);
-        }
-
-        [Fact]
-        public void RemoveHandler_Should_Return_False_When_List_Is_Empty()
-        {
-            IList<DelegatingHandler> defaultHandlers = new List<DelegatingHandler>();
-
-            bool isSuccessful = GraphClientFactory.RemoveHandler(defaultHandlers, typeof(AuthenticationHandler));
-
-            Assert.False(isSuccessful);
-            Assert.Equal(0, defaultHandlers.Count);
         }
     }
 }
