@@ -206,8 +206,8 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             }
             catch (ServiceException exception)
             {
-                Assert.True(exception.IsMatch(ErrorConstants.Codes.TooManyRetries), "Unexpected error code returned.");
-                Assert.Equal(String.Format(ErrorConstants.Messages.TooManyRetriesFormatString, 10), exception.Error.Message);
+                Assert.True(exception.IsMatch(ErrorConstants.Codes.MaximumRetriesTimeLimitReached), "Unexpected error code returned.");
+                Assert.Equal(String.Format(ErrorConstants.Messages.MaximumRetriesTimeLimitReached, 10), exception.Error.Message);
                 Assert.IsType<ServiceException>(exception);
                 IEnumerable<string> values;
                 Assert.True(httpRequestMessage.Headers.TryGetValues(RETRY_ATTEMPT, out values), "Don't set Retry-Attemp Header");

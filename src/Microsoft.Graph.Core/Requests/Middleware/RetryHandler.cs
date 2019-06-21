@@ -58,7 +58,7 @@ namespace Microsoft.Graph
 
             var response = await base.SendAsync(httpRequest, cancellationToken);
 
-            if(ShouldRetry(response) && httpRequest.IsBuffered() && RetryOption.MaxRetry > 0 && RetryOption.ShouldRetry(RetryOption.Delay, 0, response))
+            if(ShouldRetry(response) && httpRequest.IsBuffered() && RetryOption.RetriesTimeLimit > 0 && RetryOption.ShouldRetry(RetryOption.Delay, 0, response))
             {
                 response = await SendRetryAsync(response, cancellationToken);
             }
@@ -115,8 +115,8 @@ namespace Microsoft.Graph
             throw new ServiceException(
                          new Error
                          {
-                             Code = ErrorConstants.Codes.MaximumRetryTimeReached,
-                             Message = string.Format(ErrorConstants.Messages.MaximumRetryTimeReached, retryCount)
+                             Code = ErrorConstants.Codes.MaximumRetriesTimeLimitReached,
+                             Message = string.Format(ErrorConstants.Messages.MaximumRetriesTimeLimitReached, RetryOption.RetriesTimeLimit)
                          });
 
         }
