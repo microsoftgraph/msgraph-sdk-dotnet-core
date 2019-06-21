@@ -77,7 +77,8 @@ namespace Microsoft.Graph
         {
             int retryCount = 0;
             cumulativeDelay = 0.0;
-            while (cumulativeDelay < RetryOption.RetryTimeLimit)
+            CancellationTokenSource tokenSource = new CancellationTokenSource();
+            while (cumulativeDelay < RetryOption.RetriesTimeLimit)
             {
                 // Drain response content to free responses.
                 if (response.Content != null)
@@ -86,7 +87,7 @@ namespace Microsoft.Graph
                 }
 
                 // Call Delay method to get delay time from response's Retry-After header or by exponential backoff 
-                Task delay = Delay(response, retryCount, RetryOption.Delay, cancellationToken);
+                Task delay = Delay(response, retryCount, RetryOption.Delay, tokenSource.Token);
 
                 // general clone request with internal CloneAsync (see CloneAsync for details) extension method 
                 var request = await response.RequestMessage.CloneAsync();
@@ -94,6 +95,8 @@ namespace Microsoft.Graph
                 // Increase retryCount and then update Retry-Attempt in request header
                 retryCount++;
                 AddOrUpdateRetryAttempt(request, retryCount);
+
+                tokenSource.Cancel();
 
                 // Delay time
                 await delay;
@@ -154,6 +157,8 @@ namespace Microsoft.Graph
                 m_pow = Math.Pow(2, retry_count);
                 delayInSeconds = m_pow * RetryOption.Delay;
             }
+
+            cancellationToken.ThrowIfCancellationRequested();
 
             cumulativeDelay += delayInSeconds;
 
