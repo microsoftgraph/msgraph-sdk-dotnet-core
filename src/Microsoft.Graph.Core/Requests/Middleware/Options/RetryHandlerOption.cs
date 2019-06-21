@@ -16,7 +16,7 @@ namespace Microsoft.Graph
         internal const int DEFAULT_MAX_RETRY = 3;
         internal const int MAX_MAX_RETRY = 10;
         internal const int MAX_DELAY = 180;
-        internal const int RETRY_TIME_LIMIT = 180;
+        internal const int RETRIES_TIME_LIMIT = 180;
 
         /// <summary>
         /// Constructs a new <see cref="RetryHandlerOption"/>
@@ -73,25 +73,25 @@ namespace Microsoft.Graph
             }
         }
 
-        private int _retryTimeLimit = RETRY_TIME_LIMIT;
+        private int _retriesTimeLimit = RETRIES_TIME_LIMIT;
         /// <summary>
         /// The maximum time allowed for request retries. This defaults to 180
         /// </summary>
-        public int RetryTimeLimit
+        public int RetriesTimeLimit
         {
             get
             {
-                return _retryTimeLimit;
+                return _retriesTimeLimit;
             }
             set
             {
-                if(value > RETRY_TIME_LIMIT)
+                if(value > RETRIES_TIME_LIMIT)
                 {
                     throw new ServiceException(
                         new Error
                         {
                             Code = ErrorConstants.Codes.MaximumValueExceeded,
-                            Message = string.Format(ErrorConstants.Messages.MaximumValueExceeded, "MaxRetryTime", RETRY_TIME_LIMIT)
+                            Message = string.Format(ErrorConstants.Messages.MaximumValueExceeded, "MaxRetryTime", RETRIES_TIME_LIMIT)
                         });
                 }
             }
