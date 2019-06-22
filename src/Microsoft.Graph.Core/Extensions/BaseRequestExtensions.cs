@@ -114,18 +114,18 @@ namespace Microsoft.Graph
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="baseRequest">The <see cref="BaseRequest"/> for the request.</param>
-        /// <param name="maxRetryTime">The maxRetryTime for the request.</param>
+        /// <param name="retriesTimeLimit">The retriestimelimit for the request.</param>
         /// <returns></returns>
-        public static T WithRetriesTimeLimit<T>(this T baseRequest, int maxRetryTime) where T : IBaseRequest
+        public static T WithRetriesTimeLimit<T>(this T baseRequest, int retriesTimeLimit) where T : IBaseRequest
         {
             string retryOptionKey = typeof(RetryHandlerOption).ToString();
             if (baseRequest.MiddlewareOptions.ContainsKey(retryOptionKey))
             {
-                (baseRequest.MiddlewareOptions[retryOptionKey] as RetryHandlerOption).RetriesTimeLimit = maxRetryTime;
+                (baseRequest.MiddlewareOptions[retryOptionKey] as RetryHandlerOption).RetriesTimeLimit = retriesTimeLimit;
             }
             else
             {
-                baseRequest.MiddlewareOptions.Add(retryOptionKey, new RetryHandlerOption { RetriesTimeLimit = maxRetryTime });
+                baseRequest.MiddlewareOptions.Add(retryOptionKey, new RetryHandlerOption { RetriesTimeLimit = retriesTimeLimit });
             }
             return baseRequest;
         }
