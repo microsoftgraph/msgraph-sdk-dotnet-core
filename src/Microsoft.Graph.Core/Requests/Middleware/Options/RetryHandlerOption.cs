@@ -16,7 +16,6 @@ namespace Microsoft.Graph
         internal const int DEFAULT_MAX_RETRY = 3;
         internal const int MAX_MAX_RETRY = 10;
         internal const int MAX_DELAY = 180;
-        internal const int RETRIES_TIME_LIMIT = 180;
 
         /// <summary>
         /// Constructs a new <see cref="RetryHandlerOption"/>
@@ -76,7 +75,7 @@ namespace Microsoft.Graph
         /// <summary>
         /// The maximum time allowed for request retries. This defaults to 180
         /// </summary>
-        public int RetriesTimeLimit { get; set; } = RETRIES_TIME_LIMIT;
+        public TimeSpan RetriesTimeLimit { get; set; } = TimeSpan.FromSeconds(180);
 
         /// <summary>
         /// A delegate that's called to determine whether a request should be retried or not.
