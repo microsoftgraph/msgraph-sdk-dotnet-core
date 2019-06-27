@@ -75,7 +75,7 @@ namespace Microsoft.Graph
         private async Task<HttpResponseMessage> SendRetryAsync(HttpResponseMessage response, CancellationToken cancellationToken)
         {
             int retryCount = 0;
-            double cumulativeDelay = 0.0;
+            TimeSpan cumulativeDelay = TimeSpan.Zero;
             
             while (cumulativeDelay < RetryOption.RetriesTimeLimit)
             {
@@ -89,7 +89,7 @@ namespace Microsoft.Graph
                 Task delay = Delay(response, retryCount, RetryOption.Delay, out double delayInSeconds, ref cumulativeDelay, cancellationToken);
 
                 // Check whether delay(s) exceed the client-specified maximum retries value 
-                if (delayInSeconds > RetryOption.RetriesTimeLimit || cumulativeDelay > RetryOption.RetriesTimeLimit)
+                if (TimeSpan.FromSeconds(delayInSeconds) > RetryOption.RetriesTimeLimit || cumulativeDelay > RetryOption.RetriesTimeLimit)
                 {
                     return response; 
                 }
@@ -145,7 +145,7 @@ namespace Microsoft.Graph
         /// <param name="cumulativeDelay"></param>
         /// <param name="cancellationToken">The cancellationToken for the Http request</param>
         /// <returns>The <see cref="Task"/> for delay operation.</returns>
-        public Task Delay(HttpResponseMessage response, int retry_count, int delay, out double delayInSeconds, ref double cumulativeDelay, CancellationToken cancellationToken)
+        public Task Delay(HttpResponseMessage response, int retry_count, int delay, out double delayInSeconds, ref TimeSpan cumulativeDelay, CancellationToken cancellationToken)
         {
             HttpHeaders headers = response.Headers;
             delayInSeconds = RetryOption.Delay;
@@ -163,7 +163,7 @@ namespace Microsoft.Graph
                 delayInSeconds = m_pow * RetryOption.Delay;
             }
                     
-            cumulativeDelay += delayInSeconds;
+            cumulativeDelay += TimeSpan.FromSeconds(delayInSeconds);
 
             TimeSpan delayTimeSpan = TimeSpan.FromSeconds(Math.Min(delayInSeconds, RetryHandlerOption.MAX_DELAY));
 

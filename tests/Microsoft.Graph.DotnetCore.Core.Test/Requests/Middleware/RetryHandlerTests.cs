@@ -258,7 +258,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 
             var retryResponse = new HttpResponseMessage(statusCode);
             retryResponse.Headers.TryAddWithoutValidation(RETRY_AFTER, 20.ToString());
-            retryHandler.RetryOption.RetriesTimeLimit = 10;
+            retryHandler.RetryOption.RetriesTimeLimit = TimeSpan.FromSeconds(10);
 
             this.testHttpMessageHandler.SetHttpResponse(retryResponse);
 
@@ -296,7 +296,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         private async Task DelayTestWithMessage(HttpResponseMessage response, int count, string message, int delay = RetryHandlerOption.MAX_DELAY)
         {
             Message = message;
-            double cumulativeDelay = 0.0;
+            TimeSpan cumulativeDelay = TimeSpan.Zero;
             await Task.Run(async () =>
             {
                 await this.retryHandler.Delay(response, count, delay, out double delayInSeconds, ref cumulativeDelay, new CancellationToken());
