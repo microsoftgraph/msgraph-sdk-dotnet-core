@@ -73,9 +73,9 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// The maximum time allowed for request retries. This defaults to 180 seconds
+        /// The maximum time allowed for request retries.
         /// </summary>
-        public TimeSpan RetriesTimeLimit { get; set; } = TimeSpan.FromSeconds(180);
+        public TimeSpan RetriesTimeLimit { get; set; } = TimeSpan.Zero;
 
         /// <summary>
         /// A delegate that's called to determine whether a request should be retried or not.
