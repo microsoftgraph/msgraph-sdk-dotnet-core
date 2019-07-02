@@ -206,8 +206,6 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             }
             catch (ServiceException exception)
             {
-                Assert.True(exception.IsMatch(ErrorConstants.Codes.MaximumRetriesTimeLimitReached), "Unexpected error code returned.");
-                Assert.Equal(String.Format(ErrorConstants.Messages.MaximumRetriesTimeLimitReached, 10), exception.Error.Message);
                 Assert.IsType<ServiceException>(exception);
                 IEnumerable<string> values;
                 Assert.True(httpRequestMessage.Headers.TryGetValues(RETRY_ATTEMPT, out values), "Don't set Retry-Attemp Header");
@@ -296,10 +294,9 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         private async Task DelayTestWithMessage(HttpResponseMessage response, int count, string message, int delay = RetryHandlerOption.MAX_DELAY)
         {
             Message = message;
-            TimeSpan cumulativeDelay = TimeSpan.Zero;
             await Task.Run(async () =>
             {
-                await this.retryHandler.Delay(response, count, delay, out double delayInSeconds, ref cumulativeDelay, new CancellationToken());
+                await this.retryHandler.Delay(response, count, delay, out double delayInSeconds, new CancellationToken());
                 Message += " Work " + count.ToString();
             });
         }

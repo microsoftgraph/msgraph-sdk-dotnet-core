@@ -58,89 +58,26 @@ namespace Microsoft.Graph
 
             var response = await base.SendAsync(httpRequest, cancellationToken);
 
-            // Call to the time-based retry task
-            // Check whether retries are permitted and that user provided a non-negative, non-zero value for the RetriesTimeLimit
-            if (ShouldRetry(response) && httpRequest.IsBuffered() && 
-                RetryOption.RetriesTimeLimit > TimeSpan.Zero && RetryOption.ShouldRetry(RetryOption.Delay, 0, response))
+            // Check whether retries are permitted and that the MaxRetry value is a non - negative, non - zero value
+            if (ShouldRetry(response) && httpRequest.IsBuffered() && RetryOption.MaxRetry > 0 && RetryOption.ShouldRetry(RetryOption.Delay, 0, response))
             {
-                response = await SendTimeBasedRetryAsync(response, cancellationToken);
-            }
-
-            // Call to the count-based retry task
-            // Check whether retries are permitted and that the MaxRetry value is a non-negative, non-zero value
-            if (ShouldRetry(response) && httpRequest.IsBuffered() &&
-                RetryOption.MaxRetry > 0 && RetryOption.ShouldRetry(RetryOption.Delay, 0, response))
-            {
-                response = await SendCountBasedRetryAsync(response, cancellationToken);
+                response = await SendRetryAsync(response, cancellationToken);
             }
 
             return response;
-        }
-
+        }              
+        
         /// <summary>
-        /// Retry sending the HTTP request using a time-based retry handler
+        /// Retry sending the HTTP request 
         /// </summary>
         /// <param name="response">The <see cref="HttpResponseMessage"/> which is returned and includes the HTTP request needs to be retried.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the retry.</param>
         /// <returns></returns>
-        private async Task<HttpResponseMessage> SendTimeBasedRetryAsync(HttpResponseMessage response, CancellationToken cancellationToken)
+        private async Task<HttpResponseMessage> SendRetryAsync(HttpResponseMessage response, CancellationToken cancellationToken)
         {
             int retryCount = 0;
             TimeSpan cumulativeDelay = TimeSpan.Zero;
-            
-            while (cumulativeDelay < RetryOption.RetriesTimeLimit)
-            {
-                // Drain response content to free responses.
-                if (response.Content != null)
-                {
-                    await response.Content.ReadAsByteArrayAsync();
-                }                              
-             
-                // Call Delay method to get delay time from response's Retry-After header or by exponential backoff 
-                Task delay = Delay(response, retryCount, RetryOption.Delay, out double delayInSeconds, ref cumulativeDelay, cancellationToken);
 
-                // Check whether delay(s) exceed the client-specified maximum retries value 
-                if (TimeSpan.FromSeconds(delayInSeconds) > RetryOption.RetriesTimeLimit || cumulativeDelay > RetryOption.RetriesTimeLimit)
-                {
-                    return response; 
-                }
-
-                // general clone request with internal CloneAsync (see CloneAsync for details) extension method 
-                var request = await response.RequestMessage.CloneAsync();
-
-                // Increase retryCount and then update Retry-Attempt in request header
-                retryCount++;
-                AddOrUpdateRetryAttempt(request, retryCount);                                
-               
-                // Delay time
-                await delay;
-
-                // Call base.SendAsync to send the request
-                response = await base.SendAsync(request, cancellationToken);
-
-                if (!ShouldRetry(response) || !request.IsBuffered() || !RetryOption.ShouldRetry(RetryOption.Delay, retryCount, response))
-                {
-                    return response;
-                }
-            }
-            throw new ServiceException(
-                         new Error
-                         {
-                             Code = ErrorConstants.Codes.MaximumRetriesTimeLimitReached,
-                             Message = string.Format(ErrorConstants.Messages.MaximumRetriesTimeLimitReached, RetryOption.RetriesTimeLimit)
-                         });
-
-        }
-
-        /// <summary>
-        /// Retry sending the HTTP request using a count-based retry handler
-        /// </summary>
-        /// <param name="response">The <see cref="HttpResponseMessage"/> which is returned and includes the HTTP request needs to be retried.</param>
-        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the retry.</param>
-        /// <returns></returns>
-        private async Task<HttpResponseMessage> SendCountBasedRetryAsync(HttpResponseMessage response, CancellationToken cancellationToken)
-        {
-            int retryCount = 0;
             while (retryCount < RetryOption.MaxRetry)
             {
                 // Drain response content to free responses.
@@ -150,7 +87,20 @@ namespace Microsoft.Graph
                 }
 
                 // Call Delay method to get delay time from response's Retry-After header or by exponential backoff 
-                Task delay = Delay(response, retryCount, RetryOption.Delay, cancellationToken);
+                Task delay = Delay(response, retryCount, RetryOption.Delay, out double delayInSeconds, cancellationToken);
+
+                // If client specified a retries time limit, let's honour it
+                if (RetryOption.RetriesTimeLimit > TimeSpan.Zero)
+                {
+                    // Get the cumulative delay time
+                    cumulativeDelay += TimeSpan.FromSeconds(delayInSeconds);
+
+                    // Check whether delay(s) exceed the client-specified retries time limit value 
+                    if (TimeSpan.FromSeconds(delayInSeconds) > RetryOption.RetriesTimeLimit || cumulativeDelay > RetryOption.RetriesTimeLimit)
+                    {
+                        return response;
+                    }
+                }
 
                 // general clone request with internal CloneAsync (see CloneAsync for details) extension method 
                 var request = await response.RequestMessage.CloneAsync();
@@ -200,13 +150,12 @@ namespace Microsoft.Graph
         /// <param name="retry_count">The retry counts</param>
         /// <param name="delay">Delay value in seconds.</param>
         /// <param name="delayInSeconds"></param>
-        /// <param name="cumulativeDelay">The cumulative retry time </param>
         /// <param name="cancellationToken">The cancellationToken for the Http request</param>
         /// <returns>The <see cref="Task"/> for delay operation.</returns>
-        public Task Delay(HttpResponseMessage response, int retry_count, int delay, out double delayInSeconds, ref TimeSpan cumulativeDelay, CancellationToken cancellationToken)
+        public Task Delay(HttpResponseMessage response, int retry_count, int delay, out double delayInSeconds, CancellationToken cancellationToken)
         {
             HttpHeaders headers = response.Headers;
-            delayInSeconds = RetryOption.Delay;
+            delayInSeconds = delay;
             if (headers.TryGetValues(RETRY_AFTER, out IEnumerable<string> values))
             {
                 string retry_after = values.First();    
@@ -218,42 +167,8 @@ namespace Microsoft.Graph
             else
             {
                 m_pow = Math.Pow(2, retry_count);
-                delayInSeconds = m_pow * RetryOption.Delay;
-            }
-                    
-            cumulativeDelay += TimeSpan.FromSeconds(delayInSeconds);
-
-            TimeSpan delayTimeSpan = TimeSpan.FromSeconds(Math.Min(delayInSeconds, RetryHandlerOption.MAX_DELAY));
-
-            return Task.Delay(delayTimeSpan, cancellationToken);
-
-        }
-
-        /// <summary>
-        /// Delay task operation for count-retries based on Retry-After header in the response or exponential backoff
-        /// </summary>
-        /// <param name="response">The <see cref="HttpResponseMessage"/>returned.</param>
-        /// <param name="retry_count">The retry counts</param>
-        /// <param name="delay">Delay value in seconds.</param>
-        /// <param name="cancellationToken">The cancellationToken for the Http request</param>
-        /// <returns>The <see cref="Task"/> for delay operation.</returns>
-        public Task Delay(HttpResponseMessage response, int retry_count, int delay, CancellationToken cancellationToken)
-        {
-            HttpHeaders headers = response.Headers;
-            double delayInSeconds = RetryOption.Delay;
-            if (headers.TryGetValues(RETRY_AFTER, out IEnumerable<string> values))
-            {
-                string retry_after = values.First();
-                if (Int32.TryParse(retry_after, out int delay_seconds))
-                {
-                    delayInSeconds = delay_seconds;
-                }
-            }
-            else
-            {
-                m_pow = Math.Pow(2, retry_count);
-                delayInSeconds = m_pow * RetryOption.Delay;
-            }
+                delayInSeconds = m_pow * delay;
+            }                    
 
             TimeSpan delayTimeSpan = TimeSpan.FromSeconds(Math.Min(delayInSeconds, RetryHandlerOption.MAX_DELAY));
 
