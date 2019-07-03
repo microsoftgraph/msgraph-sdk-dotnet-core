@@ -152,7 +152,7 @@ namespace Microsoft.Graph
         /// <param name="delayInSeconds"></param>
         /// <param name="cancellationToken">The cancellationToken for the Http request</param>
         /// <returns>The <see cref="Task"/> for delay operation.</returns>
-        public Task Delay(HttpResponseMessage response, int retry_count, int delay, out double delayInSeconds, CancellationToken cancellationToken)
+        internal Task Delay(HttpResponseMessage response, int retry_count, int delay, out double delayInSeconds, CancellationToken cancellationToken)
         {
             HttpHeaders headers = response.Headers;
             delayInSeconds = delay;
