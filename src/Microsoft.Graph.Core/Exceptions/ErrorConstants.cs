@@ -22,7 +22,9 @@ namespace Microsoft.Graph
 
             internal static string TooManyRetries = "tooManyRetries";
 
-           
+            internal static string MaximumValueExceeded = "MaximumValueExceeded";
+
+            internal static string InvalidArgument = "invalidArgument";
         }
 
         internal static class Messages
@@ -53,6 +55,15 @@ namespace Microsoft.Graph
 
             internal static string UnexpectedExceptionResponse = "Unexpected exception returned from the service.";
 
+            internal static string MaximumValueExceeded = "{0} exceeds the maximum value of {1}.";
+
+            internal static string NullParameter = "{0} parameter cannot be null.";
+
+            internal static string UnableToDeserializexContent = "Unable to deserialize content.";
+
+            internal static string InvalidDependsOnRequestId = "Corresponding batch request id not found for the specified dependsOn relation.";
+
+            public static string InvalidProxyArgument = "Proxy cannot be set more once. Proxy can only be set on the proxy or defaultHttpHandler argument and not both.";
         }
     }
 }

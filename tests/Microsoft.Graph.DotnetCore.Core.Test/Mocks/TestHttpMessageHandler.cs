@@ -2,21 +2,21 @@
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Threading;
-using System.Threading.Tasks;
-
 namespace Microsoft.Graph.DotnetCore.Core.Test.Mocks
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Net.Http;
+    using System.Threading;
+    using System.Threading.Tasks;
     public class TestHttpMessageHandler : HttpMessageHandler
     {
+        private Action<HttpRequestMessage> requestMessageDelegate;
         private Dictionary<string, HttpResponseMessage> responseMessages;
 
-        public TestHttpMessageHandler()
+        public TestHttpMessageHandler(Action<HttpRequestMessage> requestMessage = null)
         {
+            this.requestMessageDelegate = requestMessage ?? DefaultRequestHandler;
             this.responseMessages = new Dictionary<string, HttpResponseMessage>();
         }
 
@@ -29,13 +29,20 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Mocks
         {
             HttpResponseMessage responseMessage;
 
+            requestMessageDelegate(request);
+
             if (this.responseMessages.TryGetValue(request.RequestUri.ToString(), out responseMessage))
             {
                 responseMessage.RequestMessage = request;
                 return Task.FromResult(responseMessage);
             }
 
-            return Task.FromResult<HttpResponseMessage>(null);
+            return Task.FromResult<HttpResponseMessage>(new HttpResponseMessage());
+        }
+
+        private void DefaultRequestHandler(HttpRequestMessage httpRequest)
+        {
+
         }
     }
 }

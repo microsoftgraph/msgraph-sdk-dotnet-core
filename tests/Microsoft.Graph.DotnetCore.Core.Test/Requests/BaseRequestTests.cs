@@ -2,35 +2,29 @@
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
-using Microsoft.Graph.DotnetCore.Core.Test.TestModels;
-using Moq;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net.Http;
-using System.Reflection;
-using System.Threading;
-using System.Threading.Tasks;
-using Xunit;
-
 namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 {
+    using Microsoft.Graph.DotnetCore.Core.Test.Mocks;
+    using Microsoft.Graph.DotnetCore.Core.Test.TestModels;
+    using Moq;
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Net.Http;
+    using System.Net.Http.Headers;
+    using System.Text;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using Xunit;
     public class BaseRequestTests : RequestTestBase
     {
         [Fact]
         public void BaseRequest_InitializeWithEmptyBaseUrl()
         {
-            try
-            {
-                Assert.Throws<ServiceException>(() => new BaseRequest(null, this.baseClient));
-            }
-            catch (ServiceException exception)
-            {
-                Assert.Equal(ErrorConstants.Codes.InvalidRequest, exception.Error.Code);
-                Assert.Equal(ErrorConstants.Messages.BaseUrlMissing, exception.Error.Message);
-                throw;
-            }
+            ServiceException exception =Assert.Throws<ServiceException>(() => new BaseRequest(null, this.baseClient));
+            Assert.Equal(ErrorConstants.Codes.InvalidRequest, exception.Error.Code);
+            Assert.Equal(ErrorConstants.Messages.BaseUrlMissing, exception.Error.Message);
         }
 
         [Fact]
@@ -54,6 +48,9 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             Assert.True(baseRequest.QueryOptions[2].Name.Equals("key3") && baseRequest.QueryOptions[2].Value.Equals("value3"));
             Assert.Equal(1, baseRequest.Headers.Count);
             Assert.True(baseRequest.Headers[0].Name.Equals("header") && baseRequest.Headers[0].Value.Equals("value"));
+            Assert.NotNull(baseRequest.Client.AuthenticationProvider);
+            Assert.NotNull(baseRequest.GetHttpRequestMessage().GetRequestContext().ClientRequestId);
+            Assert.Equal(baseRequest.GetHttpRequestMessage().GetMiddlewareOption<AuthenticationHandlerOption>().AuthenticationProvider, baseRequest.Client.AuthenticationProvider);
         }
 
         [Fact]
@@ -77,6 +74,55 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                 httpRequestMessage.RequestUri.GetComponents(UriComponents.AbsoluteUri & ~UriComponents.Port, UriFormat.Unescaped));
             Assert.Equal("value1", httpRequestMessage.Headers.GetValues("header1").First());
             Assert.Equal("value2", httpRequestMessage.Headers.GetValues("header2").First());
+            Assert.NotNull(baseRequest.GetHttpRequestMessage().GetRequestContext().ClientRequestId);
+        }
+
+        [Fact]
+        public void GetRequestContextWithClientRequestIdHeader()
+        {
+            string requestUrl = string.Concat(this.baseUrl, "foo/bar");
+            string clientRequestId = Guid.NewGuid().ToString();
+            var headers = new List<HeaderOption>
+            {
+                new HeaderOption(CoreConstants.Headers.ClientRequestId, clientRequestId)
+            };
+
+            var baseRequest = new BaseRequest(requestUrl, this.baseClient, headers) { Method = "PUT" };
+
+            var httpRequestMessage = baseRequest.GetHttpRequestMessage();
+
+            Assert.Equal(HttpMethod.Put, httpRequestMessage.Method);
+            Assert.Same(clientRequestId, httpRequestMessage.GetRequestContext().ClientRequestId);
+        }
+
+        [Fact]
+        public void GetRequestContextWithClientRequestId()
+        {
+            string requestUrl = string.Concat(this.baseUrl, "foo/bar");
+            string clientRequestId = Guid.NewGuid().ToString();
+
+            var baseRequest = new BaseRequest(requestUrl, this.baseClient) { Method = "PUT" };
+
+            var httpRequestMessage = baseRequest.GetHttpRequestMessage();
+
+            Assert.Equal(HttpMethod.Put, httpRequestMessage.Method);
+            Assert.NotNull(httpRequestMessage.GetRequestContext().ClientRequestId);
+        }
+
+        [Fact]
+        public void GetRequestNoAuthProvider()
+        {
+            string requestUrl = string.Concat(this.baseUrl, "foo/bar");
+            string clientRequestId = Guid.NewGuid().ToString();
+
+            var client = new BaseClient("http://localhost.foo", null);
+            var baseRequest = new BaseRequest(requestUrl, client) { Method = "PUT" };
+
+            var httpRequestMessage = baseRequest.GetHttpRequestMessage();
+
+            Assert.Equal(HttpMethod.Put, httpRequestMessage.Method);
+            Assert.NotNull(httpRequestMessage.GetRequestContext().ClientRequestId);
+            Assert.Null(httpRequestMessage.GetMiddlewareOption<AuthenticationHandlerOption>().AuthenticationProvider);
         }
 
         [Fact]
@@ -90,7 +136,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             Assert.Equal(HttpMethod.Delete, httpRequestMessage.Method);
             Assert.Equal(requestUrl,
                 httpRequestMessage.RequestUri.GetComponents(UriComponents.AbsoluteUri & ~UriComponents.Port, UriFormat.Unescaped));
-            Assert.Equal(0, httpRequestMessage.Headers.Count());
+            Assert.Empty(httpRequestMessage.Headers);
         }
 
         [Fact]
@@ -128,26 +174,65 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 
                 Assert.NotNull(responseItem);
                 Assert.Equal(expectedResponseItem.Id, responseItem.Id);
+                Assert.NotNull(baseRequest.Client.AuthenticationProvider);
+                Assert.NotNull(baseRequest.GetHttpRequestMessage().GetRequestContext().ClientRequestId);
+                Assert.Equal(baseRequest.GetHttpRequestMessage().GetMiddlewareOption<AuthenticationHandlerOption>().AuthenticationProvider,
+                    baseRequest.Client.AuthenticationProvider);
             }
         }
 
         [Fact]
-        public async Task SendAsync_AuthenticationProviderNotSet()
+        public async Task SendAsync_ResponseHeaders()
         {
-            var client = new BaseClient("https://localhost", null);
+            var requestUrl = string.Concat(this.baseUrl, "/me/drive/items/id");
+            var baseRequest = new BaseRequest(requestUrl, this.baseClient) { ContentType = "application/json" };
+            var data = "{\"data\"}";
 
+            using (var httpResponseMessage = new HttpResponseMessage())
+            using (var responseStream = new MemoryStream(Encoding.ASCII.GetBytes(data)))
+            using (var streamContent = new StreamContent(responseStream))
+            {
+                httpResponseMessage.Content = streamContent;
+                httpResponseMessage.StatusCode = System.Net.HttpStatusCode.OK;
+
+                this.httpProvider.Setup(
+                    provider => provider.SendAsync(
+                        It.Is<HttpRequestMessage>(
+                            request =>
+                                string.Equals(request.Content.Headers.ContentType.ToString(), "application/json")
+                               && request.RequestUri.ToString().Equals(requestUrl)),
+                        HttpCompletionOption.ResponseContentRead,
+                        CancellationToken.None))
+                        .Returns(Task.FromResult(httpResponseMessage));
+
+                Dictionary<string, object> additionalData = new Dictionary<string, object>();
+                additionalData["responseHeaders"] = new Dictionary<string, List<string>>() { { "key", new List<string>() { "value" } } };
+
+                var expectedResponseItem = new DerivedTypeClass { Id = "id", AdditionalData = additionalData };
+
+                this.serializer.Setup(
+                    serializer => serializer.DeserializeObject<DerivedTypeClass>(It.IsAny<string>()))
+                    .Returns(expectedResponseItem);
+                this.serializer.Setup(
+                    serializer => serializer.DeserializeObject<DerivedTypeClass>(It.IsAny<string>()))
+                    .Returns(expectedResponseItem);
+
+                var responseItem = await baseRequest.SendAsync<DerivedTypeClass>("string", CancellationToken.None);
+                Assert.NotNull(responseItem.AdditionalData["responseHeaders"]);
+                Assert.NotNull(baseRequest.Client.AuthenticationProvider);
+                Assert.NotNull(baseRequest.GetHttpRequestMessage().GetRequestContext().ClientRequestId);
+                Assert.Equal(expectedResponseItem.AdditionalData["responseHeaders"], responseItem.AdditionalData["responseHeaders"]);
+            }
+        }
+
+        [Fact]
+        public async Task SendAsync_AuthenticationProviderNotSetWithCustomIHttpProvider()
+        {
+            var client = new BaseClient("https://localhost", null, this.httpProvider.Object);
             var baseRequest = new BaseRequest("https://localhost", client);
-
-            try
-            {
-                await Assert.ThrowsAsync<ServiceException>(async () => await baseRequest.SendAsync<DerivedTypeClass>("string", CancellationToken.None));
-            }
-            catch (ServiceException exception)
-            {
-                Assert.Equal(ErrorConstants.Codes.InvalidRequest, exception.Error.Code);
-                Assert.Equal(ErrorConstants.Messages.AuthenticationProviderMissing, exception.Error.Message);
-                throw;
-            }
+            ServiceException exception = await Assert.ThrowsAsync<ServiceException>(async () => await baseRequest.SendAsync<DerivedTypeClass>("string", CancellationToken.None));
+            Assert.Equal(ErrorConstants.Codes.InvalidRequest, exception.Error.Code);
+            Assert.Equal(ErrorConstants.Messages.AuthenticationProviderMissing, exception.Error.Message);
         }
 
         [Fact]
@@ -178,6 +263,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                     .Returns(string.Empty);
 
                 await baseRequest.SendAsync("string", CancellationToken.None);
+                Assert.NotNull(baseRequest.Client.AuthenticationProvider);
             }
         }
 
@@ -215,19 +301,11 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         public async Task SendAsync_RequestUrlNotSet()
         {
             var baseRequest = new BaseRequest("https://localhost", this.baseClient);
-
             baseRequest.RequestUrl = null;
 
-            try
-            {
-                await Assert.ThrowsAsync<ServiceException>(async () => await baseRequest.SendAsync<DerivedTypeClass>("string", CancellationToken.None));
-            }
-            catch (ServiceException exception)
-            {
-                Assert.Equal(ErrorConstants.Codes.InvalidRequest, exception.Error.Code);
-                Assert.Equal(ErrorConstants.Messages.RequestUrlMissing, exception.Error.Message);
-                throw;
-            }
+            ServiceException exception = await Assert.ThrowsAsync<ServiceException>(async () => await baseRequest.SendAsync<DerivedTypeClass>("string", CancellationToken.None));
+            Assert.Equal(ErrorConstants.Codes.InvalidRequest, exception.Error.Code);
+            Assert.Equal(ErrorConstants.Messages.RequestUrlMissing, exception.Error.Message);
         }
 
         [Fact]
@@ -260,6 +338,27 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         }
 
         [Fact]
+        public async Task SendAsync_WithCustomHttpProvider()
+        {
+            using (var httpResponseMessage = new HttpResponseMessage())
+            using (TestHttpMessageHandler testHttpMessageHandler = new TestHttpMessageHandler())
+            {
+                string requestUrl = "https://localhost/";
+                testHttpMessageHandler.AddResponseMapping(requestUrl, httpResponseMessage);
+                MockCustomHttpProvider customHttpProvider = new MockCustomHttpProvider(testHttpMessageHandler);
+
+                BaseClient client = new BaseClient(requestUrl, authenticationProvider.Object, customHttpProvider);
+                BaseRequest baseRequest = new BaseRequest(requestUrl, client);
+
+                HttpResponseMessage returnedResponse = await baseRequest.SendRequestAsync("string", CancellationToken.None);
+
+                Assert.Equal(httpResponseMessage, returnedResponse);
+                Assert.NotNull(returnedResponse.RequestMessage.Headers);
+                Assert.Equal("Default-Token", returnedResponse.RequestMessage.Headers.Authorization.Parameter);
+            }
+        }
+
+        [Fact]
         public void BuildQueryString_NullQueryOptions()
         {
             var baseRequest = new BaseRequest("https://localhost", this.baseClient);
@@ -269,6 +368,48 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             var queryString = baseRequest.BuildQueryString();
 
             Assert.Null(queryString);
+        }
+
+        [Fact]
+        public async Task BaseRequest_Should_Call_HttpProvider_Concurrently()
+        {
+            var tasks = Enumerable.Range(1, 50).Select(index =>
+            {
+                return Task.Run(async () =>
+                {
+
+                    string expectedToken = Guid.NewGuid().ToString();
+                    var authProviderTriggered = 0;
+                    var authProvider = new DelegateAuthenticationProvider(message =>
+                    {
+                        authProviderTriggered++;
+                        message.Headers.Authorization = new AuthenticationHeaderValue("bearer", expectedToken);
+                        return Task.CompletedTask;
+                    });
+
+                    var validationHandlerTriggered = 0;
+                    var validationHandler = new TestHttpMessageHandler(message =>
+                    {
+                        validationHandlerTriggered++;
+                        Assert.Equal(expectedToken, message.Headers?.Authorization?.Parameter);
+                        Assert.Equal("https://test/users", message.RequestUri.AbsoluteUri);
+                    });
+
+                    var httpProvider = new HttpProvider(
+                        validationHandler,
+                        true,
+                        new Serializer());
+
+                    var client = new BaseClient("https://Test", authProvider, httpProvider);
+                    var baseRequest = new BaseRequest("https://Test/users", client);
+                    await baseRequest.SendAsync(new object(), CancellationToken.None);
+
+                    Assert.Equal(1, validationHandlerTriggered);
+                    Assert.Equal(1, authProviderTriggered);
+                });
+            });
+
+            await Task.WhenAll(tasks).ConfigureAwait(false);
         }
     }
 }

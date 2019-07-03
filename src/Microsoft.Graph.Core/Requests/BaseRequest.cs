@@ -20,6 +20,8 @@ namespace Microsoft.Graph
     /// </summary>
     public class BaseRequest : IBaseRequest
     {
+        private ResponseHandler responseHandler;
+
         /// <summary>
         /// Constructs a new <see cref="BaseRequest"/>.
         /// </summary>
@@ -33,9 +35,10 @@ namespace Microsoft.Graph
         {
             this.Method = "GET";
             this.Client = client;
+            this.responseHandler = new ResponseHandler(client.HttpProvider.Serializer);
             this.Headers = new List<HeaderOption>();
             this.QueryOptions = new List<QueryOption>();
-
+            this.MiddlewareOptions = new Dictionary<string, IMiddlewareOption>();
             this.RequestUrl = this.InitializeUrl(requestUrl);
 
             if (options != null)
@@ -52,6 +55,10 @@ namespace Microsoft.Graph
                     ((List<QueryOption>)this.QueryOptions).AddRange(queryOptions);
                 }
             }
+
+            // Adds the default authentication provider for this request. 
+            // This can be changed can be changed by the user by calling WithPerRequestAuthProvider extension method.
+            this.WithDefaultAuthProvider();
         }
 
         /// <summary>
@@ -85,6 +92,11 @@ namespace Microsoft.Graph
         public string RequestUrl { get; internal set; }
 
         /// <summary>
+        /// Gets or sets middleware options for the request.
+        /// </summary>
+        public IDictionary<string, IMiddlewareOption> MiddlewareOptions { get; private set; }
+
+        /// <summary>
         /// Sends the request.
         /// </summary>
         /// <param name="serializableObject">The serializable object to send.</param>
@@ -116,16 +128,10 @@ namespace Microsoft.Graph
         {
             using (var response = await this.SendRequestAsync(serializableObject, cancellationToken, completionOption).ConfigureAwait(false))
             {
-                if (response.Content != null)
-                {
-                    var responseString = await GetResponseString(response);
-                    return this.Client.HttpProvider.Serializer.DeserializeObject<T>(responseString);
-                }
-
-                return default(T);
+                return await this.responseHandler.HandleResponse<T>(response);
             }
         }
-
+        
         /// <summary>
         /// Sends the multipart request.
         /// </summary>
@@ -141,13 +147,7 @@ namespace Microsoft.Graph
         {
             using (var response = await this.SendMultiPartRequestAsync(multipartContent, cancellationToken, completionOption).ConfigureAwait(false))
             {
-                if (response.Content != null)
-                {
-                    var responseString = await GetResponseString(response);
-                    return this.Client.HttpProvider.Serializer.DeserializeObject<T>(responseString);
-                }
-
-                return default(T);
+                return await this.responseHandler.HandleResponse<T>(response);
             }
         }
 
@@ -191,8 +191,12 @@ namespace Microsoft.Graph
 
             if (multipartContent != null)
             {
-                using (var request = this.GetHttpRequestMessage())
+                using (var request = this.GetHttpRequestMessage(cancellationToken))
                 {
+                    // Only call `AuthenticateRequestAsync` when a custom IHttpProvider is used or our HttpProvider is used without an auth handler.
+                    if (ShouldAuthenticateRequest())
+                        await this.AuthenticateRequestAsync(request);
+
                     request.Content = multipartContent;
 
                     return await this.Client.HttpProvider.SendAsync(request, completionOption, cancellationToken).ConfigureAwait(false);
@@ -226,8 +230,12 @@ namespace Microsoft.Graph
                     });
             }
 
-            using (var request = this.GetHttpRequestMessage())
+            using (var request = this.GetHttpRequestMessage(cancellationToken))
             {
+                // Only call `AuthenticateRequestAsync` when a custom IHttpProvider is used or our HttpProvider is used without an auth handler.
+                if (ShouldAuthenticateRequest())
+                    await this.AuthenticateRequestAsync(request);
+
                 if (serializableObject != null)
                 {
                     var inputStream = serializableObject as Stream;
@@ -254,13 +262,24 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets the <see cref="HttpRequestMessage"/> representation of the request.
         /// </summary>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The <see cref="HttpRequestMessage"/> representation of the request.</returns>
-        public HttpRequestMessage GetHttpRequestMessage()
+        public HttpRequestMessage GetHttpRequestMessage(CancellationToken cancellationToken)
         {
             var queryString = this.BuildQueryString();
             var request = new HttpRequestMessage(new HttpMethod(this.Method), string.Concat(this.RequestUrl, queryString));
             this.AddHeadersToRequest(request);
+            this.AddRequestContextToRequest(request, cancellationToken);
             return request;
+        }
+
+        /// <summary>
+        /// Gets the <see cref="HttpRequestMessage"/> representation of the request.
+        /// </summary>
+        /// <returns>The <see cref="HttpRequestMessage"/> representation of the request.</returns>
+        public HttpRequestMessage GetHttpRequestMessage()
+        {
+            return this.GetHttpRequestMessage(CancellationToken.None);
         }
 
         /// <summary>
@@ -276,6 +295,25 @@ namespace Microsoft.Graph
                     request.Headers.TryAddWithoutValidation(header.Name, header.Value);
                 }
             }
+        }
+
+        /// <summary>
+        /// Adds a <see cref="GraphRequestContext"/> to <see cref="HttpRequestMessage"/> property bag
+        /// </summary>
+        /// <param name="httpRequestMessage">A <see cref="HttpRequestMessage"/></param>
+        /// <param name="cancellationToken">A <see cref="CancellationToken"/></param>
+        private void AddRequestContextToRequest(HttpRequestMessage httpRequestMessage, CancellationToken cancellationToken)
+        {
+            // Creates a request context object
+            var requestContext = new GraphRequestContext
+            {
+                MiddlewareOptions = MiddlewareOptions,
+                ClientRequestId = GetHeaderValue(httpRequestMessage, CoreConstants.Headers.ClientRequestId) ?? Guid.NewGuid().ToString(),
+                CancellationToken = cancellationToken,
+                FeatureUsage = httpRequestMessage.GetFeatureFlags()
+            };
+
+            httpRequestMessage.Properties.Add(typeof(GraphRequestContext).ToString(), requestContext);
         }
 
         /// <summary>
@@ -314,6 +352,26 @@ namespace Microsoft.Graph
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// Adds the authentication header to the request. This is a patch to support request authentication for custom HttpProviders.
+        /// </summary>
+        /// <param name="request">The <see cref="HttpRequestMessage"/> representation of the request.</param>
+        /// <returns>The task to await.</returns>
+        private async Task AuthenticateRequestAsync(HttpRequestMessage request)
+        {
+            if (this.Client.AuthenticationProvider == null)
+            {
+                throw new ServiceException(
+                    new Error
+                    {
+                        Code = ErrorConstants.Codes.InvalidRequest,
+                        Message = ErrorConstants.Messages.AuthenticationProviderMissing,
+                    });
+            }
+
+            await Client.AuthenticationProvider.AuthenticateRequestAsync(request);
         }
 
         /// <summary>
@@ -371,31 +429,43 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Get the response content string
+        /// Gets a specified header value from <see cref="HttpRequestMessage"/>
         /// </summary>
-        /// <param name="hrm">The response object</param>
-        /// <returns>The full response string to return</returns>
-        private async Task<string> GetResponseString(HttpResponseMessage hrm)
+        /// <param name="requestMessage">A <see cref="HttpRequestMessage"/></param>
+        /// <param name="headerName">The name, or key, of the header option.</param>
+        /// <returns>Header value</returns>
+        private string GetHeaderValue(HttpRequestMessage requestMessage, string headerName)
         {
-            var responseContent = "";
+            string headerValue = null;
+            var requestHeader = this.Headers.FirstOrDefault((h) => h.Name.Equals(headerName));
 
-            var content = await hrm.Content.ReadAsStringAsync().ConfigureAwait(false);
-
-            //Only add headers if we are going to return a response body
-            if (content.Length > 0)
+            // Check request headers first
+            if (requestHeader != null)
             {
-                var responseHeaders = hrm.Headers;
-                var statusCode = hrm.StatusCode;
-
-                Dictionary<string, string[]> headerDictionary = responseHeaders.ToDictionary(x => x.Key, x => x.Value.ToArray());
-                var responseHeaderString = this.Client.HttpProvider.Serializer.SerializeObject(headerDictionary);
-
-                responseContent = content.Substring(0, content.Length - 1) + ", ";
-                responseContent += "\"responseHeaders\": " + responseHeaderString + ", ";
-                responseContent += "\"statusCode\": \"" + statusCode + "\"}";
+                headerValue = requestHeader.Value;
+            }
+            // If not found, check http client default headers + request headers
+            else if (requestMessage.Headers != null)
+            {
+                if (requestMessage.Headers.TryGetValues(headerName, out var values))
+                {
+                    headerValue = values.FirstOrDefault();
+                }
             }
 
-            return responseContent;
+            return headerValue;
+        }
+
+        /// <summary>
+        /// Determins whether or not <see cref="BaseRequest"/> should authenticate the request or let <see cref="AuthenticationHandler"/> authenticate the request.
+        /// </summary>
+        /// <returns>
+        /// TRUE: If a CUSTOM <see cref="IHttpProvider"/> or DEFAULT <see cref="HttpProvider"/> is used WITHOUT an <see cref="AuthenticationHandler"/>.
+        /// FALSE: If our DEFAULT <see cref="HttpProvider"/> is used WITH an <see cref="AuthenticationHandler"/>.
+        /// </returns>
+        private bool ShouldAuthenticateRequest()
+        {
+            return !(this.Client.HttpProvider is HttpProvider && (this.Client.HttpProvider as HttpProvider).httpClient.ContainsFeatureFlag(FeatureFlag.AuthHandler));
         }
     }
 }

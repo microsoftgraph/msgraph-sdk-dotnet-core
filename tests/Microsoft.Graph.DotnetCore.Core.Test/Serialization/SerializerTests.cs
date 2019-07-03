@@ -2,19 +2,17 @@
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
-using Microsoft.Graph.DotnetCore.Core.Test.TestModels;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Xunit;
-
 namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
 {
+    using Microsoft.Graph.DotnetCore.Core.Test.TestModels;
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Text;
+    using Xunit;
     public class SerializerTests
     {
         private Serializer serializer;
@@ -28,20 +26,11 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
         public void AbstractClassDeserializationFailure()
         {
             var stringToDeserialize = "{\"jsonKey\":\"jsonValue\"}";
-
-            try
-            {
-                Assert.Throws<ServiceException>( () => this.serializer.DeserializeObject<AbstractClass>(stringToDeserialize));
-            }
-            catch (ServiceException exception)
-            {
-                Assert.True(exception.IsMatch(ErrorConstants.Codes.GeneralException));
-                Assert.Equal(
-                    string.Format(ErrorConstants.Messages.UnableToCreateInstanceOfTypeFormatString, typeof(AbstractClass).FullName),
-                    exception.Error.Message);
-
-                throw;
-            }
+            ServiceException exception = Assert.Throws<ServiceException>(() => this.serializer.DeserializeObject<AbstractClass>(stringToDeserialize));
+            Assert.True(exception.IsMatch(ErrorConstants.Codes.GeneralException));
+            Assert.Equal(
+                string.Format(ErrorConstants.Messages.UnableToCreateInstanceOfTypeFormatString, typeof(AbstractClass).FullName),
+                exception.Error.Message);
         }
 
         [Fact]
@@ -122,22 +111,14 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
         public void DerivedTypeWithoutDefaultConstructor()
         {
             var stringToDeserialize = "{\"jsonKey\":\"jsonValue\"}";
+            ServiceException exception = Assert.Throws<ServiceException>(() => this.serializer.DeserializeObject<NoDefaultConstructor>(stringToDeserialize));
 
-            try
-            {
-                Assert.Throws<ServiceException>(() => this.serializer.DeserializeObject<NoDefaultConstructor>(stringToDeserialize));
-            }
-            catch (ServiceException exception)
-            {
-                Assert.True(exception.IsMatch(ErrorConstants.Codes.GeneralException));
-                Assert.Equal(
-                    string.Format(
-                        ErrorConstants.Messages.UnableToCreateInstanceOfTypeFormatString,
-                        typeof(NoDefaultConstructor).AssemblyQualifiedName),
-                    exception.Error.Message);
-
-                throw;
-            }
+            Assert.True(exception.IsMatch(ErrorConstants.Codes.GeneralException));
+            Assert.Equal(
+                string.Format(
+                    ErrorConstants.Messages.UnableToCreateInstanceOfTypeFormatString,
+                    typeof(NoDefaultConstructor).AssemblyQualifiedName),
+                exception.Error.Message);
         }
 
         [Fact]
@@ -158,11 +139,10 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
                     date.Day == now.Day),
                 "Now date not found.");
 
-            Assert.True(deserializedObject.DateCollection.Any(
-                date =>
+            Assert.Contains(deserializedObject.DateCollection, date =>
                     date.Year == tomorrow.Year &&
                     date.Month == tomorrow.Month &&
-                    date.Day == tomorrow.Day));
+                    date.Day == tomorrow.Day);
         }
 
         [Fact]
@@ -190,7 +170,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
             var serializedString = this.serializer.SerializeObject(collectionPage);
 
             var deserializedPage = this.serializer.DeserializeObject<ICollectionPageInstance>(serializedString);
-            Assert.IsType(typeof(CollectionPageInstance), deserializedPage);
+            Assert.IsType<CollectionPageInstance>(deserializedPage);
             Assert.Equal(1, deserializedPage.Count);
             Assert.Equal("id", deserializedPage[0].Id);
         }
@@ -199,19 +179,11 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
         public void DeserializeInvalidTypeForDateConverter()
         {
             var stringToDeserialize = "{\"invalidType\":1}";
+            ServiceException serviceException = Assert.Throws<ServiceException>(() => this.serializer.DeserializeObject<DateTestClass>(stringToDeserialize));
 
-            try
-            {
-                 Assert.Throws<ServiceException>(() => this.serializer.DeserializeObject<DateTestClass>(stringToDeserialize));
-            }
-            catch (ServiceException serviceException)
-            {
-                Assert.True(serviceException.IsMatch(ErrorConstants.Codes.GeneralException));
-                Assert.Equal(ErrorConstants.Messages.UnableToDeserializeDate, serviceException.Error.Message);
-                Assert.IsType(typeof(JsonSerializationException), serviceException.InnerException);
-
-                throw;
-            }
+            Assert.True(serviceException.IsMatch(ErrorConstants.Codes.GeneralException));
+            Assert.Equal(ErrorConstants.Messages.UnableToDeserializeDate, serviceException.Error.Message);
+            Assert.IsType<JsonSerializationException>(serviceException.InnerException);
         }
 
         [Fact]
@@ -318,19 +290,12 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
                 InvalidType = 1,
             };
 
-            try
-            {
-                Assert.Throws<ServiceException>(() => this.serializer.SerializeObject(dateToSerialize));
-            }
-            catch (ServiceException serviceException)
-            {
-                Assert.True(serviceException.IsMatch(ErrorConstants.Codes.GeneralException));
-                Assert.Equal(
-                    ErrorConstants.Messages.InvalidTypeForDateConverter,
-                    serviceException.Error.Message);
+            ServiceException serviceException = Assert.Throws<ServiceException>(() => this.serializer.SerializeObject(dateToSerialize));
 
-                throw;
-            }
+            Assert.True(serviceException.IsMatch(ErrorConstants.Codes.GeneralException));
+            Assert.Equal(
+                ErrorConstants.Messages.InvalidTypeForDateConverter,
+                serviceException.Error.Message);
         }
 
         [Fact]
@@ -412,32 +377,32 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
             var parsedObj = this.serializer.DeserializeObject<ClassWithJson>(s);
             var jsObj = parsedObj.Data;
 
-            Assert.Equal(jsObj.Type, JTokenType.Object);
-            Assert.Equal(jsObj["int"].Type, JTokenType.Integer);
-            Assert.Equal(jsObj["float"].Type, JTokenType.Float);
-            Assert.Equal(jsObj["str"].Type, JTokenType.String);
-            Assert.Equal(jsObj["bool"].Type, JTokenType.Boolean);
-            Assert.Equal(jsObj["null"].Type, JTokenType.Null);
-            Assert.Equal(jsObj["arr"].Type, JTokenType.Array);
+            Assert.Equal(JTokenType.Object, jsObj.Type);
+            Assert.Equal(JTokenType.Integer, jsObj["int"].Type);
+            Assert.Equal(JTokenType.Float, jsObj["float"].Type);
+            Assert.Equal(JTokenType.String, jsObj["str"].Type);
+            Assert.Equal(JTokenType.Boolean, jsObj["bool"].Type);
+            Assert.Equal(JTokenType.Null, jsObj["null"].Type);
+            Assert.Equal(JTokenType.Array, jsObj["arr"].Type);
 
-            Assert.Equal(jsObj["int"], 42);
-            Assert.Equal(jsObj["float"], 3.14);
-            Assert.Equal(jsObj["str"], "dude");
-            Assert.Equal(jsObj["bool"], true);
-            Assert.Equal((jsObj["null"] as JValue).Value, null);
+            Assert.Equal(42, jsObj["int"]);
+            Assert.Equal(3.14, jsObj["float"]);
+            Assert.Equal("dude", jsObj["str"]);
+            Assert.Equal(true, jsObj["bool"]);
+            Assert.Null((jsObj["null"] as JValue).Value);
 
             var jsArr = jsObj["arr"] as JArray;
             Assert.NotNull(jsArr);
-            Assert.Equal(jsArr.Count, 4);
-            Assert.Equal(jsArr[0].Type, JTokenType.String);
-            Assert.Equal(jsArr[1].Type, JTokenType.Float);
-            Assert.Equal(jsArr[2].Type, JTokenType.Integer);
-            Assert.Equal(jsArr[3].Type, JTokenType.Boolean);
+            Assert.Equal(4, jsArr.Count);
+            Assert.Equal(JTokenType.String, jsArr[0].Type);
+            Assert.Equal(JTokenType.Float, jsArr[1].Type);
+            Assert.Equal(JTokenType.Integer, jsArr[2].Type);
+            Assert.Equal(JTokenType.Boolean, jsArr[3].Type);
 
-            Assert.Equal(jsArr[0], "sweet");
-            Assert.Equal(jsArr[1], 2.82);
-            Assert.Equal(jsArr[2], 43);
-            Assert.Equal(jsArr[3], false);
+            Assert.Equal("sweet", jsArr[0]);
+            Assert.Equal(2.82, jsArr[1]);
+            Assert.Equal(43, jsArr[2]);
+            Assert.Equal(false, jsArr[3]);
         }
     }
 }

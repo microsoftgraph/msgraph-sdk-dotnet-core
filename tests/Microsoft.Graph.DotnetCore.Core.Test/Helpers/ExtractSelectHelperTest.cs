@@ -2,15 +2,11 @@
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
-using Xunit;
-
 namespace Microsoft.Graph.DotnetCore.Core.Test.Helpers
 {
+    using System;
+    using System.Linq.Expressions;
+    using Xunit;
     public class ExtractSelectHelperTest
     {
         /// <summary>
@@ -54,7 +50,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Helpers
         {
             Expression<Func<Event, object>> expression = (theEvent) => new { theEvent.Body };
             string s = this.TestExtractMembers(expression);
-            Assert.Equal<string>("body", s);
+            Assert.Equal("body", s);
         }
 
         [Fact]
@@ -62,7 +58,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Helpers
         {
             Expression<Func<Event, object>> expression = (theEvent) => new { NotBody = theEvent.Body };
             string s = this.TestExtractMembers(expression);
-            Assert.Equal<string>("body", s);
+            Assert.Equal("body", s);
         }
 
         [Fact]
@@ -70,7 +66,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Helpers
         {
             Expression<Func<Event, object>> expression = (theEvent) => new { theEvent.Body, theEvent.Subject };
             string s = this.TestExtractMembers(expression);
-            Assert.Equal<string>("body,subject", s);
+            Assert.Equal("body,subject", s);
         }
 
         [Fact]
@@ -78,7 +74,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Helpers
         {
             Expression<Func<Event, object>> expression = (theEvent) => new { Body = theEvent.Body, NotSubject = theEvent.Subject };
             string s = this.TestExtractMembers(expression);
-            Assert.Equal<string>("body,subject", s);
+            Assert.Equal("body,subject", s);
         }
 
         [Fact]
@@ -86,7 +82,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Helpers
         {
             Expression<Func<Event, object>> expression = (theEvent) => new { theEvent.Body, NotSubject = theEvent.Subject };
             string s = this.TestExtractMembers(expression);
-            Assert.Equal<string>("body,subject", s);
+            Assert.Equal("body,subject", s);
         }
 
         [Fact]
@@ -110,7 +106,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Helpers
         {
             Expression<Func<Event, object>> expression = (theEvent) => theEvent.Body;
             string s = this.TestExtractMembers(expression);
-            Assert.Equal<string>("body", s);
+            Assert.Equal("body", s);
         }
 
         [Fact]
@@ -125,7 +121,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Helpers
         {
             Expression<Func<Event, object>> expression = (theEvent) => theEvent.CreatedDateTime;
             string s = this.TestExtractMembers(expression);
-            Assert.Equal<string>("createdDateTime", s);
+            Assert.Equal("createdDateTime", s);
         }
 
         [Fact]
@@ -133,7 +129,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Helpers
         {
             Expression<Func<Event, object>> expression = (theEvent) => new { theEvent.CreatedDateTime };
             string s = this.TestExtractMembers(expression);
-            Assert.Equal<string>("createdDateTime", s);
+            Assert.Equal("createdDateTime", s);
         }
 
         /// <summary>
@@ -141,8 +137,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Helpers
         /// </summary>
         private string TestExtractMembers<T>(Expression<Func<T, object>> expression)
         {
-            string error;
-            string s = ExpressionExtractHelper.ExtractMembers(expression, out error);
+            string s = ExpressionExtractHelper.ExtractMembers(expression, out string error);
 
             // Repetitive asserts go here.
             Assert.NotNull(s);
@@ -155,8 +150,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Helpers
         /// </summary>
         private void TestErrorExtractMembers<T>(Expression<Func<T, object>> expression)
         {
-            string error;
-            string s = ExpressionExtractHelper.ExtractMembers(expression, out error);
+            string s = ExpressionExtractHelper.ExtractMembers(expression, out string error);
 
             // Repetitive asserts go here.
             Assert.Null(s);

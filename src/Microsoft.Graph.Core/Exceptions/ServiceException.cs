@@ -16,24 +16,42 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="error">The error that triggered the exception.</param>
         /// <param name="innerException">The possible innerException.</param>
-        public ServiceException(Error error, Exception innerException = null)
+        /// <param name="responseHeaders">The HTTP response headers from the response.</param>
+        /// <param name="statusCode">The HTTP status code from the response.</param>
+        public ServiceException(Error error, System.Net.Http.Headers.HttpResponseHeaders responseHeaders, System.Net.HttpStatusCode statusCode, Exception innerException = null)
             : base(error?.ToString(), innerException)
         {
             this.Error = error;
+            this.ResponseHeaders = responseHeaders;
+            this.StatusCode = statusCode;
+        }
+        
+        /// <summary>
+        /// Creates a new service exception.
+        /// </summary>
+        /// <param name="error">The error that triggered the exception.</param>
+        /// <param name="innerException">The possible innerException.</param>
+        public ServiceException(Error error, Exception innerException = null)
+            : this(error, responseHeaders: null, statusCode: default(System.Net.HttpStatusCode), innerException: innerException)
+        {
         }
 
         /// <summary>
         /// The error from the service exception.
         /// </summary>
-        public Error Error { get; private set; }
+        public Error Error { get; }
 
-        /// ResponseHeaders and StatusCode exposed as pass-through.
-        public System.Net.Http.Headers.HttpResponseHeaders ResponseHeaders { get; internal set; }
+        // ResponseHeaders and StatusCode exposed as pass-through.
+
+        /// <summary>
+        /// The HTTP response headers from the response.
+        /// </summary>
+        public System.Net.Http.Headers.HttpResponseHeaders ResponseHeaders { get; }
 
         /// <summary>
         /// The HTTP status code from the response.
         /// </summary>
-        public System.Net.HttpStatusCode StatusCode { get; internal set; }
+        public System.Net.HttpStatusCode StatusCode { get; }
 
         /// <summary>
         /// Checks if a given error code has been returned in the response at any level in the error stack.
@@ -60,6 +78,12 @@ namespace Microsoft.Graph
             }
 
             return false;
+        }
+
+        /// <inheritdoc />
+        public override string ToString()
+        {
+            return $@"Status Code: {this.StatusCode}{Environment.NewLine}{base.ToString()}";
         }
     }
 }

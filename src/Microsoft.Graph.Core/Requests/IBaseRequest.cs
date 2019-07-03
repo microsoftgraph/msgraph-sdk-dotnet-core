@@ -43,6 +43,11 @@ namespace Microsoft.Graph
         IList<QueryOption> QueryOptions { get; }
 
         /// <summary>
+        /// Gets the <see cref="IMiddlewareOption"/> collection for the request.
+        /// </summary>
+        IDictionary<string, IMiddlewareOption> MiddlewareOptions { get; }
+
+        /// <summary>
         /// Gets the <see cref="HttpRequestMessage"/> representation of the request.
         /// </summary>
         /// <returns>The <see cref="HttpRequestMessage"/> representation of the request.</returns>
