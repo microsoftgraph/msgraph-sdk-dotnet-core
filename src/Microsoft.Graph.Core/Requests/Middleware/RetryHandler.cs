@@ -95,8 +95,8 @@ namespace Microsoft.Graph
                     // Get the cumulative delay time
                     cumulativeDelay += TimeSpan.FromSeconds(delayInSeconds);
 
-                    // Check whether delay(s) exceed the client-specified retries time limit value 
-                    if (TimeSpan.FromSeconds(delayInSeconds) > RetryOption.RetriesTimeLimit || cumulativeDelay > RetryOption.RetriesTimeLimit)
+                    // Check whether delay will exceed the client-specified retries time limit value 
+                    if (cumulativeDelay > RetryOption.RetriesTimeLimit)
                     {
                         return response;
                     }
@@ -120,7 +120,7 @@ namespace Microsoft.Graph
                     return response;
                 }
             }
-            throw new ServiceException(
+            throw new ServiceException (
                          new Error
                          {
                              Code = ErrorConstants.Codes.TooManyRetries,
