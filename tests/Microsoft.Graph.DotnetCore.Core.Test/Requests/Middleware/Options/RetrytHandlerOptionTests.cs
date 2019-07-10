@@ -4,6 +4,7 @@
 
 namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Middleware.Options
 {
+    using System;
     using System.Net.Http;
     using Xunit;
 
@@ -16,6 +17,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Middleware.Options
             Assert.Equal(RetryHandlerOption.DEFAULT_DELAY, retryOptions.Delay);
             Assert.Equal(RetryHandlerOption.DEFAULT_MAX_RETRY, retryOptions.MaxRetry);
             Assert.True(retryOptions.ShouldRetry(0, 0, null));
+            Assert.Equal(TimeSpan.Zero, retryOptions.RetriesTimeLimit);
         }
 
         [Fact]
@@ -52,7 +54,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Middleware.Options
             Assert.Equal(ShouldRetry, retryOptions.ShouldRetry);
         }
 
-        private bool ShouldRetry(int delay, int attempts, HttpResponseMessage rwsponse)
+        private bool ShouldRetry(int delay, int attempts, HttpResponseMessage response)
         {
             return false;
         }

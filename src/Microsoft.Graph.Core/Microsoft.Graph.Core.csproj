@@ -19,7 +19,7 @@
     <DelaySign>false</DelaySign>
     <AssemblyOriginatorKeyFile>35MSSharedLib1024.snk</AssemblyOriginatorKeyFile>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <VersionPrefix>1.16.0</VersionPrefix>
+    <VersionPrefix>1.17.0</VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <PackageReleaseNotes>
       - Fix #481. Use native HTTP client handlers for Xamarin.iOS and Xamarin.Android.

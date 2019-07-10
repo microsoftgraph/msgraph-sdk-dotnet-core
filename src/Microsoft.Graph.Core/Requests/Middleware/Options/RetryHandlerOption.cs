@@ -73,6 +73,11 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
+        /// The maximum time allowed for request retries.
+        /// </summary>
+        public TimeSpan RetriesTimeLimit { get; set; } = TimeSpan.Zero;
+
+        /// <summary>
         /// A delegate that's called to determine whether a request should be retried or not.
         /// The delegate method should accept a delay time in seconds of, number of retry attempts and <see cref="HttpResponseMessage"/> as it's parameters and return a <see cref="bool"/>. This defaults to true
         /// </summary>
