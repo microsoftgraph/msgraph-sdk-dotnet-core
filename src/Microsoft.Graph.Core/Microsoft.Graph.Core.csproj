@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Description>Microsoft Graph Core Client Library implements core functionality used by Microsoft Graph client libraries.</Description>
-    <Copyright>&#169; Microsoft Corporation. All rights reserved.</Copyright>
+    <Copyright>© Microsoft Corporation. All rights reserved.</Copyright>
     <AssemblyTitle>Microsoft Graph Core Client Library</AssemblyTitle>
     <Authors>Microsoft</Authors>
     <TargetFrameworks>netstandard1.1;net45;Xamarin.iOS10;MonoAndroid70</TargetFrameworks>
