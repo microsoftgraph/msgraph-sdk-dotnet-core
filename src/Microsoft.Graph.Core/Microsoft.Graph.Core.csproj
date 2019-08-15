@@ -19,11 +19,11 @@
     <DelaySign>false</DelaySign>
     <AssemblyOriginatorKeyFile>35MSSharedLib1024.snk</AssemblyOriginatorKeyFile>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <VersionPrefix>1.16.0</VersionPrefix>
+    <VersionPrefix>1.17.0</VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <PackageReleaseNotes>
-      - Fix #481. Use native HTTP client handlers for Xamarin.iOS and Xamarin.Android.
-      - Fix #482. Skip CompressionHandler when NSUrlSessionHandler is used.
+      - Removed PageIterator. It is now available from the service library.
+      - Add support for time based retry limits.
     </PackageReleaseNotes>
   </PropertyGroup>
   <!--We manually configure LanguageTargets for Xamarin due to .Net SDK TFMs limitation https://github.com/dotnet/sdk/issues/491 -->

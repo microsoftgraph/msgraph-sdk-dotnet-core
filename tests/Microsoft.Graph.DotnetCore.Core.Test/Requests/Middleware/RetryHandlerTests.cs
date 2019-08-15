@@ -206,8 +206,6 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             }
             catch (ServiceException exception)
             {
-                Assert.True(exception.IsMatch(ErrorConstants.Codes.TooManyRetries), "Unexpected error code returned.");
-                Assert.Equal(String.Format(ErrorConstants.Messages.TooManyRetriesFormatString, 10), exception.Error.Message);
                 Assert.IsType<ServiceException>(exception);
                 IEnumerable<string> values;
                 Assert.True(httpRequestMessage.Headers.TryGetValues(RETRY_ATTEMPT, out values), "Don't set Retry-Attemp Header");
@@ -251,6 +249,26 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         [InlineData(HttpStatusCode.GatewayTimeout)]  // 504
         [InlineData(HttpStatusCode.ServiceUnavailable)]  // 503
         [InlineData((HttpStatusCode)429)] // 429
+        public async Task ShoulReturnSameStatusCodeWhenDelayIsGreaterThanRetryTimeLimit(HttpStatusCode statusCode)
+        {
+            var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, "http://example.org/foo");
+            httpRequestMessage.Content = new StringContent("Hello World");
+
+            var retryResponse = new HttpResponseMessage(statusCode);
+            retryResponse.Headers.TryAddWithoutValidation(RETRY_AFTER, 20.ToString());
+            retryHandler.RetryOption.RetriesTimeLimit = TimeSpan.FromSeconds(10);
+
+            this.testHttpMessageHandler.SetHttpResponse(retryResponse);
+
+            var response = await invoker.SendAsync(httpRequestMessage, new CancellationToken());
+
+            Assert.Same(response, retryResponse);
+        }
+
+        [Theory]
+        [InlineData(HttpStatusCode.GatewayTimeout)]  // 504
+        [InlineData(HttpStatusCode.ServiceUnavailable)]  // 503
+        [InlineData((HttpStatusCode)429)] // 429
         public async Task ShouldRetrytBasedOnRetryAfter(HttpStatusCode statusCode)
         {
             var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, "http://example.org/foo");
@@ -278,7 +296,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             Message = message;
             await Task.Run(async () =>
             {
-                await this.retryHandler.Delay(response, count, delay, new CancellationToken());
+                await this.retryHandler.Delay(response, count, delay, out double delayInSeconds, new CancellationToken());
                 Message += " Work " + count.ToString();
             });
         }
