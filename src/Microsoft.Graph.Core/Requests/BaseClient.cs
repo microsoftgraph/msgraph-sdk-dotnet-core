@@ -5,6 +5,7 @@
 namespace Microsoft.Graph
 {
     using System;
+    using System.Net.Http;
 
     /// <summary>
     /// A default <see cref="IBaseClient"/> implementation.
@@ -27,6 +28,19 @@ namespace Microsoft.Graph
             this.BaseUrl = baseUrl;
             this.AuthenticationProvider = authenticationProvider;
             this.HttpProvider = httpProvider ?? new HttpProvider(new Serializer());
+        }
+
+        /// <summary>
+        /// Constructs a new <see cref="BaseClient"/>.
+        /// </summary>
+        /// <param name="baseUrl">The base service URL. For example, "https://graph.microsoft.com/v1.0."</param>
+        /// <param name="httpClient">The custom <see cref="HttpClient"/> to be used for making requests</param>
+        public BaseClient(
+            string baseUrl,
+            HttpClient httpClient)
+        {
+            this.BaseUrl = baseUrl;
+            this.HttpProvider = new SimpleHttpProvider(httpClient);
         }
 
         /// <summary>
