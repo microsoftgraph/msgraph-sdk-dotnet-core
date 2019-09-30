@@ -11,7 +11,7 @@ namespace Microsoft.Graph
     using Newtonsoft.Json;
 
     /// <summary>
-    /// The error object that handles unsuccessful responses returned from the service.
+    /// The error object contained in 400 and 500 responses returned from the service.
     /// Models OData protocol, 9.4 Error Response Body
     /// http://docs.oasis-open.org/odata/odata/v4.01/csprd05/part1-protocol/odata-v4.01-csprd05-part1-protocol.html#_Toc14172757
     /// </summary>
@@ -19,7 +19,8 @@ namespace Microsoft.Graph
     public class Error
     {
         /// <summary>
-        /// This code serves as a sub-status for the HTTP error code specified in the response.
+        /// This code represents the HTTP status code when this Error object accessed from the ServiceException.Error object.
+        /// This code represent a sub-code when the Error object is in the InnerError or ErrorDetails object.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "code", Required = Required.Default)]
         public string Code { get; set; }
