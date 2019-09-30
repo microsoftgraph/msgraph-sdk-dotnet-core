@@ -13,6 +13,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
     using System.Net;
     using System.Net.Http;
     using System.Net.Http.Headers;
+    using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
     using Xunit;
@@ -440,8 +441,13 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             }
         }
 
+        /// <summary>
+        /// Testing that ErrorResponse can't be deserialized and causes the GeneralException 
+        /// code to be thrown in a ServiceException. We are testing whether we can
+        /// get the response body.
+        /// </summary>
         [Fact]
-        public async Task SendAsync_AddRawResponseToError()
+        public async Task SendAsync_AddRawResponseToErrorWithErrorResponseDeserializeException()
         {
             using (var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, "https://localhost"))
             using (var stringContent = new StringContent(jsonErrorResponseBody))
@@ -458,8 +464,52 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                 
                 ServiceException exception = await Assert.ThrowsAsync<ServiceException>(async () => await this.httpProvider.SendAsync(httpRequestMessage));
 
+                // Assert that we creating an GeneralException error.
+                Assert.Same(ErrorConstants.Codes.GeneralException, exception.Error.Code);
+                Assert.Same(ErrorConstants.Messages.UnexpectedExceptionResponse, exception.Error.Message);
+
+                // Assert that we get the expected response body.
                 Assert.Equal(jsonErrorResponseBody, exception.RawResponseBody);
+
             }
+        }
+
+        /// <summary>
+        /// Test whether the raw response body is provided on the ServiceException for E2E scenario
+        /// </summary>
+        /// <param name="authenticationToken">An invalid access token.</param>
+        [Theory]
+        [InlineData("Invalid token")]
+        public async Task SendAsync_E2E_ValidateHasRawResponseBody(string authenticationToken)
+        {
+            var authenticationProvider = new DelegateAuthenticationProvider(
+                (requestMessage) =>
+                {
+                    requestMessage.Headers.Authorization = new AuthenticationHeaderValue(CoreConstants.Headers.Bearer, authenticationToken);
+                    return Task.FromResult(0);
+                });
+
+            var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, "https://graph.microsoft.com/v1.0/me/fail");
+            var httpProvider = new HttpProvider();
+
+            HttpResponseMessage response = null;
+
+            var exception = (ServiceException) await Record.ExceptionAsync(async () =>
+            {
+                await authenticationProvider.AuthenticateRequestAsync(httpRequestMessage);
+                response = await httpProvider.SendAsync(httpRequestMessage);
+            });
+
+            // Assert expected exception
+            Assert.Null(response);
+            Assert.NotNull(exception);
+            Assert.NotNull(exception.Error);
+            Assert.Contains("InvalidAuthenticationToken", exception.RawResponseBody);
+            Assert.Equal("InvalidAuthenticationToken", exception.Error.Code);
+
+            // Assert not unexpected deserialization exception
+            Assert.NotSame(ErrorConstants.Codes.GeneralException, exception.Error.Code);
+            Assert.NotSame(ErrorConstants.Messages.UnexpectedExceptionResponse, exception.Error.Message);
         }
 
         #region NETCORE

@@ -165,6 +165,8 @@ namespace Microsoft.Graph
             {
                 using (response)
                 {
+                    await response.Content.LoadIntoBufferAsync().ConfigureAwait(false);
+
                     var errorResponse = await this.ConvertErrorResponseAsync(response).ConfigureAwait(false);
                     Error error = null;
 
@@ -210,7 +212,7 @@ namespace Microsoft.Graph
 
                     if (response.Content.Headers.ContentType.MediaType == "application/json")
                     {
-                        string rawResponseBody = await response.Content.ReadAsStringAsync();
+                        string rawResponseBody = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
                         throw new ServiceException(error,
                                                    response.Headers,

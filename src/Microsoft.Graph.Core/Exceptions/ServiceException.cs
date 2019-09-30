@@ -45,11 +45,11 @@ namespace Microsoft.Graph
         /// <param name="statusCode">The HTTP status code from the response.</param>
         /// <param name="rawResponseBody">The raw JSON response body.</param>
         public ServiceException(Error error, 
-                                System.Net.Http.Headers.HttpResponseHeaders responseHeaders, 
+                                System.Net.Http.Headers.HttpResponseHeaders responseHeaders,
                                 System.Net.HttpStatusCode statusCode, 
                                 string rawResponseBody,
                                 Exception innerException = null)
-            : this(error, responseHeaders: null, statusCode: default(System.Net.HttpStatusCode), innerException: innerException)
+            : this(error, responseHeaders, statusCode, innerException)
         {
             this.RawResponseBody = rawResponseBody;
         }
