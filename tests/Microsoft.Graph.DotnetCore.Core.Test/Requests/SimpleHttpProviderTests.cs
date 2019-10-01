@@ -22,6 +22,35 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         private readonly TestHttpMessageHandler testHttpMessageHandler;
         private readonly MockAuthenticationProvider authProvider;
 
+        /*
+         {
+            "error": {
+                "code": "BadRequest",
+                "message": "Resource not found for the segment 'mer'.",
+                "innerError": {
+                    "request - id": "a9acfc00-2b19-44b5-a2c6-6c329b4337b3",
+                    "date": "2019-09-10T18:26:26",
+                    "code": "inner-error-code"
+                },
+                "target": "target-value",
+                "unexpected-property": "unexpected-property-value",
+                "details": [
+                    {
+                        "code": "details-code-value",
+                        "message": "details",
+                        "target": "details-target-value",
+                        "unexpected-details-property": "unexpected-details-property-value"
+                    },
+                    {
+                        "code": "details-code-value2"
+                    }
+                ]
+            }
+        }
+        */
+        // Use https://www.minifyjson.org/ if you need minify or beautify as part of an update.
+        private const string JsonErrorResponseBody = "{\"error\":{\"code\":\"BadRequest\",\"message\":\"Resource not found for the segment 'mer'.\",\"innerError\":{\"request - id\":\"a9acfc00-2b19-44b5-a2c6-6c329b4337b3\",\"date\":\"2019-09-10T18:26:26\",\"code\":\"inner-error-code\"},\"target\":\"target-value\",\"unexpected-property\":\"unexpected-property-value\",\"details\":[{\"code\":\"details-code-value\",\"message\":\"details\",\"target\":\"details-target-value\",\"unexpected-details-property\":\"unexpected-details-property-value\"},{\"code\":\"details-code-value2\"}]}}";
+
         public SimpleHttpProviderTests()
         {
             this.testHttpMessageHandler = new TestHttpMessageHandler();
@@ -257,5 +286,59 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             }
         }
 
+        [Fact]
+        public async Task SendAsync_CopyClientRequestIdHeader_AddClientRequestIdToError()
+        {
+            using (var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, "https://localhost"))
+            using (var stringContent = new StringContent("test"))
+            using (var httpResponseMessage = new HttpResponseMessage())
+            {
+                httpResponseMessage.Content = stringContent;
+
+                const string clientRequestId = "3c9c5bc6-42d2-49ac-a99c-49c10513339a";
+
+                httpResponseMessage.StatusCode = HttpStatusCode.BadRequest;
+                httpResponseMessage.Headers.Add(CoreConstants.Headers.ClientRequestId, clientRequestId);
+                httpResponseMessage.RequestMessage = httpRequestMessage;
+
+                this.testHttpMessageHandler.AddResponseMapping(httpRequestMessage.RequestUri.ToString(), httpResponseMessage);
+
+                ServiceException exception = await Assert.ThrowsAsync<ServiceException>(async () => await this.simpleHttpProvider.SendAsync(httpRequestMessage));
+                Assert.NotNull(exception.Error);
+                Assert.Equal(clientRequestId, exception.Error.ClientRequestId);
+            }
+        }
+
+        /// <summary>
+        /// Testing that ErrorResponse can't be deserialized and causes the GeneralException 
+        /// code to be thrown in a ServiceException. We are testing whether we can
+        /// get the response body.
+        /// </summary>
+        [Fact]
+        public async Task SendAsync_AddRawResponseToErrorWithErrorResponseDeserializeException()
+        {
+            using (var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, "https://localhost"))
+            using (var stringContent = new StringContent(JsonErrorResponseBody))
+            using (var httpResponseMessage = new HttpResponseMessage())
+            {
+                httpResponseMessage.Content = stringContent;
+                httpResponseMessage.Content.Headers.ContentType.MediaType = "application/json";
+
+                httpResponseMessage.StatusCode = HttpStatusCode.BadRequest;
+                httpResponseMessage.RequestMessage = httpRequestMessage;
+
+                this.testHttpMessageHandler.AddResponseMapping(httpRequestMessage.RequestUri.ToString(), httpResponseMessage);
+
+                ServiceException exception = await Assert.ThrowsAsync<ServiceException>(async () => await this.simpleHttpProvider.SendAsync(httpRequestMessage));
+
+                // Assert that we creating an GeneralException error.
+                Assert.Same(ErrorConstants.Codes.GeneralException, exception.Error.Code);
+                Assert.Same(ErrorConstants.Messages.UnexpectedExceptionResponse, exception.Error.Message);
+
+                // Assert that we get the expected response body.
+                Assert.Equal(JsonErrorResponseBody, exception.RawResponseBody);
+
+            }
+        }
     }
 }
