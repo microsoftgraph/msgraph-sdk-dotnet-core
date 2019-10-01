@@ -165,6 +165,8 @@ namespace Microsoft.Graph
             {
                 using (response)
                 {
+                    await response.Content.LoadIntoBufferAsync().ConfigureAwait(false);
+
                     var errorResponse = await this.ConvertErrorResponseAsync(response).ConfigureAwait(false);
                     Error error = null;
 
@@ -198,10 +200,32 @@ namespace Microsoft.Graph
                         }
                     }
 
-                    // Pass through the response headers and status code to the ServiceException.
-                    // System.Net.HttpStatusCode does not support RFC 6585, Additional HTTP Status Codes.
-                    // Throttling status code 429 is in RFC 6586. The status code 429 will be passed through.
-                    throw new ServiceException(error, response.Headers, response.StatusCode);
+                    if (string.IsNullOrEmpty(error.ClientRequestId))
+                    {
+                        IEnumerable<string> clientRequestId;
+
+                        if (response.Headers.TryGetValues(CoreConstants.Headers.ClientRequestId, out clientRequestId))
+                        {
+                            error.ClientRequestId = clientRequestId.FirstOrDefault();
+                        }
+                    }
+
+                    if (response.Content.Headers.ContentType.MediaType == "application/json")
+                    {
+                        string rawResponseBody = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+                        throw new ServiceException(error,
+                                                   response.Headers,
+                                                   response.StatusCode,
+                                                   rawResponseBody);
+                    }
+                    else
+                    {
+                        // Pass through the response headers and status code to the ServiceException.
+                        // System.Net.HttpStatusCode does not support RFC 6585, Additional HTTP Status Codes.
+                        // Throttling status code 429 is in RFC 6586. The status code 429 will be passed through.
+                        throw new ServiceException(error, response.Headers, response.StatusCode);
+                    }
                 }
             }
 
@@ -264,6 +288,5 @@ namespace Microsoft.Graph
                 return null;
             }
         }
-
     }
 }

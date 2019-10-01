@@ -16,6 +16,16 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="error">The error that triggered the exception.</param>
         /// <param name="innerException">The possible innerException.</param>
+        public ServiceException(Error error, Exception innerException = null)
+            : this(error, responseHeaders: null, statusCode: default(System.Net.HttpStatusCode), innerException: innerException)
+        {
+        }
+
+        /// <summary>
+        /// Creates a new service exception.
+        /// </summary>
+        /// <param name="error">The error that triggered the exception.</param>
+        /// <param name="innerException">The possible innerException.</param>
         /// <param name="responseHeaders">The HTTP response headers from the response.</param>
         /// <param name="statusCode">The HTTP status code from the response.</param>
         public ServiceException(Error error, System.Net.Http.Headers.HttpResponseHeaders responseHeaders, System.Net.HttpStatusCode statusCode, Exception innerException = null)
@@ -25,15 +35,23 @@ namespace Microsoft.Graph
             this.ResponseHeaders = responseHeaders;
             this.StatusCode = statusCode;
         }
-        
+
         /// <summary>
         /// Creates a new service exception.
         /// </summary>
         /// <param name="error">The error that triggered the exception.</param>
         /// <param name="innerException">The possible innerException.</param>
-        public ServiceException(Error error, Exception innerException = null)
-            : this(error, responseHeaders: null, statusCode: default(System.Net.HttpStatusCode), innerException: innerException)
+        /// <param name="responseHeaders">The HTTP response headers from the response.</param>
+        /// <param name="statusCode">The HTTP status code from the response.</param>
+        /// <param name="rawResponseBody">The raw JSON response body.</param>
+        public ServiceException(Error error, 
+                                System.Net.Http.Headers.HttpResponseHeaders responseHeaders,
+                                System.Net.HttpStatusCode statusCode, 
+                                string rawResponseBody,
+                                Exception innerException = null)
+            : this(error, responseHeaders, statusCode, innerException)
         {
+            this.RawResponseBody = rawResponseBody;
         }
 
         /// <summary>
@@ -52,6 +70,11 @@ namespace Microsoft.Graph
         /// The HTTP status code from the response.
         /// </summary>
         public System.Net.HttpStatusCode StatusCode { get; }
+
+        /// <summary>
+        /// Provide the raw JSON response body.
+        /// </summary>
+        public string RawResponseBody { get; }
 
         /// <summary>
         /// Checks if a given error code has been returned in the response at any level in the error stack.

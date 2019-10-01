@@ -19,11 +19,10 @@
     <DelaySign>false</DelaySign>
     <AssemblyOriginatorKeyFile>35MSSharedLib1024.snk</AssemblyOriginatorKeyFile>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <VersionPrefix>1.17.0</VersionPrefix>
+    <VersionPrefix>1.18.0</VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <PackageReleaseNotes>
-      - Removed PageIterator. It is now available from the service library.
-      - Add support for time based retry limits.
+      - Improved ServiceException/error information to include OData error response, raw response body, and client-request-id.
     </PackageReleaseNotes>
   </PropertyGroup>
   <!--We manually configure LanguageTargets for Xamarin due to .Net SDK TFMs limitation https://github.com/dotnet/sdk/issues/491 -->
