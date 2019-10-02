@@ -90,7 +90,10 @@ namespace Microsoft.Graph
             {
                 using (response)
                 {
-                    await response.Content.LoadIntoBufferAsync().ConfigureAwait(false);
+                    if (null != response.Content)
+                    {
+                        await response.Content.LoadIntoBufferAsync().ConfigureAwait(false);
+                    }
 
                     var errorResponse = await this.ConvertErrorResponseAsync(response).ConfigureAwait(false);
                     Error error;
@@ -131,7 +134,7 @@ namespace Microsoft.Graph
                         }
                     }
 
-                    if (response.Content.Headers.ContentType.MediaType == "application/json")
+                    if (response.Content?.Headers.ContentType.MediaType == "application/json")
                     {
                         string rawResponseBody = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
