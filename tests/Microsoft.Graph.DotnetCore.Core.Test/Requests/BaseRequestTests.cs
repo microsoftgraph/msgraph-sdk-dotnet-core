@@ -115,7 +115,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             string requestUrl = string.Concat(this.baseUrl, "foo/bar");
             string clientRequestId = Guid.NewGuid().ToString();
 
-            var client = new BaseClient("http://localhost.foo", null);
+            var client = new BaseClient(baseUrl: "http://localhost.foo", authenticationProvider: null);
             var baseRequest = new BaseRequest(requestUrl, client) { Method = "PUT" };
 
             var httpRequestMessage = baseRequest.GetHttpRequestMessage();

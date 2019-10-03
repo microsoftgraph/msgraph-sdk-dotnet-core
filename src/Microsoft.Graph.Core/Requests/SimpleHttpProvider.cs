@@ -5,102 +5,42 @@
 namespace Microsoft.Graph
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
-    using System.Net.Http.Headers;
     using System.Threading;
     using System.Threading.Tasks;
 
     /// <summary>
     /// An <see cref="IHttpProvider"/> implementation using standard .NET libraries.
     /// </summary>
-    public class HttpProvider : IHttpProvider
+    public class SimpleHttpProvider : IHttpProvider
     {
-        internal bool disposeHandler;
-
-        internal HttpClient httpClient;
-
-        internal HttpMessageHandler httpMessageHandler;
+        internal readonly HttpClient httpClient;
 
         /// <summary>
-        /// Constructs a new <see cref="HttpProvider"/>.
+        /// Constructs a new <see cref="SimpleHttpProvider"/>.
         /// </summary>
+        /// <param name="httpClient">Custom http client to be used for making requests</param>
         /// <param name="serializer">A serializer for serializing and deserializing JSON objects.</param>
-        public HttpProvider(ISerializer serializer = null)
-            : this((HttpMessageHandler)null, true, serializer)
+        public SimpleHttpProvider(HttpClient httpClient, ISerializer serializer = null)
         {
+            this.httpClient = httpClient;
+            Serializer = serializer ?? new Serializer();
+            OverallTimeout = new TimeSpan(0, 5, 0);
         }
 
         /// <summary>
-        /// Constructs a new <see cref="HttpProvider"/>.
+        /// Gets a serializer for serializing and deserializing JSON objects.
         /// </summary>
-        /// <param name="httpClientHandler">An HTTP client handler to pass to the <see cref="HttpClient"/> for sending requests.</param>
-        /// <param name="disposeHandler">Whether or not to dispose the client handler on Dispose().</param>
-        /// <param name="serializer">A serializer for serializing and deserializing JSON objects.</param>
-        /// <remarks>
-        ///     By default, HttpProvider disables automatic redirects and handles redirects to preserve authentication headers. If providing
-        ///     an <see cref="HttpClientHandler"/> to the constructor and enabling automatic redirects this could cause issues with authentication
-        ///     over the redirect.
-        /// </remarks>
-        public HttpProvider(HttpClientHandler httpClientHandler, bool disposeHandler, ISerializer serializer = null)
-            : this((HttpMessageHandler)httpClientHandler, disposeHandler, serializer)
-        {
-        }
-
-        /// <summary>
-        /// Constructs a new <see cref="HttpProvider"/>.
-        /// </summary>
-        /// <param name="httpMessageHandler">An HTTP message handler to pass to the <see cref="HttpClient"/> for sending requests.</param>
-        /// <param name="disposeHandler">Whether or not to dispose the client handler on Dispose().</param>
-        /// <param name="serializer">A serializer for serializing and deserializing JSON objects.</param>
-        public HttpProvider(HttpMessageHandler httpMessageHandler, bool disposeHandler, ISerializer serializer)
-        {
-            this.disposeHandler = disposeHandler;
-            this.httpMessageHandler = httpMessageHandler;
-            this.Serializer = serializer ?? new Serializer();
-
-            // NOTE: Override our pipeline when a httpMessageHandler is provided - httpMessageHandler can implement custom pipeline.
-            // This check won't be needed once we re-write the HttpProvider to work with GraphClientFactory.
-            if (this.httpMessageHandler == null)
-            {
-                this.httpMessageHandler = GraphClientFactory.GetNativePlatformHttpHandler();
-                this.httpClient = GraphClientFactory.Create(authenticationProvider: null, version: "v1.0", nationalCloud: GraphClientFactory.Global_Cloud, finalHandler: this.httpMessageHandler);
-            }
-            else
-            {
-                this.httpClient = new HttpClient(this.httpMessageHandler, this.disposeHandler);
-            } 
-
-            this.httpClient.SetFeatureFlag(FeatureFlag.DefaultHttpProvider);
-        }
-
-        /// <summary>
-        /// Gets or sets the cache control header for requests;
-        /// </summary>
-        public CacheControlHeaderValue CacheControlHeader
-        {
-            get
-            {
-                return this.httpClient.DefaultRequestHeaders.CacheControl;
-            }
-
-            set
-            {
-                this.httpClient.DefaultRequestHeaders.CacheControl = value;
-            }
-        }
+        public ISerializer Serializer { get; private set; }
 
         /// <summary>
         /// Gets or sets the overall request timeout.
         /// </summary>
         public TimeSpan OverallTimeout
         {
-            get
-            {
-                return this.httpClient.Timeout;
-            }
+            get => this.httpClient.Timeout;
 
             set
             {
@@ -122,22 +62,6 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Gets a serializer for serializing and deserializing JSON objects.
-        /// </summary>
-        public ISerializer Serializer { get; private set; }
-
-        /// <summary>
-        /// Disposes the HttpClient and HttpClientHandler instances.
-        /// </summary>
-        public void Dispose()
-        {
-            if (this.httpClient != null)
-            {
-                this.httpClient.Dispose();
-            }
-        }
-
-        /// <summary>
         /// Sends the request.
         /// </summary>
         /// <param name="request">The <see cref="HttpRequestMessage"/> to send.</param>
@@ -155,12 +79,13 @@ namespace Microsoft.Graph
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns>The <see cref="HttpResponseMessage"/>.</returns>
         public async Task<HttpResponseMessage> SendAsync(
-            HttpRequestMessage request,
-            HttpCompletionOption completionOption,
+            HttpRequestMessage request, 
+            HttpCompletionOption completionOption, 
             CancellationToken cancellationToken)
         {
             var response = await this.SendRequestAsync(request, completionOption, cancellationToken).ConfigureAwait(false);
 
+            // check if the response is of a successful nature.
             if (!response.IsSuccessStatusCode)
             {
                 using (response)
@@ -171,11 +96,11 @@ namespace Microsoft.Graph
                     }
 
                     var errorResponse = await this.ConvertErrorResponseAsync(response).ConfigureAwait(false);
-                    Error error = null;
+                    Error error;
 
                     if (errorResponse == null || errorResponse.Error == null)
                     {
-                        if (response != null && response.StatusCode == HttpStatusCode.NotFound)
+                        if (response.StatusCode == HttpStatusCode.NotFound)
                         {
                             error = new Error { Code = ErrorConstants.Codes.ItemNotFound };
                         }
@@ -195,19 +120,15 @@ namespace Microsoft.Graph
 
                     if (string.IsNullOrEmpty(error.ThrowSite))
                     {
-                        IEnumerable<string> throwsiteValues;
-
-                        if (response.Headers.TryGetValues(CoreConstants.Headers.ThrowSiteHeaderName, out throwsiteValues))
+                        if (response.Headers.TryGetValues(CoreConstants.Headers.ThrowSiteHeaderName, out var throwSiteValues))
                         {
-                            error.ThrowSite = throwsiteValues.FirstOrDefault();
+                            error.ThrowSite = throwSiteValues.FirstOrDefault();
                         }
                     }
 
                     if (string.IsNullOrEmpty(error.ClientRequestId))
                     {
-                        IEnumerable<string> clientRequestId;
-
-                        if (response.Headers.TryGetValues(CoreConstants.Headers.ClientRequestId, out clientRequestId))
+                        if (response.Headers.TryGetValues(CoreConstants.Headers.ClientRequestId, out var clientRequestId))
                         {
                             error.ClientRequestId = clientRequestId.FirstOrDefault();
                         }
@@ -218,9 +139,9 @@ namespace Microsoft.Graph
                         string rawResponseBody = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
                         throw new ServiceException(error,
-                                                   response.Headers,
-                                                   response.StatusCode,
-                                                   rawResponseBody);
+                            response.Headers,
+                            response.StatusCode,
+                            rawResponseBody);
                     }
                     else
                     {
@@ -235,39 +156,12 @@ namespace Microsoft.Graph
             return response;
         }
 
-        internal async Task<HttpResponseMessage> SendRequestAsync(
-            HttpRequestMessage request,
-            HttpCompletionOption completionOption,
-            CancellationToken cancellationToken)
+        /// <summary>
+        /// Disposes the HttpClient and HttpClientHandler instances.
+        /// </summary>
+        public void Dispose()
         {
-            try
-            {
-                return await this.httpClient.SendAsync(request, completionOption, cancellationToken).ConfigureAwait(false);
-            }
-            catch (TaskCanceledException exception)
-            {
-                throw new ServiceException(
-                        new Error
-                        {
-                            Code = ErrorConstants.Codes.Timeout,
-                            Message = ErrorConstants.Messages.RequestTimedOut,
-                        },
-                        exception);
-            }
-            catch(ServiceException exception)
-            {
-                throw exception;
-            }
-            catch (Exception exception)
-            {
-                throw new ServiceException(
-                        new Error
-                        {
-                            Code = ErrorConstants.Codes.GeneralException,
-                            Message = ErrorConstants.Messages.UnexpectedExceptionOnSend,
-                        },
-                        exception);
-            }
+            httpClient?.Dispose();
         }
 
         /// <summary>
@@ -291,5 +185,41 @@ namespace Microsoft.Graph
                 return null;
             }
         }
+
+        private async Task<HttpResponseMessage> SendRequestAsync(
+            HttpRequestMessage request,
+            HttpCompletionOption completionOption,
+            CancellationToken cancellationToken)
+        {
+            try
+            {
+                return await this.httpClient.SendAsync(request, completionOption, cancellationToken).ConfigureAwait(false);
+            }
+            catch (TaskCanceledException exception)
+            {
+                throw new ServiceException(
+                    new Error
+                    {
+                        Code = ErrorConstants.Codes.Timeout,
+                        Message = ErrorConstants.Messages.RequestTimedOut,
+                    },
+                    exception);
+            }
+            catch (ServiceException)
+            {
+                throw;
+            }
+            catch (Exception exception)
+            {
+                throw new ServiceException(
+                    new Error
+                    {
+                        Code = ErrorConstants.Codes.GeneralException,
+                        Message = ErrorConstants.Messages.UnexpectedExceptionOnSend,
+                    },
+                    exception);
+            }
+        }
+
     }
 }
