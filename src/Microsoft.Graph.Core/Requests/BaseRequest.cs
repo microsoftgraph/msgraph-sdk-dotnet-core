@@ -457,15 +457,26 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Determins whether or not <see cref="BaseRequest"/> should authenticate the request or let <see cref="AuthenticationHandler"/> authenticate the request.
+        /// Determines whether or not <see cref="BaseRequest"/> should authenticate the request or let <see cref="AuthenticationHandler"/> authenticate the request.
         /// </summary>
         /// <returns>
         /// TRUE: If a CUSTOM <see cref="IHttpProvider"/> or DEFAULT <see cref="HttpProvider"/> is used WITHOUT an <see cref="AuthenticationHandler"/>.
-        /// FALSE: If our DEFAULT <see cref="HttpProvider"/> is used WITH an <see cref="AuthenticationHandler"/>.
+        /// FALSE: If our DEFAULT <see cref="HttpProvider"/> or <see cref="SimpleHttpProvider"/> is used WITH an <see cref="AuthenticationHandler"/>.
         /// </returns>
         private bool ShouldAuthenticateRequest()
         {
-            return !(this.Client.HttpProvider is HttpProvider && (this.Client.HttpProvider as HttpProvider).httpClient.ContainsFeatureFlag(FeatureFlag.AuthHandler));
+            switch (this.Client.HttpProvider)
+            {
+                case HttpProvider provider when provider.httpClient.ContainsFeatureFlag(FeatureFlag.AuthHandler):
+                    return false; //no need to authenticate as we have an AuthHandler provided 
+
+                case SimpleHttpProvider simpleHttpProvider when simpleHttpProvider.httpClient.ContainsFeatureFlag(FeatureFlag.AuthHandler):
+                    return false; //no need to authenticate as we have an AuthHandler provided 
+
+                default:
+                    return true;
+
+            }
         }
     }
 }
