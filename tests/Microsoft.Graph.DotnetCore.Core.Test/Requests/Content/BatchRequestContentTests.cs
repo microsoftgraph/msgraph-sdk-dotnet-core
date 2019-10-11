@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
@@ -6,6 +6,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
 {
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
+    using Microsoft.Graph.DotnetCore.Core.Test.Mocks;
     using System.Collections.Generic;
     using System.Linq;
     using System.Net.Http;
@@ -53,13 +54,41 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
         [Fact]
         public void BatchRequestContent_AddBatchRequestStepWithNewRequestStep()
         {
+            // Arrange
             BatchRequestStep batchRequestStep = new BatchRequestStep("1", new HttpRequestMessage(HttpMethod.Get, REQUEST_URL));
             BatchRequestContent batchRequestContent = new BatchRequestContent();
+            
+            // Act
+            Assert.False(batchRequestContent.BatchRequestSteps.Any());//Its empty
             bool isSuccess = batchRequestContent.AddBatchRequestStep(batchRequestStep);
 
+            // Assert
             Assert.True(isSuccess);
             Assert.NotNull(batchRequestContent.BatchRequestSteps);
             Assert.True(batchRequestContent.BatchRequestSteps.Count.Equals(1));
+        }
+
+        [Fact]
+        public void BatchRequestContent_AddBatchRequestStepToBatchRequestContentWithMaxSteps()
+        {
+            // Arrange
+            BatchRequestContent batchRequestContent = new BatchRequestContent();
+            //Add MaxNumberOfRequests number of steps
+            for (var i = 0; i < CoreConstants.BatchRequest.MaxNumberOfRequests; i++)
+            {
+                BatchRequestStep batchRequestStep = new BatchRequestStep(i.ToString(), new HttpRequestMessage(HttpMethod.Get, REQUEST_URL));
+                bool isSuccess = batchRequestContent.AddBatchRequestStep(batchRequestStep);
+                Assert.True(isSuccess);//Assert we can add steps up to the max
+            }
+
+            // Act
+            BatchRequestStep extraBatchRequestStep = new BatchRequestStep("failing_id", new HttpRequestMessage(HttpMethod.Get, REQUEST_URL));
+            bool result = batchRequestContent.AddBatchRequestStep(extraBatchRequestStep);
+
+            // Assert
+            Assert.False(result);//Assert we did not add any more steps
+            Assert.NotNull(batchRequestContent.BatchRequestSteps);
+            Assert.True(batchRequestContent.BatchRequestSteps.Count.Equals(CoreConstants.BatchRequest.MaxNumberOfRequests));
         }
 
         [Fact]
@@ -80,7 +109,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
             BatchRequestStep batchRequestStep = new BatchRequestStep("1", new HttpRequestMessage(HttpMethod.Get, REQUEST_URL));
             BatchRequestContent batchRequestContent = new BatchRequestContent(batchRequestStep);
 
-            bool isSuccess = batchRequestContent.AddBatchRequestStep(null);
+            bool isSuccess = batchRequestContent.AddBatchRequestStep(batchRequestStep: null);
 
             Assert.False(isSuccess);
             Assert.NotNull(batchRequestContent.BatchRequestSteps);
@@ -138,5 +167,92 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
             Assert.True(batchRequestContent.BatchRequestSteps.Count.Equals(1));
             Assert.Equal(expectedContent, requestContent);
         }
+
+        [Fact]
+        public void BatchRequestContent_AddBatchRequestStepWithHttpRequestMessage()
+        {
+            // Arrange 
+            BatchRequestContent batchRequestContent = new BatchRequestContent();
+            Assert.False(batchRequestContent.BatchRequestSteps.Any());//Its empty
+
+            // Act
+            HttpRequestMessage httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, REQUEST_URL);
+            bool isSuccess = batchRequestContent.AddBatchRequestStep(httpRequestMessage);
+
+            // Assert we added successfully and contents are as expected
+            Assert.True(isSuccess);
+            Assert.NotNull(batchRequestContent.BatchRequestSteps);
+            Assert.True(batchRequestContent.BatchRequestSteps.Count.Equals(1));
+            Assert.Equal(batchRequestContent.BatchRequestSteps.First().Value.Request.RequestUri.AbsoluteUri, httpRequestMessage.RequestUri.AbsoluteUri);
+            Assert.Equal(batchRequestContent.BatchRequestSteps.First().Value.Request.Method.Method, httpRequestMessage.Method.Method);
+        }
+
+        [Fact]
+        public void BatchRequestContent_AddBatchRequestStepWithHttpRequestMessageToBatchRequestContentWithMaxSteps()
+        {
+            // Arrange
+            BatchRequestContent batchRequestContent = new BatchRequestContent();
+            // Add MaxNumberOfRequests number of steps
+            for (var i = 0; i < CoreConstants.BatchRequest.MaxNumberOfRequests; i++)
+            {
+                HttpRequestMessage httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, REQUEST_URL);
+                bool isSuccess = batchRequestContent.AddBatchRequestStep(httpRequestMessage);
+                Assert.True(isSuccess);//Assert we can add steps up to the max
+            }
+
+            // Act
+            HttpRequestMessage extraHttpRequestMessage = new HttpRequestMessage(HttpMethod.Get, REQUEST_URL);
+            bool result = batchRequestContent.AddBatchRequestStep(extraHttpRequestMessage);
+            
+            // Assert
+            Assert.False(result);//Assert we did not add any more steps
+            Assert.NotNull(batchRequestContent.BatchRequestSteps);
+            Assert.True(batchRequestContent.BatchRequestSteps.Count.Equals(CoreConstants.BatchRequest.MaxNumberOfRequests));
+        }
+
+        [Fact]
+        public void BatchRequestContent_AddBatchRequestStepWithBaseRequest()
+        {
+            // Arrange
+            BaseClient client = new BaseClient(REQUEST_URL, new MockAuthenticationProvider().Object);
+            BaseRequest baseRequest = new BaseRequest(REQUEST_URL, client);
+            BatchRequestContent batchRequestContent = new BatchRequestContent();
+            Assert.False(batchRequestContent.BatchRequestSteps.Any());//Its empty
+
+            // Act
+            bool isSuccess = batchRequestContent.AddBatchRequestStep(baseRequest);
+
+            // Assert we added successfully and contents are as expected
+            Assert.True(isSuccess);// 
+            Assert.NotNull(batchRequestContent.BatchRequestSteps);
+            Assert.True(batchRequestContent.BatchRequestSteps.Count.Equals(1));
+            Assert.Equal(batchRequestContent.BatchRequestSteps.First().Value.Request.RequestUri.OriginalString, baseRequest.RequestUrl);
+            Assert.Equal(batchRequestContent.BatchRequestSteps.First().Value.Request.Method.Method, baseRequest.Method);
+        }
+
+        [Fact]
+        public void BatchRequestContent_AddBatchRequestStepWithBaseRequestToBatchRequestContentWithMaxSteps()
+        {
+            // Arrange
+            BatchRequestContent batchRequestContent = new BatchRequestContent();
+            BaseClient client = new BaseClient(REQUEST_URL, new MockAuthenticationProvider().Object);
+            // Add MaxNumberOfRequests number of steps
+            for (var i = 0; i < CoreConstants.BatchRequest.MaxNumberOfRequests; i++)
+            {
+                BaseRequest baseRequest = new BaseRequest(REQUEST_URL, client);
+                bool isSuccess = batchRequestContent.AddBatchRequestStep(baseRequest);
+                Assert.True(isSuccess);//Assert we can add steps up to the max
+            }
+
+            // Act
+            BaseRequest extraBaseRequest = new BaseRequest(REQUEST_URL, client);
+            bool result = batchRequestContent.AddBatchRequestStep(extraBaseRequest);
+
+            // Assert
+            Assert.False(result);//Assert we did not add any more steps
+            Assert.NotNull(batchRequestContent.BatchRequestSteps);
+            Assert.True(batchRequestContent.BatchRequestSteps.Count.Equals(CoreConstants.BatchRequest.MaxNumberOfRequests));
+        }
+
     }
 }
