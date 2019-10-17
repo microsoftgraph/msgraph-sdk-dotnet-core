@@ -94,32 +94,36 @@ namespace Microsoft.Graph
         /// Adds a <see cref="HttpRequestMessage"/> to batch request content.
         /// </summary>
         /// <param name="httpRequestMessage">A <see cref="HttpRequestMessage"/> to use to build a <see cref="BatchRequestStep"/> to add.</param>
-        /// <returns>True or false based on addition or not addition of the provided <see cref="HttpRequestMessage"/>. </returns>
-        public bool AddBatchRequestStep(HttpRequestMessage httpRequestMessage)
+        public void AddBatchRequestStep(HttpRequestMessage httpRequestMessage)
         {
-            if (BatchRequestSteps.Count >= CoreConstants.BatchRequest.MaxNumberOfRequests)//we should not add any more steps
-                return false;
+            if (BatchRequestSteps.Count >= CoreConstants.BatchRequest.MaxNumberOfRequests)
+                throw new ClientException(new Error
+                {
+                    Code = ErrorConstants.Codes.MaximumValueExceeded,
+                    Message = string.Format(ErrorConstants.Messages.MaximumValueExceeded, "Number of batch request steps", CoreConstants.BatchRequest.MaxNumberOfRequests)
+                });
 
             string requestId = Guid.NewGuid().ToString();
             BatchRequestStep batchRequestStep = new BatchRequestStep(requestId, httpRequestMessage);
             (BatchRequestSteps as IDictionary<string, BatchRequestStep>).Add(batchRequestStep.RequestId, batchRequestStep);
-            return true;
         }
 
         /// <summary>
         /// Adds a <see cref="IBaseRequest"/> to batch request content
         /// </summary>
         /// <param name="request">A <see cref="BaseRequest"/> to use to build a <see cref="BatchRequestStep"/> to add.</param>
-        /// <returns>True or false based on addition or not addition of the provided <see cref="BaseRequest"/>. </returns>
-        public bool AddBatchRequestStep(IBaseRequest request)
+        public void AddBatchRequestStep(IBaseRequest request)
         {
-            if (BatchRequestSteps.Count >= CoreConstants.BatchRequest.MaxNumberOfRequests)//we should not add any more steps
-                return false;
+            if (BatchRequestSteps.Count >= CoreConstants.BatchRequest.MaxNumberOfRequests)
+                throw new ClientException(new Error
+                {
+                    Code = ErrorConstants.Codes.MaximumValueExceeded,
+                    Message = string.Format(ErrorConstants.Messages.MaximumValueExceeded, "Number of batch request steps", CoreConstants.BatchRequest.MaxNumberOfRequests)
+                });
 
             string requestId = Guid.NewGuid().ToString();
             BatchRequestStep batchRequestStep = new BatchRequestStep(requestId, request.GetHttpRequestMessage());
             (BatchRequestSteps as IDictionary<string, BatchRequestStep>).Add(batchRequestStep.RequestId, batchRequestStep);
-            return true;
         }
 
         /// <summary>
