@@ -6,6 +6,7 @@ namespace Microsoft.Graph
 {
     using System;
     using System.Net.Http;
+    using Microsoft.Graph.Core.Requests;
 
     /// <summary>
     /// A default <see cref="IBaseClient"/> implementation.
@@ -79,5 +80,16 @@ namespace Microsoft.Graph
         /// Gets or Sets the <see cref="IAuthenticationProvider"/> for authenticating a single HTTP requests. 
         /// </summary>
         public Func<IAuthenticationProvider> PerRequestAuthProvider { get; set; }
+
+        /// <summary>
+        /// Gets the <see cref="IBatchRequestBuilder"/> for building batch Requests
+        /// </summary>
+        public IBatchRequestBuilder Batch
+        {
+            get
+            {
+                return new BatchRequestBuilder(this.BaseUrl + "/$batch", this);
+            }
+        }
     }
 }
