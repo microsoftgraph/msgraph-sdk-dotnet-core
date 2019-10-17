@@ -22,6 +22,7 @@
     <VersionPrefix>1.19.0</VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <PackageReleaseNotes>
+      - Adds request builders for the batch endpoint to the client
       - BatchRequestStep enhancements: added overloads to add BatchRequestStep using BaseRequest and HttpRequestMessage
     </PackageReleaseNotes>
   </PropertyGroup>
