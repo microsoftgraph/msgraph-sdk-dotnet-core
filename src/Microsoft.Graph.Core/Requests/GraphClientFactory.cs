@@ -179,10 +179,6 @@ namespace Microsoft.Graph
                     throw new ArgumentNullException(nameof(handlers), "DelegatingHandler array contains null item.");
                 }
 
-                if (handler.InnerHandler != null)
-                {
-                    throw new ArgumentException(String.Format("DelegatingHandler array has unexpected InnerHandler. {0} has unexpected InnerHandler.", handler, "handler"));
-                }
 #if iOS
                 // Skip CompressionHandler since NSUrlSessionHandler automatically handles decompression on iOS and it can't be turned off.
                 // See issue https://github.com/microsoftgraph/msgraph-sdk-dotnet/issues/481 for more details.
