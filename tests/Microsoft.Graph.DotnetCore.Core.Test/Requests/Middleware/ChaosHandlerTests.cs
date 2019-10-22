@@ -112,7 +112,6 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Middleware
                 return null;
              };
 
-            // Create ChaosHandler with PlannedChaosFactory to 
             var handler = new ChaosHandler(new ChaosHandlerOption()
             {
                 PlannedChaosFactory = plannedChaos
