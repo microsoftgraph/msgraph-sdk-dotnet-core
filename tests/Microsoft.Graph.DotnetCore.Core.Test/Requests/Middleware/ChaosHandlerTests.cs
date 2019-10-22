@@ -2,8 +2,6 @@
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
-using System.Net.Http;
-
 namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Middleware
 {
     using System;
@@ -17,14 +15,9 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Middleware
 
     public class ChaosHandlerTests
     {
-        // Planned Chaos
-
-
-        // Random Chaos
         [Fact]
         public async Task RandomChaosShouldReturnRandomFailures()
         {
-
             // Arrange
             var handler = new ChaosHandler()
             {

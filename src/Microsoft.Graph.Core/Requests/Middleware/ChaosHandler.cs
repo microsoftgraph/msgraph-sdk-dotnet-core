@@ -96,18 +96,23 @@ namespace Microsoft.Graph
 
         public static HttpResponseMessage Create429TooManyRequestsResponse(TimeSpan retry)
         {
+            var serializer = new Serializer();
             var throttleResponse = new HttpResponseMessage()
             {
-                StatusCode = (HttpStatusCode)429
+                StatusCode = (HttpStatusCode)429,
+                Content = serializer.SerializeAsJsonContent(new { error = new Error() { Code = "activityLimitReached", Message= "Client application has been throttled and should not attempt to repeat the request until an amount of time has elapsed." } })
             };
             throttleResponse.Headers.RetryAfter = new RetryConditionHeaderValue(retry);
             return throttleResponse;
         }
+
         public static HttpResponseMessage Create503Response(TimeSpan retry)
         {
+            var serializer = new Serializer();
             var serverUnavailableResponse = new HttpResponseMessage()
             {
-                StatusCode = HttpStatusCode.ServiceUnavailable
+                StatusCode = HttpStatusCode.ServiceUnavailable,
+                Content = serializer.SerializeAsJsonContent(new { error = new Error() { Code = "serviceNotAvailable", Message= "The service is temporarily unavailable for maintenance or is overloaded. You may repeat the request after a delay, the length of which may be specified in a Retry-After header." } })
             };
             serverUnavailableResponse.Headers.RetryAfter = new RetryConditionHeaderValue(retry);
             return serverUnavailableResponse;
@@ -115,27 +120,33 @@ namespace Microsoft.Graph
 
         public static HttpResponseMessage Create502BadGatewayResponse()
         {
+            var serializer = new Serializer();
             var badGatewayResponse = new HttpResponseMessage()
             {
-                StatusCode = HttpStatusCode.BadGateway
+                StatusCode = HttpStatusCode.BadGateway,
+                Content = serializer.SerializeAsJsonContent(new { error = new Error() { Code = "502" } })
             };
             return badGatewayResponse;
         }
 
         public static HttpResponseMessage Create500InternalServerErrorResponse()
         {
+            var serializer = new Serializer();
             var internalServerError = new HttpResponseMessage()
             {
-                StatusCode = HttpStatusCode.InternalServerError
+                StatusCode = HttpStatusCode.InternalServerError,
+                Content = serializer.SerializeAsJsonContent(new { error = new Error() { Code = "generalException", Message= "There was an internal server error while processing the request." } })
             };
             return internalServerError;
         }
 
         public static HttpResponseMessage Create504GatewayTimeoutResponse(TimeSpan retry)
         {
+            var serializer = new Serializer();
             var gatewayTimeoutResponse = new HttpResponseMessage()
             {
-                StatusCode = HttpStatusCode.GatewayTimeout
+                StatusCode = HttpStatusCode.GatewayTimeout,
+                Content = serializer.SerializeAsJsonContent(new { error = new Error() { Code = "504", Message = "The server, while acting as a proxy, did not receive a timely response from the upstream server it needed to access in attempting to complete the request. May occur together with 503." } })
             };
             gatewayTimeoutResponse.Headers.RetryAfter = new RetryConditionHeaderValue(retry);
             return gatewayTimeoutResponse;
