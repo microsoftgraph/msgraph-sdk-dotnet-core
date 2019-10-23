@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Description>Microsoft Graph Core Client Library implements core functionality used by Microsoft Graph client libraries.</Description>
-    <Copyright>&#169; Microsoft Corporation. All rights reserved.</Copyright>
+    <Copyright>© Microsoft Corporation. All rights reserved.</Copyright>
     <AssemblyTitle>Microsoft Graph Core Client Library</AssemblyTitle>
     <Authors>Microsoft</Authors>
     <TargetFrameworks>netstandard1.1;net45;Xamarin.iOS10;MonoAndroid70</TargetFrameworks>
@@ -23,7 +23,9 @@
     <VersionSuffix></VersionSuffix>
     <PackageReleaseNotes>
       - Adds request builders for the batch endpoint to the client
-      - BatchRequestStep enhancements: added overloads to add BatchRequestStep using BaseRequest and HttpRequestMessage
+      - BatchRequestStep enhancements: added overloads to add BatchRequestStep using BaseRequest and HttpRequestMessage.
+      - Adds ChaosHandler for testing.
+      - HTTP pipeline updates overwrite existing inner handlers.
     </PackageReleaseNotes>
   </PropertyGroup>
   <!--We manually configure LanguageTargets for Xamarin due to .Net SDK TFMs limitation https://github.com/dotnet/sdk/issues/491 -->
@@ -93,5 +95,8 @@
 	  <Pack>True</Pack>
 	  <PackagePath></PackagePath>
 	</None>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="System.Diagnostics.DiagnosticSource" Version="4.6.0" />
   </ItemGroup>
 </Project>
