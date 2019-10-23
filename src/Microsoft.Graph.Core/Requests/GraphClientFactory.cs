@@ -194,6 +194,7 @@ namespace Microsoft.Graph
                     throw new ArgumentException($"DelegatingHandler array has a duplicate handler. {handler} has a duplicate handler.", "handlers");
                 }
 
+                // Existing InnerHandlers on handlers will be overwritten
                 handler.InnerHandler = httpPipeline;
                 httpPipeline = handler;
 
