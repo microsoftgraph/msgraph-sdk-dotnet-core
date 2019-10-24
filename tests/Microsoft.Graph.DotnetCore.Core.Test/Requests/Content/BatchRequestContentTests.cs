@@ -177,9 +177,10 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
 
             // Act
             HttpRequestMessage httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, REQUEST_URL);
-            batchRequestContent.AddBatchRequestStep(httpRequestMessage);
+            string batchRequestStepId = batchRequestContent.AddBatchRequestStep(httpRequestMessage);
 
             // Assert we added successfully and contents are as expected
+            Assert.NotNull(batchRequestStepId);
             Assert.NotNull(batchRequestContent.BatchRequestSteps);
             Assert.True(batchRequestContent.BatchRequestSteps.Count.Equals(1));
             Assert.Equal(batchRequestContent.BatchRequestSteps.First().Value.Request.RequestUri.AbsoluteUri, httpRequestMessage.RequestUri.AbsoluteUri);
@@ -195,7 +196,8 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
             for (var i = 0; i < CoreConstants.BatchRequest.MaxNumberOfRequests; i++)
             {
                 HttpRequestMessage httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, REQUEST_URL);
-                batchRequestContent.AddBatchRequestStep(httpRequestMessage);
+                string batchRequestStepId = batchRequestContent.AddBatchRequestStep(httpRequestMessage);
+                Assert.NotNull(batchRequestStepId);
                 Assert.True(batchRequestContent.BatchRequestSteps.Count.Equals(i+1));//Assert we can add steps up to the max
             }
 
@@ -219,9 +221,10 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
             Assert.False(batchRequestContent.BatchRequestSteps.Any());//Its empty
 
             // Act
-            batchRequestContent.AddBatchRequestStep(baseRequest);
+            string batchRequestStepId = batchRequestContent.AddBatchRequestStep(baseRequest);
 
             // Assert we added successfully and contents are as expected
+            Assert.NotNull(batchRequestStepId);
             Assert.NotNull(batchRequestContent.BatchRequestSteps);
             Assert.True(batchRequestContent.BatchRequestSteps.Count.Equals(1));
             Assert.Equal(batchRequestContent.BatchRequestSteps.First().Value.Request.RequestUri.OriginalString, baseRequest.RequestUrl);
@@ -238,7 +241,8 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
             for (var i = 0; i < CoreConstants.BatchRequest.MaxNumberOfRequests; i++)
             {
                 BaseRequest baseRequest = new BaseRequest(REQUEST_URL, client);
-                batchRequestContent.AddBatchRequestStep(baseRequest);
+                string batchRequestStepId = batchRequestContent.AddBatchRequestStep(baseRequest);
+                Assert.NotNull(batchRequestStepId);
                 Assert.True(batchRequestContent.BatchRequestSteps.Count.Equals(i + 1));//Assert we can add steps up to the max
             }
 

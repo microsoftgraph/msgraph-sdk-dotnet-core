@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
@@ -75,6 +75,58 @@ namespace Microsoft.Graph
             }
 
             return GetResponseMessageFromJObject(jResponseItem);
+        }
+
+        /// <summary>
+        /// Gets a batch response as a requested type for the specified batch request id.
+        /// </summary>
+        /// <param name="requestId">A batch request id.</param>
+        /// <returns>A deserialized object of type T<see cref="HttpResponseMessage"/>.</returns>
+        public async Task<T> GetResponseByIdAsync<T>(string requestId)
+        {
+            using (var httpResponseMessage = await GetResponseByIdAsync(requestId))
+            {
+                var responseHandler = new ResponseHandler(new Serializer());
+                
+                if (!httpResponseMessage.IsSuccessStatusCode)
+                {
+                    Error error;
+                    string rawResponseBody = null;
+
+                    //deserialize into an ErrorResponse as the result is not a success.
+                    ErrorResponse errorResponse = await responseHandler.HandleResponse<ErrorResponse>(httpResponseMessage);
+
+                    if (errorResponse?.Error == null)
+                    {
+                        if (httpResponseMessage.StatusCode == HttpStatusCode.NotFound)
+                        {
+                            error = new Error { Code = ErrorConstants.Codes.ItemNotFound };
+                        }
+                        else
+                        {
+                            error = new Error
+                            {
+                                Code = ErrorConstants.Codes.GeneralException,
+                                Message = ErrorConstants.Messages.UnexpectedExceptionResponse
+                            };
+                        }
+                    }
+                    else
+                    {
+                        error = errorResponse.Error;
+                    }
+
+                    if (httpResponseMessage.Content?.Headers.ContentType.MediaType == "application/json")
+                    {
+                        rawResponseBody = await httpResponseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
+                    }
+
+                    throw new ServiceException(error, httpResponseMessage.Headers, httpResponseMessage.StatusCode, rawResponseBody);
+                }
+
+                // return the deserialized object
+                return await responseHandler.HandleResponse<T>(httpResponseMessage);
+            }
         }
 
         /// <summary>
