@@ -94,7 +94,8 @@ namespace Microsoft.Graph
         /// Adds a <see cref="HttpRequestMessage"/> to batch request content.
         /// </summary>
         /// <param name="httpRequestMessage">A <see cref="HttpRequestMessage"/> to use to build a <see cref="BatchRequestStep"/> to add.</param>
-        public void AddBatchRequestStep(HttpRequestMessage httpRequestMessage)
+        /// <returns>The requestId of the newly created <see cref="BatchRequestStep"/></returns>
+        public string AddBatchRequestStep(HttpRequestMessage httpRequestMessage)
         {
             if (BatchRequestSteps.Count >= CoreConstants.BatchRequest.MaxNumberOfRequests)
                 throw new ClientException(new Error
@@ -106,13 +107,15 @@ namespace Microsoft.Graph
             string requestId = Guid.NewGuid().ToString();
             BatchRequestStep batchRequestStep = new BatchRequestStep(requestId, httpRequestMessage);
             (BatchRequestSteps as IDictionary<string, BatchRequestStep>).Add(batchRequestStep.RequestId, batchRequestStep);
+            return requestId;
         }
 
         /// <summary>
         /// Adds a <see cref="IBaseRequest"/> to batch request content
         /// </summary>
         /// <param name="request">A <see cref="BaseRequest"/> to use to build a <see cref="BatchRequestStep"/> to add.</param>
-        public void AddBatchRequestStep(IBaseRequest request)
+        /// <returns>The requestId of the  newly created <see cref="BatchRequestStep"/></returns>
+        public string AddBatchRequestStep(IBaseRequest request)
         {
             if (BatchRequestSteps.Count >= CoreConstants.BatchRequest.MaxNumberOfRequests)
                 throw new ClientException(new Error
@@ -124,6 +127,7 @@ namespace Microsoft.Graph
             string requestId = Guid.NewGuid().ToString();
             BatchRequestStep batchRequestStep = new BatchRequestStep(requestId, request.GetHttpRequestMessage());
             (BatchRequestSteps as IDictionary<string, BatchRequestStep>).Add(batchRequestStep.RequestId, batchRequestStep);
+            return requestId;
         }
 
         /// <summary>
