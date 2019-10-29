@@ -13,6 +13,11 @@ namespace Microsoft.Graph
     public interface IBaseRequest
     {
         /// <summary>
+        /// Gets or sets the response handler for the request.
+        /// </summary>
+        IResponseHandler ResponseHandler { get; set; }
+
+        /// <summary>
         /// Gets or sets the content type for the request.
         /// </summary>
         string ContentType { get; set; }
