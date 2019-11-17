@@ -59,7 +59,7 @@ namespace Microsoft.Graph
 
             internal static string NullParameter = "{0} parameter cannot be null.";
 
-            internal static string UnableToDeserializexContent = "Unable to deserialize content.";
+            internal static string UnableToDeserializeContent = "Unable to deserialize content.";
 
             internal static string InvalidDependsOnRequestId = "Corresponding batch request id not found for the specified dependsOn relation.";
 

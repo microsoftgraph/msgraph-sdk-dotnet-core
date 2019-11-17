@@ -197,7 +197,7 @@ namespace Microsoft.Graph
                 throw new ClientException(new Error
                 {
                     Code = ErrorConstants.Codes.InvalidRequest,
-                    Message = ErrorConstants.Messages.UnableToDeserializexContent
+                    Message = ErrorConstants.Messages.UnableToDeserializeContent
                 }, ex);
             }
         }
