@@ -27,11 +27,27 @@ namespace Microsoft.Graph
         public IReadOnlyDictionary<string, BatchRequestStep> BatchRequestSteps { get; private set; }
 
         /// <summary>
+        /// Gets a serializer for serializing and deserializing JSON objects.
+        /// </summary>
+        public ISerializer Serializer { get; private set; }
+
+        /// <summary>
         /// Constructs a new <see cref="BatchRequestContent"/>.
         /// </summary>
         public BatchRequestContent()
-            :this(new BatchRequestStep[] { })
+            :this(new BatchRequestStep[] { },null)
         {
+        }
+
+        /// <summary>
+        /// Constructs a new <see cref="BatchRequestContent"/>.
+        /// </summary>
+        /// <param name="batchRequestSteps">A list of <see cref="BatchRequestStep"/> to add to the batch request content.</param>
+        /// <param name="serializer">A serializer for serializing and deserializing JSON objects.</param>
+        public BatchRequestContent(BatchRequestStep [] batchRequestSteps, ISerializer serializer = null)
+            : this(batchRequestSteps)
+        {
+            this.Serializer = serializer ?? new Serializer();
         }
 
         /// <summary>
@@ -69,6 +85,8 @@ namespace Microsoft.Graph
                 }
                 AddBatchRequestStep(requestStep);
             }
+
+            this.Serializer = new Serializer();
         }
 
         /// <summary>
@@ -205,10 +223,8 @@ namespace Microsoft.Graph
                 HttpRequestMessage clonedRequest = await request.CloneAsync();
 
                 using (Stream streamContent = await clonedRequest.Content.ReadAsStreamAsync())
-                using (StreamReader streamReader = new StreamReader(streamContent))
-                using (JsonTextReader jsonTextReader = new JsonTextReader(streamReader))
                 {
-                    return JObject.Load(jsonTextReader);
+                    return Serializer.DeserializeObject<JObject>(streamContent);
                 }
             }
             catch (Exception ex)
