@@ -4,9 +4,10 @@
 
 namespace Microsoft.Graph
 {
+    using Newtonsoft.Json;
+    using System.IO;
     using System.Net;
     using System.Net.Http;
-    using System.Runtime.Serialization;
     using System.Threading.Tasks;
 
     /// <summary>
@@ -43,16 +44,17 @@ namespace Microsoft.Graph
             }
 
             // Give back the info from the server for ongoing upload as the upload is ongoing
-            var responseString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+            Stream responseSteam = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
 
             try
             {
                 if (!response.IsSuccessStatusCode)
                 {
-                    var errorResponse = this.serializer.DeserializeObject<ErrorResponse>(responseString);
-                    var error = errorResponse.Error;
-                    // Throw excpetion to know something went wrong.
-                    throw new ServiceException(error, response.Headers, response.StatusCode, responseString);
+                    ErrorResponse errorResponse = this.serializer.DeserializeObject<ErrorResponse>(responseSteam);
+                    Error error = errorResponse.Error;
+                    string rawResponseBody = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                    // Throw exception to know something went wrong.
+                    throw new ServiceException(error, response.Headers, response.StatusCode, rawResponseBody);
                 }
 
                 //Upload has completed so return info on the download
@@ -60,12 +62,12 @@ namespace Microsoft.Graph
 
                 if (response.StatusCode == HttpStatusCode.Created)
                 {
-                    uploadResult.ItemResponse = this.serializer.DeserializeObject<T>(responseString);
+                    uploadResult.ItemResponse = this.serializer.DeserializeObject<T>(responseSteam);
                     uploadResult.Location = response.Headers.Location;
                 }
                 else //its a 200 or 202
                 {
-                    UploadSessionInfo uploadSessionInfo = this.serializer.DeserializeObject<UploadSessionInfo>(responseString);
+                    UploadSessionInfo uploadSessionInfo = this.serializer.DeserializeObject<UploadSessionInfo>(responseSteam);
 
                     // try to get the session infomation
                     if (uploadSessionInfo?.NextExpectedRanges != null)
@@ -75,14 +77,15 @@ namespace Microsoft.Graph
                     else
                     {
                         //upload is most likely done. Item info may come in a 200 response
-                        uploadResult.ItemResponse = this.serializer.DeserializeObject<T>(responseString);
+                        uploadResult.ItemResponse = this.serializer.DeserializeObject<T>(responseSteam);
                     };
                 }
 
                 return uploadResult;
             }
-            catch (SerializationException exception)
+            catch (JsonSerializationException exception)
             {
+                string rawResponseBody = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                 throw new ServiceException(new Error()
                     {
                         Code = ErrorConstants.Codes.GeneralException,
@@ -90,7 +93,7 @@ namespace Microsoft.Graph
                     }, 
                     response.Headers,
                     response.StatusCode,
-                    responseString,
+                    rawResponseBody,
                     exception);
             }
         }

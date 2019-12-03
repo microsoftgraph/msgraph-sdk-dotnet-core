@@ -68,7 +68,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="uploadSliceRequest">The UploadSliceRequest to make the request with.</param>
         /// <param name="exceptionTrackingList">A list of exceptions to use to track progress. SlicedUpload may retry.</param>
-        public async Task<UploadResult<T>> UploadSliceAsync(UploadSliceRequest<T> uploadSliceRequest, ICollection<Exception> exceptionTrackingList)
+        private async Task<UploadResult<T>> UploadSliceAsync(UploadSliceRequest<T> uploadSliceRequest, ICollection<Exception> exceptionTrackingList)
         {
             var firstAttempt = true;
             this._uploadStream.Seek(uploadSliceRequest.RangeBegin, SeekOrigin.Begin);
@@ -115,7 +115,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="options">Options to be applied to each request.</param>
         /// <returns>All requests currently needed to complete the upload session.</returns>
-        public virtual IEnumerable<UploadSliceRequest<T>> GetUploadSliceRequests(IEnumerable<Option> options = null)
+        internal IEnumerable<UploadSliceRequest<T>> GetUploadSliceRequests(IEnumerable<Option> options = null)
         {
             foreach (var (item1, item2) in this._rangesRemaining)
             {
