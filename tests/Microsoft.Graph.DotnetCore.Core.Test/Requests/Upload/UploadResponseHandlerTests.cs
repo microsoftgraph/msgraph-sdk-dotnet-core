@@ -13,20 +13,22 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
     using Xunit;
     public class UploadResponseHandlerTests
     {
-        [Fact]
-        public async Task GetDriveItemOnCompletedUpload()
+        [Theory]
+        [InlineData(HttpStatusCode.Created)]
+        [InlineData(HttpStatusCode.OK)]
+        public async Task GetDriveItemOnCompletedUpload(HttpStatusCode statusCode)
         {
             // Arrange
             var responseHandler = new UploadResponseHandler();
-            var hrm = new HttpResponseMessage()
+            var hrm = new HttpResponseMessage
             {
                 Content = new StringContent(@"{
                     ""id"": ""912310013A123"",
-                    ""name"": ""largefile.vhd"",
+                    ""name"": ""largeFile.vhd"",
                     ""size"": 33
-                }", Encoding.UTF8, "application/json")
+                }", Encoding.UTF8, "application/json"),
+                StatusCode = statusCode//upload successful!
             };
-            hrm.StatusCode = HttpStatusCode.Created;//upload successful!
 
             // Act
             var uploadResult = await responseHandler.HandleResponse<DriveItem>(hrm);
@@ -36,7 +38,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             Assert.True(uploadResult.UploadSucceeded);
             Assert.NotNull(driveItem);
             Assert.Equal("912310013A123", driveItem.Id);
-            Assert.Equal("largefile.vhd", driveItem.Name);
+            Assert.Equal("largeFile.vhd", driveItem.Name);
             Assert.Equal(33, driveItem.Size);
         }
 
@@ -67,7 +69,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         {
             // Arrange
             var responseHandler = new UploadResponseHandler();
-            var hrm = new HttpResponseMessage()
+            var hrm = new HttpResponseMessage
             {
                 Content = new StringContent(@"{
                   ""expirationDateTime"": ""2015 - 01 - 29T09: 21:55.523Z"",
@@ -75,9 +77,9 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                   ""12345-55232"",
                   ""77829-99375""
                   ]
-                }", Encoding.UTF8, "application/json")
+                }", Encoding.UTF8, "application/json"),
+                StatusCode = HttpStatusCode.OK//upload successful!
             };
-            hrm.StatusCode = HttpStatusCode.OK;//upload successful!
 
             // Act
             var uploadResult = await responseHandler.HandleResponse<DriveItem>(hrm);
@@ -98,7 +100,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         {
             // Arrange
             var responseHandler = new UploadResponseHandler();
-            var hrm = new HttpResponseMessage()
+            var hrm = new HttpResponseMessage
             {
                 Content = new StringContent(@"{
                   ""error"": {
@@ -109,9 +111,9 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                                 ""date"": ""2019-11-21T13:57:37""
                             }
                         }
-                    }", Encoding.UTF8, "application/json")
+                    }", Encoding.UTF8, "application/json"),
+                StatusCode = HttpStatusCode.Unauthorized//error
             };
-            hrm.StatusCode = HttpStatusCode.Unauthorized;//error
 
             // Act
             var serviceException = await Assert.ThrowsAsync<ServiceException>(() => responseHandler.HandleResponse<DriveItem>(hrm));
@@ -140,11 +142,11 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                         }
                     }";
 
-            var hrm = new HttpResponseMessage()
+            var hrm = new HttpResponseMessage
             {
-                Content = new StringContent(malformedResponse, Encoding.UTF8, "application/json")
+                Content = new StringContent(malformedResponse, Encoding.UTF8, "application/json"),
+                StatusCode = HttpStatusCode.Unauthorized//error
             };
-            hrm.StatusCode = HttpStatusCode.Unauthorized;//error
 
             // Act
             var serviceException = await Assert.ThrowsAsync<ServiceException>(() => responseHandler.HandleResponse<DriveItem>(hrm));

@@ -67,7 +67,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
                     currentRangeBegins += maxSliceSize;
                 }
 
-                //The last slice is a abit smaller than the rest
+                //The last slice is a a bit smaller than the rest
                 var lastUploadSlice = uploadSlices.Last();
                 Assert.Equal(stream.Length - 1, lastUploadSlice.RangeEnd);
                 Assert.Equal(stream.Length % maxSliceSize, lastUploadSlice.RangeLength); //verify the last slice is the right size

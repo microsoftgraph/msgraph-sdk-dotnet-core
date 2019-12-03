@@ -15,7 +15,7 @@ namespace Microsoft.Graph
     /// </summary>
     public class UploadResponseHandler
     {
-        private readonly ISerializer serializer;
+        private readonly ISerializer _serializer;
 
         /// <summary>
         /// Constructs a new <see cref="ResponseHandler"/>.
@@ -23,7 +23,7 @@ namespace Microsoft.Graph
         /// <param name="serializer"></param>
         public UploadResponseHandler(ISerializer serializer = null)
         {
-            this.serializer = serializer ?? new Serializer();
+            this._serializer = serializer ?? new Serializer();
         }
 
         /// <summary>
@@ -44,57 +44,59 @@ namespace Microsoft.Graph
             }
 
             // Give back the info from the server for ongoing upload as the upload is ongoing
-            Stream responseSteam = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-
-            try
+            using (Stream responseSteam = await response.Content.ReadAsStreamAsync().ConfigureAwait(false))
             {
-                if (!response.IsSuccessStatusCode)
+                try
                 {
-                    ErrorResponse errorResponse = this.serializer.DeserializeObject<ErrorResponse>(responseSteam);
-                    Error error = errorResponse.Error;
-                    string rawResponseBody = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                    // Throw exception to know something went wrong.
-                    throw new ServiceException(error, response.Headers, response.StatusCode, rawResponseBody);
-                }
-
-                //Upload has completed so return info on the download
-                var uploadResult = new UploadResult<T>();
-
-                if (response.StatusCode == HttpStatusCode.Created)
-                {
-                    uploadResult.ItemResponse = this.serializer.DeserializeObject<T>(responseSteam);
-                    uploadResult.Location = response.Headers.Location;
-                }
-                else //its a 200 or 202
-                {
-                    UploadSessionInfo uploadSessionInfo = this.serializer.DeserializeObject<UploadSessionInfo>(responseSteam);
-
-                    // try to get the session infomation
-                    if (uploadSessionInfo?.NextExpectedRanges != null)
+                    if (!response.IsSuccessStatusCode)
                     {
-                        uploadResult.UploadSession = uploadSessionInfo;
+                        ErrorResponse errorResponse = this._serializer.DeserializeObject<ErrorResponse>(responseSteam);
+                        Error error = errorResponse.Error;
+                        string rawResponseBody = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                        // Throw exception to know something went wrong.
+                        throw new ServiceException(error, response.Headers, response.StatusCode, rawResponseBody);
                     }
-                    else
-                    {
-                        //upload is most likely done. Item info may come in a 200 response
-                        uploadResult.ItemResponse = this.serializer.DeserializeObject<T>(responseSteam);
-                    };
-                }
 
-                return uploadResult;
-            }
-            catch (JsonSerializationException exception)
-            {
-                string rawResponseBody = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                throw new ServiceException(new Error()
+                    //Upload has completed so return info on the download
+                    var uploadResult = new UploadResult<T>();
+
+                    if (response.StatusCode == HttpStatusCode.Created)
                     {
-                        Code = ErrorConstants.Codes.GeneralException,
-                        Message = ErrorConstants.Messages.UnableToDeserializexContent,
-                    }, 
-                    response.Headers,
-                    response.StatusCode,
-                    rawResponseBody,
-                    exception);
+                        uploadResult.ItemResponse = this._serializer.DeserializeObject<T>(responseSteam);
+                        uploadResult.Location = response.Headers.Location;
+                    }
+                    else //its a 200 or 202
+                    {
+                        UploadSessionInfo uploadSessionInfo = this._serializer.DeserializeObject<UploadSessionInfo>(responseSteam);
+
+                        // try to get the session information
+                        if (uploadSessionInfo?.NextExpectedRanges != null)
+                        {
+                            uploadResult.UploadSession = uploadSessionInfo;
+                        }
+                        else
+                        {
+                            //upload is most likely done. Item info may come in a 200 response
+                            responseSteam.Position = 0; //reset 
+                            uploadResult.ItemResponse = this._serializer.DeserializeObject<T>(responseSteam);
+                        }
+                    }
+
+                    return uploadResult;
+                }
+                catch (JsonSerializationException exception)
+                {
+                    string rawResponseBody = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                    throw new ServiceException(new Error()
+                        {
+                            Code = ErrorConstants.Codes.GeneralException,
+                            Message = ErrorConstants.Messages.UnableToDeserializexContent,
+                        }, 
+                        response.Headers,
+                        response.StatusCode,
+                        rawResponseBody,
+                        exception);
+                }
             }
         }
     }
