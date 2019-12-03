@@ -27,6 +27,7 @@
       - Adds ChaosHandler for testing.
       - HTTP pipeline updates overwrite existing inner handlers.
       - BatchRequestContent enhancements to enable deserialization to a given type
+      - Updates to fix and use common serializer for batch content
       - Adds FileUploadTask to provide support for file/attachement upload
     </PackageReleaseNotes>
   </PropertyGroup>

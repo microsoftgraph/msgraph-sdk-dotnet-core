@@ -23,6 +23,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
 
             Assert.NotNull(responses);
             Assert.Null(httpResponse);
+            Assert.NotNull(batchResponseContent.Serializer);
             Assert.True(responses.Count.Equals(0));
         }
 
@@ -41,6 +42,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
 
             Assert.NotNull(responses);
             Assert.Null(httpResponse);
+            Assert.NotNull(batchResponseContent.Serializer);
             Assert.True(responses.Count.Equals(0));
         }
 
@@ -183,6 +185,76 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
             Assert.Equal("20117", serviceException.Error.Code);
             Assert.Equal(HttpStatusCode.Conflict, serviceException.StatusCode);//status 409
             Assert.NotNull(serviceException.RawResponseBody);
+        }
+
+        [Fact]
+        public async Task BatchResponseContent_GetResponseByIdAsyncWithDeserializerWorksWithDateTimeOffsets()
+        {
+            // Arrange an example Event object with a few properties
+            string responseJSON = "\n{\n" +
+                                  "    \"responses\": [\n" +
+                                  "        {\n" +
+                                  "            \"id\": \"3\",\n" +
+                                  "            \"status\": 200,\n" +
+                                  "            \"headers\": {\n" +
+                                  "                \"Cache-Control\": \"private\",\n" +
+                                  "                \"OData-Version\": \"4.0\",\n" +
+                                  "                \"Content-Type\": \"application/json;odata.metadata=minimal;odata.streaming=true;IEEE754Compatible=false;charset=utf-8\",\n" +
+                                  "                \"ETag\": \"W/\\\"h8TLt1Vki0W7hBZaqTqGTQAAQyxv+g==\\\"\"\n" +
+                                  "            },\n" +
+                                  "            \"body\": {\n" +
+                                  "                \"@odata.context\": \"https://graph.microsoft.com/v1.0/$metadata#users('d9f7c4f6-e1bb-4032-a86d-6e84722b983d')/events/$entity\",\n" +
+                                  "                \"@odata.etag\": \"W/\\\"h8TLt1Vki0W7hBZaqTqGTQAAQyxv+g==\\\"\",\n" +
+                                  "                \"id\": \"AQMkADcyMWRhMWZmAC0xZTI1LTRjZjEtYTRjMC04M\",\n" +
+                                  "                \"categories\": [],\n" +
+                                  "                \"originalStartTimeZone\": \"Pacific Standard Time\",\n" +
+                                  "                \"originalEndTimeZone\": \"Pacific Standard Time\",\n" +
+                                  "                \"iCalUId\": \"040000008200E00074C5B7101A82E0080000000053373A40E03ED5010000000000000000100000007C41056410E97C44B2A34798E719B862\",\n" +
+                                  "                \"reminderMinutesBeforeStart\": 15,\n" +
+                                  "                \"type\": \"singleInstance\",\n" +
+                                  "                \"webLink\": \"https://outlook.office365.com/owa/?itemid=AQMkADcyMWRhMWZmAC0xZTI1LTRjZjEtYTRjMC04MGY3OGEzNThiZDAARgAAA1AZwxLGN%2FJIv2Mj%2F0o8JqYHAIfEy7dVZItFu4QWWqk6hk0AAAIBDQAAAIfEy7dVZItFu4QWWqk6hk0AAAI4eQAAAA%3D%3D&exvsurl=1&path=/calendar/item\",\n" +
+                                  "                \"onlineMeetingUrl\": null,\n" +
+                                  "                \"recurrence\": null,\n" +
+                                  "                \"responseStatus\": {\n" +
+                                  "                    \"response\": \"notResponded\",\n" +
+                                  "                    \"time\": \"0001-01-01T00:00:00Z\"\n" +
+                                  "                },\n" +
+                                  "                \"body\": {\n" +
+                                  "                    \"contentType\": \"html\",\n" +
+                                  "                    \"content\": \"<html>\\r\\n<head>\\r\\n<meta http-\",\n" +
+
+                                  "                },\n" +
+                                  "                \"start\": {\n" +
+                                  "                    \"dateTime\": \"2019-07-30T22:00:00.0000000\",\n" +
+                                  "                    \"timeZone\": \"UTC\"\n" +
+                                  "                },\n" +
+                                  "                \"end\": {\n" +
+                                  "                    \"dateTime\": \"2019-07-30T23:00:00.0000000\",\n" +
+                                  "                    \"timeZone\": \"UTC\"\n" +
+                                  "                }" +
+                                  "            }\n" +
+                                  "        }\n" +
+                                  "    ]\n" +
+                                  "}";
+
+            HttpContent content = new StringContent(responseJSON);
+            HttpResponseMessage httpResponseMessage = new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = content
+            };
+
+            BatchResponseContent batchResponseContent = new BatchResponseContent(httpResponseMessage);
+
+            // Act
+            Event eventItem = await batchResponseContent.GetResponseByIdAsync<Event>("3");
+
+            // Assert we have a valid datetime in the event
+            Assert.Equal("2019-07-30T23:00:00.0000000", eventItem.End.DateTime);
+            Assert.Equal("UTC",eventItem.End.TimeZone);
+
+            Assert.Equal("2019-07-30T22:00:00.0000000", eventItem.Start.DateTime);
+            Assert.Equal("UTC", eventItem.Start.TimeZone);
+
         }
     }
 }

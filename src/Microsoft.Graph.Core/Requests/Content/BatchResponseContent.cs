@@ -23,16 +23,24 @@ namespace Microsoft.Graph
         private HttpResponseMessage batchResponseMessage;
 
         /// <summary>
+        /// Gets a serializer for serializing and deserializing JSON objects.
+        /// </summary>
+        public ISerializer Serializer { get; private set; }
+
+        /// <summary>
         /// Constructs a new <see cref="BatchResponseContent"/>
         /// </summary>
         /// <param name="httpResponseMessage">A <see cref="HttpResponseMessage"/> of a batch request execution.</param>
-        public BatchResponseContent(HttpResponseMessage httpResponseMessage)
+        /// <param name="serializer">A serializer for serializing and deserializing JSON objects.</param>
+        public BatchResponseContent(HttpResponseMessage httpResponseMessage, ISerializer serializer = null)
         {
             this.batchResponseMessage = httpResponseMessage ?? throw new ClientException(new Error
             {
                 Code = ErrorConstants.Codes.InvalidArgument,
                 Message = string.Format(ErrorConstants.Messages.NullParameter, nameof(httpResponseMessage))
             });
+
+            this.Serializer = serializer ?? new Serializer();
         }
 
         /// <summary>
@@ -186,10 +194,8 @@ namespace Microsoft.Graph
             try
             {
                 using (Stream streamContent = await this.batchResponseMessage.Content.ReadAsStreamAsync())
-                using (StreamReader streamReader = new StreamReader(streamContent))
-                using (JsonTextReader jsonTextReader = new JsonTextReader(streamReader))
                 {
-                    return JObject.Load(jsonTextReader);
+                    return Serializer.DeserializeObject<JObject>(streamContent);
                 }
             }
             catch (Exception ex)
