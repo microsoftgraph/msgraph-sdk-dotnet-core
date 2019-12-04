@@ -15,7 +15,7 @@ namespace Microsoft.Graph
     /// The UploadSliceRequest class to help with uploading file slices
     /// </summary>
     /// <typeparam name="T">The type to be uploaded</typeparam>
-    public class UploadSliceRequest<T> : BaseRequest
+    internal class UploadSliceRequest<T> : BaseRequest
     {
         private UploadResponseHandler responseHandler;
 
@@ -44,7 +44,6 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="sessionUrl">URL to upload the slice.</param>
         /// <param name="client">Client used for sending the slice.</param>
-        /// <param name="options">Options</param>
         /// <param name="rangeBegin">Beginning of range of this slice</param>
         /// <param name="rangeEnd">End of range of this slice</param>
         /// <param name="totalSessionLength">Total session length. This MUST be consistent
@@ -52,11 +51,10 @@ namespace Microsoft.Graph
         public UploadSliceRequest(
             string sessionUrl,
             IBaseClient client,
-            IEnumerable<Option> options,
             long rangeBegin,
             long rangeEnd,
             long totalSessionLength)
-            : base(sessionUrl, client, options)
+            : base(sessionUrl, client, null)
         {
             this.RangeBegin = rangeBegin;
             this.RangeEnd = rangeEnd;

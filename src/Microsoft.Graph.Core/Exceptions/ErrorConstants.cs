@@ -65,7 +65,7 @@ namespace Microsoft.Graph
 
             internal static string ExpiredUploadSession = "Upload session expired. Upload cannot resume";
 
-            internal static string NoResponseForUplaod = "No Response Received for upload.";
+            internal static string NoResponseForUpload = "No Response Received for upload.";
 
             public static string InvalidProxyArgument = "Proxy cannot be set more once. Proxy can only be set on the proxy or defaultHttpHandler argument and not both.";
         }

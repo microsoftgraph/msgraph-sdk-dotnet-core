@@ -8,7 +8,7 @@ namespace Microsoft.Graph
     using System.Collections.Generic;
 
     /// <summary>
-    /// Concrete implementaion of the IUploadSession interface
+    /// Concrete implementation of the IUploadSession interface
     /// </summary>
     internal class UploadSessionInfo : IUploadSession
     {

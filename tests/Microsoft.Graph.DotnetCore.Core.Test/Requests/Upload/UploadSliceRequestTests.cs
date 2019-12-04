@@ -41,7 +41,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                 // 3. Create a batch request object to be tested
                 MockCustomHttpProvider customHttpProvider = new MockCustomHttpProvider(testHttpMessageHandler);
                 BaseClient client = new BaseClient(requestUrl, authenticationProvider.Object, customHttpProvider);
-                UploadSliceRequest<DriveItem> uploadSliceRequest = new UploadSliceRequest<DriveItem>(requestUrl, client, null, 0, 200, 1000);
+                UploadSliceRequest<DriveItem> uploadSliceRequest = new UploadSliceRequest<DriveItem>(requestUrl, client, 0, 200, 1000);
                 Stream stream = new MemoryStream(new byte[300]);
 
                 /* Act */

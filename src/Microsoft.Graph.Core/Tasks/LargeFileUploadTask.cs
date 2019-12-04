@@ -30,8 +30,8 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="uploadSession">Session information of type <see cref="IUploadSession"/>></param>
         /// <param name="uploadStream">Readable, seekable stream to be uploaded. Length of session is determined via uploadStream.Length</param>
-        /// <param name="maxSliceSize">Max size of each slice to be uploaded. Multiple of 320 KiB (320 * 1024) is required.
-        /// <param name="baseClient"><see cref="IBaseClient"/> to use for making upload requests. The client should not set Auth headers as upload urls do not need them.</param>
+        /// <param name="maxSliceSize">Max size of each slice to be uploaded. Multiple of 320 KiB (320 * 1024) is required.</param>
+        /// <param name="baseClient"><see cref="IBaseClient"/> to use for making upload requests. The client should not set Auth headers as upload urls do not need them.
         /// If less than 0, default value of 5 MiB is used. .</param>
         public LargeFileUploadTask(IUploadSession uploadSession, Stream uploadStream,  int maxSliceSize = -1, IBaseClient baseClient = null)
         {
@@ -52,9 +52,9 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Initialize a baseclient to use for the upload that does not have Auth enabled as the upload URLs explicitly do not need authentication.
+        /// Initialize a baseClient to use for the upload that does not have Auth enabled as the upload URLs explicitly do not need authentication.
         /// </summary>
-        /// <param name="uploadUrl">Url to perfrom the upload to from the session</param>
+        /// <param name="uploadUrl">Url to perform the upload to from the session</param>
         /// <returns></returns>
         private IBaseClient InitializeClient(string uploadUrl)
         {
@@ -113,9 +113,8 @@ namespace Microsoft.Graph
         /// Get the series of requests needed to complete the upload session. Call <see cref="UpdateSessionStatusAsync"/>
         /// first to update the internal session information.
         /// </summary>
-        /// <param name="options">Options to be applied to each request.</param>
         /// <returns>All requests currently needed to complete the upload session.</returns>
-        internal IEnumerable<UploadSliceRequest<T>> GetUploadSliceRequests(IEnumerable<Option> options = null)
+        internal IEnumerable<UploadSliceRequest<T>> GetUploadSliceRequests()
         {
             foreach (var (item1, item2) in this._rangesRemaining)
             {
@@ -127,7 +126,6 @@ namespace Microsoft.Graph
                     var uploadRequest = new UploadSliceRequest<T>(
                         this.Session.UploadUrl,
                         this._client,
-                        options,
                         currentRangeBegins,
                         currentRangeBegins + nextSliceSize - 1,
                         this.TotalUploadLength);
@@ -143,17 +141,16 @@ namespace Microsoft.Graph
         /// Upload the whole session.
         /// </summary>
         /// <param name="maxTries">Number of times to retry entire session before giving up.</param>
-        /// <param name="options">Query and header option name value pairs for the request.</param>
         /// <param name="progress">IProgress object to monitor the progress of the upload.</param>
         /// <returns>Item information returned by server.</returns>
-        public async Task<UploadResult<T>> UploadAsync(IProgress<long> progress = null, int maxTries = 3, IEnumerable<Option> options = null)
+        public async Task<UploadResult<T>> UploadAsync(IProgress<long> progress = null, int maxTries = 3)
         {
             var uploadTries = 0;
             var trackedExceptions = new List<Exception>();
 
             while (uploadTries < maxTries)
             {
-                var sliceRequests = this.GetUploadSliceRequests(options);
+                var sliceRequests = this.GetUploadSliceRequests();
 
                 foreach (var request in sliceRequests)
                 {
@@ -183,10 +180,9 @@ namespace Microsoft.Graph
         /// Get info about the upload session and resume from where it left off.
         /// </summary>
         /// <param name="maxTries">Number of times to retry entire session before giving up.</param>
-        /// <param name="options">Query and header option name value pairs for the request.</param>
         /// <param name="progress">IProgress object to monitor the progress of the upload.</param>
         /// <returns>Item information returned by server.</returns>
-        public async Task<UploadResult<T>> ResumeAsync(IProgress<long> progress = null, int maxTries = 3, IEnumerable<Option> options = null)
+        public async Task<UploadResult<T>> ResumeAsync(IProgress<long> progress = null, int maxTries = 3)
         {
             var uploadSession = await this.UpdateSessionStatusAsync().ConfigureAwait(false);
             var uploadExpirationTime = uploadSession.ExpirationDateTime ?? DateTimeOffset.Now;
@@ -200,7 +196,7 @@ namespace Microsoft.Graph
                         Message = ErrorConstants.Messages.ExpiredUploadSession
                     });
             }
-            return await this.UploadAsync(progress, maxTries, options).ConfigureAwait(false);
+            return await this.UploadAsync(progress, maxTries).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -210,7 +206,7 @@ namespace Microsoft.Graph
         /// <returns><see cref="IUploadSession"/>> returned by the server.</returns>
         public async Task<IUploadSession> UpdateSessionStatusAsync()
         {
-            var request = new UploadSessionInfoRequest(this.Session, this._client, null);
+            var request = new UploadSessionInfoRequest(this.Session, this._client);
             var newSession = await request.GetAsync().ConfigureAwait(false);
 
             var newRangesRemaining = this.GetRangesRemaining(newSession);
@@ -227,7 +223,7 @@ namespace Microsoft.Graph
         /// <returns>Once returned task is complete, the session has been deleted.</returns>
         public async Task DeleteSessionAsync()
         {
-            var request = new UploadSessionInfoRequest(this.Session, this._client, null);
+            var request = new UploadSessionInfoRequest(this.Session, this._client);
             await request.DeleteAsync().ConfigureAwait(false);
         }
 

@@ -13,7 +13,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The ResponseHandler for upload requests
     /// </summary>
-    public class UploadResponseHandler
+    internal class UploadResponseHandler
     {
         private readonly ISerializer _serializer;
 
@@ -39,7 +39,7 @@ namespace Microsoft.Graph
                 throw new ServiceException(new Error
                 {
                     Code = ErrorConstants.Codes.GeneralException,
-                    Message = ErrorConstants.Messages.NoResponseForUplaod
+                    Message = ErrorConstants.Messages.NoResponseForUpload
                 });
             }
 
@@ -57,26 +57,34 @@ namespace Microsoft.Graph
                         throw new ServiceException(error, response.Headers, response.StatusCode, rawResponseBody);
                     }
 
-                    //Upload has completed so return info on the download
                     var uploadResult = new UploadResult<T>();
 
+                    /*
+                     * Check if we have a status code 201 to know if the upload completed successfully.
+                     * This will be returned when uploading a FileAttachment with a location header but empty response hence
+                     * This could also be returned when uploading a DriveItem with  an ItemResponse but no location header.
+                     */
                     if (response.StatusCode == HttpStatusCode.Created)
                     {
                         uploadResult.ItemResponse = this._serializer.DeserializeObject<T>(responseSteam);
                         uploadResult.Location = response.Headers.Location;
                     }
-                    else //its a 200 or 202
+                    else
                     {
+                        /*
+                         * The response could be either a 200 or a 202 response.
+                         * DriveItem Upload returns the upload session in a 202 response while FileAttachment in a 200 response
+                         * However, successful upload completion for a DriveItem the response could also come in a 200 response and
+                         * hence we validate this by checking the NextExpectedRanges parameter which is present in an ongoing upload
+                         */
                         UploadSessionInfo uploadSessionInfo = this._serializer.DeserializeObject<UploadSessionInfo>(responseSteam);
-
-                        // try to get the session information
                         if (uploadSessionInfo?.NextExpectedRanges != null)
                         {
                             uploadResult.UploadSession = uploadSessionInfo;
                         }
                         else
                         {
-                            //upload is most likely done. Item info may come in a 200 response
+                            //Upload is most likely done as DriveItem info may come in a 200 response
                             responseSteam.Position = 0; //reset 
                             uploadResult.ItemResponse = this._serializer.DeserializeObject<T>(responseSteam);
                         }

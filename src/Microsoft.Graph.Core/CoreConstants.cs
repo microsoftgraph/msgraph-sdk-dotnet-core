@@ -109,14 +109,5 @@ namespace Microsoft.Graph
             /// gzip encoding.
             public const string GZip = "gzip";
         }
-
-        /// <summary>
-        /// File Upload constants
-        /// </summary>
-        public static class Upload
-        {
-            /// gzip encoding.
-            public const string NextExpectedRanges = "nextExpectedRanges";
-        }
     }
 }

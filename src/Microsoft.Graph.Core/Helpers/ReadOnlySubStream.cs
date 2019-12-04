@@ -8,6 +8,12 @@ namespace Microsoft.Graph
     using System.Diagnostics;
     using System.IO;
 
+    /// <summary>
+    /// Helper stream class to represent a slice of a larger stream to save memory when dealing with large streams
+    /// and remove the extra copy operations
+    /// This class is inspired from System.IO.Compression in dot net core. Reference implementation can be found here
+    /// https://github.com/dotnet/corefx/blob/d59f6e5a1bdabdd05317fd727efb59345e328b80/src/System.IO.Compression/src/System/IO/Compression/ZipCustomStreams.cs#L147
+    /// </summary>
     internal class ReadOnlySubStream : Stream
     {
         private readonly long _startInSuperStream;

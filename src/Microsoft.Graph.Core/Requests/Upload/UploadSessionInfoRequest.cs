@@ -4,7 +4,6 @@
 
 namespace Microsoft.Graph
 {
-    using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -20,9 +19,8 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="session">The UploadSession to use in the request.</param>
         /// <param name="client">The <see cref="IBaseClient"/> for handling requests.</param>
-        /// <param name="options">Query and header option name value pairs for the request.</param>
-        public UploadSessionInfoRequest(IUploadSession session, IBaseClient client, IEnumerable<Option> options)
-            : base(session.UploadUrl, client, options)
+        public UploadSessionInfoRequest(IUploadSession session, IBaseClient client)
+            : base(session.UploadUrl, client, null)
         {
             this.responseHandler = new UploadResponseHandler();
         }
