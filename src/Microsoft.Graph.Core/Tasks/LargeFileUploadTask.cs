@@ -223,6 +223,17 @@ namespace Microsoft.Graph
         /// <returns>Once returned task is complete, the session has been deleted.</returns>
         public async Task DeleteSessionAsync()
         {
+            // validate that the upload can still be deleted.
+            var uploadExpirationTime = this.Session.ExpirationDateTime ?? DateTimeOffset.Now;
+            if (DateTimeOffset.Compare(uploadExpirationTime, DateTimeOffset.Now) <= 0)
+            {
+                throw new ClientException(
+                    new Error
+                    {
+                        Code = ErrorConstants.Codes.Timeout,
+                        Message = ErrorConstants.Messages.ExpiredUploadSession
+                    });
+            }
             var request = new UploadSessionInfoRequest(this.Session, this._client);
             await request.DeleteAsync().ConfigureAwait(false);
         }
