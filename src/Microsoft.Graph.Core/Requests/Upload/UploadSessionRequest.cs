@@ -4,22 +4,23 @@
 
 namespace Microsoft.Graph
 {
+    using Microsoft.Graph.Core.Models;
     using System.Threading;
     using System.Threading.Tasks;
 
     /// <summary>
-    /// The UploadSessionInfoRequest class
+    /// The UploadSessionRequest class
     /// </summary>
-    public class UploadSessionInfoRequest : BaseRequest
+    internal class UploadSessionRequest : BaseRequest
     {
         private readonly UploadResponseHandler responseHandler;
 
         /// <summary>
-        /// Create a new UploadSessionInfoRequest
+        /// Create a new UploadSessionRequest
         /// </summary>
-        /// <param name="session">The UploadSession to use in the request.</param>
+        /// <param name="session">The IUploadSession to use in the request.</param>
         /// <param name="client">The <see cref="IBaseClient"/> for handling requests.</param>
-        public UploadSessionInfoRequest(IUploadSession session, IBaseClient client)
+        public UploadSessionRequest(IUploadSession session, IBaseClient client)
             : base(session.UploadUrl, client, null)
         {
             this.responseHandler = new UploadResponseHandler();
@@ -67,7 +68,7 @@ namespace Microsoft.Graph
 
             using (var response = await this.SendRequestAsync(null, cancellationToken).ConfigureAwait(false))
             {
-                var uploadResult = await this.responseHandler.HandleResponse<UploadSessionInfo>(response);
+                var uploadResult = await this.responseHandler.HandleResponse<UploadSession>(response);
                 return uploadResult.UploadSession;
             }
         }

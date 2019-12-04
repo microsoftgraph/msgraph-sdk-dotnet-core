@@ -19,12 +19,13 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
             using (Stream stream = new MemoryStream())
             {
                 // Arrange
-                UploadSessionInfo uploadSession = new UploadSessionInfo
+                IUploadSession uploadSession = new Graph.Core.Models.UploadSession
                 {
                     NextExpectedRanges = new List<string>() { "0-" },
                     UploadUrl = "http://localhost",
                     ExpirationDateTime = DateTimeOffset.Parse("2019-11-07T06:39:31.499Z")
                 };
+
                 int maxSliceSize = 1000;//invalid slice size that is not a multiple of 320
 
                 // Act 
@@ -42,7 +43,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
             using (Stream stream = new MemoryStream(mockData))
             {
                 // Arrange
-                UploadSessionInfo uploadSession = new UploadSessionInfo
+                IUploadSession uploadSession = new Graph.Core.Models.UploadSession
                 {
                     NextExpectedRanges = new List<string>() { "0-" },
                     UploadUrl = "http://localhost",

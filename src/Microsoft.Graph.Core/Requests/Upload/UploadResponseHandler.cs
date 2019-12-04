@@ -1,9 +1,10 @@
-﻿// ------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
 namespace Microsoft.Graph
 {
+    using Microsoft.Graph.Core.Models;
     using Newtonsoft.Json;
     using System.IO;
     using System.Net;
@@ -77,10 +78,10 @@ namespace Microsoft.Graph
                          * However, successful upload completion for a DriveItem the response could also come in a 200 response and
                          * hence we validate this by checking the NextExpectedRanges parameter which is present in an ongoing upload
                          */
-                        UploadSessionInfo uploadSessionInfo = this._serializer.DeserializeObject<UploadSessionInfo>(responseSteam);
-                        if (uploadSessionInfo?.NextExpectedRanges != null)
+                        UploadSession uploadSession = this._serializer.DeserializeObject<UploadSession>(responseSteam);
+                        if (uploadSession?.NextExpectedRanges != null)
                         {
-                            uploadResult.UploadSession = uploadSessionInfo;
+                            uploadResult.UploadSession = uploadSession;
                         }
                         else
                         {

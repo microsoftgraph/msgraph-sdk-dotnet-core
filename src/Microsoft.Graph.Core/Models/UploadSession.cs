@@ -2,7 +2,7 @@
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
-namespace Microsoft.Graph
+namespace Microsoft.Graph.Core.Models
 {
     using System;
     using System.Collections.Generic;
@@ -10,7 +10,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// Concrete implementation of the IUploadSession interface
     /// </summary>
-    internal class UploadSessionInfo : IUploadSession
+    internal class UploadSession : IUploadSession
     {
         /// <summary>
         /// Expiration date of the upload session

@@ -206,7 +206,7 @@ namespace Microsoft.Graph
         /// <returns><see cref="IUploadSession"/>> returned by the server.</returns>
         public async Task<IUploadSession> UpdateSessionStatusAsync()
         {
-            var request = new UploadSessionInfoRequest(this.Session, this._client);
+            var request = new UploadSessionRequest(this.Session, this._client);
             var newSession = await request.GetAsync().ConfigureAwait(false);
 
             var newRangesRemaining = this.GetRangesRemaining(newSession);
@@ -234,7 +234,7 @@ namespace Microsoft.Graph
                         Message = ErrorConstants.Messages.ExpiredUploadSession
                     });
             }
-            var request = new UploadSessionInfoRequest(this.Session, this._client);
+            var request = new UploadSessionRequest(this.Session, this._client);
             await request.DeleteAsync().ConfigureAwait(false);
         }
 
