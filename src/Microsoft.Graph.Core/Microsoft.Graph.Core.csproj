@@ -29,7 +29,7 @@
       - BatchRequestContent enhancements to enable deserialization to a given type
       - Updates to fix and use common serializer for batch content
       - Adds FileUploadTask to provide support for file/attachement upload
-      - Fix for modified Timeout property in a passed HttpClient
+      - Fix for modifying the Timeout property of a passed HttpClient
     </PackageReleaseNotes>
   </PropertyGroup>
   <!--We manually configure LanguageTargets for Xamarin due to .Net SDK TFMs limitation https://github.com/dotnet/sdk/issues/491 -->
