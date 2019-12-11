@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
@@ -23,16 +23,24 @@ namespace Microsoft.Graph
         private HttpResponseMessage batchResponseMessage;
 
         /// <summary>
+        /// Gets a serializer for serializing and deserializing JSON objects.
+        /// </summary>
+        public ISerializer Serializer { get; private set; }
+
+        /// <summary>
         /// Constructs a new <see cref="BatchResponseContent"/>
         /// </summary>
         /// <param name="httpResponseMessage">A <see cref="HttpResponseMessage"/> of a batch request execution.</param>
-        public BatchResponseContent(HttpResponseMessage httpResponseMessage)
+        /// <param name="serializer">A serializer for serializing and deserializing JSON objects.</param>
+        public BatchResponseContent(HttpResponseMessage httpResponseMessage, ISerializer serializer = null)
         {
             this.batchResponseMessage = httpResponseMessage ?? throw new ClientException(new Error
             {
                 Code = ErrorConstants.Codes.InvalidArgument,
                 Message = string.Format(ErrorConstants.Messages.NullParameter, nameof(httpResponseMessage))
             });
+
+            this.Serializer = serializer ?? new Serializer();
         }
 
         /// <summary>
@@ -75,6 +83,58 @@ namespace Microsoft.Graph
             }
 
             return GetResponseMessageFromJObject(jResponseItem);
+        }
+
+        /// <summary>
+        /// Gets a batch response as a requested type for the specified batch request id.
+        /// </summary>
+        /// <param name="requestId">A batch request id.</param>
+        /// <returns>A deserialized object of type T<see cref="HttpResponseMessage"/>.</returns>
+        public async Task<T> GetResponseByIdAsync<T>(string requestId)
+        {
+            using (var httpResponseMessage = await GetResponseByIdAsync(requestId))
+            {
+                var responseHandler = new ResponseHandler(new Serializer());
+                
+                if (!httpResponseMessage.IsSuccessStatusCode)
+                {
+                    Error error;
+                    string rawResponseBody = null;
+
+                    //deserialize into an ErrorResponse as the result is not a success.
+                    ErrorResponse errorResponse = await responseHandler.HandleResponse<ErrorResponse>(httpResponseMessage);
+
+                    if (errorResponse?.Error == null)
+                    {
+                        if (httpResponseMessage.StatusCode == HttpStatusCode.NotFound)
+                        {
+                            error = new Error { Code = ErrorConstants.Codes.ItemNotFound };
+                        }
+                        else
+                        {
+                            error = new Error
+                            {
+                                Code = ErrorConstants.Codes.GeneralException,
+                                Message = ErrorConstants.Messages.UnexpectedExceptionResponse
+                            };
+                        }
+                    }
+                    else
+                    {
+                        error = errorResponse.Error;
+                    }
+
+                    if (httpResponseMessage.Content?.Headers.ContentType.MediaType == "application/json")
+                    {
+                        rawResponseBody = await httpResponseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
+                    }
+
+                    throw new ServiceException(error, httpResponseMessage.Headers, httpResponseMessage.StatusCode, rawResponseBody);
+                }
+
+                // return the deserialized object
+                return await responseHandler.HandleResponse<T>(httpResponseMessage);
+            }
         }
 
         /// <summary>
@@ -134,10 +194,8 @@ namespace Microsoft.Graph
             try
             {
                 using (Stream streamContent = await this.batchResponseMessage.Content.ReadAsStreamAsync())
-                using (StreamReader streamReader = new StreamReader(streamContent))
-                using (JsonTextReader jsonTextReader = new JsonTextReader(streamReader))
                 {
-                    return JObject.Load(jsonTextReader);
+                    return Serializer.DeserializeObject<JObject>(streamContent);
                 }
             }
             catch (Exception ex)

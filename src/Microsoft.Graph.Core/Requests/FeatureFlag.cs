@@ -1,9 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿// ------------------------------------------------------------------------------
+//  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
+// ------------------------------------------------------------------------------
 
 namespace Microsoft.Graph
 {
+    using System;
     /// <summary>
     /// Feature Flags
     /// </summary>
@@ -29,6 +30,13 @@ namespace Microsoft.Graph
         /// Connection Pool Manager
         ConnectionPoolManager = 0x00000080,
         /// Long Running Operation Handler 
-        LongRunningOperationHandler = 0x00000100
+        LongRunningOperationHandler = 0x00000100,
+        /// Batch Request Content Used
+        BatchRequestContext = 0x00000200,
+        /// Page Iterator task Used
+        PageIteratorTask = 0x00000400,
+        /// File Upload task Used
+        FileUploadTask = 0x00000800
+
     }
 }

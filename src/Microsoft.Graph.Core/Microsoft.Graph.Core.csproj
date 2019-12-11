@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Description>Microsoft Graph Core Client Library implements core functionality used by Microsoft Graph client libraries.</Description>
-    <Copyright>&#169; Microsoft Corporation. All rights reserved.</Copyright>
+    <Copyright>© Microsoft Corporation. All rights reserved.</Copyright>
     <AssemblyTitle>Microsoft Graph Core Client Library</AssemblyTitle>
     <Authors>Microsoft</Authors>
     <TargetFrameworks>netstandard1.1;net45;Xamarin.iOS10;MonoAndroid70</TargetFrameworks>
@@ -19,11 +19,16 @@
     <DelaySign>false</DelaySign>
     <AssemblyOriginatorKeyFile>35MSSharedLib1024.snk</AssemblyOriginatorKeyFile>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <VersionPrefix>1.18.0</VersionPrefix>
+    <VersionPrefix>1.19.0</VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <PackageReleaseNotes>
-      - Improved ServiceException/error information to include OData error response, raw response body, and client-request-id.
-      - Resolves #27. Enhances GraphClientFactory compatibility by enabling GraphServiceClient creation by passing in a custom HttpClient
+      - Adds request builders for the batch endpoint to the client
+      - BatchRequestStep enhancements: added overloads to add BatchRequestStep using BaseRequest and HttpRequestMessage.
+      - Adds ChaosHandler for testing.
+      - HTTP pipeline updates overwrite existing inner handlers.
+      - BatchRequestContent enhancements to enable deserialization to a given type
+      - Updates to fix and use common serializer for batch content
+      - Adds FileUploadTask to provide support for file/attachement upload
     </PackageReleaseNotes>
   </PropertyGroup>
   <!--We manually configure LanguageTargets for Xamarin due to .Net SDK TFMs limitation https://github.com/dotnet/sdk/issues/491 -->
@@ -93,5 +98,8 @@
 	  <Pack>True</Pack>
 	  <PackagePath></PackagePath>
 	</None>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="System.Diagnostics.DiagnosticSource" Version="4.6.0" />
   </ItemGroup>
 </Project>

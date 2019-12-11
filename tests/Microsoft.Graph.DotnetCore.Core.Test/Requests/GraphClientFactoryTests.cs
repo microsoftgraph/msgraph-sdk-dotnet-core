@@ -300,18 +300,17 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                 Assert.IsType<ArgumentNullException>(exception);
                 Assert.Equal("handlers", exception.ParamName);
             }
+        }
 
-            pipelineHandlers[pipelineHandlers.Length - 1] = new RetryHandler(this.testHttpMessageHandler);
-            try
-            {
-                HttpClient client = GraphClientFactory.Create(handlers: pipelineHandlers);
-            }
-            catch (ArgumentException exception)
-            {
-                Assert.IsType<ArgumentException>(exception);
-                Assert.Equal(exception.Message, String.Format("DelegatingHandler array has unexpected InnerHandler. {0} has unexpected InnerHandler.", pipelineHandlers[pipelineHandlers.Length - 1]));
-
-            }
+        [Fact]
+        public void CreateClient_WithInnerHandlerReference()
+        {
+            DelegatingHandler[] handlers = new DelegatingHandler[1];
+            handlers[0] = new RetryHandler(this.testHttpMessageHandler);
+            // Creation should ignore the InnerHandler on RetryHandler
+            HttpClient client = GraphClientFactory.Create(handlers: handlers);
+            Assert.NotNull(client);
+            Assert.IsType<HttpClientHandler>(handlers[0].InnerHandler);
         }
 
         [Fact]

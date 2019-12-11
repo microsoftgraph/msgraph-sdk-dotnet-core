@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
@@ -27,11 +27,27 @@ namespace Microsoft.Graph
         public IReadOnlyDictionary<string, BatchRequestStep> BatchRequestSteps { get; private set; }
 
         /// <summary>
+        /// Gets a serializer for serializing and deserializing JSON objects.
+        /// </summary>
+        public ISerializer Serializer { get; private set; }
+
+        /// <summary>
         /// Constructs a new <see cref="BatchRequestContent"/>.
         /// </summary>
         public BatchRequestContent()
-            :this(new BatchRequestStep[] { })
+            :this(new BatchRequestStep[] { },null)
         {
+        }
+
+        /// <summary>
+        /// Constructs a new <see cref="BatchRequestContent"/>.
+        /// </summary>
+        /// <param name="batchRequestSteps">A list of <see cref="BatchRequestStep"/> to add to the batch request content.</param>
+        /// <param name="serializer">A serializer for serializing and deserializing JSON objects.</param>
+        public BatchRequestContent(BatchRequestStep [] batchRequestSteps, ISerializer serializer = null)
+            : this(batchRequestSteps)
+        {
+            this.Serializer = serializer ?? new Serializer();
         }
 
         /// <summary>
@@ -69,6 +85,8 @@ namespace Microsoft.Graph
                 }
                 AddBatchRequestStep(requestStep);
             }
+
+            this.Serializer = new Serializer();
         }
 
         /// <summary>
@@ -78,10 +96,56 @@ namespace Microsoft.Graph
         /// <returns>True or false based on addition or not addition of the provided <see cref="BatchRequestStep"/>. </returns>
         public bool AddBatchRequestStep(BatchRequestStep batchRequestStep)
         {
-            if (batchRequestStep == null || BatchRequestSteps.ContainsKey(batchRequestStep.RequestId))
+            if (batchRequestStep == null
+                || BatchRequestSteps.ContainsKey(batchRequestStep.RequestId)
+                || BatchRequestSteps.Count >= CoreConstants.BatchRequest.MaxNumberOfRequests //we should not add any more steps
+                )
+            {
                 return false;
+            }
+
             (BatchRequestSteps as IDictionary<string, BatchRequestStep>).Add(batchRequestStep.RequestId, batchRequestStep);
             return true;
+        }
+
+        /// <summary>
+        /// Adds a <see cref="HttpRequestMessage"/> to batch request content.
+        /// </summary>
+        /// <param name="httpRequestMessage">A <see cref="HttpRequestMessage"/> to use to build a <see cref="BatchRequestStep"/> to add.</param>
+        /// <returns>The requestId of the newly created <see cref="BatchRequestStep"/></returns>
+        public string AddBatchRequestStep(HttpRequestMessage httpRequestMessage)
+        {
+            if (BatchRequestSteps.Count >= CoreConstants.BatchRequest.MaxNumberOfRequests)
+                throw new ClientException(new Error
+                {
+                    Code = ErrorConstants.Codes.MaximumValueExceeded,
+                    Message = string.Format(ErrorConstants.Messages.MaximumValueExceeded, "Number of batch request steps", CoreConstants.BatchRequest.MaxNumberOfRequests)
+                });
+
+            string requestId = Guid.NewGuid().ToString();
+            BatchRequestStep batchRequestStep = new BatchRequestStep(requestId, httpRequestMessage);
+            (BatchRequestSteps as IDictionary<string, BatchRequestStep>).Add(batchRequestStep.RequestId, batchRequestStep);
+            return requestId;
+        }
+
+        /// <summary>
+        /// Adds a <see cref="IBaseRequest"/> to batch request content
+        /// </summary>
+        /// <param name="request">A <see cref="BaseRequest"/> to use to build a <see cref="BatchRequestStep"/> to add.</param>
+        /// <returns>The requestId of the  newly created <see cref="BatchRequestStep"/></returns>
+        public string AddBatchRequestStep(IBaseRequest request)
+        {
+            if (BatchRequestSteps.Count >= CoreConstants.BatchRequest.MaxNumberOfRequests)
+                throw new ClientException(new Error
+                {
+                    Code = ErrorConstants.Codes.MaximumValueExceeded,
+                    Message = string.Format(ErrorConstants.Messages.MaximumValueExceeded, "Number of batch request steps", CoreConstants.BatchRequest.MaxNumberOfRequests)
+                });
+
+            string requestId = Guid.NewGuid().ToString();
+            BatchRequestStep batchRequestStep = new BatchRequestStep(requestId, request.GetHttpRequestMessage());
+            (BatchRequestSteps as IDictionary<string, BatchRequestStep>).Add(batchRequestStep.RequestId, batchRequestStep);
+            return requestId;
         }
 
         /// <summary>
@@ -159,10 +223,8 @@ namespace Microsoft.Graph
                 HttpRequestMessage clonedRequest = await request.CloneAsync();
 
                 using (Stream streamContent = await clonedRequest.Content.ReadAsStreamAsync())
-                using (StreamReader streamReader = new StreamReader(streamContent))
-                using (JsonTextReader jsonTextReader = new JsonTextReader(streamReader))
                 {
-                    return JObject.Load(jsonTextReader);
+                    return Serializer.DeserializeObject<JObject>(streamContent);
                 }
             }
             catch (Exception ex)
@@ -227,7 +289,7 @@ namespace Microsoft.Graph
         /// <summary>
         /// Determines whether the HTTP content has a valid length in bytes.
         /// </summary>
-        /// <param name="length">The length in bytes of the HHTP content.</param>
+        /// <param name="length">The length in bytes of the HTTP content.</param>
         /// <returns></returns>
         protected override bool TryComputeLength(out long length)
         {
