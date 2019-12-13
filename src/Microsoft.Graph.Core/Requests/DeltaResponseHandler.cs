@@ -4,9 +4,9 @@
 
 namespace Microsoft.Graph
 {
-    using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
+    using System;
     using System.Collections.Generic;
-    using System.IO;
     using System.Linq;
     using System.Net.Http;
     using System.Threading.Tasks;
@@ -21,11 +21,10 @@ namespace Microsoft.Graph
     public class DeltaResponseHandler : IResponseHandler
     {
         private readonly ISerializer serializer;
+
         /// <summary>
         /// Constructs a new <see cref="ResponseHandler"/>.
         /// </summary>
-        /// <param name="serializer"></param>
-        
         public DeltaResponseHandler()
         {
             this.serializer = new Serializer();
@@ -37,46 +36,22 @@ namespace Microsoft.Graph
         /// <typeparam name="T">The type to return</typeparam>
         /// <param name="response">The HttpResponseMessage to handle</param>
         /// <returns></returns>
-        public async Task<T> HandleResponse<T>(HttpResponseMessage response) 
+        public async Task<T> HandleResponse<T>(HttpResponseMessage response)
         {
             if (response.Content != null)
             {
+                // Gets the response string with response headers and status code
+                // set on the response body object.
                 var responseString = await GetResponseString(response);
 
-                return serializer.DeserializeObject<T>(responseString);
+                // Get the response body object with the change list 
+                // set on each response item.
+                JObject responseBody = await GetResponseBodyWithChangelist(responseString);
+
+                return responseBody.ToObject<T>();
             }
 
             return default(T);
-        }
-
-        /// <summary>
-        /// Get the change properties.
-        /// </summary>
-        /// <param name="responseString">The response from the service.</param>
-        /// <returns>A list of changes.</returns>
-        private List<string> GetChangedProperties(string responseString)
-        {
-            var changedPropertiesList = new List<string>();
-
-            using (JsonTextReader reader = new JsonTextReader(new StringReader(responseString)))
-            {
-                // Forward the reader to the list of changes.
-                while (reader.TokenType != JsonToken.StartArray) // This is a weak assumption. 
-                {
-                    reader.Read();
-                }
-                
-                // Read all of the changed properties in the page and
-                // add them to the changed property list.
-                while (reader.Read())
-                {
-                    if (reader.TokenType == JsonToken.PropertyName)
-                    {
-                        changedPropertiesList.Add(reader.Path);
-                    }
-                }
-            }
-            return changedPropertiesList;
         }
 
         /// <summary>
@@ -93,10 +68,6 @@ namespace Microsoft.Graph
             //Only add headers and the changed list if we are going to return a response body
             if (content.Length > 0)
             {
-                // Get the list of changes in the delta response. 
-                List<string> changedProperties = GetChangedProperties(content);
-                var changes = serializer.SerializeObject(changedProperties);
-
                 // Add headers
                 var responseHeaders = hrm.Headers;
                 var statusCode = hrm.StatusCode;
@@ -106,11 +77,92 @@ namespace Microsoft.Graph
 
                 responseContent = content.Substring(0, content.Length - 1) + ", ";
                 responseContent += "\"responseHeaders\": " + responseHeaderString + ", ";
-                responseContent += "\"statusCode\": \"" + statusCode + "\", ";
-                responseContent += "\"changes\": " + changes + "}";
+                responseContent += "\"statusCode\": \"" + statusCode + "\"}";
             }
 
             return responseContent;
+        }
+
+        private async Task<JObject> GetResponseBodyWithChangelist(string deltaResponseBody)
+        {
+            // This is the JObject that we will replace. We should probably
+            // return a string instead.
+            JObject responseJObject = JObject.Parse(deltaResponseBody);
+
+            // An array of delta objects. We will need to process 
+            // each one independently of each other.
+            var pageOfDeltaObjects = responseJObject["value"] as JArray;
+            // TODO: check for empty response. Return the original JObject.
+
+            JArray updatedObjectsWithChangeList = new JArray();
+
+            for (int i = 0; i < pageOfDeltaObjects.Count(); i++)
+            {
+                // Go inspect all of the properties in the responseItem
+                var updatedObject = await DiscoverAllChangedProperties(pageOfDeltaObjects[i] as JObject);
+                updatedObjectsWithChangeList.Add(updatedObject);
+            }
+
+            // Replace the original page of changed items with a page of items that
+            // have a self describing change list.
+            responseJObject["value"].Replace(updatedObjectsWithChangeList);
+
+            return responseJObject;
+
+            throw new NotImplementedException();
+        }
+
+        public async Task<JObject> DiscoverAllChangedProperties(JObject responseItem)
+        {
+            // List of changed properties.
+            JArray changes = new JArray();
+
+            // Get the list of changed properties on the item.
+            await GetObjectProperties(responseItem, changes);
+
+            // Add the changes object to the response item.
+            responseItem.Add("changes", changes);
+
+            return responseItem;
+        }
+
+        public async Task GetObjectProperties(JObject changedObject, JArray changes, string parentName = "")
+        {
+            if (parentName != string.Empty)
+            {
+                parentName += ".";
+            }
+
+            foreach (JProperty property in changedObject.Children())
+            {
+                if (property.Value is JObject)
+                {
+                    string parent = parentName + property.Name;
+                    await GetObjectProperties(property.Value as JObject, changes, parent);
+                }
+                else if (property.Value is JArray)
+                {
+                    string parent = parentName + property.Name;
+
+                    JArray collection = (property.Value as JArray);
+                    for (int i = 0; i < collection.Count(); i++)
+                    {
+                        string parentWithIndex = $"{parent}[{i}]";
+
+                        JObject collectionItem = collection[i] as JObject;
+
+                        await GetObjectProperties(collectionItem, changes, parentWithIndex);
+                    }
+                }
+                else if (property.Value is JValue)
+                {
+                    changes.Add(parentName + property.Name);
+                }
+                else
+                {
+                    throw new NotImplementedException("Case is not a JObject, JArray, or JProperty");
+                }
+            }
         }
     }
 }

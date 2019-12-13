@@ -11,7 +11,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
     using System.Threading.Tasks;
     using Xunit;
     using Microsoft.Graph;
-    
+
     public class ResponseHandlerTests
     {
         [Fact]
@@ -43,13 +43,16 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         }
 
         [Fact]
-        public async Task HandleEventDeltaResponseWithoutAttendees()
+        public async Task HandleEventDeltaResponse()
         {
             // Arrange
             var deltaResponseHandler = new DeltaResponseHandler();
 
-            // No attendee
-            var testString = "{\"@odata.context\":\"https://graph.microsoft.com/v1.0/$metadata#Collection(event)\",\"@odata.nextLink\":\"https://graph.microsoft.com/v1.0/me/calendarView/delta?$skiptoken=R0usmci39OQxqJrxK4\",\"value\":[{\"@odata.type\":\"#microsoft.graph.event\",\"@odata.etag\":\"EZ9r3czxY0m2jz8c45czkwAAFXcvIw==\",\"subject\":\"Get food\",\"body\":{\"contentType\":\"html\",\"content\":\"\"},\"start\":{\"dateTime\":\"2016-12-10T19:30:00.0000000\",\"timeZone\":\"UTC\"},\"end\":{\"dateTime\":\"2016-12-10T21:30:00.0000000\",\"timeZone\":\"UTC\"},\"organizer\":{\"emailAddress\":{\"name\":\"Samantha Booth\",\"address\":\"samanthab@contoso.onmicrosoft.com\"},\"customProp\":\"customValue\"},\"id\":\"AAMkADVxTAAA=\"},{\"@odata.type\":\"#microsoft.graph.event\",\"@odata.etag\":\"WEZ9r3czxY0m2jz8c45czkwAAFXcvJA==\",\"subject\":\"Prepare food\",\"body\":{\"contentType\":\"html\",\"content\":\"\"},\"start\":{\"dateTime\":\"2016-12-10T22:00:00.0000000\",\"timeZone\":\"UTC\"},\"end\":{\"dateTime\":\"2016-12-11T00:00:00.0000000\",\"timeZone\":\"UTC\"},\"attendees\":[],\"organizer\":{\"emailAddress\":{\"name\":\"Samantha Booth\",\"address\":\"samanthab@contoso.onmicrosoft.com\"}},\"id\":\"AAMkADVxUAAA=\"}]}";
+            // TestString represents a page of results with a nextLink. There are two changed events.
+            // The events have key:value properties, key:object properties, and key:array properties.
+            // To view and format this test string, replace all \" with ", and use a JSON formatter
+            // to make it pretty.
+            var testString = "{\"@odata.context\":\"https://graph.microsoft.com/v1.0/$metadata#Collection(event)\",\"@odata.nextLink\":\"https://graph.microsoft.com/v1.0/me/calendarView/delta?$skiptoken=R0usmci39OQxqJrxK4\",\"value\":[{\"@odata.type\":\"#microsoft.graph.event\",\"@odata.etag\":\"EZ9r3czxY0m2jz8c45czkwAAFXcvIw==\",\"subject\":\"Get food\",\"body\":{\"contentType\":\"html\",\"content\":\"\"},\"start\":{\"dateTime\":\"2016-12-10T19:30:00.0000000\",\"timeZone\":\"UTC\"},\"end\":{\"dateTime\":\"2016-12-10T21:30:00.0000000\",\"timeZone\":\"UTC\"},\"attendees\":[{\"emailAddress\":{\"name\":\"George\",\"address\":\"george@contoso.onmicrosoft.com\"}},{\"emailAddress\":{\"name\":\"Jane\",\"address\":\"jane@contoso.onmicrosoft.com\"}}],\"organizer\":{\"emailAddress\":{\"name\":\"Samantha Booth\",\"address\":\"samanthab@contoso.onmicrosoft.com\"}},\"id\":\"AAMkADVxTAAA=\"},{\"@odata.type\":\"#microsoft.graph.event\",\"@odata.etag\":\"WEZ9r3czxY0m2jz8c45czkwAAFXcvJA==\",\"subject\":\"Prepare food\",\"body\":{\"contentType\":\"html\",\"content\":\"\"},\"start\":{\"dateTime\":\"2016-12-10T22:00:00.0000000\",\"timeZone\":\"UTC\"},\"end\":{\"dateTime\":\"2016-12-11T00:00:00.0000000\",\"timeZone\":\"UTC\"},\"attendees\":[],\"organizer\":{\"emailAddress\":{\"name\":\"Samantha Booth\",\"address\":\"samanthab@contoso.onmicrosoft.com\"}},\"id\":\"AAMkADVxUAAA=\"}]}";
 
             var hrm = new HttpResponseMessage()
             {
@@ -59,34 +62,21 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             };
 
             // Act
-            var deltaResponse = await deltaResponseHandler.HandleResponse<EventDeltaCollectionResponse>(hrm);
-            bool hasChanges = deltaResponse.AdditionalData.TryGetValue("changes", out object changes);
+            var deltaServiceLibResponse = await deltaResponseHandler.HandleResponse<EventDeltaCollectionResponse>(hrm);
+            var deltaJObjectResponse = await deltaResponseHandler.HandleResponse<JObject>(hrm);
+            string attendeeName = (string)deltaJObjectResponse.SelectToken("value[0].attendees[0].emailAddress.name");
+            //string attendeeName = (string)deltaJObjectResponse.SelectToken("value[0].changes.emailAddress.name");
 
-            // Can't test against the actual model, see issue #57 for more info.
-            var serializer = new Serializer();
-            List<string> changeList = serializer.DeserializeObject<List<string>>(changes.ToString());
-            
+            // IEventDeltaCollectionPage is what the service library provides.
+            // Can't test against the service library model, since it has a reference to the signed
+            // public version of this library. see issue #57 for more info.
+            // https://github.com/microsoftgraph/msgraph-sdk-dotnet-core/issues/57
+            // Service library testing will need to happen in the service library repo.
+
             // Assert
-            Assert.True(hasChanges);
-            Assert.Equal("value[0]['@odata.type']", changeList[0]);
-            Assert.Equal("value[0]['@odata.etag']", changeList[1]);
-            Assert.Equal("value[0].subject", changeList[2]);
-            Assert.Equal("value[0].body", changeList[3]);
-            Assert.Equal("value[0].body.contentType", changeList[4]);
-            Assert.Equal("value[0].body.content", changeList[5]);
-            Assert.Equal("value[0].start", changeList[6]);
-            Assert.Equal("value[0].start.dateTime", changeList[7]);
-            Assert.Equal("value[0].start.timeZone", changeList[8]);
-            Assert.Equal("value[0].end", changeList[9]);
-            Assert.Equal("value[0].end.dateTime", changeList[10]);
-            Assert.Equal("value[0].end.timeZone", changeList[11]);
-            Assert.Equal("value[0].organizer", changeList[12]);
-            Assert.Equal("value[0].organizer.emailAddress", changeList[13]);
-            Assert.Equal("value[0].organizer.emailAddress.name", changeList[14]);
-            Assert.Equal("value[0].organizer.emailAddress.address", changeList[15]);
-            Assert.Equal("value[0].organizer.customProp", changeList[16]);
-            Assert.Equal("value[0].id", changeList[17]);
-            Assert.Equal("value[1]['@odata.type']", changeList[18]);
+            Assert.True(deltaServiceLibResponse.Value is IEventDeltaCollectionPage); // We create a valid ICollectionPage.
+            Assert.Equal("George", attendeeName); // We maintain the expected response body when we change it.
+            // TODO: Assert that we capture emailAddress.Name in the change list.
         }
 
         [Fact]
