@@ -83,6 +83,11 @@ namespace Microsoft.Graph
             return responseContent;
         }
 
+        /// <summary>
+        /// Gets the response with change lists set on each item.
+        /// </summary>
+        /// <param name="deltaResponseBody">The entire response body as a string.</param>
+        /// <returns>A task with a JObject represention of the response body. The changes are set on each response item.</returns>
         private async Task<JObject> GetResponseBodyWithChangelist(string deltaResponseBody)
         {
             // This is the JObject that we will replace. We should probably
@@ -92,14 +97,18 @@ namespace Microsoft.Graph
             // An array of delta objects. We will need to process 
             // each one independently of each other.
             var pageOfDeltaObjects = responseJObject["value"] as JArray;
-            // TODO: check for empty response. Return the original JObject.
+
+            if (pageOfDeltaObjects is null)
+            {
+                return responseJObject;
+            }
 
             JArray updatedObjectsWithChangeList = new JArray();
 
             for (int i = 0; i < pageOfDeltaObjects.Count(); i++)
             {
                 // Go inspect all of the properties in the responseItem
-                var updatedObject = await DiscoverAllChangedProperties(pageOfDeltaObjects[i] as JObject);
+                var updatedObject = await DiscoverChangedProperties(pageOfDeltaObjects[i] as JObject);
                 updatedObjectsWithChangeList.Add(updatedObject);
             }
 
@@ -108,11 +117,15 @@ namespace Microsoft.Graph
             responseJObject["value"].Replace(updatedObjectsWithChangeList);
 
             return responseJObject;
-
-            throw new NotImplementedException();
         }
 
-        public async Task<JObject> DiscoverAllChangedProperties(JObject responseItem)
+        /// <summary>
+        /// Inspects the response item and captures the list of properties on a new property
+        /// named 'changes'.
+        /// </summary>
+        /// <param name="responseItem">The item to inspect for properties.</param>
+        /// <returns>The item with the 'changes' property set on it.</returns>
+        private async Task<JObject> DiscoverChangedProperties(JObject responseItem)
         {
             // List of changed properties.
             JArray changes = new JArray();
@@ -126,7 +139,14 @@ namespace Microsoft.Graph
             return responseItem;
         }
 
-        public async Task GetObjectProperties(JObject changedObject, JArray changes, string parentName = "")
+        /// <summary>
+        /// Gets all changes on the object.
+        /// </summary>
+        /// <param name="changedObject">The responseItem re</param>
+        /// <param name="changes"></param>
+        /// <param name="parentName"></param>
+        /// <returns></returns>
+        private async Task GetObjectProperties(JObject changedObject, JArray changes, string parentName = "")
         {
             if (parentName != string.Empty)
             {
@@ -156,7 +176,8 @@ namespace Microsoft.Graph
                 }
                 else if (property.Value is JValue)
                 {
-                    changes.Add(parentName + property.Name);
+                    var name = parentName + property.Name;
+                    changes.Add(name);
                 }
                 else
                 {
