@@ -116,7 +116,6 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             Assert.Equal(odataContext, odataContextFromJObject); // We expect that the odata.context isn't transformed.
             Assert.Equal(odataDeltalink, odataDeltalinkFromJObject); // We expect that the odata.deltalink isn't transformed.
         }
-        // TODO: need a test case to check for setting to null!!!!!
 
         [Fact]
         public async Task HandleEventDeltaResponseWithNullValues()
@@ -128,7 +127,8 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             // The events have key:value properties, key:object properties, and key:array properties.
             // To view and format this test string, replace all \" with ", and use a JSON formatter
             // to make it pretty.
-            var testString = "{\"@odata.context\":\"https://graph.microsoft.com/v1.0/$metadata#Collection(event)\",\"@odata.nextLink\":\"https://graph.microsoft.com/v1.0/me/calendarView/delta?$skiptoken=R0usmci39OQxqJrxK4\",\"value\":[{\"@odata.type\":\"#microsoft.graph.event\",\"@odata.etag\":\"EZ9r3czxY0m2jz8c45czkwAAFXcvIw==\",\"subject\":null,\"body\":{\"contentType\":\"html\",\"content\":\"\"},\"start\":{\"dateTime\":\"2016-12-10T19:30:00.0000000\",\"timeZone\":\"UTC\"},\"end\":{\"dateTime\":\"2016-12-10T21:30:00.0000000\",\"timeZone\":\"UTC\"},\"attendees\":[{\"emailAddress\":{\"name\":\"George\",\"address\":\"george@contoso.onmicrosoft.com\"}},{\"emailAddress\":{\"name\":\"Jane\",\"address\":\"jane@contoso.onmicrosoft.com\"}}],\"organizer\":{\"emailAddress\":{\"name\":\"Samantha Booth\",\"address\":\"samanthab@contoso.onmicrosoft.com\"}},\"id\":\"AAMkADVxTAAA=\"},{\"@odata.type\":\"#microsoft.graph.event\",\"@odata.etag\":\"WEZ9r3czxY0m2jz8c45czkwAAFXcvJA==\",\"subject\":\"Prepare food\",\"body\":{\"contentType\":\"html\",\"content\":\"\"},\"start\":{\"dateTime\":\"2016-12-10T22:00:00.0000000\",\"timeZone\":\"UTC\"},\"end\":{\"dateTime\":\"2016-12-11T00:00:00.0000000\",\"timeZone\":\"UTC\"},\"attendees\":[],\"organizer\":{\"emailAddress\":{\"name\":\"Samantha Booth\",\"address\":\"samanthab@contoso.onmicrosoft.com\"}},\"id\":\"AAMkADVxUAAA=\"}]}";
+            // value[0].subject == null
+            var testString = "{\"@odata.context\":\"https://graph.microsoft.com/v1.0/$metadata#Collection(event)\",\"@odata.nextLink\":\"https://graph.microsoft.com/v1.0/me/calendarView/delta?$skiptoken=R0usmci39OQxqJrxK4\",\"value\":[{\"@odata.type\":\"#microsoft.graph.event\",\"@odata.etag\":\"EZ9r3czxY0m2jz8c45czkwAAFXcvIw==\",\"subject\":null,\"body\":{\"contentType\":\"html\",\"content\":\"<p>Updated content</p>\"},\"start\":{\"dateTime\":\"2016-12-10T19:30:00.0000000\",\"timeZone\":\"UTC\"},\"end\":{\"dateTime\":\"2016-12-10T21:30:00.0000000\",\"timeZone\":\"UTC\"},\"attendees\":[{\"emailAddress\":{\"name\":\"George\",\"address\":\"george@contoso.onmicrosoft.com\"}},{\"emailAddress\":{\"name\":\"Jane\",\"address\":\"jane@contoso.onmicrosoft.com\"}}],\"organizer\":{\"emailAddress\":{\"name\":\"Samantha Booth\",\"address\":\"samanthab@contoso.onmicrosoft.com\"}},\"id\":\"AAMkADVxTAAA=\"},{\"@odata.type\":\"#microsoft.graph.event\",\"@odata.etag\":\"WEZ9r3czxY0m2jz8c45czkwAAFXcvJA==\",\"subject\":\"Prepare food\",\"body\":{\"contentType\":\"html\",\"content\":\"\"},\"start\":{\"dateTime\":\"2016-12-10T22:00:00.0000000\",\"timeZone\":\"UTC\"},\"end\":{\"dateTime\":\"2016-12-11T00:00:00.0000000\",\"timeZone\":\"UTC\"},\"attendees\":[],\"organizer\":{\"emailAddress\":{\"name\":\"Samantha Booth\",\"address\":\"samanthab@contoso.onmicrosoft.com\"}},\"id\":\"AAMkADVxUAAA=\"}]}";
 
             var hrm = new HttpResponseMessage()
             {
@@ -137,16 +137,93 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                                             "application/json")
             };
 
+            // Assuming this is the developers model that they want to update based on delta query.
+            Event myModel = new Event()
+            {
+                Subject = "Original subject",
+                Body = new ItemBody()
+                {
+                    Content = "Original body",
+                    ContentType = BodyType.Text
+                },
+                AdditionalData = new Dictionary<string,object>()
+            };
+
             // Act
             var deltaServiceLibResponse = await deltaResponseHandler.HandleResponse<EventDeltaCollectionResponse>(hrm);
             var eventsDeltaCollectionPage = deltaServiceLibResponse.Value as CollectionPage<Event>;
             eventsDeltaCollectionPage[0].AdditionalData.TryGetValue("changes", out object changes);
-            var changeArray = changes as JArray;
-            //changeArray.Children();
+            var changeList = (changes as JArray).ToObject<List<string>>();
 
-            // TODO finish this test
+            // Updating a non-schematized property on a model such as instance annotations, open types,
+            // and schema extensions. We can assume that a customer's  model would not use a dictionary.
+            if (changeList.Exists(x => x.Equals("@odata.etag")))
+            {
+                eventsDeltaCollectionPage[0].AdditionalData.TryGetValue("@odata.etag", out object odataEtag);
+                myModel.AdditionalData["@odata.etag"] = odataEtag.ToString();
+            }
 
+            // Core scenario - update schematized property regardless of it is set to null.
+            // This property has been set to null in the response. We can be confident that
+            // whatever the value set is correct, regardless whether it is null.
+            if (changeList.Exists(x => x.Equals("subject")))
+            {
+                myModel.Subject = eventsDeltaCollectionPage[0].Subject;
+            }
+
+            // Update the value on a complex type property's value. Developer can't just replace the body
+            // as that could result in overwriting other unchanged property. Essentially, they need to inspect
+            // every leaf node in the selected property set.
+            if (changeList.Exists(x => x.Equals("body.content"))) // 
+            {
+                if (myModel.Body == null)
+                {
+                    myModel.Body = new ItemBody();
+                }
+
+                myModel.Body.Content = eventsDeltaCollectionPage[0].Body.Content;
+            }
+
+            // Update complex type property's value when the value is a collection of objects.
+            // We don't know whether this is an update or add without querying the client model.
+            // We will need to check each object in the model.
+            var attendeesChangelist = changeList.FindAll(x => x.Contains("attendees"));
+            if (attendeesChangelist.Count > 0)
+            {
+                // This is where if we provided the delta response as a JSON object, 
+                // we could let the developer use JMESPath to query the changes.
+                if (changeList.Exists(x => x.Equals("attendees[0].emailAddress.name")))
+                {
+                    if (myModel.Attendees == null) // Attendees are being added for the first time.
+                    {
+                        var attendees = new List<Attendee>();
+                        attendees.AddRange(eventsDeltaCollectionPage[0].Attendees);
+                        myModel.Attendees = attendees;
+                    }
+                    else // Attendees list is being updated.
+                    {
+                        // We need to inspect each object, and determine which objects and properties 
+                        // need to be initialized and/or updated.
+                    }
+                }
+            }
+
+            Assert.NotNull(changeList);
+            Assert.Null(myModel.Subject);
+            Assert.Equal("<p>Updated content</p>", myModel.Body.Content);
+            Assert.NotNull(eventsDeltaCollectionPage[0].AdditionalData["@odata.etag"]);
+            Assert.Collection(myModel.Attendees,
+                attendee1 =>
+                {
+                    Assert.Equal("George", attendee1.EmailAddress.Name);
+                    Assert.Equal("george@contoso.onmicrosoft.com", attendee1.EmailAddress.Address);
+                },
+                attendee2 => 
+                {
+                    Assert.Equal("Jane", attendee2.EmailAddress.Name);
+                    Assert.Equal("jane@contoso.onmicrosoft.com", attendee2.EmailAddress.Address);
+                }
+            );
         }
-
     }
 }
