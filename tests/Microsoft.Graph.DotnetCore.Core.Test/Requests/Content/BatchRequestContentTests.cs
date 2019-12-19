@@ -21,7 +21,24 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
             BatchRequestContent batchRequestContent = new BatchRequestContent();
 
             Assert.NotNull(batchRequestContent.BatchRequestSteps);
+            Assert.NotNull(batchRequestContent.Serializer);
             Assert.True(batchRequestContent.BatchRequestSteps.Count.Equals(0));
+        }
+
+        [Fact]
+        public void BatchRequestContent_InitializeWithSerilizer()
+        {
+            List<BatchRequestStep> requestSteps = new List<BatchRequestStep>();
+            for (int i = 0; i < 5; i++)
+            {
+                requestSteps.Add(new BatchRequestStep(i.ToString(), new HttpRequestMessage(HttpMethod.Get, REQUEST_URL)));
+            }
+
+            BatchRequestContent batchRequestContent = new BatchRequestContent(requestSteps.ToArray(),new Serializer());
+
+            Assert.NotNull(batchRequestContent.BatchRequestSteps);
+            Assert.NotNull(batchRequestContent.Serializer);
+            Assert.True(batchRequestContent.BatchRequestSteps.Count.Equals(5));
         }
 
         [Fact]
@@ -36,6 +53,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
             BatchRequestContent batchRequestContent = new BatchRequestContent(requestSteps.ToArray());
 
             Assert.NotNull(batchRequestContent.BatchRequestSteps);
+            Assert.NotNull(batchRequestContent.Serializer);
             Assert.True(batchRequestContent.BatchRequestSteps.Count.Equals(5));
         }
 
@@ -166,6 +184,102 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
             Assert.NotNull(requestContent);
             Assert.True(batchRequestContent.BatchRequestSteps.Count.Equals(1));
             Assert.Equal(expectedContent, requestContent);
+        }
+
+        [Fact]
+        public async System.Threading.Tasks.Task BatchRequestContent_GetBatchRequestContentFromStepAsyncDoesNotModifyDateTimes()
+        {
+            var payloadString = "{\r\n" +
+                                "  \"subject\": \"Let's go for lunch\",\r\n" +
+                                "  \"body\": {\r\n    \"contentType\": \"HTML\",\r\n" +
+                                "    \"content\": \"Does mid month work for you?\"\r\n" +
+                                "  },\r\n" +
+                                "  \"start\": {\r\n" +
+                                "      \"dateTime\": \"2019-03-15T12:00:00.0000\",\r\n" +
+                                "      \"timeZone\": \"Pacific Standard Time\"\r\n" +
+                                "  },\r\n" +
+                                "  \"end\": {\r\n" +
+                                "      \"dateTime\": \"2019-03-15T14:00:00.0000\",\r\n" +
+                                "      \"timeZone\": \"Pacific Standard Time\"\r\n" +
+                                "  },\r\n  \"location\":{\r\n" +
+                                "      \"displayName\":\"Harry's Bar\"\r\n" +
+                                "  },\r\n" +
+                                "  \"attendees\": [\r\n" +
+                                "    {\r\n" +
+                                "      \"emailAddress\": {\r\n" +
+                                "        \"address\":\"adelev@contoso.onmicrosoft.com\",\r\n" +
+                                "        \"name\": \"Adele Vance\"\r\n" +
+                                "      },\r\n" +
+                                "      \"type\": \"required\"\r\n" +
+                                "    }\r\n" +
+                                "  ]\r\n" +
+                                "}";
+
+            BatchRequestStep batchRequestStep1 = new BatchRequestStep("1", new HttpRequestMessage(HttpMethod.Get, REQUEST_URL));
+            HttpRequestMessage createEventMessage = new HttpRequestMessage(HttpMethod.Post, REQUEST_URL)
+            {
+                Content = new StringContent(payloadString)
+            };
+            BatchRequestStep batchRequestStep2 = new BatchRequestStep("2", createEventMessage, new List<string> { "1" });
+
+            BatchRequestContent batchRequestContent = new BatchRequestContent();
+            batchRequestContent.AddBatchRequestStep(batchRequestStep1);
+            batchRequestContent.AddBatchRequestStep(batchRequestStep2);
+
+            JObject requestContent = await batchRequestContent.GetBatchRequestContentAsync();
+            string content = requestContent.ToString();
+
+            string expectedJson = "{\r\n" +
+                                  "  \"requests\": [\r\n" +
+                                  "    {\r\n" +
+                                  "      \"id\": \"1\",\r\n" +
+                                  "      \"url\": \"/me\",\r\n" +
+                                  "      \"method\": \"GET\"\r\n" +
+                                  "    },\r\n" +
+                                  "    {\r\n" +
+                                  "      \"id\": \"2\",\r\n" +
+                                  "      \"url\": \"/me\",\r\n" +
+                                  "      \"method\": \"POST\",\r\n" +
+                                  "      \"dependsOn\": [\r\n" +
+                                  "        \"1\"\r\n" +
+                                  "      ],\r\n" +
+                                  "      \"headers\": {\r\n" +
+                                  "        \"Content-Type\": \"text/plain; charset=utf-8\"\r\n" +
+                                  "      },\r\n" +
+                                  "      \"body\": {\r\n" +
+                                  "        \"subject\": \"Let's go for lunch\",\r\n" +
+                                  "        \"body\": {\r\n" +
+                                  "          \"contentType\": \"HTML\",\r\n" +
+                                  "          \"content\": \"Does mid month work for you?\"\r\n" +
+                                  "        },\r\n" +
+                                  "        \"start\": {\r\n" +
+                                  "          \"dateTime\": \"2019-03-15T12:00:00.0000\",\r\n" +
+                                  "          \"timeZone\": \"Pacific Standard Time\"\r\n" +
+                                  "        },\r\n" +
+                                  "        \"end\": {\r\n" +
+                                  "          \"dateTime\": \"2019-03-15T14:00:00.0000\",\r\n" +
+                                  "          \"timeZone\": \"Pacific Standard Time\"\r\n" +
+                                  "        },\r\n" +
+                                  "        \"location\": {\r\n" +
+                                  "          \"displayName\": \"Harry's Bar\"\r\n" +
+                                  "        },\r\n" +
+                                  "        \"attendees\": [\r\n" +
+                                  "          {\r\n" +
+                                  "            \"emailAddress\": {\r\n" +
+                                  "              \"address\": \"adelev@contoso.onmicrosoft.com\",\r\n" +
+                                  "              \"name\": \"Adele Vance\"\r\n" +
+                                  "            },\r\n" +
+                                  "            \"type\": \"required\"\r\n" +
+                                  "          }\r\n" +
+                                  "        ]\r\n" +
+                                  "      }\r\n" +
+                                  "    }\r\n" +
+                                  "  ]\r\n" +
+                                  "}";
+
+            Assert.NotNull(requestContent);
+            Assert.True(batchRequestContent.BatchRequestSteps.Count.Equals(2));
+            Assert.Equal(expectedJson, content);
         }
 
         [Fact]

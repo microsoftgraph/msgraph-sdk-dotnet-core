@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Description>Microsoft Graph Core Client Library implements core functionality used by Microsoft Graph client libraries.</Description>
     <Copyright>© Microsoft Corporation. All rights reserved.</Copyright>
@@ -19,14 +19,10 @@
     <DelaySign>false</DelaySign>
     <AssemblyOriginatorKeyFile>35MSSharedLib1024.snk</AssemblyOriginatorKeyFile>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <VersionPrefix>1.19.0</VersionPrefix>
+    <VersionPrefix>1.20.0</VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <PackageReleaseNotes>
-      - Adds request builders for the batch endpoint to the client
-      - BatchRequestStep enhancements: added overloads to add BatchRequestStep using BaseRequest and HttpRequestMessage.
-      - Adds ChaosHandler for testing.
-      - HTTP pipeline updates overwrite existing inner handlers.
-      - BatchRequestContent enhancements to enable deserialization to a given type
+      - Fix for modifying the Timeout property of a passed HttpClient
     </PackageReleaseNotes>
   </PropertyGroup>
   <!--We manually configure LanguageTargets for Xamarin due to .Net SDK TFMs limitation https://github.com/dotnet/sdk/issues/491 -->

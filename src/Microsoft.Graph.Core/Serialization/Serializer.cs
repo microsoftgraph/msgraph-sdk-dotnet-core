@@ -59,8 +59,7 @@ namespace Microsoft.Graph
                 true /* leaveOpen */))
             using (var textReader = new JsonTextReader(streamReader))
             {
-                var jsonSerializer = new JsonSerializer();
-
+                var jsonSerializer = JsonSerializer.Create(this.jsonSerializerSettings);
                 return jsonSerializer.Deserialize<T>(textReader);
             }
         }

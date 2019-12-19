@@ -27,7 +27,6 @@ namespace Microsoft.Graph
         {
             this.httpClient = httpClient;
             Serializer = serializer ?? new Serializer();
-            OverallTimeout = new TimeSpan(0, 5, 0);
         }
 
         /// <summary>
