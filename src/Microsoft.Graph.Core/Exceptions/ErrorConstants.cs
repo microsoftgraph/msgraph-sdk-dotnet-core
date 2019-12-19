@@ -51,7 +51,7 @@ namespace Microsoft.Graph
 
             internal static string UnableToDeserializeDate = "Unable to deserialize the returned Date.";
 
-            internal static string UnexpectedExceptionOnSend = "An error occurred sending the request.";
+            internal static string UnexpectedExceptionOnSend = "An error occurred sending the request."; 
 
             internal static string UnexpectedExceptionResponse = "Unexpected exception returned from the service.";
 
