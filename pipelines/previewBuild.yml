@@ -94,7 +94,7 @@ steps:
 - task: SFP.build-tasks.custom-build-task-1.EsrpCodeSigning@1
   displayName: 'ESRP DLL Strong Name (Microsoft.Graph.Core)'
   inputs:
-    ConnectedServiceName: 'microsoftgraph ESRP CodeSign DLL-only'
+    ConnectedServiceName: 'microsoftgraph ESRP CodeSign DLL and NuGet'
     FolderPath: src/Microsoft.Graph.Core/bin/release
     Pattern: Microsoft.Graph.Core.dll
     signConfigType: inlineSignParams
@@ -120,7 +120,7 @@ steps:
 - task: SFP.build-tasks.custom-build-task-1.EsrpCodeSigning@1
   displayName: 'ESRP DLL CodeSigning (Microsoft.Graph.Core)'
   inputs:
-    ConnectedServiceName: 'microsoftgraph ESRP CodeSign DLL-only'
+    ConnectedServiceName: 'microsoftgraph ESRP CodeSign DLL and NuGet'
     FolderPath: src/Microsoft.Graph.Core/bin/release
     Pattern: Microsoft.Graph.Core.dll
     signConfigType: inlineSignParams
@@ -174,7 +174,7 @@ steps:
 - task: SFP.build-tasks.custom-build-task-1.EsrpCodeSigning@1
   displayName: 'ESRP NuGet CodeSigning'
   inputs:
-    ConnectedServiceName: 'microsoftgraph ESRP CodeSign DLL-only'
+    ConnectedServiceName: 'microsoftgraph ESRP CodeSign DLL and NuGet'
     FolderPath: '$(Build.ArtifactStagingDirectory)'
     Pattern: '*.nupkg'
     signConfigType: inlineSignParams
