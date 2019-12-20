@@ -69,6 +69,18 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         }
 
         [Fact]
+        public async Task InitSuccessfullyWithoutHttpClient()
+        {
+            using (var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, "https://localhost"))
+            {
+                // Create a provider using a null client
+                SimpleHttpProvider testSimpleHttpProvider = new SimpleHttpProvider(null, this.serializer.Object);
+                // Assert that using the client throws no errors on initialization
+                Assert.NotNull(testSimpleHttpProvider.httpClient);
+            }
+        }
+
+        [Fact]
         public async Task InitSuccessfullyWithUsedHttpClient()
         {
             // Create a httpClient
