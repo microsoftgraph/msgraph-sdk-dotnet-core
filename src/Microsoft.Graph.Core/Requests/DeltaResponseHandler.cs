@@ -142,9 +142,9 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets all changes on the object.
         /// </summary>
-        /// <param name="changedObject">The responseItem re</param>
-        /// <param name="changes"></param>
-        /// <param name="parentName"></param>
+        /// <param name="changedObject">The responseItem to inspect for changes.</param>
+        /// <param name="changes">The list of properties returned in the response.</param>
+        /// <param name="parentName">The parent object of this changed object.</param>
         /// <returns></returns>
         private async Task GetObjectProperties(JObject changedObject, JArray changes, string parentName = "")
         {

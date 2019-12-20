@@ -79,7 +79,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             // Assert
             Assert.True(deltaServiceLibResponse.Value is IEventDeltaCollectionPage); // We create a valid ICollectionPage.
             Assert.Equal("George", attendeeName); // We maintain the expected response body when we change it.
-            Assert.Equal("attendees[0].emailaddress.name", attendeeNameInChangelist); // We expect that this property is in changelist.
+            Assert.Equal("attendees[0].emailAddress.name", attendeeNameInChangelist); // We expect that this property is in changelist.
             Assert.True(collectionPageHasChanges); // We expect that the CollectionPage is populated with the changes.
         }
 
@@ -224,6 +224,39 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                     Assert.Equal("jane@contoso.onmicrosoft.com", attendee2.EmailAddress.Address);
                 }
             );
+        }
+
+        /// <summary>
+        /// Occurs in the response when we call with the deltalink and there are no items to sync.
+        /// </summary>
+        /// <returns></returns>
+        [Fact]
+        public async Task HandleEventDeltaResponseWithRemovedItem()
+        {
+            // Arrange
+            var deltaResponseHandler = new DeltaResponseHandler();
+            var odataContext = @"https://graph.microsoft.com/v1.0/$metadata#Collection(event)";
+            var odataDeltalink = @"https://graph.microsoft.com/v1.0/me/mailfolders/inbox/messages/delta?$deltatoken=LztZwWjo5IivWBhyxw5rACKxf7mPm0oW6JZZ7fvKxYPS_67JnEYmfQQMPccy6FRun0DWJF5775dvuXxlZnMYhBubC1v4SBVT9ZjO8f7acZI.uCdGKSBS4YxPEbn_Q5zxLSq91WhpGoz9ZKeNZHMWgSA";
+
+
+            // Result string with one removed item.
+            var testString = "{\"@odata.context\":\"https://graph.microsoft.com/v1.0/$metadata#Collection(event)\",\"@odata.nextLink\":\"https://graph.microsoft.com/v1.0/me/calendarView/delta?$skiptoken=R0usmci39OQxqJrxK4\",\"value\":[{\"@removed\":{\"reason\":\"removed\"},\"id\":\"AAMkADVxTAAA=\"}]}";
+
+            var hrm = new HttpResponseMessage()
+            {
+                Content = new StringContent(testString,
+                                            Encoding.UTF8,
+                                            "application/json")
+            };
+
+            // Act
+            var deltaServiceLibResponse = await deltaResponseHandler.HandleResponse<EventDeltaCollectionResponse>(hrm);
+            var eventsDeltaCollectionPage = deltaServiceLibResponse.Value as CollectionPage<Event>;
+            eventsDeltaCollectionPage[0].AdditionalData.TryGetValue("changes", out object changes);
+            var changeList = (changes as JArray).ToObject<List<string>>();
+
+            // Assert
+            Assert.True(changeList.Exists(x => x.Equals("@removed.reason")));
         }
     }
 }
