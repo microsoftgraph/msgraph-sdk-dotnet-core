@@ -13,6 +13,9 @@ namespace Microsoft.Graph
     using System.Threading;
     using System.Threading.Tasks;
 
+    /// <summary>
+    /// A <see cref="DelegatingHandler"/> implementation that is used for simulating server failures.
+    /// </summary>
     public class ChaosHandler : DelegatingHandler
     {
         private DiagnosticSource _logger = new DiagnosticListener("Microsoft.Graph.ChaosHandler");
@@ -30,8 +33,14 @@ namespace Microsoft.Graph
             _globalChaosHandlerOptions = chaosHandlerOptions ?? new ChaosHandlerOption();
             _random = new Random(DateTime.Now.Millisecond);
             LoadKnownGraphFailures(_globalChaosHandlerOptions.KnownChaos);
-        } 
+        }
 
+        /// <summary>
+        /// Sends the request
+        /// </summary>
+        /// <param name="request">The request to send.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <returns></returns>
         protected async override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             // Select global or per request options
@@ -94,6 +103,11 @@ namespace Microsoft.Graph
             }
         }
 
+        /// <summary>
+        /// Create a HTTP status 429 response message
+        /// </summary>
+        /// <param name="retry"><see cref="TimeSpan"/> for retry condition header value</param>
+        /// <returns>A <see cref="HttpResponseMessage"/> object simulating a 429 response</returns>
         public static HttpResponseMessage Create429TooManyRequestsResponse(TimeSpan retry)
         {
             var serializer = new Serializer();
@@ -106,6 +120,11 @@ namespace Microsoft.Graph
             return throttleResponse;
         }
 
+        /// <summary>
+        /// Create a HTTP status 503 response message
+        /// </summary>
+        /// <param name="retry"><see cref="TimeSpan"/> for retry condition header value</param>
+        /// <returns>A <see cref="HttpResponseMessage"/> object simulating a 503 response</returns>
         public static HttpResponseMessage Create503Response(TimeSpan retry)
         {
             var serializer = new Serializer();
@@ -118,6 +137,10 @@ namespace Microsoft.Graph
             return serverUnavailableResponse;
         }
 
+        /// <summary>
+        /// Create a HTTP status 502 response message
+        /// </summary>
+        /// <returns>A <see cref="HttpResponseMessage"/> object simulating a 502 Response</returns>
         public static HttpResponseMessage Create502BadGatewayResponse()
         {
             var serializer = new Serializer();
@@ -129,6 +152,10 @@ namespace Microsoft.Graph
             return badGatewayResponse;
         }
 
+        /// <summary>
+        /// Create a HTTP status 500 response message
+        /// </summary>
+        /// <returns>A <see cref="HttpResponseMessage"/> object simulating a 500 Response</returns>
         public static HttpResponseMessage Create500InternalServerErrorResponse()
         {
             var serializer = new Serializer();
@@ -140,6 +167,11 @@ namespace Microsoft.Graph
             return internalServerError;
         }
 
+        /// <summary>
+        /// Create a HTTP status 504 response message
+        /// </summary>
+        /// <param name="retry"><see cref="TimeSpan"/> for retry condition header value</param>
+        /// <returns>A <see cref="HttpResponseMessage"/> object simulating a 504 response</returns>
         public static HttpResponseMessage Create504GatewayTimeoutResponse(TimeSpan retry)
         {
             var serializer = new Serializer();
