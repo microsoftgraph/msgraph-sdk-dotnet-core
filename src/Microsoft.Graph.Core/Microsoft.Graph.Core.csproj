@@ -23,6 +23,7 @@
     <VersionSuffix></VersionSuffix>
     <PackageReleaseNotes>
       - Fix for modifying the Timeout property of a passed HttpClient
+      - Add DeltaResponseHandler to discover null changes for delta query.
     </PackageReleaseNotes>
   </PropertyGroup>
   <!--We manually configure LanguageTargets for Xamarin due to .Net SDK TFMs limitation https://github.com/dotnet/sdk/issues/491 -->

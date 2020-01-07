@@ -161,7 +161,7 @@ namespace Microsoft.Graph
         /// <param name="responseHandler">The <see cref="IResponseHandler"/> for the request.</param>
         /// <returns></returns>
         /// <exception cref="System.ArgumentNullException">If responseHandler is null.</exception>
-        public static T WithResponseHandler<T>(this T baseRequest, IResponseHandler responseHandler) where T : IBaseRequest
+        public static T WithResponseHandler<T>(this T baseRequest, IResponseHandler responseHandler) where T : BaseRequest
         {
             baseRequest.ResponseHandler = responseHandler ?? throw new ArgumentNullException(nameof(responseHandler));
 
