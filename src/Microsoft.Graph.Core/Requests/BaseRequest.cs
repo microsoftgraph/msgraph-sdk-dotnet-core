@@ -20,7 +20,7 @@ namespace Microsoft.Graph
     /// </summary>
     public class BaseRequest : IBaseRequest
     {
-        private ResponseHandler responseHandler;
+        private IResponseHandler responseHandler;
 
         /// <summary>
         /// Constructs a new <see cref="BaseRequest"/>.
@@ -60,6 +60,11 @@ namespace Microsoft.Graph
             // This can be changed can be changed by the user by calling WithPerRequestAuthProvider extension method.
             this.WithDefaultAuthProvider();
         }
+
+        /// <summary>
+        /// Gets or sets the response handler for the request.
+        /// </summary>
+        public IResponseHandler ResponseHandler { get { return responseHandler; } set { responseHandler = value; } }
 
         /// <summary>
         /// Gets or sets the content type for the request.

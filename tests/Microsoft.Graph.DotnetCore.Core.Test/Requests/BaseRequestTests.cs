@@ -411,5 +411,20 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 
             await Task.WhenAll(tasks).ConfigureAwait(false);
         }
+
+        [Fact]
+        public void BaseRequest_Should_Set_ResponseHandler()
+        {
+            // Arrange
+            var requestUrl = string.Concat(this.baseUrl, "/me/drive/items/id");
+            var baseRequest = new BaseRequest(requestUrl, this.baseClient);
+
+            // Act
+            baseRequest.WithResponseHandler<BaseRequest>(new DeltaResponseHandler());
+
+            // Assert
+            Assert.NotNull(baseRequest.ResponseHandler);
+            Assert.IsType<DeltaResponseHandler>(baseRequest.ResponseHandler);
+        }
     }
 }
