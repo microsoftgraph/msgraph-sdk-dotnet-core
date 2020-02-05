@@ -8,6 +8,9 @@ namespace Microsoft.Graph
     using System.Collections.Generic;
     using System.Net.Http;
 
+    /// <summary>
+    /// The Chaos Hander Option middleware class
+    /// </summary>
     public class ChaosHandlerOption : IMiddlewareOption
     {
         /// <summary>

@@ -25,9 +25,10 @@ namespace Microsoft.Graph
         /// <param name="serializer">A serializer for serializing and deserializing JSON objects.</param>
         public SimpleHttpProvider(HttpClient httpClient, ISerializer serializer = null)
         {
-            this.httpClient = httpClient;
+            // Null authProvider addresses https://github.com/microsoftgraph/msgraph-sdk-dotnet/issues/605.
+            // We're reenabling this functionality that allowed setting a null authprovider.
+            this.httpClient = httpClient ?? GraphClientFactory.Create(authenticationProvider: null);
             Serializer = serializer ?? new Serializer();
-            OverallTimeout = new TimeSpan(0, 5, 0);
         }
 
         /// <summary>
