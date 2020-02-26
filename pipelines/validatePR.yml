@@ -8,6 +8,7 @@ pr:
     include:
     - master
     - dev
+    - feature/2.0
   paths:
     exclude:
         - .github/*
