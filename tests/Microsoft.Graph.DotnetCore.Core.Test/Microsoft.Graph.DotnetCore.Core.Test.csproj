@@ -1,11 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp2.2;Xamarin.iOS1014;MonoAndroid80</TargetFrameworks>
+    <TargetFrameworks>netcoreapp2.2;Xamarin.iOS10;MonoAndroid80</TargetFrameworks>
     <AssemblyName>Microsoft.Graph.DotnetCore.Core.Test</AssemblyName>
     <PackageId>Microsoft.Graph.DotnetCore.Core.Test</PackageId>
     <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
     <NetStandardImplicitPackageVersion>2.0.0</NetStandardImplicitPackageVersion>
-    <PackageTargetFallback>$(PackageTargetFallback);dnxcore50</PackageTargetFallback>
+    <AssetTargetFallback>$(AssetTargetFallback);dnxcore50</AssetTargetFallback>
     <RuntimeFrameworkVersion>2.2.0</RuntimeFrameworkVersion>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
@@ -18,7 +18,7 @@
   </PropertyGroup>
 
 	<!--We manually configure LanguageTargets for Xamarin due to .Net SDK TFMs limitation https://github.com/dotnet/sdk/issues/491 -->
-  <PropertyGroup Condition="'$(TargetFramework)' == 'Xamarin.iOS1014'">
+  <PropertyGroup Condition="'$(TargetFramework)' == 'Xamarin.iOS10'">
 	<TargetFrameworkIdentifier>Xamarin.iOS</TargetFrameworkIdentifier>
 	<TargetFrameworkVersion>v1.0</TargetFrameworkVersion>
 	<DefineConstants>$(DefineConstants);iOS</DefineConstants>
@@ -53,7 +53,7 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'Xamarin.iOS1014' ">
+  <ItemGroup Condition=" '$(TargetFramework)' == 'Xamarin.iOS10' ">
 	<Reference Include="Microsoft.CSharp" />
 	<Reference Include="Xamarin.iOS" />
 	<Reference Include="System" />
