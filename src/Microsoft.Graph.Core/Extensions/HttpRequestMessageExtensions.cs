@@ -122,5 +122,17 @@ namespace Microsoft.Graph
             return (T)option;
         }
 
+        /// <summary>
+        /// Gets a <see cref="MsalAuthenticationProviderOption"/> from <see cref="HttpRequestMessage"/>
+        /// </summary>
+        /// <param name="httpRequestMessage">The <see cref="HttpRequestMessage"/> representation of the request.</param>
+        /// <returns>A middleware option of type <see cref="MsalAuthenticationProviderOption"/></returns>
+        internal static MsalAuthenticationProviderOption GetMsalAuthProviderOption(this HttpRequestMessage httpRequestMessage)
+        {
+            AuthenticationHandlerOption authHandlerOption = httpRequestMessage.GetMiddlewareOption<AuthenticationHandlerOption>();
+
+            return authHandlerOption?.AuthenticationProviderOption as MsalAuthenticationProviderOption ?? new MsalAuthenticationProviderOption();
+        }
+
     }
 }

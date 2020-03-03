@@ -9,10 +9,12 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
     public class BaseClientTests
     {
         private MockAuthenticationProvider authenticationProvider;
+        private MockTokenCredential tokenCredential;
 
         public BaseClientTests()
         {
             this.authenticationProvider = new MockAuthenticationProvider();
+            this.tokenCredential = new MockTokenCredential();
         }
 
         [Fact]
@@ -41,6 +43,18 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             ServiceException exception = Assert.Throws<ServiceException>(() => new BaseClient(null, this.authenticationProvider.Object));
             Assert.Equal(ErrorConstants.Codes.InvalidRequest, exception.Error.Code);
             Assert.Equal(ErrorConstants.Messages.BaseUrlMissing, exception.Error.Message);
+        }
+
+        [Fact]
+        public void BaseClient_InitializeWithTokenCredential()
+        {
+            var expectedBaseUrl = "https://localhost";
+
+            var baseClient = new BaseClient(expectedBaseUrl, this.tokenCredential.Object);
+
+            Assert.Equal(expectedBaseUrl, baseClient.BaseUrl);
+            Assert.IsType<TokenCredentialAuthProvider>(baseClient.AuthenticationProvider);
+
         }
     }
 }

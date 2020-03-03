@@ -25,6 +25,8 @@ namespace Microsoft.Graph
             internal static string MaximumValueExceeded = "MaximumValueExceeded";
 
             internal static string InvalidArgument = "invalidArgument";
+
+            internal const string TemporarilyUnavailable = "temporarily_unavailable";
         }
 
         internal static class Messages
@@ -66,6 +68,14 @@ namespace Microsoft.Graph
             internal static string ExpiredUploadSession = "Upload session expired. Upload cannot resume";
 
             internal static string NoResponseForUpload = "No Response Received for upload.";
+
+            internal static string NullValue = "{0} cannot be null.";
+
+            internal static string UnexpectedMsalException = "Unexpected exception returned from MSAL.";
+            
+            internal static string UnexpectedException = "Unexpected exception occured while authenticating the request.";
+
+            internal static string MissingRetryAfterHeader = "Missing retry after header.";
 
             public static string InvalidProxyArgument = "Proxy cannot be set more once. Proxy can only be set on the proxy or defaultHttpHandler argument and not both.";
         }

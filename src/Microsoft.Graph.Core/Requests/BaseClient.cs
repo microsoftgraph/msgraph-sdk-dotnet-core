@@ -7,6 +7,8 @@ namespace Microsoft.Graph
     using System;
     using System.Net.Http;
     using Microsoft.Graph.Core.Requests;
+    using System.Collections.Generic;
+    using Azure.Core;
 
     /// <summary>
     /// A default <see cref="IBaseClient"/> implementation.
@@ -28,6 +30,25 @@ namespace Microsoft.Graph
         {
             this.BaseUrl = baseUrl;
             this.AuthenticationProvider = authenticationProvider;
+            this.HttpProvider = httpProvider ?? new HttpProvider(new Serializer());
+        }
+
+        /// <summary>
+        /// Constructs a new <see cref="BaseClient"/>.
+        /// </summary>
+        /// <param name="baseUrl">The base service URL. For example, "https://graph.microsoft.com/v1.0."</param>
+        /// <param name="tokenCredential">The <see cref="TokenCredential"/> for authenticating request messages.</param>
+        /// <param name="scopes">List of scopes for the authentication context.</param>
+        /// <param name="httpProvider">The <see cref="IHttpProvider"/> for sending requests.</param>
+        public BaseClient(
+            string baseUrl,
+            TokenCredential tokenCredential,
+            IEnumerable<string> scopes = null,
+            IHttpProvider httpProvider = null
+            )
+        {
+            this.BaseUrl = baseUrl;
+            this.AuthenticationProvider = new TokenCredentialAuthProvider(tokenCredential, scopes );
             this.HttpProvider = httpProvider ?? new HttpProvider(new Serializer());
         }
 
