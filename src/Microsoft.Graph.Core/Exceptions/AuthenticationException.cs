@@ -5,8 +5,9 @@
 namespace Microsoft.Graph
 {
     using System;
+
     /// <summary>
-    /// Graph authentication exception
+    /// Generic exception class to report unknown exceptions during authentication
     /// </summary>
     public class AuthenticationException : Exception
     {

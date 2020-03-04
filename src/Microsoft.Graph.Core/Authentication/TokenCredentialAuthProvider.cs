@@ -11,6 +11,7 @@ namespace Microsoft.Graph
     using System.Net.Http.Headers;
     using System.Threading;
     using System.Linq;
+    using System;
 
     /// <summary>
     /// An AuthProvider to handle instances of <see cref="TokenCredential"/> from Azure.Core and Azure.Identity
@@ -26,9 +27,12 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="tokenCredential">The <see cref="TokenCredential"/> to use for authentication</param>
         /// <param name="scopes">Scopes required to access Microsoft Graph. This defaults to https://graph.microsoft.com/.default when none is set.</param>
+        /// <exception cref="ArgumentException"> When a null <see cref="TokenCredential"/> is passed</exception>
         public TokenCredentialAuthProvider(TokenCredential tokenCredential, IEnumerable<string> scopes = null)
         {
-            _credential = tokenCredential;
+            _credential = tokenCredential ?? throw new ArgumentException(
+                              string.Format(ErrorConstants.Messages.NullParameter, nameof(tokenCredential)),
+                              nameof(tokenCredential));
             _scopes = scopes ?? new List<string> { AuthConstants.DefaultScopeUrl };
         }
 

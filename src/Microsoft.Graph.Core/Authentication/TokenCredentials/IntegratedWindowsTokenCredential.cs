@@ -30,14 +30,12 @@ namespace Microsoft.Graph
         /// Creates a new IntegratedWindowsTokenCredential which will authenticate users with the specified application.
         /// </summary>
         /// <param name="publicClientApplication">A <see cref="IPublicClientApplication"/> to pass to <see cref="IntegratedWindowsTokenCredential"/> for authentication.</param>
+        /// <exception cref="ArgumentException"> When a null <see cref="IPublicClientApplication"/> is passed</exception>
         public IntegratedWindowsTokenCredential(IPublicClientApplication publicClientApplication)
         {
-            _clientApplication = publicClientApplication ?? throw new AuthenticationException(
-                new Error
-                {
-                    Code = ErrorConstants.Codes.InvalidRequest,
-                    Message = string.Format(ErrorConstants.Messages.NullValue, nameof(publicClientApplication))
-                });
+            _clientApplication = publicClientApplication ?? throw new ArgumentException(
+                                     string.Format(ErrorConstants.Messages.NullParameter, nameof(publicClientApplication)),
+                                     nameof(publicClientApplication));
         }
 
         /// <summary>
@@ -57,6 +55,7 @@ namespace Microsoft.Graph
         /// <param name="requestContext">The <see cref="TokenRequestContext"/> for the request</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request</param>
         /// <returns>An <see cref="AccessToken"/> to make requests with</returns>
+        /// <exception cref="AuthenticationException"> When an unknown authentication exception occurs</exception>
         public override async ValueTask<AccessToken> GetTokenAsync(TokenRequestContext requestContext, CancellationToken cancellationToken)
         {
             AuthenticationResult result;
@@ -69,9 +68,6 @@ namespace Microsoft.Graph
                 // Try to get the token silently
                 AcquireTokenSilentParameterBuilder tokenSilentBuilder =
                     _clientApplication.AcquireTokenSilent(requestContext.Scopes, account);
-
-                if (!ContainsWellKnownTenantName(_clientApplication.Authority))
-                    tokenSilentBuilder.WithAuthority(_clientApplication.Authority);
 
                 result = await tokenSilentBuilder.ExecuteAsync(cancellationToken);
             }
@@ -99,6 +95,7 @@ namespace Microsoft.Graph
                 {
                     authenticationResult = await _clientApplication.AcquireTokenByIntegratedWindowsAuth(requestContext.Scopes)
                                 .ExecuteAsync();
+                    break;
                 }
                 catch (MsalServiceException serviceException)
                 {
@@ -137,19 +134,5 @@ namespace Microsoft.Graph
             return authenticationResult;
         }
 
-        /// <summary>
-        /// Determines if an authority url has a `well known` tenant name (common, consumers, organizations) in its tenant segment.
-        /// </summary>
-        /// <param name="currentAuthority">The authority url to check.</param>
-        /// <returns>True is pre-defined tenant names are present, and false if not. </returns>
-        private bool ContainsWellKnownTenantName(string currentAuthority)
-        {
-            if (!Uri.IsWellFormedUriString(currentAuthority, UriKind.Absolute))
-                throw new ArgumentException("Invalid authority URI set.");
-
-            Uri authorityUri = new Uri(currentAuthority);
-
-            return WellKnownTenants.Contains(authorityUri.Segments[1].Replace(@"/", string.Empty));
-        }
     }
 }

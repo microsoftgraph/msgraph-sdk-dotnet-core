@@ -32,7 +32,7 @@ namespace Microsoft.Graph
             }
 
             if (delay == null)
-                throw new MsalServiceException(serviceException.ErrorCode, ErrorConstants.Messages.MissingRetryAfterHeader);
+                throw new MsalServiceException(serviceException.ErrorCode, ErrorConstants.Messages.MissingRetryAfterHeader, serviceException);
 
             return delay.Value;
         }
