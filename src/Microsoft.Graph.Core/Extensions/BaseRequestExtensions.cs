@@ -181,7 +181,7 @@ namespace Microsoft.Graph
             string authHandlerOptionKey = typeof(AuthenticationHandlerOption).ToString();
             AuthenticationHandlerOption authHandlerOptions; 
 
-            // make sure that the options exist in the middleware otherwise create is
+            // make sure that the options exist in the middleware otherwise create it
             if (baseRequest.MiddlewareOptions.ContainsKey(authHandlerOptionKey))
             {
                 authHandlerOptions = baseRequest.MiddlewareOptions[authHandlerOptionKey] as AuthenticationHandlerOption;
