@@ -4,7 +4,7 @@
 
 namespace Microsoft.Graph.Core.Requests
 {
-    using Newtonsoft.Json.Linq;
+    using System.IO;
     using System.Collections.Generic;
     using System.Net.Http;
     using System.Threading;
@@ -49,9 +49,11 @@ namespace Microsoft.Graph.Core.Requests
         {
             this.ContentType = "application/json";
             this.Method = "POST";
-            JObject serializableContent = await batchRequestContent.GetBatchRequestContentAsync().ConfigureAwait(false);
-            HttpResponseMessage httpResponseMessage = await this.SendRequestAsync(serializableContent, cancellationToken).ConfigureAwait(false);
-            return new BatchResponseContent(httpResponseMessage);
+            using (Stream serializableContent = await batchRequestContent.GetBatchRequestContentAsync().ConfigureAwait(false))
+            {
+                HttpResponseMessage httpResponseMessage = await this.SendRequestAsync(serializableContent, cancellationToken).ConfigureAwait(false);
+                return new BatchResponseContent(httpResponseMessage);
+            }
         }
     }
 }

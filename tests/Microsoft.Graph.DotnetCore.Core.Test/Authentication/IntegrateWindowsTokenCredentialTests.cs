@@ -1,10 +1,11 @@
-﻿// ------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
 
 namespace Microsoft.Graph.DotnetCore.Core.Test.Authentication
 {
+    using System;
     using Azure.Core;
     using Microsoft.Identity.Client;
     using Xunit;
@@ -34,10 +35,9 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Authentication
         {
             IEnumerable<string> scopes = new List<string> { "User.ReadBasic.All" };
 
-            AuthenticationException ex = Assert.Throws<AuthenticationException>(() => new IntegratedWindowsTokenCredential(null));
+            ArgumentException ex = Assert.Throws<ArgumentException>(() => new IntegratedWindowsTokenCredential(null));
 
-            Assert.Equal(ex.Error.Code, ErrorConstants.Codes.InvalidRequest);
-            Assert.Equal(ex.Error.Message, string.Format(ErrorConstants.Messages.NullValue, "publicClientApplication"));
+            Assert.Equal(ex.ParamName, "publicClientApplication");
         }
 
     }

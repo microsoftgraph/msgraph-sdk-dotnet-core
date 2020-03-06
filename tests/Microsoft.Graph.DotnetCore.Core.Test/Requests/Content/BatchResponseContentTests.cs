@@ -30,7 +30,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
         [Fact]
         public async Task BatchResponseContent_InitializeWithEmptyResponseContentAsync()
         {
-            string jsonResponse = "{ responses: [] }";
+            string jsonResponse = "{ \"responses\": [] }";
             HttpContent content = new StringContent(jsonResponse);
             HttpResponseMessage httpResponseMessage = new HttpResponseMessage(HttpStatusCode.BadRequest);
             httpResponseMessage.Content = content;
@@ -221,7 +221,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
                                   "                },\n" +
                                   "                \"body\": {\n" +
                                   "                    \"contentType\": \"html\",\n" +
-                                  "                    \"content\": \"<html>\\r\\n<head>\\r\\n<meta http-\",\n" +
+                                  "                    \"content\": \"<html>\\r\\n<head>\\r\\n<meta http-\"\n" +
 
                                   "                },\n" +
                                   "                \"start\": {\n" +
