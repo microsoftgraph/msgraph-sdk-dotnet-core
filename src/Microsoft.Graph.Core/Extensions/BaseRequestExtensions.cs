@@ -167,5 +167,41 @@ namespace Microsoft.Graph
 
             return baseRequest;
         }
+
+        /// <summary>
+        /// Sets Microsoft Graph's scopes that will be used by <see cref="IAuthenticationProvider"/> to authenticate this request
+        /// and can be used to perform incremental scope consent.
+        /// This only works with the default authentication handler and default set of Microsoft graph authentication providers.
+        /// If you use a custom authentication handler or authentication provider, you have to handle it's retrieval in your implementation.
+        /// </summary>
+        /// <param name="baseRequest">The <see cref="IBaseRequest"/>.</param>
+        /// <param name="scopes">Microsoft graph scopes used to authenticate this request.</param>
+        public static T WithScopes<T>(this T baseRequest, string[] scopes) where T : IBaseRequest
+        {
+            string authHandlerOptionKey = typeof(AuthenticationHandlerOption).ToString();
+            AuthenticationHandlerOption authHandlerOptions; 
+
+            // make sure that the options exist in the middleware otherwise create it
+            if (baseRequest.MiddlewareOptions.ContainsKey(authHandlerOptionKey))
+            {
+                authHandlerOptions = baseRequest.MiddlewareOptions[authHandlerOptionKey] as AuthenticationHandlerOption;
+            }
+            else
+            {
+                baseRequest.MiddlewareOptions.Add(authHandlerOptionKey, new AuthenticationHandlerOption());
+                authHandlerOptions = baseRequest.MiddlewareOptions[authHandlerOptionKey] as AuthenticationHandlerOption;
+            }
+
+            // get the auth handler options or create a new instance if absent
+            MsalAuthenticationProviderOption msalAuthProviderOption = authHandlerOptions.AuthenticationProviderOption as MsalAuthenticationProviderOption ?? new MsalAuthenticationProviderOption();
+
+            msalAuthProviderOption.Scopes = scopes;
+
+            // update the base request object as appropriate
+            authHandlerOptions.AuthenticationProviderOption = msalAuthProviderOption;
+            baseRequest.MiddlewareOptions[authHandlerOptionKey] = authHandlerOptions;
+
+            return baseRequest;
+        }
     }
 }

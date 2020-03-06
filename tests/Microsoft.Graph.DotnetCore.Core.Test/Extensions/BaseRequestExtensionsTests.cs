@@ -1,4 +1,4 @@
-﻿namespace Microsoft.Graph.DotnetCore.Core.Test.Extensions
+namespace Microsoft.Graph.DotnetCore.Core.Test.Extensions
 {
     using Microsoft.Graph.DotnetCore.Core.Test.Mocks;
     using System;
@@ -124,6 +124,25 @@
                 Assert.NotEqual(perRequestAutHeader, returnedResponseMessage.RequestMessage.Headers.Authorization.Parameter);
                 Assert.Equal(defaultAuthHeader, returnedResponseMessage.RequestMessage.Headers.Authorization.Parameter);
             }
+        }
+
+        [Fact]
+        public void WithScopes_ShouldUseScopesProvided()
+        {
+            //Arrange
+            var scopes = new string[] { "User.Read", "Mail.Send"};
+            var baseRequest = new BaseRequest(requestUrl, baseClient);
+            
+            // Act
+            baseRequest.WithScopes(scopes);
+
+            // Assert
+            Assert.IsType<GraphRequestContext>(baseRequest.GetHttpRequestMessage().Properties[typeof(GraphRequestContext).ToString()]);
+            var messageScopes = baseRequest.GetHttpRequestMessage().GetMiddlewareOption<AuthenticationHandlerOption>()
+                .AuthenticationProviderOption.Scopes;
+            Assert.Equal(2, messageScopes.Length);
+            Assert.Equal(scopes[0], messageScopes[0]);
+            Assert.Equal(scopes[1], messageScopes[1]);
         }
     }
 }
