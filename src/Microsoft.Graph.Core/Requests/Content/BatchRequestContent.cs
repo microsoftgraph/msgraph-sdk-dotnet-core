@@ -237,7 +237,7 @@ namespace Microsoft.Graph
             {
                 writer.WritePropertyName(CoreConstants.BatchRequest.Headers);
                 writer.WriteStartObject();
-                foreach (KeyValuePair<string, IEnumerable<string>> header in batchRequestStep.Request.Content.Headers)
+                foreach (var header in batchRequestStep.Request.Content.Headers)
                 {
                     writer.WriteString(header.Key, GetHeaderValuesAsString(header.Value));
                 }
@@ -248,8 +248,10 @@ namespace Microsoft.Graph
             if (batchRequestStep.Request != null && batchRequestStep.Request.Content != null)
             {
                 writer.WritePropertyName(CoreConstants.BatchRequest.Body);
-                JsonDocument content = await GetRequestContentAsync(batchRequestStep.Request);
-                content.WriteTo(writer);
+                using (JsonDocument content = await GetRequestContentAsync(batchRequestStep.Request))
+                {
+                    content.WriteTo(writer);
+                }
             }
             writer.WriteEndObject();//close root object.
         }

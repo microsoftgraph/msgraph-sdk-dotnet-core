@@ -236,8 +236,8 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
             string requestContent;
             // we do this to get a version of the json that is indented 
             using (Stream requestStream = await batchRequestContent.GetBatchRequestContentAsync())
+            using (JsonDocument jsonDocument = JsonDocument.Parse(requestStream))
             {
-                JsonDocument jsonDocument = JsonDocument.Parse(requestStream);
                 requestContent = JsonSerializer.Serialize(jsonDocument.RootElement, new JsonSerializerOptions() { WriteIndented = true });
             }
 
