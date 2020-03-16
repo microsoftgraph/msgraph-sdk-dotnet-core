@@ -4,12 +4,12 @@
 
 namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
 {
-    using Newtonsoft.Json;
-    using Newtonsoft.Json.Linq;
     using Microsoft.Graph.DotnetCore.Core.Test.Mocks;
     using System.Collections.Generic;
     using System.Linq;
     using System.Net.Http;
+    using System.IO;
+    using System.Text.Json;
     using Xunit;
 
     public class BatchRequestContentTests
@@ -176,11 +176,16 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
 
             batchRequestContent.RemoveBatchRequestStepWithId("1");
 
-            JObject requestContent = await batchRequestContent.GetBatchRequestContentAsync();
-
-            string expectedJson = "{\"requests\":[{\"id\":\"2\",\"url\":\"/me\",\"method\":\"GET\"}]}";
-            JObject expectedContent = JsonConvert.DeserializeObject<JObject>(expectedJson);
-
+            string requestContent;
+            // We get the contents of the stream as string for comparison.
+            using (Stream requestStream = await batchRequestContent.GetBatchRequestContentAsync())
+            using (StreamReader reader = new StreamReader(requestStream))
+            {
+                requestContent = reader.ReadToEnd();
+            }
+            
+            string expectedContent = "{\"requests\":[{\"id\":\"2\",\"url\":\"/me\",\"method\":\"GET\"}]}";
+            
             Assert.NotNull(requestContent);
             Assert.True(batchRequestContent.BatchRequestSteps.Count.Equals(1));
             Assert.Equal(expectedContent, requestContent);
@@ -189,8 +194,10 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
         [Fact]
         public async System.Threading.Tasks.Task BatchRequestContent_GetBatchRequestContentFromStepAsyncDoesNotModifyDateTimes()
         {
+            // System.Text.Json is strict on json content by default. So make sure that there are no 
+            // trailing comma's and special characters
             var payloadString = "{\r\n" +
-                                "  \"subject\": \"Let's go for lunch\",\r\n" +
+                                "  \"subject\": \"Lets go for lunch\",\r\n" +
                                 "  \"body\": {\r\n    \"contentType\": \"HTML\",\r\n" +
                                 "    \"content\": \"Does mid month work for you?\"\r\n" +
                                 "  },\r\n" +
@@ -202,7 +209,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
                                 "      \"dateTime\": \"2019-03-15T14:00:00.0000\",\r\n" +
                                 "      \"timeZone\": \"Pacific Standard Time\"\r\n" +
                                 "  },\r\n  \"location\":{\r\n" +
-                                "      \"displayName\":\"Harry's Bar\"\r\n" +
+                                "      \"displayName\":\"Harrys Bar\"\r\n" +
                                 "  },\r\n" +
                                 "  \"attendees\": [\r\n" +
                                 "    {\r\n" +
@@ -226,8 +233,13 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
             batchRequestContent.AddBatchRequestStep(batchRequestStep1);
             batchRequestContent.AddBatchRequestStep(batchRequestStep2);
 
-            JObject requestContent = await batchRequestContent.GetBatchRequestContentAsync();
-            string content = requestContent.ToString();
+            string requestContent;
+            // we do this to get a version of the json that is indented 
+            using (Stream requestStream = await batchRequestContent.GetBatchRequestContentAsync())
+            using (JsonDocument jsonDocument = JsonDocument.Parse(requestStream))
+            {
+                requestContent = JsonSerializer.Serialize(jsonDocument.RootElement, new JsonSerializerOptions() { WriteIndented = true });
+            }
 
             string expectedJson = "{\r\n" +
                                   "  \"requests\": [\r\n" +
@@ -247,7 +259,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
                                   "        \"Content-Type\": \"text/plain; charset=utf-8\"\r\n" +
                                   "      },\r\n" +
                                   "      \"body\": {\r\n" +
-                                  "        \"subject\": \"Let's go for lunch\",\r\n" +
+                                  "        \"subject\": \"Lets go for lunch\",\r\n" +
                                   "        \"body\": {\r\n" +
                                   "          \"contentType\": \"HTML\",\r\n" +
                                   "          \"content\": \"Does mid month work for you?\"\r\n" +
@@ -261,7 +273,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
                                   "          \"timeZone\": \"Pacific Standard Time\"\r\n" +
                                   "        },\r\n" +
                                   "        \"location\": {\r\n" +
-                                  "          \"displayName\": \"Harry's Bar\"\r\n" +
+                                  "          \"displayName\": \"Harrys Bar\"\r\n" +
                                   "        },\r\n" +
                                   "        \"attendees\": [\r\n" +
                                   "          {\r\n" +
@@ -279,7 +291,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
 
             Assert.NotNull(requestContent);
             Assert.True(batchRequestContent.BatchRequestSteps.Count.Equals(2));
-            Assert.Equal(expectedJson, content);
+            Assert.Equal(expectedJson, requestContent);
         }
 
         [Fact]

@@ -4,8 +4,6 @@
 
 namespace Microsoft.Graph
 {
-    using Newtonsoft.Json;
-    using Newtonsoft.Json.Linq;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -14,6 +12,7 @@ namespace Microsoft.Graph
     using System.Net.Http;
     using System.Net.Http.Headers;
     using System.Text;
+    using System.Text.Json;
     using System.Threading.Tasks;
 
     /// <summary>
@@ -176,17 +175,37 @@ namespace Microsoft.Graph
             return isRemoved;
         }
 
-        internal async Task<JObject> GetBatchRequestContentAsync()
+        /// <summary>
+        /// Get the content of the batchRequest in the form of a stream.
+        /// It is the responsibility of the caller to dispose of the stream returned.
+        /// </summary>
+        /// <returns>A stream object with the contents of the batch request</returns>
+        internal async Task<Stream> GetBatchRequestContentAsync()
         {
-            JObject batchRequest = new JObject();
-            JArray batchRequestItems = new JArray();
+            var stream = new MemoryStream();
+            using (var writer = new Utf8JsonWriter(stream))
+            {
+                writer.WriteStartObject();//open the root object
+                writer.WritePropertyName(CoreConstants.BatchRequest.Requests);// requests property name
 
-            foreach (KeyValuePair<string, BatchRequestStep> batchRequestStep in BatchRequestSteps)
-                batchRequestItems.Add(await GetBatchRequestContentFromStepAsync(batchRequestStep.Value));
+                //write the elements of the requests array
+                writer.WriteStartArray();
+                foreach (KeyValuePair<string, BatchRequestStep> batchRequestStep in BatchRequestSteps)
+                {
+                    await WriteBatchRequestStepAsync(batchRequestStep.Value, writer);
+                }
+                writer.WriteEndArray();
 
-            batchRequest.Add(CoreConstants.BatchRequest.Requests, batchRequestItems);
+                
+                writer.WriteEndObject();//close the root object
+                writer.Flush();
+                stream.Flush();
 
-            return batchRequest;
+                //Reset the position since we want the caller to use this stream
+                stream.Position = 0;
+
+                return stream;
+            }
         }
 
         private bool ContainsCorrespondingRequestId(IList<string> dependsOn)
@@ -194,37 +213,57 @@ namespace Microsoft.Graph
         	return dependsOn.All(requestId => BatchRequestSteps.ContainsKey(requestId));
         }
 
-        private async Task<JObject> GetBatchRequestContentFromStepAsync(BatchRequestStep batchRequestStep)
+        private async Task WriteBatchRequestStepAsync(BatchRequestStep batchRequestStep, Utf8JsonWriter writer)
         {
-            JObject jRequestContent = new JObject
-            {
-                { CoreConstants.BatchRequest.Id, batchRequestStep.RequestId },
-                { CoreConstants.BatchRequest.Url, GetRelativeUrl(batchRequestStep.Request.RequestUri) },
-                { CoreConstants.BatchRequest.Method, batchRequestStep.Request.Method.Method }
-            };
-            if (batchRequestStep.DependsOn != null && batchRequestStep.DependsOn.Count() > 0)
-                jRequestContent.Add(CoreConstants.BatchRequest.DependsOn, new JArray(batchRequestStep.DependsOn));
+            writer.WriteStartObject();// open root object
+            writer.WriteString(CoreConstants.BatchRequest.Id, batchRequestStep.RequestId);//write the id property
+            writer.WriteString(CoreConstants.BatchRequest.Url, GetRelativeUrl(batchRequestStep.Request.RequestUri));//write the url property
+            writer.WriteString(CoreConstants.BatchRequest.Method, batchRequestStep.Request.Method.Method);// write the method property
 
-            if (batchRequestStep.Request.Content?.Headers != null && batchRequestStep.Request.Content.Headers.Count() > 0)
-                jRequestContent.Add(CoreConstants.BatchRequest.Headers, GetContentHeader(batchRequestStep.Request.Content.Headers));
-
-            if(batchRequestStep.Request != null && batchRequestStep.Request.Content != null)
+            // if the step depends on another step, write it
+            if (batchRequestStep.DependsOn != null && batchRequestStep.DependsOn.Any())
             {
-                jRequestContent.Add(CoreConstants.BatchRequest.Body, await GetRequestContentAsync(batchRequestStep.Request));
+                writer.WritePropertyName(CoreConstants.BatchRequest.DependsOn);
+                writer.WriteStartArray();
+                foreach (var value in batchRequestStep.DependsOn)
+                {
+                    writer.WriteStringValue(value);//write the id it depends on
+                }
+                writer.WriteEndArray();
             }
 
-            return jRequestContent;
+            // write any headers the step contains
+            if (batchRequestStep.Request.Content?.Headers != null && batchRequestStep.Request.Content.Headers.Any())
+            {
+                writer.WritePropertyName(CoreConstants.BatchRequest.Headers);
+                writer.WriteStartObject();
+                foreach (var header in batchRequestStep.Request.Content.Headers)
+                {
+                    writer.WriteString(header.Key, GetHeaderValuesAsString(header.Value));
+                }
+                writer.WriteEndObject();
+            }
+
+            // write the content of the step if it has any
+            if (batchRequestStep.Request != null && batchRequestStep.Request.Content != null)
+            {
+                writer.WritePropertyName(CoreConstants.BatchRequest.Body);
+                using (JsonDocument content = await GetRequestContentAsync(batchRequestStep.Request))
+                {
+                    content.WriteTo(writer);
+                }
+            }
+            writer.WriteEndObject();//close root object.
         }
 
-        private async Task<JObject> GetRequestContentAsync(HttpRequestMessage request)
+        private async Task<JsonDocument> GetRequestContentAsync(HttpRequestMessage request)
         {
             try
             {
                 HttpRequestMessage clonedRequest = await request.CloneAsync();
-
                 using (Stream streamContent = await clonedRequest.Content.ReadAsStreamAsync())
                 {
-                    return Serializer.DeserializeObject<JObject>(streamContent);
+                    return JsonDocument.Parse(streamContent);
                 }
             }
             catch (Exception ex)
@@ -235,16 +274,6 @@ namespace Microsoft.Graph
                     Message = ErrorConstants.Messages.UnableToDeserializexContent
                 }, ex);
             }
-        }
-
-        private JObject GetContentHeader(HttpContentHeaders headers)
-        {
-            JObject jHeaders = new JObject();
-            foreach (KeyValuePair<string, IEnumerable<string>> header in headers)
-            {
-                jHeaders.Add(header.Key, GetHeaderValuesAsString(header.Value));
-            }
-            return jHeaders;
         }
 
         private string GetHeaderValuesAsString(IEnumerable<string> headerValues)
@@ -278,11 +307,9 @@ namespace Microsoft.Graph
         /// <returns></returns>
         protected override async Task SerializeToStreamAsync(Stream stream, TransportContext context)
         {
-            using (StreamWriter streamWritter = new StreamWriter(stream, new UTF8Encoding(), 1024, true))
-            using (JsonTextWriter textWritter = new JsonTextWriter(streamWritter))
+            using (Stream batchContent = await GetBatchRequestContentAsync())
             {
-                JObject batchContent = await GetBatchRequestContentAsync();
-                batchContent.WriteTo(textWritter);
+                await batchContent.CopyToAsync(stream);
             }
         }
 
