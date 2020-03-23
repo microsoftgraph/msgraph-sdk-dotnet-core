@@ -41,7 +41,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         // and 'GraphClientFactory.DefaultHttpHandler' can easily be modified
         // by other tests since it's a static delegate.
 
-#if iOS
+#if iOS || macOS
         [Fact]
         public void Should_CreatePipeline_Without_CompressionHandler()
         {

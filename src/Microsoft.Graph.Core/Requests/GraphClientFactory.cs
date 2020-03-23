@@ -179,8 +179,8 @@ namespace Microsoft.Graph
                     throw new ArgumentNullException(nameof(handlers), "DelegatingHandler array contains null item.");
                 }
 
-#if iOS
-                // Skip CompressionHandler since NSUrlSessionHandler automatically handles decompression on iOS and it can't be turned off.
+#if iOS || macOS
+                // Skip CompressionHandler since NSUrlSessionHandler automatically handles decompression on iOS and macOS and it can't be turned off.
                 // See issue https://github.com/microsoftgraph/msgraph-sdk-dotnet/issues/481 for more details.
                 if (finalHandler.GetType().Equals(typeof(NSUrlSessionHandler)) && handler.GetType().Equals(typeof(CompressionHandler)))
                 {
@@ -206,17 +206,17 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Gets a platform's native http handler i.e. NSUrlSessionHandler for Xamarin.iOS, AndroidClientHandler for Xamarin.Android and HttpClientHandler for others.
+        /// Gets a platform's native http handler i.e. NSUrlSessionHandler for Xamarin.iOS and Xamarin.Mac, AndroidClientHandler for Xamarin.Android and HttpClientHandler for others.
         /// </summary>
         /// <param name="proxy">The proxy to be used with created client.</param>
         /// <returns>
-        /// 1. NSUrlSessionHandler for Xamarin.iOS 
+        /// 1. NSUrlSessionHandler for Xamarin.iOS and Xamarin.Mac
         /// 2. AndroidClientHandler for Xamarin.Android.
         /// 3. HttpClientHandler for other platforms.
         /// </returns>
         internal static HttpMessageHandler GetNativePlatformHttpHandler(IWebProxy proxy = null)
         {
-#if iOS
+#if iOS || macOS
             return new NSUrlSessionHandler { AllowAutoRedirect = false };
 #elif ANDROID
             return new Xamarin.Android.Net.AndroidClientHandler { Proxy = proxy, AllowAutoRedirect = false, AutomaticDecompression = DecompressionMethods.None };
