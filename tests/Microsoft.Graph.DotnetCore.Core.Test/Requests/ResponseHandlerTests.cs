@@ -12,6 +12,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
     using Xunit;
     using Microsoft.Graph;
     using System.Linq;
+    using System;
 
     public class ResponseHandlerTests
     {
@@ -41,6 +42,53 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             Assert.Equal("OK", user.AdditionalData["statusCode"]);
             var headers = (JObject)(user.AdditionalData["responseHeaders"]);
             Assert.Equal("value", (string)headers["test"][0]);
+        }
+
+        /// <summary>
+        /// We assumed that JSON arrays only contained objects. We need to test that
+        /// we account for array of primitives.
+        /// </summary>
+        /// <returns></returns>
+        [Fact]
+        public async Task HandleEventDeltaResponseWithArrayOfPrimitives()
+        {
+            // Arrange
+            var deltaResponseHandler = new DeltaResponseHandler();
+
+            // Contains string, int, and boolean arrays.
+            var testString = "{\"@odata.context\":\"https://graph.microsoft.com/v1.0/$metadata#Collection(user)\",\"@odata.nextLink\":\"https://graph.microsoft.com/v1.0/users/delta?$skiptoken=R0usmci39O\",\"value\":[{\"id\":\"AAMkADVxTAAA=\",\"arrayOfString\":[\"SMTP:alexd@contoso.com\",\"SMTP:meganb@contoso.com\"]},{\"id\":\"AAMkADVxUAAA=\",\"arrayOfBool\":[true,false]},{\"id\":\"AAMkADVxVAAA=\",\"arrayOfInt\":[2,5]}]}";
+
+            var hrm = new HttpResponseMessage()
+            {
+                Content = new StringContent(testString,
+                                Encoding.UTF8,
+                                "application/json")
+            };
+
+            // Act
+            var deltaServiceLibResponse = await deltaResponseHandler.HandleResponse<EventDeltaCollectionResponse>(hrm);
+
+            var deltaJObjectResponse = await deltaResponseHandler.HandleResponse<JObject>(hrm);
+            string actualStringValue = (string)deltaJObjectResponse.SelectToken("value[0].arrayOfString[0]");
+            bool actualBoolValue = Convert.ToBoolean((string)deltaJObjectResponse.SelectToken("value[1].arrayOfBool[1]"));
+            int actualIntValue = Convert.ToInt32((string)deltaJObjectResponse.SelectToken("value[2].arrayOfInt[1]"));
+
+            string arrayOfString = (string)deltaJObjectResponse.SelectToken("value[0].changes[2]");
+            string arrayOfBool = (string)deltaJObjectResponse.SelectToken("value[1].changes[2]");
+            string arrayOfInt = (string)deltaJObjectResponse.SelectToken("value[2].changes[2]");
+
+            // Assert that it actually deserialized into a model we expect.
+            Assert.True(deltaServiceLibResponse.Value is IEventDeltaCollectionPage); // We create a valid ICollectionPage.
+
+            // Assert that the value is set.
+            Assert.Equal("SMTP:alexd@contoso.com", actualStringValue);
+            Assert.False(actualBoolValue);
+            Assert.Equal(5, actualIntValue);
+
+            // Assert that the change manifest is set.
+            Assert.Equal("arrayOfString[1]", arrayOfString); // The third change is the second string array item.
+            Assert.Equal("arrayOfBool[1]", arrayOfBool);
+            Assert.Equal("arrayOfInt[1]", arrayOfInt);
         }
 
         [Fact]
@@ -235,9 +283,6 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         {
             // Arrange
             var deltaResponseHandler = new DeltaResponseHandler();
-            var odataContext = @"https://graph.microsoft.com/v1.0/$metadata#Collection(event)";
-            var odataDeltalink = @"https://graph.microsoft.com/v1.0/me/mailfolders/inbox/messages/delta?$deltatoken=LztZwWjo5IivWBhyxw5rACKxf7mPm0oW6JZZ7fvKxYPS_67JnEYmfQQMPccy6FRun0DWJF5775dvuXxlZnMYhBubC1v4SBVT9ZjO8f7acZI.uCdGKSBS4YxPEbn_Q5zxLSq91WhpGoz9ZKeNZHMWgSA";
-
 
             // Result string with one removed item.
             var testString = "{\"@odata.context\":\"https://graph.microsoft.com/v1.0/$metadata#Collection(event)\",\"@odata.nextLink\":\"https://graph.microsoft.com/v1.0/me/calendarView/delta?$skiptoken=R0usmci39OQxqJrxK4\",\"value\":[{\"@removed\":{\"reason\":\"removed\"},\"id\":\"AAMkADVxTAAA=\"}]}";

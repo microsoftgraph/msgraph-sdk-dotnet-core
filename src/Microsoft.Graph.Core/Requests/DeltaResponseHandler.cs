@@ -169,9 +169,15 @@ namespace Microsoft.Graph
                     {
                         string parentWithIndex = $"{parent}[{i}]";
 
-                        JObject collectionItem = collection[i] as JObject;
-
-                        await GetObjectProperties(collectionItem, changes, parentWithIndex);
+                        if (collection[i] is JObject)
+                        {
+                            JObject collectionItem = collection[i] as JObject;
+                            await GetObjectProperties(collectionItem, changes, parentWithIndex);
+                        }
+                        else // Assuming that this is a JValue.
+                        {
+                            changes.Add(parentWithIndex);
+                        }
                     }
                 }
                 else if (property.Value is JValue)
