@@ -20,7 +20,7 @@
     <AssemblyOriginatorKeyFile>35MSSharedLib1024.snk</AssemblyOriginatorKeyFile>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <VersionPrefix>1.22.0</VersionPrefix>
-    <VersionSuffix></VersionSuffix>
+    <VersionSuffix>preview.1</VersionSuffix>
     <PackageReleaseNotes>
 - Fix for modifying the Timeout property of a passed HttpClient
 - Add DeltaResponseHandler to discover null changes for delta query
