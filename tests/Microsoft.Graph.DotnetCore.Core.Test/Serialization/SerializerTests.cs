@@ -65,7 +65,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
             Assert.NotNull(instance);
             Assert.Equal(id, instance.Id);
             Assert.NotNull(instance.AdditionalData);
-            Assert.Equal(givenName, instance.AdditionalData["givenName"] as string);
+            Assert.Equal(givenName, instance.AdditionalData["givenName"].ToString());
         }
 
         [Fact]
@@ -102,7 +102,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
             Assert.Equal(id, instance.Id);
             Assert.Null(instance.EnumType);
             Assert.NotNull(instance.AdditionalData);
-            Assert.Equal(enumValue, instance.AdditionalData["enumType"] as string);
+            Assert.Equal(enumValue, instance.AdditionalData["enumType"].ToString());
         }
 
         [Fact]
@@ -224,7 +224,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
             Assert.NotNull(instance);
             Assert.Equal(entityId, instance.Id);
             Assert.NotNull(instance.AdditionalData);
-            Assert.Equal(additionalValue, instance.AdditionalData[additionalKey] as string);
+            Assert.Equal(additionalValue, instance.AdditionalData[additionalKey].ToString());
         }
 
         [Fact]
