@@ -4,25 +4,31 @@
 
 namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels
 {
-    using System.Runtime.Serialization;
-    using Newtonsoft.Json;
+    using System.Collections.Generic;
+    using System.Text.Json.Serialization;
+
     /// <summary>
     /// A property bag class for testing derived type deserialization.
     /// </summary>
-    [JsonConverter(typeof(DerivedTypeConverter))]
-    [DataContract]
+    [JsonConverter(typeof(DerivedTypeConverter<DerivedTypeClass>))]
     public class DerivedTypeClass : AbstractEntityType
     {
         /// <summary>
         /// Gets or sets enumType.
         /// </summary>
-        [DataMember(Name = "enumType", EmitDefaultValue = false, IsRequired = false)]
+        [JsonPropertyName("enumType")]
         public EnumType? EnumType { get; set; }
 
         /// <summary>
         /// Gets or sets id.
         /// </summary>
-        [DataMember(Name = "name", EmitDefaultValue = false, IsRequired = false)]
+        [JsonPropertyName("name")]
         public string Name { get; set; }
+
+        /// <summary>
+        /// Gets or sets id.
+        /// </summary>
+        [JsonPropertyName("memorableDates")]
+        public IEnumerable<DateTestClass> MemorableDates { get; set; }
     }
 }

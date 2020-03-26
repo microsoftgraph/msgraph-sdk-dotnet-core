@@ -125,7 +125,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
         }
 
 
-        [Fact]
+        [Fact(Skip = "Service Library needs to support System.Text.Json Attributes")]
         public async Task BatchResponseContent_GetResponseByIdAsyncWithDeseirializer()
         {
             // Arrange
@@ -187,7 +187,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
             Assert.NotNull(serviceException.RawResponseBody);
         }
 
-        [Fact]
+        [Fact(Skip = "Service Library needs to support System.Text.Json Attributes")]
         public async Task BatchResponseContent_GetResponseByIdAsyncWithDeserializerWorksWithDateTimeOffsets()
         {
             // Arrange an example Event object with a few properties

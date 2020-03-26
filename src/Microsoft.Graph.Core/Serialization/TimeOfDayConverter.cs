@@ -5,13 +5,13 @@
 namespace Microsoft.Graph
 {
     using System;
-
-    using Newtonsoft.Json;
+    using System.Text.Json;
+    using System.Text.Json.Serialization;
 
     /// <summary>
     /// Handles serialization and deserialization for TimeOfDay.
     /// </summary>
-    public class TimeOfDayConverter : JsonConverter
+    public class TimeOfDayConverter : JsonConverter<TimeOfDay>
     {
         /// <summary>
         /// Checks if the given type can be converted to a TimeOfDay.
@@ -31,20 +31,19 @@ namespace Microsoft.Graph
         /// <summary>
         /// Deserialize the JSON data into a TimeOfDay object.
         /// </summary>
-        /// <param name="reader">The <see cref="JsonReader"/> to read from.</param>
-        /// <param name="objectType">The object type.</param>
-        /// <param name="existingValue">The original value.</param>
-        /// <param name="serializer">The serializer to deserialize the object with.</param>
+        /// <param name="reader">The <see cref="Utf8JsonReader"/> to read from.</param>
+        /// <param name="typeToConvert">The object type.</param>
+        /// <param name="options">The <see cref="JsonSerializerOptions"/> for conversion.</param>
         /// <returns>A TimeOfDay object.</returns>
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        public override TimeOfDay Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             try
             {
-                var dateTime = (DateTime)serializer.Deserialize(reader, typeof(DateTime));
+                var dateTime = (DateTime)JsonSerializer.Deserialize(reader.GetString(), typeof(DateTime));
 
                 return new TimeOfDay(dateTime);
             }
-            catch (JsonSerializationException serializationException)
+            catch (JsonException serializationException)
             {
                 throw new ServiceException(
                     new Error
@@ -59,16 +58,14 @@ namespace Microsoft.Graph
         /// <summary>
         /// Writes the JSON representation of the object.
         /// </summary>
-        /// <param name="writer">The <see cref="JsonWriter"/> to write to.</param>
-        /// <param name="value">The value.</param>
-        /// <param name="serializer">The calling serializer.</param>
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        /// <param name="writer">The <see cref="Utf8JsonWriter"/> to write to.</param>
+        /// <param name="value">The <see cref="TimeOfDay"/> value.</param>
+        /// <param name="options">The <see cref="JsonSerializerOptions"/> of the calling serializer.</param>
+        public override void Write(Utf8JsonWriter writer, TimeOfDay value, JsonSerializerOptions options)
         {
-            var timeOfDay = value as TimeOfDay;
-
-            if (timeOfDay != null)
+            if (value != null)
             {
-                writer.WriteValue(timeOfDay.ToString());
+                writer.WriteStringValue(value.ToString());
             }
             else
             {

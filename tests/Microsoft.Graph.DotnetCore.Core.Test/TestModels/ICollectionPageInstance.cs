@@ -4,11 +4,10 @@
 
 namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels
 {
-    using Newtonsoft.Json;
     /// <summary>
     /// Test class for testing serialization of an IEnumerable of Date.
     /// </summary>
-    [JsonConverter(typeof(InterfaceConverter<CollectionPageInstance>))]
+    [InterfaceConverter(typeof(InterfaceConverter<CollectionPageInstance>))]
     public interface ICollectionPageInstance : ICollectionPage<DerivedTypeClass>
     {
     }

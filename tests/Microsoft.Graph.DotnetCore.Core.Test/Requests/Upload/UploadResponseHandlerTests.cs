@@ -13,7 +13,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
     using Xunit;
     public class UploadResponseHandlerTests
     {
-        [Theory]
+        [Theory(Skip = "Service Library needs to support System.Text.Json Attributes")]
         [InlineData(HttpStatusCode.Created)]
         [InlineData(HttpStatusCode.OK)]
         public async Task GetDriveItemOnCompletedUpload(HttpStatusCode statusCode)
@@ -42,7 +42,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             Assert.Equal(33, driveItem.Size);
         }
 
-        [Fact]
+        [Fact(Skip = "Service Library needs to support System.Text.Json Attributes")]
         public async Task GetFileAttachmentLocationItemOnCompletedUpload()
         {
             // Arrange

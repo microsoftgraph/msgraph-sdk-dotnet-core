@@ -5,11 +5,11 @@
 namespace Microsoft.Graph
 {
     using Microsoft.Graph.Core.Models;
-    using Newtonsoft.Json;
     using System.IO;
     using System.Net;
     using System.Net.Http;
     using System.Threading.Tasks;
+    using System.Text.Json;
 
     /// <summary>
     /// The ResponseHandler for upload requests
@@ -93,7 +93,7 @@ namespace Microsoft.Graph
 
                     return uploadResult;
                 }
-                catch (JsonSerializationException exception)
+                catch (JsonException exception)
                 {
                     string rawResponseBody = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                     throw new ServiceException(new Error()

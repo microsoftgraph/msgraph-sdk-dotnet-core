@@ -5,29 +5,27 @@
 namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels
 {
     using System.Collections.Generic;
-    using System.Runtime.Serialization;
-    using Newtonsoft.Json;
+    using System.Text.Json.Serialization;
     /// <summary>
     /// Test class for testing serialization of Date.
     /// </summary>
-    [JsonConverter(typeof(DerivedTypeConverter))]
-    [DataContract]
+    [JsonConverter(typeof(DerivedTypeConverter<DateTestClass>))]
     public class DateTestClass
     {
         /// <summary>
         /// Gets or sets nullableDate.
         /// </summary>
-        [DataMember(Name = "nullableDate", EmitDefaultValue = true, IsRequired = false)]
+        [JsonPropertyName("nullableDate")]
+        [JsonConverter(typeof(DateConverter))]
         public Date NullableDate { get; set; }
 
         /// <summary>
         /// Gets or sets dateCollection.
         /// </summary>
-        [DataMember(Name = "dateCollection", EmitDefaultValue = false, IsRequired = false)]
+        [JsonPropertyName("dateCollection")]
         public IEnumerable<Date> DateCollection { get; set; }
 
-        [JsonConverter(typeof(DateConverter))]
-        [DataMember(Name = "invalidType", EmitDefaultValue = false, IsRequired = false)]
+        [JsonPropertyName("invalidType")]
         public int? InvalidType { get; set; }
     }
 }

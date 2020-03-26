@@ -126,11 +126,13 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Exceptions
             Assert.Equal("inner-error-code", error.InnerError.Code);
             Assert.Equal("target-value", error.Target);
             Assert.NotNull(error.AdditionalData);
-            Assert.Equal("unexpected-property-value", error.AdditionalData["unexpected-property"]);
+            var expectedValue1 = error.AdditionalData["unexpected-property"].ToString();
+            Assert.Equal("unexpected-property-value", expectedValue1);
             Assert.NotNull(error.Details);
             Assert.Collection<ErrorDetail>(error.Details, errorDetail => Assert.Equal("details-code-value", errorDetail.Code),
                                                           errorDetail => Assert.Equal("details-code-value2", errorDetail.Code));
-            Assert.Equal("unexpected-details-property-value", error.Details.ToList<ErrorDetail>()[0].AdditionalData["unexpected-details-property"]);
+            var expectedValue2 = error.Details.ToList<ErrorDetail>()[0].AdditionalData["unexpected-details-property"].ToString();
+            Assert.Equal("unexpected-details-property-value", expectedValue2);
         }
     }
 }
