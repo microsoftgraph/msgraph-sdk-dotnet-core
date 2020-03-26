@@ -115,7 +115,7 @@ namespace Microsoft.Graph
 
                 HttpResponseMessage response = await base.SendAsync(httpRequestMessage, cancellationToken);
 
-                // Chcek if response is a 401 & is not a streamed body (is buffered)
+                // Check if response is a 401 & is not a streamed body (is buffered)
                 if (IsUnauthorized(response) && httpRequestMessage.IsBuffered())
                 {
                     // re-issue the request to get a new access token
