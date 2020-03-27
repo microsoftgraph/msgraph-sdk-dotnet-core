@@ -22,18 +22,43 @@ namespace Microsoft.Graph
         /// <returns></returns>
         public override DateTimeOffset Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            return DateTimeOffset.Parse(reader.GetString());
+            try
+            {
+                return DateTimeOffset.Parse(reader.GetString());
+            }
+            catch (Exception dateTimeOffsetParseException)
+            {
+                throw new ServiceException(
+                    new Error
+                    {
+                        Code = ErrorConstants.Codes.GeneralException,
+                        Message = ErrorConstants.Messages.UnableToDeserializeDateTimeOffset,
+                    },
+                    dateTimeOffsetParseException);
+            }
         }
 
         /// <summary>
         /// Writes the JSON representation of the object.
         /// </summary>
         /// <param name="writer">The <see cref="Utf8JsonWriter"/> to write to.</param>
-        /// <param name="dateTimeValue">The dateTime value.</param>
+        /// <param name="dateTimeOffsetValue">The dateTime value.</param>
         /// <param name="options">The calling serializer options</param>
-        public override void Write(Utf8JsonWriter writer, DateTimeOffset dateTimeValue, JsonSerializerOptions options)
+        public override void Write(Utf8JsonWriter writer, DateTimeOffset dateTimeOffsetValue, JsonSerializerOptions options)
         {
-            writer.WriteStringValue(dateTimeValue.ToString());
+            if (dateTimeOffsetValue != null)
+            {
+                writer.WriteStringValue(dateTimeOffsetValue.ToString());
+            }
+            else
+            {
+                throw new ServiceException(
+                    new Error
+                    {
+                        Code = ErrorConstants.Codes.GeneralException,
+                        Message = ErrorConstants.Messages.InvalidTypeForDateTimeOffsetConverter,
+                    });
+            }
         }
     }
     

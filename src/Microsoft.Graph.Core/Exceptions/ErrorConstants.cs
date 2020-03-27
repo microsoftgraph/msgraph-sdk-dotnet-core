@@ -36,6 +36,8 @@ namespace Microsoft.Graph
             internal static string BaseUrlMissing = "Base URL cannot be null or empty.";
 
             internal static string InvalidTypeForDateConverter = "DateConverter can only serialize objects of type Date.";
+            
+            internal static string InvalidTypeForDateTimeOffsetConverter = "DateTimeOffsetConverter can only serialize objects of type DateTimeOffset.";
 
             internal static string LocationHeaderNotSetOnRedirect = "Location header not present in redirection response.";
 
@@ -52,6 +54,8 @@ namespace Microsoft.Graph
             internal static string UnableToCreateInstanceOfTypeFormatString = "Unable to create an instance of type {0}.";
 
             internal static string UnableToDeserializeDate = "Unable to deserialize the returned Date.";
+
+            internal static string UnableToDeserializeDateTimeOffset = "Unable to deserialize the returned DateDateTimeOffset.";
 
             internal static string UnexpectedExceptionOnSend = "An error occurred sending the request.";
 
