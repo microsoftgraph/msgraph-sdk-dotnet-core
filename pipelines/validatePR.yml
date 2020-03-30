@@ -31,7 +31,7 @@ variables:
   PROJECT_PATH: '.\src\Microsoft.Graph.Core\Microsoft.Graph.Core.csproj'
 
 pool:
-  name: windows-latest
+  vmImage: windows-latest
 
 steps:
 - checkout: self
