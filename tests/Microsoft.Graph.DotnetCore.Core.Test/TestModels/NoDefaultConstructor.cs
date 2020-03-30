@@ -4,11 +4,11 @@
 
 namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels
 {
-    using Newtonsoft.Json;
+    using System.Text.Json.Serialization;
     /// <summary>
     /// A property bag class with no default constructor for unit testing purposes.
     /// </summary>
-    [JsonConverter(typeof(DerivedTypeConverter))]
+    [JsonConverter(typeof(DerivedTypeConverter<NoDefaultConstructor>))]
     public class NoDefaultConstructor
     {
         static NoDefaultConstructor()

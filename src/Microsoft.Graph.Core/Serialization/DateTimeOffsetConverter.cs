@@ -1,4 +1,4 @@
-// ------------------------------------------------------------------------------
+﻿// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
@@ -9,48 +9,32 @@ namespace Microsoft.Graph
     using System.Text.Json.Serialization;
 
     /// <summary>
-    /// The Date Converter.
+    /// The DateTimeOffset Converter.
     /// </summary>
-    public class DateConverter : JsonConverter<Date>
+    public class DateTimeOffsetConverter : JsonConverter<DateTimeOffset>
     {
         /// <summary>
-        /// Check if the given object can be converted into a Date.
-        /// </summary>
-        /// <param name="objectType">The type of the object.</param>
-        /// <returns>True if the object is a Date type.</returns>
-        public override bool CanConvert(Type objectType)
-        {
-            if (objectType == typeof(Date))
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        /// Converts the JSON object into a Date object
+        /// Converts the JSON object into a DateTime object
         /// </summary>
         /// <param name="reader">The <see cref="Utf8JsonReader"/> to read from.</param>
         /// <param name="typeToConvert">The object type.</param>
         /// <param name="options">The <see cref="JsonSerializerOptions"/> to use on deserialization.</param>
         /// <returns></returns>
-        public override Date Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        public override DateTimeOffset Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             try
             {
-                var dateTime = DateTime.Parse(reader.GetString());
-                return new Date(dateTime);
+                return DateTimeOffset.Parse(reader.GetString());
             }
-            catch (Exception dateParseException)
+            catch (Exception dateTimeOffsetParseException)
             {
                 throw new ServiceException(
                     new Error
                     {
                         Code = ErrorConstants.Codes.GeneralException,
-                        Message = ErrorConstants.Messages.UnableToDeserializeDate,
+                        Message = ErrorConstants.Messages.UnableToDeserializeDateTimeOffset,
                     },
-                    dateParseException);
+                    dateTimeOffsetParseException);
             }
         }
 
@@ -58,13 +42,13 @@ namespace Microsoft.Graph
         /// Writes the JSON representation of the object.
         /// </summary>
         /// <param name="writer">The <see cref="Utf8JsonWriter"/> to write to.</param>
-        /// <param name="date">The date value.</param>
+        /// <param name="dateTimeOffsetValue">The dateTime value.</param>
         /// <param name="options">The calling serializer options</param>
-        public override void Write(Utf8JsonWriter writer, Date date, JsonSerializerOptions options)
+        public override void Write(Utf8JsonWriter writer, DateTimeOffset dateTimeOffsetValue, JsonSerializerOptions options)
         {
-            if (date != null)
+            if (dateTimeOffsetValue != null)
             {
-                writer.WriteStringValue(date.ToString());
+                writer.WriteStringValue(dateTimeOffsetValue.ToString());
             }
             else
             {
@@ -72,9 +56,10 @@ namespace Microsoft.Graph
                     new Error
                     {
                         Code = ErrorConstants.Codes.GeneralException,
-                        Message = ErrorConstants.Messages.InvalidTypeForDateConverter,
+                        Message = ErrorConstants.Messages.InvalidTypeForDateTimeOffsetConverter,
                     });
             }
         }
     }
+    
 }

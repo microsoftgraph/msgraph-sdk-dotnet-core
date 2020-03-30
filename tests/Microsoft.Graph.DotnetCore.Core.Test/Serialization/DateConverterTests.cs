@@ -27,15 +27,5 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
             Assert.False(this.converter.CanConvert(typeof(DateTime)));
         }
 
-        [Fact]
-        public void SerializerRoundTripsDates()
-        {
-            var eventIn = new Event { Start = new DateTimeTimeZone { DateTime = "2017-10-11T07:30:00.0000+00:00", TimeZone = "UTC" } };
-            var serializer = new Serializer();
-            var json = serializer.SerializeObject(eventIn);
-            var eventRoundTrip = serializer.DeserializeObject<Event>(json);
-
-            Assert.Equal(eventIn.Start.DateTime, eventRoundTrip.Start.DateTime);
-        }
     }
 }
