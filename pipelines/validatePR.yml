@@ -73,6 +73,8 @@ steps:
     diagnosticsEnabled: true
     configuration: debug
     searchFolder: 'tests'
+    platform: AnyCPU
+    otherConsoleOptions: '/Framework:.NETCoreApp,Version=v1.0'
 
 - task: YodLabs.O365PostMessage.O365PostMessageBuild.O365PostMessageBuild@0
   displayName: 'Graph Client Tooling pipeline fail notification'
