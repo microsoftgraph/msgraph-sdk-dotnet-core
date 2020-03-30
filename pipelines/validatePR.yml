@@ -69,6 +69,7 @@ steps:
   displayName: 'Run enabled tests'
   inputs:
     testAssemblyVer2: '**\*test*.dll,**\*Test*.dll,!**\*TestAdapter.dll,!**\obj\**'
+    searchFolder: '$(System.SourcesDirectory)\tests'
 
 - task: YodLabs.O365PostMessage.O365PostMessageBuild.O365PostMessageBuild@0
   displayName: 'Graph Client Tooling pipeline fail notification'
