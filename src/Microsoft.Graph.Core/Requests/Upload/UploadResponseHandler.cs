@@ -67,7 +67,10 @@ namespace Microsoft.Graph
                      */
                     if (response.StatusCode == HttpStatusCode.Created)
                     {
-                        uploadResult.ItemResponse = this._serializer.DeserializeObject<T>(responseSteam);
+                        if(responseSteam.Length > 0) //system.text.json wont deserialize an empty string
+                        {
+                            uploadResult.ItemResponse = this._serializer.DeserializeObject<T>(responseSteam);
+                        }
                         uploadResult.Location = response.Headers.Location;
                     }
                     else

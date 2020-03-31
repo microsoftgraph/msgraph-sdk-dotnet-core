@@ -4,12 +4,13 @@
 
 namespace Microsoft.Graph
 {
-    using Newtonsoft.Json.Linq;
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Net.Http;
     using System.Threading.Tasks;
+    using System.Text.Json;
+    using System.IO;
+    using System.Text;
 
     /// <summary>
     /// PREVIEW 
@@ -36,7 +37,7 @@ namespace Microsoft.Graph
         /// <typeparam name="T">The type to return</typeparam>
         /// <param name="response">The HttpResponseMessage to handle</param>
         /// <returns></returns>
-        public async Task<T> HandleResponse<T>(HttpResponseMessage response)
+        public async Task<T>  HandleResponse<T>(HttpResponseMessage response)
         {
             if (response.Content != null)
             {
@@ -46,9 +47,9 @@ namespace Microsoft.Graph
 
                 // Get the response body object with the change list 
                 // set on each response item.
-                JObject responseBody = await GetResponseBodyWithChangelist(responseString);
+                string responseWithChangelist = await GetResponseBodyWithChangelist(responseString);
 
-                return responseBody.ToObject<T>();
+                return this.serializer.DeserializeObject<T>(responseWithChangelist);
             }
 
             return default(T);
@@ -87,36 +88,33 @@ namespace Microsoft.Graph
         /// Gets the response with change lists set on each item.
         /// </summary>
         /// <param name="deltaResponseBody">The entire response body as a string.</param>
-        /// <returns>A task with a JObject represention of the response body. The changes are set on each response item.</returns>
-        private async Task<JObject> GetResponseBodyWithChangelist(string deltaResponseBody)
+        /// <returns>A task with a JObject representation of the response body. The changes are set on each response item.</returns>
+        private async Task<string> GetResponseBodyWithChangelist(string deltaResponseBody)
         {
             // This is the JObject that we will replace. We should probably
             // return a string instead.
-            JObject responseJObject = JObject.Parse(deltaResponseBody);
+            JsonDocument responseJsonDocument = JsonDocument.Parse(deltaResponseBody);
 
             // An array of delta objects. We will need to process 
             // each one independently of each other.
-            var pageOfDeltaObjects = responseJObject["value"] as JArray;
-
-            if (pageOfDeltaObjects is null)
+            if (!responseJsonDocument.RootElement.TryGetProperty("value", out var pageOfDeltaObjects))
             {
-                return responseJObject;
+                return deltaResponseBody;
             }
 
-            JArray updatedObjectsWithChangeList = new JArray();
+            List<JsonElement> updatedObjectsWithChangeList = new List<JsonElement>();
 
-            for (int i = 0; i < pageOfDeltaObjects.Count(); i++)
+            foreach (var deltaObject in pageOfDeltaObjects.EnumerateArray())
             {
-                // Go inspect all of the properties in the responseItem
-                var updatedObject = await DiscoverChangedProperties(pageOfDeltaObjects[i] as JObject);
+                var updatedObject = await DiscoverChangedProperties(deltaObject);
                 updatedObjectsWithChangeList.Add(updatedObject);
             }
 
             // Replace the original page of changed items with a page of items that
             // have a self describing change list.
-            responseJObject["value"].Replace(updatedObjectsWithChangeList);
+            var response = AddPropertyToObject(responseJsonDocument.RootElement, "value", updatedObjectsWithChangeList);
 
-            return responseJObject;
+            return response;
         }
 
         /// <summary>
@@ -125,18 +123,18 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="responseItem">The item to inspect for properties.</param>
         /// <returns>The item with the 'changes' property set on it.</returns>
-        private async Task<JObject> DiscoverChangedProperties(JObject responseItem)
+        private async Task<JsonElement> DiscoverChangedProperties(JsonElement responseItem)
         {
             // List of changed properties.
-            JArray changes = new JArray();
+            List<string> changes = new List<string>();
 
             // Get the list of changed properties on the item.
             await GetObjectProperties(responseItem, changes);
 
             // Add the changes object to the response item.
-            responseItem.Add("changes", changes);
+            var response = AddPropertyToObject(responseItem, "changes", changes);
 
-            return responseItem;
+            return JsonDocument.Parse(response).RootElement;
         }
 
         /// <summary>
@@ -146,43 +144,99 @@ namespace Microsoft.Graph
         /// <param name="changes">The list of properties returned in the response.</param>
         /// <param name="parentName">The parent object of this changed object.</param>
         /// <returns></returns>
-        private async Task GetObjectProperties(JObject changedObject, JArray changes, string parentName = "")
+        private async Task GetObjectProperties(JsonElement changedObject, List<string> changes, string parentName = "")
         {
             if (parentName != string.Empty)
             {
                 parentName += ".";
             }
 
-            foreach (JProperty property in changedObject.Children())
+            foreach (var property in changedObject.EnumerateObject())
             {
-                if (property.Value is JObject)
+                switch (property.Value.ValueKind)
                 {
-                    string parent = parentName + property.Name;
-                    await GetObjectProperties(property.Value as JObject, changes, parent);
-                }
-                else if (property.Value is JArray)
-                {
-                    string parent = parentName + property.Name;
-
-                    JArray collection = (property.Value as JArray);
-                    for (int i = 0; i < collection.Count(); i++)
+                    case JsonValueKind.Object:
                     {
-                        string parentWithIndex = $"{parent}[{i}]";
+                        string parent = parentName + property.Name;
+                        await GetObjectProperties(property.Value, changes, parent);
+                        break;
+                    }
+                    case JsonValueKind.Array:
+                    {
+                        string parent = parentName + property.Name;
 
-                        JObject collectionItem = collection[i] as JObject;
+                        int index = 0;
+                        foreach ( var arrayItem in property.Value.EnumerateArray())
+                        {
+                            string parentWithIndex = $"{parent}[{index}]";
 
-                        await GetObjectProperties(collectionItem, changes, parentWithIndex);
+                            if (arrayItem.ValueKind == JsonValueKind.Object)
+                            {
+                                await GetObjectProperties(arrayItem, changes, parentWithIndex);
+                            }
+                            else // Assuming that this is a JValue.
+                            {
+                                changes.Add(parentWithIndex);
+                            }
+                            index++;
+                        }
+
+                        break;
+                    }
+                    default:
+                    {
+                        var name = parentName + property.Name;
+                        changes.Add(name);
+                        break;
                     }
                 }
-                else if (property.Value is JValue)
+            }
+        }
+
+        /// <summary>
+        /// Adds a property with the given property name to the JsonElement object. This function is currently necessary as
+        /// <see cref="JsonElement"/> is currently readonly.
+        /// </summary>
+        /// <param name="jsonElement">The Original JsonElement to add/replace a property</param>
+        /// <param name="propertyName">The property name to use</param>
+        /// <param name="newItem">The object to be added</param>
+        /// <returns></returns>
+        private string AddPropertyToObject(JsonElement jsonElement, string propertyName, object newItem)
+        {
+            using (MemoryStream memoryStream = new MemoryStream())
+            using (Utf8JsonWriter utf8JsonWriter = new Utf8JsonWriter(memoryStream))
+            {
+                utf8JsonWriter.WriteStartObject();
+                bool isReplacement = false;
+                foreach (var element in jsonElement.EnumerateObject())
                 {
-                    var name = parentName + property.Name;
-                    changes.Add(name);
+                    if (element.Name.Equals(propertyName))
+                    {
+                        utf8JsonWriter.WritePropertyName(element.Name);
+                        string newJsonElement = this.serializer.SerializeObject(newItem);
+                        JsonDocument.Parse(newJsonElement).RootElement.WriteTo(utf8JsonWriter);
+                        isReplacement = true;
+                    }
+                    else
+                    {
+                        element.WriteTo(utf8JsonWriter);
+                    }
                 }
-                else
+
+                // The property name did not exist so we a are writing something new
+                if (!isReplacement)
                 {
-                    throw new NotImplementedException("Case is not a JObject, JArray, or JProperty");
+                    utf8JsonWriter.WritePropertyName(propertyName);
+                    string newJsonElement = this.serializer.SerializeObject(newItem);
+                    JsonDocument.Parse(newJsonElement).RootElement.WriteTo(utf8JsonWriter);
                 }
+
+                utf8JsonWriter.WriteEndObject();
+
+                utf8JsonWriter.Flush();
+                memoryStream.Flush();
+                
+                return Encoding.UTF8.GetString(memoryStream.ToArray()); ;
             }
         }
     }

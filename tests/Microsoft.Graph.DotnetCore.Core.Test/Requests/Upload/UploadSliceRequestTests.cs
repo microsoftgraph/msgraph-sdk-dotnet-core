@@ -12,6 +12,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
     using System.Text;
     using System.Threading.Tasks;
     using Microsoft.Graph.DotnetCore.Core.Test.Mocks;
+    using Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels;
     using Xunit;
 
     public class UploadSliceRequests : RequestTestBase
@@ -41,7 +42,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                 // 3. Create a batch request object to be tested
                 MockCustomHttpProvider customHttpProvider = new MockCustomHttpProvider(testHttpMessageHandler);
                 BaseClient client = new BaseClient(requestUrl, authenticationProvider.Object, customHttpProvider);
-                UploadSliceRequest<DriveItem> uploadSliceRequest = new UploadSliceRequest<DriveItem>(requestUrl, client, 0, 200, 1000);
+                UploadSliceRequest<TestDriveItem> uploadSliceRequest = new UploadSliceRequest<TestDriveItem>(requestUrl, client, 0, 200, 1000);
                 Stream stream = new MemoryStream(new byte[300]);
 
                 /* Act */

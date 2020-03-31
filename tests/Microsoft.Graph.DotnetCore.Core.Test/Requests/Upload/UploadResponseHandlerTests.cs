@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
@@ -11,9 +11,11 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
     using System.Text;
     using System.Threading.Tasks;
     using Xunit;
+    using Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels;
+
     public class UploadResponseHandlerTests
     {
-        [Theory(Skip = "Service Library needs to support System.Text.Json Attributes")]
+        [Theory]
         [InlineData(HttpStatusCode.Created)]
         [InlineData(HttpStatusCode.OK)]
         public async Task GetDriveItemOnCompletedUpload(HttpStatusCode statusCode)
@@ -31,7 +33,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             };
 
             // Act
-            var uploadResult = await responseHandler.HandleResponse<DriveItem>(hrm);
+            var uploadResult = await responseHandler.HandleResponse<TestDriveItem>(hrm);
             var driveItem = uploadResult.ItemResponse;
 
             //Assert
@@ -42,7 +44,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             Assert.Equal(33, driveItem.Size);
         }
 
-        [Fact(Skip = "Service Library needs to support System.Text.Json Attributes")]
+        [Fact]
         public async Task GetFileAttachmentLocationItemOnCompletedUpload()
         {
             // Arrange
@@ -55,7 +57,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             hrm.StatusCode = HttpStatusCode.Created;//upload successful!
 
             // Act
-            var uploadResult = await responseHandler.HandleResponse<DriveItem>(hrm);
+            var uploadResult = await responseHandler.HandleResponse<TestDriveItem>(hrm);
             var fileAttachment = uploadResult.ItemResponse;
 
             //Assert
@@ -82,7 +84,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             };
 
             // Act
-            var uploadResult = await responseHandler.HandleResponse<DriveItem>(hrm);
+            var uploadResult = await responseHandler.HandleResponse<TestDriveItem>(hrm);
             var uploadSession = uploadResult.UploadSession;
 
             //Assert
@@ -116,7 +118,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             };
 
             // Act
-            var serviceException = await Assert.ThrowsAsync<ServiceException>(() => responseHandler.HandleResponse<DriveItem>(hrm));
+            var serviceException = await Assert.ThrowsAsync<ServiceException>(() => responseHandler.HandleResponse<TestDriveItem>(hrm));
 
             //Assert
             Assert.NotNull(serviceException);
@@ -149,7 +151,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             };
 
             // Act
-            var serviceException = await Assert.ThrowsAsync<ServiceException>(() => responseHandler.HandleResponse<DriveItem>(hrm));
+            var serviceException = await Assert.ThrowsAsync<ServiceException>(() => responseHandler.HandleResponse<TestDriveItem>(hrm));
 
             //Assert
             Assert.NotNull(serviceException);
