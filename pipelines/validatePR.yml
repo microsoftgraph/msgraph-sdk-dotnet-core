@@ -68,7 +68,7 @@ steps:
     testAssemblyVer2: |
       **/netcoreapp3.1/Microsoft.Graph.DotnetCore.Core.Test.dll
       !**/*TestAdapter.dll
-      !**/obj/**'
+      !**/obj/**
     diagnosticsEnabled: true
     configuration: debug
     searchFolder: 'tests'
