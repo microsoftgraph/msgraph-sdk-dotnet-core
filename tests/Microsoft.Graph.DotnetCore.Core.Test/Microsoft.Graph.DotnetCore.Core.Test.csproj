@@ -4,9 +4,6 @@
 		<AssemblyName>Microsoft.Graph.DotnetCore.Core.Test</AssemblyName>
 		<PackageId>Microsoft.Graph.DotnetCore.Core.Test</PackageId>
 		<GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
-		<!-- <NetStandardImplicitPackageVersion>3.1.1</NetStandardImplicitPackageVersion> -->
-		<!--<PackageTargetFallback>$(PackageTargetFallback);dnxcore50</PackageTargetFallback>-->
-		<!-- <RuntimeFrameworkVersion>3.1.1</RuntimeFrameworkVersion> -->
 		<GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
 		<GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
 		<GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
