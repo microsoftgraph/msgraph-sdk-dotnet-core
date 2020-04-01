@@ -47,7 +47,7 @@ namespace Microsoft.Graph
 
                 // Get the response body object with the change list 
                 // set on each response item.
-                string responseWithChangelist = await GetResponseBodyWithChangelist(responseString);
+                var responseWithChangelist = await GetResponseBodyWithChangelist(responseString);
 
                 return this.serializer.DeserializeObject<T>(responseWithChangelist);
             }
@@ -88,33 +88,34 @@ namespace Microsoft.Graph
         /// Gets the response with change lists set on each item.
         /// </summary>
         /// <param name="deltaResponseBody">The entire response body as a string.</param>
-        /// <returns>A task with a JObject representation of the response body. The changes are set on each response item.</returns>
+        /// <returns>A task with a string representation of the response body. The changes are set on each response item.</returns>
         private async Task<string> GetResponseBodyWithChangelist(string deltaResponseBody)
         {
-            // This is the JObject that we will replace. We should probably
+            // This is the JsonDocument that we will replace. We should probably
             // return a string instead.
-            JsonDocument responseJsonDocument = JsonDocument.Parse(deltaResponseBody);
-
-            // An array of delta objects. We will need to process 
-            // each one independently of each other.
-            if (!responseJsonDocument.RootElement.TryGetProperty("value", out var pageOfDeltaObjects))
+            using (var responseJsonDocument = JsonDocument.Parse(deltaResponseBody))
             {
-                return deltaResponseBody;
+                // An array of delta objects. We will need to process 
+                // each one independently of each other.
+                if (!responseJsonDocument.RootElement.TryGetProperty("value", out var pageOfDeltaObjects))
+                {
+                    return deltaResponseBody;
+                }
+
+                var updatedObjectsWithChangeList = new List<JsonElement>();
+
+                foreach (var deltaObject in pageOfDeltaObjects.EnumerateArray())
+                {
+                    var updatedObjectJsonDocument = await DiscoverChangedProperties(deltaObject);
+                    updatedObjectsWithChangeList.Add(updatedObjectJsonDocument.RootElement);
+                }
+
+                // Replace the original page of changed items with a page of items that
+                // have a self describing change list.
+                var response = AddOrReplacePropertyToObject(responseJsonDocument.RootElement, "value", updatedObjectsWithChangeList);
+
+                return response;
             }
-
-            List<JsonElement> updatedObjectsWithChangeList = new List<JsonElement>();
-
-            foreach (var deltaObject in pageOfDeltaObjects.EnumerateArray())
-            {
-                var updatedObject = await DiscoverChangedProperties(deltaObject);
-                updatedObjectsWithChangeList.Add(updatedObject);
-            }
-
-            // Replace the original page of changed items with a page of items that
-            // have a self describing change list.
-            var response = AddPropertyToObject(responseJsonDocument.RootElement, "value", updatedObjectsWithChangeList);
-
-            return response;
         }
 
         /// <summary>
@@ -123,18 +124,18 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="responseItem">The item to inspect for properties.</param>
         /// <returns>The item with the 'changes' property set on it.</returns>
-        private async Task<JsonElement> DiscoverChangedProperties(JsonElement responseItem)
+        private async Task<JsonDocument> DiscoverChangedProperties(JsonElement responseItem)
         {
             // List of changed properties.
-            List<string> changes = new List<string>();
+            var changes = new List<string>();
 
             // Get the list of changed properties on the item.
             await GetObjectProperties(responseItem, changes);
 
             // Add the changes object to the response item.
-            var response = AddPropertyToObject(responseItem, "changes", changes);
+            var response = AddOrReplacePropertyToObject(responseItem, "changes", changes);
 
-            return JsonDocument.Parse(response).RootElement;
+            return JsonDocument.Parse(response);
         }
 
         /// <summary>
@@ -174,7 +175,7 @@ namespace Microsoft.Graph
                             {
                                 await GetObjectProperties(arrayItem, changes, parentWithIndex);
                             }
-                            else // Assuming that this is a JValue.
+                            else // Assuming that this is a Value item.
                             {
                                 changes.Add(parentWithIndex);
                             }
@@ -201,38 +202,46 @@ namespace Microsoft.Graph
         /// <param name="propertyName">The property name to use</param>
         /// <param name="newItem">The object to be added</param>
         /// <returns></returns>
-        private string AddPropertyToObject(JsonElement jsonElement, string propertyName, object newItem)
+        private string AddOrReplacePropertyToObject(JsonElement jsonElement, string propertyName, object newItem)
         {
             using (MemoryStream memoryStream = new MemoryStream())
             using (Utf8JsonWriter utf8JsonWriter = new Utf8JsonWriter(memoryStream))
             {
-                utf8JsonWriter.WriteStartObject();
+                utf8JsonWriter.WriteStartObject();//write start of object
                 bool isReplacement = false;
                 foreach (var element in jsonElement.EnumerateObject())
                 {
                     if (element.Name.Equals(propertyName))
                     {
-                        utf8JsonWriter.WritePropertyName(element.Name);
+                        isReplacement = true;// we are replacing an existing property
+                        utf8JsonWriter.WritePropertyName(element.Name);//write the property name
+                        // Try to get a JsonElement so that we can write it to the stream
                         string newJsonElement = this.serializer.SerializeObject(newItem);
-                        JsonDocument.Parse(newJsonElement).RootElement.WriteTo(utf8JsonWriter);
-                        isReplacement = true;
+                        using (var newJsonDocument = JsonDocument.Parse(newJsonElement))
+                        {
+                            newJsonDocument.RootElement.WriteTo(utf8JsonWriter);// write the object
+                        }
                     }
                     else
                     {
-                        element.WriteTo(utf8JsonWriter);
+                        element.WriteTo(utf8JsonWriter); // write out as is
                     }
                 }
 
                 // The property name did not exist so we a are writing something new
                 if (!isReplacement)
                 {
-                    utf8JsonWriter.WritePropertyName(propertyName);
+                    utf8JsonWriter.WritePropertyName(propertyName);//write the property name
+                    // Try to get a JsonElement so that we can write it to the stream
                     string newJsonElement = this.serializer.SerializeObject(newItem);
-                    JsonDocument.Parse(newJsonElement).RootElement.WriteTo(utf8JsonWriter);
+                    using (var newJsonDocument = JsonDocument.Parse(newJsonElement))
+                    {
+                        newJsonDocument.RootElement.WriteTo(utf8JsonWriter);// write the object
+                    }
                 }
 
-                utf8JsonWriter.WriteEndObject();
-
+                utf8JsonWriter.WriteEndObject();//write end of object
+                //clean up
                 utf8JsonWriter.Flush();
                 memoryStream.Flush();
                 
