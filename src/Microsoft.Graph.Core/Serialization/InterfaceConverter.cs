@@ -36,6 +36,12 @@ namespace Microsoft.Graph
             return (T)derivedTypeConverter.Read(ref reader, typeof(T), options);
         }
 
+        /// <summary>
+        /// Serializes object to writer
+        /// </summary>
+        /// <param name="writer">The <see cref="Utf8JsonWriter"/> to serialize to</param>
+        /// <param name="value">The value to serialize</param>
+        /// <param name="options">The serializer options to use.</param>
         public override void Write(Utf8JsonWriter writer, T value, JsonSerializerOptions options)
         {
             JsonSerializer.Serialize(writer, value, typeof(T));

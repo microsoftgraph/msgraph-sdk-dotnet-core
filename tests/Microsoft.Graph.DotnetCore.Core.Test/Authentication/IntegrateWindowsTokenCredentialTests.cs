@@ -37,7 +37,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Authentication
 
             ArgumentException ex = Assert.Throws<ArgumentException>(() => new IntegratedWindowsTokenCredential(null));
 
-            Assert.Equal(ex.ParamName, "publicClientApplication");
+            Assert.Equal("publicClientApplication", ex.ParamName);
         }
 
     }

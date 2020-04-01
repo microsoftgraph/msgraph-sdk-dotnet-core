@@ -48,6 +48,13 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
         public string GivenName { get; set; }
 
         /// <summary>
+        /// Gets or sets Display name.
+        /// The displayName of the user. Supports $filter.
+        /// </summary>
+        [JsonPropertyName("displayName")]
+        public string DisplayName { get; set; }
+
+        /// <summary>
         /// Gets or sets state.
         /// The state or province in the user's address. Supports $filter.
         /// </summary>
