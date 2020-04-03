@@ -23,6 +23,7 @@
     <VersionSuffix></VersionSuffix>
     <PackageReleaseNotes>
       - Adds support for TokenCredential from Azure.Core
+      - Adds support for System.Text,Json and drops Newtonsoft.Json dependency
     </PackageReleaseNotes>
   </PropertyGroup>
   <!--We manually configure LanguageTargets for Xamarin due to .Net SDK TFMs limitation https://github.com/dotnet/sdk/issues/491 -->
@@ -83,7 +84,6 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="System.Diagnostics.DiagnosticSource" Version="4.6.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
     <PackageReference Include="Microsoft.Identity.Client" Version="4.9.0" />
     <PackageReference Include="Azure.Core" Version="1.0.1" />
     <PackageReference Include="System.Text.Json" Version="4.7.1" />

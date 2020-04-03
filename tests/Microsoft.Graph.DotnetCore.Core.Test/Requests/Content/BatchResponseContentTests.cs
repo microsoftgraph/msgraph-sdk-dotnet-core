@@ -9,6 +9,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
     using System.Net.Http;
     using Xunit;
     using System.Threading.Tasks;
+    using Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels;
 
     public class BatchResponseContentTests
     {
@@ -125,7 +126,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
         }
 
 
-        [Fact(Skip = "Service Library needs to support System.Text.Json Attributes")]
+        [Fact]
         public async Task BatchResponseContent_GetResponseByIdAsyncWithDeseirializer()
         {
             // Arrange
@@ -163,31 +164,31 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
             BatchResponseContent batchResponseContent = new BatchResponseContent(httpResponseMessage);
 
             // Act
-            User user = await batchResponseContent.GetResponseByIdAsync<User>("1");
+            TestUser user = await batchResponseContent.GetResponseByIdAsync<TestUser>("1");
             // Assert we have a valid user
             Assert.Equal("MOD Administrator", user.DisplayName);
 
             // Act
-            Drive drive = await batchResponseContent.GetResponseByIdAsync<Drive>("2");
+            TestDrive drive = await batchResponseContent.GetResponseByIdAsync<TestDrive>("2");
             // Assert we have a valid drive object
             Assert.Equal("b!random-VkHdanfIomf", drive.Id);
             Assert.Equal("OneDrive", drive.Name);
 
             // Act
-            Notebook notebook = await batchResponseContent.GetResponseByIdAsync<Notebook>("3");
+            TestNoteBook notebook = await batchResponseContent.GetResponseByIdAsync<TestNoteBook>("3");
             // Assert we have a valid notebook object
             Assert.Equal("1-9f4fe8ea-7e6e-486e-a8f4-nothing-here", notebook.Id);
             Assert.Equal("My Notebook -442293399", notebook.DisplayName);
 
             // Act
-            ServiceException serviceException = await Assert.ThrowsAsync<ServiceException>(() => batchResponseContent.GetResponseByIdAsync<DriveItem>("4"));
+            ServiceException serviceException = await Assert.ThrowsAsync<ServiceException>(() => batchResponseContent.GetResponseByIdAsync<TestDriveItem>("4"));
             // Assert we detect the incorrect response and give usable Service Exception
             Assert.Equal("20117", serviceException.Error.Code);
             Assert.Equal(HttpStatusCode.Conflict, serviceException.StatusCode);//status 409
             Assert.NotNull(serviceException.RawResponseBody);
         }
 
-        [Fact(Skip = "Service Library needs to support System.Text.Json Attributes")]
+        [Fact]
         public async Task BatchResponseContent_GetResponseByIdAsyncWithDeserializerWorksWithDateTimeOffsets()
         {
             // Arrange an example Event object with a few properties
@@ -246,7 +247,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
             BatchResponseContent batchResponseContent = new BatchResponseContent(httpResponseMessage);
 
             // Act
-            Event eventItem = await batchResponseContent.GetResponseByIdAsync<Event>("3");
+            TestEvent eventItem = await batchResponseContent.GetResponseByIdAsync<TestEvent>("3");
 
             // Assert we have a valid datetime in the event
             Assert.Equal("2019-07-30T23:00:00.0000000", eventItem.End.DateTime);

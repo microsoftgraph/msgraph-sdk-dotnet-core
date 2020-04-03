@@ -67,9 +67,16 @@ steps:
 
 - task: VSTest@2
   displayName: 'Run enabled tests'
-  # inputs:
-  #   testAssemblyVer2: '**\Microsoft.Graph.DotnetCore.Core.Test.dll'
-  #   searchFolder: '$(System.DefaultWorkingDirectory)'
+  inputs:
+    testAssemblyVer2: |
+      **/netcoreapp2.2/Microsoft.Graph.DotnetCore.Core.Test.dll
+      !**/*TestAdapter.dll
+      !**/obj/**
+    diagnosticsEnabled: true
+    configuration: debug
+    searchFolder: 'tests'
+    platform: AnyCPU
+    otherConsoleOptions: '/Framework:.NETCoreApp,Version=v2.2'
 
 - task: PowerShell@2
   displayName: 'Enable signing'

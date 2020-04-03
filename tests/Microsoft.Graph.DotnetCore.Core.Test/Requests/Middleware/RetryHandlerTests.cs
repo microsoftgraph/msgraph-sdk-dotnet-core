@@ -229,7 +229,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         }
 
 
-        [Theory]
+        [Theory(Skip = "skip test")] // Takes 9 minutes to run for each scenario
         [InlineData(HttpStatusCode.GatewayTimeout)]  // 504
         [InlineData(HttpStatusCode.ServiceUnavailable)]  // 503
         [InlineData((HttpStatusCode)429)] // 429

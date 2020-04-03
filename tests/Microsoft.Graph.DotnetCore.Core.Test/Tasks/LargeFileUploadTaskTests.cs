@@ -1,10 +1,11 @@
-﻿// ------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
 namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
 {
     using Microsoft.Graph.DotnetCore.Core.Test.Requests;
+    using Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -29,7 +30,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
                 int maxSliceSize = 1000;//invalid slice size that is not a multiple of 320
 
                 // Act 
-                var exception = Assert.Throws<ArgumentException>(() => new LargeFileUploadTask<DriveItem>(uploadSession, stream, maxSliceSize));
+                var exception = Assert.Throws<ArgumentException>(() => new LargeFileUploadTask<TestDriveItem>(uploadSession, stream, maxSliceSize));
 
                 // Assert
                 Assert.Equal("maxSliceSize", exception.ParamName);
@@ -53,7 +54,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
                 int maxSliceSize = 320 * 1024;
 
                 // Act 
-                var fileUploadTask = new LargeFileUploadTask<DriveItem>(uploadSession, stream, maxSliceSize);
+                var fileUploadTask = new LargeFileUploadTask<TestDriveItem>(uploadSession, stream, maxSliceSize);
                 var uploadSlices = fileUploadTask.GetUploadSliceRequests();
 
                 // Assert
