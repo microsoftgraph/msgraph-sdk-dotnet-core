@@ -37,7 +37,7 @@ namespace Microsoft.Graph
         /// <typeparam name="T">The type to return</typeparam>
         /// <param name="response">The HttpResponseMessage to handle</param>
         /// <returns></returns>
-        public async Task<T>  HandleResponse<T>(HttpResponseMessage response)
+        public async Task<T> HandleResponse<T>(HttpResponseMessage response)
         {
             if (response.Content != null)
             {
@@ -205,47 +205,46 @@ namespace Microsoft.Graph
         private string AddOrReplacePropertyToObject(JsonElement jsonElement, string propertyName, object newItem)
         {
             using (MemoryStream memoryStream = new MemoryStream())
-            using (Utf8JsonWriter utf8JsonWriter = new Utf8JsonWriter(memoryStream))
             {
-                utf8JsonWriter.WriteStartObject();//write start of object
-                bool isReplacement = false;
-                foreach (var element in jsonElement.EnumerateObject())
+                using (Utf8JsonWriter utf8JsonWriter = new Utf8JsonWriter(memoryStream))
                 {
-                    if (element.Name.Equals(propertyName))
+                    utf8JsonWriter.WriteStartObject(); //write start of object
+                    bool isReplacement = false;
+                    foreach (var element in jsonElement.EnumerateObject())
                     {
-                        isReplacement = true;// we are replacing an existing property
-                        utf8JsonWriter.WritePropertyName(element.Name);//write the property name
+                        if (element.Name.Equals(propertyName))
+                        {
+                            isReplacement = true; // we are replacing an existing property
+                            utf8JsonWriter.WritePropertyName(element.Name); //write the property name
+                            // Try to get a JsonElement so that we can write it to the stream
+                            string newJsonElement = this.serializer.SerializeObject(newItem);
+                            using (var newJsonDocument = JsonDocument.Parse(newJsonElement))
+                            {
+                                newJsonDocument.RootElement.WriteTo(utf8JsonWriter); // write the object
+                            }
+                        }
+                        else
+                        {
+                            element.WriteTo(utf8JsonWriter); // write out as is
+                        }
+                    }
+
+                    // The property name did not exist so we a are writing something new
+                    if (!isReplacement)
+                    {
+                        utf8JsonWriter.WritePropertyName(propertyName); //write the property name
                         // Try to get a JsonElement so that we can write it to the stream
                         string newJsonElement = this.serializer.SerializeObject(newItem);
                         using (var newJsonDocument = JsonDocument.Parse(newJsonElement))
                         {
-                            newJsonDocument.RootElement.WriteTo(utf8JsonWriter);// write the object
+                            newJsonDocument.RootElement.WriteTo(utf8JsonWriter); // write the object
                         }
                     }
-                    else
-                    {
-                        element.WriteTo(utf8JsonWriter); // write out as is
-                    }
+
+                    utf8JsonWriter.WriteEndObject(); //write end of object
                 }
 
-                // The property name did not exist so we a are writing something new
-                if (!isReplacement)
-                {
-                    utf8JsonWriter.WritePropertyName(propertyName);//write the property name
-                    // Try to get a JsonElement so that we can write it to the stream
-                    string newJsonElement = this.serializer.SerializeObject(newItem);
-                    using (var newJsonDocument = JsonDocument.Parse(newJsonElement))
-                    {
-                        newJsonDocument.RootElement.WriteTo(utf8JsonWriter);// write the object
-                    }
-                }
-
-                utf8JsonWriter.WriteEndObject();//write end of object
-                //clean up
-                utf8JsonWriter.Flush();
-                memoryStream.Flush();
-                
-                return Encoding.UTF8.GetString(memoryStream.ToArray()); ;
+                return Encoding.UTF8.GetString(memoryStream.ToArray());
             }
         }
     }

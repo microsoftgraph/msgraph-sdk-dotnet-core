@@ -10,7 +10,6 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
     /// <summary>
     /// The type TestEmailAddress.
     /// </summary>
-    [JsonConverter(typeof(DerivedTypeConverter<TestEmailAddress>))]
     public partial class TestEmailAddress
     {
         /// <summary>
