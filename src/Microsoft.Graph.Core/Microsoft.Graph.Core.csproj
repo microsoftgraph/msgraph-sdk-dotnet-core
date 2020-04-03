@@ -24,6 +24,7 @@
     <PackageReleaseNotes>
       - Adds support for TokenCredential from Azure.Core
       - Adds support for System.Text,Json and drops Newtonsoft.Json dependency
+      - Fix for incorrect task cancellation #28
     </PackageReleaseNotes>
   </PropertyGroup>
   <!--We manually configure LanguageTargets for Xamarin due to .Net SDK TFMs limitation https://github.com/dotnet/sdk/issues/491 -->
