@@ -196,15 +196,9 @@ namespace Microsoft.Graph
             {
                 return await this.httpClient.SendAsync(request, completionOption, cancellationToken).ConfigureAwait(false);
             }
-            catch (TaskCanceledException exception)
+            catch (OperationCanceledException)
             {
-                throw new ServiceException(
-                    new Error
-                    {
-                        Code = ErrorConstants.Codes.Timeout,
-                        Message = ErrorConstants.Messages.RequestTimedOut,
-                    },
-                    exception);
+                throw;
             }
             catch (ServiceException)
             {

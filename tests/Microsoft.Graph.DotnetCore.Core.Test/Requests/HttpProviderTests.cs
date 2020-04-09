@@ -170,22 +170,21 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         }
 
         [Fact]
-        public async Task SendAsync_ClientTimeout()
+        public async Task SendAsync_RethrowsTaskCancelledException()
         {
             using (var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, "https://localhost"))
             {
                 this.httpProvider.Dispose();
 
-                var clientException = new TaskCanceledException();
+                var message = "Task Cancelled";
+                var clientException = new TaskCanceledException(message);
                 this.httpProvider = new HttpProvider(new ExceptionHttpMessageHandler(clientException), /* disposeHandler */ true, null);
                 this.AddGraphRequestContextToRequest(httpRequestMessage);
 
-                ServiceException exception = await Assert.ThrowsAsync<ServiceException>(async () => await this.httpProvider.SendRequestAsync(
+                TaskCanceledException exception = await Assert.ThrowsAsync<TaskCanceledException>(async () => await this.httpProvider.SendRequestAsync(
                         httpRequestMessage, HttpCompletionOption.ResponseContentRead, CancellationToken.None));
 
-                Assert.True(exception.IsMatch(ErrorConstants.Codes.Timeout));
-                Assert.Equal(ErrorConstants.Messages.RequestTimedOut, exception.Error.Message);
-                Assert.Equal(clientException, exception.InnerException);
+                Assert.Equal(message, exception.Message);
             }
         }
 
