@@ -19,12 +19,10 @@
     <DelaySign>false</DelaySign>
     <AssemblyOriginatorKeyFile>35MSSharedLib1024.snk</AssemblyOriginatorKeyFile>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <VersionPrefix>1.20.0</VersionPrefix>
+    <VersionPrefix>1.20.1</VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <PackageReleaseNotes>
-- Fix for modifying the Timeout property of a passed HttpClient
-- Add DeltaResponseHandler to discover null changes for delta query
-- Null auth provider support, fixes #70
+      - Fix for DeltaResponseHandler not handling array of primitives. #93
     </PackageReleaseNotes>
   </PropertyGroup>
   <!--We manually configure LanguageTargets for Xamarin due to .Net SDK TFMs limitation https://github.com/dotnet/sdk/issues/491 -->

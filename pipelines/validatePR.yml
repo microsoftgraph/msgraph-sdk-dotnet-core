@@ -31,10 +31,7 @@ variables:
   PROJECT_PATH: '.\src\Microsoft.Graph.Core\Microsoft.Graph.Core.csproj'
 
 pool:
-  name: Hosted Windows 2019 with VS2019
-  demands:
-  - msbuild
-  - vstest
+  vmImage: windows-latest
 
 steps:
 - checkout: self
@@ -67,9 +64,16 @@ steps:
 
 - task: VSTest@2
   displayName: 'Run enabled tests'
-  # inputs:
-  #   testAssemblyVer2: '**\Microsoft.Graph.DotnetCore.Core.Test.dll'
-  #   searchFolder: '$(System.DefaultWorkingDirectory)'
+  inputs:
+    testAssemblyVer2: |
+      **/netcoreapp3.1/Microsoft.Graph.DotnetCore.Core.Test.dll
+      !**/*TestAdapter.dll
+      !**/obj/**
+    diagnosticsEnabled: true
+    configuration: debug
+    searchFolder: 'tests'
+    platform: AnyCPU
+    otherConsoleOptions: '/Framework:.NETCoreApp,Version=v3.1'
 
 - task: YodLabs.O365PostMessage.O365PostMessageBuild.O365PostMessageBuild@0
   displayName: 'Graph Client Tooling pipeline fail notification'
