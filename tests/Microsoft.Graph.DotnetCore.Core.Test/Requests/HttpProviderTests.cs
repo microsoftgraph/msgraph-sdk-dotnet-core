@@ -112,7 +112,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 #if ANDROID
                 Assert.IsType<Xamarin.Android.Net.AndroidClientHandler>(defaultHttpProvider.httpMessageHandler);
                 Assert.False((defaultHttpProvider.httpMessageHandler as Xamarin.Android.Net.AndroidClientHandler).AllowAutoRedirect);
-#elif iOS
+#elif iOS || macOS
                 Assert.IsType<NSUrlSessionHandler>(defaultHttpProvider.httpMessageHandler);
                 Assert.False((defaultHttpProvider.httpMessageHandler as NSUrlSessionHandler).AllowAutoRedirect);
 #else
@@ -554,8 +554,8 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 #endif
         #endregion
 
-        #region iOS
-#if iOS
+        #region iOS_macOS
+#if iOS || macOS
         [Fact]
         public void HttpProvider_CustomNSUrlSessionHandler()
         {
