@@ -180,14 +180,19 @@ namespace Microsoft.Graph
                 }
 
 #if iOS || macOS
+#if iOS
                 // Skip CompressionHandler since NSUrlSessionHandler automatically handles decompression on iOS and macOS and it can't be turned off.
                 // See issue https://github.com/microsoftgraph/msgraph-sdk-dotnet/issues/481 for more details.
                 if (finalHandler.GetType().Equals(typeof(NSUrlSessionHandler)) && handler.GetType().Equals(typeof(CompressionHandler)))
+#elif macOS
+                 if (finalHandler.GetType().Equals(typeof(Foundation.NSUrlSessionHandler)) && handler.GetType().Equals(typeof(CompressionHandler)))
+#endif
                 {
                     // Skip chaining of CompressionHandler.
                     continue;
                 }
 #endif
+
                 // Check for duplicate handler by type.
                 if (!existingHandlerTypes.Add(handler.GetType()))
                 {
@@ -216,8 +221,10 @@ namespace Microsoft.Graph
         /// </returns>
         internal static HttpMessageHandler GetNativePlatformHttpHandler(IWebProxy proxy = null)
         {
-#if iOS || macOS
+#if iOS
             return new NSUrlSessionHandler { AllowAutoRedirect = false };
+#elif macOS
+            return new Foundation.NSUrlSessionHandler { AllowAutoRedirect = false };
 #elif ANDROID
             return new Xamarin.Android.Net.AndroidClientHandler { Proxy = proxy, AllowAutoRedirect = false, AutomaticDecompression = DecompressionMethods.None };
 #else
