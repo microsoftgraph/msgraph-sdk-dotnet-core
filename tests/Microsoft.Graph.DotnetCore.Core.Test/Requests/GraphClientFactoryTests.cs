@@ -41,14 +41,18 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         // and 'GraphClientFactory.DefaultHttpHandler' can easily be modified
         // by other tests since it's a static delegate.
 
-#if iOS
+#if iOS || macOS
         [Fact]
         public void Should_CreatePipeline_Without_CompressionHandler()
         {
             using (AuthenticationHandler authenticationHandler = (AuthenticationHandler)GraphClientFactory.CreatePipeline(handlers))
             using (RetryHandler retryHandler = (RetryHandler)authenticationHandler.InnerHandler)
             using (RedirectHandler redirectHandler = (RedirectHandler)retryHandler.InnerHandler)
+#if iOS
             using (NSUrlSessionHandler innerMost = (NSUrlSessionHandler)redirectHandler.InnerHandler)
+#elif macOS
+            using (Foundation.NSUrlSessionHandler innerMost = (Foundation.NSUrlSessionHandler)redirectHandler.InnerHandler)
+#endif
             {
                 Assert.NotNull(authenticationHandler);
                 Assert.NotNull(retryHandler);
@@ -57,7 +61,11 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                 Assert.IsType<AuthenticationHandler>(authenticationHandler);
                 Assert.IsType<RetryHandler>(retryHandler);
                 Assert.IsType<RedirectHandler>(redirectHandler);
+#if iOS
                 Assert.IsType<NSUrlSessionHandler>(innerMost);
+#elif macOS
+                Assert.IsType<Foundation.NSUrlSessionHandler>(innerMost);
+#endif
             }
         }
 #else
