@@ -219,6 +219,38 @@ namespace Microsoft.Graph
         /// <param name="serializableObject">The serializable object to send.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <param name="completionOption">The <see cref="HttpCompletionOption"/> to pass to the <see cref="IHttpProvider"/> on send.</param>
+        /// <returns>The <see cref="GraphResponse"/> object.</returns>
+        public async Task<GraphResponse> SendAsyncWithGraphResponse(
+            object serializableObject,
+            CancellationToken cancellationToken,
+            HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        {
+            var response = await this.SendRequestAsync(serializableObject, cancellationToken, completionOption).ConfigureAwait(false);
+            return new GraphResponse(this, response);
+        }
+
+        /// <summary>
+        /// Sends the request.
+        /// </summary>
+        /// <param name="serializableObject">The serializable object to send.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <param name="completionOption">The <see cref="HttpCompletionOption"/> to pass to the <see cref="IHttpProvider"/> on send.</param>
+        /// <returns>The <see cref="GraphResponse"/> object.</returns>
+        public async Task<GraphResponse<T>> SendAsyncWithGraphResponse<T>(
+            object serializableObject,
+            CancellationToken cancellationToken,
+            HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        {
+            var response = await this.SendRequestAsync(serializableObject, cancellationToken, completionOption).ConfigureAwait(false);
+            return new GraphResponse<T>(this, response);
+        }
+
+        /// <summary>
+        /// Sends the request.
+        /// </summary>
+        /// <param name="serializableObject">The serializable object to send.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <param name="completionOption">The <see cref="HttpCompletionOption"/> to pass to the <see cref="IHttpProvider"/> on send.</param>
         /// <returns>The <see cref="HttpResponseMessage"/> object.</returns>
         public async Task<HttpResponseMessage> SendRequestAsync(
             object serializableObject,
