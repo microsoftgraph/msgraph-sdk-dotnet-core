@@ -48,6 +48,11 @@ namespace Microsoft.Graph
         IDictionary<string, IMiddlewareOption> MiddlewareOptions { get; }
 
         /// <summary>
+        /// Gets the <see cref="IResponseHandler"/> for the request.
+        /// </summary>
+        IResponseHandler ResponseHandler { get; }
+
+        /// <summary>
         /// Gets the <see cref="HttpRequestMessage"/> representation of the request.
         /// </summary>
         /// <returns>The <see cref="HttpRequestMessage"/> representation of the request.</returns>

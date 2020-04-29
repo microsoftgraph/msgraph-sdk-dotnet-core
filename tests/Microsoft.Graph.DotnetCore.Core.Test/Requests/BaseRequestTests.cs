@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
@@ -6,6 +6,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 {
     using Microsoft.Graph.DotnetCore.Core.Test.Mocks;
     using Microsoft.Graph.DotnetCore.Core.Test.TestModels;
+    using Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels;
     using Moq;
     using System;
     using System.Collections.Generic;
@@ -355,6 +356,56 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                 Assert.Equal(httpResponseMessage, returnedResponse);
                 Assert.NotNull(returnedResponse.RequestMessage.Headers);
                 Assert.Equal("Default-Token", returnedResponse.RequestMessage.Headers.Authorization.Parameter);
+            }
+        }
+
+        [Fact]
+        public async Task SendAsyncWithGraphResponse()
+        {
+            using (var httpResponseMessage = new HttpResponseMessage())
+            using (TestHttpMessageHandler testHttpMessageHandler = new TestHttpMessageHandler())
+            {
+                string requestUrl = "https://localhost/";
+                testHttpMessageHandler.AddResponseMapping(requestUrl, httpResponseMessage);
+                MockCustomHttpProvider customHttpProvider = new MockCustomHttpProvider(testHttpMessageHandler);
+
+                BaseClient client = new BaseClient(requestUrl, authenticationProvider.Object, customHttpProvider);
+                BaseRequest baseRequest = new BaseRequest(requestUrl, client);
+
+                GraphResponse returnedResponse = await baseRequest.SendAsyncWithGraphResponse("string", CancellationToken.None);
+
+                Assert.Equal(httpResponseMessage.StatusCode, returnedResponse.StatusCode);
+                Assert.Equal(baseRequest, returnedResponse.BaseRequest);
+            }
+        }
+
+        [Fact]
+        public async Task SendAsyncWithGraphResponseOfT()
+        {
+            using (TestHttpMessageHandler testHttpMessageHandler = new TestHttpMessageHandler())
+            {
+                string requestUrl = "https://localhost/";
+                // Arrange
+                HttpResponseMessage responseMessage = new HttpResponseMessage()
+                {
+                    Content = new StringContent(@"{
+                    ""id"": ""123"",
+                    ""givenName"": ""Joe"",
+                    ""surName"": ""Brown"",
+                    ""@odata.type"":""test""
+                    }", Encoding.UTF8, "application/json")
+                };
+                testHttpMessageHandler.AddResponseMapping(requestUrl, responseMessage);
+                MockCustomHttpProvider customHttpProvider = new MockCustomHttpProvider(testHttpMessageHandler);
+
+                BaseClient client = new BaseClient(requestUrl, authenticationProvider.Object, customHttpProvider);
+                BaseRequest baseRequest = new BaseRequest(requestUrl, client);
+
+                GraphResponse<TestUser> returnedResponse = await baseRequest.SendAsyncWithGraphResponse<TestUser>("string", CancellationToken.None);
+
+                Assert.Equal(responseMessage.StatusCode, returnedResponse.StatusCode);
+                Assert.Equal(baseRequest, returnedResponse.BaseRequest);
+                Assert.Equal(responseMessage.Content, returnedResponse.Content);
             }
         }
 
