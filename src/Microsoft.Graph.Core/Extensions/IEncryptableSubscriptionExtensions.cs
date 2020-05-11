@@ -3,7 +3,7 @@ using System.Security.Cryptography.X509Certificates;
 
 namespace Microsoft.Graph
 {
-    public static class IEncryptableSubscriptionExtension
+    public static class IEncryptableSubscriptionExtensions
     {
         /// <summary>
         /// Adds the encryption certificate information for change notifications with resource data to the subscription creation information.
