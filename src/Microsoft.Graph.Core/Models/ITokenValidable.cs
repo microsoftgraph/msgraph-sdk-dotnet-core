@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Microsoft.Graph
 {
@@ -8,7 +6,5 @@ namespace Microsoft.Graph
     {
         IEnumerable<string> ValidationTokens { get; set; }
         IEnumerable<IEncryptedContentBearer> Value { get; set; }
-
-        Task<bool> AreTokensValid(IEnumerable<Guid> tenantIds, IEnumerable<Guid> appIds, string wellKnownUri = "https://login.microsoftonline.com/common/.well-known/openid-configuration", string issuerPrefix = "https://sts.windows.net/");
     }
 }
