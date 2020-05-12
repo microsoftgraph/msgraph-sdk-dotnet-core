@@ -30,6 +30,7 @@ namespace Microsoft.Graph
         }
         /// <summary>
         /// Validates the signature and decrypted content attached with the notification.
+        /// https://docs.microsoft.com/en-us/graph/webhooks-with-resource-data#decrypting-resource-data-from-change-notifications 
         /// </summary>
         /// <param name="certificateProvider">Certificate provider to decrypt the content. The first parameter is the certificate ID provided when creating the subscription. The second is the certificate thumbprint. The certificate WILL be disposed at the end of decryption.</param>
         /// <returns>Decrypted content as string.</returns>
