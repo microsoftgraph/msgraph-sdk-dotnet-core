@@ -10,14 +10,6 @@ namespace Microsoft.Graph
 {
     public static class IDecryptableContentExtensions
     {
-        private static readonly Lazy<int> AESInitializationVectorSize = new Lazy<int>(() =>
-        {
-            using (AesCryptoServiceProvider provider = new AesCryptoServiceProvider())
-            {
-                return provider.LegalBlockSizes[0].MinSize;
-            }
-        });
-
         /// <summary>
         /// Validates the signature and decrypted content attached with the notification.
         /// </summary>
@@ -65,7 +57,7 @@ namespace Microsoft.Graph
                     Key = key
                 })
                 {
-                    var numArray = new byte[AESInitializationVectorSize.Value / 8];
+                    var numArray = new byte[16]; //16 is the IV size for the decryption provider required by specification
                     Array.Copy(key, numArray, numArray.Length);
                     cryptoServiceProvider.IV = numArray;
                     using (var memoryStream = new MemoryStream())
