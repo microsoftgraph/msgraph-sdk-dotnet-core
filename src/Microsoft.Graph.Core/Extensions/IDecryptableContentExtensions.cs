@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json;
 using System;
 using System.IO;
 using System.Security.Cryptography;
@@ -26,7 +26,7 @@ namespace Microsoft.Graph
         /// <returns>Decrypted content as the provided type.</returns>
         public static async Task<T> Decrypt<T>(this IDecryptableContent encryptedContent, Func<string, string, Task<X509Certificate2>> certificateProvider)
         {
-            return JsonConvert.DeserializeObject<T>(await encryptedContent.Decrypt(certificateProvider));
+            return JsonSerializer.Deserialize<T>(await encryptedContent.Decrypt(certificateProvider));
         }
         /// <summary>
         /// Validates the signature and decrypted content attached with the notification.
