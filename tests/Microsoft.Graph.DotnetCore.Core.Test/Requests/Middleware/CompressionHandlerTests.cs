@@ -128,6 +128,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Middleware
             string responseContentString = await compressedResponse.Content.ReadAsStringAsync();
 
             // Ensure that headers in the compressedResponse are the same as in the original, expected response.
+            Assert.NotEmpty(compressedResponse.Headers);
             Assert.NotEmpty(compressedResponse.Content.Headers);
             Assert.Equal(httpResponse.Headers, compressedResponse.Headers, new HttpHeaderComparer());
             Assert.Equal(httpResponse.Content.Headers, compressedResponse.Content.Headers, new HttpHeaderComparer());
