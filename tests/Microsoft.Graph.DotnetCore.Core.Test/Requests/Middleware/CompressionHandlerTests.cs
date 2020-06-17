@@ -125,7 +125,9 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Middleware
             this.testHttpMessageHandler.SetHttpResponse(httpResponse);
 
             HttpResponseMessage compressedResponse = await this.invoker.SendAsync(httpRequestMessage, new CancellationToken());
-            string responseContentString = await compressedResponse.Content.ReadAsStringAsync();
+            string decompressedResponseString = await compressedResponse.Content.ReadAsStringAsync();
+
+            Assert.Equal(decompressedResponseString, stringToCompress);
 
             // Ensure that headers in the compressedResponse are the same as in the original, expected response.
             Assert.NotEmpty(compressedResponse.Headers);
