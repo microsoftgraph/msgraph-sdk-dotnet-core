@@ -7,7 +7,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The base request builder class.
     /// </summary>
-    public class BaseRequestBuilder
+    public class BaseRequestBuilder : IBaseRequestBuilder
     {
         /// <summary>
         /// Constructs a new <see cref="BaseRequestBuilder"/>.
