@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFrameworks>netcoreapp3.1;Xamarin.iOS10;MonoAndroid70</TargetFrameworks>
+		<TargetFrameworks>netcoreapp3.1;Xamarin.iOS10;Xamarin.Mac20;MonoAndroid70;</TargetFrameworks>
 		<AssemblyName>Microsoft.Graph.DotnetCore.Core.Test</AssemblyName>
 		<PackageId>Microsoft.Graph.DotnetCore.Core.Test</PackageId>
 		<GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
@@ -21,6 +21,14 @@
 		<DebugType>full</DebugType>
 		<LanguageTargets>$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets</LanguageTargets>
 	</PropertyGroup>
+   
+  <PropertyGroup Condition="'$(TargetFramework)' == 'Xamarin.Mac20'">
+	  <TargetFrameworkIdentifier>Xamarin.Mac</TargetFrameworkIdentifier>
+	  <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+	  <DefineConstants>$(DefineConstants);macOS</DefineConstants>
+	  <DebugType>full</DebugType>
+	  <LanguageTargets>$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets</LanguageTargets>
+  </PropertyGroup> 
 
 	<PropertyGroup Condition="'$(TargetFramework)' == 'MonoAndroid70'">
 		<TargetFrameworkIdentifier>MonoAndroid</TargetFrameworkIdentifier>
@@ -58,6 +66,16 @@
 		<Reference Include="System.Runtime.Serialization" />
 		<PackageReference Include="System.Net.Http" Version="4.3.3" />
 	</ItemGroup>
+   
+  <ItemGroup Condition=" '$(TargetFramework)' == 'Xamarin.Mac20' ">
+	  <Reference Include="Microsoft.CSharp" />
+	  <Reference Include="Xamarin.Mac" />
+	  <Reference Include="System" />
+	  <Reference Include="System.Core" />
+	  <Reference Include="System.Xml" />
+	  <Reference Include="System.Runtime.Serialization" />
+	  <PackageReference Include="System.Net.Http" Version="4.3.3" />
+  </ItemGroup>
 
 	<ItemGroup Condition=" '$(TargetFramework)' == 'MonoAndroid70' ">
 		<Reference Include="Microsoft.CSharp" />
@@ -69,7 +87,7 @@
 		<PackageReference Include="System.Net.Http" Version="4.3.3" />
 	</ItemGroup>
 
-	<ItemGroup>
+   <ItemGroup>
 		<Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
 	</ItemGroup>
 </Project>

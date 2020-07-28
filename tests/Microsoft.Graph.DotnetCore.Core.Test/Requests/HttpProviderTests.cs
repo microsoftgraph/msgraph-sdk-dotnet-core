@@ -115,6 +115,9 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 #elif iOS
                 Assert.IsType<NSUrlSessionHandler>(defaultHttpProvider.httpMessageHandler);
                 Assert.False((defaultHttpProvider.httpMessageHandler as NSUrlSessionHandler).AllowAutoRedirect);
+#elif macOS
+                Assert.IsType<Foundation.NSUrlSessionHandler>(defaultHttpProvider.httpMessageHandler);
+                Assert.False((defaultHttpProvider.httpMessageHandler as Foundation.NSUrlSessionHandler).AllowAutoRedirect);
 #else
                 Assert.IsType<HttpClientHandler>(defaultHttpProvider.httpMessageHandler);
                 Assert.False((defaultHttpProvider.httpMessageHandler as HttpClientHandler).AllowAutoRedirect);
@@ -554,12 +557,16 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 #endif
         #endregion
 
-        #region iOS
-#if iOS
+        #region iOS_macOS
+#if iOS || macOS
         [Fact]
         public void HttpProvider_CustomNSUrlSessionHandler()
         {
+#if iOS
             using (var httpClientHandler = new NSUrlSessionHandler())
+#elif macOS
+            using (var httpClientHandler = new Foundation.NSUrlSessionHandler())
+#endif
             using (var httpProvider = new HttpProvider(httpClientHandler, false, null))
             {
                 Assert.Equal(httpClientHandler, httpProvider.httpMessageHandler);
@@ -568,6 +575,6 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             }
         }
 #endif
-        #endregion
+#endregion
+        }
     }
-}
