@@ -22,6 +22,7 @@
     <VersionPrefix>1.22.0</VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <PackageReleaseNotes>- BaseRequestBuilder is now an IBaseRequestBuilder.
+- Requests that return an OData primitive now work as expected. 
     </PackageReleaseNotes>
   </PropertyGroup>
   <!--We manually configure LanguageTargets for Xamarin due to .Net SDK TFMs limitation https://github.com/dotnet/sdk/issues/491 -->

@@ -404,5 +404,29 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
             Assert.Equal(43, jsArr[2]);
             Assert.Equal(false, jsArr[3]);
         }
+        
+        [Fact]
+        public void DeserializeSimpleReturnType()
+        {
+            var expectedStringValue = "expectedvalue";
+            var stringPayload = "{\"@odata.context\": \"https://graph.microsoft.com/beta/$metadata#String\", \"value\": \"expectedvalue\"}";
+            var expectedBoolValue = true;
+            var boolPayload = "{\"@odata.context\":\"https://graph.microsoft.com/v1.0/$metadata#Edm.Boolean\",\"value\":true}";
+            var serializer = new Serializer();
+
+            var actualStringValue = serializer.DeserializeObject<string>(stringPayload);
+            var actualBoolValue = serializer.DeserializeObject<bool>(boolPayload);
+
+            Assert.Equal(expectedStringValue, actualStringValue);
+            Assert.Equal(expectedBoolValue, actualBoolValue);
+        }
+
+        [Fact]
+        public void SimpleReturnTypeDeserializationFailure()
+        {
+            var stringPayload = "{\"@odata.context\": \"https://graph.microsoft.com/beta/$metadata#String\", \"value\": { \"objProp\": \"objPropValue\" }}";
+            ClientException exception = Assert.Throws<ClientException>(() => this.serializer.DeserializeObject<string>(stringPayload));
+            Assert.Equal(ErrorConstants.Messages.UnexpectedObjectForDeserialization, exception.Error.Message);
+        }
     }
 }
