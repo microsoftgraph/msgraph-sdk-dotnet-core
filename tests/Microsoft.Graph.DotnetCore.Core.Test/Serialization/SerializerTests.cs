@@ -406,27 +406,54 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
         }
         
         [Fact]
-        public void DeserializeSimpleReturnType()
+        public void MethodResponseSimpleReturnTypeDeserialization()
         {
             var expectedStringValue = "expectedvalue";
             var stringPayload = "{\"@odata.context\": \"https://graph.microsoft.com/beta/$metadata#String\", \"value\": \"expectedvalue\"}";
             var expectedBoolValue = true;
             var boolPayload = "{\"@odata.context\":\"https://graph.microsoft.com/v1.0/$metadata#Edm.Boolean\",\"value\":true}";
-            var serializer = new Serializer();
+            var expectedInt32Value = 1;
+            var int32Payload = "{\"@odata.context\":\"https://graph.microsoft.com/v1.0/$metadata#Edm.Boolean\",\"value\":1}";
 
-            var actualStringValue = serializer.DeserializeObject<string>(stringPayload);
-            var actualBoolValue = serializer.DeserializeObject<bool>(boolPayload);
+            var actualStringValue = this.serializer.DeserializeObject<ODataMethodStringResponse>(stringPayload).Value;
+            var actualBoolValue = this.serializer.DeserializeObject<ODataMethodBooleanResponse>(boolPayload).Value;
+            var actualInt32Value = this.serializer.DeserializeObject<ODataMethodIntResponse>(int32Payload).Value;
 
             Assert.Equal(expectedStringValue, actualStringValue);
             Assert.Equal(expectedBoolValue, actualBoolValue);
+            Assert.Equal(expectedInt32Value, actualInt32Value);
         }
 
         [Fact]
-        public void SimpleReturnTypeDeserializationFailure()
+        public void MethodResponseUnexpectedReturnObject()
         {
             var stringPayload = "{\"@odata.context\": \"https://graph.microsoft.com/beta/$metadata#String\", \"value\": { \"objProp\": \"objPropValue\" }}";
-            ClientException exception = Assert.Throws<ClientException>(() => this.serializer.DeserializeObject<string>(stringPayload));
-            Assert.Equal(ErrorConstants.Messages.UnexpectedObjectForDeserialization, exception.Error.Message);
+
+            JsonReaderException exceptionString = Assert.Throws<JsonReaderException>(() => this.serializer.DeserializeObject<ODataMethodStringResponse>(stringPayload));
+            JsonReaderException exceptionBool = Assert.Throws<JsonReaderException>(() => this.serializer.DeserializeObject<ODataMethodBooleanResponse>(stringPayload));
+            JsonReaderException exceptionInt = Assert.Throws<JsonReaderException>(() => this.serializer.DeserializeObject<ODataMethodIntResponse>(stringPayload));
+
+            Assert.Equal("value", exceptionString.Path); // the value property doesn't exist as a string
+            Assert.Equal("value", exceptionBool.Path); // the value property doesn't exist as a bool
+            Assert.Equal("value", exceptionInt.Path); // the value property doesn't exist as a int
+        }
+
+        /// <summary>
+        /// Test what happens when the service API returns an unexpected response body.
+        /// https://github.com/microsoftgraph/msgraph-sdk-serviceissues/issues/9
+        /// </summary>
+        [Fact]
+        public void MethodResponseMissingValueDeserialization()
+        {
+            var badPayload = "{\"@odata.context\": \"https://graph.microsoft.com/v1.0/$metadata#Edm.Null\", \"@odata.null\": true}";
+
+            var stringResult = this.serializer.DeserializeObject<ODataMethodStringResponse>(badPayload).Value;
+            var boolResult = this.serializer.DeserializeObject<ODataMethodBooleanResponse>(badPayload).Value;
+            var intResult = this.serializer.DeserializeObject<ODataMethodIntResponse>(badPayload).Value;
+
+            Assert.Null(stringResult);
+            Assert.Null(boolResult);
+            Assert.Null(intResult);
         }
     }
 }

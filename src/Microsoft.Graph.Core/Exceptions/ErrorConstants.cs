@@ -68,8 +68,6 @@ namespace Microsoft.Graph
             internal static string NoResponseForUpload = "No Response Received for upload.";
 
             public static string InvalidProxyArgument = "Proxy cannot be set more once. Proxy can only be set on the proxy or defaultHttpHandler argument and not both.";
-
-            internal static string UnexpectedObjectForDeserialization = "Expected a simple value for return type.";
         }
     }
 }

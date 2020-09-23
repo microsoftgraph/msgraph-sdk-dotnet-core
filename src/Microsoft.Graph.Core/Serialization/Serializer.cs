@@ -78,24 +78,6 @@ namespace Microsoft.Graph
             {
                 return default(T);
             }
-            if (typeof(T).IsSimpleOdataValue())
-            {
-                // Remember that T, the return type, is determined when we generate the service library.
-                try
-                {
-                    var obj = JToken.Parse(inputString);
-                    return obj.Value<T>("value");
-                }
-                catch (InvalidCastException icex) // Occurs when "value" is an object and not a simple odata value
-                {
-                    var error = new Error()
-                    {
-                        Message = ErrorConstants.Messages.UnexpectedObjectForDeserialization
-                    };
-
-                    throw new ClientException(error, icex);
-                }
-            }
 
             return JsonConvert.DeserializeObject<T>(inputString, this.jsonSerializerSettings);
         }
