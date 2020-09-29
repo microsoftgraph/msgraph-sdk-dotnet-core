@@ -21,7 +21,7 @@ namespace Microsoft.Graph
         /// <summary>
         /// Nullable in case the value property is not present.
         /// /// </summary>
-		[JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "value", Required = Newtonsoft.Json.Required.Default)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "value", Required = Newtonsoft.Json.Required.Default)]
         public bool? Value { get; set; }
 
         /// <summary>
