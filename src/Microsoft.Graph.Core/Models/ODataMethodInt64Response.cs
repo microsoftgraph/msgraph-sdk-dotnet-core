@@ -9,7 +9,7 @@ namespace Microsoft.Graph
 
     /// <summary>
     /// Represents an intermediate object used for deserializing OData method responses
-    /// that return a single Int32 OData primitive. This type is consumed by code files
+    /// that return a single long OData primitive. This type is consumed by code files
     /// generated with:
     /// https://github.com/microsoftgraph/MSGraph-SDK-Code-Generator/blob/dev/Templates/CSharp/Requests/MethodRequest.cs.tt
     /// The value of a return type is an object:

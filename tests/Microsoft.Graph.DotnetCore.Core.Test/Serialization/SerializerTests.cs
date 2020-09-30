@@ -405,55 +405,93 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
             Assert.Equal(false, jsArr[3]);
         }
         
-        [Fact]
-        public void MethodResponseSimpleReturnTypeDeserialization()
+        [Theory]
+        [InlineData("string", "{\"@odata.context\": \"https://graph.microsoft.com/beta/$metadata#String\", \"value\": \"expectedvalue\"}")]
+        [InlineData("bool", "{\"@odata.context\": \"https://graph.microsoft.com/beta/$metadata#String\", \"value\": true}")]
+        [InlineData("int32", "{\"@odata.context\":\"https://graph.microsoft.com/v1.0/$metadata#Edm.Boolean\",\"value\":1}")]
+        public void MethodResponseSimpleReturnTypeDeserialization(string @case, string payload)
         {
-            var expectedStringValue = "expectedvalue";
-            var stringPayload = "{\"@odata.context\": \"https://graph.microsoft.com/beta/$metadata#String\", \"value\": \"expectedvalue\"}";
-            var expectedBoolValue = true;
-            var boolPayload = "{\"@odata.context\":\"https://graph.microsoft.com/v1.0/$metadata#Edm.Boolean\",\"value\":true}";
-            var expectedInt32Value = 1;
-            var int32Payload = "{\"@odata.context\":\"https://graph.microsoft.com/v1.0/$metadata#Edm.Boolean\",\"value\":1}";
-
-            var actualStringValue = this.serializer.DeserializeObject<ODataMethodStringResponse>(stringPayload).Value;
-            var actualBoolValue = this.serializer.DeserializeObject<ODataMethodBooleanResponse>(boolPayload).Value;
-            var actualInt32Value = this.serializer.DeserializeObject<ODataMethodIntResponse>(int32Payload).Value;
-
-            Assert.Equal(expectedStringValue, actualStringValue);
-            Assert.Equal(expectedBoolValue, actualBoolValue);
-            Assert.Equal(expectedInt32Value, actualInt32Value);
+            switch (@case)
+            {
+                case "string": 
+                    var actualStringValue = this.serializer.DeserializeObject<ODataMethodStringResponse>(payload).Value;
+                    Assert.Equal("expectedvalue", actualStringValue);
+                    break;
+                case "bool":
+                    var actualBoolValue = this.serializer.DeserializeObject<ODataMethodBooleanResponse>(payload).Value;
+                    Assert.True(actualBoolValue);
+                    break;
+                case "int32":
+                    var actualInt32Value = this.serializer.DeserializeObject<ODataMethodIntResponse>(payload).Value;
+                    Assert.Equal(1, actualInt32Value);
+                    break;
+                default:
+                    Assert.True(false);
+                    break;
+            }
         }
 
-        [Fact]
-        public void MethodResponseUnexpectedReturnObject()
+        [Theory]
+        [InlineData("string")]
+        [InlineData("bool")]
+        [InlineData("int32")]
+        public void MethodResponseUnexpectedReturnObject(string @case)
         {
-            var stringPayload = "{\"@odata.context\": \"https://graph.microsoft.com/beta/$metadata#String\", \"value\": { \"objProp\": \"objPropValue\" }}";
+            var payload = "{\"@odata.context\": \"https://graph.microsoft.com/beta/$metadata#String\", \"value\": { \"objProp\": \"objPropValue\" }}";
 
-            JsonReaderException exceptionString = Assert.Throws<JsonReaderException>(() => this.serializer.DeserializeObject<ODataMethodStringResponse>(stringPayload));
-            JsonReaderException exceptionBool = Assert.Throws<JsonReaderException>(() => this.serializer.DeserializeObject<ODataMethodBooleanResponse>(stringPayload));
-            JsonReaderException exceptionInt = Assert.Throws<JsonReaderException>(() => this.serializer.DeserializeObject<ODataMethodIntResponse>(stringPayload));
-
-            Assert.Equal("value", exceptionString.Path); // the value property doesn't exist as a string
-            Assert.Equal("value", exceptionBool.Path); // the value property doesn't exist as a bool
-            Assert.Equal("value", exceptionInt.Path); // the value property doesn't exist as a int
+            switch (@case)
+            {
+                case "string":
+                    JsonReaderException exceptionString = Assert.Throws<JsonReaderException>(() => this.serializer
+                                                                                                       .DeserializeObject<ODataMethodStringResponse>(payload));
+                    Assert.Equal("value", exceptionString.Path); // the value property doesn't exist as a string
+                    break;
+                case "bool":
+                    JsonReaderException exceptionBool = Assert.Throws<JsonReaderException>(() => this.serializer
+                                                                                                     .DeserializeObject<ODataMethodBooleanResponse>(payload));
+                    Assert.Equal("value", exceptionBool.Path); // the value property doesn't exist as a bool
+                    break;
+                case "int32":
+                    JsonReaderException exceptionInt = Assert.Throws<JsonReaderException>(() => this.serializer
+                                                                                                    .DeserializeObject<ODataMethodIntResponse>(payload));
+                    Assert.Equal("value", exceptionInt.Path); // the value property doesn't exist as a int
+                    break;
+                default:
+                    Assert.True(false);
+                    break;
+            }
         }
 
         /// <summary>
         /// Test what happens when the service API returns an unexpected response body.
         /// https://github.com/microsoftgraph/msgraph-sdk-serviceissues/issues/9
         /// </summary>
-        [Fact]
-        public void MethodResponseMissingValueDeserialization()
+        [Theory]
+        [InlineData("string")]
+        [InlineData("bool")]
+        [InlineData("int32")]
+        public void MethodResponseMissingValueDeserialization(string @case)
         {
             var badPayload = "{\"@odata.context\": \"https://graph.microsoft.com/v1.0/$metadata#Edm.Null\", \"@odata.null\": true}";
 
-            var stringResult = this.serializer.DeserializeObject<ODataMethodStringResponse>(badPayload).Value;
-            var boolResult = this.serializer.DeserializeObject<ODataMethodBooleanResponse>(badPayload).Value;
-            var intResult = this.serializer.DeserializeObject<ODataMethodIntResponse>(badPayload).Value;
-
-            Assert.Null(stringResult);
-            Assert.Null(boolResult);
-            Assert.Null(intResult);
+            switch (@case)
+            {
+                case "string":
+                    var stringResult = this.serializer.DeserializeObject<ODataMethodStringResponse>(badPayload).Value;
+                    Assert.Null(stringResult);
+                    break;
+                case "bool":
+                    var boolResult = this.serializer.DeserializeObject<ODataMethodBooleanResponse>(badPayload).Value;
+                    Assert.Null(boolResult);
+                    break;
+                case "int32":
+                    var intResult = this.serializer.DeserializeObject<ODataMethodIntResponse>(badPayload).Value;
+                    Assert.Null(intResult);
+                    break;
+                default:
+                    Assert.True(false);
+                    break;
+            }
         }
     }
 }
