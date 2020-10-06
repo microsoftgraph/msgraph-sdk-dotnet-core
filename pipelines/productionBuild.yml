@@ -93,7 +93,7 @@ steps:
 - task: SFP.build-tasks.custom-build-task-1.EsrpCodeSigning@1
   displayName: 'ESRP DLL Strong Name (Microsoft.Graph.Core) (AKV)'
   inputs:
-    ConnectedServiceName: 'microsoftgraph ESRP CodeSign DLL and NuGet'
+    ConnectedServiceName: 'microsoftgraph ESRP CodeSign DLL and NuGet (AKV)'
     FolderPath: src/Microsoft.Graph.Core/bin/release
     Pattern: Microsoft.Graph.Core.dll
     signConfigType: inlineSignParams
