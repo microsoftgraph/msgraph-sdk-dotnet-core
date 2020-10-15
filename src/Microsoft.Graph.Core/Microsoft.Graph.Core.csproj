@@ -19,10 +19,10 @@
     <DelaySign>false</DelaySign>
     <AssemblyOriginatorKeyFile>35MSSharedLib1024.snk</AssemblyOriginatorKeyFile>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <VersionPrefix>1.22.0</VersionPrefix>
+    <VersionPrefix>1.23.0</VersionPrefix>
     <VersionSuffix></VersionSuffix>
-    <PackageReleaseNotes>- BaseRequestBuilder is now an IBaseRequestBuilder.
-- Requests that return an OData primitive now work as expected. 
+    <PackageReleaseNotes>
+    - Fix for #120: Exception thrown when slice size is not specified for LargeFileUploadTask 
     </PackageReleaseNotes>
   </PropertyGroup>
   <!--We manually configure LanguageTargets for Xamarin due to .Net SDK TFMs limitation https://github.com/dotnet/sdk/issues/491 -->

@@ -15,7 +15,7 @@ namespace Microsoft.Graph
     /// </summary>
     public class LargeFileUploadTask<T>
     {
-        private const int DefaultMaxSliceSize = 4 * 1024 * 1024;
+        private const int DefaultMaxSliceSize = 5 * 1024 * 1024;
         private const int RequiredSliceSizeIncrement = 320 * 1024;
         private IUploadSession Session { get; set; }
         private readonly IBaseClient _client;
