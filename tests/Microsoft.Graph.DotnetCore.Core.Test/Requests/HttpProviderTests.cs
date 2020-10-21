@@ -515,6 +515,39 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             Assert.NotSame(ErrorConstants.Messages.UnexpectedExceptionResponse, exception.Error.Message);
         }
 
+        /// <summary>
+        /// Testing that ErrorResponse can't be deserialized and causes the GeneralException 
+        /// code to be thrown in a ServiceException.
+        /// This test validates that the NullReference exception is no longer thrown according to
+        /// https://github.com/microsoftgraph/msgraph-sdk-dotnet-core/issues/113
+        /// </summary>
+        [Fact]
+        public async Task SendAsync_DoesNotThrowNullReferenceExceptionWhenHeaderContentTypeIsNull()
+        {
+            using (var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, "https://localhost"))
+            using (var stringContent = new StringContent(""))
+            using (var httpResponseMessage = new HttpResponseMessage())
+            {
+                httpResponseMessage.Content = stringContent;
+                httpResponseMessage.Content.Headers.ContentType = null;
+
+                httpResponseMessage.StatusCode = HttpStatusCode.BadRequest;
+                httpResponseMessage.RequestMessage = httpRequestMessage;
+
+                this.testHttpMessageHandler.AddResponseMapping(httpRequestMessage.RequestUri.ToString(), httpResponseMessage);
+
+                ServiceException exception = await Assert.ThrowsAsync<ServiceException>(async () => await this.httpProvider.SendAsync(httpRequestMessage));
+
+                // Assert that we creating an GeneralException error.
+                Assert.Same(ErrorConstants.Codes.GeneralException, exception.Error.Code);
+                Assert.Same(ErrorConstants.Messages.UnexpectedExceptionResponse, exception.Error.Message);
+
+                // Assert that the response is null since we have no contentType.
+                Assert.Null(exception.RawResponseBody);
+
+            }
+        }
+
         #region NETCORE
         // Skip this test for Xamain since it never throws an exception.
 #if NETCORE
