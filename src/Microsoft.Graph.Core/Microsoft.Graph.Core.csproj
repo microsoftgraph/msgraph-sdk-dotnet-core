@@ -22,7 +22,8 @@
     <VersionPrefix>1.23.0</VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <PackageReleaseNotes>
-    - Fix for #120: Exception thrown when slice size is not specified for LargeFileUploadTask 
+- Fix for #120: Exception thrown when slice size is not specified for LargeFileUploadTask
+- Fix for #113: NullReferenceException thrown when error response does not have content type header is empty.
     </PackageReleaseNotes>
   </PropertyGroup>
   <!--We manually configure LanguageTargets for Xamarin due to .Net SDK TFMs limitation https://github.com/dotnet/sdk/issues/491 -->
