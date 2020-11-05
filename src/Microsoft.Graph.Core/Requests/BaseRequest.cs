@@ -256,7 +256,7 @@ namespace Microsoft.Graph
 
                     if (!string.IsNullOrEmpty(this.ContentType))
                     {
-                        request.Content.Headers.ContentType = new MediaTypeHeaderValue(this.ContentType);
+                        request.Content.Headers.ContentType = MediaTypeHeaderValue.Parse(this.ContentType);
                     }
                 }
 
