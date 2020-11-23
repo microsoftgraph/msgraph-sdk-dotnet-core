@@ -293,7 +293,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             var middleWareOption = requestContext.MiddlewareOptions[typeof(AuthenticationHandlerOption).ToString()] as AuthenticationHandlerOption;
             Assert.NotNull(middleWareOption);
 
-            var authProviderOption = middleWareOption.AuthenticationProviderOption as CaeAuthenticationProviderOption;
+            var authProviderOption = middleWareOption.AuthenticationProviderOption as ICaeAuthenticationProviderOption;
             Assert.NotNull(authProviderOption);
 
             // Assert the decoded claims string is as expected

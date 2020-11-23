@@ -8,7 +8,7 @@ namespace Microsoft.Graph
     /// An interface used to pass auth provider options in a request.
     /// Auth providers will be in charge of implementing this interface and providing <see cref="IBaseRequest"/> extensions to set it's values.
     /// </summary>
-    public class CaeAuthenticationProviderOption : ICaeAuthenticationProviderOption
+    internal class CaeAuthenticationProviderOption : ICaeAuthenticationProviderOption
     {
         /// <summary>
         /// Default constructor
