@@ -22,7 +22,7 @@ namespace Microsoft.Graph
         /// </summary>
         public CaeAuthenticationProviderOption(IAuthenticationProviderOption authenticationProviderOption)
         {
-            this.Scopes = authenticationProviderOption.Scopes;
+            this.Scopes = authenticationProviderOption?.Scopes;
         }
 
         /// <summary>
