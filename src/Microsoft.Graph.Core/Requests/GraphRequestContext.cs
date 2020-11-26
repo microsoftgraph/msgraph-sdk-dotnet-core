@@ -20,7 +20,10 @@ namespace Microsoft.Graph
         /// <summary>
         /// A MiddlewareOptions property
         /// </summary>
-        public IDictionary<string, IMiddlewareOption> MiddlewareOptions { get; set; }
+        public IDictionary<string, IMiddlewareOption> MiddlewareOptions {
+            get => _middlewareOptions ?? (_middlewareOptions = new Dictionary<string, IMiddlewareOption>());
+            set => _middlewareOptions = value;
+        }
 
         /// <summary>
         /// A CancellationToken property
@@ -36,5 +39,7 @@ namespace Microsoft.Graph
         /// A <see cref="GraphUserAccount"/> property representing the logged in user
         /// </summary>
         public GraphUserAccount User { get; set; }
+
+        private IDictionary<string, IMiddlewareOption> _middlewareOptions;
     }
 }

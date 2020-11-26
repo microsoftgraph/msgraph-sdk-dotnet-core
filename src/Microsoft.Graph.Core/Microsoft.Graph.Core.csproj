@@ -19,10 +19,13 @@
     <DelaySign>false</DelaySign>
     <AssemblyOriginatorKeyFile>35MSSharedLib1024.snk</AssemblyOriginatorKeyFile>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <VersionPrefix>1.22.0</VersionPrefix>
+    <VersionPrefix>1.23.0</VersionPrefix>
     <VersionSuffix></VersionSuffix>
-    <PackageReleaseNotes>- BaseRequestBuilder is now an IBaseRequestBuilder.
-- Requests that return an OData primitive now work as expected. 
+    <PackageReleaseNotes>
+- Fix for #120: Exception thrown when slice size is not specified for LargeFileUploadTask
+- Fix for #113: NullReferenceException thrown when error response does not have content type header is empty.
+- Fix for #165: Add support for content types with parameters to BaseRequest
+- Add support for Continuous Access Evaluation(CAE)
     </PackageReleaseNotes>
   </PropertyGroup>
   <!--We manually configure LanguageTargets for Xamarin due to .Net SDK TFMs limitation https://github.com/dotnet/sdk/issues/491 -->
@@ -72,7 +75,7 @@
   </ItemGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.1' ">
     <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
-    <PackageReference Include="System.Net.Http" Version="4.3.3" />
+    <PackageReference Include="System.Net.Http" Version="4.3.4" />
   <PackageReference Include="System.ValueTuple" Version="4.3.0" />
   </ItemGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'Xamarin.iOS10' ">
@@ -82,7 +85,7 @@
   <Reference Include="System.Xml" />
   <Reference Include="Microsoft.CSharp" />
   <PackageReference Include="Newtonsoft.Json" Version="11.0.1" />
-  <PackageReference Include="System.Net.Http" Version="4.3.3" />
+  <PackageReference Include="System.Net.Http" Version="4.3.4" />
   </ItemGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'Xamarin.Mac20' ">
   <Reference Include="Xamarin.Mac" />
@@ -91,7 +94,7 @@
   <Reference Include="System.Xml" />
   <Reference Include="Microsoft.CSharp" />
   <PackageReference Include="Newtonsoft.Json" Version="11.0.1" />
-  <PackageReference Include="System.Net.Http" Version="4.3.3" />
+  <PackageReference Include="System.Net.Http" Version="4.3.4" />
   </ItemGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'MonoAndroid70' ">
   <Reference Include="Mono.Android" />
@@ -100,7 +103,7 @@
   <Reference Include="System.Xml" />
   <Reference Include="Microsoft.CSharp" />
   <PackageReference Include="Newtonsoft.Json" Version="11.0.1" />
-  <PackageReference Include="System.Net.Http" Version="4.3.3" />
+  <PackageReference Include="System.Net.Http" Version="4.3.4" />
   <PackageReference Include="System.ValueTuple" Version="4.3.0" />
   </ItemGroup>
   <ItemGroup>
@@ -110,6 +113,6 @@
   </None>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="System.Diagnostics.DiagnosticSource" Version="4.6.0" />
+    <PackageReference Include="System.Diagnostics.DiagnosticSource" Version="4.7.1" />
   </ItemGroup>
 </Project>

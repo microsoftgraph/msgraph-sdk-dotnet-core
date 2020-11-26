@@ -135,7 +135,7 @@ namespace Microsoft.Graph
                         }
                     }
 
-                    if (response.Content?.Headers.ContentType.MediaType == "application/json")
+                    if (response.Content?.Headers.ContentType?.MediaType == "application/json")
                     {
                         string rawResponseBody = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
