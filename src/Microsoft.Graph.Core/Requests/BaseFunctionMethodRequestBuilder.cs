@@ -63,7 +63,7 @@ namespace Microsoft.Graph
             }
             else if (!this.passParametersInQueryString && _parameters.Count > 0)
             {
-                fnUrl = string.Format("{0}({1})", fnUrl, string.Join(",", _parameters));
+                //fnUrl = string.Format("{0}({1})", fnUrl, string.Join(",", _parameters));
             }
 
             return CreateRequest(fnUrl, options);
@@ -120,6 +120,20 @@ namespace Microsoft.Graph
         {
             // Per OData spec, single quotes within a string must be escaped with a second single quote.
             return value.Replace("'", "''");
+        }
+
+        /// <summary>
+        /// Set the parameter string on the request URL. MUST be used after all 
+        /// parameters have been set in the generated request builder.
+        /// </summary>
+        protected void SetParameterString()
+        { 
+            if (_parameters.Count > 0)
+            {
+                this.RequestUrl = string.Format("{0}({1})", 
+                                                this.RequestUrl, 
+                                                string.Join(",", _parameters));
+            }
         }
     }
 }
