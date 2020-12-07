@@ -38,6 +38,37 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
         }
 
         [Fact]
+        public void ShouldNotThrowArgumentExceptionOnConstructorWithoutSliceSize()
+        {
+            // Try to upload 1Mb stream without specifying the slice size(should default to 5Mb)
+            byte[] mockData = new byte[1000000];
+            using (Stream stream = new MemoryStream(mockData))
+            {
+                // Arrange
+                IUploadSession uploadSession = new Graph.Core.Models.UploadSession
+                {
+                    NextExpectedRanges = new List<string>() { "0-" },
+                    UploadUrl = "http://localhost",
+                    ExpirationDateTime = DateTimeOffset.Parse("2019-11-07T06:39:31.499Z")
+                };
+
+                // Act with constructor without chunk length
+                var fileUploadTask = new LargeFileUploadTask<DriveItem>(uploadSession, stream);
+                var uploadSlices = fileUploadTask.GetUploadSliceRequests();
+
+                // Assert
+                //We have only 1 slices
+                Assert.Single(uploadSlices);
+
+                var onlyUploadSlice = uploadSlices.First();
+                Assert.Equal(stream.Length, onlyUploadSlice.TotalSessionLength);
+                Assert.Equal(0, onlyUploadSlice.RangeBegin);
+                Assert.Equal(stream.Length - 1, onlyUploadSlice.RangeEnd);
+                Assert.Equal(stream.Length , onlyUploadSlice.RangeLength); //verify the last slice is the right size
+            }
+        }
+
+        [Fact]
         public void BreaksDownStreamIntoRangesCorrectly()
         {
             byte[] mockData = new byte[1000000];//create a stream of about 1M so we can split it into a few 320K slices
