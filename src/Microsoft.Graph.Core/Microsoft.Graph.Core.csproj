@@ -22,11 +22,17 @@
     <VersionPrefix>2.0.0</VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <PackageReleaseNotes>
-      - Adds support for TokenCredential from Azure.Core
-      - [Breaking Change] Adds support for System.Text,Json and drops Newtonsoft.Json dependency
-      - [Breaking Change] Fix for incorrect task cancellation #28
-      - Added GraphResponse object for wrapping responses
-      - [Breaking Change] IBaseRequest now takes IResponseHandler as a member
+- Adds support for TokenCredential from Azure.Core
+- [Breaking Change] Adds support for System.Text,Json and drops Newtonsoft.Json dependency
+- [Breaking Change] Fix for incorrect task cancellation #28
+- Added GraphResponse object for wrapping responses
+- [Breaking Change] IBaseRequest now takes IResponseHandler as a member
+- Support Mac Http handlers(v1.0 feature)
+- Compression header handling(v1.0 feature)
+- Fix DefaultMaxSliceSize in LargeFileUpload task(v1.0 feature)
+- Fix for NullReference exception thrown when contentType is empty(v1.0 feature)
+- Add support for content with parameters(v1.0 feature)
+- Add continuous access evaluation(CAE) support(v1.0 feature)
     </PackageReleaseNotes>
   </PropertyGroup>
   <!--We manually configure LanguageTargets for Xamarin due to .Net SDK TFMs limitation https://github.com/dotnet/sdk/issues/491 -->
