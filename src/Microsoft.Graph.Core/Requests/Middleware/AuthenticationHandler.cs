@@ -7,7 +7,11 @@ namespace Microsoft.Graph
     using System.Net.Http;
     using System.Threading;
     using System.Threading.Tasks;
+    using System;
+    using System.Linq;
     using System.Net;
+    using System.Text;
+
     /// <summary>
     /// A <see cref="DelegatingHandler"/> implementation using standard .NET libraries.
     /// </summary>
@@ -77,8 +81,14 @@ namespace Microsoft.Graph
                 // general clone request with internal CloneAsync (see CloneAsync for details) extension method 
                 var newRequest = await httpResponseMessage.RequestMessage.CloneAsync();
 
-                // Authenticate request using AuthenticationProvider
+                // extract the www-authenticate header and add claims to the request context
+                if (httpResponseMessage.Headers.WwwAuthenticate.Any())
+                {
+                    var wwwAuthenticateHeader = httpResponseMessage.Headers.WwwAuthenticate.ToString();
+                    AddClaimsToRequestContext(newRequest, wwwAuthenticateHeader);
+                }
 
+                // Authenticate request using AuthenticationProvider
                 await authProvider.AuthenticateRequestAsync(newRequest);
                 httpResponseMessage = await base.SendAsync(newRequest, cancellationToken);
 
@@ -115,7 +125,7 @@ namespace Microsoft.Graph
 
                 HttpResponseMessage response = await base.SendAsync(httpRequestMessage, cancellationToken);
 
-                // Chcek if response is a 401 & is not a streamed body (is buffered)
+                // Check if response is a 401 & is not a streamed body (is buffered)
                 if (IsUnauthorized(response) && httpRequestMessage.IsBuffered())
                 {
                     // re-issue the request to get a new access token
@@ -130,6 +140,48 @@ namespace Microsoft.Graph
                 // We will add this check once we re-write a new HttpProvider.
                 return await base.SendAsync(httpRequestMessage, cancellationToken);
             }
+        }
+
+        /// <summary>
+        /// Add claims to the request context of the given request message
+        /// </summary>
+        /// <param name="wwwAuthenticateHeader">String representation of www Authenticate Header</param>
+        /// <param name="newRequest">Request message to add claims to</param>
+        private void AddClaimsToRequestContext(HttpRequestMessage newRequest, string wwwAuthenticateHeader)
+        {
+            int claimsStart = wwwAuthenticateHeader.IndexOf("claims=", StringComparison.OrdinalIgnoreCase);
+            if (claimsStart < 0) 
+                return; // do nothing as there is no claims in www Authenticate Header
+
+            claimsStart += 8; // jump to the index after the opening quotation mark
+
+            // extract and decode the Base 64 encoded claims property
+            byte[] bytes = Convert.FromBase64String(wwwAuthenticateHeader.Substring(claimsStart, wwwAuthenticateHeader.Length - claimsStart - 1));
+            string claimsChallenge = Encoding.UTF8.GetString(bytes, 0, bytes.Length);
+
+            // Try to get the current options otherwise create new ones
+            AuthenticationHandlerOption authenticationHandlerOption = newRequest.GetMiddlewareOption<AuthenticationHandlerOption>() ?? AuthOption;
+            IAuthenticationProviderOption authenticationProviderOption = authenticationHandlerOption.AuthenticationProviderOption ?? new CaeAuthenticationProviderOption();
+            
+            // make sure that there is no information loss due to casting by copying over the scopes information if necessary
+            CaeAuthenticationProviderOption caeAuthenticationProviderOption;
+            if (authenticationProviderOption is CaeAuthenticationProviderOption option)
+            {
+                caeAuthenticationProviderOption = option;
+            }
+            else
+            {
+                caeAuthenticationProviderOption = new CaeAuthenticationProviderOption(authenticationProviderOption);
+            }
+
+            // update the claims property in the options
+            caeAuthenticationProviderOption.Claims = claimsChallenge;
+            authenticationHandlerOption.AuthenticationProviderOption = caeAuthenticationProviderOption;
+
+            // update the request context with the updated options
+            GraphRequestContext requestContext = newRequest.GetRequestContext();
+            requestContext.MiddlewareOptions[typeof(AuthenticationHandlerOption).ToString()] = authenticationHandlerOption;
+            newRequest.Properties[typeof(GraphRequestContext).ToString()] = requestContext;
         }
     }
 }

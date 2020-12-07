@@ -66,14 +66,14 @@ steps:
   displayName: 'Run enabled tests'
   inputs:
     testAssemblyVer2: |
-      **/netcoreapp2.2/Microsoft.Graph.DotnetCore.Core.Test.dll
+      **/netcoreapp3.1/Microsoft.Graph.DotnetCore.Core.Test.dll
       !**/*TestAdapter.dll
       !**/obj/**
     diagnosticsEnabled: true
     configuration: debug
     searchFolder: 'tests'
     platform: AnyCPU
-    otherConsoleOptions: '/Framework:.NETCoreApp,Version=v2.2'
+    otherConsoleOptions: '/Framework:.NETCoreApp,Version=v3.1'
 
 - task: PowerShell@2
   displayName: 'Enable signing'
@@ -91,9 +91,9 @@ steps:
     clean: true
 
 - task: SFP.build-tasks.custom-build-task-1.EsrpCodeSigning@1
-  displayName: 'ESRP DLL Strong Name (Microsoft.Graph.Core)'
+  displayName: 'ESRP DLL Strong Name (Microsoft.Graph.Core) (AKV)'
   inputs:
-    ConnectedServiceName: 'microsoftgraph ESRP CodeSign DLL and NuGet'
+    ConnectedServiceName: 'microsoftgraph ESRP CodeSign DLL and NuGet (AKV)'
     FolderPath: src/Microsoft.Graph.Core/bin/release
     Pattern: Microsoft.Graph.Core.dll
     signConfigType: inlineSignParams
@@ -119,7 +119,7 @@ steps:
 - task: SFP.build-tasks.custom-build-task-1.EsrpCodeSigning@1
   displayName: 'ESRP DLL CodeSigning (Microsoft.Graph.Core)'
   inputs:
-    ConnectedServiceName: 'microsoftgraph ESRP CodeSign DLL and NuGet'
+    ConnectedServiceName: 'microsoftgraph ESRP CodeSign DLL and NuGet (AKV)'
     FolderPath: src/Microsoft.Graph.Core/bin/release
     Pattern: Microsoft.Graph.Core.dll
     signConfigType: inlineSignParams
@@ -173,7 +173,7 @@ steps:
 - task: SFP.build-tasks.custom-build-task-1.EsrpCodeSigning@1
   displayName: 'ESRP NuGet CodeSigning'
   inputs:
-    ConnectedServiceName: 'microsoftgraph ESRP CodeSign DLL and NuGet'
+    ConnectedServiceName: 'microsoftgraph ESRP CodeSign DLL and NuGet (AKV)'
     FolderPath: '$(Build.ArtifactStagingDirectory)'
     Pattern: '*.nupkg'
     signConfigType: inlineSignParams
