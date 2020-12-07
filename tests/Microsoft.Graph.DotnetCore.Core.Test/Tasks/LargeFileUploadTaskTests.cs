@@ -53,7 +53,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
                 };
 
                 // Act with constructor without chunk length
-                var fileUploadTask = new LargeFileUploadTask<DriveItem>(uploadSession, stream);
+                var fileUploadTask = new LargeFileUploadTask<TestDriveItem>(uploadSession, stream);
                 var uploadSlices = fileUploadTask.GetUploadSliceRequests();
 
                 // Assert
