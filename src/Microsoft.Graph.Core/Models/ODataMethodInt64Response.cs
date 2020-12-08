@@ -4,8 +4,8 @@
 
 namespace Microsoft.Graph
 {
-    using Newtonsoft.Json;
     using System.Collections.Generic;
+    using System.Text.Json.Serialization;
 
     /// <summary>
     /// Represents an intermediate object used for deserializing OData method responses
@@ -15,19 +15,18 @@ namespace Microsoft.Graph
     /// The value of a return type is an object:
     /// http://docs.oasis-open.org/odata/odata-csdl-json/v4.01/odata-csdl-json-v4.01.html#sec_ReturnType
     /// </summary>
-    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public class ODataMethodLongResponse
     {
         /// <summary>
         /// Nullable in case the value property is not present.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "value", Required = Newtonsoft.Json.Required.Default)]
+        [JsonPropertyName("value")]
         public long? Value { get; set; }
 
         /// <summary>
         /// Gets or sets additional data.
         /// </summary>
-        [JsonExtensionData(ReadData = true)]
+        [JsonExtensionData]
         public IDictionary<string, object> AdditionalData { get; set; }
     }
 }

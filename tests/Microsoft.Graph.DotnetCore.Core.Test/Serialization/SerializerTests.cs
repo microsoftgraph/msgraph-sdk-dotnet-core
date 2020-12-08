@@ -10,6 +10,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
     using System.IO;
     using System.Linq;
     using System.Text;
+    using System.Text.Json;
     using Xunit;
     public class SerializerTests
     {
@@ -390,19 +391,19 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
             switch (@case)
             {
                 case "string":
-                    JsonReaderException exceptionString = Assert.Throws<JsonReaderException>(() => this.serializer
+                    JsonException exceptionString = Assert.Throws<JsonException>(() => this.serializer
                                                                                                        .DeserializeObject<ODataMethodStringResponse>(payload));
-                    Assert.Equal("value", exceptionString.Path); // the value property doesn't exist as a string
+                    Assert.Equal("$.value", exceptionString.Path); // the value property doesn't exist as a string
                     break;
                 case "bool":
-                    JsonReaderException exceptionBool = Assert.Throws<JsonReaderException>(() => this.serializer
+                    JsonException exceptionBool = Assert.Throws<JsonException>(() => this.serializer
                                                                                                      .DeserializeObject<ODataMethodBooleanResponse>(payload));
-                    Assert.Equal("value", exceptionBool.Path); // the value property doesn't exist as a bool
+                    Assert.Equal("$.value", exceptionBool.Path); // the value property doesn't exist as a bool
                     break;
                 case "int32":
-                    JsonReaderException exceptionInt = Assert.Throws<JsonReaderException>(() => this.serializer
+                    JsonException exceptionInt = Assert.Throws<JsonException>(() => this.serializer
                                                                                                     .DeserializeObject<ODataMethodIntResponse>(payload));
-                    Assert.Equal("value", exceptionInt.Path); // the value property doesn't exist as a int
+                    Assert.Equal("$.value", exceptionInt.Path); // the value property doesn't exist as a int
                     break;
                 default:
                     Assert.True(false);
