@@ -15,12 +15,6 @@ namespace Microsoft.Graph
     public abstract class BaseFunctionMethodRequestBuilder<T> : BaseRequestBuilder where T : IBaseRequest
     {
         private List<string> _parameters = new List<string>();
-        private List<QueryOption> _queryOptions = new List<QueryOption>();
-
-        /// <summary>
-        /// Whether to include parameters in the query string.
-        /// </summary>
-        protected bool passParametersInQueryString;
 
         /// <summary>
         /// Constructs a new BaseFunctionMethodRequestBuilder.
