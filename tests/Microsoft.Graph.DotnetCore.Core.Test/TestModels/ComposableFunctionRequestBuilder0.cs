@@ -16,6 +16,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels
             IBaseClient client)
             : base(requestUrl, client)
         {
+            this.SetParameterString();
         }
 
         public ComposableFunctionRequestBuilder0(

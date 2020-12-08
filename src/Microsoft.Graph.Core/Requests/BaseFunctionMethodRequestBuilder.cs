@@ -4,11 +4,13 @@
 
 namespace Microsoft.Graph
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
     /// <summary>
-    /// The base method request builder class.
+    /// The base request builder class for OData functions. This is the base 
+    /// class for generated OData function request builders.
     /// </summary>
     public abstract class BaseFunctionMethodRequestBuilder<T> : BaseRequestBuilder where T : IBaseRequest
     {
@@ -48,25 +50,21 @@ namespace Microsoft.Graph
         /// <returns>The built request.</returns>
         public T Request(IEnumerable<Option> options = null)
         {
-            string fnUrl = this.RequestUrl;
-
-            if (this.passParametersInQueryString && this._queryOptions.Count > 0)
+            // Validate the query options according to 
+            // http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_InvokingaFunction
+            if (options != null)
             {
-                if (options == null)
+                var unexpectedQueryOptions = options.OfType<QueryOption>().Any<QueryOption>(qp => 
+                                                                                 qp.Name.ToLower() != "filter" && 
+                                                                                 qp.Name.ToLower() != "orderby");
+
+                if (unexpectedQueryOptions)
                 {
-                    options = this._queryOptions;
-                }
-                else
-                {
-                    options.ToList().AddRange(this._queryOptions);
+                    throw new ArgumentException("You can only use filter and orderby query options with this function.");
                 }
             }
-            else if (!this.passParametersInQueryString && _parameters.Count > 0)
-            {
-                //fnUrl = string.Format("{0}({1})", fnUrl, string.Join(",", _parameters));
-            }
 
-            return CreateRequest(fnUrl, options);
+            return CreateRequest(this.RequestUrl, options);
         }
 
         /// <summary>
@@ -80,6 +78,16 @@ namespace Microsoft.Graph
         /// <returns>A string representing the parameter for an OData method call.</returns>
         protected void SetParameter(string name, object value, bool nullable)
         {
+            if (name == string.Empty)
+            { 
+                throw new ClientException(
+                    new Error
+                    {
+                        Code = "invalidRequest",
+                        Message = "Parameter name must not be an empty string."
+                    });
+            }
+
             if (value == null && !nullable)
             {
                 throw new ServiceException(
@@ -90,25 +98,18 @@ namespace Microsoft.Graph
                     });
             }
 
-            if (passParametersInQueryString && value != null)
+            string valueAsString = value != null ? value.ToString() : "null";
+            if (value is bool)
             {
-                _queryOptions.Add(new QueryOption(name, value.ToString()));
+                valueAsString = valueAsString.ToLower();
             }
-            else if (!passParametersInQueryString)
+
+            if (value != null && value is string)
             {
-                string valueAsString = value != null ? value.ToString() : "null";
-                if (value is bool)
-                {
-                    valueAsString = valueAsString.ToLower();
-                }
-
-                if (value != null && value is string)
-                {
-                    valueAsString = "'" + EscapeStringValue(valueAsString) + "'";
-                }
-
-                _parameters.Add(string.Format("{0}={1}", name, valueAsString));
+                valueAsString = "'" + EscapeStringValue(valueAsString) + "'";
             }
+
+            _parameters.Add(string.Format("{0}={1}", name, valueAsString));
         }
 
         /// <summary>
@@ -124,16 +125,14 @@ namespace Microsoft.Graph
 
         /// <summary>
         /// Set the parameter string on the request URL. MUST be used after all 
-        /// parameters have been set in the generated request builder.
+        /// parameters have been set in the generated request builder. Used for
+        /// each section. Adds an empty () if no parameters are present.
         /// </summary>
         protected void SetParameterString()
         { 
-            if (_parameters.Count > 0)
-            {
-                this.RequestUrl = string.Format("{0}({1})", 
-                                                this.RequestUrl, 
-                                                string.Join(",", _parameters));
-            }
+            this.RequestUrl = string.Format("{0}({1})", 
+                                            this.RequestUrl, 
+                                            string.Join(",", _parameters));
         }
     }
 }
