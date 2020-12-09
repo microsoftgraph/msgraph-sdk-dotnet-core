@@ -44,24 +44,8 @@ namespace Microsoft.Graph
         /// <param name="options">The query and header options for the request. You can
         /// only use filter and orderby query options.</param>
         /// <returns>The built request.</returns>
-        /// <exception cref="ArgumentException">Thrown if a query option other than
-        /// filter or orderby are provided in the options collection.</exception>
         public T Request(IEnumerable<Option> options = null)
         {
-            // Validate the query options according to 
-            // http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_InvokingaFunction
-            if (options != null)
-            {
-                var unexpectedQueryOptions = options.OfType<QueryOption>().Any(qp => 
-                                                                               qp.Name.ToUpperInvariant() != "FILTER" && 
-                                                                               qp.Name.ToUpperInvariant() != "ORDERBY");
-
-                if (unexpectedQueryOptions)
-                {
-                    throw new ArgumentException("You can only use filter and orderby query options with this function.");
-                }
-            }
-
             return CreateRequest(this.RequestUrl, options);
         }
 

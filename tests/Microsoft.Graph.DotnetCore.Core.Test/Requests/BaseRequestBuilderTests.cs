@@ -135,25 +135,6 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         /// Functions only support filter and orderby
         /// </summary>
         [Theory]
-        [InlineData("select", "name")]
-        [InlineData("count", "true")]
-        [InlineData("expand", "test")]
-        public void ComposableFunctionUnexpectedQueryOptionTest(string name, string value)
-        {
-            var client = new BaseClient(" ", new HttpClient()); // base url needs to be a non-zero length string.
-            var queryOptions = new List<Option>() { new QueryOption(name, value) };
-
-            // Create the composed function request builders
-            var composableFunctionRequestBuilder0 = new ComposableFunctionRequestBuilder0(requestUrl, client, string.Empty);
-            
-            var exception = Assert.Throws<ArgumentException>(() => composableFunctionRequestBuilder0.Request(queryOptions));
-            Assert.Equal("You can only use filter and orderby query options with this function.", exception.Message);
-        }
-
-        /// <summary>
-        /// Functions only support filter and orderby
-        /// </summary>
-        [Theory]
         [InlineData("filter", "name")]
         [InlineData("orderby", "test")]
         public void ComposableFunctionExpectedQueryOptionTest(string name, string value)
