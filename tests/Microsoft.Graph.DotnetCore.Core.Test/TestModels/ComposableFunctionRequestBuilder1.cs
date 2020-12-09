@@ -25,7 +25,19 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels
             : base(requestUrl, client)
         {
             this.SetParameter("anotherValue", anotherValue, true);
-            this.SetParameterString();
+            this.SetFunctionParameters();
+        }
+
+        public ComposableFunctionRequestBuilder1(
+            string requestUrl,
+            IBaseClient client,
+            string anotherValue,
+            string secondValue)
+            : base(requestUrl, client)
+        {
+            this.SetParameter("anotherValue", anotherValue, true);
+            this.SetParameter("secondValue", secondValue, true);
+            this.SetFunctionParameters();
         }
 
         protected override IBaseRequest CreateRequest(string functionUrl, IEnumerable<Option> options)

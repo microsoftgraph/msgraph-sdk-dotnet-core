@@ -6,6 +6,7 @@ namespace Microsoft.Graph
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
 
     /// <summary>
@@ -40,17 +41,20 @@ namespace Microsoft.Graph
         /// <summary>
         /// Builds the request.
         /// </summary>
-        /// <param name="options">The query and header options for the request.</param>
+        /// <param name="options">The query and header options for the request. You can
+        /// only use filter and orderby query options.</param>
         /// <returns>The built request.</returns>
+        /// <exception cref="ArgumentException">Thrown if a query option other than
+        /// filter or orderby are provided in the options collection.</exception>
         public T Request(IEnumerable<Option> options = null)
         {
             // Validate the query options according to 
             // http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_InvokingaFunction
             if (options != null)
             {
-                var unexpectedQueryOptions = options.OfType<QueryOption>().Any<QueryOption>(qp => 
-                                                                                 qp.Name.ToLower() != "filter" && 
-                                                                                 qp.Name.ToLower() != "orderby");
+                var unexpectedQueryOptions = options.OfType<QueryOption>().Any(qp => 
+                                                                               qp.Name.ToUpperInvariant() != "FILTER" && 
+                                                                               qp.Name.ToUpperInvariant() != "ORDERBY");
 
                 if (unexpectedQueryOptions)
                 {
@@ -70,15 +74,17 @@ namespace Microsoft.Graph
         /// <param name="value">The parameter value.</param>
         /// <param name="nullable">A flag specifying whether the parameter is allowed to be null.</param>
         /// <returns>A string representing the parameter for an OData method call.</returns>
+        /// <exception cref="ClientException">Thrown if parameter name is not set.</exception>
+        /// <exception cref="ServiceException">Thrown if a non-nullable parameter is passed a null value.</exception>
         protected void SetParameter(string name, object value, bool nullable)
         {
-            if (name == string.Empty)
+            if (string.IsNullOrEmpty(name))
             { 
                 throw new ClientException(
                     new Error
                     {
                         Code = "invalidRequest",
-                        Message = "Parameter name must not be an empty string."
+                        Message = "Parameter name must not be null or an empty string."
                     });
             }
 
@@ -122,7 +128,7 @@ namespace Microsoft.Graph
         /// parameters have been set in the generated request builder. Used for
         /// each section. Adds an empty () if no parameters are present.
         /// </summary>
-        protected void SetParameterString()
+        protected void SetFunctionParameters()
         { 
             this.RequestUrl = string.Format("{0}({1})", 
                                             this.RequestUrl, 

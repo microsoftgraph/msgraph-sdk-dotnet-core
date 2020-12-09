@@ -16,7 +16,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels
             IBaseClient client)
             : base(requestUrl, client)
         {
-            this.SetParameterString();
+            this.SetFunctionParameters();
         }
 
         public ComposableFunctionRequestBuilder0(
@@ -26,7 +26,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels
             : base(requestUrl, client)
         {
             this.SetParameter("address", address, true);
-            this.SetParameterString();
+            this.SetFunctionParameters();
         }
 
         protected override IBaseRequest CreateRequest(string functionUrl, IEnumerable<Option> options)
@@ -38,9 +38,18 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels
         public ComposableFunctionRequestBuilder1 RequestBuilder1(string anotherValue)
         {
             return new ComposableFunctionRequestBuilder1(
-            this.AppendSegmentToRequestUrl("microsoft.graph.composablefunction1"),
-            this.Client,
-            anotherValue);
+                this.AppendSegmentToRequestUrl("microsoft.graph.composablefunction1"),
+                this.Client,
+                anotherValue);
+        }
+
+        public ComposableFunctionRequestBuilder1 RequestBuilder1(string anotherValue, string secondValue)
+        {
+            return new ComposableFunctionRequestBuilder1(
+                this.AppendSegmentToRequestUrl("microsoft.graph.composablefunction1"),
+                this.Client,
+                anotherValue,
+                secondValue);
         }
     }
 }

@@ -13,6 +13,8 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
     using Xunit;
     public class BaseRequestBuilderTests
     {
+        const string requestUrl = "https://localhost:443/microsoft.graph.composablefunction0";
+
         [Fact]
         public void BaseRequestBuilder()
         {
@@ -39,22 +41,52 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         }
 
         /// <summary>
-        /// Test that: 1) composable functions have all parameters set, and 2) query options are not yet applied to the URL.
+        /// Test that: 
+        /// 1) composable functions have all parameters set.
+        /// 2) query options are not yet applied to the URL before HttpRequestMessage is formed.
+        /// 3) query options are applied to the URL after HttpRequestMessage is formed.
         /// </summary>
         [Fact]
         public void ComposableFunctionTest()
         {
-            var requestUrl = "https://localhost:443/microsoft.graph.composablefunction0";
             var client = new BaseClient(" ", new HttpClient()); // base url needs to be a non-zero length string.
             var parameter_first_function = "A1:B1";
             var parameter_second_function = "test-value";
-            var queryOptions = new List<Option>() { new QueryOption("filter", "name")};
+            var queryOptions = new List<Option>() { new QueryOption("filter", "name"), 
+                                                    new QueryOption("orderby", "date") };
 
             // Create the composed function request builders
             var composableFunctionRequestBuilder0 = new ComposableFunctionRequestBuilder0(requestUrl, client, parameter_first_function);
             var composedRequestUrl = composableFunctionRequestBuilder0.RequestBuilder1(parameter_second_function).Request(queryOptions).RequestUrl;
 
+            // Get the URL formed with query parameters.
+            var actualUrl = composableFunctionRequestBuilder0.RequestBuilder1(parameter_second_function)
+                                                       .Request(queryOptions)
+                                                       .GetHttpRequestMessage()
+                                                       .RequestUri
+                                                       .ToString();
+
+
             var expected = @"https://localhost:443/microsoft.graph.composablefunction0(address='A1:B1')/microsoft.graph.composablefunction1(anotherValue='test-value')";
+            var expectedFullUrl = "https://localhost/microsoft.graph.composablefunction0(address='A1:B1')/microsoft.graph.composablefunction1(anotherValue='test-value')?filter=name&orderby=date";
+
+            Assert.Equal(expected, composedRequestUrl);
+            Assert.Equal(expectedFullUrl, actualUrl);
+        }
+
+        [Fact]
+        public void ComposableFunctionTestWithSecondParameter()
+        {
+            var client = new BaseClient(" ", new HttpClient()); // base url needs to be a non-zero length string.
+            var parameter_first_function = "A1:B1";
+            var parameter_second_function = "test-value";
+            var parameter_second_function_second_param = "test-value2";
+
+            // Create the composed function request builders
+            var composableFunctionRequestBuilder0 = new ComposableFunctionRequestBuilder0(requestUrl, client, parameter_first_function);
+            var composedRequestUrl = composableFunctionRequestBuilder0.RequestBuilder1(parameter_second_function, parameter_second_function_second_param).Request().RequestUrl;
+
+            var expected = @"https://localhost:443/microsoft.graph.composablefunction0(address='A1:B1')/microsoft.graph.composablefunction1(anotherValue='test-value',secondValue='test-value2')";
 
             Assert.Equal(expected, composedRequestUrl);
         }
@@ -65,7 +97,6 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         [Fact]
         public void ComposableFunctionWithNullParamTest()
         {
-            var requestUrl = "https://localhost:443/microsoft.graph.composablefunction0";
             var client = new BaseClient(" ", new HttpClient()); // base url needs to be a non-zero length string.
             string parameter_first_function = null;
             var parameter_second_function = "test-value";
@@ -87,7 +118,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         [Fact]
         public void ComposableFunctionWithNoParamsTest()
         {
-            var requestUrl = "https://localhost:443/microsoft.graph.composablefunction0";
+            
             var client = new BaseClient(" ", new HttpClient()); // base url needs to be a non-zero length string.
             var parameter_second_function = "test-value";
 
@@ -109,7 +140,6 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         [InlineData("expand", "test")]
         public void ComposableFunctionUnexpectedQueryOptionTest(string name, string value)
         {
-            var requestUrl = "https://localhost:443/microsoft.graph.composablefunction0";
             var client = new BaseClient(" ", new HttpClient()); // base url needs to be a non-zero length string.
             var queryOptions = new List<Option>() { new QueryOption(name, value) };
 
@@ -128,7 +158,6 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         [InlineData("orderby", "test")]
         public void ComposableFunctionExpectedQueryOptionTest(string name, string value)
         {
-            var requestUrl = "https://localhost:443/microsoft.graph.composablefunction0";
             var client = new BaseClient(" ", new HttpClient()); // base url needs to be a non-zero length string.
             var queryOptions = new List<Option>() { new QueryOption(name, value) };
 
