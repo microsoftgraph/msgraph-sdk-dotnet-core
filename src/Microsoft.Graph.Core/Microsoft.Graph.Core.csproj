@@ -34,6 +34,7 @@
 - Add support for content with parameters(v1.0 feature)
 - Add continuous access evaluation(CAE) support(v1.0 feature)
 - Fix deserialization of odata primitives(v1.0 feature)
+- Support composable functions.(v1.0 feature)
     </PackageReleaseNotes>
   </PropertyGroup>
   <!--We manually configure LanguageTargets for Xamarin due to .Net SDK TFMs limitation https://github.com/dotnet/sdk/issues/491 -->
