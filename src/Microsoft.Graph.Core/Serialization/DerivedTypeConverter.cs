@@ -100,7 +100,7 @@ namespace Microsoft.Graph
                     });
             }
 
-            PopulateObject(instance, jsonDocument.RootElement, objectType,options);
+            PopulateObject(instance, jsonDocument.RootElement, options);
             return (T)instance;
         }
 
@@ -111,10 +111,11 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="target">The target object</param>
         /// <param name="json">The json element undergoing deserialization</param>
-        /// <param name="objectType">The target object <see cref="Type"/></param>
         /// <param name="options">The options to use for deserialization.</param>
-        private void PopulateObject(object target, JsonElement json, Type objectType, JsonSerializerOptions options)
+        private void PopulateObject(object target, JsonElement json, JsonSerializerOptions options)
         {
+            // We use the target type information since it maybe be derived. We do not want to leave out extra properties in the child class and put them in the additional data unnecessarily
+            Type objectType = target.GetType();
             switch (json.ValueKind)
             {
                 case JsonValueKind.Object:
