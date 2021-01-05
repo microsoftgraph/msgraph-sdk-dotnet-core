@@ -181,7 +181,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
             using (Stream requestStream = await batchRequestContent.GetBatchRequestContentAsync())
             using (StreamReader reader = new StreamReader(requestStream))
             {
-                requestContent = reader.ReadToEnd();
+                requestContent = await reader.ReadToEndAsync();
             }
             
             string expectedContent = "{\"requests\":[{\"id\":\"2\",\"url\":\"/me\",\"method\":\"GET\"}]}";

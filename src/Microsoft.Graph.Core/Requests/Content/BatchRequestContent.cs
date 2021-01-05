@@ -198,7 +198,6 @@ namespace Microsoft.Graph
 
                 writer.WriteEndObject();//close the root object
                 await writer.FlushAsync();
-                await stream.FlushAsync();
 
                 //Reset the position since we want the caller to use this stream
                 stream.Position = 0;
