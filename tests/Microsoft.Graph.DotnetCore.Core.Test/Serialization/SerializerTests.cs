@@ -51,6 +51,25 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
         }
 
         [Fact]
+        public void DeserializeDerivedTypeFromAbstractParent()
+        {
+            var id = "id";
+            var name = "name";
+
+            var stringToDeserialize = string.Format(
+                "{{\"id\":\"{0}\", \"@odata.type\":\"#microsoft.graph.dotnetCore.core.test.testModels.derivedTypeClass\", \"name\":\"{1}\"}}",
+                id,
+                name);
+
+            //The type information from "@odata.type" should lead to correctly deserializing to the derived type
+            var derivedType = this.serializer.DeserializeObject<AbstractEntityType>(stringToDeserialize) as DerivedTypeClass;
+
+            Assert.NotNull(derivedType);
+            Assert.Equal(id, derivedType.Id);
+            Assert.Equal(name, derivedType.Name);
+        }
+
+        [Fact]
         public void DeserializeInvalidODataType()
         {
             var id = "id";
