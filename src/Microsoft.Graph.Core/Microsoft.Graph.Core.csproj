@@ -19,13 +19,10 @@
     <DelaySign>false</DelaySign>
     <AssemblyOriginatorKeyFile>35MSSharedLib1024.snk</AssemblyOriginatorKeyFile>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <VersionPrefix>1.23.0</VersionPrefix>
+    <VersionPrefix>1.24.0</VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <PackageReleaseNotes>
-- Fix for #120: Exception thrown when slice size is not specified for LargeFileUploadTask
-- Fix for #113: NullReferenceException thrown when error response does not have content type header is empty.
-- Fix for #165: Add support for content types with parameters to BaseRequest
-- Add support for Continuous Access Evaluation(CAE)
+- Support composable functions.
     </PackageReleaseNotes>
   </PropertyGroup>
   <!--We manually configure LanguageTargets for Xamarin due to .Net SDK TFMs limitation https://github.com/dotnet/sdk/issues/491 -->
