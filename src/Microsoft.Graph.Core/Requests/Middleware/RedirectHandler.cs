@@ -63,7 +63,9 @@ namespace Microsoft.Graph
                         {
                             Code = ErrorConstants.Codes.GeneralException,
                             Message = ErrorConstants.Messages.LocationHeaderNotSetOnRedirect,
-                        });
+                        },
+                        response.Headers,
+                        response.StatusCode);
                 }
 
                 var redirectCount = 0;
