@@ -81,7 +81,6 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             Assert.Equal("123", user.Id);
             Assert.Equal("Joe", user.GivenName);
             Assert.Equal("Brown", user.Surname);
-            Assert.Equal("OK", user.AdditionalData["statusCode"].ToString());
 
         }
     }
