@@ -35,6 +35,9 @@
 - Add continuous access evaluation(CAE) support(v1.0 feature)
 - Fix deserialization of odata primitives(v1.0 feature)
 - Support composable functions.(v1.0 feature)
+- Fixes setting of response headers in ServiceException so that customers have access to correlation ids #193 (v1.0 feature)
+- Prevents potential deadlock from occurring when AuthenticateRequestAsync(request) is called. #188 (v1.0 feature)
+- [Breaking Change] Remove serialization headers and statusCode into AdditionalData #206
     </PackageReleaseNotes>
   </PropertyGroup>
   <!--We manually configure LanguageTargets for Xamarin due to .Net SDK TFMs limitation https://github.com/dotnet/sdk/issues/491 -->
