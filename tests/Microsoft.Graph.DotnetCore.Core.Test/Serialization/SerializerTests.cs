@@ -106,6 +106,23 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
         }
 
         [Fact]
+        public void DeserializeEmptyStringOrStream()
+        {
+            var stringToDeserialize = string.Empty;
+
+            // Asset empty stream deserializes to null
+            using (var serializedStream = new MemoryStream(Encoding.UTF8.GetBytes(stringToDeserialize)))
+            {
+                var instance = this.serializer.DeserializeObject<DerivedTypeClass>(serializedStream);
+                Assert.Null(instance);
+            }
+
+            // Asset empty string deserializes to null
+            var stringInstance = this.serializer.DeserializeObject<DerivedTypeClass>(stringToDeserialize);
+            Assert.Null(stringInstance);
+        }
+
+        [Fact]
         public void DeserializeUnknownEnumValue()
         {
             var enumValue = "newValue";

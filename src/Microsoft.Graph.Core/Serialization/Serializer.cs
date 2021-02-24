@@ -48,7 +48,7 @@ namespace Microsoft.Graph
         /// <returns>The deserialized object.</returns>
         public T DeserializeObject<T>(Stream stream)
         {
-            if (stream == null)
+            if (stream == null || stream.Length == 0 )
             {
                 return default(T);
             }
