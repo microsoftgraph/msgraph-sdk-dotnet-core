@@ -47,7 +47,7 @@ namespace Microsoft.Graph.Core.Requests
         /// <returns></returns>
         public async Task<BatchResponseContent> PostAsync(BatchRequestContent batchRequestContent, CancellationToken cancellationToken)
         {
-            this.ContentType = "application/json";
+            this.ContentType = CoreConstants.MimeTypeNames.Application.Json;
             this.Method = CoreConstants.HttpMethods.POST;
             using (Stream serializableContent = await batchRequestContent.GetBatchRequestContentAsync().ConfigureAwait(false))
             {

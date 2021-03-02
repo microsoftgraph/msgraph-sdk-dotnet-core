@@ -44,7 +44,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
         /// <returns>The created Event.</returns>
         public System.Threading.Tasks.Task<TestEvent> AddAsync(TestEvent eventsEvent, CancellationToken cancellationToken)
         {
-            this.ContentType = "application/json";
+            this.ContentType = CoreConstants.MimeTypeNames.Application.Json;
             this.Method = CoreConstants.HttpMethods.POST;
             return this.SendAsync<TestEvent>(eventsEvent, cancellationToken);
         }

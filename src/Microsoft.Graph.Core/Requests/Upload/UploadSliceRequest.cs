@@ -83,7 +83,7 @@ namespace Microsoft.Graph
         public virtual async Task<UploadResult<T>> PutAsync(Stream stream, CancellationToken cancellationToken)
         {
             this.Method = CoreConstants.HttpMethods.PUT;
-            this.ContentType = "application/octet-stream";
+            this.ContentType = CoreConstants.MimeTypeNames.Application.Stream;
             using (var response = await this.SendRequestAsync(stream, cancellationToken).ConfigureAwait(false))
             {
                 return await this.responseHandler.HandleResponse<T>(response);

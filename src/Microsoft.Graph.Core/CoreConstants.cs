@@ -56,6 +56,9 @@ namespace Microsoft.Graph
             {
                 /// JSON content type value
                 public const string Json = "application/json";
+
+                /// Stream content type value
+                public const string Stream = "application/octet-stream";
             }
         }
 

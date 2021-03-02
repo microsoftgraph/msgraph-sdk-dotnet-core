@@ -33,7 +33,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                   ""77829-99375""
                   ]
                 }";
-                HttpContent content = new StringContent(responseJSON, Encoding.UTF8, "application/json");
+                HttpContent content = new StringContent(responseJSON, Encoding.UTF8, CoreConstants.MimeTypeNames.Application.Json);
                 responseMessage.Content = content;
 
                 // 2. Map the response

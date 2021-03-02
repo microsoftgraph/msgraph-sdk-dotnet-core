@@ -126,7 +126,7 @@ namespace Microsoft.Graph
                         error = errorResponse.Error;
                     }
 
-                    if (httpResponseMessage.Content?.Headers.ContentType.MediaType == "application/json")
+                    if (httpResponseMessage.Content?.Headers.ContentType.MediaType == CoreConstants.MimeTypeNames.Application.Json)
                     {
                         rawResponseBody = await httpResponseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
                     }

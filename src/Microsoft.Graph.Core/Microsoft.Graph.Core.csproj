@@ -39,6 +39,7 @@
 - Prevents potential deadlock from occurring when AuthenticateRequestAsync(request) is called. #188 (v1.0 feature)
 - [Breaking Change] Remove serialization of headers and statusCode into AdditionalData #206
 - Fix deserialization of empty streams to be consistent with empty strings
+- [Breaking Change] Method type in IBaseRequest changes from string to enum 
     </PackageReleaseNotes>
   </PropertyGroup>
   <!--We manually configure LanguageTargets for Xamarin due to .Net SDK TFMs limitation https://github.com/dotnet/sdk/issues/491 -->

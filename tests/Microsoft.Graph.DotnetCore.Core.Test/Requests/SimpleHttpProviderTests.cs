@@ -350,7 +350,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             using (var httpResponseMessage = new HttpResponseMessage())
             {
                 httpResponseMessage.Content = stringContent;
-                httpResponseMessage.Content.Headers.ContentType.MediaType = "application/json";
+                httpResponseMessage.Content.Headers.ContentType.MediaType = CoreConstants.MimeTypeNames.Application.Json;
 
                 httpResponseMessage.StatusCode = HttpStatusCode.BadRequest;
                 httpResponseMessage.RequestMessage = httpRequestMessage;
