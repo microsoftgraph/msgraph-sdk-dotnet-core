@@ -138,7 +138,28 @@ namespace Microsoft.Graph
             /// <summary>
             /// The DELETE method.
             /// </summary>
-            DELETE
+            DELETE,
+
+            /// <summary>
+            /// The HEAD method.
+            /// </summary>
+            HEAD,
+
+            /// <summary>
+            /// The CONNECT method.
+            /// </summary>
+            CONNECT,
+
+            /// <summary>
+            /// The OPTIONS method.
+            /// </summary>
+            OPTIONS,
+
+            /// <summary>
+            /// The TRACE method.
+            /// </summary>
+            TRACE
+
         }
     }
 }

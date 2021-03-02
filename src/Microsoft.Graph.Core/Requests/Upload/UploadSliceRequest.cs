@@ -82,7 +82,7 @@ namespace Microsoft.Graph
         /// is true, then the item has completed, and the value is the created item from the server.</returns>
         public virtual async Task<UploadResult<T>> PutAsync(Stream stream, CancellationToken cancellationToken)
         {
-            this.Method = "PUT";
+            this.Method = CoreConstants.HttpMethods.PUT;
             this.ContentType = "application/octet-stream";
             using (var response = await this.SendRequestAsync(stream, cancellationToken).ConfigureAwait(false))
             {
