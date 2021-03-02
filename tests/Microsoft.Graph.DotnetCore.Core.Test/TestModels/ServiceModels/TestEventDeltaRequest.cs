@@ -45,7 +45,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
         public System.Threading.Tasks.Task<TestEvent> AddAsync(TestEvent eventsEvent, CancellationToken cancellationToken)
         {
             this.ContentType = CoreConstants.MimeTypeNames.Application.Json;
-            this.Method = CoreConstants.HttpMethods.POST;
+            this.Method = HttpMethods.POST;
             return this.SendAsync<TestEvent>(eventsEvent, cancellationToken);
         }
 
@@ -65,7 +65,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
         /// <returns>The collection page.</returns>
         public async System.Threading.Tasks.Task<ITestEventDeltaCollectionPage> GetAsync(CancellationToken cancellationToken)
         {
-            this.Method = CoreConstants.HttpMethods.GET;
+            this.Method = HttpMethods.GET;
             var response = await this.SendAsync<TestEventDeltaCollectionResponse>(null, cancellationToken).ConfigureAwait(false);
             if (response != null && response.Value != null && response.Value.CurrentPage != null)
             {
