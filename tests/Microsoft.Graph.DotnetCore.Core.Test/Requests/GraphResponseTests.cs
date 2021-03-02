@@ -62,7 +62,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                     ""givenName"": ""Joe"",
                     ""surName"": ""Brown"",
                     ""@odata.type"":""test""
-                }", Encoding.UTF8, "application/json")
+                }", Encoding.UTF8, CoreConstants.MimeTypeNames.Application.Json)
             };
 
             // create a custom responseHandler

@@ -213,7 +213,7 @@ namespace Microsoft.Graph
                         }
                     }
 
-                    if (response.Content?.Headers.ContentType?.MediaType == "application/json")
+                    if (response.Content?.Headers.ContentType?.MediaType == CoreConstants.MimeTypeNames.Application.Json)
                     {
                         string rawResponseBody = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 

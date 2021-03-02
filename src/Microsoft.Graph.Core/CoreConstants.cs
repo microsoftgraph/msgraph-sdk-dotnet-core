@@ -56,6 +56,9 @@ namespace Microsoft.Graph
             {
                 /// JSON content type value
                 public const string Json = "application/json";
+
+                /// Stream content type value
+                public const string Stream = "application/octet-stream";
             }
         }
 
@@ -108,37 +111,6 @@ namespace Microsoft.Graph
         {
             /// gzip encoding.
             public const string GZip = "gzip";
-        }
-
-        /// <summary>
-        /// Enum used specify Http methods
-        /// </summary>
-        public enum HttpMethods
-        {
-            /// <summary>
-            /// The GET method.
-            /// </summary>
-            GET,
-
-            /// <summary>
-            /// The POST method.
-            /// </summary>
-            POST,
-
-            /// <summary>
-            /// The PATCH method.
-            /// </summary>
-            PATCH,
-
-            /// <summary>
-            /// The PUT method.
-            /// </summary>
-            PUT,
-
-            /// <summary>
-            /// The DELETE method.
-            /// </summary>
-            DELETE
         }
     }
 }

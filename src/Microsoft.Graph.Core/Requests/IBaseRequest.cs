@@ -30,7 +30,7 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets or sets the HTTP method string for the request.
         /// </summary>
-        string Method { get; }
+        HttpMethods Method { get; }
 
         /// <summary>
         /// Gets the URL for the request, without query string.

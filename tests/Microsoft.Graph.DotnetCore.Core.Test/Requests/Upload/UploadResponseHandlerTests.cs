@@ -28,7 +28,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                     ""id"": ""912310013A123"",
                     ""name"": ""largeFile.vhd"",
                     ""size"": 33
-                }", Encoding.UTF8, "application/json"),
+                }", Encoding.UTF8, CoreConstants.MimeTypeNames.Application.Json),
                 StatusCode = statusCode//upload successful!
             };
 
@@ -79,7 +79,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                   ""12345-55232"",
                   ""77829-99375""
                   ]
-                }", Encoding.UTF8, "application/json"),
+                }", Encoding.UTF8, CoreConstants.MimeTypeNames.Application.Json),
                 StatusCode = HttpStatusCode.OK//upload successful!
             };
 
@@ -113,7 +113,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                                 ""date"": ""2019-11-21T13:57:37""
                             }
                         }
-                    }", Encoding.UTF8, "application/json"),
+                    }", Encoding.UTF8, CoreConstants.MimeTypeNames.Application.Json),
                 StatusCode = HttpStatusCode.Unauthorized//error
             };
 
@@ -146,7 +146,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 
             var hrm = new HttpResponseMessage
             {
-                Content = new StringContent(malformedResponse, Encoding.UTF8, "application/json"),
+                Content = new StringContent(malformedResponse, Encoding.UTF8, CoreConstants.MimeTypeNames.Application.Json),
                 StatusCode = HttpStatusCode.Unauthorized//error
             };
 

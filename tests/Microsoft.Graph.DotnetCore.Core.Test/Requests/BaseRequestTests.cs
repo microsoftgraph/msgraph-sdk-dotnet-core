@@ -67,7 +67,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                 new QueryOption("query2", "value2"),
             };
 
-            var baseRequest = new BaseRequest(requestUrl, this.baseClient, options) { Method = "PUT" };
+            var baseRequest = new BaseRequest(requestUrl, this.baseClient, options) { Method = HttpMethods.PUT };
 
             var httpRequestMessage = baseRequest.GetHttpRequestMessage();
             Assert.Equal(HttpMethod.Put, httpRequestMessage.Method);
@@ -88,7 +88,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                 new HeaderOption(CoreConstants.Headers.ClientRequestId, clientRequestId)
             };
 
-            var baseRequest = new BaseRequest(requestUrl, this.baseClient, headers) { Method = "PUT" };
+            var baseRequest = new BaseRequest(requestUrl, this.baseClient, headers) { Method = HttpMethods.PUT };
 
             var httpRequestMessage = baseRequest.GetHttpRequestMessage();
 
@@ -102,7 +102,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             string requestUrl = string.Concat(this.baseUrl, "foo/bar");
             string clientRequestId = Guid.NewGuid().ToString();
 
-            var baseRequest = new BaseRequest(requestUrl, this.baseClient) { Method = "PUT" };
+            var baseRequest = new BaseRequest(requestUrl, this.baseClient) { Method = HttpMethods.PUT };
 
             var httpRequestMessage = baseRequest.GetHttpRequestMessage();
 
@@ -117,7 +117,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             string clientRequestId = Guid.NewGuid().ToString();
 
             var client = new BaseClient(baseUrl: "http://localhost.foo", authenticationProvider: null);
-            var baseRequest = new BaseRequest(requestUrl, client) { Method = "PUT" };
+            var baseRequest = new BaseRequest(requestUrl, client) { Method = HttpMethods.PUT };
 
             var httpRequestMessage = baseRequest.GetHttpRequestMessage();
 
@@ -131,7 +131,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         {
             var requestUrl = string.Concat(this.baseUrl, "/me/drive/items/id");
 
-            var baseRequest = new BaseRequest(requestUrl, this.baseClient) { Method = "DELETE" };
+            var baseRequest = new BaseRequest(requestUrl, this.baseClient) { Method = HttpMethods.DELETE };
 
             var httpRequestMessage = baseRequest.GetHttpRequestMessage();
             Assert.Equal(HttpMethod.Delete, httpRequestMessage.Method);
@@ -145,7 +145,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         {
             var requestUrl = string.Concat(this.baseUrl, "/me/drive/items/id");
 
-            var baseRequest = new BaseRequest(requestUrl, this.baseClient) { ContentType = "application/json" };
+            var baseRequest = new BaseRequest(requestUrl, this.baseClient) { ContentType = CoreConstants.MimeTypeNames.Application.Json };
 
             using (var httpResponseMessage = new HttpResponseMessage())
             using (var responseStream = new MemoryStream())
@@ -157,7 +157,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                     provider => provider.SendAsync(
                         It.Is<HttpRequestMessage>(
                             request =>
-                                string.Equals(request.Content.Headers.ContentType.ToString(), "application/json")
+                                string.Equals(request.Content.Headers.ContentType.ToString(), CoreConstants.MimeTypeNames.Application.Json)
                                && request.RequestUri.ToString().Equals(requestUrl)),
                         HttpCompletionOption.ResponseContentRead,
                         CancellationToken.None))
@@ -238,7 +238,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         {
             var requestUrl = string.Concat(this.baseUrl, "/me/drive/items/id");
 
-            var baseRequest = new BaseRequest(requestUrl, this.baseClient) { ContentType = "application/json" };
+            var baseRequest = new BaseRequest(requestUrl, this.baseClient) { ContentType = CoreConstants.MimeTypeNames.Application.Json };
 
             using (var httpResponseMessage = new HttpResponseMessage())
             using (var responseStream = new MemoryStream())
@@ -250,7 +250,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                     provider => provider.SendAsync(
                         It.Is<HttpRequestMessage>(
                             request =>
-                                string.Equals(request.Content.Headers.ContentType.ToString(), "application/json")
+                                string.Equals(request.Content.Headers.ContentType.ToString(), CoreConstants.MimeTypeNames.Application.Json)
                                && request.RequestUri.ToString().Equals(requestUrl)),
                         HttpCompletionOption.ResponseContentRead,
                         CancellationToken.None))
@@ -270,7 +270,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         {
             var requestUrl = string.Concat(this.baseUrl, "/me/drive/items/id");
 
-            var baseRequest = new BaseRequest(requestUrl, this.baseClient) { ContentType = "application/json" };
+            var baseRequest = new BaseRequest(requestUrl, this.baseClient) { ContentType = CoreConstants.MimeTypeNames.Application.Json };
 
             using (var httpResponseMessage = new HttpResponseMessage())
             using (var responseStream = new MemoryStream())
@@ -279,7 +279,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                     provider => provider.SendAsync(
                         It.Is<HttpRequestMessage>(
                             request =>
-                                string.Equals(request.Content.Headers.ContentType.ToString(), "application/json")
+                                string.Equals(request.Content.Headers.ContentType.ToString(), CoreConstants.MimeTypeNames.Application.Json)
                                && request.RequestUri.ToString().Equals(requestUrl)),
                         HttpCompletionOption.ResponseContentRead,
                         CancellationToken.None))
@@ -310,7 +310,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         public async Task SendStreamRequestAsync()
         {
             var requestUrl = string.Concat(this.baseUrl, "/me/photo/$value");
-            var baseRequest = new BaseRequest(requestUrl, this.baseClient) { ContentType = "application/json", Method = "PUT" };
+            var baseRequest = new BaseRequest(requestUrl, this.baseClient) { ContentType = CoreConstants.MimeTypeNames.Application.Json, Method = HttpMethods.PUT };
 
             using (var requestStream = new MemoryStream())
             using (var httpResponseMessage = new HttpResponseMessage())
@@ -390,7 +390,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                     ""givenName"": ""Joe"",
                     ""surName"": ""Brown"",
                     ""@odata.type"":""test""
-                    }", Encoding.UTF8, "application/json")
+                    }", Encoding.UTF8, CoreConstants.MimeTypeNames.Application.Json)
                 };
                 testHttpMessageHandler.AddResponseMapping(requestUrl, responseMessage);
                 MockCustomHttpProvider customHttpProvider = new MockCustomHttpProvider(testHttpMessageHandler);

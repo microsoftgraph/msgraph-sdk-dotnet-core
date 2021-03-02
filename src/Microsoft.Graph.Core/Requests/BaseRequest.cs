@@ -33,7 +33,7 @@ namespace Microsoft.Graph
             IBaseClient client,
             IEnumerable<Option> options = null)
         {
-            this.Method = "GET";
+            this.Method = HttpMethods.GET;
             this.Client = client;
             this.responseHandler = new ResponseHandler(client.HttpProvider.Serializer);
             this.Headers = new List<HeaderOption>();
@@ -84,7 +84,7 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets or sets the HTTP method string for the request.
         /// </summary>
-        public string Method { get; set; }
+        public HttpMethods Method { get; set; }
 
         /// <summary>
         /// Gets the <see cref="QueryOption"/> collection for the request.
@@ -304,7 +304,7 @@ namespace Microsoft.Graph
         public HttpRequestMessage GetHttpRequestMessage(CancellationToken cancellationToken)
         {
             var queryString = this.BuildQueryString();
-            var request = new HttpRequestMessage(new HttpMethod(this.Method), string.Concat(this.RequestUrl, queryString));
+            var request = new HttpRequestMessage(new HttpMethod(this.Method.ToString()), string.Concat(this.RequestUrl, queryString));
             this.AddHeadersToRequest(request);
             this.AddRequestContextToRequest(request, cancellationToken);
             return request;
