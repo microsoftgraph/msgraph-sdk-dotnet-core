@@ -6,6 +6,7 @@ trigger:
   branches:
     include:
     - dev
+    - feature/2.0
   paths:
     include:
       - src/*
@@ -30,7 +31,7 @@ variables:
   PROJECT_PATH: '.\src\Microsoft.Graph.Core\Microsoft.Graph.Core.csproj'
 
 pool:
-  name: Microsoft Graph
+  name: Hosted Windows 2019 with VS2019
   demands:
   - msbuild
   - vstest
@@ -64,9 +65,16 @@ steps:
 
 - task: VSTest@2
   displayName: 'Run enabled tests'
-  # inputs:
-  #   testAssemblyVer2: '**\Microsoft.Graph.DotnetCore.Core.Test.dll'
-  #   searchFolder: '$(System.DefaultWorkingDirectory)'
+  inputs:
+    testAssemblyVer2: |
+      **/netcoreapp3.1/Microsoft.Graph.DotnetCore.Core.Test.dll
+      !**/*TestAdapter.dll
+      !**/obj/**
+    diagnosticsEnabled: true
+    configuration: debug
+    searchFolder: 'tests'
+    platform: AnyCPU
+    otherConsoleOptions: '/Framework:.NETCoreApp,Version=v3.1'
 
 - task: PowerShell@2
   displayName: 'Enable signing'
@@ -94,7 +102,7 @@ steps:
 - task: SFP.build-tasks.custom-build-task-1.EsrpCodeSigning@1
   displayName: 'ESRP DLL Strong Name (Microsoft.Graph.Core)'
   inputs:
-    ConnectedServiceName: 'microsoftgraph ESRP CodeSign DLL-only'
+    ConnectedServiceName: 'microsoftgraph ESRP CodeSign DLL and NuGet (AKV)'
     FolderPath: src/Microsoft.Graph.Core/bin/release
     Pattern: Microsoft.Graph.Core.dll
     signConfigType: inlineSignParams
@@ -120,7 +128,7 @@ steps:
 - task: SFP.build-tasks.custom-build-task-1.EsrpCodeSigning@1
   displayName: 'ESRP DLL CodeSigning (Microsoft.Graph.Core)'
   inputs:
-    ConnectedServiceName: 'microsoftgraph ESRP CodeSign DLL-only'
+    ConnectedServiceName: 'microsoftgraph ESRP CodeSign DLL and NuGet (AKV)'
     FolderPath: src/Microsoft.Graph.Core/bin/release
     Pattern: Microsoft.Graph.Core.dll
     signConfigType: inlineSignParams
@@ -174,7 +182,7 @@ steps:
 - task: SFP.build-tasks.custom-build-task-1.EsrpCodeSigning@1
   displayName: 'ESRP NuGet CodeSigning'
   inputs:
-    ConnectedServiceName: 'microsoftgraph ESRP CodeSign DLL-only'
+    ConnectedServiceName: 'microsoftgraph ESRP CodeSign DLL and NuGet (AKV)'
     FolderPath: '$(Build.ArtifactStagingDirectory)'
     Pattern: '*.nupkg'
     signConfigType: inlineSignParams

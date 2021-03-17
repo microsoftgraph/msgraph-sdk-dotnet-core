@@ -4,9 +4,9 @@
 
 namespace Microsoft.Graph
 {
+    using Newtonsoft.Json;
     using System.IO;
     using System.Text;
-    using Newtonsoft.Json;
 
     /// <summary>
     /// An <see cref="ISerializer"/> implementation using the JSON.NET serializer.
@@ -59,8 +59,7 @@ namespace Microsoft.Graph
                 true /* leaveOpen */))
             using (var textReader = new JsonTextReader(streamReader))
             {
-                var jsonSerializer = new JsonSerializer();
-
+                var jsonSerializer = JsonSerializer.Create(this.jsonSerializerSettings);
                 return jsonSerializer.Deserialize<T>(textReader);
             }
         }

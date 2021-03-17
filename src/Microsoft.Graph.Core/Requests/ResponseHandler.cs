@@ -12,7 +12,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// Provides method(s) to deserialize raw HTTP responses into strong types.
     /// </summary>
-    public class ResponseHandler
+    public class ResponseHandler : IResponseHandler
     {
         private readonly ISerializer serializer;
         /// <summary>

@@ -69,6 +69,35 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         }
 
         [Fact]
+        public void InitSuccessfullyWithoutHttpClient()
+        {
+            // Create a provider using a null client
+            SimpleHttpProvider testSimpleHttpProvider = new SimpleHttpProvider(null, this.serializer.Object);
+            // Assert that the httpclient is set (from the factory)
+            Assert.NotNull(testSimpleHttpProvider.httpClient);
+        }
+
+        [Fact]
+        public async Task InitSuccessfullyWithUsedHttpClient()
+        {
+            // Create a httpClient
+            var defaultHandlers = GraphClientFactory.CreateDefaultHandlers(authProvider.Object);
+            using (HttpClient httpClient = GraphClientFactory.Create(handlers: defaultHandlers, finalHandler: testHttpMessageHandler))
+            using (var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, "https://localhost"))
+            using (var httpResponseMessage = new HttpResponseMessage())
+            {
+                this.testHttpMessageHandler.AddResponseMapping(httpRequestMessage.RequestUri.ToString(), httpResponseMessage);
+                // use the httpClient to send something out
+                await httpClient.SendAsync(httpRequestMessage);
+                // Create a provider using the same client
+                SimpleHttpProvider testSimpleHttpProvider = new SimpleHttpProvider(httpClient, this.serializer.Object);
+                // Assert that using the used client throws no errors on initialization
+                Assert.NotNull(testSimpleHttpProvider.Serializer);
+                Assert.Equal(httpClient.Timeout, simpleHttpProvider.OverallTimeout);
+            }
+        }
+
+        [Fact]
         public async Task SendAsync()
         {
             using (var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, "https://localhost"))
@@ -337,6 +366,39 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 
                 // Assert that we get the expected response body.
                 Assert.Equal(JsonErrorResponseBody, exception.RawResponseBody);
+
+            }
+        }
+
+        /// <summary>
+        /// Testing that ErrorResponse can't be deserialized and causes the GeneralException 
+        /// code to be thrown in a ServiceException.
+        /// This test validates that the NullReference exception is no longer thrown according to
+        /// https://github.com/microsoftgraph/msgraph-sdk-dotnet-core/issues/113
+        /// </summary>
+        [Fact]
+        public async Task SendAsync_DoesNotThrowNullReferenceExceptionWhenHeaderContentTypeIsNull()
+        {
+            using (var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, "https://localhost"))
+            using (var stringContent = new StringContent(""))
+            using (var httpResponseMessage = new HttpResponseMessage())
+            {
+                httpResponseMessage.Content = stringContent;
+                httpResponseMessage.Content.Headers.ContentType = null;
+
+                httpResponseMessage.StatusCode = HttpStatusCode.BadRequest;
+                httpResponseMessage.RequestMessage = httpRequestMessage;
+
+                this.testHttpMessageHandler.AddResponseMapping(httpRequestMessage.RequestUri.ToString(), httpResponseMessage);
+
+                ServiceException exception = await Assert.ThrowsAsync<ServiceException>(async () => await this.simpleHttpProvider.SendAsync(httpRequestMessage));
+
+                // Assert that we creating an GeneralException error.
+                Assert.Same(ErrorConstants.Codes.GeneralException, exception.Error.Code);
+                Assert.Same(ErrorConstants.Messages.UnexpectedExceptionResponse, exception.Error.Message);
+
+                // Assert that the response is null since we have no contentType.
+                Assert.Null(exception.RawResponseBody);
 
             }
         }

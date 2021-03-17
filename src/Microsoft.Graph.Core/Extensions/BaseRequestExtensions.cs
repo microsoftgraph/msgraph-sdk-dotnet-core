@@ -16,7 +16,7 @@ namespace Microsoft.Graph
         /// <summary>
         /// Sets the default authentication provider to the default Authentication Middleware Handler for this request.
         /// This only works with the default authentication handler.
-        /// If you use a custom authentication handler, you have to handle it's retreival in your implementation.
+        /// If you use a custom authentication handler, you have to handle it's retrieval in your implementation.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="baseRequest">The <see cref="BaseRequest"/> for the request.</param>
@@ -39,7 +39,7 @@ namespace Microsoft.Graph
         /// Sets the PerRequestAuthProvider delegate handler to the default Authentication Middleware Handler to authenticate a single request.
         /// The PerRequestAuthProvider delegate handler must be set to the GraphServiceClient instance before using this extension method otherwise, it defaults to the default authentication provider.
         /// This only works with the default authentication handler.
-        /// If you use a custom authentication handler, you have to handle it's retreival in your implementation.
+        /// If you use a custom authentication handler, you have to handle it's retrieval in your implementation.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="baseRequest">The <see cref="BaseRequest"/> for the request.</param>
@@ -64,7 +64,7 @@ namespace Microsoft.Graph
         /// <summary>
         /// Sets a ShouldRetry delegate to the default Retry Middleware Handler for this request.
         /// This only works with the default Retry Middleware Handler.
-        /// If you use a custom Retry Middleware Handler, you have to handle it's retreival in your implementation.
+        /// If you use a custom Retry Middleware Handler, you have to handle it's retrieval in your implementation.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="baseRequest">The <see cref="BaseRequest"/> for the request.</param>
@@ -87,7 +87,7 @@ namespace Microsoft.Graph
         /// <summary>
         /// Sets the maximum number of retries to the default Retry Middleware Handler for this request.
         /// This only works with the default Retry Middleware Handler.
-        /// If you use a custom Retry Middleware Handler, you have to handle it's retreival in your implementation.
+        /// If you use a custom Retry Middleware Handler, you have to handle it's retrieval in your implementation.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="baseRequest">The <see cref="BaseRequest"/> for the request.</param>
@@ -133,7 +133,7 @@ namespace Microsoft.Graph
         /// <summary>
         /// Sets the maximum number of redirects to the default Redirect Middleware Handler for this request.
         /// This only works with the default Redirect Middleware Handler.
-        /// If you use a custom Redirect Middleware Handler, you have to handle it's retreival in your implementation.
+        /// If you use a custom Redirect Middleware Handler, you have to handle it's retrieval in your implementation.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="baseRequest">The <see cref="BaseRequest"/> for the request.</param>
@@ -150,6 +150,21 @@ namespace Microsoft.Graph
             {
                 baseRequest.MiddlewareOptions.Add(redirectOptionKey, new RedirectHandlerOption { MaxRedirect = maxRedirects });
             }
+            return baseRequest;
+        }
+
+        /// <summary>
+        /// Replaces the default response handler with a custom response handler for this request.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="baseRequest">The <see cref="BaseRequest"/> for the request.</param>
+        /// <param name="responseHandler">The <see cref="IResponseHandler"/> for the request.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">If responseHandler is null.</exception>
+        public static T WithResponseHandler<T>(this T baseRequest, IResponseHandler responseHandler) where T : BaseRequest
+        {
+            baseRequest.ResponseHandler = responseHandler ?? throw new ArgumentNullException(nameof(responseHandler));
+
             return baseRequest;
         }
     }

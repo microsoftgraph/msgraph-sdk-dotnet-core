@@ -20,7 +20,7 @@ namespace Microsoft.Graph
     /// </summary>
     public class BaseRequest : IBaseRequest
     {
-        private ResponseHandler responseHandler;
+        private IResponseHandler responseHandler;
 
         /// <summary>
         /// Constructs a new <see cref="BaseRequest"/>.
@@ -57,9 +57,14 @@ namespace Microsoft.Graph
             }
 
             // Adds the default authentication provider for this request. 
-            // This can be changed can be changed by the user by calling WithPerRequestAuthProvider extension method.
+            // This can be changed by the user by calling WithPerRequestAuthProvider extension method.
             this.WithDefaultAuthProvider();
         }
+
+        /// <summary>
+        /// Gets or sets the response handler for the request.
+        /// </summary>
+        public IResponseHandler ResponseHandler { get { return responseHandler; } set { responseHandler = value; } }
 
         /// <summary>
         /// Gets or sets the content type for the request.
@@ -195,7 +200,7 @@ namespace Microsoft.Graph
                 {
                     // Only call `AuthenticateRequestAsync` when a custom IHttpProvider is used or our HttpProvider is used without an auth handler.
                     if (ShouldAuthenticateRequest())
-                        await this.AuthenticateRequestAsync(request);
+                        await this.AuthenticateRequestAsync(request).ConfigureAwait(false);
 
                     request.Content = multipartContent;
 
@@ -251,7 +256,7 @@ namespace Microsoft.Graph
 
                     if (!string.IsNullOrEmpty(this.ContentType))
                     {
-                        request.Content.Headers.ContentType = new MediaTypeHeaderValue(this.ContentType);
+                        request.Content.Headers.ContentType = MediaTypeHeaderValue.Parse(this.ContentType);
                     }
                 }
 
