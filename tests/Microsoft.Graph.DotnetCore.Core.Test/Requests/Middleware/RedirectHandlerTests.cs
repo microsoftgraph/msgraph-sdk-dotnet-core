@@ -185,6 +185,22 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         }
 
         [Fact]
+        public async Task RedirectWithRelativeUrlShouldKeepRequestHost()
+        {
+            var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, "http://example.org/foo");
+
+            var redirectResponse = new HttpResponseMessage(HttpStatusCode.Redirect);
+            redirectResponse.Headers.Location = new Uri("/bar", UriKind.Relative);
+
+            this.testHttpMessageHandler.SetHttpResponse(redirectResponse, new HttpResponseMessage(HttpStatusCode.OK));
+
+            var response = await invoker.SendAsync(httpRequestMessage, new CancellationToken());
+
+            Assert.NotSame(response.RequestMessage, httpRequestMessage);
+            Assert.Equal("http://example.org/bar", response.RequestMessage.RequestUri.AbsoluteUri);
+        }
+
+        [Fact]
         public async Task ExceedMaxRedirectsShouldThrowsException()
         {
             var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, "http://example.org/foo");
