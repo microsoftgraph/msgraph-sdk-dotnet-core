@@ -23,6 +23,7 @@
     <VersionSuffix></VersionSuffix>
     <PackageReleaseNotes>
 - Include symbols
+- Change debug type to portable
     </PackageReleaseNotes>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
@@ -37,21 +38,21 @@
     <TargetFrameworkIdentifier>Xamarin.iOS</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v1.0</TargetFrameworkVersion>
     <DefineConstants>$(DefineConstants);iOS</DefineConstants>
-    <DebugType>full</DebugType>
+    <DebugType>Portable</DebugType>
     <LanguageTargets>$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets</LanguageTargets>
   </PropertyGroup>
   <PropertyGroup Condition="'$(TargetFramework)' == 'Xamarin.Mac20'">
     <TargetFrameworkIdentifier>Xamarin.Mac</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <DefineConstants>$(DefineConstants);macOS</DefineConstants>
-    <DebugType>full</DebugType>
+    <DebugType>Portable</DebugType>
     <LanguageTargets>$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets</LanguageTargets>
   </PropertyGroup>
   <PropertyGroup Condition="'$(TargetFramework)' == 'MonoAndroid70'">
     <TargetFrameworkIdentifier>MonoAndroid</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v7.0</TargetFrameworkVersion>
     <AndroidUseLatestPlatformSdk>False</AndroidUseLatestPlatformSdk>
-    <DebugType>full</DebugType>
+    <DebugType>Portable</DebugType>
     <DefineConstants>$(DefineConstants);ANDROID</DefineConstants>
   <LanguageTargets>$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets</LanguageTargets>
   </PropertyGroup>
