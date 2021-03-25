@@ -177,14 +177,14 @@ steps:
   inputs:
     solution: '**/Microsoft.Graph.Core.csproj'
     configuration: 'release'
-    msbuildArguments: '-t:pack /p:NoBuild=true /p:PackageOutputPath=$(Build.ArtifactStagingDirectory)'
+    msbuildArguments: '-t:pack /p:NoBuild=true /p:PackageOutputPath=$(Build.ArtifactStagingDirectory) /p:IncludeSymbols=true /p:SymbolPackageFormat=snupkg'
 
 - task: SFP.build-tasks.custom-build-task-1.EsrpCodeSigning@1
   displayName: 'ESRP NuGet CodeSigning'
   inputs:
     ConnectedServiceName: 'microsoftgraph ESRP CodeSign DLL and NuGet (AKV)'
     FolderPath: '$(Build.ArtifactStagingDirectory)'
-    Pattern: '*.nupkg'
+    Pattern: '*nupkg'
     signConfigType: inlineSignParams
     inlineOperation: |
           [

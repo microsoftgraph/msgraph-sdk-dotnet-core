@@ -23,12 +23,12 @@ Param(
 
 Write-Host "Get the NuGet package version and set it in the global variable: VERSION_STRING" -ForegroundColor Magenta
 
-$nugetPackageName = (Get-ChildItem $packageDirPath | Where Name -match Microsoft.Graph).Name
+$nugetPackageName = (Get-ChildItem (Join-Path $packageDirPath *.nupkg) -Exclude *.symbols.nupkg).Name
 
 Write-Host "Found NuGet package: $nugetPackageName" -ForegroundColor Magenta
 
 ## Extracts the package version from nupkg file name.
-$packageVersion = $nugetPackageName -replace "^(.*?)\.((?:\.?[0-9]+){3,}(?:[-a-z]+)?)\.nupkg$", '$2'
+$packageVersion = $nugetPackageName.Replace("Microsoft.Graph.Core.", "").Replace(".nupkg", "")
 
 Write-Host "##vso[task.setvariable variable=VERSION_STRING]$($packageVersion)";
 Write-Host "Updated the VERSION_STRING environment variable with the package version value '$packageVersion'." -ForegroundColor Green
