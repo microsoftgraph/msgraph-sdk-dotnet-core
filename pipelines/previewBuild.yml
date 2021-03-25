@@ -172,7 +172,6 @@ steps:
 #      ]
 #     SessionTimeout: 20
 
-# arguments are not parsed in DotNetCoreCLI@2 task for `pack` command, that's why we have a custom pack command here
 - task: MSBuild@1
   displayName: 'Create NuGet package for preview release'
   inputs:
