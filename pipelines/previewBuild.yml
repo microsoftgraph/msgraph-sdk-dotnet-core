@@ -173,11 +173,12 @@ steps:
 #     SessionTimeout: 20
 
 # arguments are not parsed in DotNetCoreCLI@2 task for `pack` command, that's why we have a custom pack command here
-- powershell: |
-    dotnet pack $env:BUILD_SOURCESDIRECTORY/src/Microsoft.Graph.Core/Microsoft.Graph.Core.csproj /p:IncludeSymbols=true /p:SymbolPackageFormat=snupkg --no-build --output $env:BUILD_ARTIFACTSTAGINGDIRECTORY --configuration $env:BUILD_CONFIGURATION
-  env:
-    BUILD_CONFIGURATION: release
-  displayName: dotnet pack
+- task: MSBuild@1
+  displayName: 'Create NuGet package for preview release'
+  inputs:
+    solution: '**/Microsoft.Graph.Core.csproj'
+    configuration: 'release'
+    msbuildArguments: '-t:pack /p:NoBuild=true /p:PackageOutputPath=$(Build.ArtifactStagingDirectory) /p:IncludeSymbols=true /p:SymbolPackageFormat=snupkg'
 
 # - task: SFP.build-tasks.custom-build-task-1.EsrpCodeSigning@1
 #   displayName: 'ESRP NuGet CodeSigning'
