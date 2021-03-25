@@ -41,10 +41,10 @@ steps:
   clean: true
   fetchDepth: 1
 
-# - task: securedevelopmentteam.vss-secure-development-tools.build-task-credscan.CredScan@2
-#   displayName: 'Run CredScan'
-#   inputs:
-#     debugMode: false
+- task: securedevelopmentteam.vss-secure-development-tools.build-task-credscan.CredScan@2
+  displayName: 'Run CredScan'
+  inputs:
+    debugMode: false
 
 - task: PowerShell@2
   displayName: 'Validate updated version'
@@ -99,78 +99,78 @@ steps:
     configuration: release
     clean: true
 
-# - task: SFP.build-tasks.custom-build-task-1.EsrpCodeSigning@1
-#   displayName: 'ESRP DLL Strong Name (Microsoft.Graph.Core)'
-#   inputs:
-#     ConnectedServiceName: 'microsoftgraph ESRP CodeSign DLL and NuGet (AKV)'
-#     FolderPath: src/Microsoft.Graph.Core/bin/release
-#     Pattern: Microsoft.Graph.Core.dll
-#     signConfigType: inlineSignParams
-#     inlineOperation: |
-#      [
-#          {
-#              "keyCode": "CP-233863-SN",
-#              "operationSetCode": "StrongNameSign",
-#              "parameters": [],
-#              "toolName": "sign",
-#              "toolVersion": "1.0"
-#          },
-#          {
-#              "keyCode": "CP-233863-SN",
-#              "operationSetCode": "StrongNameVerify",
-#              "parameters": [],
-#              "toolName": "sign",
-#              "toolVersion": "1.0"
-#          }
-#      ]
-#     SessionTimeout: 20
+- task: SFP.build-tasks.custom-build-task-1.EsrpCodeSigning@1
+  displayName: 'ESRP DLL Strong Name (Microsoft.Graph.Core)'
+  inputs:
+    ConnectedServiceName: 'microsoftgraph ESRP CodeSign DLL and NuGet (AKV)'
+    FolderPath: src/Microsoft.Graph.Core/bin/release
+    Pattern: Microsoft.Graph.Core.dll
+    signConfigType: inlineSignParams
+    inlineOperation: |
+     [
+         {
+             "keyCode": "CP-233863-SN",
+             "operationSetCode": "StrongNameSign",
+             "parameters": [],
+             "toolName": "sign",
+             "toolVersion": "1.0"
+         },
+         {
+             "keyCode": "CP-233863-SN",
+             "operationSetCode": "StrongNameVerify",
+             "parameters": [],
+             "toolName": "sign",
+             "toolVersion": "1.0"
+         }
+     ]
+    SessionTimeout: 20
 
-# - task: SFP.build-tasks.custom-build-task-1.EsrpCodeSigning@1
-#   displayName: 'ESRP DLL CodeSigning (Microsoft.Graph.Core)'
-#   inputs:
-#     ConnectedServiceName: 'microsoftgraph ESRP CodeSign DLL and NuGet (AKV)'
-#     FolderPath: src/Microsoft.Graph.Core/bin/release
-#     Pattern: Microsoft.Graph.Core.dll
-#     signConfigType: inlineSignParams
-#     inlineOperation: |
-#      [
-#          {
-#              "keyCode": "CP-230012",
-#              "operationSetCode": "SigntoolSign",
-#              "parameters": [
-#                  {
-#                      "parameterName": "OpusName",
-#                      "parameterValue": "Microsoft"
-#                  },
-#                  {
-#                      "parameterName": "OpusInfo",
-#                      "parameterValue": "http://www.microsoft.com"
-#                  },
-#                  {
-#                      "parameterName": "FileDigest",
-#                      "parameterValue": "/fd \"SHA256\""
-#                  },
-#                  {
-#                      "parameterName": "PageHash",
-#                      "parameterValue": "/NPH"
-#                  },
-#                  {
-#                      "parameterName": "TimeStamp",
-#                      "parameterValue": "/tr \"http://rfc3161.gtm.corp.microsoft.com/TSS/HttpTspServer\" /td sha256"
-#                  }
-#              ],
-#              "toolName": "sign",
-#              "toolVersion": "1.0"
-#          },
-#          {
-#              "keyCode": "CP-230012",
-#              "operationSetCode": "SigntoolVerify",
-#              "parameters": [],
-#              "toolName": "sign",
-#              "toolVersion": "1.0"
-#          }
-#      ]
-#     SessionTimeout: 20
+- task: SFP.build-tasks.custom-build-task-1.EsrpCodeSigning@1
+  displayName: 'ESRP DLL CodeSigning (Microsoft.Graph.Core)'
+  inputs:
+    ConnectedServiceName: 'microsoftgraph ESRP CodeSign DLL and NuGet (AKV)'
+    FolderPath: src/Microsoft.Graph.Core/bin/release
+    Pattern: Microsoft.Graph.Core.dll
+    signConfigType: inlineSignParams
+    inlineOperation: |
+     [
+         {
+             "keyCode": "CP-230012",
+             "operationSetCode": "SigntoolSign",
+             "parameters": [
+                 {
+                     "parameterName": "OpusName",
+                     "parameterValue": "Microsoft"
+                 },
+                 {
+                     "parameterName": "OpusInfo",
+                     "parameterValue": "http://www.microsoft.com"
+                 },
+                 {
+                     "parameterName": "FileDigest",
+                     "parameterValue": "/fd \"SHA256\""
+                 },
+                 {
+                     "parameterName": "PageHash",
+                     "parameterValue": "/NPH"
+                 },
+                 {
+                     "parameterName": "TimeStamp",
+                     "parameterValue": "/tr \"http://rfc3161.gtm.corp.microsoft.com/TSS/HttpTspServer\" /td sha256"
+                 }
+             ],
+             "toolName": "sign",
+             "toolVersion": "1.0"
+         },
+         {
+             "keyCode": "CP-230012",
+             "operationSetCode": "SigntoolVerify",
+             "parameters": [],
+             "toolName": "sign",
+             "toolVersion": "1.0"
+         }
+     ]
+    SessionTimeout: 20
 
 - task: MSBuild@1
   displayName: 'Create NuGet package for preview release'
@@ -179,31 +179,31 @@ steps:
     configuration: 'release'
     msbuildArguments: '-t:pack /p:NoBuild=true /p:PackageOutputPath=$(Build.ArtifactStagingDirectory) /p:IncludeSymbols=true /p:SymbolPackageFormat=snupkg'
 
-# - task: SFP.build-tasks.custom-build-task-1.EsrpCodeSigning@1
-#   displayName: 'ESRP NuGet CodeSigning'
-#   inputs:
-#     ConnectedServiceName: 'microsoftgraph ESRP CodeSign DLL and NuGet (AKV)'
-#     FolderPath: '$(Build.ArtifactStagingDirectory)'
-#     Pattern: '*nupkg'
-#     signConfigType: inlineSignParams
-#     inlineOperation: |
-#           [
-#               {
-#                   "keyCode": "CP-401405",
-#                   "operationSetCode": "NuGetSign",
-#                   "parameters": [ ],
-#                   "toolName": "sign",
-#                   "toolVersion": "1.0"
-#               },
-#               {
-#                   "keyCode": "CP-401405",
-#                   "operationSetCode": "NuGetVerify",
-#                   "parameters": [ ],
-#                   "toolName": "sign",
-#                   "toolVersion": "1.0"
-#               }
-#           ]
-#     SessionTimeout: 20
+- task: SFP.build-tasks.custom-build-task-1.EsrpCodeSigning@1
+  displayName: 'ESRP NuGet CodeSigning'
+  inputs:
+    ConnectedServiceName: 'microsoftgraph ESRP CodeSign DLL and NuGet (AKV)'
+    FolderPath: '$(Build.ArtifactStagingDirectory)'
+    Pattern: '*nupkg'
+    signConfigType: inlineSignParams
+    inlineOperation: |
+          [
+              {
+                  "keyCode": "CP-401405",
+                  "operationSetCode": "NuGetSign",
+                  "parameters": [ ],
+                  "toolName": "sign",
+                  "toolVersion": "1.0"
+              },
+              {
+                  "keyCode": "CP-401405",
+                  "operationSetCode": "NuGetVerify",
+                  "parameters": [ ],
+                  "toolName": "sign",
+                  "toolVersion": "1.0"
+              }
+          ]
+    SessionTimeout: 20
 
 - task: CopyFiles@2
   displayName: 'Copy release scripts to artifact staging directory'
@@ -220,12 +220,12 @@ steps:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
     ArtifactName: PreviewReleaseArtifact
 
-# - task: YodLabs.O365PostMessage.O365PostMessageBuild.O365PostMessageBuild@0
-#   displayName: 'Graph Client Tooling pipeline fail notification'
-#   inputs:
-#     addressType: serviceEndpoint
-#     serviceEndpointName: 'microsoftgraph pipeline status'
-#     title: '$(Build.DefinitionName) failure notification'
-#     text: 'This pipeline has failed. View the build details for further information. This is a blocking failure.'
-#   condition: and(failed(), ne(variables['Build.Reason'], 'Manual'))
-#   enabled: true
+- task: YodLabs.O365PostMessage.O365PostMessageBuild.O365PostMessageBuild@0
+  displayName: 'Graph Client Tooling pipeline fail notification'
+  inputs:
+    addressType: serviceEndpoint
+    serviceEndpointName: 'microsoftgraph pipeline status'
+    title: '$(Build.DefinitionName) failure notification'
+    text: 'This pipeline has failed. View the build details for further information. This is a blocking failure.'
+  condition: and(failed(), ne(variables['Build.Reason'], 'Manual'))
+  enabled: true
