@@ -51,7 +51,7 @@ namespace Microsoft.Graph
 
             internal static string UnableToDeserializeDate = "Unable to deserialize the returned Date.";
 
-            internal static string UnexpectedExceptionOnSend = "An error occurred sending the request.";
+            internal static string UnexpectedExceptionOnSend = "An error occurred sending the request."; 
 
             internal static string UnexpectedExceptionResponse = "Unexpected exception returned from the service.";
 
@@ -59,7 +59,7 @@ namespace Microsoft.Graph
 
             internal static string NullParameter = "{0} parameter cannot be null.";
 
-            internal static string UnableToDeserializexContent = "Unable to deserialize content.";
+            internal static string UnableToDeserializeContent = "Unable to deserialize content.";
 
             internal static string InvalidDependsOnRequestId = "Corresponding batch request id not found for the specified dependsOn relation.";
 
