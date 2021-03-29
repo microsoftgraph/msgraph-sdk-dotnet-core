@@ -1,6 +1,6 @@
 # Logging requests in the Microsoft Graph .NET Client Library
 
-The SDK does not log of request/response infomation out of the box. If you wish to log request and response information performed by the sdk, there are currently two ways do this. These are :-
+The SDK does not log of request/response infomation out of the box. If you wish to log request and response information performed by the sdk, there are currently two ways do this. These are :
 
     a. Implement a LoggingHandler and add it to the list of handlers.
     b. Take advantage of OpenTelemetry.NET's instrumentation of HttpClient
