@@ -4,6 +4,7 @@
 
 namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
 {
+    using Microsoft.Graph.Core.Models;
     using Microsoft.Graph.DotnetCore.Core.Test.TestModels;
     using System;
     using System.Collections.Generic;
@@ -342,12 +343,33 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
         [Fact]
         public void SerializeDateTimeOffsetValue()
         {
-            var dateTimeOffset = DateTimeOffset.Parse("2016-11-20T18:23:45.9356913Z");
-            // Expect the string to be ISO 8601-1:2019 format
+            // Arrange
+            var dateTimeOffset = DateTimeOffset.Parse("2016-11-20T18:23:45.9356913+00:00");
             var expectedDateTimeOffsetString = "\"2016-11-20T18:23:45.9356913+00:00\""; 
-
+            // Act
             var serializedString = this.serializer.SerializeObject(dateTimeOffset);
+
+            // Assert
+            // Expect the string to be ISO 8601-1:2019 format
             Assert.Equal(expectedDateTimeOffsetString, serializedString);
+        }
+
+        [Fact]
+        public void SerializeUploadSessionValues()
+        {
+            // Arrange
+            var uploadSession = new UploadSession()
+            {
+                ExpirationDateTime = DateTimeOffset.Parse("2016-11-20T18:23:45.9356913+00:00"),
+                UploadUrl = "http://localhost",
+                NextExpectedRanges = new List<string> { "0 - 1000" }
+            };
+            var expectedString = @"{""expirationDateTime"":""2016-11-20T18:23:45.9356913+00:00"",""nextExpectedRanges"":[""0 - 1000""],""uploadUrl"":""http://localhost""}";
+            // Act
+            var serializedString = this.serializer.SerializeObject(uploadSession);
+            // Assert
+            // Expect the string to be ISO 8601-1:2019 format
+            Assert.Equal(expectedString, serializedString);
         }
 
         [Fact]
