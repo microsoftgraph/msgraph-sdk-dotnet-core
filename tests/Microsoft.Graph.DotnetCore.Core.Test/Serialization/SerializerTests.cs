@@ -340,18 +340,19 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
             Assert.Equal(expectedSerializedString, serializedString);
         }
 
-        [Fact]
-        public void SerializeDateTimeOffsetValue()
+        [Theory]
+        [InlineData("2016-11-20T18:23:45.9356913+00:00", "\"2016-11-20T18:23:45.9356913+00:00\"")]
+        [InlineData("1992-10-26T80:30:15.1456919+07:00", "\"1992-10-26T80:30:15.1456919+07:00\"")]// make sure different offset is okay as well
+        public void SerializeDateTimeOffsetValue(string dateTimeOffsetString, string expectedJsonValue)
         {
             // Arrange
-            var dateTimeOffset = DateTimeOffset.Parse("2016-11-20T18:23:45.9356913+00:00");
-            var expectedDateTimeOffsetString = "\"2016-11-20T18:23:45.9356913+00:00\""; 
+            var dateTimeOffset = DateTimeOffset.Parse(dateTimeOffsetString);
             // Act
             var serializedString = this.serializer.SerializeObject(dateTimeOffset);
 
             // Assert
             // Expect the string to be ISO 8601-1:2019 format
-            Assert.Equal(expectedDateTimeOffsetString, serializedString);
+            Assert.Equal(expectedJsonValue, serializedString);
         }
 
         [Fact]
