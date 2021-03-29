@@ -48,7 +48,8 @@ namespace Microsoft.Graph
         {
             if (dateTimeOffsetValue != null)
             {
-                writer.WriteStringValue(dateTimeOffsetValue.ToString());
+                // use the serializer's native implementation with ISO 8601-1:2019 format support(and also faster)
+                JsonSerializer.Serialize(writer, dateTimeOffsetValue, typeof(DateTimeOffset));
             }
             else
             {
