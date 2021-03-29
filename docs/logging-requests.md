@@ -87,6 +87,7 @@ This example also sets up the OpenTelemetry Console exporter, which requires add
 to the application.
 
 ```cs
+// Sdk comes from the OpenTelemetry namespace provided through the installation of the OpenTelemetry.Instrumentation.Http package
 using var tracerProvider = Sdk.CreateTracerProviderBuilder()
     .AddHttpClientInstrumentation()
     .AddConsoleExporter()
@@ -98,6 +99,7 @@ using var tracerProvider = Sdk.CreateTracerProviderBuilder()
 By default, the instrumentation library collects all the outgoing HTTP requests. If your app makes requests to other endpoints using HttpClient, you can filter them out as follows to only trace calls going to Microsoft Graph.
 
 ```cs
+// Sdk comes from the OpenTelemetry namespace provided through the installation of the OpenTelemetry.Instrumentation.Http package
 using var tracerProvider = Sdk.CreateTracerProviderBuilder()
     .AddHttpClientInstrumentation(
         (options) => options.Filter =
@@ -122,6 +124,7 @@ For event name "OnException", the actual object will be Exception and this event
 The example below enriches the information collected by the intrumentation library with the HTTP version used when eack request is made and the responses received(on top of filtering only Graph requests as shown in the previous step).
 
 ```cs
+// Sdk comes from the OpenTelemetry namespace provided through the installation of the OpenTelemetry.Instrumentation.Http package
 using var tracerProvider = Sdk.CreateTracerProviderBuilder()
     .AddHttpClientInstrumentation(
         (options) =>
