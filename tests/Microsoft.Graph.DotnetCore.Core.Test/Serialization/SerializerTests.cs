@@ -340,6 +340,17 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
         }
 
         [Fact]
+        public void SerializeDateTimeOffsetValue()
+        {
+            var dateTimeOffset = DateTimeOffset.Parse("2016-11-20T18:23:45.9356913Z");
+            // Expect the string to be ISO 8601-1:2019 format
+            var expectedDateTimeOffsetString = "\"2016-11-20T18:23:45.9356913+00:00\""; 
+
+            var serializedString = this.serializer.SerializeObject(dateTimeOffset);
+            Assert.Equal(expectedDateTimeOffsetString, serializedString);
+        }
+
+        [Fact]
         public void VerifyTypeMappingCache()
         {
             // Clear the cache so it won't have mappings from previous tests.
