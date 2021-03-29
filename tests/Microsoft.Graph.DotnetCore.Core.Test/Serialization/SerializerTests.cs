@@ -342,7 +342,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
 
         [Theory]
         [InlineData("2016-11-20T18:23:45.9356913+00:00", "\"2016-11-20T18:23:45.9356913+00:00\"")]
-        [InlineData("1992-10-26T80:30:15.1456919+07:00", "\"1992-10-26T80:30:15.1456919+07:00\"")]// make sure different offset is okay as well
+        [InlineData("1992-10-26T08:30:15.1456919+07:00", "\"1992-10-26T08:30:15.1456919+07:00\"")]// make sure different offset is okay as well
         public void SerializeDateTimeOffsetValue(string dateTimeOffsetString, string expectedJsonValue)
         {
             // Arrange
