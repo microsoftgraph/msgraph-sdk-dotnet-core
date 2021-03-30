@@ -89,7 +89,17 @@ namespace Microsoft.Graph
                     }
 
                     // Set newRequestUri from response
-                    newRequest.RequestUri = response.Headers.Location;
+                    if (response.Headers.Location.IsAbsoluteUri)
+                    {
+                        newRequest.RequestUri = response.Headers.Location;
+                    }
+                    else
+                    {
+                        var baseAddress = newRequest.RequestUri.GetComponents(
+                            UriComponents.SchemeAndServer | UriComponents.KeepDelimiter, UriFormat.Unescaped);
+
+                        newRequest.RequestUri = new Uri(baseAddress + response.Headers.Location);
+                    }
 
                     // Remove Auth if http request's scheme or host changes
                     if (String.CompareOrdinal(newRequest.RequestUri.Host, request.RequestUri.Host) != 0 ||
