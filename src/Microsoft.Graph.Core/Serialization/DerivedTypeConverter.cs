@@ -219,15 +219,29 @@ namespace Microsoft.Graph
                     propertyName = StringHelper.ConvertTypeToLowerCamelCase(propertyInfo.Name);
                 }
 
-                // Check to see if the property has a special converter specified
-                var jsonConverter = propertyInfo.GetCustomAttribute<System.Text.Json.Serialization.JsonConverterAttribute>();
-                if (propertyInfo.GetValue(value) == null && jsonConverter == null)
+                // Check so that we are not serializing the JsonExtensionDataAttribute(i.e AdditionalData) at a nested level
+                var jsonExtensionData = propertyInfo.GetCustomAttribute<System.Text.Json.Serialization.JsonExtensionDataAttribute>();
+                if (jsonExtensionData != null)
                 {
-                    continue; //Don't do anything if we don't have a special converter or the value is null
+                    var additionalData = propertyInfo.GetValue(value) as IDictionary<string, object> ?? new Dictionary<string, object>();
+                    foreach (var item in additionalData)
+                    {
+                        writer.WritePropertyName(item.Key);
+                        JsonSerializer.Serialize(writer, item.Value, item.Value.GetType(), options);
+                    }
                 }
+                else
+                {
+                    // Check to see if the property has a special converter specified
+                    var jsonConverter = propertyInfo.GetCustomAttribute<System.Text.Json.Serialization.JsonConverterAttribute>();
+                    if (propertyInfo.GetValue(value) == null && jsonConverter == null)
+                    {
+                        continue; //Don't do anything if we don't have a special converter or the value is null
+                    }
 
-                writer.WritePropertyName(propertyName);
-                JsonSerializer.Serialize(writer, propertyInfo.GetValue(value), propertyInfo.PropertyType, options);
+                    writer.WritePropertyName(propertyName);
+                    JsonSerializer.Serialize(writer, propertyInfo.GetValue(value), propertyInfo.PropertyType, options);
+                }
             }
             writer.WriteEndObject();
         }
