@@ -49,7 +49,7 @@ namespace GraphResponseSample
 }
 ```
 
-In the event an exception is thrown your custom handler, always ensure that you drain the response body so that the connection may be released for use by other requests. 
+In the event an exception is thrown by your custom handler, always ensure that you drain the response body so that the connection may be released for use by other requests. 
 This can be done by simply doing this.
 
 ```cs
