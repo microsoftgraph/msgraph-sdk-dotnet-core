@@ -13,6 +13,8 @@ You can read more about HttpClient Message Handlers [here](https://docs.microsof
 
 The implemented logging handler will look something like the example below. The example simply logs a statement to show that the request has been sent out and the response has come back.
 
+The handler should derive from `DelegatingHandler` and override the `SendAsync` method. This override will always call `base.SendAsync` so that the request can be forwarded through the request pipeline.
+
 ```cs
 using Microsoft.Extensions.Logging;
 using System.Net.Http;
@@ -38,6 +40,7 @@ namespace GraphResponseSample
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage httpRequest, CancellationToken cancellationToken)
         {
             _logger.LogInformation("Sending Graph request", httpRequest);// log the request before it goes out.
+            // Always call base.SendAsync so that the request is forwarded through the pipeline.
             HttpResponseMessage response = await base.SendAsync(httpRequest, cancellationToken);
             _logger.LogInformation("Received Graph response", response);// log the response as it comes back.
             return response;
@@ -46,9 +49,20 @@ namespace GraphResponseSample
 }
 ```
 
+In the event an exception is thrown by your custom handler, always ensure that you drain the response body so that the connection may be released for use by other requests. 
+This can be done by simply doing this.
+
+```cs
+if (response.Content != null)
+{
+    await response.Content.ReadAsByteArrayAsync();// Drain response content to free connections.
+}
+```
+
 ### Step 2: Add the Handler to GraphServiceClient's list of handlers
 
-Once the logging handler is implemented. You can add it to the list of handlers used by the SDK as follows.
+Once the logging handler is implemented. You can add it to the list of handlers used by the SDK as follows. 
+The best practice for this is to add this to the end of the handler list so that all requests/responses are captured irrespective of any handlers that are added earlier.
 
 ```cs
 // create the auth provider
