@@ -293,6 +293,18 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
         }
 
         [Fact]
+        public void SerializeEnumValueWithFlags()
+        {
+            EnumTypeWithFlags enumValueWithFlags = EnumTypeWithFlags.FirstValue | EnumTypeWithFlags.SecondValue;
+
+            var expectedSerializedValue = "\"firstValue, secondValue\""; // All values should be camelCased
+
+            var serializedValue = this.serializer.SerializeObject(enumValueWithFlags);
+
+            Assert.Equal(expectedSerializedValue, serializedValue);
+        }
+
+        [Fact]
         public void SerializeDateEnumerableValue()
         {
             var now = DateTimeOffset.UtcNow;
