@@ -6,6 +6,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
 {
     using Microsoft.Graph.Core.Models;
     using Microsoft.Graph.DotnetCore.Core.Test.TestModels;
+    using Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -337,6 +338,85 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
 
             var serializedString = this.serializer.SerializeObject(date);
 
+            Assert.Equal(expectedSerializedString, serializedString);
+        }
+
+        [Fact]
+        public void SerializeObjectWithAdditionalDataWithDerivedTypeConverter()
+        {
+            // This example class uses the derived type converter
+            // Arrange
+            TestItemBody testItemBody = new TestItemBody
+            {
+                Content = "Example Content",
+                ContentType = TestBodyType.Text,
+                AdditionalData = new Dictionary<string, object>
+                {
+                    { "length" , "100" }
+                }
+            };
+            var expectedSerializedString = "{" +
+                                               "\"contentType\":\"text\"," +
+                                               "\"content\":\"Example Content\"," +
+                                               "\"length\":\"100\"," + // should be at the same level as other properties
+                                               "\"@odata.type\":\"microsoft.graph.itemBody\"" +
+                                           "}";
+
+            // Act
+            var serializedString = this.serializer.SerializeObject(testItemBody);
+
+            //Assert
+            Assert.Equal(expectedSerializedString, serializedString);
+        }
+
+        [Fact]
+        public void SerializeObjectWithEmptyAdditionalDataWithDerivedTypeConverter()
+        {
+            // This example class uses the derived type converter with an empty/unset AdditionalData
+            // Arrange
+            TestItemBody testItemBody = new TestItemBody
+            {
+                Content = "Example Content",
+                ContentType = TestBodyType.Text
+            };
+            var expectedSerializedString = "{" +
+                                           "\"contentType\":\"text\"," +
+                                           "\"content\":\"Example Content\"," +
+                                           "\"@odata.type\":\"microsoft.graph.itemBody\"" +
+                                           "}";
+
+            // Act
+            var serializedString = this.serializer.SerializeObject(testItemBody);
+
+            //Assert
+            Assert.Equal(expectedSerializedString, serializedString);
+        }
+
+        [Fact]
+        public void SerializeObjectWithAdditionalDataWithoutDerivedTypeConverter()
+        {
+            // This example class does NOT use the derived type converter to act as a control
+            // Arrange
+            TestEmailAddress testEmailAddress = new TestEmailAddress
+            {
+                Name = "Peter Pan",
+                Address = "peterpan@neverland.com",
+                AdditionalData = new Dictionary<string, object>
+                {
+                    { "alias" , "peterpan" }
+                }
+            };
+            var expectedSerializedString = "{" +
+                                               "\"name\":\"Peter Pan\"," +
+                                               "\"address\":\"peterpan@neverland.com\"," +
+                                               "\"@odata.type\":\"microsoft.graph.emailAddress\"," +
+                                               "\"alias\":\"peterpan\"" + // should be at the same level as other properties
+                                           "}";
+
+            // Act
+            var serializedString = this.serializer.SerializeObject(testEmailAddress);
+
+            // Assert
             Assert.Equal(expectedSerializedString, serializedString);
         }
 
