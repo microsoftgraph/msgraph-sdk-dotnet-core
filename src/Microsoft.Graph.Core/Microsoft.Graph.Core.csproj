@@ -41,7 +41,15 @@
 - Fix deserialization of empty streams to be consistent with empty strings
 - [Breaking Change] Method type in IBaseRequest changes from string to enum 
 - Fix InvalidOperationException when Location header is relative #214
+- Include symbols
     </PackageReleaseNotes>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <!-- https://github.com/clairernovotny/DeterministicBuilds#deterministic-builds -->
+  <PropertyGroup Condition="'$(TF_BUILD)' == 'true'">
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
   </PropertyGroup>
   <!--We manually configure LanguageTargets for Xamarin due to .Net SDK TFMs limitation https://github.com/dotnet/sdk/issues/491 -->
   <PropertyGroup Condition="'$(TargetFramework)' == 'Xamarin.iOS10'">
@@ -115,9 +123,10 @@
   </None>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="System.Diagnostics.DiagnosticSource" Version="4.6.0" />
-    <PackageReference Include="Microsoft.Identity.Client" Version="4.9.0" />
-    <PackageReference Include="Azure.Core" Version="1.0.1" />
     <PackageReference Include="System.Text.Json" Version="5.0.1" />
+    <PackageReference Include="Azure.Core" Version="1.0.1" />
+    <PackageReference Include="Microsoft.Identity.Client" Version="4.9.0" />
+    <PackageReference Include="System.Diagnostics.DiagnosticSource" Version="4.7.1" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All"/>
   </ItemGroup>
 </Project>
