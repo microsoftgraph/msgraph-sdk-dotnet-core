@@ -57,7 +57,7 @@ namespace Microsoft.Graph
             }
 
             // Adds the default authentication provider for this request. 
-            // This can be changed can be changed by the user by calling WithPerRequestAuthProvider extension method.
+            // This can be changed by the user by calling WithPerRequestAuthProvider extension method.
             this.WithDefaultAuthProvider();
         }
 

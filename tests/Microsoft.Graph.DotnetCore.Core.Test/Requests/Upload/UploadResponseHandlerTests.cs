@@ -156,7 +156,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             //Assert
             Assert.NotNull(serviceException);
             Assert.Equal(ErrorConstants.Codes.GeneralException, serviceException.Error.Code);
-            Assert.Equal(ErrorConstants.Messages.UnableToDeserializexContent, serviceException.Error.Message);
+            Assert.Equal(ErrorConstants.Messages.UnableToDeserializeContent, serviceException.Error.Message);
             Assert.Equal(malformedResponse, serviceException.RawResponseBody);
         }
     }
