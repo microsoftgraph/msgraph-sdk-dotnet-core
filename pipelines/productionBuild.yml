@@ -168,7 +168,7 @@ steps:
   inputs:
     solution: '**/Microsoft.Graph.Core.csproj'
     configuration: 'release'
-    msbuildArguments: '-t:pack /p:NoBuild=true /p:PackageOutputPath=$(Build.ArtifactStagingDirectory)'
+    msbuildArguments: '-t:pack /p:NoBuild=true /p:PackageOutputPath=$(Build.ArtifactStagingDirectory) /p:IncludeSymbols=true /p:SymbolPackageFormat=snupkg'
 
 - task: SFP.build-tasks.custom-build-task-1.EsrpCodeSigning@1
   displayName: 'ESRP NuGet CodeSigning'
