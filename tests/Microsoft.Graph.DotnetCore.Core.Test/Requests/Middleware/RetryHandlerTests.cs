@@ -291,6 +291,43 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             Assert.NotSame(response.RequestMessage, httpRequestMessage);
         }
 
+
+        [Fact]
+        public async Task ShouldRetryBasedOnCustomShouldRetryDelegate()
+        {
+            // Arrange
+            // Create the first  request and response
+            var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, "http://example.org/foo")
+            {
+                Content = new StringContent("Hello World")
+            };
+            var retryResponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
+
+            // create the retry response
+            var finalResponse = new HttpResponseMessage(HttpStatusCode.OK);
+
+            // hook everything up
+            this.testHttpMessageHandler.SetHttpResponse(retryResponse, finalResponse);
+
+            // Create a retry handler that will retry on HttpStatusCode.BadGateway and hook it up
+            RetryHandlerOption retryHandlerOption = new RetryHandlerOption
+            {
+                ShouldRetry = (delay, attempt, httpResponseMessage) => httpResponseMessage.StatusCode == HttpStatusCode.BadGateway
+            };
+            RetryHandler customHandler = new RetryHandler(this.testHttpMessageHandler, retryHandlerOption);
+            HttpMessageInvoker httpMessageInvoker = new HttpMessageInvoker(customHandler);
+
+            // Act
+            var response = await httpMessageInvoker.SendAsync(httpRequestMessage, new CancellationToken());
+
+            // Assert
+            Assert.Same(response, finalResponse);
+            Assert.NotSame(response.RequestMessage, httpRequestMessage);
+            Assert.NotNull(response.RequestMessage.Content);
+            Assert.NotNull(response.RequestMessage.Content.Headers.ContentLength);
+            Assert.Equal("Hello World", response.RequestMessage.Content.ReadAsStringAsync().Result);
+        }
+
         private async Task DelayTestWithMessage(HttpResponseMessage response, int count, string message, int delay = RetryHandlerOption.MAX_DELAY)
         {
             Message = message;
