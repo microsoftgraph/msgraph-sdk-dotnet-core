@@ -42,11 +42,11 @@ namespace Microsoft.Graph
             JsonElement type;
             try
             {
-                type = jsonDocument.RootElement.GetProperty(CoreConstants.Serialization.ODataType);
-            }
-            catch (KeyNotFoundException)
-            {
-                type = default;
+                // try to get the @odata.type property if we can
+                if (!jsonDocument.RootElement.TryGetProperty(CoreConstants.Serialization.ODataType, out type))
+                {
+                    type = default;
+                }
             }
             catch (InvalidOperationException)
             {
@@ -207,6 +207,12 @@ namespace Microsoft.Graph
             writer.WriteStartObject();
             foreach (var propertyInfo in value.GetType().GetProperties())
             {
+                var ignoreConverterAttribute = propertyInfo.GetCustomAttribute<System.Text.Json.Serialization.JsonIgnoreAttribute>();
+                if(ignoreConverterAttribute != null)
+                {
+                    continue;// Don't serialize a property we are asked to ignore
+                }
+
                 string propertyName;
                 // Try to get the property name off the JsonAttribute otherwise camel case the property name
                 var jsonProperty = propertyInfo.GetCustomAttribute<System.Text.Json.Serialization.JsonPropertyNameAttribute>();
