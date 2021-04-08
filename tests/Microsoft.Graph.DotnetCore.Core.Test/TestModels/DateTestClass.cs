@@ -27,5 +27,8 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels
 
         [JsonPropertyName("invalidType")]
         public int? InvalidType { get; set; }
+
+        [JsonIgnore]
+        public int IgnoredNumber { get; set; }
     }
 }

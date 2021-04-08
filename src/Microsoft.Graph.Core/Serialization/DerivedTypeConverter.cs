@@ -207,6 +207,12 @@ namespace Microsoft.Graph
             writer.WriteStartObject();
             foreach (var propertyInfo in value.GetType().GetProperties())
             {
+                var ignoreConverterAttribute = propertyInfo.GetCustomAttribute<System.Text.Json.Serialization.JsonIgnoreAttribute>();
+                if(ignoreConverterAttribute != null)
+                {
+                    continue;// Don't serialize a property we are asked to ignore
+                }
+
                 string propertyName;
                 // Try to get the property name off the JsonAttribute otherwise camel case the property name
                 var jsonProperty = propertyInfo.GetCustomAttribute<System.Text.Json.Serialization.JsonPropertyNameAttribute>();

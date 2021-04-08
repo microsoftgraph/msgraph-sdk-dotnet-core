@@ -354,6 +354,25 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
         }
 
         [Fact]
+        public void DerivedTypeConverterIgnoresPropertyWithJsonIgnore()
+        {
+            var now = DateTimeOffset.UtcNow;
+
+            var expectedSerializedString = string.Format("{{\"nullableDate\":\"{0}\"}}", now.ToString("yyyy-MM-dd"));
+
+            var date = new DateTestClass
+            {
+                NullableDate = new Date(now.Year, now.Month, now.Day),
+                IgnoredNumber = 230 // we shouldn't see this value
+            };
+
+            var serializedString = this.serializer.SerializeObject(date);
+
+            Assert.Equal(expectedSerializedString, serializedString);
+            Assert.DoesNotContain("230", serializedString);
+        }
+
+        [Fact]
         public void SerializeObjectWithAdditionalDataWithDerivedTypeConverter()
         {
             // This example class uses the derived type converter
