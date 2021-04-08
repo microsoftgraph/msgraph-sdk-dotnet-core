@@ -42,11 +42,11 @@ namespace Microsoft.Graph
             JsonElement type;
             try
             {
-                type = jsonDocument.RootElement.GetProperty(CoreConstants.Serialization.ODataType);
-            }
-            catch (KeyNotFoundException)
-            {
-                type = default;
+                // try to get the @odata.type property if we can
+                if (!jsonDocument.RootElement.TryGetProperty(CoreConstants.Serialization.ODataType, out type))
+                {
+                    type = default;
+                }
             }
             catch (InvalidOperationException)
             {
