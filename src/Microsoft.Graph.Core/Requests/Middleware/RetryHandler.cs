@@ -59,7 +59,7 @@ namespace Microsoft.Graph
             var response = await base.SendAsync(httpRequest, cancellationToken);
 
             // Check whether retries are permitted and that the MaxRetry value is a non - negative, non - zero value
-            if (ShouldRetry(response) && httpRequest.IsBuffered() && RetryOption.MaxRetry > 0 && RetryOption.ShouldRetry(RetryOption.Delay, 0, response))
+            if (httpRequest.IsBuffered() && RetryOption.MaxRetry > 0 && (ShouldRetry(response) || RetryOption.ShouldRetry(RetryOption.Delay, 0, response)))
             {
                 response = await SendRetryAsync(response, cancellationToken);
             }
