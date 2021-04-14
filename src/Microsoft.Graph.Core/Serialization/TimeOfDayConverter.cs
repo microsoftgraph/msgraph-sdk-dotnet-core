@@ -39,11 +39,10 @@ namespace Microsoft.Graph
         {
             try
             {
-                var dateTime = (DateTime)JsonSerializer.Deserialize(reader.GetString(), typeof(DateTime));
-
+                var dateTime = DateTime.Parse(reader.GetString());
                 return new TimeOfDay(dateTime);
             }
-            catch (JsonException serializationException)
+            catch (FormatException formatException)
             {
                 throw new ServiceException(
                     new Error
@@ -51,7 +50,7 @@ namespace Microsoft.Graph
                         Code = ErrorConstants.Codes.GeneralException,
                         Message = "Unable to deserialize time of day"
                     },
-                    serializationException);
+                    formatException);
             }
         }
 
