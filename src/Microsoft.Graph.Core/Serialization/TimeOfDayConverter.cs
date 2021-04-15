@@ -39,6 +39,8 @@ namespace Microsoft.Graph
         {
             try
             {
+                // Use the datetime class to parse since Utf8JsonReader/System.Text.Json serializer will 
+                // throw FormatException on json that is not ISO 8601-1:2019 date format compliant.
                 var dateTime = DateTime.Parse(reader.GetString());
                 return new TimeOfDay(dateTime);
             }
