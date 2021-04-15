@@ -39,11 +39,12 @@ namespace Microsoft.Graph
         {
             try
             {
-                var dateTime = (DateTime)JsonSerializer.Deserialize(reader.GetString(), typeof(DateTime));
-
+                // Use the datetime class to parse since Utf8JsonReader/System.Text.Json serializer will 
+                // throw FormatException on json that is not ISO 8601-1:2019 date format compliant.
+                var dateTime = DateTime.Parse(reader.GetString());
                 return new TimeOfDay(dateTime);
             }
-            catch (JsonException serializationException)
+            catch (FormatException formatException)
             {
                 throw new ServiceException(
                     new Error
@@ -51,7 +52,7 @@ namespace Microsoft.Graph
                         Code = ErrorConstants.Codes.GeneralException,
                         Message = "Unable to deserialize time of day"
                     },
-                    serializationException);
+                    formatException);
             }
         }
 
