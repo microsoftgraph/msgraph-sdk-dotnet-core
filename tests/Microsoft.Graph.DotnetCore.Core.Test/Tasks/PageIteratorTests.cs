@@ -2,17 +2,17 @@
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
-using Microsoft.Graph.DotnetCore.Test.Mocks;
-
-namespace Microsoft.Graph.DotnetCore.Test.Tasks
+namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
 {
-    using Microsoft.CSharp.RuntimeBinder;
-    using Microsoft.Graph.DotnetCore.Core.Test.Requests;
-    using Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels;
     using System;
     using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
+    using Microsoft.CSharp.RuntimeBinder;
+    using Microsoft.Graph.DotnetCore.Core.Test.Requests;
+    using Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels;
+    using Microsoft.Graph.DotnetCore.Test.Mocks;
+    using Microsoft.Graph.DotnetCore.Test.Tasks;
     using Xunit;
 
     /**
@@ -50,8 +50,7 @@ namespace Microsoft.Graph.DotnetCore.Test.Tasks
         public async Task Given_Concrete_Generated_CollectionPage_It_Iterates_Page_Items()
         {
             int inputEventCount = 17;
-            var page = new TestEventDeltaCollectionPage();
-            page.AdditionalData = new Dictionary<string, object>();
+            var page = new TestEventDeltaCollectionPage {AdditionalData = new Dictionary<string, object>()};
             for (int i = 0; i < inputEventCount; i++)
             {
                 page.Add(new TestEvent() { Subject = $"Subject{i.ToString()}" });
@@ -71,7 +70,7 @@ namespace Microsoft.Graph.DotnetCore.Test.Tasks
         }
 
         [Fact]
-        public async Task Given_Concrete_Generated_CollectionPage_It_Stops_Iterating_Pageitems()
+        public async Task Given_Concrete_Generated_CollectionPage_It_Stops_Iterating_Page_Items()
         {
             int inputEventCount = 17;
             var page = new TestEventDeltaCollectionPage();
@@ -100,7 +99,7 @@ namespace Microsoft.Graph.DotnetCore.Test.Tasks
         [Fact]
         public async Task Given_CollectionPage_It_Stops_Iterating_Across_Pages()
         {
-            // Create the 17 events to initiallize the original collection page.
+            // Create the 17 events to initialize the original collection page.
             List<TestEvent> testEvents = new List<TestEvent>();
             int inputEventCount = 17;
             for (int i = 0; i < inputEventCount; i++)
@@ -151,7 +150,7 @@ namespace Microsoft.Graph.DotnetCore.Test.Tasks
         [Fact]
         public async Task Given_CollectionPage_It_Iterates_Across_Pages()
         {
-            // Create the 17 events to initiallize the original collection page.
+            // Create the 17 events to initialize the original collection page.
             List<TestEvent> originalCollectionPageEvents = new List<TestEvent>();
             int inputEventCount = 17;
             for (int i = 0; i < inputEventCount; i++)
@@ -194,9 +193,9 @@ namespace Microsoft.Graph.DotnetCore.Test.Tasks
         }
 
         [Fact]
-        public async Task Given_CollectionPage_It_Detects_Nextlink_Loop()
+        public async Task Given_CollectionPage_It_Detects_Next_Link_Loop()
         {
-            // Create the 17 events to initiallize the original collection page.
+            // Create the 17 events to initialize the original collection page.
             List<TestEvent> originalCollectionPageEvents = new List<TestEvent>();
             int inputEventCount = 5;
             for (int i = 0; i < inputEventCount; i++)
@@ -212,7 +211,7 @@ namespace Microsoft.Graph.DotnetCore.Test.Tasks
                 nextPage.Add(new TestEvent() { Subject = $"Subject for next page events: {i.ToString()}" });
             }
 
-            // This will be the same nextLink value as the one set in MockUserEventsCollectionPage cstor.
+            // This will be the same nextLink value as the one set in MockUserEventsCollectionPage constructor.
             nextPage.InitializeNextPageRequest(baseClient, "https://graph.microsoft.com/v1.0/me/events?$skip=10");
 
             // Create the delegate to process each entity returned in the pages. The delegate will 
@@ -236,7 +235,7 @@ namespace Microsoft.Graph.DotnetCore.Test.Tasks
         {
             try
             {
-                // Create the 17 events to initiallize the original collection page.
+                // Create the 17 events to initialize the original collection page.
                 List<TestEvent> originalCollectionPageEvents = new List<TestEvent>();
                 int inputEventCount = 17;
                 for (int i = 0; i < inputEventCount; i++)
@@ -273,19 +272,19 @@ namespace Microsoft.Graph.DotnetCore.Test.Tasks
             TestEventDeltaCollectionPage nextPage = new TestEventDeltaCollectionPage();
 
             MockUserEventsCollectionRequest mockUserEventsCollectionRequest = new MockUserEventsCollectionRequest(baseClient, nextPage);
-            var mockUserEventsCollectionPage = new MockUserEventsCollectionPage(originalCollectionPageEvents, mockUserEventsCollectionRequest, "nextlink") as ITestEventDeltaCollectionPage;
+            var mockUserEventsCollectionPage = new MockUserEventsCollectionPage(originalCollectionPageEvents, mockUserEventsCollectionRequest) as ITestEventDeltaCollectionPage;
 
             // Act
             eventPageIterator = PageIterator<TestEvent>.CreatePageIterator(baseClient, mockUserEventsCollectionPage, (e) => { return true; });
 
             // Assert
-            Assert.Equal<PagingState>(PagingState.NotStarted, eventPageIterator.State);
+            Assert.Equal(PagingState.NotStarted, eventPageIterator.State);
         }
 
         [Fact]
         public async Task Given_RequestConfigurator_It_Is_Invoked()
         {
-            // Create the 17 events to initiallize the original collection page.
+            // Create the 17 events to initialize the original collection page.
             List<TestEvent> originalCollectionPageEvents = new List<TestEvent>();
             int inputEventCount = 17;
             for (int i = 0; i < inputEventCount; i++)
@@ -315,7 +314,7 @@ namespace Microsoft.Graph.DotnetCore.Test.Tasks
             };
 
             MockUserEventsCollectionRequest mockUserEventsCollectionRequest = new MockUserEventsCollectionRequest(baseClient, nextPage);
-            var mockUserEventsCollectionPage = new MockUserEventsCollectionPage(originalCollectionPageEvents, mockUserEventsCollectionRequest, "nextLink") as ITestEventDeltaCollectionPage;
+            var mockUserEventsCollectionPage = new MockUserEventsCollectionPage(originalCollectionPageEvents, mockUserEventsCollectionRequest) as ITestEventDeltaCollectionPage;
 
             eventPageIterator = PageIterator<TestEvent>.CreatePageIterator(baseClient, mockUserEventsCollectionPage, processEachEvent, requestConfigurator);
             await eventPageIterator.IterateAsync();
