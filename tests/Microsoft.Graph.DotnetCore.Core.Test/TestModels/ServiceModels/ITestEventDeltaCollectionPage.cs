@@ -13,7 +13,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
         /// <summary>
         /// Gets the next page <see cref="ITestEventDeltaCollectionPage"/> instance.
         /// </summary>
-        TestEventDeltaRequest NextPageRequest { get; }
+        ITestEventDeltaRequest NextPageRequest { get; }
 
         /// <summary>
         /// Initializes the NextPageRequest property.

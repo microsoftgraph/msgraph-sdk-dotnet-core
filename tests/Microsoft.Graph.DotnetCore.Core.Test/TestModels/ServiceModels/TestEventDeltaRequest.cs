@@ -10,7 +10,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
     /// <summary>
     /// The type UserEventsCollectionRequest.
     /// </summary>
-    public partial class TestEventDeltaRequest : BaseRequest
+    public partial class TestEventDeltaRequest : BaseRequest, ITestEventDeltaRequest
     {
         /// <summary>
         /// Constructs a new UserEventsCollectionRequest.
