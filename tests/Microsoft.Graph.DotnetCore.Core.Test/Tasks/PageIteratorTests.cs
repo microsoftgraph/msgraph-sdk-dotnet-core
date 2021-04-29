@@ -6,13 +6,13 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
 {
     using System;
     using System.Collections.Generic;
+    using System.Net.Http;
     using System.Threading;
     using System.Threading.Tasks;
     using Microsoft.CSharp.RuntimeBinder;
     using Microsoft.Graph.DotnetCore.Core.Test.Requests;
     using Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels;
-    using Microsoft.Graph.DotnetCore.Test.Mocks;
-    using Microsoft.Graph.DotnetCore.Test.Tasks;
+    using Moq;
     using Xunit;
 
     /**
@@ -138,8 +138,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
                 return shouldContinue;
             };
 
-            MockUserEventsCollectionRequest mockUserEventsCollectionRequest = new MockUserEventsCollectionRequest(baseClient, nextPage);
-            var mockUserEventsCollectionPage = new MockUserEventsCollectionPage(testEvents, mockUserEventsCollectionRequest) as ITestEventDeltaCollectionPage;
+            var mockUserEventsCollectionPage = SetupMocks(testEvents, nextPage);
 
             eventPageIterator = PageIterator<TestEvent>.CreatePageIterator(baseClient, mockUserEventsCollectionPage, processEachEvent);
             await eventPageIterator.IterateAsync(pagingToken);
@@ -182,8 +181,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
                 return true;
             };
 
-            MockUserEventsCollectionRequest mockUserEventsCollectionRequest = new MockUserEventsCollectionRequest(baseClient, nextPage);
-            var mockUserEventsCollectionPage = new MockUserEventsCollectionPage(originalCollectionPageEvents, mockUserEventsCollectionRequest, "nextLink") as ITestEventDeltaCollectionPage;
+            var mockUserEventsCollectionPage = SetupMocks(originalCollectionPageEvents, nextPage);
 
             eventPageIterator = PageIterator<TestEvent>.CreatePageIterator(baseClient, mockUserEventsCollectionPage, processEachEvent);
             await eventPageIterator.IterateAsync();
@@ -221,8 +219,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
                 return true;
             };
 
-            MockUserEventsCollectionRequest mockUserEventsCollectionRequest = new MockUserEventsCollectionRequest(baseClient, nextPage);
-            var mockUserEventsCollectionPage = new MockUserEventsCollectionPage(originalCollectionPageEvents, mockUserEventsCollectionRequest) as ITestEventDeltaCollectionPage;
+            var mockUserEventsCollectionPage = SetupMocks(originalCollectionPageEvents, nextPage);
 
             eventPageIterator = PageIterator<TestEvent>.CreatePageIterator(baseClient, mockUserEventsCollectionPage, processEachEvent);
 
@@ -252,8 +249,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
                     return true;
                 };
 
-                MockUserEventsCollectionRequest mockUserEventsCollectionRequest = new MockUserEventsCollectionRequest(baseClient, nextPage);
-                var mockUserEventsCollectionPage = new MockUserEventsCollectionPage(originalCollectionPageEvents, mockUserEventsCollectionRequest) as ITestEventDeltaCollectionPage;
+                var mockUserEventsCollectionPage = SetupMocks(originalCollectionPageEvents, nextPage);
 
                 eventPageIterator = PageIterator<TestEvent>.CreatePageIterator(baseClient, mockUserEventsCollectionPage, processEachEvent);
                 await eventPageIterator.IterateAsync();
@@ -271,8 +267,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
             List<TestEvent> originalCollectionPageEvents = new List<TestEvent>();
             TestEventDeltaCollectionPage nextPage = new TestEventDeltaCollectionPage();
 
-            MockUserEventsCollectionRequest mockUserEventsCollectionRequest = new MockUserEventsCollectionRequest(baseClient, nextPage);
-            var mockUserEventsCollectionPage = new MockUserEventsCollectionPage(originalCollectionPageEvents, mockUserEventsCollectionRequest) as ITestEventDeltaCollectionPage;
+            var mockUserEventsCollectionPage = SetupMocks(originalCollectionPageEvents, nextPage);
 
             // Act
             eventPageIterator = PageIterator<TestEvent>.CreatePageIterator(baseClient, mockUserEventsCollectionPage, (e) => { return true; });
@@ -313,13 +308,34 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
                 return request;
             };
 
-            MockUserEventsCollectionRequest mockUserEventsCollectionRequest = new MockUserEventsCollectionRequest(baseClient, nextPage);
-            var mockUserEventsCollectionPage = new MockUserEventsCollectionPage(originalCollectionPageEvents, mockUserEventsCollectionRequest) as ITestEventDeltaCollectionPage;
+            var mockUserEventsCollectionPage = SetupMocks(originalCollectionPageEvents, nextPage);
 
             eventPageIterator = PageIterator<TestEvent>.CreatePageIterator(baseClient, mockUserEventsCollectionPage, processEachEvent, requestConfigurator);
             await eventPageIterator.IterateAsync();
 
             Assert.True(requestConfiguratorInvoked, "The delegate request configurator not invoked.");
+        }
+
+
+        private ITestEventDeltaCollectionPage SetupMocks(List<TestEvent> originalCollectionPageEvents, TestEventDeltaCollectionPage nextPage)
+        {
+            var mockUserEventsCollectionRequest = new Mock<ITestEventDeltaRequest>(MockBehavior.Strict);
+            mockUserEventsCollectionRequest.Setup(userEventsCollectionRequest => userEventsCollectionRequest.GetAsync(It.IsAny<CancellationToken>()))
+                .Returns((CancellationToken token) => Task.FromResult<ITestEventDeltaCollectionPage>(nextPage));
+            mockUserEventsCollectionRequest.Setup(userEventsCollectionRequest => userEventsCollectionRequest.GetHttpRequestMessage())
+                .Returns(() => new HttpRequestMessage(HttpMethod.Get, "https://graph.microsoft.com/v1.0/me/events?$skip=10"));
+
+            var mockUserEventsCollectionPage = new Mock<ITestEventDeltaCollectionPage>(MockBehavior.Strict);
+            mockUserEventsCollectionPage.Setup(userEventsCollectionPage => userEventsCollectionPage.NextPageRequest)
+                .Returns(mockUserEventsCollectionRequest.Object);
+            mockUserEventsCollectionPage.Setup(userEventsCollectionPage => userEventsCollectionPage.Count)
+                .Returns(originalCollectionPageEvents.Count);
+            mockUserEventsCollectionPage.Setup(userEventsCollectionPage => userEventsCollectionPage.GetEnumerator())
+                .Callback(() => originalCollectionPageEvents.GetEnumerator());
+            mockUserEventsCollectionPage.Setup(userEventsCollectionPage => userEventsCollectionPage.CopyTo(It.IsAny<TestEvent[]>(), It.IsAny<int>()))
+                .Callback((TestEvent[] arr, int index) => originalCollectionPageEvents.CopyTo(arr, index));
+
+            return mockUserEventsCollectionPage.Object;
         }
     }
 }
