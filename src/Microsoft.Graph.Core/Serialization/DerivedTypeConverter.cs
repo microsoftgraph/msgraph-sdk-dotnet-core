@@ -123,8 +123,12 @@ namespace Microsoft.Graph
                     // iterate through the object properties
                     foreach (var property in json.EnumerateObject())
                     {
-                        // look up the property in the object definition
-                        var propertyInfo = objectType.GetProperty(property.Name, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance | BindingFlags.FlattenHierarchy);
+                        // look up the property in the object definition using the mapping provided in the model attribute
+                        var propertyInfo = objectType.GetProperties().FirstOrDefault((mappedProperty) =>
+                        {
+                            var attribute = mappedProperty.GetCustomAttribute<JsonPropertyNameAttribute>();
+                            return attribute?.Name == property.Name;
+                        });
                         if (propertyInfo == null)
                         {
                             //Add the property to AdditionalData as it doesn't exist as a member of the object

@@ -91,6 +91,28 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
         }
 
         [Fact]
+        public void DerivedTypeConverterFollowsNamingProperty()
+        {
+            var id = "id";
+            var givenName = "name";
+            var link = "localhost.com"; // this property name does not match the object name
+
+            var stringToDeserialize = string.Format(
+                "{{\"id\":\"{0}\", \"givenName\":\"{1}\", \"link\":\"{2}\"}}",
+                id,
+                givenName,
+                link);
+
+            var instance = this.serializer.DeserializeObject<DerivedTypeClass>(stringToDeserialize);
+
+            Assert.NotNull(instance);
+            Assert.Equal(id, instance.Id);
+            Assert.Equal(link, instance.WebUrl);
+            Assert.NotNull(instance.AdditionalData);
+            Assert.Equal(givenName, instance.AdditionalData["givenName"].ToString());
+        }
+
+        [Fact]
         public void DeserializeStream()
         {
             var id = "id";
