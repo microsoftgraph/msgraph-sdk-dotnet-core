@@ -375,13 +375,21 @@ namespace Microsoft.Graph
 
                 foreach (var queryOption in this.QueryOptions)
                 {
+                    // no need to add empty query option
+                    if(string.IsNullOrEmpty(queryOption.Value)) 
+                        continue;
+
+                    // Escape any special uri characters in the queryOption data 
+                    // We first decode/escape the string in case the user has already encoded it to prevent double encoding
+                    var unescapedData = Uri.UnescapeDataString(queryOption.Value);
+                    var escapedOptionValue = Uri.EscapeDataString(unescapedData);
                     if (stringBuilder.Length == 0)
                     {
-                        stringBuilder.AppendFormat("?{0}={1}", queryOption.Name, queryOption.Value);
+                        stringBuilder.AppendFormat("?{0}={1}", queryOption.Name, escapedOptionValue);
                     }
                     else
                     {
-                        stringBuilder.AppendFormat("&{0}={1}", queryOption.Name, queryOption.Value);
+                        stringBuilder.AppendFormat("&{0}={1}", queryOption.Name, escapedOptionValue);
                     }
                 }
 

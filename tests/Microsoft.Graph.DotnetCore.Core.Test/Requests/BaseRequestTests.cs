@@ -28,6 +28,52 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             Assert.Equal(ErrorConstants.Messages.BaseUrlMissing, exception.Error.Message);
         }
 
+        [Theory]
+        [InlineData("contains(subject, '#')", "contains%28subject%2C%20%27%23%27%29")]
+        [InlineData("contains(subject, '?')", "contains%28subject%2C%20%27%3F%27%29")]
+        [InlineData("contains(subject,'Überweisung')", "contains%28subject%2C%27%C3%9Cberweisung%27%29")]
+        [InlineData("contains%28subject%2C%27%C3%9Cberweisung%27%29", "contains%28subject%2C%27%C3%9Cberweisung%27%29")]//ensure we do not double encode parameters if already encoded
+        public void BaseRequest_InitializeWithQueryOptionsWillUrlEncodeQueryOptions(string filterClause, string expectedQueryParam)
+        {
+            // Arrange
+            var requestUrl = string.Concat(this.baseUrl, "/users");
+            var options = new List<Option>
+            {
+                new QueryOption("$filter", filterClause),
+            };
+            var expectedUrl = $"https://localhost/v1.0/users?$filter={expectedQueryParam}";
+
+            // Act
+            var baseRequest = new BaseRequest(requestUrl, this.baseClient, options);
+            var requestMessage = baseRequest.GetHttpRequestMessage();
+
+
+            Assert.Equal(new Uri(requestUrl), new Uri(baseRequest.RequestUrl));
+            Assert.Equal(1, baseRequest.QueryOptions.Count);
+            Assert.Equal(expectedUrl, requestMessage.RequestUri.AbsoluteUri);
+        }
+
+        [Fact]
+        public void BaseRequest_InitializeWithQueryOptionsWillNotAddEmptyQueryOptionToUrl()
+        {
+            // Arrange
+            var requestUrl = string.Concat(this.baseUrl, "/users");
+            var options = new List<Option>
+            {
+                new QueryOption("$filter", ""),
+            };
+            var expectedUrl = "https://localhost/v1.0/users";
+
+            // Act
+            var baseRequest = new BaseRequest(requestUrl, this.baseClient, options);
+            var requestMessage = baseRequest.GetHttpRequestMessage();
+
+
+            Assert.Equal(new Uri(requestUrl), new Uri(baseRequest.RequestUrl));
+            Assert.Equal(1, baseRequest.QueryOptions.Count);
+            Assert.Equal(expectedUrl, requestMessage.RequestUri.AbsoluteUri);
+        }
+
         [Fact]
         public void BaseRequest_InitializeWithQueryStringAndOptions()
         {
