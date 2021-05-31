@@ -59,20 +59,24 @@ namespace Microsoft.Graph
                 var typeString = type.ToString();
                 typeString = typeString.TrimStart('#');
                 typeString = StringHelper.ConvertTypeToTitleCase(typeString);
+                var typeAssembly = objectType.GetTypeInfo().Assembly;
+                // Use the type assembly as part of the key since users might use v1 and beta at the same causing conflicts
+                var typeMappingCacheKey = $"{typeAssembly.FullName} : {typeString}";
 
-                if (DerivedTypeConverter<T>.TypeMappingCache.TryGetValue(typeString, out var instanceType))
+                if (DerivedTypeConverter<T>.TypeMappingCache.TryGetValue(typeMappingCacheKey, out var instanceType))
                 {
                     instance = this.Create(instanceType);
                 }
                 else
                 {
-                    var typeAssembly = objectType.GetTypeInfo().Assembly;
                     instance = this.Create(typeString, typeAssembly);
                 }
 
-                // If @odata.type is set but we aren't able to create an instance of it use the method-provided
-                // object type instead. This means unknown types will be deserialized as a parent type.
-                if (instance == null)
+                // If @odata.type is set but we aren't able to create an instance of it use the method-provided object type instead.
+                // This means unknown types will be deserialized as a parent type.
+                // Also if the @odata.type is set but the type is not assignable to the method provided type e.g they are not related by inheritance
+                // also use the parent type object. 
+                if (instance == null || !objectType.IsAssignableFrom(instance.GetType()))
                 {
                     instance = this.Create(objectType.AssemblyQualifiedName, /* typeAssembly */ null);
                 }
@@ -80,7 +84,7 @@ namespace Microsoft.Graph
                 if (instance != null && instanceType == null)
                 {
                     // Cache the type mapping resolution if we haven't pulled it from the cache already.
-                    DerivedTypeConverter<T>.TypeMappingCache.TryAdd(typeString, instance.GetType());
+                    DerivedTypeConverter<T>.TypeMappingCache.TryAdd(typeMappingCacheKey, instance.GetType());
                 }
             }
             else
