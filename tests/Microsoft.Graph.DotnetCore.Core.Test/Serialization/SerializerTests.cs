@@ -266,7 +266,33 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
             Assert.Equal("id2", deserializedPage[2].Id);
             Assert.Equal("id3", deserializedPage[3].Id);
         }
-        
+
+        [Fact]
+        // This test validates we do not experience an InvalidCastException in scenarios where the api could return a type in the odata.type string the is not assignable to the type defined in the metadata.
+        // A good example is the ResourceData type which can have the odata.type specified as ChatMessage(which derives from entity) and can't be assigned to it. Extra properties will therefore be found in AdditionalData.
+        // https://docs.microsoft.com/en-us/graph/api/resources/resourcedata?view=graph-rest-1.0#json-representation
+        public void DeserializeUnrelatedTypesInOdataType()
+        {
+            // Arrange
+            var resourceDataString = "{\r\n" +
+                                        "\"@odata.type\": \"#Microsoft.Graph.Message\",\r\n" + // this type can't be assigned/cast to TestResourceData
+                                        "\"@odata.id\": \"Users/{user-id}/Messages/{message-id}\",\r\n" +
+                                        "\"@odata.etag\": \"{etag}\",\r\n" +
+                                        "\"id\": \"{id}\"\r\n" +
+                                     "}";
+
+            // Act
+            var resourceData = this.serializer.DeserializeObject<TestResourceData>(resourceDataString);
+
+            // Assert
+            Assert.IsType<TestResourceData>(resourceData);
+            Assert.NotNull(resourceData);
+            Assert.Equal("#Microsoft.Graph.Message", resourceData.ODataType);
+            Assert.Equal("{id}", resourceData.AdditionalData["id"].ToString());
+            Assert.Equal("{etag}", resourceData.AdditionalData["@odata.etag"].ToString());
+            Assert.Equal("Users/{user-id}/Messages/{message-id}", resourceData.AdditionalData["@odata.id"].ToString());
+        }
+
         [Fact]
         public void NewAbstractDerivedClassInstance()
         {
@@ -515,6 +541,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
             var id = "id";
             var derivedTypeClassTypeString = "microsoft.graph.dotnetCore.core.test.testModels.derivedTypeClass";
             var dateTestClassTypeString = "microsoft.graph.dotnetCore.core.test.testModels.dateTestClass";
+            var assemblyFullName = typeof(AbstractEntityType).Assembly.FullName;
 
             var deserializeExistingTypeString = string.Format(
                 "{{\"id\":\"{0}\", \"@odata.type\":\"#{1}\"}}",
@@ -546,15 +573,15 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
 
             Assert.Equal(
                 typeof(DerivedTypeClass),
-                DerivedTypeConverter<DerivedTypeClass>.TypeMappingCache[derivedTypeClassTypeString]);
+                DerivedTypeConverter<DerivedTypeClass>.TypeMappingCache[$"{assemblyFullName} : {derivedTypeClassTypeString}"]);
 
             Assert.Equal(
                 typeof(DerivedTypeClass),
-                DerivedTypeConverter<DerivedTypeClass>.TypeMappingCache["unknown"]);
+                DerivedTypeConverter<DerivedTypeClass>.TypeMappingCache[$"{assemblyFullName} : unknown"]);
 
             Assert.Equal(
                 typeof(DateTestClass),
-                DerivedTypeConverter<DateTestClass>.TypeMappingCache[dateTestClassTypeString]);
+                DerivedTypeConverter<DateTestClass>.TypeMappingCache[$"{assemblyFullName} : {dateTestClassTypeString}"]);
         }
         
         [Theory]
