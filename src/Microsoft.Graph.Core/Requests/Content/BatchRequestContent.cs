@@ -231,8 +231,8 @@ namespace Microsoft.Graph
             }
 
             // write any headers if the step contains any request headers or content headers
-            if (   (batchRequestStep.Request.Headers != null && batchRequestStep.Request.Headers.Any()) 
-                || (batchRequestStep.Request.Content?.Headers != null && batchRequestStep.Request.Content.Headers.Any()))
+            if ((batchRequestStep.Request.Headers?.Any() ?? false) 
+                || (batchRequestStep.Request.Content?.Headers?.Any() ?? false))
             {
                 // write the Headers property name for the batch object
                 writer.WritePropertyName(CoreConstants.BatchRequest.Headers);
