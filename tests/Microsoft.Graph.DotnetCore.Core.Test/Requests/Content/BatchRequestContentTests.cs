@@ -381,12 +381,9 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
             Assert.True(batchRequestContent.BatchRequestSteps[batchRequestStepId].Request.Content.Headers.Any());
 
             // we do this to get a version of the json payload that is indented 
-            string requestContentString;
-            await using (Stream requestStream = await batchRequestContent.GetBatchRequestContentAsync())
-            using (JsonDocument jsonDocument = await JsonDocument.ParseAsync(requestStream))
-            {
-                requestContentString = JsonSerializer.Serialize(jsonDocument.RootElement, new JsonSerializerOptions() { WriteIndented = true });
-            }
+            await using var requestStream = await batchRequestContent.GetBatchRequestContentAsync();
+            using var jsonDocument = await JsonDocument.ParseAsync(requestStream);
+            string requestContentString = JsonSerializer.Serialize(jsonDocument.RootElement, new JsonSerializerOptions() { WriteIndented = true });
 
             // Ensure the headers section is added
             string expectedJsonSection = "      \"url\": \"/me\",\r\n" +
