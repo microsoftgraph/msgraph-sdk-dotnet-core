@@ -43,6 +43,7 @@
 - Fix InvalidOperationException when Location header is relative #214
 - Include symbols
 - Change debug type to portable
+- Fix for Batch function not sending the ImmutableID header
     </PackageReleaseNotes>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>

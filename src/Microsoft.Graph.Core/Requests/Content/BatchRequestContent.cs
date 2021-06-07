@@ -230,15 +230,32 @@ namespace Microsoft.Graph
                 writer.WriteEndArray();
             }
 
-            // write any headers the step contains
-            if (batchRequestStep.Request.Content?.Headers != null && batchRequestStep.Request.Content.Headers.Any())
+            // write any headers if the step contains any request headers or content headers
+            if ((batchRequestStep.Request.Headers?.Any() ?? false) 
+                || (batchRequestStep.Request.Content?.Headers?.Any() ?? false))
             {
+                // write the Headers property name for the batch object
                 writer.WritePropertyName(CoreConstants.BatchRequest.Headers);
                 writer.WriteStartObject();
-                foreach (var header in batchRequestStep.Request.Content.Headers)
+
+                // write any request headers
+                if (batchRequestStep.Request.Headers != null)
                 {
-                    writer.WriteString(header.Key, GetHeaderValuesAsString(header.Value));
+                    foreach (var header in batchRequestStep.Request.Headers)
+                    {
+                        writer.WriteString(header.Key, GetHeaderValuesAsString(header.Value));
+                    }
                 }
+
+                // write any content headers
+                if (batchRequestStep.Request.Content?.Headers != null)
+                {
+                    foreach (var header in batchRequestStep.Request.Content.Headers)
+                    {
+                        writer.WriteString(header.Key, GetHeaderValuesAsString(header.Value));
+                    }
+                }
+
                 writer.WriteEndObject();
             }
 
