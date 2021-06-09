@@ -45,6 +45,7 @@
 - Change debug type to portable
 - Fix for Batch function not sending the ImmutableID header
 - Fix NullReference Exception on null property in Error payload
+- Include US Government L5 (DOD) national cloud endpoint in cloud list
     </PackageReleaseNotes>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
