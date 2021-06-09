@@ -128,7 +128,7 @@ namespace Microsoft.Graph
                 errorStringBuilder.Append(Environment.NewLine);
                 foreach (var prop in this.AdditionalData)
                 {
-                    errorStringBuilder.AppendFormat("\t{0}: {1}", prop.Key, prop.Value == null ? "null" : prop.Value.ToString());
+                    errorStringBuilder.AppendFormat("\t{0}: {1}", prop.Key, prop.Value?.ToString() ?? "null");
                     errorStringBuilder.Append(Environment.NewLine);
                 }
             }
