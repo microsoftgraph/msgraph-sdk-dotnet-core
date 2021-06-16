@@ -45,7 +45,7 @@ namespace Microsoft.Graph
             });
 
             this.Serializer = serializer ?? new Serializer();
-            this.ResponseHandler = new ResponseHandler(this.Serializer);
+            this.ResponseHandler = responseHandler ?? new ResponseHandler(this.Serializer);
         }
 
         /// <summary>
@@ -120,7 +120,7 @@ namespace Microsoft.Graph
             using (var httpResponseMessage = await GetResponseByIdAsync(requestId)) 
             {
                 await ValidateSuccessfulResponse(httpResponseMessage);
-                var stream = await httpResponseMessage.Content.ReadAsStreamAsync();
+                using var stream = await httpResponseMessage.Content.ReadAsStreamAsync();
                 var memoryStream = new MemoryStream();
                 await stream.CopyToAsync(memoryStream);
                 return memoryStream;
@@ -183,7 +183,7 @@ namespace Microsoft.Graph
 
             if (jBatchResponseObject.RootElement.TryGetProperty(CoreConstants.Serialization.ODataNextLink, out JsonElement nextLink))
             {
-                return nextLink.ToString();
+                return nextLink.GetString();
             }
 
             return null;
