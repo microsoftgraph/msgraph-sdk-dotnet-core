@@ -5,6 +5,7 @@
     <AssemblyTitle>Microsoft Graph Core Client Library</AssemblyTitle>
     <Authors>Microsoft</Authors>
     <TargetFrameworks>netstandard2.0;net462;MonoAndroid80;Xamarin.iOS10;Xamarin.Mac20;</TargetFrameworks>
+    <LangVersion>latest</LangVersion>
     <PreserveCompilationContext>false</PreserveCompilationContext>
     <AssemblyName>Microsoft.Graph.Core</AssemblyName>
     <PackageId>Microsoft.Graph.Core</PackageId>
@@ -46,6 +47,7 @@
 - Fix for Batch function not sending the ImmutableID header
 - Fix NullReference Exception on null property in Error payload
 - Include US Government L5 (DOD) national cloud endpoint in cloud list
+- Add support for retrieving stream responses in Batch requests.
     </PackageReleaseNotes>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
