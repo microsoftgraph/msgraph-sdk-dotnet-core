@@ -165,15 +165,15 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
                                         "]" +
                                     "}";
 
-            HttpContent content = new StringContent(responseJSON);
-            HttpResponseMessage httpResponseMessage = new HttpResponseMessage(HttpStatusCode.OK)
+            using HttpContent content = new StringContent(responseJSON);
+            using HttpResponseMessage httpResponseMessage = new HttpResponseMessage(HttpStatusCode.OK)
             {
                 Content = content
             };
 
             BatchResponseContent batchResponseContent = new BatchResponseContent(httpResponseMessage);
 
-            Stream responseStream = await batchResponseContent.GetResponseStreamByIdAsync("1");
+            using Stream responseStream = await batchResponseContent.GetResponseStreamByIdAsync("1");
 
             Assert.NotNull(responseStream);
             Assert.True(responseStream.Length > 0);
