@@ -333,7 +333,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 
             // Assert
             mockHttpMessageHandler.Protected().Verify<Task<HttpResponseMessage>>("SendAsync", Times.Exactly(1 + expectedMaxRetry), ItExpr.IsAny<HttpRequestMessage>(), It.IsAny<CancellationToken>());
-            Assert.True(response.StatusCode == expectedStatusCode, $"Expected {expectedStatusCode} by was {response.StatusCode}");
+            Assert.True(response.StatusCode == expectedStatusCode, $"Expected {expectedStatusCode} but was {response.StatusCode}");
         }
 
         private async Task DelayTestWithMessage(HttpResponseMessage response, int count, string message, int delay = RetryHandlerOption.MAX_DELAY)
