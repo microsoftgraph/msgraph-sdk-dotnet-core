@@ -296,11 +296,11 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 
 
         [Theory]
-        [InlineData(1, HttpStatusCode.BadGateway)]
-        [InlineData(2, HttpStatusCode.BadGateway)]
-        [InlineData(3, HttpStatusCode.BadGateway)]
-        [InlineData(4, HttpStatusCode.OK)]
-        public async Task ShouldRetryBasedOnCustomShouldRetryDelegate(int expectedMaxRetry, HttpStatusCode expectedStatusCode)
+        [InlineData(1, HttpStatusCode.BadGateway, true)]
+        [InlineData(2, HttpStatusCode.BadGateway, true)]
+        [InlineData(3, HttpStatusCode.BadGateway, true)]
+        [InlineData(4, HttpStatusCode.OK, false)]
+        public async Task ShouldRetryBasedOnCustomShouldRetryDelegate(int expectedMaxRetry, HttpStatusCode expectedStatusCode, bool isServiceExceptionExpected)
         {
 
             var request = new HttpRequestMessage();
@@ -329,11 +329,24 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             HttpMessageInvoker httpMessageInvoker = new(retryHandler);
 
             // Act
-            var response = await httpMessageInvoker.SendAsync(request, new CancellationToken());
+            HttpResponseMessage response;
+            try
+            {
+                response = await httpMessageInvoker.SendAsync(request, new CancellationToken());
+
+                Assert.False(isServiceExceptionExpected);
+                Assert.Equal(expectedStatusCode, response.StatusCode);
+            }
+            catch (ServiceException ex)
+            {
+                Assert.True(isServiceExceptionExpected);
+                Assert.Equal(ErrorConstants.Codes.TooManyRetries, ex.Error.Code);
+                Assert.Equal(string.Format(ErrorConstants.Messages.TooManyRetriesFormatString, expectedMaxRetry), ex.Error.Message);
+            }
 
             // Assert
             mockHttpMessageHandler.Protected().Verify<Task<HttpResponseMessage>>("SendAsync", Times.Exactly(1 + expectedMaxRetry), ItExpr.IsAny<HttpRequestMessage>(), It.IsAny<CancellationToken>());
-            Assert.True(response.StatusCode == expectedStatusCode, $"Expected {expectedStatusCode} but was {response.StatusCode}");
+            
         }
 
         private async Task DelayTestWithMessage(HttpResponseMessage response, int count, string message, int delay = RetryHandlerOption.MAX_DELAY)
