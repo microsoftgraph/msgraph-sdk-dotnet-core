@@ -115,7 +115,7 @@ namespace Microsoft.Graph
                 // Call base.SendAsync to send the request
                 response = await base.SendAsync(request, cancellationToken);
 
-                if (retryCount >= RetryOption.MaxRetry || !(request.IsBuffered() && (ShouldRetry(response) || RetryOption.ShouldRetry(RetryOption.Delay, 0, response))))
+                if (retryCount >= RetryOption.MaxRetry || !(request.IsBuffered() && (ShouldRetry(response) || RetryOption.ShouldRetry(RetryOption.Delay, retryCount, response))))
                 {
                     return response;
                 }
