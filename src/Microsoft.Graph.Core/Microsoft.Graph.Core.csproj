@@ -96,11 +96,9 @@
   </PropertyGroup>
   
   <ItemGroup Condition=" '$(TargetFramework)' == 'net462' ">
-    <PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="6.5.1" />
   </ItemGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
     <PackageReference Include="System.Security.Claims" Version="4.3.0" />
-    <PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="6.5.1" />
   </ItemGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'Xamarin.iOS10' ">
     <Reference Include="Xamarin.iOS" />
@@ -135,6 +133,7 @@
     <PackageReference Include="Azure.Core" Version="1.0.1" />
     <PackageReference Include="Microsoft.Identity.Client" Version="4.9.0" />
     <PackageReference Include="System.Diagnostics.DiagnosticSource" Version="4.7.1" />
+    <PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="6.5.1" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All"/>
   </ItemGroup>
 </Project>
