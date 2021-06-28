@@ -8,6 +8,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
     using System;
     using System.Net;
     using System.Net.Http;
+    using System.Net.Http.Headers;
     using System.Threading;
     using Xunit;
     using System.Threading.Tasks;
@@ -268,5 +269,94 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                 Assert.Same(ex.Error.Message, ErrorConstants.Messages.AuthenticationProviderMissing);
             }
         }
+
+        [Fact]
+        public async Task AuthHandler_ShouldRetryUnauthorizedGetRequestAndExtractWWWAuthenticateHeaders()
+        {
+            var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, "http://example.com/bar");
+            
+            var unauthorizedResponse = new HttpResponseMessage(HttpStatusCode.Unauthorized);
+            unauthorizedResponse.Headers.WwwAuthenticate.Add(
+                new AuthenticationHeaderValue("authorization_url", 
+                    "authorization_url=\"https://login.microsoftonline.com/common/oauth2/authorize\"," +
+                            "error=\"insufficient_claims\"," +
+                            "claims=\"eyJhY2Nlc3NfdG9rZW4iOnsibmJmIjp7ImVzc2VudGlhbCI6ZmFsc2UsInZhbHVlIjoxNTM5Mjg0Mzc2fX19\""));
+
+            var expectedResponse = new HttpResponseMessage(HttpStatusCode.OK);
+
+            testHttpMessageHandler.SetHttpResponse(unauthorizedResponse, expectedResponse);
+
+            var response = await invoker.SendAsync(httpRequestMessage, new CancellationToken());
+
+            var requestContext = response.RequestMessage.GetRequestContext();
+
+            var middleWareOption = requestContext.MiddlewareOptions[typeof(AuthenticationHandlerOption).ToString()] as AuthenticationHandlerOption;
+            Assert.NotNull(middleWareOption);
+
+            var authProviderOption = middleWareOption.AuthenticationProviderOption as ICaeAuthenticationProviderOption;
+            Assert.NotNull(authProviderOption);
+
+            // Assert the decoded claims string is as expected
+            Assert.Equal("{\"access_token\":{\"nbf\":{\"essential\":false,\"value\":1539284376}}}", authProviderOption.Claims);
+            Assert.Same(response, expectedResponse);
+            Assert.NotSame(response.RequestMessage, httpRequestMessage);
+        }
+
+        [Fact]
+        // Test with a request that already has an auth provider option present
+        public async Task AuthHandler_ShouldRetryUnauthorizedGetRequestAndExtractWWWAuthenticateHeadersShouldNotLoseScopesInformation()
+        {
+            // Arrange
+            var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, "http://example.com/bar");
+            var authenticationHandlerOption = new AuthenticationHandlerOption();
+            var authenticationProviderOption = new AuthenticationProviderOptionTest
+            {
+                Scopes = new string[] { "User.Read" }
+            };
+            authenticationHandlerOption.AuthenticationProviderOption = authenticationProviderOption;
+
+            // set the original AuthenticationProviderOptionTest as the auth provider
+            var originalRequestContext = httpRequestMessage.GetRequestContext();
+            originalRequestContext.MiddlewareOptions[typeof(AuthenticationHandlerOption).ToString()] = authenticationHandlerOption;
+            httpRequestMessage.Properties[typeof(GraphRequestContext).ToString()] = originalRequestContext;
+
+            var unauthorizedResponse = new HttpResponseMessage(HttpStatusCode.Unauthorized);
+            unauthorizedResponse.Headers.WwwAuthenticate.Add(
+                new AuthenticationHeaderValue("authorization_url",
+                    "authorization_url=\"https://login.microsoftonline.com/common/oauth2/authorize\"," +
+                    "error=\"insufficient_claims\"," +
+                    "claims=\"eyJhY2Nlc3NfdG9rZW4iOnsibmJmIjp7ImVzc2VudGlhbCI6ZmFsc2UsInZhbHVlIjoxNTM5Mjg0Mzc2fX19\""));
+
+            var expectedResponse = new HttpResponseMessage(HttpStatusCode.OK);
+            
+            // Act
+            testHttpMessageHandler.SetHttpResponse(unauthorizedResponse, expectedResponse);
+            var response = await invoker.SendAsync(httpRequestMessage, new CancellationToken());
+            var requestContext = response.RequestMessage.GetRequestContext();
+
+            // Assert
+            var middleWareOption = requestContext.MiddlewareOptions[typeof(AuthenticationHandlerOption).ToString()] as AuthenticationHandlerOption;
+            Assert.NotNull(middleWareOption);
+
+            var authProviderOption = middleWareOption.AuthenticationProviderOption as ICaeAuthenticationProviderOption;
+            Assert.NotNull(authProviderOption);
+
+            // Assert the decoded claims string is as expected
+            Assert.Equal("{\"access_token\":{\"nbf\":{\"essential\":false,\"value\":1539284376}}}", authProviderOption.Claims);
+            Assert.Same(response, expectedResponse);
+            Assert.NotSame(response.RequestMessage, httpRequestMessage);
+
+            // Assert that we still have the original scopes information
+            Assert.Single(authProviderOption.Scopes);
+            Assert.Equal("User.Read", authProviderOption.Scopes[0]);
+        }
+    }
+
+    /// <summary>
+    /// Test class that implements the <see cref="IAuthenticationProviderOption"/> interface
+    /// </summary>
+    internal class AuthenticationProviderOptionTest : IAuthenticationProviderOption
+    {
+        public string[] Scopes { get; set; }
     }
 }

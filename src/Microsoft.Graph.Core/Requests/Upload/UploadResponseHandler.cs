@@ -102,7 +102,7 @@ namespace Microsoft.Graph
                     throw new ServiceException(new Error()
                         {
                             Code = ErrorConstants.Codes.GeneralException,
-                            Message = ErrorConstants.Messages.UnableToDeserializexContent,
+                            Message = ErrorConstants.Messages.UnableToDeserializeContent,
                         }, 
                         response.Headers,
                         response.StatusCode,

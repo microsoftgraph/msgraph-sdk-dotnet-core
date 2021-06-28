@@ -9,6 +9,8 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
     using System.Linq;
     using System.Net.Http;
     using System.IO;
+    using System.Net.Http.Headers;
+    using System.Threading.Tasks;
     using System.Text.Json;
     using Xunit;
 
@@ -181,7 +183,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
             using (Stream requestStream = await batchRequestContent.GetBatchRequestContentAsync())
             using (StreamReader reader = new StreamReader(requestStream))
             {
-                requestContent = reader.ReadToEnd();
+                requestContent = await reader.ReadToEndAsync();
             }
             
             string expectedContent = "{\"requests\":[{\"id\":\"2\",\"url\":\"/me\",\"method\":\"GET\"}]}";
@@ -354,7 +356,43 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
             Assert.NotNull(batchRequestContent.BatchRequestSteps);
             Assert.True(batchRequestContent.BatchRequestSteps.Count.Equals(1));
             Assert.Equal(batchRequestContent.BatchRequestSteps.First().Value.Request.RequestUri.OriginalString, baseRequest.RequestUrl);
-            Assert.Equal(batchRequestContent.BatchRequestSteps.First().Value.Request.Method.Method, baseRequest.Method);
+            Assert.Equal(batchRequestContent.BatchRequestSteps.First().Value.Request.Method.Method, baseRequest.Method.ToString());
+        }
+
+        [Fact]
+        public async Task BatchRequestContent_AddBatchRequestStepWithBaseRequestWithHeaderOptions()
+        {
+            // Create a BatchRequestContent from a BaseRequest object
+            BatchRequestContent batchRequestContent = new BatchRequestContent();
+
+            // Create a BatchRequestContent from a HttpRequestMessage object
+            HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Post, REQUEST_URL)
+            {
+                Content = new StringContent("{}")
+            };
+            requestMessage.Headers.Add("ConsistencyLevel", "eventual");
+            requestMessage.Content.Headers.ContentType = new MediaTypeHeaderValue(CoreConstants.MimeTypeNames.Application.Json);
+            string batchRequestStepId = batchRequestContent.AddBatchRequestStep(requestMessage);
+
+            // Assert we added successfully and contents are as expected
+            Assert.NotNull(batchRequestContent.BatchRequestSteps);
+            Assert.True(batchRequestContent.BatchRequestSteps.Count.Equals(1));
+            Assert.True(batchRequestContent.BatchRequestSteps[batchRequestStepId].Request.Headers.Any());
+            Assert.True(batchRequestContent.BatchRequestSteps[batchRequestStepId].Request.Content.Headers.Any());
+
+            // we do this to get a version of the json payload that is indented 
+            await using var requestStream = await batchRequestContent.GetBatchRequestContentAsync();
+            using var jsonDocument = await JsonDocument.ParseAsync(requestStream);
+            string requestContentString = JsonSerializer.Serialize(jsonDocument.RootElement, new JsonSerializerOptions() { WriteIndented = true });
+
+            // Ensure the headers section is added
+            string expectedJsonSection = "      \"url\": \"/me\",\r\n" +
+                                         "      \"method\": \"POST\",\r\n" +
+                                         "      \"headers\": {\r\n" +
+                                         "        \"ConsistencyLevel\": \"eventual\",\r\n" + // Ensure the requestMessage headers are present
+                                         "        \"Content-Type\": \"application/json\"\r\n" + // Ensure the content headers are present
+                                         "      }";
+            Assert.Contains(expectedJsonSection, requestContentString);
         }
 
         [Fact]

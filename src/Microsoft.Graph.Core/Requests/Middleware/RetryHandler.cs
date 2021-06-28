@@ -59,7 +59,7 @@ namespace Microsoft.Graph
             var response = await base.SendAsync(httpRequest, cancellationToken);
 
             // Check whether retries are permitted and that the MaxRetry value is a non - negative, non - zero value
-            if (ShouldRetry(response) && httpRequest.IsBuffered() && RetryOption.MaxRetry > 0 && RetryOption.ShouldRetry(RetryOption.Delay, 0, response))
+            if (httpRequest.IsBuffered() && RetryOption.MaxRetry > 0 && (ShouldRetry(response) || RetryOption.ShouldRetry(RetryOption.Delay, 0, response)))
             {
                 response = await SendRetryAsync(response, cancellationToken);
             }
@@ -115,11 +115,19 @@ namespace Microsoft.Graph
                 // Call base.SendAsync to send the request
                 response = await base.SendAsync(request, cancellationToken);
 
-                if (!ShouldRetry(response) || !request.IsBuffered() || !RetryOption.ShouldRetry(RetryOption.Delay, retryCount, response))
+                if (!(request.IsBuffered() && (ShouldRetry(response) || RetryOption.ShouldRetry(RetryOption.Delay, retryCount, response))))
                 {
                     return response;
                 }
             }
+            
+            // Drain response content to free connections. Need to perform this
+            // before retry attempt and before the TooManyRetries ServiceException.
+            if (response.Content != null)
+            {
+                await response.Content.ReadAsByteArrayAsync();
+            }
+            
             throw new ServiceException (
                          new Error
                          {

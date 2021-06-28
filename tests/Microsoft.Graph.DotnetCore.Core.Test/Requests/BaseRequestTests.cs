@@ -28,6 +28,52 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             Assert.Equal(ErrorConstants.Messages.BaseUrlMissing, exception.Error.Message);
         }
 
+        [Theory]
+        [InlineData("contains(subject, '#')", "contains%28subject%2C%20%27%23%27%29")]
+        [InlineData("contains(subject, '?')", "contains%28subject%2C%20%27%3F%27%29")]
+        [InlineData("contains(subject,'Überweisung')", "contains%28subject%2C%27%C3%9Cberweisung%27%29")]
+        [InlineData("contains%28subject%2C%27%C3%9Cberweisung%27%29", "contains%28subject%2C%27%C3%9Cberweisung%27%29")]//ensure we do not double encode parameters if already encoded
+        public void BaseRequest_InitializeWithQueryOptionsWillUrlEncodeQueryOptions(string filterClause, string expectedQueryParam)
+        {
+            // Arrange
+            var requestUrl = string.Concat(this.baseUrl, "/users");
+            var options = new List<Option>
+            {
+                new QueryOption("$filter", filterClause),
+            };
+            var expectedUrl = $"https://localhost/v1.0/users?$filter={expectedQueryParam}";
+
+            // Act
+            var baseRequest = new BaseRequest(requestUrl, this.baseClient, options);
+            var requestMessage = baseRequest.GetHttpRequestMessage();
+
+
+            Assert.Equal(new Uri(requestUrl), new Uri(baseRequest.RequestUrl));
+            Assert.Equal(1, baseRequest.QueryOptions.Count);
+            Assert.Equal(expectedUrl, requestMessage.RequestUri.AbsoluteUri);
+        }
+
+        [Fact]
+        public void BaseRequest_InitializeWithQueryOptionsWillNotAddEmptyQueryOptionToUrl()
+        {
+            // Arrange
+            var requestUrl = string.Concat(this.baseUrl, "/users");
+            var options = new List<Option>
+            {
+                new QueryOption("$filter", ""),
+            };
+            var expectedUrl = "https://localhost/v1.0/users";
+
+            // Act
+            var baseRequest = new BaseRequest(requestUrl, this.baseClient, options);
+            var requestMessage = baseRequest.GetHttpRequestMessage();
+
+
+            Assert.Equal(new Uri(requestUrl), new Uri(baseRequest.RequestUrl));
+            Assert.Equal(1, baseRequest.QueryOptions.Count);
+            Assert.Equal(expectedUrl, requestMessage.RequestUri.AbsoluteUri);
+        }
+
         [Fact]
         public void BaseRequest_InitializeWithQueryStringAndOptions()
         {
@@ -67,7 +113,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                 new QueryOption("query2", "value2"),
             };
 
-            var baseRequest = new BaseRequest(requestUrl, this.baseClient, options) { Method = "PUT" };
+            var baseRequest = new BaseRequest(requestUrl, this.baseClient, options) { Method = HttpMethods.PUT };
 
             var httpRequestMessage = baseRequest.GetHttpRequestMessage();
             Assert.Equal(HttpMethod.Put, httpRequestMessage.Method);
@@ -88,7 +134,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                 new HeaderOption(CoreConstants.Headers.ClientRequestId, clientRequestId)
             };
 
-            var baseRequest = new BaseRequest(requestUrl, this.baseClient, headers) { Method = "PUT" };
+            var baseRequest = new BaseRequest(requestUrl, this.baseClient, headers) { Method = HttpMethods.PUT };
 
             var httpRequestMessage = baseRequest.GetHttpRequestMessage();
 
@@ -102,7 +148,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             string requestUrl = string.Concat(this.baseUrl, "foo/bar");
             string clientRequestId = Guid.NewGuid().ToString();
 
-            var baseRequest = new BaseRequest(requestUrl, this.baseClient) { Method = "PUT" };
+            var baseRequest = new BaseRequest(requestUrl, this.baseClient) { Method = HttpMethods.PUT };
 
             var httpRequestMessage = baseRequest.GetHttpRequestMessage();
 
@@ -117,7 +163,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             string clientRequestId = Guid.NewGuid().ToString();
 
             var client = new BaseClient(baseUrl: "http://localhost.foo", authenticationProvider: null);
-            var baseRequest = new BaseRequest(requestUrl, client) { Method = "PUT" };
+            var baseRequest = new BaseRequest(requestUrl, client) { Method = HttpMethods.PUT };
 
             var httpRequestMessage = baseRequest.GetHttpRequestMessage();
 
@@ -131,7 +177,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         {
             var requestUrl = string.Concat(this.baseUrl, "/me/drive/items/id");
 
-            var baseRequest = new BaseRequest(requestUrl, this.baseClient) { Method = "DELETE" };
+            var baseRequest = new BaseRequest(requestUrl, this.baseClient) { Method = HttpMethods.DELETE };
 
             var httpRequestMessage = baseRequest.GetHttpRequestMessage();
             Assert.Equal(HttpMethod.Delete, httpRequestMessage.Method);
@@ -145,7 +191,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         {
             var requestUrl = string.Concat(this.baseUrl, "/me/drive/items/id");
 
-            var baseRequest = new BaseRequest(requestUrl, this.baseClient) { ContentType = "application/json" };
+            var baseRequest = new BaseRequest(requestUrl, this.baseClient) { ContentType = CoreConstants.MimeTypeNames.Application.Json };
 
             using (var httpResponseMessage = new HttpResponseMessage())
             using (var responseStream = new MemoryStream())
@@ -157,7 +203,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                     provider => provider.SendAsync(
                         It.Is<HttpRequestMessage>(
                             request =>
-                                string.Equals(request.Content.Headers.ContentType.ToString(), "application/json")
+                                string.Equals(request.Content.Headers.ContentType.ToString(), CoreConstants.MimeTypeNames.Application.Json)
                                && request.RequestUri.ToString().Equals(requestUrl)),
                         HttpCompletionOption.ResponseContentRead,
                         CancellationToken.None))
@@ -165,10 +211,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 
                 var expectedResponseItem = new DerivedTypeClass { Id = "id" };
                 this.serializer.Setup(
-                    serializer => serializer.SerializeObject(It.IsAny<string>()))
-                    .Returns(string.Empty);
-                this.serializer.Setup(
-                    serializer => serializer.DeserializeObject<DerivedTypeClass>(It.IsAny<string>()))
+                    serializer => serializer.DeserializeObject<DerivedTypeClass>(It.IsAny<Stream>()))
                     .Returns(expectedResponseItem);
 
                 var responseItem = await baseRequest.SendAsync<DerivedTypeClass>("string", CancellationToken.None);
@@ -183,46 +226,46 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         }
 
         [Fact]
-        public async Task SendAsync_ResponseHeaders()
+        public async Task SendAsyncSupportsContentTypeWithParameters()
         {
+            // Arrange
             var requestUrl = string.Concat(this.baseUrl, "/me/drive/items/id");
-            var baseRequest = new BaseRequest(requestUrl, this.baseClient) { ContentType = "application/json" };
-            var data = "{\"data\"}";
+
+            // Create a request that has content type with parameters 
+            var baseRequest = new BaseRequest(requestUrl, this.baseClient) { ContentType = "application/json; odata=verbose" }; 
 
             using (var httpResponseMessage = new HttpResponseMessage())
-            using (var responseStream = new MemoryStream(Encoding.ASCII.GetBytes(data)))
+            using (var responseStream = new MemoryStream())
             using (var streamContent = new StreamContent(responseStream))
             {
                 httpResponseMessage.Content = streamContent;
-                httpResponseMessage.StatusCode = System.Net.HttpStatusCode.OK;
 
                 this.httpProvider.Setup(
                     provider => provider.SendAsync(
                         It.Is<HttpRequestMessage>(
                             request =>
-                                string.Equals(request.Content.Headers.ContentType.ToString(), "application/json")
+                                string.Equals(request.Content.Headers.ContentType.ToString(), "application/json; odata=verbose")
                                && request.RequestUri.ToString().Equals(requestUrl)),
                         HttpCompletionOption.ResponseContentRead,
                         CancellationToken.None))
                         .Returns(Task.FromResult(httpResponseMessage));
 
-                Dictionary<string, object> additionalData = new Dictionary<string, object>();
-                additionalData["responseHeaders"] = new Dictionary<string, List<string>>() { { "key", new List<string>() { "value" } } };
-
-                var expectedResponseItem = new DerivedTypeClass { Id = "id", AdditionalData = additionalData };
-
+                var expectedResponseItem = new DerivedTypeClass { Id = "id" };
                 this.serializer.Setup(
-                    serializer => serializer.DeserializeObject<DerivedTypeClass>(It.IsAny<string>()))
-                    .Returns(expectedResponseItem);
-                this.serializer.Setup(
-                    serializer => serializer.DeserializeObject<DerivedTypeClass>(It.IsAny<string>()))
+                    serializer => serializer.DeserializeObject<DerivedTypeClass>(It.IsAny<Stream>()))
                     .Returns(expectedResponseItem);
 
+                // Act
                 var responseItem = await baseRequest.SendAsync<DerivedTypeClass>("string", CancellationToken.None);
-                Assert.NotNull(responseItem.AdditionalData["responseHeaders"]);
+
+                // Assert
+                Assert.NotNull(responseItem);
+                Assert.Equal(expectedResponseItem.Id, responseItem.Id);
                 Assert.NotNull(baseRequest.Client.AuthenticationProvider);
                 Assert.NotNull(baseRequest.GetHttpRequestMessage().GetRequestContext().ClientRequestId);
-                Assert.Equal(expectedResponseItem.AdditionalData["responseHeaders"], responseItem.AdditionalData["responseHeaders"]);
+                Assert.Equal(baseRequest.GetHttpRequestMessage().GetMiddlewareOption<AuthenticationHandlerOption>().AuthenticationProvider, 
+                    baseRequest.Client.AuthenticationProvider);
+                Assert.Equal("application/json; odata=verbose", baseRequest.ContentType);
             }
         }
 
@@ -241,7 +284,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         {
             var requestUrl = string.Concat(this.baseUrl, "/me/drive/items/id");
 
-            var baseRequest = new BaseRequest(requestUrl, this.baseClient) { ContentType = "application/json" };
+            var baseRequest = new BaseRequest(requestUrl, this.baseClient) { ContentType = CoreConstants.MimeTypeNames.Application.Json };
 
             using (var httpResponseMessage = new HttpResponseMessage())
             using (var responseStream = new MemoryStream())
@@ -253,7 +296,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                     provider => provider.SendAsync(
                         It.Is<HttpRequestMessage>(
                             request =>
-                                string.Equals(request.Content.Headers.ContentType.ToString(), "application/json")
+                                string.Equals(request.Content.Headers.ContentType.ToString(), CoreConstants.MimeTypeNames.Application.Json)
                                && request.RequestUri.ToString().Equals(requestUrl)),
                         HttpCompletionOption.ResponseContentRead,
                         CancellationToken.None))
@@ -273,7 +316,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         {
             var requestUrl = string.Concat(this.baseUrl, "/me/drive/items/id");
 
-            var baseRequest = new BaseRequest(requestUrl, this.baseClient) { ContentType = "application/json" };
+            var baseRequest = new BaseRequest(requestUrl, this.baseClient) { ContentType = CoreConstants.MimeTypeNames.Application.Json };
 
             using (var httpResponseMessage = new HttpResponseMessage())
             using (var responseStream = new MemoryStream())
@@ -282,7 +325,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                     provider => provider.SendAsync(
                         It.Is<HttpRequestMessage>(
                             request =>
-                                string.Equals(request.Content.Headers.ContentType.ToString(), "application/json")
+                                string.Equals(request.Content.Headers.ContentType.ToString(), CoreConstants.MimeTypeNames.Application.Json)
                                && request.RequestUri.ToString().Equals(requestUrl)),
                         HttpCompletionOption.ResponseContentRead,
                         CancellationToken.None))
@@ -313,7 +356,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         public async Task SendStreamRequestAsync()
         {
             var requestUrl = string.Concat(this.baseUrl, "/me/photo/$value");
-            var baseRequest = new BaseRequest(requestUrl, this.baseClient) { ContentType = "application/json", Method = "PUT" };
+            var baseRequest = new BaseRequest(requestUrl, this.baseClient) { ContentType = CoreConstants.MimeTypeNames.Application.Json, Method = HttpMethods.PUT };
 
             using (var requestStream = new MemoryStream())
             using (var httpResponseMessage = new HttpResponseMessage())
@@ -393,7 +436,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                     ""givenName"": ""Joe"",
                     ""surName"": ""Brown"",
                     ""@odata.type"":""test""
-                    }", Encoding.UTF8, "application/json")
+                    }", Encoding.UTF8, CoreConstants.MimeTypeNames.Application.Json)
                 };
                 testHttpMessageHandler.AddResponseMapping(requestUrl, responseMessage);
                 MockCustomHttpProvider customHttpProvider = new MockCustomHttpProvider(testHttpMessageHandler);

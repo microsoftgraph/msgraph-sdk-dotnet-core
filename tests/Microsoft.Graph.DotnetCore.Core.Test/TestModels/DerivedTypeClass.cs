@@ -30,5 +30,11 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels
         /// </summary>
         [JsonPropertyName("memorableDates")]
         public IEnumerable<DateTestClass> MemorableDates { get; set; }
+
+        /// <summary>
+        /// Gets or sets link.
+        /// </summary>
+        [JsonPropertyName("link")]
+        public string WebUrl { get; set; }
     }
 }

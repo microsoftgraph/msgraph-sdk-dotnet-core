@@ -38,13 +38,16 @@ namespace Microsoft.Graph
                 { Global_Cloud, "https://graph.microsoft.com" },
                 { USGOV_Cloud, "https://graph.microsoft.us" },
                 { China_Cloud, "https://microsoftgraph.chinacloudapi.cn" },
-                { Germany_Cloud, "https://graph.microsoft.de" }
+                { Germany_Cloud, "https://graph.microsoft.de" },
+                { USGOV_DOD_Cloud, "https://dod-graph.microsoft.us" },
             };
 
         /// Global endpoint
         public const string Global_Cloud = "Global";
         /// US_GOV endpoint
         public const string USGOV_Cloud = "US_GOV";
+        /// US_GOV endpoint
+        public const string USGOV_DOD_Cloud = "US_GOV_DOD";
         /// China endpoint
         public const string China_Cloud = "China";
         /// Germany endpoint
@@ -179,15 +182,20 @@ namespace Microsoft.Graph
                     throw new ArgumentNullException(nameof(handlers), "DelegatingHandler array contains null item.");
                 }
 
+#if iOS || macOS
 #if iOS
-                // Skip CompressionHandler since NSUrlSessionHandler automatically handles decompression on iOS and it can't be turned off.
+                // Skip CompressionHandler since NSUrlSessionHandler automatically handles decompression on iOS and macOS and it can't be turned off.
                 // See issue https://github.com/microsoftgraph/msgraph-sdk-dotnet/issues/481 for more details.
                 if (finalHandler.GetType().Equals(typeof(NSUrlSessionHandler)) && handler.GetType().Equals(typeof(CompressionHandler)))
+#elif macOS
+                 if (finalHandler.GetType().Equals(typeof(Foundation.NSUrlSessionHandler)) && handler.GetType().Equals(typeof(CompressionHandler)))
+#endif
                 {
                     // Skip chaining of CompressionHandler.
                     continue;
                 }
 #endif
+
                 // Check for duplicate handler by type.
                 if (!existingHandlerTypes.Add(handler.GetType()))
                 {
@@ -206,11 +214,11 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Gets a platform's native http handler i.e. NSUrlSessionHandler for Xamarin.iOS, AndroidClientHandler for Xamarin.Android and HttpClientHandler for others.
+        /// Gets a platform's native http handler i.e. NSUrlSessionHandler for Xamarin.iOS and Xamarin.Mac, AndroidClientHandler for Xamarin.Android and HttpClientHandler for others.
         /// </summary>
         /// <param name="proxy">The proxy to be used with created client.</param>
         /// <returns>
-        /// 1. NSUrlSessionHandler for Xamarin.iOS 
+        /// 1. NSUrlSessionHandler for Xamarin.iOS and Xamarin.Mac
         /// 2. AndroidClientHandler for Xamarin.Android.
         /// 3. HttpClientHandler for other platforms.
         /// </returns>
@@ -218,6 +226,8 @@ namespace Microsoft.Graph
         {
 #if iOS
             return new NSUrlSessionHandler { AllowAutoRedirect = false };
+#elif macOS
+            return new Foundation.NSUrlSessionHandler { AllowAutoRedirect = false };
 #elif ANDROID
             return new Xamarin.Android.Net.AndroidClientHandler { Proxy = proxy, AllowAutoRedirect = false, AutomaticDecompression = DecompressionMethods.None };
 #else

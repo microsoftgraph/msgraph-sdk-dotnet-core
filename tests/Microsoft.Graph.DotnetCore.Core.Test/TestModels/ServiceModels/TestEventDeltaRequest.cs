@@ -10,7 +10,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
     /// <summary>
     /// The type UserEventsCollectionRequest.
     /// </summary>
-    public partial class TestEventDeltaRequest : BaseRequest
+    public partial class TestEventDeltaRequest : BaseRequest, ITestEventDeltaRequest
     {
         /// <summary>
         /// Constructs a new UserEventsCollectionRequest.
@@ -44,8 +44,8 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
         /// <returns>The created Event.</returns>
         public System.Threading.Tasks.Task<TestEvent> AddAsync(TestEvent eventsEvent, CancellationToken cancellationToken)
         {
-            this.ContentType = "application/json";
-            this.Method = "POST";
+            this.ContentType = CoreConstants.MimeTypeNames.Application.Json;
+            this.Method = HttpMethods.POST;
             return this.SendAsync<TestEvent>(eventsEvent, cancellationToken);
         }
 
@@ -65,7 +65,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
         /// <returns>The collection page.</returns>
         public async System.Threading.Tasks.Task<ITestEventDeltaCollectionPage> GetAsync(CancellationToken cancellationToken)
         {
-            this.Method = "GET";
+            this.Method = HttpMethods.GET;
             var response = await this.SendAsync<TestEventDeltaCollectionResponse>(null, cancellationToken).ConfigureAwait(false);
             if (response != null && response.Value != null && response.Value.CurrentPage != null)
             {

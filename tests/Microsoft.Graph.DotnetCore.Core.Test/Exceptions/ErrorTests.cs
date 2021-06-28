@@ -132,5 +132,44 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Exceptions
                                                           errorDetail => Assert.Equal("details-code-value2", errorDetail.Code));
             Assert.Equal("unexpected-details-property-value", error.Details.ToList<ErrorDetail>()[0].AdditionalData["unexpected-details-property"].ToString());
         }
+
+        [Fact]
+        public void VerifyToStringDoesNotThrowNullReferenceExceptionOnNullErrorProperty()
+        {
+            var errorResponseWithNullException = "{\r\n" +
+                                                 "            \"error\": {\r\n" +
+                                                 "                \"code\": \"BadRequest\",\r\n" +
+                                                 "                \"message\": \"Resource not found for the segment 'mer'.\",\r\n" +
+                                                 "                \"innerError\": {\r\n" +
+                                                 "                    \"request-id\": \"a9acfc00-2b19-44b5-a2c6-6c329b4337b3\",\r\n" +
+                                                 "                    \"date\": \"2019-09-10T18:26:26\",\r\n" +
+                                                 "                    \"code\": \"inner-error-code\",\r\n" +
+                                                 "                    \"exception\": null\r\n" +                    // Exception property present but set to null
+                                                 "                },\r\n" +
+                                                 "                \"target\": \"target-value\",\r\n" +
+                                                 "                \"unexpected-property\": \"unexpected-property-value\"\r\n" +
+                                                 "            }\r\n" +
+                                                 "        }";
+
+            Error error = this.serializer.DeserializeObject<ErrorResponse>(errorResponseWithNullException).Error;
+
+            // Assert we have deserialized the properties as expected.
+            Assert.NotNull(error);
+            Assert.Equal("BadRequest", error.Code);
+            Assert.Equal("Resource not found for the segment 'mer'.", error.Message);
+            Assert.NotNull(error.InnerError);
+            Assert.Equal("a9acfc00-2b19-44b5-a2c6-6c329b4337b3", error.InnerError.AdditionalData["request-id"].ToString());
+            Assert.Equal("2019-09-10T18:26:26", error.InnerError.AdditionalData["date"].ToString());
+            Assert.Null(error.InnerError.AdditionalData["exception"]);                  // Assert the property is null
+            Assert.Equal("inner-error-code", error.InnerError.Code);
+            Assert.Equal("target-value", error.Target);
+            Assert.NotNull(error.AdditionalData);
+            Assert.Equal("unexpected-property-value", error.AdditionalData["unexpected-property"].ToString());
+
+            var errorString = error.ToString();
+
+            // Assert we can create the string representation
+            Assert.Contains("exception: null", errorString);
+        }
     }
 }

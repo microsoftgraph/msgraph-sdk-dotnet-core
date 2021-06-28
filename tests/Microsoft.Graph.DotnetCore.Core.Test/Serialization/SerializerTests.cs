@@ -4,12 +4,15 @@
 
 namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
 {
+    using Microsoft.Graph.Core.Models;
     using Microsoft.Graph.DotnetCore.Core.Test.TestModels;
+    using Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels;
     using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Text;
+    using System.Text.Json;
     using Xunit;
     public class SerializerTests
     {
@@ -50,6 +53,25 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
         }
 
         [Fact]
+        public void DeserializeDerivedTypeFromAbstractParent()
+        {
+            var id = "id";
+            var name = "name";
+
+            var stringToDeserialize = string.Format(
+                "{{\"id\":\"{0}\", \"@odata.type\":\"#microsoft.graph.dotnetCore.core.test.testModels.derivedTypeClass\", \"name\":\"{1}\"}}",
+                id,
+                name);
+
+            //The type information from "@odata.type" should lead to correctly deserializing to the derived type
+            var derivedType = this.serializer.DeserializeObject<AbstractEntityType>(stringToDeserialize) as DerivedTypeClass;
+
+            Assert.NotNull(derivedType);
+            Assert.Equal(id, derivedType.Id);
+            Assert.Equal(name, derivedType.Name);
+        }
+
+        [Fact]
         public void DeserializeInvalidODataType()
         {
             var id = "id";
@@ -69,6 +91,28 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
         }
 
         [Fact]
+        public void DerivedTypeConverterFollowsNamingProperty()
+        {
+            var id = "id";
+            var givenName = "name";
+            var link = "localhost.com"; // this property name does not match the object name
+
+            var stringToDeserialize = string.Format(
+                "{{\"id\":\"{0}\", \"givenName\":\"{1}\", \"link\":\"{2}\"}}",
+                id,
+                givenName,
+                link);
+
+            var instance = this.serializer.DeserializeObject<DerivedTypeClass>(stringToDeserialize);
+
+            Assert.NotNull(instance);
+            Assert.Equal(id, instance.Id);
+            Assert.Equal(link, instance.WebUrl);
+            Assert.NotNull(instance.AdditionalData);
+            Assert.Equal(givenName, instance.AdditionalData["givenName"].ToString());
+        }
+
+        [Fact]
         public void DeserializeStream()
         {
             var id = "id";
@@ -83,6 +127,23 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
                 Assert.Equal(id, instance.Id);
                 Assert.Null(instance.AdditionalData);
             }
+        }
+
+        [Fact]
+        public void DeserializeEmptyStringOrStream()
+        {
+            var stringToDeserialize = string.Empty;
+
+            // Asset empty stream deserializes to null
+            using (var serializedStream = new MemoryStream(Encoding.UTF8.GetBytes(stringToDeserialize)))
+            {
+                var instance = this.serializer.DeserializeObject<DerivedTypeClass>(serializedStream);
+                Assert.Null(instance);
+            }
+
+            // Asset empty string deserializes to null
+            var stringInstance = this.serializer.DeserializeObject<DerivedTypeClass>(stringToDeserialize);
+            Assert.Null(stringInstance);
         }
 
         [Fact]
@@ -205,7 +266,33 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
             Assert.Equal("id2", deserializedPage[2].Id);
             Assert.Equal("id3", deserializedPage[3].Id);
         }
-        
+
+        [Fact]
+        // This test validates we do not experience an InvalidCastException in scenarios where the api could return a type in the odata.type string the is not assignable to the type defined in the metadata.
+        // A good example is the ResourceData type which can have the odata.type specified as ChatMessage(which derives from entity) and can't be assigned to it. Extra properties will therefore be found in AdditionalData.
+        // https://docs.microsoft.com/en-us/graph/api/resources/resourcedata?view=graph-rest-1.0#json-representation
+        public void DeserializeUnrelatedTypesInOdataType()
+        {
+            // Arrange
+            var resourceDataString = "{\r\n" +
+                                        "\"@odata.type\": \"#Microsoft.Graph.Message\",\r\n" + // this type can't be assigned/cast to TestResourceData
+                                        "\"@odata.id\": \"Users/{user-id}/Messages/{message-id}\",\r\n" +
+                                        "\"@odata.etag\": \"{etag}\",\r\n" +
+                                        "\"id\": \"{id}\"\r\n" +
+                                     "}";
+
+            // Act
+            var resourceData = this.serializer.DeserializeObject<TestResourceData>(resourceDataString);
+
+            // Assert
+            Assert.IsType<TestResourceData>(resourceData);
+            Assert.NotNull(resourceData);
+            Assert.Equal("#Microsoft.Graph.Message", resourceData.ODataType);
+            Assert.Equal("{id}", resourceData.AdditionalData["id"].ToString());
+            Assert.Equal("{etag}", resourceData.AdditionalData["@odata.etag"].ToString());
+            Assert.Equal("Users/{user-id}/Messages/{message-id}", resourceData.AdditionalData["@odata.id"].ToString());
+        }
+
         [Fact]
         public void NewAbstractDerivedClassInstance()
         {
@@ -251,6 +338,18 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
             Assert.Equal(instance.Id, instance.Id);
             Assert.Equal(EnumType.Value, instance.EnumType);
             Assert.Null(instance.AdditionalData);
+        }
+
+        [Fact]
+        public void SerializeEnumValueWithFlags()
+        {
+            EnumTypeWithFlags enumValueWithFlags = EnumTypeWithFlags.FirstValue | EnumTypeWithFlags.SecondValue;
+
+            var expectedSerializedValue = "\"firstValue, secondValue\""; // All values should be camelCased
+
+            var serializedValue = this.serializer.SerializeObject(enumValueWithFlags);
+
+            Assert.Equal(expectedSerializedValue, serializedValue);
         }
 
         [Fact]
@@ -303,6 +402,137 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
         }
 
         [Fact]
+        public void DerivedTypeConverterIgnoresPropertyWithJsonIgnore()
+        {
+            var now = DateTimeOffset.UtcNow;
+
+            var expectedSerializedString = string.Format("{{\"nullableDate\":\"{0}\"}}", now.ToString("yyyy-MM-dd"));
+
+            var date = new DateTestClass
+            {
+                NullableDate = new Date(now.Year, now.Month, now.Day),
+                IgnoredNumber = 230 // we shouldn't see this value
+            };
+
+            var serializedString = this.serializer.SerializeObject(date);
+
+            Assert.Equal(expectedSerializedString, serializedString);
+            Assert.DoesNotContain("230", serializedString);
+        }
+
+        [Fact]
+        public void SerializeObjectWithAdditionalDataWithDerivedTypeConverter()
+        {
+            // This example class uses the derived type converter
+            // Arrange
+            TestItemBody testItemBody = new TestItemBody
+            {
+                Content = "Example Content",
+                ContentType = TestBodyType.Text,
+                AdditionalData = new Dictionary<string, object>
+                {
+                    { "length" , "100" }
+                }
+            };
+            var expectedSerializedString = "{" +
+                                               "\"contentType\":\"text\"," +
+                                               "\"content\":\"Example Content\"," +
+                                               "\"length\":\"100\"," + // should be at the same level as other properties
+                                               "\"@odata.type\":\"microsoft.graph.itemBody\"" +
+                                           "}";
+
+            // Act
+            var serializedString = this.serializer.SerializeObject(testItemBody);
+
+            //Assert
+            Assert.Equal(expectedSerializedString, serializedString);
+        }
+
+        [Fact]
+        public void SerializeObjectWithEmptyAdditionalDataWithDerivedTypeConverter()
+        {
+            // This example class uses the derived type converter with an empty/unset AdditionalData
+            // Arrange
+            TestItemBody testItemBody = new TestItemBody
+            {
+                Content = "Example Content",
+                ContentType = TestBodyType.Text
+            };
+            var expectedSerializedString = "{" +
+                                           "\"contentType\":\"text\"," +
+                                           "\"content\":\"Example Content\"," +
+                                           "\"@odata.type\":\"microsoft.graph.itemBody\"" +
+                                           "}";
+
+            // Act
+            var serializedString = this.serializer.SerializeObject(testItemBody);
+
+            //Assert
+            Assert.Equal(expectedSerializedString, serializedString);
+        }
+
+        [Fact]
+        public void SerializeObjectWithAdditionalDataWithoutDerivedTypeConverter()
+        {
+            // This example class does NOT use the derived type converter to act as a control
+            // Arrange
+            TestEmailAddress testEmailAddress = new TestEmailAddress
+            {
+                Name = "Peter Pan",
+                Address = "peterpan@neverland.com",
+                AdditionalData = new Dictionary<string, object>
+                {
+                    { "alias" , "peterpan" }
+                }
+            };
+            var expectedSerializedString = "{" +
+                                               "\"name\":\"Peter Pan\"," +
+                                               "\"address\":\"peterpan@neverland.com\"," +
+                                               "\"@odata.type\":\"microsoft.graph.emailAddress\"," +
+                                               "\"alias\":\"peterpan\"" + // should be at the same level as other properties
+                                           "}";
+
+            // Act
+            var serializedString = this.serializer.SerializeObject(testEmailAddress);
+
+            // Assert
+            Assert.Equal(expectedSerializedString, serializedString);
+        }
+
+        [Theory]
+        [InlineData("2016-11-20T18:23:45.9356913+00:00", "\"2016-11-20T18:23:45.9356913+00:00\"")]
+        [InlineData("1992-10-26T08:30:15.1456919+07:00", "\"1992-10-26T08:30:15.1456919+07:00\"")]// make sure different offset is okay as well
+        public void SerializeDateTimeOffsetValue(string dateTimeOffsetString, string expectedJsonValue)
+        {
+            // Arrange
+            var dateTimeOffset = DateTimeOffset.Parse(dateTimeOffsetString);
+            // Act
+            var serializedString = this.serializer.SerializeObject(dateTimeOffset);
+
+            // Assert
+            // Expect the string to be ISO 8601-1:2019 format
+            Assert.Equal(expectedJsonValue, serializedString);
+        }
+
+        [Fact]
+        public void SerializeUploadSessionValues()
+        {
+            // Arrange
+            var uploadSession = new UploadSession()
+            {
+                ExpirationDateTime = DateTimeOffset.Parse("2016-11-20T18:23:45.9356913+00:00"),
+                UploadUrl = "http://localhost",
+                NextExpectedRanges = new List<string> { "0 - 1000" }
+            };
+            var expectedString = @"{""expirationDateTime"":""2016-11-20T18:23:45.9356913+00:00"",""nextExpectedRanges"":[""0 - 1000""],""uploadUrl"":""http://localhost""}";
+            // Act
+            var serializedString = this.serializer.SerializeObject(uploadSession);
+            // Assert
+            // Expect the string to be ISO 8601-1:2019 format
+            Assert.Equal(expectedString, serializedString);
+        }
+
+        [Fact]
         public void VerifyTypeMappingCache()
         {
             // Clear the cache so it won't have mappings from previous tests.
@@ -311,6 +541,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
             var id = "id";
             var derivedTypeClassTypeString = "microsoft.graph.dotnetCore.core.test.testModels.derivedTypeClass";
             var dateTestClassTypeString = "microsoft.graph.dotnetCore.core.test.testModels.dateTestClass";
+            var assemblyFullName = typeof(AbstractEntityType).Assembly.FullName;
 
             var deserializeExistingTypeString = string.Format(
                 "{{\"id\":\"{0}\", \"@odata.type\":\"#{1}\"}}",
@@ -342,15 +573,104 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
 
             Assert.Equal(
                 typeof(DerivedTypeClass),
-                DerivedTypeConverter<DerivedTypeClass>.TypeMappingCache[derivedTypeClassTypeString]);
+                DerivedTypeConverter<DerivedTypeClass>.TypeMappingCache[$"{assemblyFullName} : {derivedTypeClassTypeString}"]);
 
             Assert.Equal(
                 typeof(DerivedTypeClass),
-                DerivedTypeConverter<DerivedTypeClass>.TypeMappingCache["unknown"]);
+                DerivedTypeConverter<DerivedTypeClass>.TypeMappingCache[$"{assemblyFullName} : unknown"]);
 
             Assert.Equal(
                 typeof(DateTestClass),
-                DerivedTypeConverter<DateTestClass>.TypeMappingCache[dateTestClassTypeString]);
+                DerivedTypeConverter<DateTestClass>.TypeMappingCache[$"{assemblyFullName} : {dateTestClassTypeString}"]);
+        }
+        
+        [Theory]
+        [InlineData("string", "{\"@odata.context\": \"https://graph.microsoft.com/beta/$metadata#String\", \"value\": \"expectedvalue\"}")]
+        [InlineData("bool", "{\"@odata.context\": \"https://graph.microsoft.com/beta/$metadata#String\", \"value\": true}")]
+        [InlineData("int32", "{\"@odata.context\":\"https://graph.microsoft.com/v1.0/$metadata#Edm.Boolean\",\"value\":1}")]
+        public void MethodResponseSimpleReturnTypeDeserialization(string @case, string payload)
+        {
+            switch (@case)
+            {
+                case "string": 
+                    var actualStringValue = this.serializer.DeserializeObject<ODataMethodStringResponse>(payload).Value;
+                    Assert.Equal("expectedvalue", actualStringValue);
+                    break;
+                case "bool":
+                    var actualBoolValue = this.serializer.DeserializeObject<ODataMethodBooleanResponse>(payload).Value;
+                    Assert.True(actualBoolValue);
+                    break;
+                case "int32":
+                    var actualInt32Value = this.serializer.DeserializeObject<ODataMethodIntResponse>(payload).Value;
+                    Assert.Equal(1, actualInt32Value);
+                    break;
+                default:
+                    Assert.True(false);
+                    break;
+            }
+        }
+
+        [Theory]
+        [InlineData("string")]
+        [InlineData("bool")]
+        [InlineData("int32")]
+        public void MethodResponseUnexpectedReturnObject(string @case)
+        {
+            var payload = "{\"@odata.context\": \"https://graph.microsoft.com/beta/$metadata#String\", \"value\": { \"objProp\": \"objPropValue\" }}";
+
+            switch (@case)
+            {
+                case "string":
+                    JsonException exceptionString = Assert.Throws<JsonException>(() => this.serializer
+                                                                                                       .DeserializeObject<ODataMethodStringResponse>(payload));
+                    Assert.Equal("$.value", exceptionString.Path); // the value property doesn't exist as a string
+                    break;
+                case "bool":
+                    JsonException exceptionBool = Assert.Throws<JsonException>(() => this.serializer
+                                                                                                     .DeserializeObject<ODataMethodBooleanResponse>(payload));
+                    Assert.Equal("$.value", exceptionBool.Path); // the value property doesn't exist as a bool
+                    break;
+                case "int32":
+                    JsonException exceptionInt = Assert.Throws<JsonException>(() => this.serializer
+                                                                                                    .DeserializeObject<ODataMethodIntResponse>(payload));
+                    Assert.Equal("$.value", exceptionInt.Path); // the value property doesn't exist as a int
+                    break;
+                default:
+                    Assert.True(false);
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// Test what happens when the service API returns an unexpected response body.
+        /// https://github.com/microsoftgraph/msgraph-sdk-serviceissues/issues/9
+        /// </summary>
+        [Theory]
+        [InlineData("string")]
+        [InlineData("bool")]
+        [InlineData("int32")]
+        public void MethodResponseMissingValueDeserialization(string @case)
+        {
+            var badPayload = "{\"@odata.context\": \"https://graph.microsoft.com/v1.0/$metadata#Edm.Null\", \"@odata.null\": true}";
+
+            switch (@case)
+            {
+                case "string":
+                    var stringResult = this.serializer.DeserializeObject<ODataMethodStringResponse>(badPayload).Value;
+                    Assert.Null(stringResult);
+                    break;
+                case "bool":
+                    var boolResult = this.serializer.DeserializeObject<ODataMethodBooleanResponse>(badPayload).Value;
+                    Assert.Null(boolResult);
+                    break;
+                case "int32":
+                    var intResult = this.serializer.DeserializeObject<ODataMethodIntResponse>(badPayload).Value;
+                    Assert.Null(intResult);
+                    break;
+                default:
+                    Assert.True(false);
+                    break;
+            }
         }
     }
 }

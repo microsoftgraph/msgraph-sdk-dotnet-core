@@ -29,7 +29,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                     ""givenName"": ""Joe"",
                     ""surName"": ""Brown"",
                     ""@odata.type"":""test""
-                }", Encoding.UTF8, "application/json")
+                }", Encoding.UTF8, CoreConstants.MimeTypeNames.Application.Json)
             };
             hrm.Headers.Add("test", "value");
 
@@ -40,10 +40,6 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             Assert.Equal("123", user.Id);
             Assert.Equal("Joe", user.GivenName);
             Assert.Equal("Brown", user.Surname);
-            Assert.Equal("OK", user.AdditionalData["statusCode"].ToString());
-            var headers = (JsonElement)(user.AdditionalData["responseHeaders"]);
-            var headerValue = headers.GetProperty("test");
-            Assert.Equal("value", headerValue.EnumerateArray().ElementAt(0).ToString());
         }
 
         /// <summary>
@@ -64,7 +60,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             {
                 Content = new StringContent(testString,
                                 Encoding.UTF8,
-                                "application/json")
+                                CoreConstants.MimeTypeNames.Application.Json)
             };
         
             // Act
@@ -114,8 +110,8 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             var hrm = new HttpResponseMessage()
             {
                 Content = new StringContent(testString, 
-                                            Encoding.UTF8, 
-                                            "application/json")
+                                            Encoding.UTF8,
+                                            CoreConstants.MimeTypeNames.Application.Json)
             };
         
             // Act
@@ -163,7 +159,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             {
                 Content = new StringContent(testString,
                                             Encoding.UTF8,
-                                            "application/json")
+                                            CoreConstants.MimeTypeNames.Application.Json)
             };
 
             // Act
@@ -194,7 +190,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             {
                 Content = new StringContent(testString,
                                             Encoding.UTF8,
-                                            "application/json")
+                                            CoreConstants.MimeTypeNames.Application.Json)
             };
 
             // Assuming this is the developers model that they want to update based on delta query.
@@ -304,7 +300,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             {
                 Content = new StringContent(testString,
                                             Encoding.UTF8,
-                                            "application/json")
+                                            CoreConstants.MimeTypeNames.Application.Json)
             };
 
             // Act

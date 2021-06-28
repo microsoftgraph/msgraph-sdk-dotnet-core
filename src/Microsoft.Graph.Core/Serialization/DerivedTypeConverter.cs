@@ -42,11 +42,11 @@ namespace Microsoft.Graph
             JsonElement type;
             try
             {
-                type = jsonDocument.RootElement.GetProperty(CoreConstants.Serialization.ODataType);
-            }
-            catch (KeyNotFoundException)
-            {
-                type = default;
+                // try to get the @odata.type property if we can
+                if (!jsonDocument.RootElement.TryGetProperty(CoreConstants.Serialization.ODataType, out type))
+                {
+                    type = default;
+                }
             }
             catch (InvalidOperationException)
             {
@@ -59,20 +59,24 @@ namespace Microsoft.Graph
                 var typeString = type.ToString();
                 typeString = typeString.TrimStart('#');
                 typeString = StringHelper.ConvertTypeToTitleCase(typeString);
+                var typeAssembly = objectType.GetTypeInfo().Assembly;
+                // Use the type assembly as part of the key since users might use v1 and beta at the same causing conflicts
+                var typeMappingCacheKey = $"{typeAssembly.FullName} : {typeString}";
 
-                if (DerivedTypeConverter<T>.TypeMappingCache.TryGetValue(typeString, out var instanceType))
+                if (DerivedTypeConverter<T>.TypeMappingCache.TryGetValue(typeMappingCacheKey, out var instanceType))
                 {
                     instance = this.Create(instanceType);
                 }
                 else
                 {
-                    var typeAssembly = objectType.GetTypeInfo().Assembly;
                     instance = this.Create(typeString, typeAssembly);
                 }
 
-                // If @odata.type is set but we aren't able to create an instance of it use the method-provided
-                // object type instead. This means unknown types will be deserialized as a parent type.
-                if (instance == null)
+                // If @odata.type is set but we aren't able to create an instance of it use the method-provided object type instead.
+                // This means unknown types will be deserialized as a parent type.
+                // Also if the @odata.type is set but the type is not assignable to the method provided type e.g they are not related by inheritance
+                // also use the parent type object. 
+                if (instance == null || !objectType.IsAssignableFrom(instance.GetType()))
                 {
                     instance = this.Create(objectType.AssemblyQualifiedName, /* typeAssembly */ null);
                 }
@@ -80,7 +84,7 @@ namespace Microsoft.Graph
                 if (instance != null && instanceType == null)
                 {
                     // Cache the type mapping resolution if we haven't pulled it from the cache already.
-                    DerivedTypeConverter<T>.TypeMappingCache.TryAdd(typeString, instance.GetType());
+                    DerivedTypeConverter<T>.TypeMappingCache.TryAdd(typeMappingCacheKey, instance.GetType());
                 }
             }
             else
@@ -100,7 +104,7 @@ namespace Microsoft.Graph
                     });
             }
 
-            PopulateObject(instance, jsonDocument.RootElement, objectType,options);
+            PopulateObject(instance, jsonDocument.RootElement, options);
             return (T)instance;
         }
 
@@ -111,10 +115,11 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="target">The target object</param>
         /// <param name="json">The json element undergoing deserialization</param>
-        /// <param name="objectType">The target object <see cref="Type"/></param>
         /// <param name="options">The options to use for deserialization.</param>
-        private void PopulateObject(object target, JsonElement json, Type objectType, JsonSerializerOptions options)
+        private void PopulateObject(object target, JsonElement json, JsonSerializerOptions options)
         {
+            // We use the target type information since it maybe be derived. We do not want to leave out extra properties in the child class and put them in the additional data unnecessarily
+            Type objectType = target.GetType();
             switch (json.ValueKind)
             {
                 case JsonValueKind.Object:
@@ -122,8 +127,12 @@ namespace Microsoft.Graph
                     // iterate through the object properties
                     foreach (var property in json.EnumerateObject())
                     {
-                        // look up the property in the object definition
-                        var propertyInfo = objectType.GetProperty(property.Name, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance | BindingFlags.FlattenHierarchy);
+                        // look up the property in the object definition using the mapping provided in the model attribute
+                        var propertyInfo = objectType.GetProperties().FirstOrDefault((mappedProperty) =>
+                        {
+                            var attribute = mappedProperty.GetCustomAttribute<JsonPropertyNameAttribute>();
+                            return attribute?.Name == property.Name;
+                        });
                         if (propertyInfo == null)
                         {
                             //Add the property to AdditionalData as it doesn't exist as a member of the object
@@ -206,6 +215,12 @@ namespace Microsoft.Graph
             writer.WriteStartObject();
             foreach (var propertyInfo in value.GetType().GetProperties())
             {
+                var ignoreConverterAttribute = propertyInfo.GetCustomAttribute<System.Text.Json.Serialization.JsonIgnoreAttribute>();
+                if(ignoreConverterAttribute != null)
+                {
+                    continue;// Don't serialize a property we are asked to ignore
+                }
+
                 string propertyName;
                 // Try to get the property name off the JsonAttribute otherwise camel case the property name
                 var jsonProperty = propertyInfo.GetCustomAttribute<System.Text.Json.Serialization.JsonPropertyNameAttribute>();
@@ -218,15 +233,29 @@ namespace Microsoft.Graph
                     propertyName = StringHelper.ConvertTypeToLowerCamelCase(propertyInfo.Name);
                 }
 
-                // Check to see if the property has a special converter specified
-                var jsonConverter = propertyInfo.GetCustomAttribute<System.Text.Json.Serialization.JsonConverterAttribute>();
-                if (propertyInfo.GetValue(value) == null && jsonConverter == null)
+                // Check so that we are not serializing the JsonExtensionDataAttribute(i.e AdditionalData) at a nested level
+                var jsonExtensionData = propertyInfo.GetCustomAttribute<System.Text.Json.Serialization.JsonExtensionDataAttribute>();
+                if (jsonExtensionData != null)
                 {
-                    continue; //Don't do anything if we don't have a special converter or the value is null
+                    var additionalData = propertyInfo.GetValue(value) as IDictionary<string, object> ?? new Dictionary<string, object>();
+                    foreach (var item in additionalData)
+                    {
+                        writer.WritePropertyName(item.Key);
+                        JsonSerializer.Serialize(writer, item.Value, item.Value.GetType(), options);
+                    }
                 }
+                else
+                {
+                    // Check to see if the property has a special converter specified
+                    var jsonConverter = propertyInfo.GetCustomAttribute<System.Text.Json.Serialization.JsonConverterAttribute>();
+                    if (propertyInfo.GetValue(value) == null && jsonConverter == null)
+                    {
+                        continue; //Don't do anything if we don't have a special converter or the value is null
+                    }
 
-                writer.WritePropertyName(propertyName);
-                JsonSerializer.Serialize(writer, propertyInfo.GetValue(value), propertyInfo.PropertyType, options);
+                    writer.WritePropertyName(propertyName);
+                    JsonSerializer.Serialize(writer, propertyInfo.GetValue(value), propertyInfo.PropertyType, options);
+                }
             }
             writer.WriteEndObject();
         }

@@ -33,7 +33,7 @@ namespace Microsoft.Graph
             IBaseClient client,
             IEnumerable<Option> options = null)
         {
-            this.Method = "GET";
+            this.Method = HttpMethods.GET;
             this.Client = client;
             this.responseHandler = new ResponseHandler(client.HttpProvider.Serializer);
             this.Headers = new List<HeaderOption>();
@@ -57,7 +57,7 @@ namespace Microsoft.Graph
             }
 
             // Adds the default authentication provider for this request. 
-            // This can be changed can be changed by the user by calling WithPerRequestAuthProvider extension method.
+            // This can be changed by the user by calling WithPerRequestAuthProvider extension method.
             this.WithDefaultAuthProvider();
         }
 
@@ -84,7 +84,7 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets or sets the HTTP method string for the request.
         /// </summary>
-        public string Method { get; set; }
+        public HttpMethods Method { get; set; }
 
         /// <summary>
         /// Gets the <see cref="QueryOption"/> collection for the request.
@@ -200,7 +200,7 @@ namespace Microsoft.Graph
                 {
                     // Only call `AuthenticateRequestAsync` when a custom IHttpProvider is used or our HttpProvider is used without an auth handler.
                     if (ShouldAuthenticateRequest())
-                        await this.AuthenticateRequestAsync(request);
+                        await this.AuthenticateRequestAsync(request).ConfigureAwait(false);
 
                     request.Content = multipartContent;
 
@@ -288,7 +288,7 @@ namespace Microsoft.Graph
 
                     if (!string.IsNullOrEmpty(this.ContentType))
                     {
-                        request.Content.Headers.ContentType = new MediaTypeHeaderValue(this.ContentType);
+                        request.Content.Headers.ContentType = MediaTypeHeaderValue.Parse(this.ContentType);
                     }
                 }
 
@@ -304,7 +304,7 @@ namespace Microsoft.Graph
         public HttpRequestMessage GetHttpRequestMessage(CancellationToken cancellationToken)
         {
             var queryString = this.BuildQueryString();
-            var request = new HttpRequestMessage(new HttpMethod(this.Method), string.Concat(this.RequestUrl, queryString));
+            var request = new HttpRequestMessage(new HttpMethod(this.Method.ToString()), string.Concat(this.RequestUrl, queryString));
             this.AddHeadersToRequest(request);
             this.AddRequestContextToRequest(request, cancellationToken);
             return request;
@@ -375,13 +375,21 @@ namespace Microsoft.Graph
 
                 foreach (var queryOption in this.QueryOptions)
                 {
+                    // no need to add empty query option
+                    if(string.IsNullOrEmpty(queryOption.Value)) 
+                        continue;
+
+                    // Escape any special uri characters in the queryOption data 
+                    // We first decode/escape the string in case the user has already encoded it to prevent double encoding
+                    var unescapedData = Uri.UnescapeDataString(queryOption.Value);
+                    var escapedOptionValue = Uri.EscapeDataString(unescapedData);
                     if (stringBuilder.Length == 0)
                     {
-                        stringBuilder.AppendFormat("?{0}={1}", queryOption.Name, queryOption.Value);
+                        stringBuilder.AppendFormat("?{0}={1}", queryOption.Name, escapedOptionValue);
                     }
                     else
                     {
-                        stringBuilder.AppendFormat("&{0}={1}", queryOption.Name, queryOption.Value);
+                        stringBuilder.AppendFormat("&{0}={1}", queryOption.Name, escapedOptionValue);
                     }
                 }
 
