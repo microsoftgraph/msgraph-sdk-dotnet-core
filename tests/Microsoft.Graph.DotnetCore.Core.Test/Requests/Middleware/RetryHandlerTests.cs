@@ -13,6 +13,9 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
     using Xunit;
     using System.Collections.Generic;
     using System.Linq;
+    using Moq;
+    using Moq.Protected;
+
     public class RetryHandlerTests : IDisposable
     {
         private MockRedirectHandler testHttpMessageHandler;
@@ -292,40 +295,58 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         }
 
 
-        [Fact]
-        public async Task ShouldRetryBasedOnCustomShouldRetryDelegate()
+        [Theory]
+        [InlineData(1, HttpStatusCode.BadGateway, true)]
+        [InlineData(2, HttpStatusCode.BadGateway, true)]
+        [InlineData(3, HttpStatusCode.BadGateway, true)]
+        [InlineData(4, HttpStatusCode.OK, false)]
+        public async Task ShouldRetryBasedOnCustomShouldRetryDelegate(int expectedMaxRetry, HttpStatusCode expectedStatusCode, bool isServiceExceptionExpected)
         {
-            // Arrange
-            // Create the first  request and response
-            var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, "http://example.org/foo")
+
+            var request = new HttpRequestMessage();
+            Queue<HttpResponseMessage> httpResponseQueue = new(new HttpResponseMessage[]
             {
-                Content = new StringContent("Hello World")
-            };
-            var retryResponse = new HttpResponseMessage(HttpStatusCode.BadGateway);
+                new(HttpStatusCode.BadGateway) { RequestMessage = request },
+                new(HttpStatusCode.BadGateway) { RequestMessage = request },
+                new(HttpStatusCode.BadGateway) { RequestMessage = request },
+                new(HttpStatusCode.BadGateway) { RequestMessage = request },
+                new(HttpStatusCode.OK) { RequestMessage = request },
+            });
 
-            // create the retry response
-            var finalResponse = new HttpResponseMessage(HttpStatusCode.OK);
+            var mockHttpMessageHandler = new Moq.Mock<HttpMessageHandler>(Moq.MockBehavior.Loose);
+            mockHttpMessageHandler.Protected()
+                .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), It.IsAny<CancellationToken>())
+                .Returns(() => Task.FromResult(httpResponseQueue.TryDequeue(out HttpResponseMessage r) ? r : new(HttpStatusCode.OK) { RequestMessage = request }))
+                .Verifiable();
 
-            // hook everything up
-            this.testHttpMessageHandler.SetHttpResponse(retryResponse, finalResponse);
-
-            // Create a retry handler that will retry on HttpStatusCode.BadGateway and hook it up
-            RetryHandlerOption retryHandlerOption = new RetryHandlerOption
+            RetryHandler retryHandler = new(mockHttpMessageHandler.Object, new RetryHandlerOption()
             {
-                ShouldRetry = (delay, attempt, httpResponseMessage) => httpResponseMessage.StatusCode == HttpStatusCode.BadGateway
-            };
-            RetryHandler customHandler = new RetryHandler(this.testHttpMessageHandler, retryHandlerOption);
-            HttpMessageInvoker httpMessageInvoker = new HttpMessageInvoker(customHandler);
+                ShouldRetry = (delay, attempt, httpResponseMessage) => httpResponseMessage.StatusCode == HttpStatusCode.BadGateway,
+                MaxRetry = expectedMaxRetry,
+                Delay = 0
+            });
+
+            HttpMessageInvoker httpMessageInvoker = new(retryHandler);
 
             // Act
-            var response = await httpMessageInvoker.SendAsync(httpRequestMessage, new CancellationToken());
+            HttpResponseMessage response;
+            try
+            {
+                response = await httpMessageInvoker.SendAsync(request, new CancellationToken());
+
+                Assert.False(isServiceExceptionExpected);
+                Assert.Equal(expectedStatusCode, response.StatusCode);
+            }
+            catch (ServiceException ex)
+            {
+                Assert.True(isServiceExceptionExpected);
+                Assert.Equal(ErrorConstants.Codes.TooManyRetries, ex.Error.Code);
+                Assert.Equal(string.Format(ErrorConstants.Messages.TooManyRetriesFormatString, expectedMaxRetry), ex.Error.Message);
+            }
 
             // Assert
-            Assert.Same(response, finalResponse);
-            Assert.NotSame(response.RequestMessage, httpRequestMessage);
-            Assert.NotNull(response.RequestMessage.Content);
-            Assert.NotNull(response.RequestMessage.Content.Headers.ContentLength);
-            Assert.Equal("Hello World", response.RequestMessage.Content.ReadAsStringAsync().Result);
+            mockHttpMessageHandler.Protected().Verify<Task<HttpResponseMessage>>("SendAsync", Times.Exactly(1 + expectedMaxRetry), ItExpr.IsAny<HttpRequestMessage>(), It.IsAny<CancellationToken>());
+            
         }
 
         private async Task DelayTestWithMessage(HttpResponseMessage response, int count, string message, int delay = RetryHandlerOption.MAX_DELAY)
