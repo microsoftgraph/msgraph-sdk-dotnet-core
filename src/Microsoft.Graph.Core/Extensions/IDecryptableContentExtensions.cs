@@ -82,7 +82,7 @@ namespace Microsoft.Graph
             }
             catch (Exception ex)
             {
-                throw new ApplicationException("Unexpected error occured while trying to decrypt the input", ex);
+                throw new ApplicationException("Unexpected error occurred while trying to decrypt the input", ex);
             }
         }
     }

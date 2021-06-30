@@ -19,7 +19,7 @@ namespace Microsoft.Graph
         /// <param name="certificate">Certificate to use for encryption</param>
         public static void AddPublicEncryptionCertificate(this IEncryptableSubscription subscription, X509Certificate2 certificate)
         {
-            subscription.EncryptionCertificate = Convert.ToBase64String(certificate.Export(X509ContentType.SerializedCert));
+            subscription.EncryptionCertificate = Convert.ToBase64String(certificate.Export(X509ContentType.Cert));
         }
     }
 }
