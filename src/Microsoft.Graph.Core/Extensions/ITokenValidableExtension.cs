@@ -21,13 +21,13 @@ namespace Microsoft.Graph
         /// <summary>
         /// Validates tokens attached with the notification collection. If the result is false, the notification collection should be discarded.
         /// </summary>
-        /// <param name="collection">Collection instance of <see cref="ITokenValidable"/></param>
+        /// <param name="collection">Collection instance of <see cref="ITokenValidable{T1,T2}"/></param>
         /// <param name="tenantIds">List of tenant ids that notifications might be originating from.</param>
         /// <param name="appIds">List of application id (clientid) that subscriptions have been created from.</param>
         /// <param name="wellKnownUri">Well known URL to get the signing certificates for the tokens. If you are not using the public cloud you need to pass the value corresponding to your national deployment.</param>
         /// <param name="issuerPrefix">Issuer prefix for the "aud" claim in the tokens. If you are not using the public cloud you need to pass the value corresponding to your national deployment.</param>
         /// <returns>Are tokens valid or not.</returns>
-        public static async Task<bool> AreTokensValid(this ITokenValidable collection, IEnumerable<Guid> tenantIds, IEnumerable<Guid> appIds,
+        public static async Task<bool> AreTokensValid(this ITokenValidable<IEncryptedContentBearer<IDecryptableContent>, IDecryptableContent> collection, IEnumerable<Guid> tenantIds, IEnumerable<Guid> appIds,
             string wellKnownUri = "https://login.microsoftonline.com/common/.well-known/openid-configuration",
             string issuerPrefix = "https://sts.windows.net/")
         {
