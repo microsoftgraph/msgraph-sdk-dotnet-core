@@ -8,7 +8,7 @@ namespace Microsoft.Graph
     using System.Security.Cryptography.X509Certificates;
 
     /// <summary>
-    /// Contains extension methods for <see cref="IEncryptableSubscriptionExtensions"/>
+    /// Contains extension methods for <see cref="IEncryptableSubscription"/>
     /// </summary>
     public static class IEncryptableSubscriptionExtensions
     {

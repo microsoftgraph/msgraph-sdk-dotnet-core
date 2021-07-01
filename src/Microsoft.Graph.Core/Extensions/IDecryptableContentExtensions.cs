@@ -24,9 +24,9 @@ namespace Microsoft.Graph
         /// <param name="encryptedContent">The encrypted content of type <see cref="IDecryptableContent"/></param>
         /// <param name="certificateProvider">Certificate provider to decrypt the content. The first parameter is the certificate ID provided when creating the subscription. The second is the certificate thumbprint. The certificate WILL be disposed at the end of decryption.</param>
         /// <returns>Decrypted content as the provided type.</returns>
-        public static async Task<T> Decrypt<T>(this IDecryptableContent encryptedContent, Func<string, string, Task<X509Certificate2>> certificateProvider) where T : class
+        public static async Task<T> DecryptAsync<T>(this IDecryptableContent encryptedContent, Func<string, string, Task<X509Certificate2>> certificateProvider) where T : class
         {
-            return JsonSerializer.Deserialize<T>(await encryptedContent.Decrypt(certificateProvider));
+            return JsonSerializer.Deserialize<T>(await encryptedContent.DecryptAsync(certificateProvider));
         }
 
         /// <summary>
@@ -36,7 +36,7 @@ namespace Microsoft.Graph
         /// <param name="encryptedContent">The encrypted content of type <see cref="IDecryptableContent"/></param>
         /// <param name="certificateProvider">Certificate provider to decrypt the content. The first parameter is the certificate ID provided when creating the subscription. The second is the certificate thumbprint. The certificate WILL be disposed at the end of decryption.</param>
         /// <returns>Decrypted content as string.</returns>
-        public static async Task<string> Decrypt(this IDecryptableContent encryptedContent, Func<string, string, Task<X509Certificate2>> certificateProvider)
+        public static async Task<string> DecryptAsync(this IDecryptableContent encryptedContent, Func<string, string, Task<X509Certificate2>> certificateProvider)
         {
             using (var certificate = await certificateProvider(encryptedContent.EncryptionCertificateId, encryptedContent.EncryptionCertificateThumbprint))
             using (var rsaPrivateKey = certificate.GetRSAPrivateKey())
