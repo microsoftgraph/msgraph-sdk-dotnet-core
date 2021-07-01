@@ -271,7 +271,7 @@ namespace Microsoft.Graph
             {
                 // Only call `AuthenticateRequestAsync` when a custom IHttpProvider is used or our HttpProvider is used without an auth handler.
                 if (ShouldAuthenticateRequest())
-                    await this.AuthenticateRequestAsync(request);
+                    await this.AuthenticateRequestAsync(request).ConfigureAwait(false);
 
                 if (serializableObject != null)
                 {
