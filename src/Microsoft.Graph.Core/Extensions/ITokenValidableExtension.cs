@@ -23,9 +23,11 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="collection">Collection instance of <see cref="ITokenValidable{T1,T2}"/></param>
         /// <param name="tenantIds">List of tenant ids that notifications might be originating from.</param>
-        /// <param name="appIds">List of application id (clientid) that subscriptions have been created from.</param>
-        /// <param name="wellKnownUri">Well known URL to get the signing certificates for the tokens. If you are not using the public cloud you need to pass the value corresponding to your national deployment.</param>
-        /// <param name="issuerPrefix">Issuer prefix for the "aud" claim in the tokens. If you are not using the public cloud you need to pass the value corresponding to your national deployment.</param>
+        /// <param name="appIds">List of application id (client ids) that subscriptions have been created from.</param>
+        /// <param name="wellKnownUri">Well known URL to get the signing certificates for the tokens.
+        /// If you are not using the public cloud you need to pass the value corresponding to your national deployment.</param>
+        /// <param name="issuerPrefix">Issuer prefix for the "aud" claim in the tokens.
+        /// If you are not using the public cloud you need to pass the value corresponding to your national deployment.</param>
         /// <returns>Are tokens valid or not.</returns>
         public static async Task<bool> AreTokensValid<T1,T2>(this ITokenValidable<T1, T2> collection, IEnumerable<Guid> tenantIds, IEnumerable<Guid> appIds,
             string wellKnownUri = "https://login.microsoftonline.com/common/.well-known/openid-configuration",
