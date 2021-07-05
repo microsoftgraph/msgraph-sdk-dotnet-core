@@ -17,8 +17,12 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="subscription">The subscription instance of type <see cref="IEncryptableSubscription"/></param>
         /// <param name="certificate">Certificate to use for encryption</param>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="certificate"/> is null</exception>
         public static void AddPublicEncryptionCertificate(this IEncryptableSubscription subscription, X509Certificate2 certificate)
         {
+            if (certificate == null)
+                throw new ArgumentNullException(nameof(certificate));
+
             subscription.EncryptionCertificate = Convert.ToBase64String(certificate.Export(X509ContentType.Cert));
         }
     }

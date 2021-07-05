@@ -28,6 +28,7 @@ namespace Microsoft.Graph
         /// If you are not using the public cloud you need to pass the value corresponding to your national deployment.</param>
         /// <param name="issuerPrefix">Issuer prefix for the "aud" claim in the tokens.
         /// If you are not using the public cloud you need to pass the value corresponding to your national deployment.</param>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="tenantIds"/> or <paramref name="appIds"/> is null or empty</exception>
         /// <returns>Are tokens valid or not.</returns>
         public static async Task<bool> AreTokensValid<T1,T2>(this ITokenValidable<T1, T2> collection, IEnumerable<Guid> tenantIds, IEnumerable<Guid> appIds,
             string wellKnownUri = "https://login.microsoftonline.com/common/.well-known/openid-configuration",

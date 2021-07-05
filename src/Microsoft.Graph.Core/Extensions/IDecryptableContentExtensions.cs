@@ -25,9 +25,13 @@ namespace Microsoft.Graph
         /// <param name="certificateProvider">Certificate provider to decrypt the content.
         /// The first parameter is the certificate ID provided when creating the subscription.
         /// The second is the certificate thumbprint. The certificate WILL be disposed at the end of decryption.</param>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="certificateProvider"/> is null</exception>
         /// <returns>Decrypted content as the provided type.</returns>
         public static async Task<T> DecryptAsync<T>(this IDecryptableContent encryptedContent, Func<string, string, Task<X509Certificate2>> certificateProvider) where T : class
         {
+            if (certificateProvider == null)
+                throw new ArgumentNullException(nameof(certificateProvider));
+
             return JsonSerializer.Deserialize<T>(await encryptedContent.DecryptAsync(certificateProvider));
         }
 
@@ -40,10 +44,14 @@ namespace Microsoft.Graph
         /// The first parameter is the certificate ID provided when creating the subscription.
         /// The second is the certificate thumbprint. The certificate WILL be disposed at the end of decryption.</param>
         /// <exception cref="InvalidDataException">Thrown when the <see cref="IDecryptableContent.DataSignature"/> value does not match the signature in the payload</exception>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="certificateProvider"/> is null</exception>
         /// <exception cref="ApplicationException">Thrown when there is a failure in attempting to decrypt the information</exception>
         /// <returns>Decrypted content as string.</returns>
         public static async Task<string> DecryptAsync(this IDecryptableContent encryptedContent, Func<string, string, Task<X509Certificate2>> certificateProvider)
         {
+            if (certificateProvider == null)
+                throw new ArgumentNullException(nameof(certificateProvider));
+
             using var certificate = await certificateProvider(encryptedContent.EncryptionCertificateId, encryptedContent.EncryptionCertificateThumbprint);
             using var rsaPrivateKey = certificate.GetRSAPrivateKey();
             var decryptedSymmetricKey = rsaPrivateKey.Decrypt(Convert.FromBase64String(encryptedContent.DataKey), RSAEncryptionPadding.OaepSHA1);
