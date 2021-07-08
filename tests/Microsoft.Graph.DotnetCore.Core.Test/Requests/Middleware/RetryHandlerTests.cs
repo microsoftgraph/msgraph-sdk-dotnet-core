@@ -190,7 +190,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             Assert.Equal(response.RequestMessage.Content.Headers.ContentLength, -1);
         }
 
-      
+
         [Theory(Skip = "skip test")]
         [InlineData(HttpStatusCode.GatewayTimeout)]  // 504
         [InlineData(HttpStatusCode.ServiceUnavailable)]  // 503
@@ -225,9 +225,9 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         {
             var retryResponse = new HttpResponseMessage(statusCode);
             retryResponse.Headers.TryAddWithoutValidation(RETRY_AFTER, 1.ToString());
-           
+
             await DelayTestWithMessage(retryResponse, 1, "Init");
-        
+
             Assert.Equal("Init Work 1", Message);
         }
 
@@ -240,7 +240,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         {
             var retryResponse = new HttpResponseMessage(statusCode);
             String compareMessage = "Init Work ";
-           
+
             for (int count = 0; count < 3; count++)
             {
                 await DelayTestWithMessage(retryResponse, count, "Init");

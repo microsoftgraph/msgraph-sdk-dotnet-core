@@ -17,13 +17,13 @@
 	<DefineConstants>$(DefineConstants);NETCORE</DefineConstants>
   </PropertyGroup>
 
-	<!--We manually configure LanguageTargets for Xamarin due to .Net SDK TFMs limitation https://github.com/dotnet/sdk/issues/491 -->
+  <!--We manually configure LanguageTargets for Xamarin due to .Net SDK TFMs limitation https://github.com/dotnet/sdk/issues/491 -->
   <PropertyGroup Condition="'$(TargetFramework)' == 'Xamarin.iOS10'">
-	<TargetFrameworkIdentifier>Xamarin.iOS</TargetFrameworkIdentifier>
-	<TargetFrameworkVersion>v1.0</TargetFrameworkVersion>
-	<DefineConstants>$(DefineConstants);iOS</DefineConstants>
-	<DebugType>full</DebugType>
-	<LanguageTargets>$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets</LanguageTargets>
+    <TargetFrameworkIdentifier>Xamarin.iOS</TargetFrameworkIdentifier>
+    <TargetFrameworkVersion>v1.0</TargetFrameworkVersion>
+    <DefineConstants>$(DefineConstants);iOS</DefineConstants>
+    <DebugType>full</DebugType>
+    <LanguageTargets>$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets</LanguageTargets>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(TargetFramework)' == 'Xamarin.Mac20'">
@@ -42,7 +42,7 @@
 	<DefineConstants>$(DefineConstants);ANDROID</DefineConstants>
 	<LanguageTargets>$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets</LanguageTargets>
   </PropertyGroup>
-  
+
   <ItemGroup>
 	<PackageReference Include="System.Reflection.Emit" Version="4.3.0">
 	  <ExcludeAssets>all</ExcludeAssets>
@@ -88,7 +88,7 @@
 	<Reference Include="System.Runtime.Serialization" />
   </ItemGroup>
 
-  <ItemGroup>
+   <ItemGroup>
     <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
   </ItemGroup>
 </Project>

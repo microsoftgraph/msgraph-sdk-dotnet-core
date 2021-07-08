@@ -31,7 +31,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         [Theory]
         [InlineData("contains(subject, '#')", "contains%28subject%2C%20%27%23%27%29")]
         [InlineData("contains(subject, '?')", "contains%28subject%2C%20%27%3F%27%29")]
-        [InlineData("contains(subject,'Überweisung')", "contains%28subject%2C%27%C3%9Cberweisung%27%29")]
+        [InlineData("contains(subject,'Ãœberweisung')", "contains%28subject%2C%27%C3%9Cberweisung%27%29")]
         [InlineData("contains%28subject%2C%27%C3%9Cberweisung%27%29", "contains%28subject%2C%27%C3%9Cberweisung%27%29")]//ensure we do not double encode parameters if already encoded
         public void BaseRequest_InitializeWithQueryOptionsWillUrlEncodeQueryOptions(string filterClause, string expectedQueryParam)
         {
