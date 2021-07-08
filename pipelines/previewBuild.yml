@@ -54,6 +54,8 @@ steps:
     arguments: '-packageName "$(PACKAGE_NAME)" -projectPath "$(PROJECT_PATH)"'
   enabled: true
 
+- task: NuGetToolInstaller@1
+
 - task: NuGetCommand@2
   displayName: 'NuGet restore'
 

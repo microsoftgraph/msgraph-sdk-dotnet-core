@@ -105,7 +105,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Extensions
         public async Task CloneAsync_WithHttpContent()
         {
             HttpRequestMessage originalRequest = new HttpRequestMessage(HttpMethod.Post, "http://example.com");
-            originalRequest.Content = new StringContent("Sample Content", Encoding.UTF8, "application/json");
+            originalRequest.Content = new StringContent("Sample Content", Encoding.UTF8, CoreConstants.MimeTypeNames.Application.Json);
 
             HttpRequestMessage clonedRequest = await originalRequest.CloneAsync();
 

@@ -4,23 +4,21 @@
 
 namespace Microsoft.Graph
 {
-    using Newtonsoft.Json;
-    using Newtonsoft.Json.Linq;
     using System;
     using System.Collections.Generic;
     using System.IO;
-    using System.Linq;
     using System.Net;
     using System.Net.Http;
     using System.Text;
+    using System.Text.Json;
     using System.Threading.Tasks;
     /// <summary>
     /// Handles batch request responses.
     /// </summary>
     public class BatchResponseContent
     {
-        private JObject jBatchResponseObject;
-        private HttpResponseMessage batchResponseMessage;
+        private JsonDocument jBatchResponseObject;
+        private readonly HttpResponseMessage batchResponseMessage;
 
         /// <summary>
         /// Gets a serializer for serializing and deserializing JSON objects.
@@ -28,11 +26,17 @@ namespace Microsoft.Graph
         public ISerializer Serializer { get; private set; }
 
         /// <summary>
+        /// Gets a <see cref="IResponseHandler"/> for handling responses.
+        /// </summary>
+        public IResponseHandler ResponseHandler { get; private set; }
+
+        /// <summary>
         /// Constructs a new <see cref="BatchResponseContent"/>
         /// </summary>
         /// <param name="httpResponseMessage">A <see cref="HttpResponseMessage"/> of a batch request execution.</param>
         /// <param name="serializer">A serializer for serializing and deserializing JSON objects.</param>
-        public BatchResponseContent(HttpResponseMessage httpResponseMessage, ISerializer serializer = null)
+        /// <param name="responseHandler">A <see cref="IResponseHandler"/> for handling responses..</param>
+        public BatchResponseContent(HttpResponseMessage httpResponseMessage, ISerializer serializer = null, IResponseHandler responseHandler = null)
         {
             this.batchResponseMessage = httpResponseMessage ?? throw new ClientException(new Error
             {
@@ -41,6 +45,7 @@ namespace Microsoft.Graph
             });
 
             this.Serializer = serializer ?? new Serializer();
+            this.ResponseHandler = responseHandler ?? new ResponseHandler(this.Serializer);
         }
 
         /// <summary>
@@ -55,10 +60,10 @@ namespace Microsoft.Graph
             if (jBatchResponseObject == null)
                 return responseMessages;
 
-            if(jBatchResponseObject.TryGetValue(CoreConstants.BatchRequest.Responses, out JToken jResponses))
+            if(jBatchResponseObject.RootElement.TryGetProperty(CoreConstants.BatchRequest.Responses, out JsonElement jResponses))
             {
-                foreach (JObject jResponseItem in jResponses)
-                    responseMessages.Add(jResponseItem.GetValue(CoreConstants.BatchRequest.Id).ToString(), GetResponseMessageFromJObject(jResponseItem));
+                foreach (JsonElement jResponseItem in jResponses.EnumerateArray())
+                    responseMessages.Add(jResponseItem.GetProperty(CoreConstants.BatchRequest.Id).ToString(), GetResponseMessageFromJObject(jResponseItem));
             }
             return responseMessages;
         }
@@ -75,14 +80,18 @@ namespace Microsoft.Graph
             if (jBatchResponseObject == null)
                 return null;
 
-            JObject jResponseItem = null;
-
-            if (jBatchResponseObject.TryGetValue(CoreConstants.BatchRequest.Responses, out JToken jResponses))
+            if (jBatchResponseObject.RootElement.TryGetProperty(CoreConstants.BatchRequest.Responses, out JsonElement jResponses))
             {
-                jResponseItem = jResponses.FirstOrDefault((jtoken) => jtoken.Value<string>(CoreConstants.BatchRequest.Id).Equals(requestId)) as JObject;
+                foreach (var element in jResponses.EnumerateArray())
+                {
+                    if (element.GetProperty(CoreConstants.BatchRequest.Id).GetString().Equals(requestId))
+                    {
+                        return GetResponseMessageFromJObject(element);
+                    }
+                }
             }
 
-            return GetResponseMessageFromJObject(jResponseItem);
+            return null;
         }
 
         /// <summary>
@@ -94,46 +103,71 @@ namespace Microsoft.Graph
         {
             using (var httpResponseMessage = await GetResponseByIdAsync(requestId))
             {
-                var responseHandler = new ResponseHandler(new Serializer());
-                
-                if (!httpResponseMessage.IsSuccessStatusCode)
+                await ValidateSuccessfulResponse(httpResponseMessage);
+                // return the deserialized object
+                return await ResponseHandler.HandleResponse<T>(httpResponseMessage);
+            }
+        }
+
+        /// <summary>
+        /// Gets a batch response content as a stream
+        /// </summary>
+        /// <param name="requestId">A batch request id.</param>
+        /// <returns>The response stream of the batch response object</returns>
+        /// <remarks> Stream should be dispose once done with.</remarks>
+        public async Task<Stream> GetResponseStreamByIdAsync(string requestId)
+        {
+            using (var httpResponseMessage = await GetResponseByIdAsync(requestId)) 
+            {
+                await ValidateSuccessfulResponse(httpResponseMessage);
+                using var stream = await httpResponseMessage.Content.ReadAsStreamAsync();
+                var memoryStream = new MemoryStream();
+                await stream.CopyToAsync(memoryStream);
+                return memoryStream;
+            }
+        }
+
+        /// <summary>
+        /// Validates the HttpResponse message is a successful response. Otherwise, throws a ServiceException with the error information
+        /// present in the response body.
+        /// </summary>
+        /// <param name="httpResponseMessage">The <see cref="HttpResponseMessage"/> to validate</param>
+        private async Task ValidateSuccessfulResponse(HttpResponseMessage httpResponseMessage)
+        {
+            if (!httpResponseMessage.IsSuccessStatusCode)
+            {
+                Error error;
+                string rawResponseBody = null;
+
+                //deserialize into an ErrorResponse as the result is not a success.
+                ErrorResponse errorResponse = await ResponseHandler.HandleResponse<ErrorResponse>(httpResponseMessage);
+
+                if (errorResponse?.Error == null)
                 {
-                    Error error;
-                    string rawResponseBody = null;
-
-                    //deserialize into an ErrorResponse as the result is not a success.
-                    ErrorResponse errorResponse = await responseHandler.HandleResponse<ErrorResponse>(httpResponseMessage);
-
-                    if (errorResponse?.Error == null)
+                    if (httpResponseMessage.StatusCode == HttpStatusCode.NotFound)
                     {
-                        if (httpResponseMessage.StatusCode == HttpStatusCode.NotFound)
-                        {
-                            error = new Error { Code = ErrorConstants.Codes.ItemNotFound };
-                        }
-                        else
-                        {
-                            error = new Error
-                            {
-                                Code = ErrorConstants.Codes.GeneralException,
-                                Message = ErrorConstants.Messages.UnexpectedExceptionResponse
-                            };
-                        }
+                        error = new Error { Code = ErrorConstants.Codes.ItemNotFound };
                     }
                     else
                     {
-                        error = errorResponse.Error;
+                        error = new Error
+                        {
+                            Code = ErrorConstants.Codes.GeneralException,
+                            Message = ErrorConstants.Messages.UnexpectedExceptionResponse
+                        };
                     }
-
-                    if (httpResponseMessage.Content?.Headers.ContentType.MediaType == "application/json")
-                    {
-                        rawResponseBody = await httpResponseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
-                    }
-
-                    throw new ServiceException(error, httpResponseMessage.Headers, httpResponseMessage.StatusCode, rawResponseBody);
+                }
+                else
+                {
+                    error = errorResponse.Error;
                 }
 
-                // return the deserialized object
-                return await responseHandler.HandleResponse<T>(httpResponseMessage);
+                if (httpResponseMessage.Content?.Headers.ContentType.MediaType == CoreConstants.MimeTypeNames.Application.Json)
+                {
+                    rawResponseBody = await httpResponseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
+                }
+
+                throw new ServiceException(error, httpResponseMessage.Headers, httpResponseMessage.StatusCode, rawResponseBody);
             }
         }
 
@@ -147,46 +181,48 @@ namespace Microsoft.Graph
             if (jBatchResponseObject == null)
                 return null;
 
-            return jBatchResponseObject.GetValue(CoreConstants.Serialization.ODataNextLink)?.ToString();
+            if (jBatchResponseObject.RootElement.TryGetProperty(CoreConstants.Serialization.ODataNextLink, out JsonElement nextLink))
+            {
+                return nextLink.GetString();
+            }
+
+            return null;
         }
 
         /// <summary>
-        /// Gets a <see cref="HttpResponseMessage"/> from <see cref="JObject"/> representing a batch response item.
+        /// Gets a <see cref="HttpResponseMessage"/> from <see cref="JsonElement"/> representing a batch response item.
         /// </summary>
-        /// <param name="jResponseItem">A single batch response item of type <see cref="JObject"/>.</param>
+        /// <param name="jResponseItem">A single batch response item of type <see cref="JsonElement"/>.</param>
         /// <returns>A single batch response as a <see cref="HttpResponseMessage"/>.</returns>
-        private HttpResponseMessage GetResponseMessageFromJObject(JObject jResponseItem)
+        private HttpResponseMessage GetResponseMessageFromJObject(JsonElement jResponseItem)
         {
-            if (jResponseItem == null)
-                return null;
-
             HttpResponseMessage responseMessage = new HttpResponseMessage();
 
-            if (jResponseItem.TryGetValue(CoreConstants.BatchRequest.Status, out JToken status))
+            if (jResponseItem.TryGetProperty(CoreConstants.BatchRequest.Status, out JsonElement status))
             {
                 responseMessage.StatusCode = (HttpStatusCode)int.Parse(status.ToString());
             }
 
-            if (jResponseItem.TryGetValue(CoreConstants.BatchRequest.Body, out JToken body))
+            if (jResponseItem.TryGetProperty(CoreConstants.BatchRequest.Body, out JsonElement body))
             {
                 responseMessage.Content = new StringContent(body.ToString(), Encoding.UTF8, CoreConstants.MimeTypeNames.Application.Json);
             }
 
-            if (jResponseItem.TryGetValue(CoreConstants.BatchRequest.Headers, out JToken headers))
+            if (jResponseItem.TryGetProperty(CoreConstants.BatchRequest.Headers, out JsonElement headers))
             {
-                foreach (KeyValuePair<string, string> headerKeyValue in headers.ToObject<Dictionary<string, string>>())
+                foreach (var headerKeyValue in headers.EnumerateObject())
                 {
-                    responseMessage.Headers.TryAddWithoutValidation(headerKeyValue.Key, headerKeyValue.Value);
+                    responseMessage.Headers.TryAddWithoutValidation(headerKeyValue.Name, headerKeyValue.Value.ToString());
                 }
             }
             return responseMessage;
         }
 
         /// <summary>
-        /// Gets the <see cref="HttpContent"/> of a batch response as <see cref="JObject"/>.
+        /// Gets the <see cref="HttpContent"/> of a batch response as a <see cref="JsonDocument"/>.
         /// </summary>
-        /// <returns>A batch response content as <see cref="JObject"/>.</returns>
-        private async Task<JObject> GetBatchResponseContentAsync()
+        /// <returns>A batch response content as <see cref="JsonDocument"/>.</returns>
+        private async Task<JsonDocument> GetBatchResponseContentAsync()
         {
             if (this.batchResponseMessage.Content == null)
                 return null;
@@ -195,7 +231,7 @@ namespace Microsoft.Graph
             {
                 using (Stream streamContent = await this.batchResponseMessage.Content.ReadAsStreamAsync())
                 {
-                    return Serializer.DeserializeObject<JObject>(streamContent);
+                    return await JsonDocument.ParseAsync(streamContent);
                 }
             }
             catch (Exception ex)

@@ -4,11 +4,9 @@
 
 namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels
 {
-    using System.Runtime.Serialization;
     /// <summary>
     /// Test class for testing serialization of an IEnumerable of Date.
     /// </summary>
-    [DataContract]
     public class CollectionPageInstance : CollectionPage<DerivedTypeClass>, ICollectionPageInstance
     {
     }

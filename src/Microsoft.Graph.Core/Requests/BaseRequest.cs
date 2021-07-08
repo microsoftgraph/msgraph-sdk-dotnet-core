@@ -33,7 +33,7 @@ namespace Microsoft.Graph
             IBaseClient client,
             IEnumerable<Option> options = null)
         {
-            this.Method = "GET";
+            this.Method = HttpMethods.GET;
             this.Client = client;
             this.responseHandler = new ResponseHandler(client.HttpProvider.Serializer);
             this.Headers = new List<HeaderOption>();
@@ -84,7 +84,7 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets or sets the HTTP method string for the request.
         /// </summary>
-        public string Method { get; set; }
+        public HttpMethods Method { get; set; }
 
         /// <summary>
         /// Gets the <see cref="QueryOption"/> collection for the request.
@@ -219,6 +219,38 @@ namespace Microsoft.Graph
         /// <param name="serializableObject">The serializable object to send.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <param name="completionOption">The <see cref="HttpCompletionOption"/> to pass to the <see cref="IHttpProvider"/> on send.</param>
+        /// <returns>The <see cref="GraphResponse"/> object.</returns>
+        public async Task<GraphResponse> SendAsyncWithGraphResponse(
+            object serializableObject,
+            CancellationToken cancellationToken,
+            HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        {
+            var response = await this.SendRequestAsync(serializableObject, cancellationToken, completionOption).ConfigureAwait(false);
+            return new GraphResponse(this, response);
+        }
+
+        /// <summary>
+        /// Sends the request.
+        /// </summary>
+        /// <param name="serializableObject">The serializable object to send.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <param name="completionOption">The <see cref="HttpCompletionOption"/> to pass to the <see cref="IHttpProvider"/> on send.</param>
+        /// <returns>The <see cref="GraphResponse"/> object.</returns>
+        public async Task<GraphResponse<T>> SendAsyncWithGraphResponse<T>(
+            object serializableObject,
+            CancellationToken cancellationToken,
+            HttpCompletionOption completionOption = HttpCompletionOption.ResponseContentRead)
+        {
+            var response = await this.SendRequestAsync(serializableObject, cancellationToken, completionOption).ConfigureAwait(false);
+            return new GraphResponse<T>(this, response);
+        }
+
+        /// <summary>
+        /// Sends the request.
+        /// </summary>
+        /// <param name="serializableObject">The serializable object to send.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
+        /// <param name="completionOption">The <see cref="HttpCompletionOption"/> to pass to the <see cref="IHttpProvider"/> on send.</param>
         /// <returns>The <see cref="HttpResponseMessage"/> object.</returns>
         public async Task<HttpResponseMessage> SendRequestAsync(
             object serializableObject,
@@ -239,7 +271,7 @@ namespace Microsoft.Graph
             {
                 // Only call `AuthenticateRequestAsync` when a custom IHttpProvider is used or our HttpProvider is used without an auth handler.
                 if (ShouldAuthenticateRequest())
-                    await this.AuthenticateRequestAsync(request);
+                    await this.AuthenticateRequestAsync(request).ConfigureAwait(false);
 
                 if (serializableObject != null)
                 {
@@ -272,7 +304,7 @@ namespace Microsoft.Graph
         public HttpRequestMessage GetHttpRequestMessage(CancellationToken cancellationToken)
         {
             var queryString = this.BuildQueryString();
-            var request = new HttpRequestMessage(new HttpMethod(this.Method), string.Concat(this.RequestUrl, queryString));
+            var request = new HttpRequestMessage(new HttpMethod(this.Method.ToString()), string.Concat(this.RequestUrl, queryString));
             this.AddHeadersToRequest(request);
             this.AddRequestContextToRequest(request, cancellationToken);
             return request;
@@ -343,13 +375,21 @@ namespace Microsoft.Graph
 
                 foreach (var queryOption in this.QueryOptions)
                 {
+                    // no need to add empty query option
+                    if(string.IsNullOrEmpty(queryOption.Value)) 
+                        continue;
+
+                    // Escape any special uri characters in the queryOption data 
+                    // We first decode/escape the string in case the user has already encoded it to prevent double encoding
+                    var unescapedData = Uri.UnescapeDataString(queryOption.Value);
+                    var escapedOptionValue = Uri.EscapeDataString(unescapedData);
                     if (stringBuilder.Length == 0)
                     {
-                        stringBuilder.AppendFormat("?{0}={1}", queryOption.Name, queryOption.Value);
+                        stringBuilder.AppendFormat("?{0}={1}", queryOption.Name, escapedOptionValue);
                     }
                     else
                     {
-                        stringBuilder.AppendFormat("&{0}={1}", queryOption.Name, queryOption.Value);
+                        stringBuilder.AppendFormat("&{0}={1}", queryOption.Name, escapedOptionValue);
                     }
                 }
 

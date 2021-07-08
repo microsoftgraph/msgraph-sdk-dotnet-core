@@ -38,13 +38,16 @@ namespace Microsoft.Graph
                 { Global_Cloud, "https://graph.microsoft.com" },
                 { USGOV_Cloud, "https://graph.microsoft.us" },
                 { China_Cloud, "https://microsoftgraph.chinacloudapi.cn" },
-                { Germany_Cloud, "https://graph.microsoft.de" }
+                { Germany_Cloud, "https://graph.microsoft.de" },
+                { USGOV_DOD_Cloud, "https://dod-graph.microsoft.us" },
             };
 
         /// Global endpoint
         public const string Global_Cloud = "Global";
         /// US_GOV endpoint
         public const string USGOV_Cloud = "US_GOV";
+        /// US_GOV endpoint
+        public const string USGOV_DOD_Cloud = "US_GOV_DOD";
         /// China endpoint
         public const string China_Cloud = "China";
         /// Germany endpoint

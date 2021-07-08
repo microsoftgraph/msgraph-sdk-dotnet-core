@@ -31,7 +31,10 @@ variables:
   PROJECT_PATH: '.\src\Microsoft.Graph.Core\Microsoft.Graph.Core.csproj'
 
 pool:
-  vmImage: windows-latest
+  name: Hosted Windows 2019 with VS2019
+  demands:
+  - msbuild
+  - vstest
 
 steps:
 - checkout: self
@@ -50,6 +53,8 @@ steps:
     filePath: 'scripts\ValidateUpdatedNugetVersion.ps1'
     arguments: '-packageName "$(PACKAGE_NAME)" -projectPath "$(PROJECT_PATH)"'
   enabled: true
+
+- task: NuGetToolInstaller@1
 
 - task: NuGetCommand@2
   displayName: 'NuGet restore'

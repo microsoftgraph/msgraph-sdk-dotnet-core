@@ -4,27 +4,26 @@
 
 namespace Microsoft.Graph
 {
-    using Newtonsoft.Json;
     using System.IO;
-    using System.Text;
+    using System.Text.Json;
+    using System.Text.Json.Serialization;
 
     /// <summary>
     /// An <see cref="ISerializer"/> implementation using the JSON.NET serializer.
     /// </summary>
     public class Serializer : ISerializer
     {
-        JsonSerializerSettings jsonSerializerSettings;
+        readonly JsonSerializerOptions jsonSerializerOptions;
 
         /// <summary>
         /// Constructor for the serializer with defaults for the JsonSerializer settings.
         /// </summary>
         public Serializer()
             : this(
-                  new JsonSerializerSettings
+                  new JsonSerializerOptions
                   {
-                      ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor,
-                      TypeNameHandling = TypeNameHandling.None,
-                      DateParseHandling = DateParseHandling.None
+                      IgnoreNullValues = true,
+                      PropertyNameCaseInsensitive = true
                   })
         {
         }
@@ -33,9 +32,12 @@ namespace Microsoft.Graph
         /// Constructor for the serializer.
         /// </summary>
         /// <param name="jsonSerializerSettings">The serializer settings to apply to the serializer.</param>
-        public Serializer(JsonSerializerSettings jsonSerializerSettings)
+        public Serializer(JsonSerializerOptions jsonSerializerSettings)
         {
-            this.jsonSerializerSettings = jsonSerializerSettings;
+            this.jsonSerializerOptions = jsonSerializerSettings;
+            this.jsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+            this.jsonSerializerOptions.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase));
+            this.jsonSerializerOptions.Converters.Add(new DateTimeOffsetConverter());
         }
 
         /// <summary>
@@ -46,22 +48,12 @@ namespace Microsoft.Graph
         /// <returns>The deserialized object.</returns>
         public T DeserializeObject<T>(Stream stream)
         {
-            if (stream == null)
+            if (stream == null || stream.Length == 0 )
             {
                 return default(T);
             }
 
-            using (var streamReader = new StreamReader(
-                stream,
-                Encoding.UTF8 /* encoding */,
-                true /* detectEncodingFromByteOrderMarks */,
-                4096 /* bufferSize */,
-                true /* leaveOpen */))
-            using (var textReader = new JsonTextReader(streamReader))
-            {
-                var jsonSerializer = JsonSerializer.Create(this.jsonSerializerSettings);
-                return jsonSerializer.Deserialize<T>(textReader);
-            }
+            return JsonSerializer.DeserializeAsync<T>(stream, this.jsonSerializerOptions).GetAwaiter().GetResult();
         }
 
         /// <summary>
@@ -77,7 +69,7 @@ namespace Microsoft.Graph
                 return default(T);
             }
 
-            return JsonConvert.DeserializeObject<T>(inputString, this.jsonSerializerSettings);
+            return JsonSerializer.Deserialize<T>(inputString, this.jsonSerializerOptions);
         }
 
         /// <summary>
@@ -107,7 +99,7 @@ namespace Microsoft.Graph
                 return stringValue;
             }
 
-            return JsonConvert.SerializeObject(serializeableObject, this.jsonSerializerSettings);
+            return JsonSerializer.Serialize(serializeableObject, this.jsonSerializerOptions);
         }
     }
 }
