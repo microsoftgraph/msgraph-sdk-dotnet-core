@@ -4,13 +4,10 @@
 
 namespace Microsoft.Graph
 {
-    using Microsoft.Identity.Client;
-    using System.Security;
-
     /// <summary>
     /// Options class used to configure the authentication providers.
     /// </summary>
-    internal class MsalAuthenticationProviderOption : IAuthenticationProviderOption
+    internal class ScopedAuthenticationProviderOptions : IAuthenticationProviderOption
     {
 
         /// <summary>

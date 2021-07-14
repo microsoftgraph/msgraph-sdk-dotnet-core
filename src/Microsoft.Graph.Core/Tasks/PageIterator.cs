@@ -49,6 +49,9 @@ namespace Microsoft.Graph
         /// <returns>A PageIterator&lt;TEntity&gt; that will process additional result pages based on the rules specified in Func&lt;TEntity,bool&gt; processPageItems</returns>
         public static PageIterator<TEntity> CreatePageIterator(IBaseClient client, ICollectionPage<TEntity> page, Func<TEntity, bool> callback, Func<IBaseRequest, IBaseRequest> requestConfigurator = null)
         {
+            if (client == null)
+                throw new ArgumentNullException("client");
+
             if (page == null)
                 throw new ArgumentNullException("page");
 
@@ -143,7 +146,7 @@ namespace Microsoft.Graph
                 page = _currentPage;
 
                 // Add all of the items returned in the response to the queue.
-                if (_currentPage.Count > 0)
+                if (_currentPage != null && _currentPage.Count > 0)
                 {
                     foreach (TEntity entity in _currentPage)
                     {

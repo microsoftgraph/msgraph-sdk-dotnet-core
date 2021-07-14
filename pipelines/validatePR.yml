@@ -31,10 +31,7 @@ variables:
   PROJECT_PATH: '.\src\Microsoft.Graph.Core\Microsoft.Graph.Core.csproj'
 
 pool:
-  name: Hosted Windows 2019 with VS2019
-  demands:
-  - msbuild
-  - vstest
+  vmImage: windows-latest
 
 steps:
 - checkout: self

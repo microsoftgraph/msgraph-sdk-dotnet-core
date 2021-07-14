@@ -45,8 +45,8 @@ namespace Microsoft.Graph
         public async Task AuthenticateRequestAsync(HttpRequestMessage request)
         {
             //First try to read the scopes off the requestContext.
-            MsalAuthenticationProviderOption msalAuthProviderOption = request.GetMsalAuthProviderOption();
-            AccessToken token = await _credential.GetTokenAsync(new TokenRequestContext(msalAuthProviderOption.Scopes ?? _scopes.ToArray()), CancellationToken.None).ConfigureAwait(false);
+            ScopedAuthenticationProviderOptions scopedAuthenticationProviderOptions = request.GetScopedAuthenticationProviderOption();
+            AccessToken token = await _credential.GetTokenAsync(new TokenRequestContext(scopedAuthenticationProviderOptions.Scopes ?? _scopes.ToArray()), CancellationToken.None).ConfigureAwait(false);
             request.Headers.Authorization = new AuthenticationHeaderValue(CoreConstants.Headers.Bearer, token.Token);
         }
     }

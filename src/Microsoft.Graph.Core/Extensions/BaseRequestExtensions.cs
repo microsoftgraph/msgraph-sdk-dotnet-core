@@ -193,12 +193,12 @@ namespace Microsoft.Graph
             }
 
             // get the auth handler options or create a new instance if absent
-            MsalAuthenticationProviderOption msalAuthProviderOption = authHandlerOptions.AuthenticationProviderOption as MsalAuthenticationProviderOption ?? new MsalAuthenticationProviderOption();
+            ScopedAuthenticationProviderOptions scopedAuthenticationProviderOptions = authHandlerOptions.AuthenticationProviderOption as ScopedAuthenticationProviderOptions ?? new ScopedAuthenticationProviderOptions();
 
-            msalAuthProviderOption.Scopes = scopes;
+            scopedAuthenticationProviderOptions.Scopes = scopes;
 
             // update the base request object as appropriate
-            authHandlerOptions.AuthenticationProviderOption = msalAuthProviderOption;
+            authHandlerOptions.AuthenticationProviderOption = scopedAuthenticationProviderOptions;
             baseRequest.MiddlewareOptions[authHandlerOptionKey] = authHandlerOptions;
 
             return baseRequest;

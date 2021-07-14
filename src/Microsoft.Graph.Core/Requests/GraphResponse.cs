@@ -20,8 +20,10 @@ namespace Microsoft.Graph
         /// <param name="httpResponseMessage">The response</param>
         public GraphResponse(IBaseRequest iBaseRequest, HttpResponseMessage httpResponseMessage)
         {
-            this.httpResponseMessage = httpResponseMessage;
-            this.BaseRequest = iBaseRequest;
+            this.httpResponseMessage = httpResponseMessage ?? 
+                               throw new ArgumentException(string.Format(ErrorConstants.Messages.NullParameter, nameof(httpResponseMessage)));
+            this.BaseRequest = iBaseRequest ??
+                               throw new ArgumentException(string.Format(ErrorConstants.Messages.NullParameter, nameof(iBaseRequest)));
         }
 
         private readonly HttpResponseMessage httpResponseMessage;

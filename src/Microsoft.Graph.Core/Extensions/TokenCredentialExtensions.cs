@@ -20,16 +20,7 @@ namespace Microsoft.Graph
         internal static TimeSpan GetRetryAfter(this TokenCredential tokenCredential, MsalServiceException serviceException)
         {
             RetryConditionHeaderValue retryAfter = serviceException.Headers?.RetryAfter;
-            TimeSpan? delay = null;
-
-            if (retryAfter != null && retryAfter.Delta.HasValue)
-            {
-                delay = retryAfter.Delta;
-            }
-            else if (retryAfter != null && retryAfter.Date.HasValue)
-            {
-                delay = retryAfter.Date.Value.Offset;
-            }
+            TimeSpan? delay = retryAfter?.Delta ?? retryAfter?.Date?.Offset;
 
             if (delay == null)
                 throw new MsalServiceException(serviceException.ErrorCode, ErrorConstants.Messages.MissingRetryAfterHeader, serviceException);
