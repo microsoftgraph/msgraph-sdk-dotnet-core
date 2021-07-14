@@ -147,7 +147,7 @@ namespace Microsoft.Graph
         /// <returns></returns>
         private async Task GetObjectProperties(JsonElement changedObject, List<string> changes, string parentName = "")
         {
-            if (parentName != string.Empty)
+            if (!string.IsNullOrEmpty(parentName))
             {
                 parentName += ".";
             }

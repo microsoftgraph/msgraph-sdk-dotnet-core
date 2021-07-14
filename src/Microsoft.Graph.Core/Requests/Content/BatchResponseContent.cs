@@ -60,7 +60,7 @@ namespace Microsoft.Graph
             if (jBatchResponseObject == null)
                 return responseMessages;
 
-            if(jBatchResponseObject.RootElement.TryGetProperty(CoreConstants.BatchRequest.Responses, out JsonElement jResponses))
+            if(jBatchResponseObject.RootElement.TryGetProperty(CoreConstants.BatchRequest.Responses, out JsonElement jResponses) && jResponses.ValueKind == JsonValueKind.Array)
             {
                 foreach (JsonElement jResponseItem in jResponses.EnumerateArray())
                     responseMessages.Add(jResponseItem.GetProperty(CoreConstants.BatchRequest.Id).ToString(), GetResponseMessageFromJObject(jResponseItem));
@@ -80,7 +80,7 @@ namespace Microsoft.Graph
             if (jBatchResponseObject == null)
                 return null;
 
-            if (jBatchResponseObject.RootElement.TryGetProperty(CoreConstants.BatchRequest.Responses, out JsonElement jResponses))
+            if (jBatchResponseObject.RootElement.TryGetProperty(CoreConstants.BatchRequest.Responses, out JsonElement jResponses) && jResponses.ValueKind == JsonValueKind.Array)
             {
                 foreach (var element in jResponses.EnumerateArray())
                 {
