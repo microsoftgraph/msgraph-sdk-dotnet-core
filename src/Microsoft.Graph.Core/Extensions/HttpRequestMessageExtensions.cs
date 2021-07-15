@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
@@ -98,7 +98,7 @@ namespace Microsoft.Graph
         public static GraphRequestContext GetRequestContext(this HttpRequestMessage httpRequestMessage)
         {
             GraphRequestContext requestContext = new GraphRequestContext();
-            if (httpRequestMessage.Properties.TryGetValue(typeof(GraphRequestContext).ToString(), out var requestContextObject))
+            if (httpRequestMessage.Properties.TryGetValue(nameof(GraphRequestContext), out var requestContextObject))
             {
                 requestContext = (GraphRequestContext)requestContextObject;
             }
@@ -117,7 +117,7 @@ namespace Microsoft.Graph
             GraphRequestContext requestContext = httpRequestMessage.GetRequestContext();
             if (requestContext.MiddlewareOptions != null)
             {
-                requestContext.MiddlewareOptions.TryGetValue(typeof(T).ToString(), out option);
+                requestContext.MiddlewareOptions.TryGetValue(typeof(T).Name, out option);
             }
             return (T)option;
         }

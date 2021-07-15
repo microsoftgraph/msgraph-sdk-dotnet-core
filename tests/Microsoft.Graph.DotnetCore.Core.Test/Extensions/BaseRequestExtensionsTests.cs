@@ -42,7 +42,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Extensions
                 var baseRequest = new BaseRequest(requestUrl, baseClient);
                 baseRequest.WithShouldRetry((d, a, r) => false);
 
-                Assert.IsType<GraphRequestContext>(baseRequest.GetHttpRequestMessage().Properties[typeof(GraphRequestContext).ToString()]);
+                Assert.IsType<GraphRequestContext>(baseRequest.GetHttpRequestMessage().Properties[nameof(GraphRequestContext)]);
                 Assert.False(baseRequest.GetHttpRequestMessage().GetMiddlewareOption<RetryHandlerOption>().ShouldRetry(delay, attempt, httpResponseMessage));
             }
         }
@@ -53,7 +53,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Extensions
             var baseRequest = new BaseRequest(requestUrl, baseClient);
             baseRequest.WithMaxRetry(3);
 
-            Assert.IsType<GraphRequestContext>(baseRequest.GetHttpRequestMessage().Properties[typeof(GraphRequestContext).ToString()]);
+            Assert.IsType<GraphRequestContext>(baseRequest.GetHttpRequestMessage().Properties[nameof(GraphRequestContext)]);
             Assert.Equal(3, baseRequest.GetHttpRequestMessage().GetMiddlewareOption<RetryHandlerOption>().MaxRetry);
         }
 
@@ -63,7 +63,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Extensions
             var baseRequest = new BaseRequest(requestUrl, baseClient);
             baseRequest.WithMaxRedirects(4);
 
-            Assert.IsType<GraphRequestContext>(baseRequest.GetHttpRequestMessage().Properties[typeof(GraphRequestContext).ToString()]);
+            Assert.IsType<GraphRequestContext>(baseRequest.GetHttpRequestMessage().Properties[nameof(GraphRequestContext)]);
             Assert.Equal(4, baseRequest.GetHttpRequestMessage().GetMiddlewareOption<RedirectHandlerOption>().MaxRedirect);
         }
 
@@ -77,7 +77,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Extensions
             baseRequest.WithPerRequestAuthProvider();
             var httpRequestMessage = baseRequest.GetHttpRequestMessage();
 
-            Assert.IsType<GraphRequestContext>(baseRequest.GetHttpRequestMessage().Properties[typeof(GraphRequestContext).ToString()]);
+            Assert.IsType<GraphRequestContext>(baseRequest.GetHttpRequestMessage().Properties[nameof(GraphRequestContext)]);
             Assert.NotSame(baseClient.AuthenticationProvider, httpRequestMessage.GetMiddlewareOption<AuthenticationHandlerOption>().AuthenticationProvider);
             Assert.Same(requestMockAuthProvider.Object, httpRequestMessage.GetMiddlewareOption<AuthenticationHandlerOption>().AuthenticationProvider);
         }
@@ -137,7 +137,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Extensions
             baseRequest.WithScopes(scopes);
 
             // Assert
-            Assert.IsType<GraphRequestContext>(baseRequest.GetHttpRequestMessage().Properties[typeof(GraphRequestContext).ToString()]);
+            Assert.IsType<GraphRequestContext>(baseRequest.GetHttpRequestMessage().Properties[nameof(GraphRequestContext)]);
             var messageScopes = baseRequest.GetHttpRequestMessage().GetMiddlewareOption<AuthenticationHandlerOption>()
                 .AuthenticationProviderOption.Scopes;
             Assert.Equal(2, messageScopes.Length);
