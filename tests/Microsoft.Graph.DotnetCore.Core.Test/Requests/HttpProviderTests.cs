@@ -410,13 +410,13 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             {
                 MiddlewareOptions = new Dictionary<string, IMiddlewareOption>() {
                     {
-                        typeof(AuthenticationHandlerOption).ToString(),
+                        nameof(AuthenticationHandlerOption),
                         new AuthenticationHandlerOption { AuthenticationProvider = authProvider .Object }
                     }
                 },
                 ClientRequestId = "client-request-id"
             };
-            httpRequestMessage.Properties.Add(typeof(GraphRequestContext).ToString(), requestContext);
+            httpRequestMessage.Properties.Add(nameof(GraphRequestContext), requestContext);
         }
 
         [Fact]

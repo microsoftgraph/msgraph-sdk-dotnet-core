@@ -23,7 +23,7 @@ namespace Microsoft.Graph
         /// <returns></returns>
         internal static T WithDefaultAuthProvider<T>(this T baseRequest) where T : IBaseRequest
         {
-            string authOptionKey = typeof(AuthenticationHandlerOption).ToString();
+            string authOptionKey = nameof(AuthenticationHandlerOption);
             if (baseRequest.MiddlewareOptions.ContainsKey(authOptionKey))
             {
                 (baseRequest.MiddlewareOptions[authOptionKey] as AuthenticationHandlerOption).AuthenticationProvider = baseRequest.Client.AuthenticationProvider;
@@ -48,7 +48,7 @@ namespace Microsoft.Graph
         {
             if (baseRequest.Client.PerRequestAuthProvider != null)
             {
-                string authOptionKey = typeof(AuthenticationHandlerOption).ToString();
+                string authOptionKey = nameof(AuthenticationHandlerOption);
                 if (baseRequest.MiddlewareOptions.ContainsKey(authOptionKey))
                 {
                     (baseRequest.MiddlewareOptions[authOptionKey] as AuthenticationHandlerOption).AuthenticationProvider = baseRequest.Client.PerRequestAuthProvider();
@@ -72,7 +72,7 @@ namespace Microsoft.Graph
         /// <returns></returns>
         public static T WithShouldRetry<T>(this T baseRequest, Func<int, int, HttpResponseMessage, bool> shouldRetry) where T : IBaseRequest
         {
-            string retryOptionKey = typeof(RetryHandlerOption).ToString();
+            string retryOptionKey = nameof(RetryHandlerOption);
             if (baseRequest.MiddlewareOptions.ContainsKey(retryOptionKey))
             {
                 (baseRequest.MiddlewareOptions[retryOptionKey] as RetryHandlerOption).ShouldRetry = shouldRetry;
@@ -95,7 +95,7 @@ namespace Microsoft.Graph
         /// <returns></returns>
         public static T WithMaxRetry<T>(this T baseRequest, int maxRetry) where T : IBaseRequest
         {
-            string retryOptionKey = typeof(RetryHandlerOption).ToString();
+            string retryOptionKey = nameof(RetryHandlerOption);
             if (baseRequest.MiddlewareOptions.ContainsKey(retryOptionKey))
             {
                 (baseRequest.MiddlewareOptions[retryOptionKey] as RetryHandlerOption).MaxRetry = maxRetry;
@@ -118,7 +118,7 @@ namespace Microsoft.Graph
         /// <returns></returns>
         public static T WithMaxRetry<T>(this T baseRequest, TimeSpan retriesTimeLimit) where T : IBaseRequest
         {
-            string retryOptionKey = typeof(RetryHandlerOption).ToString();
+            string retryOptionKey = nameof(RetryHandlerOption);
             if (baseRequest.MiddlewareOptions.ContainsKey(retryOptionKey))
             {
                 (baseRequest.MiddlewareOptions[retryOptionKey] as RetryHandlerOption).RetriesTimeLimit = retriesTimeLimit;
@@ -141,7 +141,7 @@ namespace Microsoft.Graph
         /// <returns></returns>
         public static T WithMaxRedirects<T>(this T baseRequest, int maxRedirects) where T : IBaseRequest
         {
-            string redirectOptionKey = typeof(RedirectHandlerOption).ToString();
+            string redirectOptionKey = nameof(RedirectHandlerOption);
             if (baseRequest.MiddlewareOptions.ContainsKey(redirectOptionKey))
             {
                 (baseRequest.MiddlewareOptions[redirectOptionKey] as RedirectHandlerOption).MaxRedirect = maxRedirects;
@@ -178,7 +178,7 @@ namespace Microsoft.Graph
         /// <param name="scopes">Microsoft graph scopes used to authenticate this request.</param>
         public static T WithScopes<T>(this T baseRequest, string[] scopes) where T : IBaseRequest
         {
-            string authHandlerOptionKey = typeof(AuthenticationHandlerOption).ToString();
+            string authHandlerOptionKey = nameof(AuthenticationHandlerOption);
             AuthenticationHandlerOption authHandlerOptions; 
 
             // make sure that the options exist in the middleware otherwise create it

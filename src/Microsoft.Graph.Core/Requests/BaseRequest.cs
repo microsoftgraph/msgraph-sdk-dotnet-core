@@ -350,7 +350,7 @@ namespace Microsoft.Graph
                 FeatureUsage = httpRequestMessage.GetFeatureFlags()
             };
 
-            httpRequestMessage.Properties.Add(typeof(GraphRequestContext).ToString(), requestContext);
+            httpRequestMessage.Properties.Add(nameof(GraphRequestContext), requestContext);
         }
 
         /// <summary>
