@@ -27,5 +27,23 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
         {
             Assert.False(this.converter.CanConvert(typeof(DateTime)));
         }
+
+        [Fact]
+        public void CanSerializeAndDeserializeTimeOfDay()
+        {
+            // Arrange
+            var serializer = new Serializer();
+            var stringToDeserialize = "\"06:00:00\"";
+            var expectedTimeDate = new TimeOfDay(6, 0, 0);
+            
+            // Act
+            var timeOfDay = serializer.DeserializeObject<TimeOfDay>(stringToDeserialize);
+
+            var timeOfDayString = serializer.SerializeObject(timeOfDay);
+
+            // Assert
+            Assert.Equal(expectedTimeDate.ToString(), timeOfDay.ToString());
+            Assert.Equal(timeOfDayString, stringToDeserialize);
+        }
     }
 }

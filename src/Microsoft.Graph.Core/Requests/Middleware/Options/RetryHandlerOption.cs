@@ -79,8 +79,8 @@ namespace Microsoft.Graph
 
         /// <summary>
         /// A delegate that's called to determine whether a request should be retried or not.
-        /// The delegate method should accept a delay time in seconds of, number of retry attempts and <see cref="HttpResponseMessage"/> as it's parameters and return a <see cref="bool"/>. This defaults to true
+        /// The delegate method should accept a delay time in seconds of, number of retry attempts and <see cref="HttpResponseMessage"/> as it's parameters and return a <see cref="bool"/>. This defaults to false
         /// </summary>
-        public Func<int, int, HttpResponseMessage, bool> ShouldRetry { get; set; } = (delay, attempt, response) => true;
+        public Func<int, int, HttpResponseMessage, bool> ShouldRetry { get; set; } = (delay, attempt, response) => false;
     }
 }

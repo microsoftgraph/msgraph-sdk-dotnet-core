@@ -2,43 +2,42 @@
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
 namespace Microsoft.Graph
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Text;
+    using System.Text.Json.Serialization;
+
     /// <summary>
     /// The error details object.
     /// Models OData protocol, 9.4 Error Response Body details object.
     /// http://docs.oasis-open.org/odata/odata/v4.01/csprd05/part1-protocol/odata-v4.01-csprd05-part1-protocol.html#_Toc14172757
     /// </summary>
-    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public class ErrorDetail
     {
         /// <summary>
         /// This code serves as a sub-status for the error code specified in the Error object.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "code", Required = Required.Default)]
+        [JsonPropertyName("code")]
         public string Code { get; set; }
 
         /// <summary>
         /// The error message.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "message", Required = Required.Default)]
+        [JsonPropertyName("message")]
         public string Message { get; set; }
 
         /// <summary>
         /// Indicates the target of the error, for example, the name of the property in error.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "target", Required = Required.Default)]
+        [JsonPropertyName("target")]
         public string Target { get; set; }
 
         /// <summary>
         /// The AdditionalData property bag.
         /// </summary>
-        [JsonExtensionData(ReadData = true)]
+        [JsonExtensionData]
         public IDictionary<string, object> AdditionalData { get; set; }
 
         /// <summary>

@@ -5,11 +5,11 @@
 namespace Microsoft.Graph
 {
     using Microsoft.Graph.Core.Models;
-    using Newtonsoft.Json;
     using System.IO;
     using System.Net;
     using System.Net.Http;
     using System.Threading.Tasks;
+    using System.Text.Json;
 
     /// <summary>
     /// The ResponseHandler for upload requests
@@ -67,7 +67,10 @@ namespace Microsoft.Graph
                      */
                     if (response.StatusCode == HttpStatusCode.Created)
                     {
-                        uploadResult.ItemResponse = this._serializer.DeserializeObject<T>(responseSteam);
+                        if(responseSteam.Length > 0) //system.text.json wont deserialize an empty string
+                        {
+                            uploadResult.ItemResponse = this._serializer.DeserializeObject<T>(responseSteam);
+                        }
                         uploadResult.Location = response.Headers.Location;
                     }
                     else
@@ -93,7 +96,7 @@ namespace Microsoft.Graph
 
                     return uploadResult;
                 }
-                catch (JsonSerializationException exception)
+                catch (JsonException exception)
                 {
                     string rawResponseBody = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                     throw new ServiceException(new Error()

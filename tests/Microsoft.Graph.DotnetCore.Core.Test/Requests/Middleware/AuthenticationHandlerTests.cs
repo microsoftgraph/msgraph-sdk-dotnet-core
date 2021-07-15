@@ -116,11 +116,11 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             using (var unauthorizedResponse = new HttpResponseMessage(HttpStatusCode.Unauthorized))
             using (var expectedResponse = new HttpResponseMessage(HttpStatusCode.OK))
             {
-                httpRequestMessage.Properties.Add(typeof(GraphRequestContext).ToString(), new GraphRequestContext
+                httpRequestMessage.Properties.Add(nameof(GraphRequestContext), new GraphRequestContext
                 {
                     MiddlewareOptions = new Dictionary<string, IMiddlewareOption>() {
                         {
-                            typeof(AuthenticationHandlerOption).ToString(),
+                            nameof(AuthenticationHandlerOption),
                             new AuthenticationHandlerOption { AuthenticationProvider = mockAuthenticationProvider.Object }
                         }
                     }
@@ -290,7 +290,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 
             var requestContext = response.RequestMessage.GetRequestContext();
 
-            var middleWareOption = requestContext.MiddlewareOptions[typeof(AuthenticationHandlerOption).ToString()] as AuthenticationHandlerOption;
+            var middleWareOption = requestContext.MiddlewareOptions[nameof(AuthenticationHandlerOption)] as AuthenticationHandlerOption;
             Assert.NotNull(middleWareOption);
 
             var authProviderOption = middleWareOption.AuthenticationProviderOption as ICaeAuthenticationProviderOption;
@@ -317,8 +317,8 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 
             // set the original AuthenticationProviderOptionTest as the auth provider
             var originalRequestContext = httpRequestMessage.GetRequestContext();
-            originalRequestContext.MiddlewareOptions[typeof(AuthenticationHandlerOption).ToString()] = authenticationHandlerOption;
-            httpRequestMessage.Properties[typeof(GraphRequestContext).ToString()] = originalRequestContext;
+            originalRequestContext.MiddlewareOptions[nameof(AuthenticationHandlerOption)] = authenticationHandlerOption;
+            httpRequestMessage.Properties[nameof(GraphRequestContext)] = originalRequestContext;
 
             var unauthorizedResponse = new HttpResponseMessage(HttpStatusCode.Unauthorized);
             unauthorizedResponse.Headers.WwwAuthenticate.Add(
@@ -335,7 +335,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             var requestContext = response.RequestMessage.GetRequestContext();
 
             // Assert
-            var middleWareOption = requestContext.MiddlewareOptions[typeof(AuthenticationHandlerOption).ToString()] as AuthenticationHandlerOption;
+            var middleWareOption = requestContext.MiddlewareOptions[nameof(AuthenticationHandlerOption)] as AuthenticationHandlerOption;
             Assert.NotNull(middleWareOption);
 
             var authProviderOption = middleWareOption.AuthenticationProviderOption as ICaeAuthenticationProviderOption;

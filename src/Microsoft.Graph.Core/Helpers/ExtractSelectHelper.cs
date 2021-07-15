@@ -93,10 +93,10 @@ namespace Microsoft.Graph
 
         private static string GetMemberWireName(MemberInfo member)
         {
-            var jsonProperty = member.GetCustomAttribute<Newtonsoft.Json.JsonPropertyAttribute>();
-            if (jsonProperty != null && !string.IsNullOrWhiteSpace(jsonProperty.PropertyName))
+            var jsonProperty = member.GetCustomAttribute<System.Text.Json.Serialization.JsonPropertyNameAttribute>();
+            if (jsonProperty != null && !string.IsNullOrWhiteSpace(jsonProperty.Name))
             {
-                return jsonProperty.PropertyName;
+                return jsonProperty.Name;
             }
             return StringHelper.ConvertIdentifierToLowerCamelCase(member.Name);
         }

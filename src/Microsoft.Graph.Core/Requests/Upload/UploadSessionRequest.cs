@@ -42,7 +42,7 @@ namespace Microsoft.Graph
         /// <returns>The task to await.</returns>
         public async Task DeleteAsync(CancellationToken cancellationToken)
         {
-            this.Method = "DELETE";
+            this.Method = HttpMethods.DELETE;
             using (var response = await this.SendRequestAsync(null, cancellationToken).ConfigureAwait(false))
             {
             }
@@ -64,7 +64,7 @@ namespace Microsoft.Graph
         /// <returns>The Item.</returns>
         public async Task<IUploadSession> GetAsync(CancellationToken cancellationToken)
         {
-            this.Method = "GET";
+            this.Method = HttpMethods.GET;
 
             using (var response = await this.SendRequestAsync(null, cancellationToken).ConfigureAwait(false))
             {

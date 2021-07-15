@@ -4,14 +4,13 @@
 
 namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels
 {
-    using Newtonsoft.Json;
+    using System.Text.Json.Serialization;
     using System.Collections.Generic;
-    using System.Runtime.Serialization;
+
     /// <summary>
     /// A property bag class with no default constructor for unit testing purposes.
     /// </summary>
-    [JsonConverter(typeof(DerivedTypeConverter))]
-    [DataContract]
+    [JsonConverter(typeof(DerivedTypeConverter<AbstractClass>))]
     public abstract class AbstractClass
     {
         protected AbstractClass()
@@ -22,13 +21,13 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels
         /// <summary>
         /// Gets or sets id.
         /// </summary>
-        [DataMember(Name = "id", EmitDefaultValue = false, IsRequired = false)]
+        [JsonPropertyName("id")]
         public string Id { get; set; }
 
         /// <summary>
         /// Gets or sets additional data.
         /// </summary>
-        [JsonExtensionData(ReadData = true, WriteData = true)]
+        [JsonExtensionData]
         public IDictionary<string, object> AdditionalData { get; set; }
     }
 }

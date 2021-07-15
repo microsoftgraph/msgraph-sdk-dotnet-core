@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
@@ -6,6 +6,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Helpers
 {
     using System;
     using System.Linq.Expressions;
+    using System.Text.Json.Serialization;
     using Xunit;
     public class ExtractSelectHelperTest
     {
@@ -22,6 +23,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Helpers
         /// </summary>
         private class Event : EventBase
         {
+            [JsonPropertyName("body")]//use property name
             public string Body { get; set; }
 
             public string Subject { get; set; }

@@ -56,6 +56,9 @@ namespace Microsoft.Graph
             {
                 /// JSON content type value
                 public const string Json = "application/json";
+
+                /// Stream content type value
+                public const string Stream = "application/octet-stream";
             }
         }
 
@@ -108,6 +111,23 @@ namespace Microsoft.Graph
         {
             /// gzip encoding.
             public const string GZip = "gzip";
+        }
+
+        /// <summary>
+        /// Constants used to specify OData instance annotations.
+        /// https://www.odata.org/vocabularies/
+        /// </summary>
+        public static class OdataInstanceAnnotations
+        {
+            /// <summary>
+            /// The nextLink annotations string.
+            /// </summary>
+            public const string NextLink = "@odata.nextLink";
+
+            /// <summary>
+            /// The deltaLink annotations string.
+            /// </summary>
+            public const string DeltaLink = "@odata.deltaLink";
         }
     }
 }

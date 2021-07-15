@@ -5,16 +5,15 @@
 namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels
 {
     using System.Collections.Generic;
-    using System.Runtime.Serialization;
-    using Newtonsoft.Json;
+    using System.Text.Json.Serialization;
+
     /// <summary>
     /// A class to test abstract entity serialization and deserialization.
     /// </summary>
-    [JsonConverter(typeof(DerivedTypeConverter))]
-    [DataContract]
+    [JsonConverter(typeof(DerivedTypeConverter<AbstractEntityType>))]
     public class AbstractEntityType
     {
-        protected AbstractEntityType()
+        public AbstractEntityType()
         {
 
         }
@@ -22,13 +21,13 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels
         /// <summary>
         /// Gets or sets id.
         /// </summary>
-        [DataMember(Name = "id", EmitDefaultValue = false, IsRequired = false)]
+        [JsonPropertyName("id")]
         public string Id { get; set; }
 
         /// <summary>
         /// Gets or sets additional data.
         /// </summary>
-        [JsonExtensionData(ReadData = true, WriteData = true)]
+        [JsonExtensionData]
         public IDictionary<string, object> AdditionalData { get; set; }
     }
 }
