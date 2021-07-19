@@ -44,7 +44,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-	<PackageReference Include="System.Reflection.Emit" Version="4.3.0">
+	<PackageReference Include="System.Reflection.Emit" Version="4.7.0">
 	  <ExcludeAssets>all</ExcludeAssets>
 	</PackageReference>
 	<PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
