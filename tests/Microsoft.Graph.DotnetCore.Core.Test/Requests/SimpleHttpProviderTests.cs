@@ -134,23 +134,22 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 
         [Fact]
 
-        public async Task SendAsync_ThrowsClientTimeoutException()
+        public async Task SendAsync_RethrowsTaskCancelledException()
         {
             using (var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, "https://localhost"))
             {
                 this.simpleHttpProvider.Dispose();
 
-                var clientException = new TaskCanceledException();
+                var message = "Task cancelled";
+                var clientException = new TaskCanceledException(message);
                 var defaultHandlers = GraphClientFactory.CreateDefaultHandlers(authProvider.Object);
                 var httpClient = GraphClientFactory.Create(handlers: defaultHandlers, finalHandler: new ExceptionHttpMessageHandler(clientException));
                 this.simpleHttpProvider = new SimpleHttpProvider(httpClient, this.serializer.Object);
 
-                ServiceException exception = await Assert.ThrowsAsync<ServiceException>(async () => await this.simpleHttpProvider.SendAsync(
+                TaskCanceledException exception = await Assert.ThrowsAsync<TaskCanceledException>(async () => await this.simpleHttpProvider.SendAsync(
                     httpRequestMessage, HttpCompletionOption.ResponseContentRead, CancellationToken.None));
 
-                Assert.True(exception.IsMatch(ErrorConstants.Codes.Timeout));
-                Assert.Equal(ErrorConstants.Messages.RequestTimedOut, exception.Error.Message);
-                Assert.Equal(clientException, exception.InnerException);
+                Assert.Equal(message,exception.Message);
             }
         }
 
@@ -351,7 +350,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             using (var httpResponseMessage = new HttpResponseMessage())
             {
                 httpResponseMessage.Content = stringContent;
-                httpResponseMessage.Content.Headers.ContentType.MediaType = "application/json";
+                httpResponseMessage.Content.Headers.ContentType.MediaType = CoreConstants.MimeTypeNames.Application.Json;
 
                 httpResponseMessage.StatusCode = HttpStatusCode.BadRequest;
                 httpResponseMessage.RequestMessage = httpRequestMessage;

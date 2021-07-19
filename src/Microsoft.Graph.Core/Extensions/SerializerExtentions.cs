@@ -21,7 +21,7 @@ namespace Microsoft.Graph
         public static HttpContent SerializeAsJsonContent(this ISerializer serializer, object source )
         {
             var stringContent = serializer.SerializeObject(source);
-            return new StringContent(stringContent, Encoding.UTF8, "application/json");
+            return new StringContent(stringContent, Encoding.UTF8, CoreConstants.MimeTypeNames.Application.Json);
         }
         
     }

@@ -6,47 +6,45 @@ namespace Microsoft.Graph
 {
     using System;
     using System.Collections.Generic;
-    using System.Runtime.Serialization;
     using System.Text;
-    using Newtonsoft.Json;
+    using System.Text.Json.Serialization;
 
     /// <summary>
     /// The error object contained in 400 and 500 responses returned from the service.
     /// Models OData protocol, 9.4 Error Response Body
     /// http://docs.oasis-open.org/odata/odata/v4.01/csprd05/part1-protocol/odata-v4.01-csprd05-part1-protocol.html#_Toc14172757
     /// </summary>
-    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public class Error
     {
         /// <summary>
         /// This code represents the HTTP status code when this Error object accessed from the ServiceException.Error object.
         /// This code represent a sub-code when the Error object is in the InnerError or ErrorDetails object.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "code", Required = Required.Default)]
+        [JsonPropertyName("code")]
         public string Code { get; set; }
         
         /// <summary>
         /// The error message.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "message", Required = Required.Default)]
+        [JsonPropertyName("message")]
         public string Message { get; set; }
 
         /// <summary>
         /// Indicates the target of the error, for example, the name of the property in error.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "target", Required = Required.Default)]
+        [JsonPropertyName("target")]
         public string Target { get; set; }
 
         /// <summary>
         /// An array of details that describe the error[s] encountered with the request.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "details", Required = Required.Default)]
+        [JsonPropertyName("details")]
         public IEnumerable<ErrorDetail> Details { get; set; }
 
         /// <summary>
         /// The inner error of the response. These are additional error objects that may be more specific than the top level error.
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "innererror", Required = Required.Default)]
+        [JsonPropertyName("innererror")]
         public Error InnerError { get; set; }
 
         /// <summary>
@@ -62,7 +60,7 @@ namespace Microsoft.Graph
         /// <summary>
         /// The AdditionalData property bag.
         /// </summary>
-        [JsonExtensionData(ReadData = true)]
+        [JsonExtensionData]
         public IDictionary<string, object> AdditionalData { get; set; }
 
         /// <summary>
@@ -130,7 +128,7 @@ namespace Microsoft.Graph
                 errorStringBuilder.Append(Environment.NewLine);
                 foreach (var prop in this.AdditionalData)
                 {
-                    errorStringBuilder.AppendFormat("\t{0}: {1}", prop.Key, prop.Value.ToString());
+                    errorStringBuilder.AppendFormat("\t{0}: {1}", prop.Key, prop.Value?.ToString() ?? "null");
                     errorStringBuilder.Append(Environment.NewLine);
                 }
             }

@@ -5,25 +5,23 @@
 namespace Microsoft.Graph
 {
     using System.Collections.Generic;
-    using System.Runtime.Serialization;
-    using Newtonsoft.Json;
+    using System.Text.Json.Serialization;
 
     /// <summary>
     /// The error response object from the service on an unsuccessful call.
     /// </summary>
-    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public class ErrorResponse
     {
         /// <summary>
         /// The <see cref="Error"/> returned by the service.
         /// </summary>
-        [JsonProperty(PropertyName = "error")]
+        [JsonPropertyName("error")]
         public Error Error { get; set; }
 
         /// <summary>
         /// Additional data returned in the call.
         /// </summary>
-        [JsonExtensionData(ReadData = true)]
+        [JsonExtensionData]
         public IDictionary<string, object> AdditionalData { get; set; }
     }
 }
