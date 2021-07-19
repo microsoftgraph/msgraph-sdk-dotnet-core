@@ -129,7 +129,7 @@
   </None>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="System.Text.Json" Version="5.0.1" />
+    <PackageReference Include="System.Text.Json" Version="5.0.2" />
     <PackageReference Include="Azure.Core" Version="1.0.1" />
     <PackageReference Include="Microsoft.Identity.Client" Version="4.9.0" />
     <PackageReference Include="System.Diagnostics.DiagnosticSource" Version="4.7.1" />
