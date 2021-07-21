@@ -4,9 +4,9 @@
 
 namespace Microsoft.Graph
 {
-    using Newtonsoft.Json;
     using System;
     using System.Xml;
+    using System.Text.Json.Serialization;
 
     /// <summary>
     /// Represents an edm.duration value.

@@ -173,22 +173,21 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         }
 
         [Fact]
-        public async Task SendAsync_ClientTimeout()
+        public async Task SendAsync_RethrowsTaskCancelledException()
         {
             using (var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, "https://localhost"))
             {
                 this.httpProvider.Dispose();
 
-                var clientException = new TaskCanceledException();
+                var message = "Task Cancelled";
+                var clientException = new TaskCanceledException(message);
                 this.httpProvider = new HttpProvider(new ExceptionHttpMessageHandler(clientException), /* disposeHandler */ true, null);
                 this.AddGraphRequestContextToRequest(httpRequestMessage);
 
-                ServiceException exception = await Assert.ThrowsAsync<ServiceException>(async () => await this.httpProvider.SendRequestAsync(
+                TaskCanceledException exception = await Assert.ThrowsAsync<TaskCanceledException>(async () => await this.httpProvider.SendRequestAsync(
                         httpRequestMessage, HttpCompletionOption.ResponseContentRead, CancellationToken.None));
 
-                Assert.True(exception.IsMatch(ErrorConstants.Codes.Timeout));
-                Assert.Equal(ErrorConstants.Messages.RequestTimedOut, exception.Error.Message);
-                Assert.Equal(clientException, exception.InnerException);
+                Assert.Equal(message, exception.Message);
             }
         }
 
@@ -411,13 +410,13 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             {
                 MiddlewareOptions = new Dictionary<string, IMiddlewareOption>() {
                     {
-                        typeof(AuthenticationHandlerOption).ToString(),
+                        nameof(AuthenticationHandlerOption),
                         new AuthenticationHandlerOption { AuthenticationProvider = authProvider .Object }
                     }
                 },
                 ClientRequestId = "client-request-id"
             };
-            httpRequestMessage.Properties.Add(typeof(GraphRequestContext).ToString(), requestContext);
+            httpRequestMessage.Properties.Add(nameof(GraphRequestContext), requestContext);
         }
 
         [Fact]
@@ -457,7 +456,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             using (var httpResponseMessage = new HttpResponseMessage())
             {
                 httpResponseMessage.Content = stringContent;
-                httpResponseMessage.Content.Headers.ContentType.MediaType = "application/json";
+                httpResponseMessage.Content.Headers.ContentType.MediaType = CoreConstants.MimeTypeNames.Application.Json;
 
                 httpResponseMessage.StatusCode = HttpStatusCode.BadRequest;
                 httpResponseMessage.RequestMessage = httpRequestMessage;

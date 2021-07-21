@@ -16,7 +16,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Middleware.Options
             var retryOptions = new RetryHandlerOption();
             Assert.Equal(RetryHandlerOption.DEFAULT_DELAY, retryOptions.Delay);
             Assert.Equal(RetryHandlerOption.DEFAULT_MAX_RETRY, retryOptions.MaxRetry);
-            Assert.True(retryOptions.ShouldRetry(0, 0, null));
+            Assert.False(retryOptions.ShouldRetry(0, 0, null));
             Assert.Equal(TimeSpan.Zero, retryOptions.RetriesTimeLimit);
         }
 

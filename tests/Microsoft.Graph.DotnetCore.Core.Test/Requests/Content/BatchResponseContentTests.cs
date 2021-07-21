@@ -9,6 +9,8 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
     using System.Net.Http;
     using Xunit;
     using System.Threading.Tasks;
+    using Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels;
+    using System.IO;
 
     public class BatchResponseContentTests
     {
@@ -30,7 +32,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
         [Fact]
         public async Task BatchResponseContent_InitializeWithEmptyResponseContentAsync()
         {
-            string jsonResponse = "{ responses: [] }";
+            string jsonResponse = "{ \"responses\": [] }";
             HttpContent content = new StringContent(jsonResponse);
             HttpResponseMessage httpResponseMessage = new HttpResponseMessage(HttpStatusCode.BadRequest);
             httpResponseMessage.Content = content;
@@ -124,6 +126,59 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
             Assert.True(response.Headers.CacheControl.NoCache);
         }
 
+        [Fact]
+        public async Task BatchResponseContent_GetResponseStreamByIdAsync()
+        {
+            // This is an example response from /me/photo/$value
+            string responseJSON = @"{"+
+                                        "\"responses\": [" +
+                                            "{" +
+                                                "\"id\": \"1\"," +
+                                                "\"status\": 200," +
+                                                "\"headers\": {" +
+                                                    "\"Cache-Control\": \"private\"," +
+                                                    "\"Content-Type\": \"image/jpeg\"," +
+                                                    "\"ETag\": \"BEB9D79C\"" +
+                                              "}," +
+                                              "\"body\": \"iVBORw0KGgoAAAANSUhEUgAAABkAAAAZCAYAAADE6YVjAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZ" +
+                                                  "SBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77" +
+                                                  "u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM" +
+                                                  "6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0x" +
+                                                  "NDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyL" +
+                                                  "zIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodH" +
+                                                  "RwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXA" +
+                                                  "vMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJj" +
+                                                  "ZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc" +
+                                                  "3RhbmNlSUQ9InhtcC5paWQ6MEVBMTczNDg3QzA5MTFFNjk3ODM5NjQyRjE2RjA3QTkiIHhtcE1NOkRvY3VtZW" +
+                                                  "50SUQ9InhtcC5kaWQ6MEVBMTczNDk3QzA5MTFFNjk3ODM5NjQyRjE2RjA3QTkiPiA8eG1wTU06RGVyaXZlZEZ" +
+                                                  "yb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDowRUExNzM0NjdDMDkxMUU2OTc4Mzk2NDJGMTZGMDdBOSIg" +
+                                                  "c3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDowRUExNzM0NzdDMDkxMUU2OTc4Mzk2NDJGMTZGMDdBOSIvPiA8L" +
+                                                  "3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PjjUms" +
+                                                  "sAAAGASURBVHjatJaxTsMwEIbpIzDA6FaMMPYJkDKzVYU+QFeEGPIKfYU8AETkCYI6wANkZQwIKRNDB1hA0Jr" +
+                                                  "f0rk6WXZ8BvWkb4kv99vn89kDrfVexBSYgVNwDA7AN+jAK3gEd+AlGMGIBFDgFvzouK3JV/lihQTOwLtOtw9w" +
+                                                  "IRG5pJn91Tbgqk9kSk7GViADrTD4HCyZ0NQnomi51sb0fUyCMQEbp2WpU67IjfNjwcYyoUDhjJVcZBjYBy40j" +
+                                                  "4wXgaobWoe8Z6Y80CJBwFpunepIzt2AUgFjtXXshNXjVmMh+K+zzp/CMs0CqeuzrxSRpbOKfdCkiMTS1VBQ41" +
+                                                  "uxMyQR2qbrXiiwYN3ACh1FDmsdK2Eu4J6Tlo31dYVtCY88h5ELZIJJ+IRMzBHfyJINrigNkt5VsRiub9nXICd" +
+                                                  "sYyVd2NcVvA3ScE5t2rb5JuEeyZnAhmLt9NK63vX1O5Pe8XaPSuGq1uTrfUgMEp9EJ+CQvr+BJ/AAKvAcCiAR" +
+                                                  "+bf9CjAAluzmdX4AEIIAAAAASUVORK5CYII=\"" +
+                                            "}" +
+                                        "]" +
+                                    "}";
+
+            using HttpContent content = new StringContent(responseJSON);
+            using HttpResponseMessage httpResponseMessage = new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = content
+            };
+
+            BatchResponseContent batchResponseContent = new BatchResponseContent(httpResponseMessage);
+
+            using Stream responseStream = await batchResponseContent.GetResponseStreamByIdAsync("1");
+
+            Assert.NotNull(responseStream);
+            Assert.True(responseStream.Length > 0);
+        }
+
 
         [Fact]
         public async Task BatchResponseContent_GetResponseByIdAsyncWithDeseirializer()
@@ -163,24 +218,24 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
             BatchResponseContent batchResponseContent = new BatchResponseContent(httpResponseMessage);
 
             // Act
-            User user = await batchResponseContent.GetResponseByIdAsync<User>("1");
+            TestUser user = await batchResponseContent.GetResponseByIdAsync<TestUser>("1");
             // Assert we have a valid user
             Assert.Equal("MOD Administrator", user.DisplayName);
 
             // Act
-            Drive drive = await batchResponseContent.GetResponseByIdAsync<Drive>("2");
+            TestDrive drive = await batchResponseContent.GetResponseByIdAsync<TestDrive>("2");
             // Assert we have a valid drive object
             Assert.Equal("b!random-VkHdanfIomf", drive.Id);
             Assert.Equal("OneDrive", drive.Name);
 
             // Act
-            Notebook notebook = await batchResponseContent.GetResponseByIdAsync<Notebook>("3");
+            TestNoteBook notebook = await batchResponseContent.GetResponseByIdAsync<TestNoteBook>("3");
             // Assert we have a valid notebook object
             Assert.Equal("1-9f4fe8ea-7e6e-486e-a8f4-nothing-here", notebook.Id);
             Assert.Equal("My Notebook -442293399", notebook.DisplayName);
 
             // Act
-            ServiceException serviceException = await Assert.ThrowsAsync<ServiceException>(() => batchResponseContent.GetResponseByIdAsync<DriveItem>("4"));
+            ServiceException serviceException = await Assert.ThrowsAsync<ServiceException>(() => batchResponseContent.GetResponseByIdAsync<TestDriveItem>("4"));
             // Assert we detect the incorrect response and give usable Service Exception
             Assert.Equal("20117", serviceException.Error.Code);
             Assert.Equal(HttpStatusCode.Conflict, serviceException.StatusCode);//status 409
@@ -221,7 +276,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
                                   "                },\n" +
                                   "                \"body\": {\n" +
                                   "                    \"contentType\": \"html\",\n" +
-                                  "                    \"content\": \"<html>\\r\\n<head>\\r\\n<meta http-\",\n" +
+                                  "                    \"content\": \"<html>\\r\\n<head>\\r\\n<meta http-\"\n" +
 
                                   "                },\n" +
                                   "                \"start\": {\n" +
@@ -246,7 +301,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
             BatchResponseContent batchResponseContent = new BatchResponseContent(httpResponseMessage);
 
             // Act
-            Event eventItem = await batchResponseContent.GetResponseByIdAsync<Event>("3");
+            TestEvent eventItem = await batchResponseContent.GetResponseByIdAsync<TestEvent>("3");
 
             // Assert we have a valid datetime in the event
             Assert.Equal("2019-07-30T23:00:00.0000000", eventItem.End.DateTime);

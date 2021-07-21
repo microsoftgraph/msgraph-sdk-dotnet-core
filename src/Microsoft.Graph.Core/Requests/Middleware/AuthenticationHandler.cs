@@ -180,8 +180,8 @@ namespace Microsoft.Graph
 
             // update the request context with the updated options
             GraphRequestContext requestContext = newRequest.GetRequestContext();
-            requestContext.MiddlewareOptions[typeof(AuthenticationHandlerOption).ToString()] = authenticationHandlerOption;
-            newRequest.Properties[typeof(GraphRequestContext).ToString()] = requestContext;
+            requestContext.MiddlewareOptions[nameof(AuthenticationHandlerOption)] = authenticationHandlerOption;
+            newRequest.Properties[nameof(GraphRequestContext)] = requestContext;
         }
     }
 }

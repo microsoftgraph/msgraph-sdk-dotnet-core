@@ -30,7 +30,7 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets or sets the HTTP method string for the request.
         /// </summary>
-        string Method { get; }
+        HttpMethods Method { get; set; }
 
         /// <summary>
         /// Gets the URL for the request, without query string.
@@ -46,6 +46,11 @@ namespace Microsoft.Graph
         /// Gets the <see cref="IMiddlewareOption"/> collection for the request.
         /// </summary>
         IDictionary<string, IMiddlewareOption> MiddlewareOptions { get; }
+
+        /// <summary>
+        /// Gets the <see cref="IResponseHandler"/> for the request.
+        /// </summary>
+        IResponseHandler ResponseHandler { get; }
 
         /// <summary>
         /// Gets the <see cref="HttpRequestMessage"/> representation of the request.

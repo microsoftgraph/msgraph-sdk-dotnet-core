@@ -1,17 +1,17 @@
-﻿// ------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
 namespace Microsoft.Graph
 {
     using System;
-
-    using Newtonsoft.Json;
+    using System.Text.Json;
+    using System.Text.Json.Serialization;
 
     /// <summary>
     /// The Date Converter.
     /// </summary>
-    public class DateConverter : JsonConverter
+    public class DateConverter : JsonConverter<Date>
     {
         /// <summary>
         /// Check if the given object can be converted into a Date.
@@ -31,20 +31,18 @@ namespace Microsoft.Graph
         /// <summary>
         /// Converts the JSON object into a Date object
         /// </summary>
-        /// <param name="reader">The <see cref="JsonWriter"/> to read from.</param>
-        /// <param name="objectType">The object type.</param>
-        /// <param name="existingValue">The existing value.</param>
-        /// <param name="serializer">The serializer to convert the object with.</param>
+        /// <param name="reader">The <see cref="Utf8JsonReader"/> to read from.</param>
+        /// <param name="typeToConvert">The object type.</param>
+        /// <param name="options">The <see cref="JsonSerializerOptions"/> to use on deserialization.</param>
         /// <returns></returns>
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        public override Date Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             try
             {
-                var dateTime = (DateTime)serializer.Deserialize(reader, typeof(DateTime));
-
+                var dateTime = DateTime.Parse(reader.GetString());
                 return new Date(dateTime);
             }
-            catch (JsonSerializationException serializationException)
+            catch (Exception dateParseException)
             {
                 throw new ServiceException(
                     new Error
@@ -52,23 +50,21 @@ namespace Microsoft.Graph
                         Code = ErrorConstants.Codes.GeneralException,
                         Message = ErrorConstants.Messages.UnableToDeserializeDate,
                     },
-                    serializationException);
+                    dateParseException);
             }
         }
 
         /// <summary>
         /// Writes the JSON representation of the object.
         /// </summary>
-        /// <param name="writer">The <see cref="JsonWriter"/> to write to.</param>
-        /// <param name="value">The value.</param>
-        /// <param name="serializer">The calling serializer.</param>
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        /// <param name="writer">The <see cref="Utf8JsonWriter"/> to write to.</param>
+        /// <param name="date">The date value.</param>
+        /// <param name="options">The calling serializer options</param>
+        public override void Write(Utf8JsonWriter writer, Date date, JsonSerializerOptions options)
         {
-            var date = value as Date;
-
             if (date != null)
             {
-                writer.WriteValue(date.ToString());
+                writer.WriteStringValue(date.ToString());
             }
             else
             {

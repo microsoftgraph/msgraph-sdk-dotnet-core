@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
@@ -11,6 +11,8 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
     using System.Text;
     using System.Threading.Tasks;
     using Xunit;
+    using Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels;
+
     public class UploadResponseHandlerTests
     {
         [Theory]
@@ -26,12 +28,12 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                     ""id"": ""912310013A123"",
                     ""name"": ""largeFile.vhd"",
                     ""size"": 33
-                }", Encoding.UTF8, "application/json"),
+                }", Encoding.UTF8, CoreConstants.MimeTypeNames.Application.Json),
                 StatusCode = statusCode//upload successful!
             };
 
             // Act
-            var uploadResult = await responseHandler.HandleResponse<DriveItem>(hrm);
+            var uploadResult = await responseHandler.HandleResponse<TestDriveItem>(hrm);
             var driveItem = uploadResult.ItemResponse;
 
             //Assert
@@ -55,7 +57,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             hrm.StatusCode = HttpStatusCode.Created;//upload successful!
 
             // Act
-            var uploadResult = await responseHandler.HandleResponse<DriveItem>(hrm);
+            var uploadResult = await responseHandler.HandleResponse<TestDriveItem>(hrm);
             var fileAttachment = uploadResult.ItemResponse;
 
             //Assert
@@ -77,12 +79,12 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                   ""12345-55232"",
                   ""77829-99375""
                   ]
-                }", Encoding.UTF8, "application/json"),
+                }", Encoding.UTF8, CoreConstants.MimeTypeNames.Application.Json),
                 StatusCode = HttpStatusCode.OK//upload successful!
             };
 
             // Act
-            var uploadResult = await responseHandler.HandleResponse<DriveItem>(hrm);
+            var uploadResult = await responseHandler.HandleResponse<TestDriveItem>(hrm);
             var uploadSession = uploadResult.UploadSession;
 
             //Assert
@@ -111,12 +113,12 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                                 ""date"": ""2019-11-21T13:57:37""
                             }
                         }
-                    }", Encoding.UTF8, "application/json"),
+                    }", Encoding.UTF8, CoreConstants.MimeTypeNames.Application.Json),
                 StatusCode = HttpStatusCode.Unauthorized//error
             };
 
             // Act
-            var serviceException = await Assert.ThrowsAsync<ServiceException>(() => responseHandler.HandleResponse<DriveItem>(hrm));
+            var serviceException = await Assert.ThrowsAsync<ServiceException>(() => responseHandler.HandleResponse<TestDriveItem>(hrm));
 
             //Assert
             Assert.NotNull(serviceException);
@@ -144,12 +146,12 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 
             var hrm = new HttpResponseMessage
             {
-                Content = new StringContent(malformedResponse, Encoding.UTF8, "application/json"),
+                Content = new StringContent(malformedResponse, Encoding.UTF8, CoreConstants.MimeTypeNames.Application.Json),
                 StatusCode = HttpStatusCode.Unauthorized//error
             };
 
             // Act
-            var serviceException = await Assert.ThrowsAsync<ServiceException>(() => responseHandler.HandleResponse<DriveItem>(hrm));
+            var serviceException = await Assert.ThrowsAsync<ServiceException>(() => responseHandler.HandleResponse<TestDriveItem>(hrm));
 
             //Assert
             Assert.NotNull(serviceException);
