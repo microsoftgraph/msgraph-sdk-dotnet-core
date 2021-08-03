@@ -241,7 +241,17 @@ namespace Microsoft.Graph
                     foreach (var item in additionalData)
                     {
                         writer.WritePropertyName(item.Key);
-                        JsonSerializer.Serialize(writer, item.Value, item.Value.GetType(), options);
+                        // Check if value is null to choose the JsonSerializer.Serialize overload as System.Text.Json no longer supports 
+                        // the type parameter being null. 
+                        // Ref: https://docs.microsoft.com/en-us/dotnet/core/compatibility/serialization/5.0/jsonserializer-serialize-throws-argumentnullexception-for-null-type
+                        if (item.Value == null)
+                        {
+                            JsonSerializer.Serialize(writer, item.Value, options);
+                        }
+                        else
+                        {
+                            JsonSerializer.Serialize(writer, item.Value, item.Value.GetType(), options);
+                        }
                     }
                 }
                 else
