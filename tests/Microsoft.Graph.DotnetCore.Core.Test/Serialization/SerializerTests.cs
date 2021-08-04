@@ -431,13 +431,15 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
                 ContentType = TestBodyType.Text,
                 AdditionalData = new Dictionary<string, object>
                 {
-                    { "length" , "100" }
+                    { "length" , "100" },
+                    { "extraProperty", null }
                 }
             };
             var expectedSerializedString = "{" +
                                                "\"contentType\":\"text\"," +
                                                "\"content\":\"Example Content\"," +
                                                "\"length\":\"100\"," + // should be at the same level as other properties
+                                               "\"extraProperty\":null," +
                                                "\"@odata.type\":\"microsoft.graph.itemBody\"" +
                                            "}";
 
@@ -445,6 +447,27 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
             var serializedString = this.serializer.SerializeObject(testItemBody);
 
             //Assert
+            Assert.Equal(expectedSerializedString, serializedString);
+        }
+
+        [Fact]
+        public void SerializeInterfaceProperty()
+        {
+            // Arrange
+            var user = new TestUser()
+            {
+                EventDeltas = new TestEventDeltaCollectionPage()
+                {
+                    new TestEvent() { Id = "id" }
+
+                }
+            };
+            var expectedSerializedString = "{\"@odata.type\":\"microsoft.graph.user\",\"eventDeltas\":[{\"id\":\"id\",\"@odata.type\":\"microsoft.graph.event\"}]}";
+
+            // Act
+            var serializedString = this.serializer.SerializeObject(user);
+
+            // Assert that the interface properties respect the json serializer options
             Assert.Equal(expectedSerializedString, serializedString);
         }
 
