@@ -68,5 +68,12 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
         [JsonPropertyName("surname")]
         public string Surname { get; set; }
 
+        /// <summary>
+        /// Gets or sets eventDeltas.
+        /// The user's event deltas. This property is just a testing value.
+        /// </summary>
+        [JsonPropertyName("eventDeltas")]
+        public ITestEventDeltaCollectionPage EventDeltas { get; set; }
+
     }
 }

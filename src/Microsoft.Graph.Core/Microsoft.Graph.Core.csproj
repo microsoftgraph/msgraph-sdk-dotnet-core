@@ -20,34 +20,10 @@
     <DelaySign>false</DelaySign>
     <AssemblyOriginatorKeyFile>35MSSharedLib1024.snk</AssemblyOriginatorKeyFile>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <VersionPrefix>2.0.0</VersionPrefix>
+    <VersionPrefix>2.0.1</VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <PackageReleaseNotes>
-- Adds support for TokenCredential from Azure.Core
-- [Breaking Change] Adds support for System.Text,Json and drops Newtonsoft.Json dependency
-- [Breaking Change] Fix for incorrect task cancellation #28
-- Added GraphResponse object for wrapping responses
-- [Breaking Change] IBaseRequest now takes IResponseHandler as a member
-- Support Mac Http handlers(v1.0 feature)
-- Compression header handling(v1.0 feature)
-- Fix DefaultMaxSliceSize in LargeFileUpload task(v1.0 feature)
-- Fix for NullReference exception thrown when contentType is empty(v1.0 feature)
-- Add support for content with parameters(v1.0 feature)
-- Add continuous access evaluation(CAE) support(v1.0 feature)
-- Fix deserialization of odata primitives(v1.0 feature)
-- Support composable functions.(v1.0 feature)
-- Fixes setting of response headers in ServiceException so that customers have access to correlation ids #193 (v1.0 feature)
-- Prevents potential deadlock from occurring when AuthenticateRequestAsync(request) is called. #188 (v1.0 feature)
-- [Breaking Change] Remove serialization of headers and statusCode into AdditionalData #206
-- Fix deserialization of empty streams to be consistent with empty strings
-- [Breaking Change] Method type in IBaseRequest changes from string to enum 
-- Fix InvalidOperationException when Location header is relative #214
-- Include symbols
-- Change debug type to portable
-- Fix for Batch function not sending the ImmutableID header
-- Fix NullReference Exception on null property in Error payload
-- Include US Government L5 (DOD) national cloud endpoint in cloud list
-- Add support for retrieving stream responses in Batch requests.
+- Fix for serialization of interface properties not using global serializer options
     </PackageReleaseNotes>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
@@ -130,10 +106,10 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="System.Text.Json" Version="5.0.2" />
-    <PackageReference Include="Azure.Core" Version="1.16.0" />
-    <PackageReference Include="Microsoft.Identity.Client" Version="4.34.0" />
+    <PackageReference Include="Azure.Core" Version="1.17.0" />
+    <PackageReference Include="Microsoft.Identity.Client" Version="4.35.1" />
     <PackageReference Include="System.Diagnostics.DiagnosticSource" Version="4.7.1" />
-    <PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="6.11.1" />
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All"/>
+    <PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="6.12.0" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
   </ItemGroup>
 </Project>

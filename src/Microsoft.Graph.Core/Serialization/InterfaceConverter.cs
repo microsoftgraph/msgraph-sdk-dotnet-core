@@ -44,7 +44,7 @@ namespace Microsoft.Graph
         /// <param name="options">The serializer options to use.</param>
         public override void Write(Utf8JsonWriter writer, T value, JsonSerializerOptions options)
         {
-            JsonSerializer.Serialize(writer, value, typeof(T));
+            JsonSerializer.Serialize(writer, value, typeof(T), options);
         }
     }
 }
