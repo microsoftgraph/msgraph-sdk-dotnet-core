@@ -13,17 +13,17 @@
     <PackageProjectUrl>https://developer.microsoft.com/graph</PackageProjectUrl>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
-    <RepositoryUrl>https://github.com/microsoftgraph/msgraph-sdk-dotnet</RepositoryUrl>
+    <RepositoryUrl>https://github.com/microsoftgraph/msgraph-sdk-dotnet-core</RepositoryUrl>
     <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard2.0' ">2.0.0</NetStandardImplicitPackageVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <SignAssembly>false</SignAssembly>
     <DelaySign>false</DelaySign>
     <AssemblyOriginatorKeyFile>35MSSharedLib1024.snk</AssemblyOriginatorKeyFile>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <VersionPrefix>2.0.1</VersionPrefix>
+    <VersionPrefix>2.0.2</VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <PackageReleaseNotes>
-- Fix for serialization of interface properties not using global serializer options
+- Fix for initialization of the @odata.nextLink property through the NextLinkConverter
     </PackageReleaseNotes>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
