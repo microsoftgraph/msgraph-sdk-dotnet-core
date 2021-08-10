@@ -32,8 +32,6 @@ namespace Microsoft.Graph
         {
             if (typeToConvert == null)
                 throw new ArgumentNullException(nameof(typeToConvert));
-            if (options == null)
-                throw new ArgumentNullException(nameof(options));
 
             return WebUtility.UrlDecode(reader.GetString());
         }
@@ -48,8 +46,6 @@ namespace Microsoft.Graph
         {
             if (writer == null)
                 throw new ArgumentNullException(nameof(writer));
-            if (options == null)
-                throw new ArgumentNullException(nameof(options));
 
             writer.WriteStringValue(value);
         }
