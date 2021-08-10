@@ -20,6 +20,12 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
         public ITestEventDeltaCollectionPage Value { get; set; }
 
         /// <summary>
+        /// Gets or sets the nextLink string value.
+        /// </summary>
+        [JsonPropertyName("@odata.nextLink")]
+        [JsonConverter(typeof(NextLinkConverter))]
+        public string NextLink { get; set; }
+        /// <summary>
         /// Gets or sets additional data.
         /// </summary>
         [JsonExtensionData]
