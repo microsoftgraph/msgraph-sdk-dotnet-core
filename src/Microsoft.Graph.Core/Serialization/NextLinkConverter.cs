@@ -30,6 +30,11 @@ namespace Microsoft.Graph
         /// <returns>A TimeOfDay object.</returns>
         public override string Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
+            if (typeToConvert == null)
+                throw new ArgumentNullException(nameof(typeToConvert));
+            if (options == null)
+                throw new ArgumentNullException(nameof(options));
+
             return WebUtility.UrlDecode(reader.GetString());
         }
 
@@ -41,6 +46,11 @@ namespace Microsoft.Graph
         /// <param name="options">The calling serializer options</param>
         public override void Write(Utf8JsonWriter writer, string value, JsonSerializerOptions options)
         {
+            if (writer == null)
+                throw new ArgumentNullException(nameof(writer));
+            if (options == null)
+                throw new ArgumentNullException(nameof(options));
+
             writer.WriteStringValue(value);
         }
     }
