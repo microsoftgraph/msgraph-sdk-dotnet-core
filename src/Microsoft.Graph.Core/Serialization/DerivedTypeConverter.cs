@@ -258,9 +258,10 @@ namespace Microsoft.Graph
                 {
                     // Check to see if the property has a special converter specified
                     var jsonConverter = propertyInfo.GetCustomAttribute<System.Text.Json.Serialization.JsonConverterAttribute>();
-                    if (propertyInfo.GetValue(value) == null && jsonConverter == null)
+                    if ((propertyInfo.GetValue(value) == null && 
+                         (jsonConverter == null || jsonConverter.ConverterType == typeof(NextLinkConverter))))
                     {
-                        continue; //Don't do anything if we don't have a special converter or the value is null
+                        continue; //Don't emit null values unless we have a special converter. Unless its a converter for a primitive like the NextLinkConverter
                     }
 
                     writer.WritePropertyName(propertyName);

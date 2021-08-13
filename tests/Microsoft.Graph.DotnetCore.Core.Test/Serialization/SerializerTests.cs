@@ -474,7 +474,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
         }
 
         [Fact]
-        public void SerializeObjectWithEmptyAdditionalDataWithDerivedTypeConverter()
+        public void DerivedTypeConverterSerializeObjectWithEmptyAdditionalDataWithDerivedTypeConverterAndIgnoresNullNextLinkConverter()
         {
             // This example class uses the derived type converter with an empty/unset AdditionalData
             // Arrange
@@ -494,6 +494,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
 
             //Assert
             Assert.Equal(expectedSerializedString, serializedString);
+            Assert.DoesNotContain("@odata.nextLink", serializedString);
         }
 
         [Fact]
