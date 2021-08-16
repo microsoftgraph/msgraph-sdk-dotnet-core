@@ -37,6 +37,13 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
         public string Content { get; set; }
 
         /// <summary>
+        /// Gets or sets instancesNextLink.
+        /// </summary>
+        [JsonPropertyName("instances@odata.nextLink")]
+        [JsonConverter(typeof(NextLinkConverter))]
+        public string InstancesNextLink { get; set; }
+
+        /// <summary>
         /// Gets or sets additional data.
         /// </summary>
         [JsonExtensionData]

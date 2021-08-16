@@ -20,10 +20,10 @@
     <DelaySign>false</DelaySign>
     <AssemblyOriginatorKeyFile>35MSSharedLib1024.snk</AssemblyOriginatorKeyFile>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <VersionPrefix>2.0.2</VersionPrefix>
+    <VersionPrefix>2.0.3</VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <PackageReleaseNotes>
-- Fix for initialization of the @odata.nextLink property through the NextLinkConverter
+- Fix for DerivedTypeConverter emitting null values in conjunction with the NextLinkConverter
     </PackageReleaseNotes>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
@@ -109,7 +109,7 @@
     <PackageReference Include="Azure.Core" Version="1.17.0" />
     <PackageReference Include="Microsoft.Identity.Client" Version="4.35.1" />
     <PackageReference Include="System.Diagnostics.DiagnosticSource" Version="4.7.1" />
-    <PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="6.12.0" />
+    <PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="6.12.1" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
   </ItemGroup>
 </Project>
