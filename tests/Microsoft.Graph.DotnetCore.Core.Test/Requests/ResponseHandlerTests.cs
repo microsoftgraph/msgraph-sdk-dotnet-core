@@ -313,5 +313,42 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             // Assert
             Assert.True(changeList.Exists(x => x.Equals("@removed.reason")));
         }
+
+        [Fact]
+        public async Task HandleEventDeltaResponseWithEmptyCollectionProperty()
+        {
+            // Arrange
+            var deltaResponseHandler = new DeltaResponseHandler();
+
+            // TestString represents a page of results with a nextLink. There are two changed events.
+            // The events have key:value properties, key:object properties, and key:array properties.
+            // To view and format this test string, replace all \" with ", and use a JSON formatter
+            // to make it pretty.
+
+            // In this scenario the attendees for the first event have been removed and the api has returned 
+            // an empty collection to the property
+            var testString = "{\"@odata.context\":\"https://graph.microsoft.com/v1.0/$metadata#Collection(event)\",\"@odata.nextLink\":\"https://graph.microsoft.com/v1.0/me/calendarView/delta?$skiptoken=R0usmci39OQxqJrxK4\",\"value\":[{\"@odata.type\":\"#microsoft.graph.event\",\"@odata.etag\":\"EZ9r3czxY0m2jz8c45czkwAAFXcvIw==\",\"subject\":\"Get food\",\"body\":{\"contentType\":\"html\",\"content\":\"\"},\"start\":{\"dateTime\":\"2016-12-10T19:30:00.0000000\",\"timeZone\":\"UTC\"},\"end\":{\"dateTime\":\"2016-12-10T21:30:00.0000000\",\"timeZone\":\"UTC\"},\"attendees\":[],\"organizer\":{\"emailAddress\":{\"name\":\"Samantha Booth\",\"address\":\"samanthab@contoso.onmicrosoft.com\"}},\"id\":\"AAMkADVxTAAA=\"},{\"@odata.type\":\"#microsoft.graph.event\",\"@odata.etag\":\"WEZ9r3czxY0m2jz8c45czkwAAFXcvJA==\",\"subject\":\"Prepare food\",\"body\":{\"contentType\":\"html\",\"content\":\"\"},\"start\":{\"dateTime\":\"2016-12-10T22:00:00.0000000\",\"timeZone\":\"UTC\"},\"end\":{\"dateTime\":\"2016-12-11T00:00:00.0000000\",\"timeZone\":\"UTC\"},\"attendees\":[],\"organizer\":{\"emailAddress\":{\"name\":\"Samantha Booth\",\"address\":\"samanthab@contoso.onmicrosoft.com\"}},\"id\":\"AAMkADVxUAAA=\"}]}";
+
+            var hrm = new HttpResponseMessage()
+            {
+                Content = new StringContent(testString,
+                                            Encoding.UTF8,
+                                            CoreConstants.MimeTypeNames.Application.Json)
+            };
+
+            // Act
+            var deltaServiceLibResponse = await deltaResponseHandler.HandleResponse<TestEventDeltaCollectionResponse>(hrm);
+
+            // Assert
+            Assert.IsAssignableFrom<ITestEventDeltaCollectionPage>(deltaServiceLibResponse.Value); // We create a valid ICollectionPage.
+            Assert.True(deltaServiceLibResponse.Value[0].AdditionalData.TryGetValue("changes", out object changesElement)); // The first element has a list of changes
+            
+            // Deserialize the change list to a list of strings
+            var firstItemChangeList = JsonSerializer.Deserialize<List<string>>(((JsonElement)changesElement).GetRawText());
+
+            Assert.NotNull(firstItemChangeList);
+            Assert.NotEmpty(firstItemChangeList);
+            Assert.Contains("attendees", firstItemChangeList); // assert that the empty collection property is added to the list
+        }
     }
 }

@@ -165,9 +165,18 @@ namespace Microsoft.Graph
                     case JsonValueKind.Array:
                     {
                         string parent = parentName + property.Name;
+                        var arrayEnumerator = property.Value.EnumerateArray();
+                        if (!arrayEnumerator.Any())
+                        {
+                            // Handle the edge case when the change involves changing to an empty array 
+                            // as we can't observe elements in an empty collection in the foreach loop below
+                            changes.Add(parent); 
+                            break;
+                        }
 
                         int index = 0;
-                        foreach ( var arrayItem in property.Value.EnumerateArray())
+                        // Extract change elements from the array collection
+                        foreach ( var arrayItem in arrayEnumerator)
                         {
                             string parentWithIndex = $"{parent}[{index}]";
 
