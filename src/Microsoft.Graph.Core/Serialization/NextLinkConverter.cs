@@ -9,6 +9,9 @@ namespace Microsoft.Graph
     using System.Text.Json;
     using System.Text.Json.Serialization;
 
+    /// <summary>
+    /// The converter for deserializing/serializing next link urls
+    /// </summary>
     public class NextLinkConverter : JsonConverter<string>
     {
         /// <summary>
