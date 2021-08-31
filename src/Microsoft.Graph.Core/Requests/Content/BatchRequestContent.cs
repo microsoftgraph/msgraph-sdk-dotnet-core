@@ -310,7 +310,7 @@ namespace Microsoft.Graph
             if (requestUri == null)
                 throw new ArgumentNullException(nameof(requestUri));
 
-            return requestUri.PathAndQuery.Substring(5);
+            return requestUri.PathAndQuery.Substring(5); // `v1.0/` and `beta/` are both 5 characters
         }
 
         /// <summary>
