@@ -307,11 +307,10 @@ namespace Microsoft.Graph
 
         private string GetRelativeUrl(Uri requestUri)
         {
-            string version = "v1.0";
-            if (requestUri.AbsoluteUri.Contains("beta"))
-                version = "beta";
+            if (requestUri == null)
+                throw new ArgumentNullException(nameof(requestUri));
 
-            return requestUri.AbsoluteUri.Substring(requestUri.AbsoluteUri.IndexOf(version) + version.ToCharArray().Count());
+            return requestUri.PathAndQuery.Substring(5); // `v1.0/` and `beta/` are both 5 characters
         }
 
         /// <summary>
