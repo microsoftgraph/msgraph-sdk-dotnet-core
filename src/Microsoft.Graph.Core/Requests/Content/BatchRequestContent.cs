@@ -307,11 +307,10 @@ namespace Microsoft.Graph
 
         private string GetRelativeUrl(Uri requestUri)
         {
-            string version = "v1.0";
-            if (requestUri.AbsoluteUri.Contains("/beta/"))//use the url segment to search.
-                version = "beta";
+            if (requestUri == null)
+                throw new ArgumentNullException(nameof(requestUri));
 
-            return requestUri.AbsoluteUri.Substring(requestUri.AbsoluteUri.IndexOf(version, StringComparison.OrdinalIgnoreCase) + version.ToCharArray().Length);
+            return requestUri.PathAndQuery.Substring(5);
         }
 
         /// <summary>
