@@ -58,7 +58,7 @@ namespace Microsoft.Graph
         /// <returns></returns>
         private IBaseClient InitializeClient(string uploadUrl)
         {
-            HttpClient httpClient = GraphClientFactory.Create(authenticationProvider: null); //no auth
+            HttpClient httpClient = GraphClientFactory.Create(); //no auth
             httpClient.SetFeatureFlag(FeatureFlag.FileUploadTask);
             return new BaseClient(uploadUrl, httpClient);
         }

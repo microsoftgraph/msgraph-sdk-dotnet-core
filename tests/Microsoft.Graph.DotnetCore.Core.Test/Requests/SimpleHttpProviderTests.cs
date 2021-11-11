@@ -20,7 +20,6 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         private SimpleHttpProvider simpleHttpProvider;
         private readonly MockSerializer serializer;
         private readonly TestHttpMessageHandler testHttpMessageHandler;
-        private readonly MockAuthenticationProvider authProvider;
 
         /*
          {
@@ -54,10 +53,9 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         public SimpleHttpProviderTests()
         {
             this.testHttpMessageHandler = new TestHttpMessageHandler();
-            this.authProvider = new MockAuthenticationProvider();
             this.serializer = new MockSerializer();
 
-            var defaultHandlers = GraphClientFactory.CreateDefaultHandlers(authProvider.Object);
+            var defaultHandlers = GraphClientFactory.CreateDefaultHandlers();
             var httpClient = GraphClientFactory.Create(handlers: defaultHandlers, finalHandler: testHttpMessageHandler);
 
             this.simpleHttpProvider = new SimpleHttpProvider(httpClient, this.serializer.Object);
@@ -81,7 +79,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         public async Task InitSuccessfullyWithUsedHttpClient()
         {
             // Create a httpClient
-            var defaultHandlers = GraphClientFactory.CreateDefaultHandlers(authProvider.Object);
+            var defaultHandlers = GraphClientFactory.CreateDefaultHandlers();
             using (HttpClient httpClient = GraphClientFactory.Create(handlers: defaultHandlers, finalHandler: testHttpMessageHandler))
             using (var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, "https://localhost"))
             using (var httpResponseMessage = new HttpResponseMessage())
@@ -119,7 +117,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                 this.simpleHttpProvider.Dispose();
                 var clientException = new Exception();
 
-                var defaultHandlers = GraphClientFactory.CreateDefaultHandlers(authProvider.Object);
+                var defaultHandlers = GraphClientFactory.CreateDefaultHandlers();
                 var httpClient = GraphClientFactory.Create(handlers: defaultHandlers, finalHandler: new ExceptionHttpMessageHandler(clientException));
                 this.simpleHttpProvider = new SimpleHttpProvider(httpClient, this.serializer.Object);
 
@@ -142,7 +140,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 
                 var message = "Task cancelled";
                 var clientException = new TaskCanceledException(message);
-                var defaultHandlers = GraphClientFactory.CreateDefaultHandlers(authProvider.Object);
+                var defaultHandlers = GraphClientFactory.CreateDefaultHandlers();
                 var httpClient = GraphClientFactory.Create(handlers: defaultHandlers, finalHandler: new ExceptionHttpMessageHandler(clientException));
                 this.simpleHttpProvider = new SimpleHttpProvider(httpClient, this.serializer.Object);
 

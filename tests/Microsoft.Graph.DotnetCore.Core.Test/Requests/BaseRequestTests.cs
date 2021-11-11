@@ -8,6 +8,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
     using Microsoft.Graph.DotnetCore.Core.Test.TestModels;
     using Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels;
     using Microsoft.Kiota.Http.HttpClientLibrary.Extensions;
+    using Microsoft.Kiota.Abstractions.Authentication;
     using Moq;
     using System;
     using System.Collections.Generic;
@@ -98,7 +99,6 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             Assert.True(baseRequest.Headers[0].Name.Equals("header") && baseRequest.Headers[0].Value.Equals("value"));
             Assert.NotNull(baseRequest.Client.AuthenticationProvider);
             Assert.NotNull(baseRequest.GetHttpRequestMessage().GetRequestContext().ClientRequestId);
-            Assert.Equal(baseRequest.GetHttpRequestMessage().GetRequestOption<AuthenticationHandlerOption>().AuthenticationProvider, baseRequest.Client.AuthenticationProvider);
         }
 
         [Fact]
@@ -170,7 +170,6 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 
             Assert.Equal(HttpMethod.Put, httpRequestMessage.Method);
             Assert.NotNull(httpRequestMessage.GetRequestContext().ClientRequestId);
-            Assert.Null(httpRequestMessage.GetRequestOption<AuthenticationHandlerOption>().AuthenticationProvider);
         }
 
         [Fact]
@@ -221,8 +220,6 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                 Assert.Equal(expectedResponseItem.Id, responseItem.Id);
                 Assert.NotNull(baseRequest.Client.AuthenticationProvider);
                 Assert.NotNull(baseRequest.GetHttpRequestMessage().GetRequestContext().ClientRequestId);
-                Assert.Equal(baseRequest.GetHttpRequestMessage().GetRequestOption<AuthenticationHandlerOption>().AuthenticationProvider,
-                    baseRequest.Client.AuthenticationProvider);
             }
         }
 
@@ -264,8 +261,6 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                 Assert.Equal(expectedResponseItem.Id, responseItem.Id);
                 Assert.NotNull(baseRequest.Client.AuthenticationProvider);
                 Assert.NotNull(baseRequest.GetHttpRequestMessage().GetRequestContext().ClientRequestId);
-                Assert.Equal(baseRequest.GetHttpRequestMessage().GetRequestOption<AuthenticationHandlerOption>().AuthenticationProvider, 
-                    baseRequest.Client.AuthenticationProvider);
                 Assert.Equal("application/json; odata=verbose", baseRequest.ContentType);
             }
         }
@@ -475,12 +470,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 
                     string expectedToken = Guid.NewGuid().ToString();
                     var authProviderTriggered = 0;
-                    var authProvider = new DelegateAuthenticationProvider(message =>
-                    {
-                        authProviderTriggered++;
-                        message.Headers.Authorization = new AuthenticationHeaderValue("bearer", expectedToken);
-                        return Task.CompletedTask;
-                    });
+                    var authProvider = new AnonymousAuthenticationProvider();
 
                     var validationHandlerTriggered = 0;
                     var validationHandler = new TestHttpMessageHandler(message =>

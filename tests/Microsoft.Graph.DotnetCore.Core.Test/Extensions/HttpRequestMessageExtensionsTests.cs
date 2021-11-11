@@ -79,17 +79,6 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Extensions
         }
 
         [Fact]
-        public void GetMiddlewareControl_ShouldReturnIMiddlewareOptionObject()
-        {
-            string requestUrl = "https://localhost/v2";
-            var baseRequest = new BaseRequest(requestUrl, this.baseClient);
-
-            HttpRequestMessage httpRequestMessage = baseRequest.GetHttpRequestMessage();
-
-            Assert.NotNull(httpRequestMessage.GetRequestOption<AuthenticationHandlerOption>());
-        }
-
-        [Fact]
         public async Task CloneAsync_WithEmptyHttpContent()
         {
             HttpRequestMessage originalRequest = new HttpRequestMessage(HttpMethod.Post, "http://example.com");

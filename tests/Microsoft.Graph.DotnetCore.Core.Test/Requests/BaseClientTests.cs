@@ -5,6 +5,7 @@
 namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 {
     using Microsoft.Graph.DotnetCore.Core.Test.Mocks;
+    using Microsoft.Kiota.Authentication.Azure;
     using Xunit;
     public class BaseClientTests
     {
@@ -53,7 +54,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             var baseClient = new BaseClient(expectedBaseUrl, this.tokenCredential.Object);
 
             Assert.Equal(expectedBaseUrl, baseClient.BaseUrl);
-            Assert.IsType<TokenCredentialAuthProvider>(baseClient.AuthenticationProvider);
+            Assert.IsType<AzureIdentityAuthenticationProvider>(baseClient.AuthenticationProvider);
 
         }
     }

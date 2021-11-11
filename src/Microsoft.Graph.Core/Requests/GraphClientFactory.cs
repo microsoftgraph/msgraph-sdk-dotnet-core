@@ -11,7 +11,7 @@ namespace Microsoft.Graph
     using System.Reflection;
     using System.Net.Http.Headers;
     using Microsoft.Kiota.Http.HttpClientLibrary.Middleware;
-
+    using Microsoft.Kiota.Abstractions.Authentication;
     /// <summary>
     /// GraphClientFactory class to create the HTTP client
     /// </summary>
@@ -58,7 +58,6 @@ namespace Microsoft.Graph
         /// <summary>
         /// Creates a new <see cref="HttpClient"/> instance configured with the handlers provided.
         /// </summary>
-        /// <param name="authenticationProvider">The <see cref="IAuthenticationProvider"/> to authenticate requests.</param>
         /// <param name="version">The graph version to use.</param>
         /// <param name="nationalCloud">The national cloud endpoint to use.</param>
         /// <param name="proxy">The proxy to be used with created client.</param>
@@ -66,13 +65,12 @@ namespace Microsoft.Graph
         /// The default implementation creates a new instance of <see cref="HttpClientHandler"/> for each HttpClient.</param>
         /// <returns></returns>
         public static HttpClient Create(
-            IAuthenticationProvider authenticationProvider,
             string version = "v1.0",
             string nationalCloud = Global_Cloud,
             IWebProxy proxy = null,
             HttpMessageHandler finalHandler = null)
         {
-            IList<DelegatingHandler> handlers = CreateDefaultHandlers(authenticationProvider);
+            IList<DelegatingHandler> handlers = CreateDefaultHandlers();
             return Create(handlers, version, nationalCloud, proxy, finalHandler);
         }
 
@@ -122,12 +120,10 @@ namespace Microsoft.Graph
         /// <summary>
         /// Create a default set of middleware for calling Microsoft Graph
         /// </summary>
-        /// <param name="authenticationProvider">The <see cref="IAuthenticationProvider"/> to authenticate requests.</param>
         /// <returns></returns>
-        public static IList<DelegatingHandler> CreateDefaultHandlers(IAuthenticationProvider authenticationProvider)
+        public static IList<DelegatingHandler> CreateDefaultHandlers()
         {
             return new List<DelegatingHandler> {
-                new AuthenticationHandler(authenticationProvider),
                 new CompressionHandler(),
                 new RetryHandler(),
                 new RedirectHandler()
@@ -244,9 +240,7 @@ namespace Microsoft.Graph
         /// <returns>Delegating handler feature flag.</returns>
         private static FeatureFlag GetHandlerFeatureFlag(DelegatingHandler delegatingHandler)
         {
-            if (delegatingHandler is AuthenticationHandler)
-                return FeatureFlag.AuthHandler;
-            else if (delegatingHandler is CompressionHandler)
+            if (delegatingHandler is CompressionHandler)
                 return FeatureFlag.CompressionHandler;
             else if (delegatingHandler is RetryHandler)
                 return FeatureFlag.RetryHandler;

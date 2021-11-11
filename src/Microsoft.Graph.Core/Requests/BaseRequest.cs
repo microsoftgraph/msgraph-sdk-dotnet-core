@@ -57,9 +57,6 @@ namespace Microsoft.Graph
                 }
             }
 
-            // Adds the default authentication provider for this request. 
-            // This can be changed by the user by calling WithPerRequestAuthProvider extension method.
-            this.WithDefaultAuthProvider();
         }
 
         /// <summary>
@@ -199,9 +196,6 @@ namespace Microsoft.Graph
             {
                 using (var request = this.GetHttpRequestMessage(cancellationToken))
                 {
-                    // Only call `AuthenticateRequestAsync` when a custom IHttpProvider is used or our HttpProvider is used without an auth handler.
-                    if (ShouldAuthenticateRequest())
-                        await this.AuthenticateRequestAsync(request).ConfigureAwait(false);
 
                     request.Content = multipartContent;
 
@@ -270,10 +264,6 @@ namespace Microsoft.Graph
 
             using (var request = this.GetHttpRequestMessage(cancellationToken))
             {
-                // Only call `AuthenticateRequestAsync` when a custom IHttpProvider is used or our HttpProvider is used without an auth handler.
-                if (ShouldAuthenticateRequest())
-                    await this.AuthenticateRequestAsync(request).ConfigureAwait(false);
-
                 if (serializableObject != null)
                 {
                     var inputStream = serializableObject as Stream;
@@ -399,26 +389,6 @@ namespace Microsoft.Graph
             }
 
             return null;
-        }
-
-        /// <summary>
-        /// Adds the authentication header to the request. This is a patch to support request authentication for custom HttpProviders.
-        /// </summary>
-        /// <param name="request">The <see cref="HttpRequestMessage"/> representation of the request.</param>
-        /// <returns>The task to await.</returns>
-        private async Task AuthenticateRequestAsync(HttpRequestMessage request)
-        {
-            if (this.Client.AuthenticationProvider == null)
-            {
-                throw new ServiceException(
-                    new Error
-                    {
-                        Code = ErrorConstants.Codes.InvalidRequest,
-                        Message = ErrorConstants.Messages.AuthenticationProviderMissing,
-                    });
-            }
-
-            await Client.AuthenticationProvider.AuthenticateRequestAsync(request);
         }
 
         /// <summary>

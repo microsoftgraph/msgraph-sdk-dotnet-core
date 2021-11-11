@@ -105,18 +105,5 @@ namespace Microsoft.Graph
             }
             return requestContext;
         }
-
-        /// <summary>
-        /// Gets a <see cref="ScopedAuthenticationProviderOptions"/> from <see cref="HttpRequestMessage"/>
-        /// </summary>
-        /// <param name="httpRequestMessage">The <see cref="HttpRequestMessage"/> representation of the request.</param>
-        /// <returns>A middleware option of type <see cref="ScopedAuthenticationProviderOptions"/></returns>
-        internal static ScopedAuthenticationProviderOptions GetScopedAuthenticationProviderOption(this HttpRequestMessage httpRequestMessage)
-        {
-            AuthenticationHandlerOption authHandlerOption = httpRequestMessage.GetRequestOption<AuthenticationHandlerOption>();
-
-            return authHandlerOption?.AuthenticationProviderOption as ScopedAuthenticationProviderOptions ?? new ScopedAuthenticationProviderOptions();
-        }
-
     }
 }
