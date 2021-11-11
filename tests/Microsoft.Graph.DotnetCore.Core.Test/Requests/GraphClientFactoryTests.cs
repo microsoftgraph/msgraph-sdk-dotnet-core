@@ -15,6 +15,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
     using System.Threading.Tasks;
     using System.Net;
     using Xunit;
+    using Microsoft.Kiota.Http.HttpClientLibrary.Middleware;
 
     public class GraphClientFactoryTests : IDisposable
     {
@@ -314,7 +315,10 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         public void CreateClient_WithInnerHandlerReference()
         {
             DelegatingHandler[] handlers = new DelegatingHandler[1];
-            handlers[0] = new RetryHandler(this.testHttpMessageHandler);
+            handlers[0] = new RetryHandler() 
+            {
+                InnerHandler = this.testHttpMessageHandler
+            };
             // Creation should ignore the InnerHandler on RetryHandler
             HttpClient client = GraphClientFactory.Create(handlers: handlers);
             Assert.NotNull(client);

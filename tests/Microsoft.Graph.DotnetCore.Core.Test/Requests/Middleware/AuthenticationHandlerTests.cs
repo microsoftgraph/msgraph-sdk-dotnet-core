@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
@@ -13,6 +13,8 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
     using Xunit;
     using System.Threading.Tasks;
     using System.Collections.Generic;
+    using Microsoft.Kiota.Abstractions;
+    using HttpMethod = System.Net.Http.HttpMethod;
 
     public class AuthenticationHandlerTests : IDisposable
     {
@@ -116,15 +118,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             using (var unauthorizedResponse = new HttpResponseMessage(HttpStatusCode.Unauthorized))
             using (var expectedResponse = new HttpResponseMessage(HttpStatusCode.OK))
             {
-                httpRequestMessage.Properties.Add(nameof(GraphRequestContext), new GraphRequestContext
-                {
-                    MiddlewareOptions = new Dictionary<string, IMiddlewareOption>() {
-                        {
-                            nameof(AuthenticationHandlerOption),
-                            new AuthenticationHandlerOption { AuthenticationProvider = mockAuthenticationProvider.Object }
-                        }
-                    }
-                });
+                httpRequestMessage.Properties.Add(typeof(AuthenticationHandlerOption).FullName, new AuthenticationHandlerOption { AuthenticationProvider = mockAuthenticationProvider.Object });
                 testHttpMessageHandler.SetHttpResponse(unauthorizedResponse, expectedResponse);
 
                 var response = await msgInvoker.SendAsync(httpRequestMessage, new CancellationToken());
@@ -316,9 +310,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             authenticationHandlerOption.AuthenticationProviderOption = authenticationProviderOption;
 
             // set the original AuthenticationProviderOptionTest as the auth provider
-            var originalRequestContext = httpRequestMessage.GetRequestContext();
-            originalRequestContext.MiddlewareOptions[nameof(AuthenticationHandlerOption)] = authenticationHandlerOption;
-            httpRequestMessage.Properties[nameof(GraphRequestContext)] = originalRequestContext;
+            httpRequestMessage.Properties[typeof(AuthenticationHandlerOption).FullName] = authenticationHandlerOption;
 
             var unauthorizedResponse = new HttpResponseMessage(HttpStatusCode.Unauthorized);
             unauthorizedResponse.Headers.WwwAuthenticate.Add(

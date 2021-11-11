@@ -7,6 +7,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
     using Microsoft.Graph.DotnetCore.Core.Test.Mocks;
     using Microsoft.Graph.DotnetCore.Core.Test.TestModels;
     using Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels;
+    using Microsoft.Kiota.Http.HttpClientLibrary.Extensions;
     using Moq;
     using System;
     using System.Collections.Generic;
@@ -97,7 +98,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             Assert.True(baseRequest.Headers[0].Name.Equals("header") && baseRequest.Headers[0].Value.Equals("value"));
             Assert.NotNull(baseRequest.Client.AuthenticationProvider);
             Assert.NotNull(baseRequest.GetHttpRequestMessage().GetRequestContext().ClientRequestId);
-            Assert.Equal(baseRequest.GetHttpRequestMessage().GetMiddlewareOption<AuthenticationHandlerOption>().AuthenticationProvider, baseRequest.Client.AuthenticationProvider);
+            Assert.Equal(baseRequest.GetHttpRequestMessage().GetRequestOption<AuthenticationHandlerOption>().AuthenticationProvider, baseRequest.Client.AuthenticationProvider);
         }
 
         [Fact]
@@ -169,7 +170,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 
             Assert.Equal(HttpMethod.Put, httpRequestMessage.Method);
             Assert.NotNull(httpRequestMessage.GetRequestContext().ClientRequestId);
-            Assert.Null(httpRequestMessage.GetMiddlewareOption<AuthenticationHandlerOption>().AuthenticationProvider);
+            Assert.Null(httpRequestMessage.GetRequestOption<AuthenticationHandlerOption>().AuthenticationProvider);
         }
 
         [Fact]
@@ -220,7 +221,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                 Assert.Equal(expectedResponseItem.Id, responseItem.Id);
                 Assert.NotNull(baseRequest.Client.AuthenticationProvider);
                 Assert.NotNull(baseRequest.GetHttpRequestMessage().GetRequestContext().ClientRequestId);
-                Assert.Equal(baseRequest.GetHttpRequestMessage().GetMiddlewareOption<AuthenticationHandlerOption>().AuthenticationProvider,
+                Assert.Equal(baseRequest.GetHttpRequestMessage().GetRequestOption<AuthenticationHandlerOption>().AuthenticationProvider,
                     baseRequest.Client.AuthenticationProvider);
             }
         }
@@ -263,7 +264,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                 Assert.Equal(expectedResponseItem.Id, responseItem.Id);
                 Assert.NotNull(baseRequest.Client.AuthenticationProvider);
                 Assert.NotNull(baseRequest.GetHttpRequestMessage().GetRequestContext().ClientRequestId);
-                Assert.Equal(baseRequest.GetHttpRequestMessage().GetMiddlewareOption<AuthenticationHandlerOption>().AuthenticationProvider, 
+                Assert.Equal(baseRequest.GetHttpRequestMessage().GetRequestOption<AuthenticationHandlerOption>().AuthenticationProvider, 
                     baseRequest.Client.AuthenticationProvider);
                 Assert.Equal("application/json; odata=verbose", baseRequest.ContentType);
             }

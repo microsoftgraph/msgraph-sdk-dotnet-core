@@ -4,6 +4,7 @@
 
 namespace Microsoft.Graph
 {
+    using Microsoft.Kiota.Abstractions;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -38,7 +39,7 @@ namespace Microsoft.Graph
             this.responseHandler = new ResponseHandler(client.HttpProvider.Serializer);
             this.Headers = new List<HeaderOption>();
             this.QueryOptions = new List<QueryOption>();
-            this.MiddlewareOptions = new Dictionary<string, IMiddlewareOption>();
+            this.MiddlewareOptions = new Dictionary<string, IRequestOption>();
             this.RequestUrl = this.InitializeUrl(requestUrl);
 
             if (options != null)
@@ -99,7 +100,7 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets or sets middleware options for the request.
         /// </summary>
-        public IDictionary<string, IMiddlewareOption> MiddlewareOptions { get; private set; }
+        public IDictionary<string, IRequestOption> MiddlewareOptions { get; private set; }
 
         /// <summary>
         /// Sends the request.
@@ -304,7 +305,7 @@ namespace Microsoft.Graph
         public HttpRequestMessage GetHttpRequestMessage(CancellationToken cancellationToken)
         {
             var queryString = this.BuildQueryString();
-            var request = new HttpRequestMessage(new HttpMethod(this.Method.ToString()), string.Concat(this.RequestUrl, queryString));
+            var request = new HttpRequestMessage(new System.Net.Http.HttpMethod(this.Method.ToString()), string.Concat(this.RequestUrl, queryString));
             this.AddHeadersToRequest(request);
             this.AddRequestContextToRequest(request, cancellationToken);
             return request;
@@ -344,13 +345,14 @@ namespace Microsoft.Graph
             // Creates a request context object
             var requestContext = new GraphRequestContext
             {
-                MiddlewareOptions = MiddlewareOptions,
                 ClientRequestId = GetHeaderValue(httpRequestMessage, CoreConstants.Headers.ClientRequestId) ?? Guid.NewGuid().ToString(),
                 CancellationToken = cancellationToken,
                 FeatureUsage = httpRequestMessage.GetFeatureFlags()
             };
 
             httpRequestMessage.Properties.Add(nameof(GraphRequestContext), requestContext);
+            foreach (var (key,value) in this.MiddlewareOptions)
+                httpRequestMessage.Properties.Add(key, value);
         }
 
         /// <summary>

@@ -11,6 +11,7 @@ namespace Microsoft.Graph
     using System.Linq;
     using System.Net;
     using System.Text;
+    using Microsoft.Kiota.Http.HttpClientLibrary.Extensions;
 
     /// <summary>
     /// A <see cref="DelegatingHandler"/> implementation using standard .NET libraries.
@@ -113,7 +114,7 @@ namespace Microsoft.Graph
         /// <returns></returns>
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage httpRequestMessage, CancellationToken cancellationToken)
         {
-            AuthOption = httpRequestMessage.GetMiddlewareOption<AuthenticationHandlerOption>() ?? AuthOption;
+            AuthOption = httpRequestMessage.GetRequestOption<AuthenticationHandlerOption>() ?? AuthOption;
 
             // If default auth provider is not set, use the option
             var authProvider = AuthOption.AuthenticationProvider ?? AuthenticationProvider;
@@ -160,7 +161,7 @@ namespace Microsoft.Graph
             string claimsChallenge = Encoding.UTF8.GetString(bytes, 0, bytes.Length);
 
             // Try to get the current options otherwise create new ones
-            AuthenticationHandlerOption authenticationHandlerOption = newRequest.GetMiddlewareOption<AuthenticationHandlerOption>() ?? AuthOption;
+            AuthenticationHandlerOption authenticationHandlerOption = newRequest.GetRequestOption<AuthenticationHandlerOption>() ?? AuthOption;
             IAuthenticationProviderOption authenticationProviderOption = authenticationHandlerOption.AuthenticationProviderOption ?? new CaeAuthenticationProviderOption();
             
             // make sure that there is no information loss due to casting by copying over the scopes information if necessary

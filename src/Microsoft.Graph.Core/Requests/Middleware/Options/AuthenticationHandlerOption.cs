@@ -4,10 +4,12 @@
 
 namespace Microsoft.Graph
 {
+    using Microsoft.Kiota.Abstractions;
+
     /// <summary>
     /// The auth middleware option class
     /// </summary>
-    public class AuthenticationHandlerOption : IMiddlewareOption
+    public class AuthenticationHandlerOption : IRequestOption
     {
         /// <summary>
         /// An authentication provider

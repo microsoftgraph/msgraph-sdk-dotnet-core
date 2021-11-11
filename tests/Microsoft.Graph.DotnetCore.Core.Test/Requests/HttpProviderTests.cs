@@ -5,6 +5,7 @@
 namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 {
     using Microsoft.Graph.DotnetCore.Core.Test.Mocks;
+    using Microsoft.Kiota.Abstractions;
     using Moq;
     using System;
     using System.Collections.Generic;
@@ -17,6 +18,8 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
     using System.Threading;
     using System.Threading.Tasks;
     using Xunit;
+    using HttpMethod = System.Net.Http.HttpMethod;
+
     public class HttpProviderTests : IDisposable
     {
         private HttpProvider httpProvider;
@@ -205,9 +208,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 
                 ServiceException exception = await Assert.ThrowsAsync<ServiceException>(async () => await this.httpProvider.SendAsync(httpRequestMessage));
                 Assert.True(exception.IsMatch(ErrorConstants.Codes.GeneralException));
-                Assert.Equal(
-                    ErrorConstants.Messages.LocationHeaderNotSetOnRedirect,
-                    exception.Error.Message);
+                Assert.Contains("Location Header is not set in response", exception.InnerException.Message);
             }
         }
 
@@ -270,10 +271,8 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                         httpRequestMessage,
                         HttpCompletionOption.ResponseContentRead,
                         CancellationToken.None));
-                Assert.True(exception.IsMatch(ErrorConstants.Codes.TooManyRedirects));
-                Assert.Equal(
-                    string.Format(ErrorConstants.Messages.TooManyRedirectsFormatString, "5"),
-                    exception.Error.Message);
+                Assert.True(exception.IsMatch(ErrorConstants.Codes.GeneralException));
+                Assert.Contains("Too many redirects performed",exception.InnerException.Message);
             }
         }
 
@@ -408,7 +407,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         {
             var requestContext = new GraphRequestContext
             {
-                MiddlewareOptions = new Dictionary<string, IMiddlewareOption>() {
+                MiddlewareOptions = new Dictionary<string, IRequestOption>() {
                     {
                         nameof(AuthenticationHandlerOption),
                         new AuthenticationHandlerOption { AuthenticationProvider = authProvider .Object }

@@ -165,9 +165,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 
                 ServiceException exception = await Assert.ThrowsAsync<ServiceException>(async () => await this.simpleHttpProvider.SendAsync(httpRequestMessage));
                 Assert.True(exception.IsMatch(ErrorConstants.Codes.GeneralException));
-                Assert.Equal(
-                    ErrorConstants.Messages.LocationHeaderNotSetOnRedirect,
-                    exception.Error.Message);
+                Assert.Contains("Location Header is not set in response", exception.InnerException.Message);
             }
         }
 
@@ -232,10 +230,8 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                     HttpCompletionOption.ResponseContentRead,
                     CancellationToken.None));
 
-                Assert.True(exception.IsMatch(ErrorConstants.Codes.TooManyRedirects));
-                Assert.Equal(
-                    string.Format(ErrorConstants.Messages.TooManyRedirectsFormatString, "5"),
-                    exception.Error.Message);
+                Assert.True(exception.IsMatch(ErrorConstants.Codes.GeneralException));
+                Assert.Contains("Too many redirects performed", exception.InnerException.Message);
             }
         }
 
