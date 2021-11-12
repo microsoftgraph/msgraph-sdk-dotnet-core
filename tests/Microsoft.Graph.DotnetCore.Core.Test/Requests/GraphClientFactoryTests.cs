@@ -88,7 +88,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         [Fact]
         public void CreatePipelineWithHttpMessageHandlerInput()
         {
-            using (CompressionHandler compressionHandler = (CompressionHandler)GraphClientFactory.CreatePipeline(handlers))
+            using (CompressionHandler compressionHandler = (CompressionHandler)GraphClientFactory.CreatePipeline(handlers, new MockRedirectHandler()))
             using (RetryHandler retryHandler = (RetryHandler)compressionHandler.InnerHandler)
             using (RedirectHandler redirectHandler = (RedirectHandler)retryHandler.InnerHandler)
             using (MockRedirectHandler innerMost = (MockRedirectHandler)redirectHandler.InnerHandler)
@@ -266,25 +266,6 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         }
 
         [Fact]
-        public async Task SendRequest_UnauthorizedWithAuthenticationProvider()
-        {
-            var httpRequestMessage = new HttpRequestMessage(HttpMethod.Put, "https://example.com/bar");
-            httpRequestMessage.Content = new StringContent("Hello World");
-
-            var unauthorizedResponse = new HttpResponseMessage(HttpStatusCode.Unauthorized);
-            var okResponse = new HttpResponseMessage(HttpStatusCode.OK);
-
-            testHttpMessageHandler.SetHttpResponse(unauthorizedResponse, okResponse);
-
-            using (HttpClient client = GraphClientFactory.Create(handlers: handlers, finalHandler: this.testHttpMessageHandler))
-            {
-                var response = await client.SendAsync(httpRequestMessage, new CancellationToken());
-                Assert.Same(response, okResponse);
-                Assert.Equal(response.RequestMessage.Headers.Authorization, new AuthenticationHeaderValue(CoreConstants.Headers.Bearer, expectedAccessToken));
-            }
-        }
-
-        [Fact]
         public void CreateClient_WithHandlersHasExceptions()
         {
             var pipelineHandlers = GraphClientFactory.CreateDefaultHandlers().ToArray();
@@ -317,7 +298,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         [Fact]
         public void CreatePipelineWithFeatureFlags_Should_Set_FeatureFlag_For_Default_Handlers()
         {
-            FeatureFlag expectedFlag = FeatureFlag.AuthHandler | FeatureFlag.CompressionHandler | FeatureFlag.RetryHandler | FeatureFlag.RedirectHandler;
+            FeatureFlag expectedFlag = FeatureFlag.CompressionHandler | FeatureFlag.RetryHandler | FeatureFlag.RedirectHandler;
             string expectedFlagHeaderValue = Enum.Format(typeof(FeatureFlag), expectedFlag, "x");
             var handlers = GraphClientFactory.CreateDefaultHandlers();
             var pipelineWithHandlers = GraphClientFactory.CreatePipelineWithFeatureFlags(handlers);
@@ -329,9 +310,9 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         [Fact]
         public void CreatePipelineWithFeatureFlags_Should_Set_FeatureFlag_For_Speficied_Handlers()
         {
-            FeatureFlag expectedFlag = FeatureFlag.AuthHandler | FeatureFlag.CompressionHandler | FeatureFlag.RetryHandler;
+            FeatureFlag expectedFlag = FeatureFlag.CompressionHandler | FeatureFlag.RetryHandler;
             var handlers = GraphClientFactory.CreateDefaultHandlers();
-            handlers.RemoveAt(3);
+            handlers.RemoveAt(2);
             var pipelineWithHandlers = GraphClientFactory.CreatePipelineWithFeatureFlags(handlers);
 
             Assert.NotNull(pipelineWithHandlers.Pipeline);

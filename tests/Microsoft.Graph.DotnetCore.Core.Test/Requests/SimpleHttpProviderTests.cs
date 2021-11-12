@@ -185,7 +185,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 
                 var returnedResponseMessage = await this.simpleHttpProvider.SendAsync(httpRequestMessage);
 
-                Assert.Equal(6, finalResponseMessage.RequestMessage.Headers.Count());
+                Assert.Equal(5, finalResponseMessage.RequestMessage.Headers.Count());
 
                 foreach (var header in httpRequestMessage.Headers)
                 {
