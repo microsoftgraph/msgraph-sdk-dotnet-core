@@ -13,55 +13,6 @@ namespace Microsoft.Graph
     /// </summary>
     public static class BaseRequestExtensions
     {
-
-        /// <summary>
-        /// Sets the default authentication provider to the default Authentication Middleware Handler for this request.
-        /// This only works with the default authentication handler.
-        /// If you use a custom authentication handler, you have to handle it's retrieval in your implementation.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="baseRequest">The <see cref="BaseRequest"/> for the request.</param>
-        /// <returns></returns>
-        internal static T WithDefaultAuthProvider<T>(this T baseRequest) where T : IBaseRequest
-        {
-            string authOptionKey = typeof(AuthenticationHandlerOption).FullName;
-            if (baseRequest.MiddlewareOptions.ContainsKey(authOptionKey))
-            {
-                (baseRequest.MiddlewareOptions[authOptionKey] as AuthenticationHandlerOption).AuthenticationProvider = baseRequest.Client.AuthenticationProvider;
-            }
-            else
-            {
-                baseRequest.MiddlewareOptions.Add(authOptionKey, new AuthenticationHandlerOption { AuthenticationProvider = baseRequest.Client.AuthenticationProvider });
-            }
-            return baseRequest;
-        }
-
-        /// <summary>
-        /// Sets the PerRequestAuthProvider delegate handler to the default Authentication Middleware Handler to authenticate a single request.
-        /// The PerRequestAuthProvider delegate handler must be set to the GraphServiceClient instance before using this extension method otherwise, it defaults to the default authentication provider.
-        /// This only works with the default authentication handler.
-        /// If you use a custom authentication handler, you have to handle it's retrieval in your implementation.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="baseRequest">The <see cref="BaseRequest"/> for the request.</param>
-        /// <returns></returns>
-        public static T WithPerRequestAuthProvider<T>(this T baseRequest) where T : IBaseRequest
-        {
-            if (baseRequest.Client.PerRequestAuthProvider != null)
-            {
-                string authOptionKey = typeof(AuthenticationHandlerOption).FullName;
-                if (baseRequest.MiddlewareOptions.ContainsKey(authOptionKey))
-                {
-                    (baseRequest.MiddlewareOptions[authOptionKey] as AuthenticationHandlerOption).AuthenticationProvider = baseRequest.Client.PerRequestAuthProvider();
-                }
-                else
-                {
-                    baseRequest.MiddlewareOptions.Add(authOptionKey, new AuthenticationHandlerOption { AuthenticationProvider = baseRequest.Client.PerRequestAuthProvider() });
-                }
-            }
-            return baseRequest;
-        }
-
         /// <summary>
         /// Sets a ShouldRetry delegate to the default Retry Middleware Handler for this request.
         /// This only works with the default Retry Middleware Handler.
@@ -165,42 +116,6 @@ namespace Microsoft.Graph
         public static T WithResponseHandler<T>(this T baseRequest, IResponseHandler responseHandler) where T : BaseRequest
         {
             baseRequest.ResponseHandler = responseHandler ?? throw new ArgumentNullException(nameof(responseHandler));
-
-            return baseRequest;
-        }
-
-        /// <summary>
-        /// Sets Microsoft Graph's scopes that will be used by <see cref="IAuthenticationProvider"/> to authenticate this request
-        /// and can be used to perform incremental scope consent.
-        /// This only works with the default authentication handler and default set of Microsoft graph authentication providers.
-        /// If you use a custom authentication handler or authentication provider, you have to handle it's retrieval in your implementation.
-        /// </summary>
-        /// <param name="baseRequest">The <see cref="IBaseRequest"/>.</param>
-        /// <param name="scopes">Microsoft graph scopes used to authenticate this request.</param>
-        public static T WithScopes<T>(this T baseRequest, string[] scopes) where T : IBaseRequest
-        {
-            string authHandlerOptionKey = typeof(AuthenticationHandlerOption).FullName;
-            AuthenticationHandlerOption authHandlerOptions; 
-
-            // make sure that the options exist in the middleware otherwise create it
-            if (baseRequest.MiddlewareOptions.ContainsKey(authHandlerOptionKey))
-            {
-                authHandlerOptions = baseRequest.MiddlewareOptions[authHandlerOptionKey] as AuthenticationHandlerOption;
-            }
-            else
-            {
-                baseRequest.MiddlewareOptions.Add(authHandlerOptionKey, new AuthenticationHandlerOption());
-                authHandlerOptions = baseRequest.MiddlewareOptions[authHandlerOptionKey] as AuthenticationHandlerOption;
-            }
-
-            // get the auth handler options or create a new instance if absent
-            ScopedAuthenticationProviderOptions scopedAuthenticationProviderOptions = authHandlerOptions.AuthenticationProviderOption as ScopedAuthenticationProviderOptions ?? new ScopedAuthenticationProviderOptions();
-
-            scopedAuthenticationProviderOptions.Scopes = scopes;
-
-            // update the base request object as appropriate
-            authHandlerOptions.AuthenticationProviderOption = scopedAuthenticationProviderOptions;
-            baseRequest.MiddlewareOptions[authHandlerOptionKey] = authHandlerOptions;
 
             return baseRequest;
         }

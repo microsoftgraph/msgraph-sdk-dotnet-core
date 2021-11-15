@@ -9,6 +9,9 @@ namespace Microsoft.Graph
     using Microsoft.Graph.Core.Requests;
     using System.Collections.Generic;
     using Azure.Core;
+    using Microsoft.Kiota.Abstractions.Authentication;
+    using Microsoft.Kiota.Authentication.Azure;
+    using System.Linq;
 
     /// <summary>
     /// A default <see cref="IBaseClient"/> implementation.
@@ -48,7 +51,7 @@ namespace Microsoft.Graph
             )
         {
             this.BaseUrl = baseUrl;
-            this.AuthenticationProvider = new TokenCredentialAuthProvider(tokenCredential, scopes );
+            this.AuthenticationProvider = new AzureIdentityAuthenticationProvider(tokenCredential, scopes?.ToArray() ?? Array.Empty<string>());
             this.HttpProvider = httpProvider ?? new HttpProvider(new Serializer());
         }
 

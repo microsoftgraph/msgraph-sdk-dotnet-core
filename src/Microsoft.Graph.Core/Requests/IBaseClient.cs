@@ -6,6 +6,7 @@ namespace Microsoft.Graph
 {
     using System;
     using Microsoft.Graph.Core.Requests;
+    using Microsoft.Kiota.Abstractions.Authentication;
 
     /// <summary>
     /// Interface for the base client.
