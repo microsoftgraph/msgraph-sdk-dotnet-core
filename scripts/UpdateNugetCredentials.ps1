@@ -1,3 +1,4 @@
+# This file is sourced from https://github.com/microsoft/kiota/blob/main/scripts/updateNugetCredentials.ps1 and any updates there should be synced here as well.
 param([Parameter(Mandatory=$true)][string]$username, [Parameter(Mandatory=$true)][string]$apiToken, [Parameter(Mandatory=$true)][string]$nugetFileAbsolutePath)
 $template = "<?xml version=`"1.0`" encoding=`"utf-8`"?><configuration><packageSources><add key=`"GitHub`" value=`"https://nuget.pkg.github.com/microsoft/index.json`" /></packageSources><packageSourceCredentials><GitHub><add key=`"Username`" value=`"`" /><add key=`"ClearTextPassword`" value=`"`" /></GitHub></packageSourceCredentials></configuration>"
 [xml]$nugetConfigFileContent = [xml]$template
