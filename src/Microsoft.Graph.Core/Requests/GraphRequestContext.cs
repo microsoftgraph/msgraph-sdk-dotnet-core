@@ -4,6 +4,7 @@
 
 namespace Microsoft.Graph
 {
+    using Microsoft.Kiota.Abstractions;
     using System.Collections.Generic;
     using System.Threading;
 
@@ -20,8 +21,8 @@ namespace Microsoft.Graph
         /// <summary>
         /// A MiddlewareOptions property
         /// </summary>
-        public IDictionary<string, IMiddlewareOption> MiddlewareOptions {
-            get => _middlewareOptions ?? (_middlewareOptions = new Dictionary<string, IMiddlewareOption>());
+        public IDictionary<string, IRequestOption> MiddlewareOptions {
+            get => _middlewareOptions ?? (_middlewareOptions = new Dictionary<string, IRequestOption>());
             set => _middlewareOptions = value;
         }
 
@@ -40,6 +41,6 @@ namespace Microsoft.Graph
         /// </summary>
         public GraphUserAccount User { get; set; }
 
-        private IDictionary<string, IMiddlewareOption> _middlewareOptions;
+        private IDictionary<string, IRequestOption> _middlewareOptions;
     }
 }

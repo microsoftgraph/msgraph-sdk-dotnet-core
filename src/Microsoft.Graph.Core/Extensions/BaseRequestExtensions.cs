@@ -4,6 +4,7 @@
 
 namespace Microsoft.Graph
 {
+    using Microsoft.Kiota.Http.HttpClientLibrary.Middleware.Options;
     using System;
     using System.Net.Http;
 
@@ -23,7 +24,7 @@ namespace Microsoft.Graph
         /// <returns></returns>
         internal static T WithDefaultAuthProvider<T>(this T baseRequest) where T : IBaseRequest
         {
-            string authOptionKey = nameof(AuthenticationHandlerOption);
+            string authOptionKey = typeof(AuthenticationHandlerOption).FullName;
             if (baseRequest.MiddlewareOptions.ContainsKey(authOptionKey))
             {
                 (baseRequest.MiddlewareOptions[authOptionKey] as AuthenticationHandlerOption).AuthenticationProvider = baseRequest.Client.AuthenticationProvider;
@@ -48,7 +49,7 @@ namespace Microsoft.Graph
         {
             if (baseRequest.Client.PerRequestAuthProvider != null)
             {
-                string authOptionKey = nameof(AuthenticationHandlerOption);
+                string authOptionKey = typeof(AuthenticationHandlerOption).FullName;
                 if (baseRequest.MiddlewareOptions.ContainsKey(authOptionKey))
                 {
                     (baseRequest.MiddlewareOptions[authOptionKey] as AuthenticationHandlerOption).AuthenticationProvider = baseRequest.Client.PerRequestAuthProvider();
@@ -72,7 +73,7 @@ namespace Microsoft.Graph
         /// <returns></returns>
         public static T WithShouldRetry<T>(this T baseRequest, Func<int, int, HttpResponseMessage, bool> shouldRetry) where T : IBaseRequest
         {
-            string retryOptionKey = nameof(RetryHandlerOption);
+            string retryOptionKey = typeof(RetryHandlerOption).FullName;
             if (baseRequest.MiddlewareOptions.ContainsKey(retryOptionKey))
             {
                 (baseRequest.MiddlewareOptions[retryOptionKey] as RetryHandlerOption).ShouldRetry = shouldRetry;
@@ -95,7 +96,7 @@ namespace Microsoft.Graph
         /// <returns></returns>
         public static T WithMaxRetry<T>(this T baseRequest, int maxRetry) where T : IBaseRequest
         {
-            string retryOptionKey = nameof(RetryHandlerOption);
+            string retryOptionKey = typeof(RetryHandlerOption).FullName;
             if (baseRequest.MiddlewareOptions.ContainsKey(retryOptionKey))
             {
                 (baseRequest.MiddlewareOptions[retryOptionKey] as RetryHandlerOption).MaxRetry = maxRetry;
@@ -118,7 +119,7 @@ namespace Microsoft.Graph
         /// <returns></returns>
         public static T WithMaxRetry<T>(this T baseRequest, TimeSpan retriesTimeLimit) where T : IBaseRequest
         {
-            string retryOptionKey = nameof(RetryHandlerOption);
+            string retryOptionKey = typeof(RetryHandlerOption).FullName;
             if (baseRequest.MiddlewareOptions.ContainsKey(retryOptionKey))
             {
                 (baseRequest.MiddlewareOptions[retryOptionKey] as RetryHandlerOption).RetriesTimeLimit = retriesTimeLimit;
@@ -141,7 +142,7 @@ namespace Microsoft.Graph
         /// <returns></returns>
         public static T WithMaxRedirects<T>(this T baseRequest, int maxRedirects) where T : IBaseRequest
         {
-            string redirectOptionKey = nameof(RedirectHandlerOption);
+            string redirectOptionKey = typeof(RedirectHandlerOption).FullName;
             if (baseRequest.MiddlewareOptions.ContainsKey(redirectOptionKey))
             {
                 (baseRequest.MiddlewareOptions[redirectOptionKey] as RedirectHandlerOption).MaxRedirect = maxRedirects;
@@ -178,7 +179,7 @@ namespace Microsoft.Graph
         /// <param name="scopes">Microsoft graph scopes used to authenticate this request.</param>
         public static T WithScopes<T>(this T baseRequest, string[] scopes) where T : IBaseRequest
         {
-            string authHandlerOptionKey = nameof(AuthenticationHandlerOption);
+            string authHandlerOptionKey = typeof(AuthenticationHandlerOption).FullName;
             AuthenticationHandlerOption authHandlerOptions; 
 
             // make sure that the options exist in the middleware otherwise create it

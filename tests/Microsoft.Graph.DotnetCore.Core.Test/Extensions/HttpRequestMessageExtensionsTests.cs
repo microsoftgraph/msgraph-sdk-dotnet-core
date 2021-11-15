@@ -5,6 +5,7 @@
 namespace Microsoft.Graph.DotnetCore.Core.Test.Extensions
 {
     using Microsoft.Graph.DotnetCore.Core.Test.Requests;
+    using Microsoft.Kiota.Http.HttpClientLibrary.Extensions;
     using System.Net.Http;
     using System.Text;
     using System.Threading.Tasks;
@@ -85,7 +86,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Extensions
 
             HttpRequestMessage httpRequestMessage = baseRequest.GetHttpRequestMessage();
 
-            Assert.NotNull(httpRequestMessage.GetMiddlewareOption<AuthenticationHandlerOption>());
+            Assert.NotNull(httpRequestMessage.GetRequestOption<AuthenticationHandlerOption>());
         }
 
         [Fact]

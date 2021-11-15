@@ -10,6 +10,7 @@ namespace Microsoft.Graph
     using System.Linq;
     using System.Net.Http;
     using System.Threading.Tasks;
+    using Microsoft.Kiota.Http.HttpClientLibrary.Extensions;
 
     /// <summary>
     /// Contains extension methods for <see cref="HttpRequestMessage"/>
@@ -106,30 +107,13 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Gets a <see cref="IMiddlewareOption"/> from <see cref="HttpRequestMessage"/>
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="httpRequestMessage">The <see cref="HttpRequestMessage"/> representation of the request.</param>
-        /// <returns>A middleware option</returns>
-        public static T GetMiddlewareOption<T>(this HttpRequestMessage httpRequestMessage) where T : IMiddlewareOption
-        {
-            IMiddlewareOption option = null;
-            GraphRequestContext requestContext = httpRequestMessage.GetRequestContext();
-            if (requestContext.MiddlewareOptions != null)
-            {
-                requestContext.MiddlewareOptions.TryGetValue(typeof(T).Name, out option);
-            }
-            return (T)option;
-        }
-
-        /// <summary>
         /// Gets a <see cref="ScopedAuthenticationProviderOptions"/> from <see cref="HttpRequestMessage"/>
         /// </summary>
         /// <param name="httpRequestMessage">The <see cref="HttpRequestMessage"/> representation of the request.</param>
         /// <returns>A middleware option of type <see cref="ScopedAuthenticationProviderOptions"/></returns>
         internal static ScopedAuthenticationProviderOptions GetScopedAuthenticationProviderOption(this HttpRequestMessage httpRequestMessage)
         {
-            AuthenticationHandlerOption authHandlerOption = httpRequestMessage.GetMiddlewareOption<AuthenticationHandlerOption>();
+            AuthenticationHandlerOption authHandlerOption = httpRequestMessage.GetRequestOption<AuthenticationHandlerOption>();
 
             return authHandlerOption?.AuthenticationProviderOption as ScopedAuthenticationProviderOptions ?? new ScopedAuthenticationProviderOptions();
         }

@@ -4,6 +4,7 @@
 
 namespace Microsoft.Graph
 {
+    using Microsoft.Kiota.Abstractions;
     using System.Collections.Generic;
     using System.Net.Http;
 
@@ -43,9 +44,9 @@ namespace Microsoft.Graph
         IList<QueryOption> QueryOptions { get; }
 
         /// <summary>
-        /// Gets the <see cref="IMiddlewareOption"/> collection for the request.
+        /// Gets the <see cref="IRequestOption"/> collection for the request.
         /// </summary>
-        IDictionary<string, IMiddlewareOption> MiddlewareOptions { get; }
+        IDictionary<string, IRequestOption> MiddlewareOptions { get; }
 
         /// <summary>
         /// Gets the <see cref="IResponseHandler"/> for the request.

@@ -1,0 +1,41 @@
+name: Validate Pull Request
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ 'feature/*', 'dev' ,'master' ]
+  pull_request:
+    branches: [ 'feature/*', 'dev' ,'master' ]
+
+jobs:
+  build:
+    name: Build and Test
+    runs-on: windows-latest
+    env:
+      solutionName: Microsoft.Graph.Core.sln
+      relativePath: ./src/Microsoft.Graph.Core
+    steps:
+      - uses: actions/checkout@v2.4.0
+
+      - name: Add msbuild to PATH
+        uses: microsoft/setup-msbuild@v1.1
+
+      - uses: nuget/setup-nuget@v1
+        with:
+          nuget-version: '5.x'
+
+      - name: Setup VSTest
+        uses: darenm/Setup-VSTest@v1
+
+      - run: ./scripts/UpdateNugetCredentials.ps1 -username "${{ secrets.PUBLISH_GH_USERNAME }}" -apiToken "${{ secrets.PUBLISH_GH_TOKEN }}" -nugetFileAbsolutePath "./nuget.config"
+        shell: pwsh
+
+      - name : Nuget Restore
+        run: msbuild -t:restore
+
+      - name: Build Project
+        run: msbuild ${{ env.solutionName }}
+
+      - name: Test Project
+        run: vstest.console.exe ./tests/Microsoft.Graph.DotnetCore.Core.Test/bin/Debug/netcoreapp3.1/Microsoft.Graph.DotnetCore.Core.Test.dll
+            

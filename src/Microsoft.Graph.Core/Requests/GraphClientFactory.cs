@@ -10,6 +10,8 @@ namespace Microsoft.Graph
     using System.Net.Http;
     using System.Reflection;
     using System.Net.Http.Headers;
+    using Microsoft.Kiota.Http.HttpClientLibrary.Middleware;
+
     /// <summary>
     /// GraphClientFactory class to create the HTTP client
     /// </summary>
