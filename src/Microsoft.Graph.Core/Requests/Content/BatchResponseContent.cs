@@ -4,6 +4,7 @@
 
 namespace Microsoft.Graph
 {
+    using Microsoft.Kiota.Abstractions;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -105,7 +106,7 @@ namespace Microsoft.Graph
             {
                 await ValidateSuccessfulResponse(httpResponseMessage);
                 // return the deserialized object
-                return await ResponseHandler.HandleResponse<T>(httpResponseMessage);
+                return await ResponseHandler.HandleResponseAsync<HttpResponseMessage,T>(httpResponseMessage);
             }
         }
 
@@ -140,7 +141,7 @@ namespace Microsoft.Graph
                 string rawResponseBody = null;
 
                 //deserialize into an ErrorResponse as the result is not a success.
-                ErrorResponse errorResponse = await ResponseHandler.HandleResponse<ErrorResponse>(httpResponseMessage);
+                ErrorResponse errorResponse = await ResponseHandler.HandleResponseAsync<HttpResponseMessage,ErrorResponse>(httpResponseMessage);
 
                 if (errorResponse?.Error == null)
                 {

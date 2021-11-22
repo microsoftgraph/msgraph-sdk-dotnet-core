@@ -11,6 +11,7 @@ namespace Microsoft.Graph
     using System.Text.Json;
     using System.IO;
     using System.Text;
+    using Microsoft.Kiota.Abstractions;
 
     /// <summary>
     /// PREVIEW 
@@ -34,25 +35,26 @@ namespace Microsoft.Graph
         /// <summary>
         /// Process raw HTTP response into requested domain type.
         /// </summary>
-        /// <typeparam name="T">The type to return</typeparam>
+        /// <typeparam name="NativeResponseType">The type of the response</typeparam>
+        /// <typeparam name="ModelType">The type to return</typeparam>
         /// <param name="response">The HttpResponseMessage to handle</param>
         /// <returns></returns>
-        public async Task<T> HandleResponse<T>(HttpResponseMessage response)
+        public async Task<ModelType> HandleResponseAsync<NativeResponseType, ModelType>(NativeResponseType response)
         {
-            if (response.Content != null)
+            if (response is HttpResponseMessage responseMessage && responseMessage.Content != null)
             {
                 // Gets the response string with response headers and status code
                 // set on the response body object.
-                var responseString = await GetResponseString(response);
+                var responseString = await GetResponseString(responseMessage);
 
                 // Get the response body object with the change list 
                 // set on each response item.
                 var responseWithChangelist = await GetResponseBodyWithChangelist(responseString);
 
-                return this.serializer.DeserializeObject<T>(responseWithChangelist);
+                return this.serializer.DeserializeObject<ModelType>(responseWithChangelist);
             }
 
-            return default(T);
+            return default(ModelType);
         }
 
         /// <summary>

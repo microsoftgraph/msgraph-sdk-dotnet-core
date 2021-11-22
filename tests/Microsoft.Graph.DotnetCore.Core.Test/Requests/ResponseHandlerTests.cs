@@ -34,7 +34,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             hrm.Headers.Add("test", "value");
 
             // Act
-            var user = await responseHandler.HandleResponse<TestUser>(hrm);
+            var user = await responseHandler.HandleResponseAsync<HttpResponseMessage, TestUser>(hrm);
 
             //Assert
             Assert.Equal("123", user.Id);
@@ -64,9 +64,9 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             };
         
             // Act
-            var deltaServiceLibResponse = await deltaResponseHandler.HandleResponse<TestEventDeltaCollectionResponse>(hrm);
+            var deltaServiceLibResponse = await deltaResponseHandler.HandleResponseAsync<HttpResponseMessage, TestEventDeltaCollectionResponse>(hrm);
         
-            var deltaJObjectResponse = await deltaResponseHandler.HandleResponse<JsonElement>(hrm);
+            var deltaJObjectResponse = await deltaResponseHandler.HandleResponseAsync<HttpResponseMessage, JsonElement>(hrm);
             string actualStringValue = deltaJObjectResponse.GetProperty("value").EnumerateArray().ElementAt(0)
                 .GetProperty("arrayOfString").EnumerateArray().ElementAt(0).ToString(); //value[0].arrayOfString[0]
             bool actualBoolValue = Convert.ToBoolean(deltaJObjectResponse.GetProperty("value").EnumerateArray()
@@ -112,8 +112,8 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             };
         
             // Act
-            var deltaServiceLibResponse = await deltaResponseHandler.HandleResponse<TestEventDeltaCollectionResponse>(hrm);
-            var deltaJObjectResponse = await deltaResponseHandler.HandleResponse<JsonElement>(hrm);
+            var deltaServiceLibResponse = await deltaResponseHandler.HandleResponseAsync<HttpResponseMessage, TestEventDeltaCollectionResponse>(hrm);
+            var deltaJObjectResponse = await deltaResponseHandler.HandleResponseAsync<HttpResponseMessage, JsonElement>(hrm);
             string attendeeName = deltaJObjectResponse.GetProperty("value").EnumerateArray().ElementAt(0)
                 .GetProperty("attendees").EnumerateArray().ElementAt(0).GetProperty("emailAddress").GetProperty("name")
                 .ToString(); // value[0].attendees[0].emailAddress.name
@@ -160,7 +160,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             };
 
             // Act
-            var deltaJObjectResponse = await deltaResponseHandler.HandleResponse<JsonElement>(hrm);
+            var deltaJObjectResponse = await deltaResponseHandler.HandleResponseAsync<HttpResponseMessage, JsonElement>(hrm);
             var itemsCount = deltaJObjectResponse.GetProperty("value").GetArrayLength();
             var odataContextFromJObject = deltaJObjectResponse.GetProperty("@odata.context").ToString();
             var odataDeltalinkFromJObject = deltaJObjectResponse.GetProperty("@odata.deltaLink").ToString();
@@ -203,7 +203,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             };
 
             // Act
-            var deltaServiceLibResponse = await deltaResponseHandler.HandleResponse<TestEventDeltaCollectionResponse>(hrm);
+            var deltaServiceLibResponse = await deltaResponseHandler.HandleResponseAsync<HttpResponseMessage, TestEventDeltaCollectionResponse>(hrm);
             var eventsDeltaCollectionPage = deltaServiceLibResponse.Value;
             eventsDeltaCollectionPage[0].AdditionalData.TryGetValue("changes", out object changes);
             var changesElement = (JsonElement)changes;
@@ -301,7 +301,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             };
 
             // Act
-            var deltaServiceLibResponse = await deltaResponseHandler.HandleResponse<TestEventDeltaCollectionResponse>(hrm);
+            var deltaServiceLibResponse = await deltaResponseHandler.HandleResponseAsync<HttpResponseMessage, TestEventDeltaCollectionResponse>(hrm);
             var eventsDeltaCollectionPage = deltaServiceLibResponse.Value;
             eventsDeltaCollectionPage[0].AdditionalData.TryGetValue("changes", out object changes);
             var changesElement = (JsonElement)changes;
@@ -334,7 +334,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             };
 
             // Act
-            var deltaServiceLibResponse = await deltaResponseHandler.HandleResponse<TestEventDeltaCollectionResponse>(hrm);
+            var deltaServiceLibResponse = await deltaResponseHandler.HandleResponseAsync<HttpResponseMessage,TestEventDeltaCollectionResponse>(hrm);
 
             // Assert
             Assert.True(deltaServiceLibResponse.Value[0].AdditionalData.TryGetValue("changes", out object changesElement)); // The first element has a list of changes

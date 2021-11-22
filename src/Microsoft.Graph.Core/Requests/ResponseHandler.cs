@@ -4,8 +4,7 @@
 
 namespace Microsoft.Graph
 {
-    using System.Collections.Generic;
-    using System.Linq;
+    using Microsoft.Kiota.Abstractions;
     using System.Net.Http;
     using System.Threading.Tasks;
 
@@ -27,20 +26,19 @@ namespace Microsoft.Graph
         /// <summary>
         /// Process raw HTTP response into requested domain type.
         /// </summary>
-        /// <typeparam name="T">The type to return</typeparam>
+        /// <typeparam name="NativeResponseType">The type of the response</typeparam>
+        /// <typeparam name="ModelType">The type to return</typeparam>
         /// <param name="response">The HttpResponseMessage to handle</param>
         /// <returns></returns>
-        public async Task<T> HandleResponse<T>(HttpResponseMessage response)
+        public async Task<ModelType> HandleResponseAsync<NativeResponseType, ModelType>(NativeResponseType response)
         {
-            if (response.Content != null)
+            if (response is HttpResponseMessage responseMessage && responseMessage.Content != null)
             {
-                using (var responseStream = await response.Content.ReadAsStreamAsync())
-                {
-                    return serializer.DeserializeObject<T>(responseStream);
-                }
+                using var responseStream = await responseMessage.Content.ReadAsStreamAsync();
+                return serializer.DeserializeObject<ModelType>(responseStream);
             }
 
-            return default(T);
+            return default(ModelType);
         }
     }
 }
