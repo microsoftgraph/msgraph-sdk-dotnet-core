@@ -8,6 +8,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
     using Microsoft.Graph.DotnetCore.Core.Test.Mocks;
     using Microsoft.Graph.DotnetCore.Core.Test.TestModels;
     using Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels;
+    using Microsoft.Kiota.Abstractions;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -458,10 +459,9 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
             // Arrange
             var user = new TestUser()
             {
-                EventDeltas = new TestEventDeltaCollectionPage()
+                EventDeltas = new List<TestEvent>()
                 {
                     new TestEvent() { Id = "id" }
-
                 }
             };
             var expectedSerializedString = "{\"@odata.type\":\"microsoft.graph.user\",\"eventDeltas\":[{\"id\":\"id\",\"@odata.type\":\"microsoft.graph.event\"}]}";
@@ -702,15 +702,13 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
         [Theory]
         [InlineData(
             "https://graph.microsoft.com/v1.0/groups/xx/threads?%24select=id%2ctopic%2clastDeliveredDateTime%2chasAttachments%2cuniqueSenders&%24expand=Posts(%24expand%3dAttachments(%24select%3did))%2cPosts(%24select%3did%2cfrom%2ccreatedDateTime)&%24orderby=lastDeliveredDateTime+desc&%24skip=10",
-            "orderby", 
             "lastDeliveredDateTime%20desc")
         ]
         [InlineData(
             "https://graph.microsoft.com/beta/deviceManagement/managedDevices?$filter=(deviceType+eq+%27android%27+or+deviceType+eq+%27androidEnterprise%27+or+deviceType+eq+%27androidForWork%27+or+deviceType+eq+%27iPad%27+or+deviceType+eq+%27iPhone%27)&$skiptoken=LastDeviceName%3d%27Andrew%25e2%2580%2599s%2520iPhone%27%2cLastDeviceId%3d%272dcc19dc-a2b9-434a-8013-ac85b69bece3%27", 
-            "filter", 
             "(deviceType%20eq%20'android'%20or%20deviceType%20eq%20'androidEnterprise'%20or%20deviceType%20eq%20'androidForWork'%20or%20deviceType%20eq%20'iPad'%20or%20deviceType%20eq%20'iPhone')")
         ]
-        public void DeserializeNextLinkValues(string nextLink, string queryOptionKey, string expectedValue)
+        public void DeserializeNextLinkValues(string nextLink, string expectedValue)
         {
             // Arrange
             var eventCollectionResponseString = 
@@ -723,13 +721,12 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
             // Act
             var collectionResponse = this.serializer.DeserializeObject<TestEventDeltaCollectionResponse>(eventCollectionResponseString);
 
-            var request = new BaseRequest(collectionResponse.NextLink, new BaseClient("https://localhost", new HttpClient()));
-            var queryOption = request?.QueryOptions.FirstOrDefault(x => x.Name.EndsWith(queryOptionKey));
-            var queryString = request.BuildQueryString();
+            var requestInformation = new RequestInformation() { UrlTemplate = collectionResponse.NextLink };
+            var queryString = requestInformation.URI.Query;
 
             // Assert
             Assert.DoesNotContain("+", queryString); // assert that the plus sign has been replaced with a space character
-            Assert.Equal(expectedValue, queryOption.Value); // assert we have a validly decoded nextLink url
+            Assert.Contains(expectedValue, queryString); // assert we have a validly decoded nextLink url
         }
     }
 }

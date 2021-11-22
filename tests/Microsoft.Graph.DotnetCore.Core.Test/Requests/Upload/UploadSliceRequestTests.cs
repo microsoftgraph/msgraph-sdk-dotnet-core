@@ -13,6 +13,8 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
     using System.Threading.Tasks;
     using Microsoft.Graph.DotnetCore.Core.Test.Mocks;
     using Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels;
+    using Microsoft.Kiota.Abstractions;
+    using Microsoft.Kiota.Http.HttpClientLibrary;
     using Xunit;
 
     public class UploadSliceRequests : RequestTestBase
@@ -40,13 +42,13 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                 testHttpMessageHandler.AddResponseMapping(requestUrl, responseMessage);
 
                 // 3. Create a batch request object to be tested
-                MockCustomHttpProvider customHttpProvider = new MockCustomHttpProvider(testHttpMessageHandler);
-                BaseClient client = new BaseClient(requestUrl, authenticationProvider.Object, customHttpProvider);
-                UploadSliceRequest<TestDriveItem> uploadSliceRequest = new UploadSliceRequest<TestDriveItem>(requestUrl, client, 0, 200, 1000);
+                BaseClient client = new BaseClient(requestUrl, authenticationProvider.Object);
+                BaseClient baseClient = new BaseClient(this.baseUrl, GraphClientFactory.Create(finalHandler: testHttpMessageHandler));
+                UploadSliceRequestBuilder<TestDriveItem> uploadSliceRequestBuilder = new UploadSliceRequestBuilder<TestDriveItem>(requestUrl, baseClient.RequestAdapter, 0, 200, 1000);
                 Stream stream = new MemoryStream(new byte[300]);
 
                 /* Act */
-                var uploadResult = await uploadSliceRequest.PutAsync(stream);
+                var uploadResult = await uploadSliceRequestBuilder.PutAsync(stream);
                 var uploadSession = uploadResult.UploadSession;
 
                 /* Assert */

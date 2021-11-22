@@ -244,27 +244,6 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 
         }
 
-        [Fact(Skip = "In order to support HttpProvider, we'll skip authentication if no provider is set. We will enable this once we re-write HttpProvider.")]
-        public async Task SendRequest_UnauthorizedWithNoAuthenticationProvider()
-        {
-            var httpRequestMessage = new HttpRequestMessage(HttpMethod.Put, "https://example.com/bar");
-            httpRequestMessage.Content = new StringContent("Hello World");
-
-            var unauthorizedResponse = new HttpResponseMessage(HttpStatusCode.Unauthorized);
-            var okResponse = new HttpResponseMessage(HttpStatusCode.OK);
-
-            testHttpMessageHandler.SetHttpResponse(unauthorizedResponse, okResponse);
-
-            IList<DelegatingHandler> handlersWithNoAuthProvider = GraphClientFactory.CreateDefaultHandlers();
-
-            using (HttpClient client = GraphClientFactory.Create(handlers: handlersWithNoAuthProvider, finalHandler: this.testHttpMessageHandler))
-            {
-                ServiceException ex = await Assert.ThrowsAsync<ServiceException>(() => client.SendAsync(httpRequestMessage, new CancellationToken()));
-                Assert.Equal(ErrorConstants.Codes.InvalidRequest, ex.Error.Code);
-                Assert.Equal(ErrorConstants.Messages.AuthenticationProviderMissing, ex.Error.Message);
-            }
-        }
-
         [Fact]
         public void CreateClient_WithHandlersHasExceptions()
         {

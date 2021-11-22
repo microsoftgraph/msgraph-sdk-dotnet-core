@@ -19,14 +19,6 @@ namespace Microsoft.Graph
         public string ClientRequestId { get; set; }
 
         /// <summary>
-        /// A MiddlewareOptions property
-        /// </summary>
-        public IDictionary<string, IRequestOption> MiddlewareOptions {
-            get => _middlewareOptions ?? (_middlewareOptions = new Dictionary<string, IRequestOption>());
-            set => _middlewareOptions = value;
-        }
-
-        /// <summary>
         /// A CancellationToken property
         /// </summary>
         public CancellationToken CancellationToken { get; set; }
@@ -35,7 +27,5 @@ namespace Microsoft.Graph
         /// A FeatureUsage property
         /// </summary>
         public FeatureFlag FeatureUsage { get; set; }
-
-        private IDictionary<string, IRequestOption> _middlewareOptions;
     }
 }

@@ -4,42 +4,67 @@
 
 namespace Microsoft.Graph.Core.Requests
 {
-    using System.Collections.Generic;
+    using Microsoft.Kiota.Abstractions;
+    using System;
+    using System.Net.Http;
+    using System.Threading.Tasks;
 
     /// <summary>
     /// The type BatchRequestBuilder
     /// </summary>
-    public class BatchRequestBuilder: BaseRequestBuilder, IBatchRequestBuilder
+    public class BatchRequestBuilder
     {
         /// <summary>
         /// Constructs a new BatchRequestBuilder.
         /// </summary>
-        /// <param name="requestUrl">The URL for the built request.</param>
-        /// <param name="client">The <see cref="IBaseClient"/> for handling requests.</param>
-        public BatchRequestBuilder(
-            string requestUrl, 
-            IBaseClient client) 
-            : base(requestUrl, client)
+        /// <param name="requestAdapter">The request adapter to use to execute the requests.</param>
+        public BatchRequestBuilder(IRequestAdapter requestAdapter)
         {
+            _ = requestAdapter ?? throw new ArgumentNullException(nameof(requestAdapter));
+            UrlTemplate = "{+baseurl}/$batch";
+            RequestAdapter = requestAdapter;
         }
 
         /// <summary>
-        /// Builds the request.
+        /// Url template to use to build the URL for the current request builder
         /// </summary>
-        /// <returns>The built request.</returns>
-        public IBatchRequest Request()
+        internal string UrlTemplate { get; set; }
+
+        /// <summary>
+        /// The request adapter to use to execute the requests.
+        /// </summary>
+        internal IRequestAdapter RequestAdapter { get; set; }
+
+        /// <summary>
+        /// Sends out the <see cref="BatchRequestContent"/> using the POST method
+        /// </summary>
+        /// <param name="batchRequestContent">The <see cref="BatchRequestContent"/> for the request</param>
+        /// <returns></returns>
+        public async Task<BatchResponseContent> PostAsync(BatchRequestContent batchRequestContent)
         {
-            return this.Request(null);
+            _ = batchRequestContent ?? throw new ArgumentNullException(nameof(batchRequestContent));
+            var requestInfo = await CreatePostRequestInformationAsync(batchRequestContent);
+            var responseHandler = new NativeResponseHandler();
+            await this.RequestAdapter.SendNoContentAsync(requestInfo, responseHandler);
+            return new BatchResponseContent(responseHandler.Value as HttpResponseMessage);
         }
 
         /// <summary>
-        /// Builds the request.
+        /// Create <see cref="RequestInformation"/> instance to post to batch endpoint
+        /// <param name="batchRequestContent">The <see cref="BatchRequestContent"/> for the request</param>
         /// </summary>
-        /// <param name="options">The query and header options for the request.</param>
-        /// <returns>The built request.</returns>
-        public IBatchRequest Request(IEnumerable<Option> options)
+        public async Task<RequestInformation> CreatePostRequestInformationAsync(BatchRequestContent batchRequestContent)
         {
-            return new BatchRequest(this.RequestUrl,this.Client,options);
+            _ = batchRequestContent ?? throw new ArgumentNullException(nameof(batchRequestContent));
+            var requestInfo = new RequestInformation
+            {
+                HttpMethod = Kiota.Abstractions.HttpMethod.POST,
+                UrlTemplate = UrlTemplate,
+            };
+            requestInfo.PathParameters.Add("baseurl", RequestAdapter.BaseUrl);
+            requestInfo.Content = await batchRequestContent.GetBatchRequestContentAsync();
+            requestInfo.Headers.Add("Content-Type", "application/json");
+            return requestInfo;
         }
     }
 }

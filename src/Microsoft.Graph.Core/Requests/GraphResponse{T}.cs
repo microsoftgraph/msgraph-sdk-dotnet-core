@@ -4,6 +4,7 @@
 
 namespace Microsoft.Graph
 {
+    using Microsoft.Kiota.Abstractions;
     using System.Net.Http;
     using System.Threading.Tasks;
 
@@ -15,19 +16,19 @@ namespace Microsoft.Graph
         /// <summary>
         /// The GraphResponse Constructor
         /// </summary>
-        /// <param name="iBaseRequest">The Request made for the response</param>
+        /// <param name="requestInformation">The Request made for the response</param>
         /// <param name="httpResponseMessage">The response</param>
-        public GraphResponse(IBaseRequest iBaseRequest, HttpResponseMessage httpResponseMessage)
-            : base(iBaseRequest, httpResponseMessage)
+        public GraphResponse(RequestInformation requestInformation, HttpResponseMessage httpResponseMessage)
+            : base(requestInformation, httpResponseMessage)
         {
         }
 
         /// <summary>
         /// Gets the deserialized object 
         /// </summary>
-        public async Task<T> GetResponseObjectAsync()
+        public async Task<T> GetResponseObjectAsync(IResponseHandler responseHandler)
         {
-            return await this.BaseRequest.ResponseHandler.HandleResponse<T>(this.ToHttpResponseMessage());
+            return await responseHandler.HandleResponse<T>(this.ToHttpResponseMessage());
         }
     }
 }

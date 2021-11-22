@@ -4,6 +4,9 @@
 
 namespace Microsoft.Graph
 {
+    using Microsoft.Kiota.Abstractions;
+    using Microsoft.Kiota.Abstractions.Authentication;
+    using Microsoft.Kiota.Http.HttpClientLibrary;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -128,11 +131,12 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Adds a <see cref="IBaseRequest"/> to batch request content
+        /// Adds a <see cref="RequestInformation"/> to batch request content
         /// </summary>
-        /// <param name="request">A <see cref="BaseRequest"/> to use to build a <see cref="BatchRequestStep"/> to add.</param>
+        /// <param name="baseClient">A <see cref="BaseClient"/> to use as a reference for creating the batch request..</param>
+        /// <param name="requestInformation">A <see cref="RequestInformation"/> to use to build a <see cref="BatchRequestStep"/> to add.</param>
         /// <returns>The requestId of the  newly created <see cref="BatchRequestStep"/></returns>
-        public string AddBatchRequestStep(IBaseRequest request)
+        public string AddBatchRequestStep(BaseClient baseClient, RequestInformation requestInformation)
         {
             if (BatchRequestSteps.Count >= CoreConstants.BatchRequest.MaxNumberOfRequests)
                 throw new ClientException(new Error
@@ -142,7 +146,8 @@ namespace Microsoft.Graph
                 });
 
             string requestId = Guid.NewGuid().ToString();
-            BatchRequestStep batchRequestStep = new BatchRequestStep(requestId, request.GetHttpRequestMessage());
+            var requestMessage = new HttpClientRequestAdapter(new AnonymousAuthenticationProvider()) {BaseUrl = baseClient.RequestAdapter.BaseUrl}.GetRequestMessageFromRequestInformation(requestInformation);
+            BatchRequestStep batchRequestStep = new BatchRequestStep(requestId, requestMessage);
             (BatchRequestSteps as IDictionary<string, BatchRequestStep>).Add(batchRequestStep.RequestId, batchRequestStep);
             return requestId;
         }

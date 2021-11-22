@@ -13,6 +13,8 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
     using System.Threading.Tasks;
     using System.Text.Json;
     using Xunit;
+    using Microsoft.Kiota.Abstractions;
+    using HttpMethod = System.Net.Http.HttpMethod;
 
     public class BatchRequestContentTests
     {
@@ -344,19 +346,19 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
         {
             // Arrange
             BaseClient client = new BaseClient(REQUEST_URL, new MockAuthenticationProvider().Object);
-            BaseRequest baseRequest = new BaseRequest(REQUEST_URL, client);
+            RequestInformation requestInformation = new RequestInformation() { HttpMethod = Kiota.Abstractions.HttpMethod.GET, UrlTemplate = REQUEST_URL };
             BatchRequestContent batchRequestContent = new BatchRequestContent();
             Assert.False(batchRequestContent.BatchRequestSteps.Any());//Its empty
 
             // Act
-            string batchRequestStepId = batchRequestContent.AddBatchRequestStep(baseRequest);
+            string batchRequestStepId = batchRequestContent.AddBatchRequestStep(client, requestInformation);
 
             // Assert we added successfully and contents are as expected
             Assert.NotNull(batchRequestStepId);
             Assert.NotNull(batchRequestContent.BatchRequestSteps);
             Assert.True(batchRequestContent.BatchRequestSteps.Count.Equals(1));
-            Assert.Equal(batchRequestContent.BatchRequestSteps.First().Value.Request.RequestUri.OriginalString, baseRequest.RequestUrl);
-            Assert.Equal(batchRequestContent.BatchRequestSteps.First().Value.Request.Method.Method, baseRequest.Method.ToString());
+            Assert.Equal(batchRequestContent.BatchRequestSteps.First().Value.Request.RequestUri.OriginalString, requestInformation.URI.OriginalString);
+            Assert.Equal(batchRequestContent.BatchRequestSteps.First().Value.Request.Method.Method, requestInformation.HttpMethod.ToString());
         }
 
         [Fact]
@@ -404,15 +406,15 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
             // Add MaxNumberOfRequests number of steps
             for (var i = 0; i < CoreConstants.BatchRequest.MaxNumberOfRequests; i++)
             {
-                BaseRequest baseRequest = new BaseRequest(REQUEST_URL, client);
-                string batchRequestStepId = batchRequestContent.AddBatchRequestStep(baseRequest);
+                RequestInformation requestInformation = new RequestInformation() { HttpMethod = Kiota.Abstractions.HttpMethod.GET, UrlTemplate = REQUEST_URL };
+                string batchRequestStepId = batchRequestContent.AddBatchRequestStep(client, requestInformation);
                 Assert.NotNull(batchRequestStepId);
                 Assert.True(batchRequestContent.BatchRequestSteps.Count.Equals(i + 1));//Assert we can add steps up to the max
             }
 
             // Act
-            BaseRequest extraBaseRequest = new BaseRequest(REQUEST_URL, client);
-            var exception = Assert.Throws<ClientException>(() => batchRequestContent.AddBatchRequestStep(extraBaseRequest));
+            RequestInformation extraRequestInformation = new RequestInformation() { HttpMethod = Kiota.Abstractions.HttpMethod.GET, UrlTemplate = REQUEST_URL };
+            var exception = Assert.Throws<ClientException>(() => batchRequestContent.AddBatchRequestStep(client, extraRequestInformation));
             
             // Assert
             Assert.Equal(ErrorConstants.Codes.MaximumValueExceeded, exception.Error.Code);

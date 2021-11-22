@@ -12,9 +12,8 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         protected string baseUrl = "https://localhost/v1.0";
 
         protected MockAuthenticationProvider authenticationProvider;
-        protected MockHttpProvider httpProvider;
         protected HttpResponseMessage httpResponseMessage;
-        protected IBaseClient baseClient;
+        protected BaseClient baseClient;
         protected MockSerializer serializer;
 
         public RequestTestBase()
@@ -22,12 +21,10 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             this.authenticationProvider = new MockAuthenticationProvider();
             this.serializer = new MockSerializer();
             this.httpResponseMessage = new HttpResponseMessage();
-            this.httpProvider = new MockHttpProvider(this.httpResponseMessage, this.serializer.Object);
 
             this.baseClient = new BaseClient(
                 this.baseUrl,
-                this.authenticationProvider.Object,
-                this.httpProvider.Object);
+                this.authenticationProvider.Object);
         }
 
         public void Dispose()
