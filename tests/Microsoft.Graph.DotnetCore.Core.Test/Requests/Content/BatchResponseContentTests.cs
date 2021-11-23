@@ -25,7 +25,6 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
 
             Assert.NotNull(responses);
             Assert.Null(httpResponse);
-            Assert.NotNull(batchResponseContent.Serializer);
             Assert.True(responses.Count.Equals(0));
         }
 
@@ -44,7 +43,6 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
 
             Assert.NotNull(responses);
             Assert.Null(httpResponse);
-            Assert.NotNull(batchResponseContent.Serializer);
             Assert.True(responses.Count.Equals(0));
         }
 

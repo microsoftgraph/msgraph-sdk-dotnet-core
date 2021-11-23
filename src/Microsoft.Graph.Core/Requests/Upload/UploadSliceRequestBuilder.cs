@@ -51,12 +51,12 @@ namespace Microsoft.Graph
             long rangeEnd,
             long totalSessionLength)
         {
+            this.UrlTemplate = sessionUrl ?? throw new ArgumentNullException(nameof(requestAdapter));
+            this.RequestAdapter = requestAdapter ?? throw new ArgumentNullException(nameof(requestAdapter));
             this.RangeBegin = rangeBegin;
             this.RangeEnd = rangeEnd;
             this.TotalSessionLength = totalSessionLength;
             this.ResponseHandler = new UploadResponseHandler();
-            this.RequestAdapter = requestAdapter;
-            this.UrlTemplate = sessionUrl;
         }
 
         /// <summary>

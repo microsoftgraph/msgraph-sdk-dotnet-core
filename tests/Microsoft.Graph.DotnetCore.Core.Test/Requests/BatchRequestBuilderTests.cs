@@ -33,7 +33,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             BatchRequestStep requestStep2 = new BatchRequestStep("2", httpRequestMessage2, new List<string> { "1" });
 
             // 4.3 Add batch request steps to BatchRequestContent.
-            BatchRequestContent batchRequestContent = new BatchRequestContent(requestStep1, requestStep2);
+            BatchRequestContent batchRequestContent = new BatchRequestContent(baseClient, requestStep1, requestStep2);
             var requestInformation = await batchRequestBuilder.CreatePostRequestInformationAsync(batchRequestContent);
 
             // Assert
