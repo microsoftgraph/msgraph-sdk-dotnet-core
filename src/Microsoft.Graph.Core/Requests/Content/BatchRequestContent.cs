@@ -4,6 +4,9 @@
 
 namespace Microsoft.Graph
 {
+    using Microsoft.Kiota.Abstractions;
+    using Microsoft.Kiota.Abstractions.Authentication;
+    using Microsoft.Kiota.Http.HttpClientLibrary;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -26,34 +29,25 @@ namespace Microsoft.Graph
         public IReadOnlyDictionary<string, BatchRequestStep> BatchRequestSteps { get; private set; }
 
         /// <summary>
-        /// Gets a serializer for serializing and deserializing JSON objects.
+        /// The request adapter for sending the batch request
         /// </summary>
-        public ISerializer Serializer { get; private set; }
+        public IRequestAdapter RequestAdapter { get; set; }
 
         /// <summary>
         /// Constructs a new <see cref="BatchRequestContent"/>.
         /// </summary>
-        public BatchRequestContent()
-            :this(new BatchRequestStep[] { },null)
+        /// <param name="baseClient">The <see cref="BaseClient"/> for making requests</param>
+        public BatchRequestContent(BaseClient baseClient)
+            :this(baseClient, new BatchRequestStep[] { })
         {
         }
 
         /// <summary>
         /// Constructs a new <see cref="BatchRequestContent"/>.
         /// </summary>
+        /// <param name="baseClient">The <see cref="BaseClient"/> for making requests</param>
         /// <param name="batchRequestSteps">A list of <see cref="BatchRequestStep"/> to add to the batch request content.</param>
-        /// <param name="serializer">A serializer for serializing and deserializing JSON objects.</param>
-        public BatchRequestContent(BatchRequestStep [] batchRequestSteps, ISerializer serializer = null)
-            : this(batchRequestSteps)
-        {
-            this.Serializer = serializer ?? new Serializer();
-        }
-
-        /// <summary>
-        /// Constructs a new <see cref="BatchRequestContent"/>.
-        /// </summary>
-        /// <param name="batchRequestSteps">A list of <see cref="BatchRequestStep"/> to add to the batch request content.</param>
-        public BatchRequestContent(params BatchRequestStep[] batchRequestSteps)
+        public BatchRequestContent(BaseClient baseClient, params BatchRequestStep[] batchRequestSteps)
         {
             if (batchRequestSteps == null)
                 throw new ClientException(new Error
@@ -85,7 +79,7 @@ namespace Microsoft.Graph
                 AddBatchRequestStep(requestStep);
             }
 
-            this.Serializer = new Serializer();
+            this.RequestAdapter = baseClient?.RequestAdapter ?? throw new ArgumentNullException(nameof(baseClient.RequestAdapter));
         }
 
         /// <summary>
@@ -128,11 +122,11 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Adds a <see cref="IBaseRequest"/> to batch request content
+        /// Adds a <see cref="RequestInformation"/> to batch request content
         /// </summary>
-        /// <param name="request">A <see cref="BaseRequest"/> to use to build a <see cref="BatchRequestStep"/> to add.</param>
+        /// <param name="requestInformation">A <see cref="RequestInformation"/> to use to build a <see cref="BatchRequestStep"/> to add.</param>
         /// <returns>The requestId of the  newly created <see cref="BatchRequestStep"/></returns>
-        public string AddBatchRequestStep(IBaseRequest request)
+        public string AddBatchRequestStep(RequestInformation requestInformation)
         {
             if (BatchRequestSteps.Count >= CoreConstants.BatchRequest.MaxNumberOfRequests)
                 throw new ClientException(new Error
@@ -140,9 +134,9 @@ namespace Microsoft.Graph
                     Code = ErrorConstants.Codes.MaximumValueExceeded,
                     Message = string.Format(ErrorConstants.Messages.MaximumValueExceeded, "Number of batch request steps", CoreConstants.BatchRequest.MaxNumberOfRequests)
                 });
-
             string requestId = Guid.NewGuid().ToString();
-            BatchRequestStep batchRequestStep = new BatchRequestStep(requestId, request.GetHttpRequestMessage());
+            var requestMessage = ((HttpClientRequestAdapter)RequestAdapter).GetRequestMessageFromRequestInformation(requestInformation);
+            BatchRequestStep batchRequestStep = new BatchRequestStep(requestId, requestMessage);
             (BatchRequestSteps as IDictionary<string, BatchRequestStep>).Add(batchRequestStep.RequestId, batchRequestStep);
             return requestId;
         }

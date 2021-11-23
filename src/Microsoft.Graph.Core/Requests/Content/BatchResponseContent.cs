@@ -4,6 +4,7 @@
 
 namespace Microsoft.Graph
 {
+    using Microsoft.Kiota.Abstractions;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -20,10 +21,6 @@ namespace Microsoft.Graph
         private JsonDocument jBatchResponseObject;
         private readonly HttpResponseMessage batchResponseMessage;
 
-        /// <summary>
-        /// Gets a serializer for serializing and deserializing JSON objects.
-        /// </summary>
-        public ISerializer Serializer { get; private set; }
 
         /// <summary>
         /// Gets a <see cref="IResponseHandler"/> for handling responses.
@@ -34,18 +31,15 @@ namespace Microsoft.Graph
         /// Constructs a new <see cref="BatchResponseContent"/>
         /// </summary>
         /// <param name="httpResponseMessage">A <see cref="HttpResponseMessage"/> of a batch request execution.</param>
-        /// <param name="serializer">A serializer for serializing and deserializing JSON objects.</param>
         /// <param name="responseHandler">A <see cref="IResponseHandler"/> for handling responses..</param>
-        public BatchResponseContent(HttpResponseMessage httpResponseMessage, ISerializer serializer = null, IResponseHandler responseHandler = null)
+        public BatchResponseContent(HttpResponseMessage httpResponseMessage, IResponseHandler responseHandler = null)
         {
             this.batchResponseMessage = httpResponseMessage ?? throw new ClientException(new Error
             {
                 Code = ErrorConstants.Codes.InvalidArgument,
                 Message = string.Format(ErrorConstants.Messages.NullParameter, nameof(httpResponseMessage))
             });
-
-            this.Serializer = serializer ?? new Serializer();
-            this.ResponseHandler = responseHandler ?? new ResponseHandler(this.Serializer);
+            this.ResponseHandler = responseHandler ?? new ResponseHandler(new Serializer());
         }
 
         /// <summary>
@@ -105,7 +99,7 @@ namespace Microsoft.Graph
             {
                 await ValidateSuccessfulResponse(httpResponseMessage);
                 // return the deserialized object
-                return await ResponseHandler.HandleResponse<T>(httpResponseMessage);
+                return await ResponseHandler.HandleResponseAsync<HttpResponseMessage,T>(httpResponseMessage);
             }
         }
 
@@ -140,7 +134,7 @@ namespace Microsoft.Graph
                 string rawResponseBody = null;
 
                 //deserialize into an ErrorResponse as the result is not a success.
-                ErrorResponse errorResponse = await ResponseHandler.HandleResponse<ErrorResponse>(httpResponseMessage);
+                ErrorResponse errorResponse = await ResponseHandler.HandleResponseAsync<HttpResponseMessage,ErrorResponse>(httpResponseMessage);
 
                 if (errorResponse?.Error == null)
                 {

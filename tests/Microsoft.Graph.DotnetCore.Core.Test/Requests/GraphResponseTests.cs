@@ -12,6 +12,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
     using System.Linq;
     using Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels;
     using Xunit;
+    using Microsoft.Kiota.Abstractions;
 
     public class GraphResponseTests : RequestTestBase
     {
@@ -20,15 +21,15 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         {
             // Arrange
             HttpResponseMessage responseMessage = new HttpResponseMessage(HttpStatusCode.OK);
-            BaseRequest baseRequest = new BaseRequest("http://localhost", this.baseClient) ;
+            RequestInformation requestInformation = new RequestInformation() { UrlTemplate = "http://localhost" } ;
 
             // Act
-            GraphResponse response = new GraphResponse(baseRequest, responseMessage);
+            GraphResponse response = new GraphResponse(requestInformation, responseMessage);
 
             // Assert
             Assert.Equal(responseMessage, response.ToHttpResponseMessage());
             Assert.Equal(responseMessage.StatusCode, response.StatusCode);
-            Assert.Equal(baseRequest, response.BaseRequest);
+            Assert.Equal(requestInformation, response.RequestInformation);
 
         }
 
@@ -38,10 +39,10 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             // Arrange
             HttpResponseMessage responseMessage = new HttpResponseMessage(HttpStatusCode.OK);
             responseMessage.Headers.Add("Authorization","bearer token");// add a test header
-            BaseRequest baseRequest = new BaseRequest("http://localhost", this.baseClient);
+            RequestInformation requestInformation = new RequestInformation() { UrlTemplate = "http://localhost" };
 
             // Act
-            GraphResponse response = new GraphResponse(baseRequest, responseMessage);
+            GraphResponse response = new GraphResponse(requestInformation, responseMessage);
 
             // Assert
             Assert.Equal(responseMessage, response.ToHttpResponseMessage());
@@ -66,16 +67,13 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             };
 
             // create a custom responseHandler
-            IResponseHandler responseHandler = new ResponseHandler(new Serializer());
-            BaseRequest baseRequest = new BaseRequest("http://localhost", this.baseClient)
-            {
-                ResponseHandler = responseHandler // use custom responseHandler
-            };
+            ResponseHandler responseHandler = new ResponseHandler(new Serializer());
+            RequestInformation requestInformation = new RequestInformation() { UrlTemplate = "http://localhost" };
 
 
             // Act
-            GraphResponse<TestUser> response = new GraphResponse<TestUser>(baseRequest, responseMessage);
-            TestUser user = await response.GetResponseObjectAsync();
+            GraphResponse<TestUser> response = new GraphResponse<TestUser>(requestInformation, responseMessage);
+            TestUser user = await response.GetResponseObjectAsync(responseHandler);
 
             // Assert
             Assert.Equal("123", user.Id);

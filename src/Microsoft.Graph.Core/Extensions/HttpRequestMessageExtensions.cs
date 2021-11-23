@@ -18,23 +18,6 @@ namespace Microsoft.Graph
     public static class HttpRequestMessageExtensions
     {
         /// <summary>
-        /// Checks the HTTP request's content to determine if it's buffered or streamed content.
-        /// </summary>
-        /// <param name="httpRequestMessage">The <see cref="HttpRequestMessage"/>needs to be sent.</param>
-        /// <returns></returns>
-        internal static bool IsBuffered(this HttpRequestMessage httpRequestMessage)
-        {
-            HttpContent requestContent = httpRequestMessage.Content;
-
-            if ((httpRequestMessage.Method == HttpMethod.Put || httpRequestMessage.Method == HttpMethod.Post || httpRequestMessage.Method.Method.Equals("PATCH"))
-                && requestContent != null && (requestContent.Headers.ContentLength == null || (int)requestContent.Headers.ContentLength == -1))
-            {
-                return false;
-            }
-            return true;
-        }
-
-        /// <summary>
         /// Get's feature request header value from the incoming <see cref="HttpRequestMessage"/>
         /// </summary>
         /// <param name="httpRequestMessage">The <see cref="HttpRequestMessage"/> object</param>

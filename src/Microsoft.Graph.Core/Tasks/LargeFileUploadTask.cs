@@ -18,7 +18,7 @@ namespace Microsoft.Graph
         private const int DefaultMaxSliceSize = 5 * 1024 * 1024;
         private const int RequiredSliceSizeIncrement = 320 * 1024;
         private IUploadSession Session { get; set; }
-        private readonly IBaseClient _client;
+        private readonly BaseClient _client;
         private readonly Stream _uploadStream;
         private readonly int _maxSliceSize;
         private List<Tuple<long, long>> _rangesRemaining;
@@ -31,9 +31,9 @@ namespace Microsoft.Graph
         /// <param name="uploadSession">Session information of type <see cref="IUploadSession"/>></param>
         /// <param name="uploadStream">Readable, seekable stream to be uploaded. Length of session is determined via uploadStream.Length</param>
         /// <param name="maxSliceSize">Max size of each slice to be uploaded. Multiple of 320 KiB (320 * 1024) is required.</param>
-        /// <param name="baseClient"><see cref="IBaseClient"/> to use for making upload requests. The client should not set Auth headers as upload urls do not need them.
+        /// <param name="baseClient"><see cref="BaseClient"/> to use for making upload requests. The client should not set Auth headers as upload urls do not need them.
         /// If less than 0, default value of 5 MiB is used. .</param>
-        public LargeFileUploadTask(IUploadSession uploadSession, Stream uploadStream,  int maxSliceSize = -1, IBaseClient baseClient = null)
+        public LargeFileUploadTask(IUploadSession uploadSession, Stream uploadStream,  int maxSliceSize = -1, BaseClient baseClient = null)
         {
             if (!uploadStream.CanRead || !uploadStream.CanSeek)
             {
@@ -56,7 +56,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="uploadUrl">Url to perform the upload to from the session</param>
         /// <returns></returns>
-        private IBaseClient InitializeClient(string uploadUrl)
+        private BaseClient InitializeClient(string uploadUrl)
         {
             HttpClient httpClient = GraphClientFactory.Create(); //no auth
             httpClient.SetFeatureFlag(FeatureFlag.FileUploadTask);
@@ -66,20 +66,20 @@ namespace Microsoft.Graph
         /// <summary>
         /// Write a slice of data using the UploadSliceRequest.
         /// </summary>
-        /// <param name="uploadSliceRequest">The UploadSliceRequest to make the request with.</param>
+        /// <param name="uploadSliceRequestBuilder">The UploadSliceRequest to make the request with.</param>
         /// <param name="exceptionTrackingList">A list of exceptions to use to track progress. SlicedUpload may retry.</param>
-        private async Task<UploadResult<T>> UploadSliceAsync(UploadSliceRequest<T> uploadSliceRequest, ICollection<Exception> exceptionTrackingList)
+        private async Task<UploadResult<T>> UploadSliceAsync(UploadSliceRequestBuilder<T> uploadSliceRequestBuilder, ICollection<Exception> exceptionTrackingList)
         {
             var firstAttempt = true;
-            this._uploadStream.Seek(uploadSliceRequest.RangeBegin, SeekOrigin.Begin);
+            this._uploadStream.Seek(uploadSliceRequestBuilder.RangeBegin, SeekOrigin.Begin);
 
             while (true)
             {
-                using (var requestBodyStream = new ReadOnlySubStream(this._uploadStream, uploadSliceRequest.RangeBegin, uploadSliceRequest.RangeLength))
+                using (var requestBodyStream = new ReadOnlySubStream(this._uploadStream, uploadSliceRequestBuilder.RangeBegin, uploadSliceRequestBuilder.RangeLength))
                 {
                     try
                     {
-                        return await uploadSliceRequest.PutAsync(requestBodyStream).ConfigureAwait(false);
+                        return await uploadSliceRequestBuilder.PutAsync(requestBodyStream).ConfigureAwait(false);
                     }
                     catch (ServiceException exception)
                     {
@@ -114,7 +114,7 @@ namespace Microsoft.Graph
         /// first to update the internal session information.
         /// </summary>
         /// <returns>All requests currently needed to complete the upload session.</returns>
-        internal IEnumerable<UploadSliceRequest<T>> GetUploadSliceRequests()
+        internal IEnumerable<UploadSliceRequestBuilder<T>> GetUploadSliceRequests()
         {
             foreach (var (item1, item2) in this._rangesRemaining)
             {
@@ -123,9 +123,9 @@ namespace Microsoft.Graph
                 while (currentRangeBegins <= item2)
                 {
                     var nextSliceSize = NextSliceSize(currentRangeBegins, item2);
-                    var uploadRequest = new UploadSliceRequest<T>(
+                    var uploadRequest = new UploadSliceRequestBuilder<T>(
                         this.Session.UploadUrl,
-                        this._client,
+                        this._client.RequestAdapter,
                         currentRangeBegins,
                         currentRangeBegins + nextSliceSize - 1,
                         this.TotalUploadLength);
@@ -206,8 +206,8 @@ namespace Microsoft.Graph
         /// <returns><see cref="IUploadSession"/>> returned by the server.</returns>
         public async Task<IUploadSession> UpdateSessionStatusAsync()
         {
-            var request = new UploadSessionRequest(this.Session, this._client);
-            var newSession = await request.GetAsync().ConfigureAwait(false);
+            var requestBuilder = new UploadSessionRequestBuilder(this.Session, this._client.RequestAdapter);
+            var newSession = await requestBuilder.GetAsync().ConfigureAwait(false);
 
             var newRangesRemaining = this.GetRangesRemaining(newSession);
 
@@ -234,8 +234,8 @@ namespace Microsoft.Graph
                         Message = ErrorConstants.Messages.ExpiredUploadSession
                     });
             }
-            var request = new UploadSessionRequest(this.Session, this._client);
-            await request.DeleteAsync().ConfigureAwait(false);
+            var requestBuilder = new UploadSessionRequestBuilder(this.Session, this._client.RequestAdapter);
+            await requestBuilder.DeleteAsync().ConfigureAwait(false);
         }
 
         private List<Tuple<long, long>> GetRangesRemaining(IUploadSession session)

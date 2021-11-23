@@ -14,10 +14,10 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
     public class TestEventDeltaCollectionResponse
     {
         /// <summary>
-        /// Gets or sets the <see cref="ITestEventDeltaCollectionPage"/> value.
+        /// Gets or sets the event collection value.
         /// </summary>
         [JsonPropertyName("value")]
-        public ITestEventDeltaCollectionPage Value { get; set; }
+        public List<TestEvent> Value { get; set; }
 
         /// <summary>
         /// Gets or sets the nextLink string value.

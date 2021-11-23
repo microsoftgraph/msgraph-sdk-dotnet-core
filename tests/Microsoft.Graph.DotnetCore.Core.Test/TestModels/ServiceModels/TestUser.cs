@@ -73,7 +73,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
         /// The user's event deltas. This property is just a testing value.
         /// </summary>
         [JsonPropertyName("eventDeltas")]
-        public ITestEventDeltaCollectionPage EventDeltas { get; set; }
+        public List<TestEvent> EventDeltas { get; set; }
 
     }
 }

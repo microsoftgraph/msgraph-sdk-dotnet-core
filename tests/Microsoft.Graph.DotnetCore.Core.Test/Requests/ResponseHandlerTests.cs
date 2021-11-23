@@ -34,7 +34,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             hrm.Headers.Add("test", "value");
 
             // Act
-            var user = await responseHandler.HandleResponse<TestUser>(hrm);
+            var user = await responseHandler.HandleResponseAsync<HttpResponseMessage, TestUser>(hrm);
 
             //Assert
             Assert.Equal("123", user.Id);
@@ -64,9 +64,9 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             };
         
             // Act
-            var deltaServiceLibResponse = await deltaResponseHandler.HandleResponse<TestEventDeltaCollectionResponse>(hrm);
+            var deltaServiceLibResponse = await deltaResponseHandler.HandleResponseAsync<HttpResponseMessage, TestEventDeltaCollectionResponse>(hrm);
         
-            var deltaJObjectResponse = await deltaResponseHandler.HandleResponse<JsonElement>(hrm);
+            var deltaJObjectResponse = await deltaResponseHandler.HandleResponseAsync<HttpResponseMessage, JsonElement>(hrm);
             string actualStringValue = deltaJObjectResponse.GetProperty("value").EnumerateArray().ElementAt(0)
                 .GetProperty("arrayOfString").EnumerateArray().ElementAt(0).ToString(); //value[0].arrayOfString[0]
             bool actualBoolValue = Convert.ToBoolean(deltaJObjectResponse.GetProperty("value").EnumerateArray()
@@ -80,9 +80,6 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                 .GetProperty("changes").EnumerateArray().ElementAt(2).ToString();
             string arrayOfInt = deltaJObjectResponse.GetProperty("value").EnumerateArray().ElementAt(2)
                 .GetProperty("changes").EnumerateArray().ElementAt(2).ToString();
-
-            // Assert that it actually deserialized into a model we expect.
-            Assert.True(deltaServiceLibResponse.Value is ITestEventDeltaCollectionPage); // We create a valid ICollectionPage.
         
             // Assert that the value is set.
             Assert.Equal("SMTP:alexd@contoso.com", actualStringValue);
@@ -115,15 +112,15 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             };
         
             // Act
-            var deltaServiceLibResponse = await deltaResponseHandler.HandleResponse<TestEventDeltaCollectionResponse>(hrm);
-            var deltaJObjectResponse = await deltaResponseHandler.HandleResponse<JsonElement>(hrm);
+            var deltaServiceLibResponse = await deltaResponseHandler.HandleResponseAsync<HttpResponseMessage, TestEventDeltaCollectionResponse>(hrm);
+            var deltaJObjectResponse = await deltaResponseHandler.HandleResponseAsync<HttpResponseMessage, JsonElement>(hrm);
             string attendeeName = deltaJObjectResponse.GetProperty("value").EnumerateArray().ElementAt(0)
                 .GetProperty("attendees").EnumerateArray().ElementAt(0).GetProperty("emailAddress").GetProperty("name")
                 .ToString(); // value[0].attendees[0].emailAddress.name
             string attendeeNameInChangelist = deltaJObjectResponse.GetProperty("value").EnumerateArray().ElementAt(0)
                 .GetProperty("changes").EnumerateArray().ElementAt(9).ToString();//eltaJObjectResponse["value"][0]["changes"][9]
             
-            var collectionPage = deltaServiceLibResponse.Value as CollectionPage<TestEvent>;
+            var collectionPage = deltaServiceLibResponse.Value;
             var collectionPageHasChanges = collectionPage[0].AdditionalData.TryGetValue("changes", out object obj);
             
             // IEventDeltaCollectionPage is what the service library provides.
@@ -133,7 +130,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             // Service library testing will need to happen in the service library repo once this is published on NuGet.
             
             // Assert
-            Assert.True(deltaServiceLibResponse.Value is ITestEventDeltaCollectionPage); // We create a valid ICollectionPage.
+            Assert.NotEmpty(deltaServiceLibResponse.Value);
             Assert.Equal("George", attendeeName); // We maintain the expected response body when we change it.
             Assert.Equal("attendees[0].emailAddress.name", attendeeNameInChangelist); // We expect that this property is in changelist.
             Assert.True(collectionPageHasChanges); // We expect that the CollectionPage is populated with the changes.
@@ -163,7 +160,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             };
 
             // Act
-            var deltaJObjectResponse = await deltaResponseHandler.HandleResponse<JsonElement>(hrm);
+            var deltaJObjectResponse = await deltaResponseHandler.HandleResponseAsync<HttpResponseMessage, JsonElement>(hrm);
             var itemsCount = deltaJObjectResponse.GetProperty("value").GetArrayLength();
             var odataContextFromJObject = deltaJObjectResponse.GetProperty("@odata.context").ToString();
             var odataDeltalinkFromJObject = deltaJObjectResponse.GetProperty("@odata.deltaLink").ToString();
@@ -206,8 +203,8 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             };
 
             // Act
-            var deltaServiceLibResponse = await deltaResponseHandler.HandleResponse<TestEventDeltaCollectionResponse>(hrm);
-            var eventsDeltaCollectionPage = deltaServiceLibResponse.Value as CollectionPage<TestEvent>;
+            var deltaServiceLibResponse = await deltaResponseHandler.HandleResponseAsync<HttpResponseMessage, TestEventDeltaCollectionResponse>(hrm);
+            var eventsDeltaCollectionPage = deltaServiceLibResponse.Value;
             eventsDeltaCollectionPage[0].AdditionalData.TryGetValue("changes", out object changes);
             var changesElement = (JsonElement)changes;
             var changeList = JsonSerializer.Deserialize<List<string>>(changesElement.GetRawText());
@@ -304,8 +301,8 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             };
 
             // Act
-            var deltaServiceLibResponse = await deltaResponseHandler.HandleResponse<TestEventDeltaCollectionResponse>(hrm);
-            var eventsDeltaCollectionPage = deltaServiceLibResponse.Value as CollectionPage<TestEvent>;
+            var deltaServiceLibResponse = await deltaResponseHandler.HandleResponseAsync<HttpResponseMessage, TestEventDeltaCollectionResponse>(hrm);
+            var eventsDeltaCollectionPage = deltaServiceLibResponse.Value;
             eventsDeltaCollectionPage[0].AdditionalData.TryGetValue("changes", out object changes);
             var changesElement = (JsonElement)changes;
             var changeList = JsonSerializer.Deserialize<List<string>>(changesElement.GetRawText());
@@ -337,10 +334,9 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             };
 
             // Act
-            var deltaServiceLibResponse = await deltaResponseHandler.HandleResponse<TestEventDeltaCollectionResponse>(hrm);
+            var deltaServiceLibResponse = await deltaResponseHandler.HandleResponseAsync<HttpResponseMessage,TestEventDeltaCollectionResponse>(hrm);
 
             // Assert
-            Assert.IsAssignableFrom<ITestEventDeltaCollectionPage>(deltaServiceLibResponse.Value); // We create a valid ICollectionPage.
             Assert.True(deltaServiceLibResponse.Value[0].AdditionalData.TryGetValue("changes", out object changesElement)); // The first element has a list of changes
             
             // Deserialize the change list to a list of strings

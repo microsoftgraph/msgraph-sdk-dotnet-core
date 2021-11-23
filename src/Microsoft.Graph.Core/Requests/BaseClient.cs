@@ -12,28 +12,34 @@ namespace Microsoft.Graph
     using Microsoft.Kiota.Abstractions.Authentication;
     using Microsoft.Kiota.Authentication.Azure;
     using System.Linq;
+    using Microsoft.Kiota.Abstractions;
+    using Microsoft.Kiota.Http.HttpClientLibrary;
 
     /// <summary>
-    /// A default <see cref="IBaseClient"/> implementation.
+    /// A default client implementation.
     /// </summary>
-    public class BaseClient : IBaseClient
+    public class BaseClient
     {
-        private string baseUrl;
-        
+        /// <summary>
+        /// Constructs a new <see cref="BaseClient"/>.
+        /// </summary>
+        /// <param name="requestAdapter">The custom <see cref="IRequestAdapter"/> to be used for making requests</param>
+        public BaseClient(
+            IRequestAdapter requestAdapter)
+        {
+            this.RequestAdapter = requestAdapter;
+        }
+
         /// <summary>
         /// Constructs a new <see cref="BaseClient"/>.
         /// </summary>
         /// <param name="baseUrl">The base service URL. For example, "https://graph.microsoft.com/v1.0."</param>
         /// <param name="authenticationProvider">The <see cref="IAuthenticationProvider"/> for authenticating request messages.</param>
-        /// <param name="httpProvider">The <see cref="IHttpProvider"/> for sending requests.</param>
         public BaseClient(
             string baseUrl,
-            IAuthenticationProvider authenticationProvider,
-            IHttpProvider httpProvider = null)
+            IAuthenticationProvider authenticationProvider
+            ): this(new HttpClientRequestAdapter(authenticationProvider , httpClient: GraphClientFactory.Create()){ BaseUrl = baseUrl })
         {
-            this.BaseUrl = baseUrl;
-            this.AuthenticationProvider = authenticationProvider;
-            this.HttpProvider = httpProvider ?? new HttpProvider(new Serializer());
         }
 
         /// <summary>
@@ -42,77 +48,38 @@ namespace Microsoft.Graph
         /// <param name="baseUrl">The base service URL. For example, "https://graph.microsoft.com/v1.0."</param>
         /// <param name="tokenCredential">The <see cref="TokenCredential"/> for authenticating request messages.</param>
         /// <param name="scopes">List of scopes for the authentication context.</param>
-        /// <param name="httpProvider">The <see cref="IHttpProvider"/> for sending requests.</param>
         public BaseClient(
             string baseUrl,
             TokenCredential tokenCredential,
-            IEnumerable<string> scopes = null,
-            IHttpProvider httpProvider = null
-            )
+            IEnumerable<string> scopes = null
+            ):this(baseUrl, new AzureIdentityAuthenticationProvider(tokenCredential, scopes?.ToArray() ?? Array.Empty<string>()))
         {
-            this.BaseUrl = baseUrl;
-            this.AuthenticationProvider = new AzureIdentityAuthenticationProvider(tokenCredential, scopes?.ToArray() ?? Array.Empty<string>());
-            this.HttpProvider = httpProvider ?? new HttpProvider(new Serializer());
         }
 
         /// <summary>
         /// Constructs a new <see cref="BaseClient"/>.
         /// </summary>
         /// <param name="baseUrl">The base service URL. For example, "https://graph.microsoft.com/v1.0."</param>
-        /// <param name="httpClient">The custom <see cref="HttpClient"/> to be used for making requests</param>
+        /// <param name="httpClient">The customized <see cref="HttpClient"/> to be used for making requests</param>
         public BaseClient(
             string baseUrl,
-            HttpClient httpClient)
+            HttpClient httpClient):this(new HttpClientRequestAdapter(new AnonymousAuthenticationProvider(), httpClient: httpClient) { BaseUrl = baseUrl })
         {
-            this.BaseUrl = baseUrl;
-            this.HttpProvider = new SimpleHttpProvider(httpClient);
         }
 
         /// <summary>
-        /// Gets the <see cref="IAuthenticationProvider"/> for authenticating requests.
+        /// Gets the <see cref="IRequestAdapter"/> for sending requests.
         /// </summary>
-        public IAuthenticationProvider AuthenticationProvider { get; set; }
+        public IRequestAdapter RequestAdapter { get; private set; }
 
         /// <summary>
-        /// Gets or sets the base URL for requests of the client.
+        /// Gets the <see cref="BatchRequestBuilder"/> for building batch Requests
         /// </summary>
-        public string BaseUrl
-        {
-            get { return this.baseUrl; }
-            set
-            {
-                if (string.IsNullOrEmpty(value))
-                {
-                    throw new ServiceException(
-                        new Error
-                        {
-                            Code = ErrorConstants.Codes.InvalidRequest,
-                            Message = ErrorConstants.Messages.BaseUrlMissing,
-                        });
-                }
-
-                this.baseUrl = value.TrimEnd('/');
-            }
-        }
-
-        /// <summary>
-        /// Gets the <see cref="IHttpProvider"/> for sending HTTP requests.
-        /// </summary>
-        public IHttpProvider HttpProvider { get; private set; }
-
-        /// <summary>
-        /// Gets or Sets the <see cref="IAuthenticationProvider"/> for authenticating a single HTTP requests. 
-        /// </summary>
-        public Func<IAuthenticationProvider> PerRequestAuthProvider { get; set; }
-
-        /// <summary>
-        /// Gets the <see cref="IBatchRequestBuilder"/> for building batch Requests
-        /// </summary>
-        public IBatchRequestBuilder Batch
+        public BatchRequestBuilder Batch
         {
             get
             {
-                return new BatchRequestBuilder(this.BaseUrl + "/$batch", this);
+                return new BatchRequestBuilder(this.RequestAdapter);
             }
         }
     }
