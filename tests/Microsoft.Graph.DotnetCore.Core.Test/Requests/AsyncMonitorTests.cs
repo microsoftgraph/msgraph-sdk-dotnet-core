@@ -72,8 +72,8 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             redirectedResponseMessage.Content = redirectedStringContent;
 
             this.requestAdapter
-                .Setup(requestAdapter => requestAdapter.SendNoContentAsync(It.IsAny<RequestInformation>(), It.IsAny<NativeResponseHandler>()))
-                .Callback((RequestInformation requestInfo, Kiota.Abstractions.IResponseHandler responseHandler) =>
+                .Setup(requestAdapter => requestAdapter.SendNoContentAsync(It.IsAny<RequestInformation>(), It.IsAny<NativeResponseHandler>(), It.IsAny<CancellationToken>()))
+                .Callback((RequestInformation requestInfo, IResponseHandler responseHandler, CancellationToken cancellationToken) =>
                 {
                     if (!called)
                     {
@@ -97,8 +97,8 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         public async Task PollForOperationCompletionAsync_OperationCancelled()
         {
             this.requestAdapter
-                .Setup(requestAdapter => requestAdapter.SendNoContentAsync(It.IsAny<RequestInformation>(), It.IsAny<NativeResponseHandler>()))
-                .Callback((RequestInformation requestInfo, Kiota.Abstractions.IResponseHandler responseHandler) => ((NativeResponseHandler)responseHandler).Value = this.httpResponseMessage)
+                .Setup(requestAdapter => requestAdapter.SendNoContentAsync(It.IsAny<RequestInformation>(), It.IsAny<NativeResponseHandler>(), It.IsAny<CancellationToken>()))
+                .Callback((RequestInformation requestInfo, IResponseHandler responseHandler, CancellationToken cancellationToken) => ((NativeResponseHandler)responseHandler).Value = this.httpResponseMessage)
                 .Returns(Task.FromResult(0));
 
             using var stringContent = new StringContent(JsonSerializer.Serialize(new AsyncOperationStatus { Status = "cancelled" }));
@@ -113,8 +113,8 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         public async Task PollForOperationCompletionAsync_OperationDeleteFailed()
         {
             this.requestAdapter
-                .Setup(requestAdapter => requestAdapter.SendNoContentAsync(It.IsAny<RequestInformation>(), It.IsAny<NativeResponseHandler>()))
-                .Callback((RequestInformation requestInfo, Kiota.Abstractions.IResponseHandler responseHandler) => ((NativeResponseHandler)responseHandler).Value = this.httpResponseMessage)
+                .Setup(requestAdapter => requestAdapter.SendNoContentAsync(It.IsAny<RequestInformation>(), It.IsAny<NativeResponseHandler>(), It.IsAny<CancellationToken>()))
+                .Callback((RequestInformation requestInfo, IResponseHandler responseHandler, CancellationToken cancellationToken) => ((NativeResponseHandler)responseHandler).Value = this.httpResponseMessage)
                 .Returns(Task.FromResult(0));
 
             using var stringContent = new StringContent(JsonSerializer.Serialize(new AsyncOperationStatus { Status = "deleteFailed" }));
@@ -129,8 +129,8 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         public async Task PollForOperationCompletionAsync_OperationFailed()
         {
             this.requestAdapter
-                .Setup(requestAdapter => requestAdapter.SendNoContentAsync(It.IsAny<RequestInformation>(), It.IsAny<NativeResponseHandler>()))
-                .Callback((RequestInformation requestInfo, Kiota.Abstractions.IResponseHandler responseHandler) => ((NativeResponseHandler)responseHandler).Value = this.httpResponseMessage)
+                .Setup(requestAdapter => requestAdapter.SendNoContentAsync(It.IsAny<RequestInformation>(), It.IsAny<NativeResponseHandler>(), It.IsAny<CancellationToken>()))
+                .Callback((RequestInformation requestInfo, IResponseHandler responseHandler, CancellationToken cancellationToken) => ((NativeResponseHandler)responseHandler).Value = this.httpResponseMessage)
                 .Returns(Task.FromResult(0));
 
             using var stringContent = new StringContent(JsonSerializer.Serialize(new AsyncOperationStatus
@@ -150,8 +150,8 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         public async Task PollForOperationCompletionAsync_OperationNull()
         {
             this.requestAdapter
-                .Setup(requestAdapter => requestAdapter.SendNoContentAsync(It.IsAny<RequestInformation>(), It.IsAny<NativeResponseHandler>()))
-                .Callback((RequestInformation requestInfo, Kiota.Abstractions.IResponseHandler responseHandler) => ((NativeResponseHandler)responseHandler).Value = this.httpResponseMessage)
+                .Setup(requestAdapter => requestAdapter.SendNoContentAsync(It.IsAny<RequestInformation>(), It.IsAny<NativeResponseHandler>(), It.IsAny<CancellationToken>()))
+                .Callback((RequestInformation requestInfo, IResponseHandler responseHandler, CancellationToken cancellationToken) => ((NativeResponseHandler)responseHandler).Value = this.httpResponseMessage)
                 .Returns(Task.FromResult(0));
 
             using var stringContent = new StringContent("");

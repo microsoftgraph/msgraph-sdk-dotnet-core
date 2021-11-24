@@ -7,6 +7,7 @@ namespace Microsoft.Graph
     using Microsoft.Graph.Core.Models;
     using Microsoft.Kiota.Abstractions;
     using System.Net.Http;
+    using System.Threading;
     using System.Threading.Tasks;
 
     internal class UploadSessionRequestBuilder
@@ -30,11 +31,12 @@ namespace Microsoft.Graph
         /// <summary>
         /// Deletes the specified Session
         /// </summary>
+        /// <param name="cancellationToken"><see cref="CancellationToken"/> to use for cancelling requests</param>
         /// <returns>The task to await.</returns>
-        public async Task DeleteAsync()
+        public async Task DeleteAsync(CancellationToken cancellationToken = default)
         {
             var requestInformation = this.CreateDeleteRequestInformationAsync();
-            await this.requestAdapter.SendNoContentAsync(requestInformation);
+            await this.requestAdapter.SendNoContentAsync(requestInformation, cancellationToken: cancellationToken);
         }
 
         /// <summary>
@@ -54,12 +56,13 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets the specified UploadSession.
         /// </summary>
+        /// <param name="cancellationToken"><see cref="CancellationToken"/> to use for cancelling requests</param>
         /// <returns>The Item.</returns>
-        public async Task<IUploadSession> GetAsync()
+        public async Task<IUploadSession> GetAsync(CancellationToken cancellationToken = default)
         {
             var requestInformation = this.CreateGetRequestInformationAsync();
             var responseHandler = new NativeResponseHandler();
-            await this.requestAdapter.SendNoContentAsync(requestInformation, responseHandler);
+            await this.requestAdapter.SendNoContentAsync(requestInformation, responseHandler, cancellationToken);
             var uploadResult = await this.responseHandler.HandleResponse<UploadSession>(responseHandler.Value as HttpResponseMessage);
             return uploadResult.UploadSession;
         }

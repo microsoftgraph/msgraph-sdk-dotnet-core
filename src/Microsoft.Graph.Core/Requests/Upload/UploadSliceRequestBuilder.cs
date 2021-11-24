@@ -8,6 +8,7 @@ namespace Microsoft.Graph
     using System;
     using System.IO;
     using System.Net.Http;
+    using System.Threading;
     using System.Threading.Tasks;
 
     internal class UploadSliceRequestBuilder<T>
@@ -64,13 +65,14 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="stream">Stream of data to be sent in the request. Length must be equal to the length
         /// of this slice (as defined by this.RangeLength)</param>
+        /// <param name="cancellationToken"><see cref="CancellationToken"/> to use for cancelling requests</param>
         /// <returns>The status of the upload. If UploadSession.AdditionalData.ContainsKey("successResponse")
         /// is true, then the item has completed, and the value is the created item from the server.</returns>
-        public async Task<UploadResult<T>> PutAsync(Stream stream)
+        public async Task<UploadResult<T>> PutAsync(Stream stream, CancellationToken cancellationToken = default)
         {
             var requestInformation = this.CreatePutRequestInformationAsync(stream);
             var responseHandler = new NativeResponseHandler();
-            await this.RequestAdapter.SendNoContentAsync(requestInformation, responseHandler);
+            await this.RequestAdapter.SendNoContentAsync(requestInformation, responseHandler, cancellationToken);
             return await this.ResponseHandler.HandleResponse<T>(responseHandler.Value as HttpResponseMessage);
         }
 
