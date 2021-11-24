@@ -7,6 +7,7 @@ namespace Microsoft.Graph.Core.Requests
     using Microsoft.Kiota.Abstractions;
     using System;
     using System.Net.Http;
+    using System.Threading;
     using System.Threading.Tasks;
 
     /// <summary>
@@ -39,13 +40,14 @@ namespace Microsoft.Graph.Core.Requests
         /// Sends out the <see cref="BatchRequestContent"/> using the POST method
         /// </summary>
         /// <param name="batchRequestContent">The <see cref="BatchRequestContent"/> for the request</param>
+        /// <param name="cancellationToken"><see cref="CancellationToken"/> to use for cancelling requests</param>
         /// <returns></returns>
-        public async Task<BatchResponseContent> PostAsync(BatchRequestContent batchRequestContent)
+        public async Task<BatchResponseContent> PostAsync(BatchRequestContent batchRequestContent, CancellationToken cancellationToken = default)
         {
             _ = batchRequestContent ?? throw new ArgumentNullException(nameof(batchRequestContent));
             var requestInfo = await CreatePostRequestInformationAsync(batchRequestContent);
             var responseHandler = new NativeResponseHandler();
-            await this.RequestAdapter.SendNoContentAsync(requestInfo, responseHandler);
+            await this.RequestAdapter.SendNoContentAsync(requestInfo, responseHandler, cancellationToken);
             return new BatchResponseContent(responseHandler.Value as HttpResponseMessage);
         }
 
