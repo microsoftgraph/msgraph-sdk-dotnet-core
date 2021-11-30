@@ -248,29 +248,6 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
         }
 
         [Fact]
-        public void DeserializeInterface()
-        {
-            var collectionPage = new CollectionPageInstance
-            {
-                new DerivedTypeClass { Id = "id" },
-                new DerivedTypeClass { Id = "id1" },
-                new DerivedTypeClass { Id = "id2" },
-                new DerivedTypeClass { Id = "id3" },
-
-            };
-
-            var serializedString = this.serializer.SerializeObject(collectionPage);
-
-            var deserializedPage = this.serializer.DeserializeObject<ICollectionPageInstance>(serializedString);
-            Assert.IsType<CollectionPageInstance>(deserializedPage);
-            Assert.Equal(4, deserializedPage.Count);
-            Assert.Equal("id", deserializedPage[0].Id);
-            Assert.Equal("id1", deserializedPage[1].Id);
-            Assert.Equal("id2", deserializedPage[2].Id);
-            Assert.Equal("id3", deserializedPage[3].Id);
-        }
-
-        [Fact]
         // This test validates we do not experience an InvalidCastException in scenarios where the api could return a type in the odata.type string the is not assignable to the type defined in the metadata.
         // A good example is the ResourceData type which can have the odata.type specified as ChatMessage(which derives from entity) and can't be assigned to it. Extra properties will therefore be found in AdditionalData.
         // https://docs.microsoft.com/en-us/graph/api/resources/resourcedata?view=graph-rest-1.0#json-representation

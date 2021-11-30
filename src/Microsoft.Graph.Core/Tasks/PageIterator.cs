@@ -5,10 +5,12 @@
 namespace Microsoft.Graph
 {
     using Microsoft.Kiota.Abstractions;
+    using Microsoft.Kiota.Abstractions.Serialization;
     using System;
     using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
+    using HttpMethod = Kiota.Abstractions.HttpMethod;
 
     /*
      Spec https://github.com/microsoftgraph/msgraph-sdk-design/blob/master/tasks/PageIteratorTask.md
@@ -19,10 +21,11 @@ namespace Microsoft.Graph
     /// and process each item in the result set.
     /// </summary>
     /// <typeparam name="TEntity">The Microsoft Graph entity type returned in the result set.</typeparam>
-    public class PageIterator<TEntity>
+    /// <typeparam name="TCollectionPage">The Microsoft Graph collection response type returned in the collection response.</typeparam>
+    public class PageIterator<TEntity, TCollectionPage> where TCollectionPage : IParsable
     {
         private BaseClient _client;
-        private ICollectionPage<TEntity> _currentPage;
+        private TCollectionPage _currentPage;
         private Queue<TEntity> _pageItemQueue;
         private Func<TEntity, bool> _processPageItemCallback;
         private Func<RequestInformation, RequestInformation> _requestConfigurator;
@@ -48,7 +51,7 @@ namespace Microsoft.Graph
         /// <param name="callback">A Func delegate that processes type TEntity in the result set and should return false if the iterator should cancel processing.</param>
         /// <param name="requestConfigurator">A Func delegate that configures the NextPageRequest</param>
         /// <returns>A PageIterator&lt;TEntity&gt; that will process additional result pages based on the rules specified in Func&lt;TEntity,bool&gt; processPageItems</returns>
-        public static PageIterator<TEntity> CreatePageIterator(BaseClient client, ICollectionPage<TEntity> page, Func<TEntity, bool> callback, Func<RequestInformation, RequestInformation> requestConfigurator = null)
+        public static PageIterator<TEntity, TCollectionPage> CreatePageIterator(BaseClient client, TCollectionPage page, Func<TEntity, bool> callback, Func<RequestInformation, RequestInformation> requestConfigurator = null)
         {
             if (client == null)
                 throw new ArgumentNullException(nameof(client));
@@ -57,13 +60,18 @@ namespace Microsoft.Graph
                 throw new ArgumentNullException(nameof(page));
 
             if (callback == null)
-                throw new ArgumentNullException("processPageItems");
+                throw new ArgumentNullException(nameof(callback));
 
-            return new PageIterator<TEntity>()
+            if (!page.GetFieldDeserializers<IParsable>().ContainsKey("value"))
+                throw new ArgumentException("The Parsable does not contain a collection property");
+
+            var pageItems = ExtractEntityListFromParsable(page);
+
+            return new PageIterator<TEntity, TCollectionPage>()
             {
                 _client = client,
                 _currentPage = page,
-                _pageItemQueue = new Queue<TEntity>(page),
+                _pageItemQueue = new Queue<TEntity>(pageItems),
                 _processPageItemCallback = callback,
                 _requestConfigurator = requestConfigurator,
                 State = PagingState.NotStarted
@@ -93,11 +101,12 @@ namespace Microsoft.Graph
             }
 
             // Setup deltalink request. Using dynamic to access the NextPageRequest.
-            dynamic page = _currentPage;
+            var nextLink = ExtractNextLinkFromParsable(_currentPage);
             // There are more pages ready to be paged.
-            if (page.NextPageRequest != null)
+            if (!string.IsNullOrEmpty(nextLink))
             {
-                Nextlink = page.NextPageRequest.GetHttpRequestMessage().RequestUri.AbsoluteUri;
+                Nextlink = nextLink;
+                Deltalink = string.Empty;
                 return true;
             }
 
@@ -107,9 +116,6 @@ namespace Microsoft.Graph
                 Deltalink = deltalink.ToString();
                 State = PagingState.Delta;
                 Nextlink = string.Empty;
-
-                page.InitializeNextPageRequest(this._client, Deltalink);
-                _currentPage = page;
 
                 return false;
             }
@@ -135,21 +141,24 @@ namespace Microsoft.Graph
         {
             State = PagingState.InterpageIteration;
 
-            // We need access to the NextPageRequest to call and get the next page. ICollectionPage<TEntity> doesn't define NextPageRequest.
-            // We are making this dynamic so we can access NextPageRequest.
-            dynamic page = _currentPage;
-
             // Get the next page if it is available and queue the items for processing.
-            if (page.NextPageRequest != null)
+            if (!string.IsNullOrEmpty(Nextlink) || !string.IsNullOrEmpty(Deltalink))
             {
                 // Call the MSGraph API to get the next page of results and set that page as the currentPage.
-                _currentPage = await (_requestConfigurator == null ? page.NextPageRequest : _requestConfigurator(page.NextPageRequest)).GetAsync(token).ConfigureAwait(false);
-                page = _currentPage;
-
-                // Add all of the items returned in the response to the queue.
-                if (_currentPage != null && _currentPage.Count > 0)
+                var nextPageRequestInformation = new RequestInformation
                 {
-                    foreach (TEntity entity in _currentPage)
+                    HttpMethod = HttpMethod.GET,
+                    UrlTemplate = string.IsNullOrEmpty(Nextlink) ? Deltalink : Nextlink,
+                };
+                // if we have a request configurator, modify the request as desired then execute it to get the next page
+                nextPageRequestInformation = _requestConfigurator == null ? nextPageRequestInformation : _requestConfigurator(nextPageRequestInformation);
+                _currentPage = await _client.RequestAdapter.SendAsync<TCollectionPage>(nextPageRequestInformation,cancellationToken:token);
+
+                var pageItems = ExtractEntityListFromParsable(_currentPage);
+                // Add all of the items returned in the response to the queue.
+                if (pageItems != null && pageItems.Count > 0)
+                {
+                    foreach (TEntity entity in pageItems)
                     {
                         _pageItemQueue.Enqueue(entity);
                     }
@@ -157,7 +166,7 @@ namespace Microsoft.Graph
             }
 
             // Detect nextLink loop
-            if (page.NextPageRequest != null && Nextlink.Equals(page.NextPageRequest.GetHttpRequestMessage().RequestUri.AbsoluteUri))
+            if (Nextlink.Equals(ExtractNextLinkFromParsable(_currentPage)))
             {
                 throw new ServiceException(new Error()
                 {
@@ -170,8 +179,6 @@ namespace Microsoft.Graph
         /// Fetches page collections and iterates through each page of items and processes it according to the Func&lt;TEntity, bool&gt; set in <see cref="CreatePageIterator"/>. 
         /// </summary>
         /// <returns>The task object that represents the results of this asynchronous operation.</returns>
-        /// <exception cref="Microsoft.CSharp.RuntimeBinder.RuntimeBinderException">Thrown when a base CollectionPage that does not implement NextPageRequest
-        /// is provided to the PageIterator</exception>
         /// <exception cref="Microsoft.Graph.ServiceException">Thrown when the service encounters an error with
         /// a request.</exception>
         public async Task IterateAsync()
@@ -184,8 +191,6 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="token">The CancellationToken used to stop iterating calls for more pages.</param>
         /// <returns>The task object that represents the results of this asynchronous operation.</returns>
-        /// <exception cref="Microsoft.CSharp.RuntimeBinder.RuntimeBinderException">Thrown when a base CollectionPage that does not implement NextPageRequest
-        /// is provided to the PageIterator</exception>
         /// <exception cref="Microsoft.Graph.ServiceException">Thrown when the service encounters an error with
         /// a request or there is an internal error with the service.</exception>
         public async Task IterateAsync(CancellationToken token)
@@ -218,7 +223,6 @@ namespace Microsoft.Graph
         /// Resumes iterating through each page of items and processes it according to the Func&lt;TEntity, bool&gt; set in <see cref="CreatePageIterator"/>. 
         /// </summary>
         /// <returns>The task object that represents the results of this asynchronous operation.</returns>
-        /// <exception cref="Microsoft.CSharp.RuntimeBinder.RuntimeBinderException">Thrown when a base CollectionPage that does not implement NextPageRequest
         /// is provided to the PageIterator</exception>
         public async Task ResumeAsync()
         {
@@ -230,13 +234,33 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="token">The CancellationToken used to stop iterating calls for more pages.</param>
         /// <returns>The task object that represents the results of this asynchronous operation.</returns>
-        /// <exception cref="Microsoft.CSharp.RuntimeBinder.RuntimeBinderException">Thrown when a base CollectionPage that does not implement NextPageRequest
-        /// is provided to the PageIterator</exception>
         /// <exception cref="Microsoft.Graph.ServiceException">Thrown when the service encounters an error with
         /// a request.</exception>
         public async Task ResumeAsync(CancellationToken token)
         {
             await IterateAsync(token);
+        }
+
+        /// <summary>
+        /// Helper method to extract the collection rom an <see cref="IParsable"/> instance.
+        /// </summary>
+        /// <param name="parsableCollection">The <see cref="IParsable"/> to extract the collection from</param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException">Thrown when the object doesn't contain a collection inside it</exception>
+        private static List<TEntity> ExtractEntityListFromParsable(TCollectionPage parsableCollection)
+        {
+            return parsableCollection.GetType().GetProperty("Value").GetValue(parsableCollection, null) as List<TEntity> ?? throw new ArgumentException("The Parsable does not contain a collection property");
+        }
+
+        /// <summary>
+        /// Helper method to extract the nextLink property from an <see cref="IParsable"/> instance.
+        /// </summary>
+        /// <param name="parsableCollection">The <see cref="IParsable"/> to extract the nextLink from</param>
+        /// <param name="nextLinkPropertyName">The property name of the nextLink string</param>
+        /// <returns></returns>
+        private static string ExtractNextLinkFromParsable(TCollectionPage parsableCollection, string nextLinkPropertyName = "NextLink")
+        {
+            return parsableCollection.GetType().GetProperty(nextLinkPropertyName).GetValue(parsableCollection, null) as string ?? string.Empty;
         }
     }
 

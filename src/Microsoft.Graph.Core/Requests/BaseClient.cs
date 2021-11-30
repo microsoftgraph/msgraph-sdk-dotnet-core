@@ -21,6 +21,13 @@ namespace Microsoft.Graph
     public class BaseClient
     {
         /// <summary>
+        /// Constructs a new <see cref="BaseClient"/> for use by derived instances.
+        /// </summary>
+        protected BaseClient()
+        {
+        }
+
+        /// <summary>
         /// Constructs a new <see cref="BaseClient"/>.
         /// </summary>
         /// <param name="requestAdapter">The custom <see cref="IRequestAdapter"/> to be used for making requests</param>
@@ -70,7 +77,7 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets the <see cref="IRequestAdapter"/> for sending requests.
         /// </summary>
-        public IRequestAdapter RequestAdapter { get; private set; }
+        protected internal IRequestAdapter RequestAdapter { get; set; }
 
         /// <summary>
         /// Gets the <see cref="BatchRequestBuilder"/> for building batch Requests
