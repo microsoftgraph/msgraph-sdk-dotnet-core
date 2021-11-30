@@ -19,7 +19,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
     **/
     public class PageIteratorTests
     {
-        private PageIterator<TestEventItem> eventPageIterator;
+        private PageIterator<TestEventItem, TestEventsResponse> eventPageIterator;
         private Mock<IRequestAdapter> mockRequestAdapter;
         private BaseClient baseClient;
 
@@ -34,20 +34,20 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
         {
             var fakePage = new TestEventItem();// This is an IParsable but is not a collectionResponse
 
-            var exception = Assert.Throws<ArgumentException>(() => PageIterator<TestEventItem>.CreatePageIterator(baseClient, fakePage, (e) => { return true; }));
+            var exception = Assert.Throws<ArgumentException>(() => PageIterator<TestEventItem, TestEventItem>.CreatePageIterator(baseClient, fakePage, (e) => { return true; }));
             Assert.Equal("The Parsable does not contain a collection property", exception.Message);
         }
 
         [Fact]
         public void Given_Null_CollectionPage_It_Throws_ArgumentNullException()
         {
-            Assert.Throws<ArgumentNullException>(() => PageIterator<TestEventItem>.CreatePageIterator(baseClient, null, (e) => { return true; }));
+            Assert.Throws<ArgumentNullException>(() => PageIterator<TestEventItem, TestEventsResponse>.CreatePageIterator(baseClient, null, (e) => { return true; }));
         }
 
         [Fact]
         public void Given_Null_Delegate_It_Throws_ArgumentNullException()
         {
-            Assert.Throws<ArgumentNullException>(() => PageIterator<TestEventItem>.CreatePageIterator(baseClient, new TestEventsResponse(), null));
+            Assert.Throws<ArgumentNullException>(() => PageIterator<TestEventItem, TestEventsResponse>.CreatePageIterator(baseClient, new TestEventsResponse(), null));
         }
 
         [Fact]
@@ -64,7 +64,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
             var events = new List<TestEventItem>();
 
             // Act by using callback to populate the collection
-            eventPageIterator = PageIterator<TestEventItem>.CreatePageIterator(baseClient, originalPage, (e) =>
+            eventPageIterator = PageIterator<TestEventItem, TestEventsResponse>.CreatePageIterator(baseClient, originalPage, (e) =>
             {
                 events.Add(e);
                 return true;
@@ -91,7 +91,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
             var events = new List<TestEventItem>();
 
             // Act by using callback to populate the collection but will return false in the middle
-            eventPageIterator = PageIterator<TestEventItem>.CreatePageIterator(baseClient, originalPage, (e) =>
+            eventPageIterator = PageIterator<TestEventItem, TestEventsResponse>.CreatePageIterator(baseClient, originalPage, (e) =>
             {
                 if (e.Subject == "Subject7")
                     return false;
@@ -148,7 +148,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
                 return true;
             };
 
-            eventPageIterator = PageIterator<TestEventItem>.CreatePageIterator(baseClient, originalPage, processEachEvent);
+            eventPageIterator = PageIterator<TestEventItem, TestEventsResponse>.CreatePageIterator(baseClient, originalPage, processEachEvent);
             await eventPageIterator.IterateAsync(pagingToken);
 
             // Assert the task was cancelled and did not get to the second page
@@ -193,7 +193,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
                                     .Returns(() => { return Task.FromResult(nextPage); });
 
             // Act by calling the iterator
-            eventPageIterator = PageIterator<TestEventItem>.CreatePageIterator(baseClient, originalPage, processEachEvent);
+            eventPageIterator = PageIterator<TestEventItem, TestEventsResponse>.CreatePageIterator(baseClient, originalPage, processEachEvent);
             await eventPageIterator.IterateAsync();
 
             // Assert that paging was paused and got to the next page
@@ -230,7 +230,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
             this.mockRequestAdapter.Setup(x => x.SendAsync<TestEventsResponse>(It.IsAny<RequestInformation>(), It.IsAny<ResponseHandler>(), It.IsAny<CancellationToken>()))
                                     .Returns(() => { return Task.FromResult(nextPage); });
 
-            eventPageIterator = PageIterator<TestEventItem>.CreatePageIterator(baseClient, originalPage, processEachEvent);
+            eventPageIterator = PageIterator<TestEventItem, TestEventsResponse>.CreatePageIterator(baseClient, originalPage, processEachEvent);
 
             // Assert that the exception is thrown since the next page had the same nextLink URL
             ServiceException exception = await Assert.ThrowsAsync<ServiceException>(async () => await eventPageIterator.IterateAsync());
@@ -262,7 +262,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
                 this.mockRequestAdapter.Setup(x => x.SendAsync<TestEventsResponse>(It.IsAny<RequestInformation>(), It.IsAny<ResponseHandler>(), It.IsAny<CancellationToken>()))
                                     .Returns(() => { return Task.FromResult(nextPage); });
 
-                eventPageIterator = PageIterator<TestEventItem>.CreatePageIterator(baseClient, originalPage, processEachEvent);
+                eventPageIterator = PageIterator<TestEventItem, TestEventsResponse>.CreatePageIterator(baseClient, originalPage, processEachEvent);
                 await eventPageIterator.IterateAsync();
 
                 // Assert that we have made it through without any errors
@@ -281,7 +281,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
             var originalPage = new TestEventsResponse() { Value = new List<TestEventItem>() };
 
             // Act
-            eventPageIterator = PageIterator<TestEventItem>.CreatePageIterator(baseClient, originalPage, (e) => { return true; });
+            eventPageIterator = PageIterator<TestEventItem, TestEventsResponse>.CreatePageIterator(baseClient, originalPage, (e) => { return true; });
 
             // Assert
             Assert.Equal(PagingState.NotStarted, eventPageIterator.State);
@@ -321,7 +321,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
             this.mockRequestAdapter.Setup(x => x.SendAsync<TestEventsResponse>(It.IsAny<RequestInformation>(), It.IsAny<ResponseHandler>(), It.IsAny<CancellationToken>()))
                     .Returns(() => { return Task.FromResult(nextPage); });
 
-            eventPageIterator = PageIterator<TestEventItem>.CreatePageIterator(baseClient, originalPage, processEachEvent, requestConfigurator);
+            eventPageIterator = PageIterator<TestEventItem, TestEventsResponse>.CreatePageIterator(baseClient, originalPage, processEachEvent, requestConfigurator);
             await eventPageIterator.IterateAsync();
 
             // Assert that configurator is invoked

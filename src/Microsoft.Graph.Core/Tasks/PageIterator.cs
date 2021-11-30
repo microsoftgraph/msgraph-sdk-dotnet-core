@@ -21,10 +21,11 @@ namespace Microsoft.Graph
     /// and process each item in the result set.
     /// </summary>
     /// <typeparam name="TEntity">The Microsoft Graph entity type returned in the result set.</typeparam>
-    public class PageIterator<TEntity>
+    /// <typeparam name="TCollectionPage">The Microsoft Graph collection response type returned in the collection response.</typeparam>
+    public class PageIterator<TEntity, TCollectionPage> where TCollectionPage : IParsable
     {
         private BaseClient _client;
-        private IParsable _currentPage;
+        private TCollectionPage _currentPage;
         private Queue<TEntity> _pageItemQueue;
         private Func<TEntity, bool> _processPageItemCallback;
         private Func<RequestInformation, RequestInformation> _requestConfigurator;
@@ -50,7 +51,7 @@ namespace Microsoft.Graph
         /// <param name="callback">A Func delegate that processes type TEntity in the result set and should return false if the iterator should cancel processing.</param>
         /// <param name="requestConfigurator">A Func delegate that configures the NextPageRequest</param>
         /// <returns>A PageIterator&lt;TEntity&gt; that will process additional result pages based on the rules specified in Func&lt;TEntity,bool&gt; processPageItems</returns>
-        public static PageIterator<TEntity> CreatePageIterator(BaseClient client, IParsable page, Func<TEntity, bool> callback, Func<RequestInformation, RequestInformation> requestConfigurator = null)
+        public static PageIterator<TEntity, TCollectionPage> CreatePageIterator(BaseClient client, TCollectionPage page, Func<TEntity, bool> callback, Func<RequestInformation, RequestInformation> requestConfigurator = null)
         {
             if (client == null)
                 throw new ArgumentNullException(nameof(client));
@@ -66,7 +67,7 @@ namespace Microsoft.Graph
 
             var pageItems = ExtractEntityListFromParsable(page);
 
-            return new PageIterator<TEntity>()
+            return new PageIterator<TEntity, TCollectionPage>()
             {
                 _client = client,
                 _currentPage = page,
@@ -151,7 +152,7 @@ namespace Microsoft.Graph
                 };
                 // if we have a request configurator, modify the request as desired then execute it to get the next page
                 nextPageRequestInformation = _requestConfigurator == null ? nextPageRequestInformation : _requestConfigurator(nextPageRequestInformation);
-                _currentPage = await GetNextPageAsync(nextPageRequestInformation, token);
+                _currentPage = await _client.RequestAdapter.SendAsync<TCollectionPage>(nextPageRequestInformation,cancellationToken:token);
 
                 var pageItems = ExtractEntityListFromParsable(_currentPage);
                 // Add all of the items returned in the response to the queue.
@@ -246,36 +247,20 @@ namespace Microsoft.Graph
         /// <param name="parsableCollection">The <see cref="IParsable"/> to extract the collection from</param>
         /// <returns></returns>
         /// <exception cref="ArgumentException">Thrown when the object doesn't contain a collection inside it</exception>
-        private static List<TEntity> ExtractEntityListFromParsable(IParsable parsableCollection)
+        private static List<TEntity> ExtractEntityListFromParsable(TCollectionPage parsableCollection)
         {
             return parsableCollection.GetType().GetProperty("Value").GetValue(parsableCollection, null) as List<TEntity> ?? throw new ArgumentException("The Parsable does not contain a collection property");
-        }
-
-        /// <summary>
-        /// Helper method to execute the the request to get back the next page
-        /// </summary>
-        /// <param name="nextPageRequestInformation">The <see cref="RequestInformation"/> of the next page request</param>
-        /// <param name="cancellationToken">The <see cref="CancellationToken"/> to use to cancel requests</param>
-        /// <returns></returns>
-        private async Task<IParsable> GetNextPageAsync(RequestInformation nextPageRequestInformation, CancellationToken cancellationToken)
-        {
-            // Use reflection to invoke the "requestAdapter.SendAsync" method so as to be able to be able to pass the generic type arguments
-            // neededed for handling the response.
-            var method = _client.RequestAdapter.GetType().GetMethod("SendAsync").MakeGenericMethod(_currentPage.GetType());
-            var sendTask = (Task)method.Invoke(_client.RequestAdapter, new object[] { nextPageRequestInformation, null, cancellationToken });
-            await sendTask.ConfigureAwait(false);
-            // return the result from the task.
-            return (IParsable)sendTask.GetType().GetProperty("Result").GetValue(sendTask);
         }
 
         /// <summary>
         /// Helper method to extract the nextLink property from an <see cref="IParsable"/> instance.
         /// </summary>
         /// <param name="parsableCollection">The <see cref="IParsable"/> to extract the nextLink from</param>
+        /// <param name="nextLinkPropertyName">The property name of the nextLink string</param>
         /// <returns></returns>
-        private static string ExtractNextLinkFromParsable(IParsable parsableCollection)
+        private static string ExtractNextLinkFromParsable(TCollectionPage parsableCollection, string nextLinkPropertyName = "NextLink")
         {
-            return parsableCollection.GetType().GetProperty("NextLink").GetValue(parsableCollection, null) as string ?? string.Empty;
+            return parsableCollection.GetType().GetProperty(nextLinkPropertyName).GetValue(parsableCollection, null) as string ?? string.Empty;
         }
     }
 
