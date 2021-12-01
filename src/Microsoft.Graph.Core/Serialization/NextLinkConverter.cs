@@ -5,7 +5,6 @@
 namespace Microsoft.Graph
 {
     using System;
-    using System.Net;
     using System.Text.Json;
     using System.Text.Json.Serialization;
 
@@ -30,13 +29,15 @@ namespace Microsoft.Graph
         /// <param name="reader">The <see cref="Utf8JsonReader"/> to read from.</param>
         /// <param name="typeToConvert">The object type.</param>
         /// <param name="options">The <see cref="JsonSerializerOptions"/> for conversion.</param>
-        /// <returns>A TimeOfDay object.</returns>
+        /// <returns>A nextLink string parsable by <see cref="BaseRequest"/>.</returns>
         public override string Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             if (typeToConvert == null)
                 throw new ArgumentNullException(nameof(typeToConvert));
 
-            return WebUtility.UrlDecode(reader.GetString());
+            var nextLinkUri = new Uri(reader.GetString());
+            // Replace any '+' in the query as it signifies a space character the SDK does url encoding on the query parameter
+            return new UriBuilder(nextLinkUri) { Query = nextLinkUri.Query.Replace("+", "%20") }.ToString();
         }
 
         /// <summary>

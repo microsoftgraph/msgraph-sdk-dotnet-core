@@ -707,8 +707,13 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
         ]
         [InlineData(
             "https://graph.microsoft.com/beta/deviceManagement/managedDevices?$filter=(deviceType+eq+%27android%27+or+deviceType+eq+%27androidEnterprise%27+or+deviceType+eq+%27androidForWork%27+or+deviceType+eq+%27iPad%27+or+deviceType+eq+%27iPhone%27)&$skiptoken=LastDeviceName%3d%27Andrew%25e2%2580%2599s%2520iPhone%27%2cLastDeviceId%3d%272dcc19dc-a2b9-434a-8013-ac85b69bece3%27", 
-            "filter", 
-            "(deviceType%20eq%20'android'%20or%20deviceType%20eq%20'androidEnterprise'%20or%20deviceType%20eq%20'androidForWork'%20or%20deviceType%20eq%20'iPad'%20or%20deviceType%20eq%20'iPhone')")
+            "filter",
+            "(deviceType%20eq%20%27android%27%20or%20deviceType%20eq%20%27androidEnterprise%27%20or%20deviceType%20eq%20%27androidForWork%27%20or%20deviceType%20eq%20%27iPad%27%20or%20deviceType%20eq%20%27iPhone%27)")
+        ]
+        [InlineData(
+            "https://graph.microsoft.com/v1.0/teams/c7a2f0a6-bb37-40f2-b908-2305650b03ce/channels/19:7yFDiTCIS1sYT-rZ46tTn8PfZFTafi7pyhe1ml0RmhI1@thread.tacv2/messages?$skiptoken=%5b%7B%22token%22%3a%22%2bRID%3a~vpsQAJ9uAC0sBo8AAAC8DQ%3d%3d%23RT%3a1%23TRC%3a20%23RTD%3aAyAER1ygxSHVHJBn2S99BTI6Ozh6R0VqVURKVDJ0WlUuc1s1NnVVbzlRZ1dHVWJnajhtemlmMm5tMVNuaUoyQXVpc2ZiZS91YmR3MzwyNzQ5Mzo6NjU2MzI2AA%3d%3d%23ISV%3a2%23IEO%3a65551%23QCF%3a4%23FPC%3aAgg8AgAA8DYAADwCAADwNgAAPAIAAPA2AAASAMODRQIAN2U3Km0DAMEVAQQkAA%3d%3d%22%2c%22range%22%3a%7B%22min%22%3a%2205C1DB7BBFBDC008323A3B67373962653567633866636235353A316362633A663537333667653333383762417569736662652F756264773300%22%2c%22max%22%3a%2205C1DB8525A774%22%7D%7D%5d",
+            "skiptoken",
+            "%5b%7B%22token%22%3a%22%2bRID%3a~vpsQAJ9uAC0sBo8AAAC8DQ%3d%3d%23RT%3a1%23TRC%3a20%23RTD%3aAyAER1ygxSHVHJBn2S99BTI6Ozh6R0VqVURKVDJ0WlUuc1s1NnVVbzlRZ1dHVWJnajhtemlmMm5tMVNuaUoyQXVpc2ZiZS91YmR3MzwyNzQ5Mzo6NjU2MzI2AA%3d%3d%23ISV%3a2%23IEO%3a65551%23QCF%3a4%23FPC%3aAgg8AgAA8DYAADwCAADwNgAAPAIAAPA2AAASAMODRQIAN2U3Km0DAMEVAQQkAA%3d%3d%22%2c%22range%22%3a%7B%22min%22%3a%2205C1DB7BBFBDC008323A3B67373962653567633866636235353A316362633A663537333667653333383762417569736662652F756264773300%22%2c%22max%22%3a%2205C1DB8525A774%22%7D%7D%5d")
         ]
         public void DeserializeNextLinkValues(string nextLink, string queryOptionKey, string expectedValue)
         {
