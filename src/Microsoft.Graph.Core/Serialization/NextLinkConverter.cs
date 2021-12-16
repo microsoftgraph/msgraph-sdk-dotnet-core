@@ -37,7 +37,12 @@ namespace Microsoft.Graph
 
             var nextLinkUri = new Uri(reader.GetString());
             // Replace any '+' in the query as it signifies a space character the SDK does url encoding on the query parameter
-            return new UriBuilder(nextLinkUri) { Query = nextLinkUri.Query.Replace("+", "%20") }.ToString();
+            // Strip the ? character as .NetFramework may incorrectly build the url by adding a second '?' character
+            var queryString = string.Empty;
+            if (nextLinkUri.Query != null && nextLinkUri.Query.Length > 1)
+                queryString = nextLinkUri.Query.Replace("+", "%20").Substring(1);
+
+            return new UriBuilder(nextLinkUri) { Query = queryString }.ToString();
         }
 
         /// <summary>
