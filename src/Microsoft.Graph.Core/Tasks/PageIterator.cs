@@ -10,7 +10,6 @@ namespace Microsoft.Graph
     using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
-    using HttpMethod = Kiota.Abstractions.HttpMethod;
 
     /*
      Spec https://github.com/microsoftgraph/msgraph-sdk-design/blob/master/tasks/PageIteratorTask.md
@@ -147,7 +146,7 @@ namespace Microsoft.Graph
                 // Call the MSGraph API to get the next page of results and set that page as the currentPage.
                 var nextPageRequestInformation = new RequestInformation
                 {
-                    HttpMethod = HttpMethod.GET,
+                    HttpMethod = Method.GET,
                     UrlTemplate = string.IsNullOrEmpty(Nextlink) ? Deltalink : Nextlink,
                 };
                 // if we have a request configurator, modify the request as desired then execute it to get the next page
@@ -223,7 +222,6 @@ namespace Microsoft.Graph
         /// Resumes iterating through each page of items and processes it according to the Func&lt;TEntity, bool&gt; set in <see cref="CreatePageIterator"/>. 
         /// </summary>
         /// <returns>The task object that represents the results of this asynchronous operation.</returns>
-        /// is provided to the PageIterator</exception>
         public async Task ResumeAsync()
         {
             await ResumeAsync(new CancellationToken());

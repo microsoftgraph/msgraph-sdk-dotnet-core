@@ -344,7 +344,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
         public void BatchRequestContent_AddBatchRequestStepWithBaseRequest()
         {
             // Arrange
-            RequestInformation requestInformation = new RequestInformation() { HttpMethod = Kiota.Abstractions.HttpMethod.GET, UrlTemplate = REQUEST_URL };
+            RequestInformation requestInformation = new RequestInformation() { HttpMethod = Method.GET, UrlTemplate = REQUEST_URL };
             BatchRequestContent batchRequestContent = new BatchRequestContent(client);
             Assert.False(batchRequestContent.BatchRequestSteps.Any());//Its empty
 
@@ -403,14 +403,14 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
             // Add MaxNumberOfRequests number of steps
             for (var i = 0; i < CoreConstants.BatchRequest.MaxNumberOfRequests; i++)
             {
-                RequestInformation requestInformation = new RequestInformation() { HttpMethod = Kiota.Abstractions.HttpMethod.GET, UrlTemplate = REQUEST_URL };
+                RequestInformation requestInformation = new RequestInformation() { HttpMethod = Method.GET, UrlTemplate = REQUEST_URL };
                 string batchRequestStepId = batchRequestContent.AddBatchRequestStep(requestInformation);
                 Assert.NotNull(batchRequestStepId);
                 Assert.True(batchRequestContent.BatchRequestSteps.Count.Equals(i + 1));//Assert we can add steps up to the max
             }
 
             // Act
-            RequestInformation extraRequestInformation = new RequestInformation() { HttpMethod = Kiota.Abstractions.HttpMethod.GET, UrlTemplate = REQUEST_URL };
+            RequestInformation extraRequestInformation = new RequestInformation() { HttpMethod = Method.GET, UrlTemplate = REQUEST_URL };
             var exception = Assert.Throws<ClientException>(() => batchRequestContent.AddBatchRequestStep(extraRequestInformation));
             
             // Assert

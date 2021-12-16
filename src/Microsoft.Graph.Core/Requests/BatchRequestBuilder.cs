@@ -60,10 +60,9 @@ namespace Microsoft.Graph.Core.Requests
             _ = batchRequestContent ?? throw new ArgumentNullException(nameof(batchRequestContent));
             var requestInfo = new RequestInformation
             {
-                HttpMethod = Kiota.Abstractions.HttpMethod.POST,
+                HttpMethod = Method.POST,
                 UrlTemplate = UrlTemplate,
             };
-            requestInfo.PathParameters.Add("baseurl", RequestAdapter.BaseUrl);
             requestInfo.Content = await batchRequestContent.GetBatchRequestContentAsync();
             requestInfo.Headers.Add("Content-Type", "application/json");
             return requestInfo;

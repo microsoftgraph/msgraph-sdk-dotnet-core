@@ -98,14 +98,14 @@
   </None>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="System.Text.Json" Version="6.0.0" />
+    <PackageReference Include="System.Text.Json" Version="6.0.1" />
     <PackageReference Include="Azure.Core" Version="1.21.0" />
     <PackageReference Include="System.Diagnostics.DiagnosticSource" Version="6.0.0" />
-    <PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="6.14.1" />
+    <PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="6.15.0" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.Kiota.Abstractions" Version="1.0.25" />
-    <PackageReference Include="Microsoft.Kiota.Authentication.Azure" Version="1.0.6" />
-    <PackageReference Include="Microsoft.Kiota.Http.HttpClientLibrary" Version="1.0.16" />
-    <PackageReference Include="Microsoft.Kiota.Serialization.Json" Version="1.0.6" />
+    <PackageReference Include="Microsoft.Kiota.Abstractions" Version="1.0.26" />
+    <PackageReference Include="Microsoft.Kiota.Authentication.Azure" Version="1.0.7" />
+    <PackageReference Include="Microsoft.Kiota.Http.HttpClientLibrary" Version="1.0.17" />
+    <PackageReference Include="Microsoft.Kiota.Serialization.Json" Version="1.0.7" />
   </ItemGroup>
 </Project>

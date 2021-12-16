@@ -85,7 +85,7 @@ namespace Microsoft.Graph
             _ = stream ?? throw new ArgumentNullException(nameof(stream));
             var requestInfo = new RequestInformation
             {
-                HttpMethod = Kiota.Abstractions.HttpMethod.PUT,
+                HttpMethod = Method.PUT,
                 UrlTemplate = UrlTemplate,
             };
             requestInfo.SetStreamContent(stream);
