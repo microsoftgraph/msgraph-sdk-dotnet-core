@@ -47,7 +47,7 @@ namespace Microsoft.Graph
         {
             var requestInfo = new RequestInformation
             {
-                HttpMethod = Kiota.Abstractions.HttpMethod.DELETE,
+                HttpMethod = Method.DELETE,
                 UrlTemplate = urlTemplate,
             };
             return requestInfo;
@@ -75,7 +75,7 @@ namespace Microsoft.Graph
         {
             var requestInfo = new RequestInformation
             {
-                HttpMethod = Kiota.Abstractions.HttpMethod.GET,
+                HttpMethod = Method.GET,
                 UrlTemplate = urlTemplate,
             };
             return requestInfo;

@@ -37,7 +37,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             var requestInformation = await batchRequestBuilder.CreatePostRequestInformationAsync(batchRequestContent);
 
             // Assert
-            Assert.Equal("https://localhost/$batch", requestInformation.URI.AbsoluteUri);
+            Assert.Equal("{+baseurl}/$batch", requestInformation.UrlTemplate);
             Assert.Equal(baseClient.RequestAdapter, batchRequestBuilder.RequestAdapter);
         }
     }

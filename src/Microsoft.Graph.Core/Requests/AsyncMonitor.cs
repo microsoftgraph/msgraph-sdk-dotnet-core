@@ -45,7 +45,7 @@ namespace Microsoft.Graph
         {
             while (!cancellationToken.IsCancellationRequested)
             {
-                var requestInformation = new RequestInformation() { HttpMethod = Kiota.Abstractions.HttpMethod.GET , UrlTemplate = this.monitorUrl};
+                var requestInformation = new RequestInformation() { HttpMethod = Method.GET , UrlTemplate = this.monitorUrl};
                 var nativeResponseHandler = new NativeResponseHandler();
                 await this.client.RequestAdapter.SendNoContentAsync(requestInformation, nativeResponseHandler, cancellationToken).ConfigureAwait(false);
                 using var responseMessage = nativeResponseHandler.Value as HttpResponseMessage;
