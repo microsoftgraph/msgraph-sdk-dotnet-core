@@ -4,13 +4,14 @@
 
 namespace Microsoft.Graph
 {
+    using Microsoft.Kiota.Abstractions.Serialization;
     using System;
     using System.Collections.Generic;
 
     /// <summary>
     /// The IUploadSession interface
     /// </summary>
-    public interface IUploadSession
+    public interface IUploadSession: IParsable
     {
         /// <summary>
         /// Expiration date of the upload session

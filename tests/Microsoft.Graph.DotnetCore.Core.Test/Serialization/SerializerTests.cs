@@ -9,6 +9,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
     using Microsoft.Graph.DotnetCore.Core.Test.TestModels;
     using Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels;
     using Microsoft.Kiota.Abstractions;
+    using Microsoft.Kiota.Serialization.Json;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -527,12 +528,17 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
                 UploadUrl = "http://localhost",
                 NextExpectedRanges = new List<string> { "0 - 1000" }
             };
+            using var jsonSerializerWriter = new JsonSerializationWriter();
             var expectedString = @"{""expirationDateTime"":""2016-11-20T18:23:45.9356913+00:00"",""nextExpectedRanges"":[""0 - 1000""],""uploadUrl"":""http://localhost""}";
             // Act
-            var serializedString = this.serializer.SerializeObject(uploadSession);
+            jsonSerializerWriter.WriteObjectValue(string.Empty, uploadSession);
             // Assert
+            // Get the json string from the stream.
+            var serializedStream = jsonSerializerWriter.GetSerializedContent();
+            using var reader = new StreamReader(serializedStream, Encoding.UTF8);
+            var serializedJsonString = reader.ReadToEnd();
             // Expect the string to be ISO 8601-1:2019 format
-            Assert.Equal(expectedString, serializedString);
+            Assert.Equal(expectedString, serializedJsonString);
         }
 
         [Fact]

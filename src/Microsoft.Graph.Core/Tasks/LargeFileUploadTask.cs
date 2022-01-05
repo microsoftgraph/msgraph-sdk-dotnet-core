@@ -4,6 +4,8 @@
 
 namespace Microsoft.Graph
 {
+    using Microsoft.Graph.Core.Models;
+    using Microsoft.Kiota.Abstractions.Serialization;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -39,11 +41,10 @@ namespace Microsoft.Graph
             {
                 throw new ArgumentException("Must provide stream that can read and seek");
             }
-
             this.Session = uploadSession;
-            this._client = baseClient ?? this.InitializeClient(uploadSession.UploadUrl);
+            this._client = baseClient ?? this.InitializeClient(Session.UploadUrl);
             this._uploadStream = uploadStream;
-            this._rangesRemaining = this.GetRangesRemaining(uploadSession);
+            this._rangesRemaining = this.GetRangesRemaining(Session);
             this._maxSliceSize = maxSliceSize < 0 ? DefaultMaxSliceSize : maxSliceSize;
             if (this._maxSliceSize % RequiredSliceSizeIncrement != 0)
             {
