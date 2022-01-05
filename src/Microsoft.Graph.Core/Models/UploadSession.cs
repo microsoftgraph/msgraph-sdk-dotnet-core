@@ -12,16 +12,8 @@ namespace Microsoft.Graph.Core.Models
     /// <summary>
     /// Concrete implementation of the IUploadSession interface
     /// </summary>
-    internal class UploadSession : IUploadSession,IParsable
+    internal class UploadSession : IUploadSession
     {
-        /// <summary>
-        /// Instantiates a new uploadSession and sets the default values.
-        /// </summary>
-        public UploadSession()
-        {
-            AdditionalData = new Dictionary<string, object>();
-        }
-
         /// <summary>
         /// Expiration date of the upload session
         /// </summary>
@@ -40,7 +32,7 @@ namespace Microsoft.Graph.Core.Models
         /// <summary>
         /// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
         /// </summary>
-        public IDictionary<string, object> AdditionalData { get; set; }
+        public IDictionary<string, object> AdditionalData { get; set; } = new Dictionary<string, object>();
 
         /// <summary>
         /// The deserialization information for the current model

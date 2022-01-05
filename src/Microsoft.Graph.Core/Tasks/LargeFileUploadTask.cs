@@ -30,7 +30,7 @@ namespace Microsoft.Graph
         /// Task to help with resume able large file uploads. Generates slices based on <paramref name="uploadSession"/>
         /// information, and can control uploading of requests/>
         /// </summary>
-        /// <param name="uploadSession">Session information of type <see cref="IUploadSession"/>></param>
+        /// <param name="uploadSession">Session information of type <see cref="IParsable"/> that has a similar structure to <see cref="IUploadSession"/></param>
         /// <param name="uploadStream">Readable, seekable stream to be uploaded. Length of session is determined via uploadStream.Length</param>
         /// <param name="maxSliceSize">Max size of each slice to be uploaded. Multiple of 320 KiB (320 * 1024) is required.</param>
         /// <param name="baseClient"><see cref="BaseClient"/> to use for making upload requests. The client should not set Auth headers as upload urls do not need them.
