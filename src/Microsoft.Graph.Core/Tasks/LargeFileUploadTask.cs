@@ -30,18 +30,18 @@ namespace Microsoft.Graph
         /// Task to help with resume able large file uploads. Generates slices based on <paramref name="uploadSession"/>
         /// information, and can control uploading of requests/>
         /// </summary>
-        /// <param name="uploadSession">Session information of type <see cref="IParsable"/> that has a similar structure to <see cref="IUploadSession"/></param>
+        /// <param name="uploadSession">Session information of type <see cref="IUploadSession"/>></param>
         /// <param name="uploadStream">Readable, seekable stream to be uploaded. Length of session is determined via uploadStream.Length</param>
         /// <param name="maxSliceSize">Max size of each slice to be uploaded. Multiple of 320 KiB (320 * 1024) is required.</param>
         /// <param name="baseClient"><see cref="BaseClient"/> to use for making upload requests. The client should not set Auth headers as upload urls do not need them.
         /// If less than 0, default value of 5 MiB is used. .</param>
-        public LargeFileUploadTask(IParsable uploadSession, Stream uploadStream,  int maxSliceSize = -1, BaseClient baseClient = null)
+        public LargeFileUploadTask(IUploadSession uploadSession, Stream uploadStream,  int maxSliceSize = -1, BaseClient baseClient = null)
         {
             if (!uploadStream.CanRead || !uploadStream.CanSeek)
             {
                 throw new ArgumentException("Must provide stream that can read and seek");
             }
-            this.Session = this.ExtractSessionFromParsable(uploadSession);
+            this.Session = uploadSession;
             this._client = baseClient ?? this.InitializeClient(Session.UploadUrl);
             this._uploadStream = uploadStream;
             this._rangesRemaining = this.GetRangesRemaining(Session);
@@ -50,31 +50,6 @@ namespace Microsoft.Graph
             {
                 throw new ArgumentException("Max slice size must be a multiple of 320 KiB", nameof(maxSliceSize));
             }
-        }
-
-        /// <summary>
-        /// Extract an <see cref="IUploadSession"/> from an <see cref="IParsable"/>
-        /// </summary>
-        /// <param name="uploadSession"><see cref="IParsable"/> to initiaze an <see cref="IUploadSession"/> from</param>
-        /// <returns>A <see cref="IUploadSession"/> instance</returns>
-        /// <exception cref="NotImplementedException"></exception>
-        private IUploadSession ExtractSessionFromParsable(IParsable uploadSession)
-        {
-            if (!uploadSession.GetFieldDeserializers<IParsable>().ContainsKey("expirationDateTime"))
-                throw new ArgumentException("The Parsable does not contain the 'expirationDateTime' property");
-            if (!uploadSession.GetFieldDeserializers<IParsable>().ContainsKey("nextExpectedRanges"))
-                throw new ArgumentException("The Parsable does not contain the 'nextExpectedRanges' property");
-            if (!uploadSession.GetFieldDeserializers<IParsable>().ContainsKey("uploadUrl"))
-                throw new ArgumentException("The Parsable does not contain the 'uploadUrl' property");
-
-            var uploadSessionType = uploadSession.GetType();
-
-            return new UploadSession() 
-            {
-                ExpirationDateTime = uploadSessionType.GetProperty("ExpirationDateTime").GetValue(uploadSession, null) as DateTimeOffset?,
-                NextExpectedRanges = uploadSessionType.GetProperty("NextExpectedRanges").GetValue(uploadSession, null) as IEnumerable<string>,
-                UploadUrl = uploadSessionType.GetProperty("UploadUrl").GetValue(uploadSession, null) as string
-            };
         }
 
         /// <summary>
