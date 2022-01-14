@@ -1,11 +1,13 @@
-﻿// ------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
 namespace Microsoft.Graph.DotnetCore.Core.Test.Exceptions
 {
+    using Microsoft.Kiota.Serialization.Json;
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.Text;
     using Xunit;
@@ -39,11 +41,10 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Exceptions
         */
         // Use https://www.minifyjson.org/ if you need minify or beautify as part of an update.
         private const string jsonErrorResponseBody = "{\"error\":{\"code\":\"BadRequest\",\"message\":\"Resource not found for the segment 'mer'.\",\"innerError\":{\"request-id\":\"a9acfc00-2b19-44b5-a2c6-6c329b4337b3\",\"date\":\"2019-09-10T18:26:26\",\"code\":\"inner-error-code\"},\"target\":\"target-value\",\"unexpected-property\":\"unexpected-property-value\",\"details\":[{\"code\":\"details-code-value\",\"message\":\"details\",\"target\":\"details-target-value\",\"unexpected-details-property\":\"unexpected-details-property-value\"},{\"code\":\"details-code-value2\"}]}}";
-        private Serializer serializer;
-
+        private readonly JsonParseNodeFactory _jsonParseNodeFactory;
         public ErrorTests()
         {
-            this.serializer = new Serializer();
+            _jsonParseNodeFactory = new JsonParseNodeFactory();
         }
 
         [Fact]
@@ -107,7 +108,6 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Exceptions
             errorStringBuilder.Append(Environment.NewLine);
             errorStringBuilder.Append("\tkey: value");
             errorStringBuilder.Append(Environment.NewLine);
-            var serviceException = new ServiceException(error);
 
             Assert.Equal(errorStringBuilder.ToString(), error.ToString());
         }
@@ -115,14 +115,16 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Exceptions
         [Fact]
         public void Validate_ErrorObjectDeserializes()
         {
-            Error error = this.serializer.DeserializeObject<ErrorResponse>(jsonErrorResponseBody).Error;
+            var stream = new MemoryStream(Encoding.UTF8.GetBytes(jsonErrorResponseBody));
+            var rootNode = _jsonParseNodeFactory.GetRootParseNode(CoreConstants.MimeTypeNames.Application.Json, stream);
+            Error error = rootNode.GetObjectValue<ErrorResponse>().Error;
 
             Assert.NotNull(error);
             Assert.Equal("BadRequest", error.Code);
             Assert.Equal("Resource not found for the segment 'mer'.", error.Message);
             Assert.NotNull(error.InnerError);
             Assert.Equal("a9acfc00-2b19-44b5-a2c6-6c329b4337b3", error.InnerError.AdditionalData["request-id"].ToString());
-            Assert.Equal("2019-09-10T18:26:26", error.InnerError.AdditionalData["date"].ToString());
+            Assert.Equal(DateTime.Parse("2019-09-10T18:26:26"), error.InnerError.AdditionalData["date"]);
             Assert.Equal("inner-error-code", error.InnerError.Code);
             Assert.Equal("target-value", error.Target);
             Assert.NotNull(error.AdditionalData);
@@ -151,7 +153,9 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Exceptions
                                                  "            }\r\n" +
                                                  "        }";
 
-            Error error = this.serializer.DeserializeObject<ErrorResponse>(errorResponseWithNullException).Error;
+            var stream = new MemoryStream(Encoding.UTF8.GetBytes(errorResponseWithNullException));
+            var rootNode = _jsonParseNodeFactory.GetRootParseNode(CoreConstants.MimeTypeNames.Application.Json, stream);
+            Error error = rootNode.GetObjectValue<ErrorResponse>().Error;
 
             // Assert we have deserialized the properties as expected.
             Assert.NotNull(error);
@@ -159,7 +163,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Exceptions
             Assert.Equal("Resource not found for the segment 'mer'.", error.Message);
             Assert.NotNull(error.InnerError);
             Assert.Equal("a9acfc00-2b19-44b5-a2c6-6c329b4337b3", error.InnerError.AdditionalData["request-id"].ToString());
-            Assert.Equal("2019-09-10T18:26:26", error.InnerError.AdditionalData["date"].ToString());
+            Assert.Equal(DateTime.Parse("2019-09-10T18:26:26"), error.InnerError.AdditionalData["date"]);
             Assert.Null(error.InnerError.AdditionalData["exception"]);                  // Assert the property is null
             Assert.Equal("inner-error-code", error.InnerError.Code);
             Assert.Equal("target-value", error.Target);

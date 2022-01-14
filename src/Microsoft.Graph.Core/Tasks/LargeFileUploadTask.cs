@@ -15,7 +15,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// Task to help with resume able large file uploads.
     /// </summary>
-    public class LargeFileUploadTask<T>
+    public class LargeFileUploadTask<T> where T : IParsable
     {
         private const int DefaultMaxSliceSize = 5 * 1024 * 1024;
         private const int RequiredSliceSizeIncrement = 320 * 1024;

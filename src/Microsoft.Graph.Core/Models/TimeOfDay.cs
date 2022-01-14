@@ -10,7 +10,6 @@ namespace Microsoft.Graph
     /// <summary>
     /// Time of day model.
     /// </summary>
-    [JsonConverter(typeof(TimeOfDayConverter))]
     public class TimeOfDay
     {
         internal DateTime DateTime { get; set; }

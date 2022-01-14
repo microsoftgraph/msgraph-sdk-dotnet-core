@@ -5,13 +5,14 @@
 namespace Microsoft.Graph
 {
     using Microsoft.Kiota.Abstractions;
+    using Microsoft.Kiota.Abstractions.Serialization;
     using System;
     using System.IO;
     using System.Net.Http;
     using System.Threading;
     using System.Threading.Tasks;
 
-    internal class UploadSliceRequestBuilder<T>
+    internal class UploadSliceRequestBuilder<T> where T : IParsable
     {
         private readonly UploadResponseHandler ResponseHandler;
         private readonly IRequestAdapter RequestAdapter;

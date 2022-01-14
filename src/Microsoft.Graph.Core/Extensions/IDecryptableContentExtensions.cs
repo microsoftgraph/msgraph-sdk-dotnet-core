@@ -11,6 +11,8 @@ namespace Microsoft.Graph
     using System.Security.Cryptography.X509Certificates;
     using System.Text;
     using System.Threading.Tasks;
+    using Microsoft.Kiota.Abstractions.Serialization;
+    using Microsoft.Kiota.Serialization.Json;
 
     /// <summary>
     /// Contains extension methods for <see cref="IDecryptableContentExtensions"/>
@@ -27,12 +29,16 @@ namespace Microsoft.Graph
         /// The second is the certificate thumbprint. The certificate WILL be disposed at the end of decryption.</param>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="certificateProvider"/> is null</exception>
         /// <returns>Decrypted content as the provided type.</returns>
-        public static async Task<T> DecryptAsync<T>(this IDecryptableContent encryptedContent, Func<string, string, Task<X509Certificate2>> certificateProvider) where T : class
+        public static async Task<T> DecryptAsync<T>(this IDecryptableContent encryptedContent, Func<string, string, Task<X509Certificate2>> certificateProvider) where T : IParsable
         {
             if (certificateProvider == null)
                 throw new ArgumentNullException(nameof(certificateProvider));
 
-            return JsonSerializer.Deserialize<T>(await encryptedContent.DecryptAsync(certificateProvider));
+            var stringContent = await encryptedContent.DecryptAsync(certificateProvider);
+            var contentStream = new MemoryStream(Encoding.UTF8.GetBytes(stringContent));
+            var jsonParseNodeFactory = new JsonParseNodeFactory();
+            var rootNode = jsonParseNodeFactory.GetRootParseNode(CoreConstants.MimeTypeNames.Application.Json, contentStream);
+            return rootNode.GetObjectValue<T>();
         }
 
         /// <summary>

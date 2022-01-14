@@ -4,41 +4,66 @@
 
 namespace Microsoft.Graph
 {
+    using Microsoft.Kiota.Abstractions.Serialization;
     using System;
     using System.Collections.Generic;
     using System.Text;
-    using System.Text.Json.Serialization;
 
     /// <summary>
     /// The error details object.
     /// Models OData protocol, 9.4 Error Response Body details object.
     /// http://docs.oasis-open.org/odata/odata/v4.01/csprd05/part1-protocol/odata-v4.01-csprd05-part1-protocol.html#_Toc14172757
     /// </summary>
-    public class ErrorDetail
+    public class ErrorDetail : IParsable
     {
         /// <summary>
         /// This code serves as a sub-status for the error code specified in the Error object.
         /// </summary>
-        [JsonPropertyName("code")]
         public string Code { get; set; }
 
         /// <summary>
         /// The error message.
         /// </summary>
-        [JsonPropertyName("message")]
         public string Message { get; set; }
 
         /// <summary>
         /// Indicates the target of the error, for example, the name of the property in error.
         /// </summary>
-        [JsonPropertyName("target")]
         public string Target { get; set; }
 
         /// <summary>
         /// The AdditionalData property bag.
         /// </summary>
-        [JsonExtensionData]
-        public IDictionary<string, object> AdditionalData { get; set; }
+        public IDictionary<string, object> AdditionalData { get; set; } = new Dictionary<string, object>();
+
+        /// <summary>
+        /// Gets the field deserializers for the class
+        /// </summary>
+        /// <typeparam name="T">The type of the class</typeparam>
+        /// <returns></returns>
+        public IDictionary<string, Action<T, IParseNode>> GetFieldDeserializers<T>()
+        {
+            return new Dictionary<string, Action<T, IParseNode>>
+            {
+                {"code", (o,n) => { (o as ErrorDetail).Code = n.GetStringValue(); } },
+                {"message", (o,n) => {(o as ErrorDetail).Message = n.GetStringValue(); }},
+                {"target", (o,n) => {(o as ErrorDetail).Target = n.GetStringValue(); }}
+            };
+        }
+
+        /// <summary>
+        /// Serializes the class using the the given writer
+        /// </summary>
+        /// <param name="writer">The <see cref="ISerializationWriter"/> to use</param>
+        /// <exception cref="ArgumentNullException">Thrown when the provided writer is null</exception>
+        public void Serialize(ISerializationWriter writer)
+        {
+            _ = writer ?? throw new ArgumentNullException(nameof(writer));
+            writer.WriteStringValue("code", Code);
+            writer.WriteStringValue("message", Message);
+            writer.WriteStringValue("target", Target);
+            writer.WriteAdditionalData(AdditionalData);
+        }
 
         /// <summary>
         /// Concatenates the error detail into a string.

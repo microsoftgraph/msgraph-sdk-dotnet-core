@@ -11,7 +11,6 @@ namespace Microsoft.Graph
     /// <summary>
     /// Represents an edm.duration value.
     /// </summary>
-    [JsonConverter(typeof(DurationConverter))]
     public class Duration
     {
         internal TimeSpan TimeSpan { get; set; }

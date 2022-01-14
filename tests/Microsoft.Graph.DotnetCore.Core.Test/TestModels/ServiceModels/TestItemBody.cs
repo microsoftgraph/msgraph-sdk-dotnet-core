@@ -4,15 +4,14 @@
 
 namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
 {
+    using Microsoft.Kiota.Abstractions.Serialization;
+    using System;
     using System.Collections.Generic;
-    using System.Text.Json.Serialization;
 
     /// <summary>
     /// The type ItemBody.
     /// </summary>
-
-    [JsonConverter(typeof(DerivedTypeConverter<TestItemBody>))]
-    public partial class TestItemBody
+    public partial class TestItemBody:  IParsable
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TestItemBody"/> class.
@@ -26,34 +25,51 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
         /// Gets or sets contentType.
         /// The type of the content. Possible values are text and html.
         /// </summary>
-        [JsonPropertyName("contentType")]
         public TestBodyType? ContentType { get; set; }
 
         /// <summary>
         /// Gets or sets content.
         /// The content of the item.
         /// </summary>
-        [JsonPropertyName("content")]
         public string Content { get; set; }
-
-        /// <summary>
-        /// Gets or sets instancesNextLink.
-        /// </summary>
-        [JsonPropertyName("instances@odata.nextLink")]
-        [JsonConverter(typeof(NextLinkConverter))]
-        public string InstancesNextLink { get; set; }
 
         /// <summary>
         /// Gets or sets additional data.
         /// </summary>
-        [JsonExtensionData]
-        public IDictionary<string, object> AdditionalData { get; set; }
+        public IDictionary<string, object> AdditionalData { get; set; } = new Dictionary<string, object>();
 
         /// <summary>
         /// Gets or sets @odata.type.
         /// </summary>
-        [JsonPropertyName("@odata.type")]
         public string ODataType { get; set; }
 
+        /// <summary>
+        /// Gets the field deserializers for the <see cref="TestItemBody"/> instance
+        /// </summary>
+        /// <typeparam name="T">The type to deserialize</typeparam>
+        /// <returns></returns>
+        public IDictionary<string, Action<T, IParseNode>> GetFieldDeserializers<T>()
+        {
+            return new Dictionary<string, Action<T, IParseNode>>
+            {
+                {"@odata.type", (o,n) => { (o as TestItemBody).ODataType = n.GetStringValue(); } },
+                {"contentType", (o,n) => { (o as TestItemBody).ContentType = n.GetEnumValue<TestBodyType>(); } },
+                {"content", (o,n) => { (o as TestItemBody).Content = n.GetStringValue(); } },
+            };
+        }
+
+        /// <summary>
+        /// Serialize the <see cref="TestItemBody"/> instance
+        /// </summary>
+        /// <param name="writer">The <see cref="ISerializationWriter"/> to serialize the instance</param>
+        /// <exception cref="ArgumentNullException">Thrown when the writer is null</exception>
+        public void Serialize(ISerializationWriter writer)
+        {
+            _ = writer ?? throw new ArgumentNullException(nameof(writer));
+            writer.WriteStringValue("@odata.type", ODataType);
+            writer.WriteEnumValue("contentType", ContentType);
+            writer.WriteStringValue("content", Content);
+            writer.WriteAdditionalData(AdditionalData);
+        }
     }
 }

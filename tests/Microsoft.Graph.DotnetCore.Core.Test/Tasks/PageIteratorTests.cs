@@ -189,7 +189,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
                 return true;
             };
 
-            this.mockRequestAdapter.Setup(x => x.SendAsync<TestEventsResponse>(It.IsAny<RequestInformation>(), It.IsAny<ResponseHandler>(), It.IsAny<CancellationToken>()))
+            this.mockRequestAdapter.Setup(x => x.SendAsync<TestEventsResponse>(It.IsAny<RequestInformation>(), It.IsAny<IResponseHandler>(), It.IsAny<CancellationToken>()))
                                     .Returns(() => { return Task.FromResult(nextPage); });
 
             // Act by calling the iterator
@@ -227,7 +227,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
                 return true;
             };
 
-            this.mockRequestAdapter.Setup(x => x.SendAsync<TestEventsResponse>(It.IsAny<RequestInformation>(), It.IsAny<ResponseHandler>(), It.IsAny<CancellationToken>()))
+            this.mockRequestAdapter.Setup(x => x.SendAsync<TestEventsResponse>(It.IsAny<RequestInformation>(), It.IsAny<IResponseHandler>(), It.IsAny<CancellationToken>()))
                                     .Returns(() => { return Task.FromResult(nextPage); });
 
             eventPageIterator = PageIterator<TestEventItem, TestEventsResponse>.CreatePageIterator(baseClient, originalPage, processEachEvent);
@@ -259,7 +259,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
                     return true;
                 };
 
-                this.mockRequestAdapter.Setup(x => x.SendAsync<TestEventsResponse>(It.IsAny<RequestInformation>(), It.IsAny<ResponseHandler>(), It.IsAny<CancellationToken>()))
+                this.mockRequestAdapter.Setup(x => x.SendAsync<TestEventsResponse>(It.IsAny<RequestInformation>(), It.IsAny<IResponseHandler>(), It.IsAny<CancellationToken>()))
                                     .Returns(() => { return Task.FromResult(nextPage); });
 
                 eventPageIterator = PageIterator<TestEventItem, TestEventsResponse>.CreatePageIterator(baseClient, originalPage, processEachEvent);
@@ -318,7 +318,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
                 return request;
             };
 
-            this.mockRequestAdapter.Setup(x => x.SendAsync<TestEventsResponse>(It.IsAny<RequestInformation>(), It.IsAny<ResponseHandler>(), It.IsAny<CancellationToken>()))
+            this.mockRequestAdapter.Setup(x => x.SendAsync<TestEventsResponse>(It.IsAny<RequestInformation>(), It.IsAny<IResponseHandler>(), It.IsAny<CancellationToken>()))
                     .Returns(() => { return Task.FromResult(nextPage); });
 
             eventPageIterator = PageIterator<TestEventItem, TestEventsResponse>.CreatePageIterator(baseClient, originalPage, processEachEvent, requestConfigurator);

@@ -61,13 +61,13 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                 Content = new StringContent(@"{
                     ""id"": ""123"",
                     ""givenName"": ""Joe"",
-                    ""surName"": ""Brown"",
+                    ""surname"": ""Brown"",
                     ""@odata.type"":""test""
                 }", Encoding.UTF8, CoreConstants.MimeTypeNames.Application.Json)
             };
 
             // create a custom responseHandler
-            ResponseHandler responseHandler = new ResponseHandler(new Serializer());
+            IResponseHandler responseHandler = new ResponseHandler<TestUser>();
             RequestInformation requestInformation = new RequestInformation() { UrlTemplate = "http://localhost" };
 
 

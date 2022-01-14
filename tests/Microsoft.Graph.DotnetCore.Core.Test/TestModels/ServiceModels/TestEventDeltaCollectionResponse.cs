@@ -2,8 +2,10 @@
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
+using Microsoft.Kiota.Abstractions.Serialization;
+using System;
 using System.Collections.Generic;
-using System.Text.Json.Serialization;
+using System.Linq;
 
 namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
 {
@@ -11,24 +13,47 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
     /// The type UserEventsCollectionResponse.
     /// </summary>
 
-    public class TestEventDeltaCollectionResponse
+    public class TestEventDeltaCollectionResponse: IParsable
     {
         /// <summary>
         /// Gets or sets the event collection value.
         /// </summary>
-        [JsonPropertyName("value")]
         public List<TestEvent> Value { get; set; }
 
         /// <summary>
         /// Gets or sets the nextLink string value.
         /// </summary>
-        [JsonPropertyName("@odata.nextLink")]
-        [JsonConverter(typeof(NextLinkConverter))]
         public string NextLink { get; set; }
         /// <summary>
         /// Gets or sets additional data.
         /// </summary>
-        [JsonExtensionData]
         public IDictionary<string, object> AdditionalData { get; set; }
+
+        /// <summary>
+        /// Gets the field deserializers for the <see cref="TestEventDeltaCollectionResponse"/> instance
+        /// </summary>
+        /// <typeparam name="T">The type to deserialize</typeparam>
+        /// <returns></returns>
+        public IDictionary<string, Action<T, IParseNode>> GetFieldDeserializers<T>()
+        {
+            return new Dictionary<string, Action<T, IParseNode>>
+            {
+                {"@odata.nextLink", (o,n) => { (o as TestEventDeltaCollectionResponse).NextLink = n.GetStringValue(); } },
+                {"value", (o,n) => { (o as TestEventDeltaCollectionResponse).Value = n.GetCollectionOfObjectValues<TestEvent>().ToList(); } },
+            };
+        }
+
+        /// <summary>
+        /// Serialize the <see cref="TestEventDeltaCollectionResponse"/> instance
+        /// </summary>
+        /// <param name="writer">The <see cref="ISerializationWriter"/> to serialize the instance</param>
+        /// <exception cref="ArgumentNullException">Thrown when the writer is null</exception>
+        public void Serialize(ISerializationWriter writer)
+        {
+            _ = writer ?? throw new ArgumentNullException(nameof(writer));
+            writer.WriteStringValue("@odata.nextLink", NextLink);
+            writer.WriteCollectionOfObjectValues("value", Value);
+            writer.WriteAdditionalData(AdditionalData);
+        }
     }
 }

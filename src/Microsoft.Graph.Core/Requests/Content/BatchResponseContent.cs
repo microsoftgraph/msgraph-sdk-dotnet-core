@@ -5,6 +5,7 @@
 namespace Microsoft.Graph
 {
     using Microsoft.Kiota.Abstractions;
+    using Microsoft.Kiota.Abstractions.Serialization;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -21,25 +22,17 @@ namespace Microsoft.Graph
         private JsonDocument jBatchResponseObject;
         private readonly HttpResponseMessage batchResponseMessage;
 
-
-        /// <summary>
-        /// Gets a <see cref="IResponseHandler"/> for handling responses.
-        /// </summary>
-        public IResponseHandler ResponseHandler { get; private set; }
-
         /// <summary>
         /// Constructs a new <see cref="BatchResponseContent"/>
         /// </summary>
         /// <param name="httpResponseMessage">A <see cref="HttpResponseMessage"/> of a batch request execution.</param>
-        /// <param name="responseHandler">A <see cref="IResponseHandler"/> for handling responses..</param>
-        public BatchResponseContent(HttpResponseMessage httpResponseMessage, IResponseHandler responseHandler = null)
+        public BatchResponseContent(HttpResponseMessage httpResponseMessage)
         {
             this.batchResponseMessage = httpResponseMessage ?? throw new ClientException(new Error
             {
                 Code = ErrorConstants.Codes.InvalidArgument,
                 Message = string.Format(ErrorConstants.Messages.NullParameter, nameof(httpResponseMessage))
             });
-            this.ResponseHandler = responseHandler ?? new ResponseHandler(new Serializer());
         }
 
         /// <summary>
@@ -92,14 +85,16 @@ namespace Microsoft.Graph
         /// Gets a batch response as a requested type for the specified batch request id.
         /// </summary>
         /// <param name="requestId">A batch request id.</param>
+        /// <param name="responseHandler">ResponseHandler to use for the resonse</param>
         /// <returns>A deserialized object of type T<see cref="HttpResponseMessage"/>.</returns>
-        public async Task<T> GetResponseByIdAsync<T>(string requestId)
+        public async Task<T> GetResponseByIdAsync<T>(string requestId, IResponseHandler responseHandler = null) where T : IParsable
         {
             using (var httpResponseMessage = await GetResponseByIdAsync(requestId))
             {
                 await ValidateSuccessfulResponse(httpResponseMessage);
                 // return the deserialized object
-                return await ResponseHandler.HandleResponseAsync<HttpResponseMessage,T>(httpResponseMessage);
+                responseHandler ??= new ResponseHandler<T>();
+                return await responseHandler.HandleResponseAsync<HttpResponseMessage,T>(httpResponseMessage);
             }
         }
 
@@ -134,7 +129,8 @@ namespace Microsoft.Graph
                 string rawResponseBody = null;
 
                 //deserialize into an ErrorResponse as the result is not a success.
-                ErrorResponse errorResponse = await ResponseHandler.HandleResponseAsync<HttpResponseMessage,ErrorResponse>(httpResponseMessage);
+                var errorResponseHandler = new ResponseHandler<ErrorResponse>();
+                ErrorResponse errorResponse = await errorResponseHandler.HandleResponseAsync<HttpResponseMessage,ErrorResponse>(httpResponseMessage);
 
                 if (errorResponse?.Error == null)
                 {

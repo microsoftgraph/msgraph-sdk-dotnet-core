@@ -14,12 +14,10 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         protected MockAuthenticationProvider authenticationProvider;
         protected HttpResponseMessage httpResponseMessage;
         protected BaseClient baseClient;
-        protected MockSerializer serializer;
 
         public RequestTestBase()
         {
             this.authenticationProvider = new MockAuthenticationProvider();
-            this.serializer = new MockSerializer();
             this.httpResponseMessage = new HttpResponseMessage();
 
             this.baseClient = new BaseClient(

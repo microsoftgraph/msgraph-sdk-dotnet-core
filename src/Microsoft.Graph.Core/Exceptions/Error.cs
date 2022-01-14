@@ -4,47 +4,43 @@
 
 namespace Microsoft.Graph
 {
+    using Microsoft.Kiota.Abstractions.Serialization;
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Text;
-    using System.Text.Json.Serialization;
 
     /// <summary>
     /// The error object contained in 400 and 500 responses returned from the service.
     /// Models OData protocol, 9.4 Error Response Body
     /// http://docs.oasis-open.org/odata/odata/v4.01/csprd05/part1-protocol/odata-v4.01-csprd05-part1-protocol.html#_Toc14172757
     /// </summary>
-    public class Error
+    public class Error: IParsable
     {
         /// <summary>
         /// This code represents the HTTP status code when this Error object accessed from the ServiceException.Error object.
         /// This code represent a sub-code when the Error object is in the InnerError or ErrorDetails object.
         /// </summary>
-        [JsonPropertyName("code")]
         public string Code { get; set; }
         
         /// <summary>
         /// The error message.
         /// </summary>
-        [JsonPropertyName("message")]
         public string Message { get; set; }
 
         /// <summary>
         /// Indicates the target of the error, for example, the name of the property in error.
         /// </summary>
-        [JsonPropertyName("target")]
         public string Target { get; set; }
 
         /// <summary>
         /// An array of details that describe the error[s] encountered with the request.
         /// </summary>
-        [JsonPropertyName("details")]
-        public IEnumerable<ErrorDetail> Details { get; set; }
+        public List<ErrorDetail> Details { get; set; }
 
         /// <summary>
         /// The inner error of the response. These are additional error objects that may be more specific than the top level error.
         /// </summary>
-        [JsonPropertyName("innererror")]
         public Error InnerError { get; set; }
 
         /// <summary>
@@ -60,8 +56,40 @@ namespace Microsoft.Graph
         /// <summary>
         /// The AdditionalData property bag.
         /// </summary>
-        [JsonExtensionData]
-        public IDictionary<string, object> AdditionalData { get; set; }
+        public IDictionary<string, object> AdditionalData { get; set; } = new Dictionary<string, object>();
+
+        /// <summary>
+        /// Gets the field deserializers for the class
+        /// </summary>
+        /// <typeparam name="T">The type of the class</typeparam>
+        /// <returns></returns>
+        public IDictionary<string, Action<T, IParseNode>> GetFieldDeserializers<T>()
+        {
+            return new Dictionary<string, Action<T, IParseNode>>
+            {
+                {"code", (o,n) => { (o as Error).Code = n.GetStringValue(); } },
+                {"message", (o,n) => {(o as Error).Message = n.GetStringValue(); }},
+                {"target", (o,n) => {(o as Error).Target = n.GetStringValue(); }},
+                {"details", (o,n) => {(o as Error).Details = n.GetCollectionOfObjectValues<ErrorDetail>().ToList(); }},
+                {"innerError", (o,n) => {(o as Error).InnerError = n.GetObjectValue<Error>(); }}
+            };
+        }
+
+        /// <summary>
+        /// Serializes the class using the the given writer
+        /// </summary>
+        /// <param name="writer">The <see cref="ISerializationWriter"/> to use</param>
+        /// <exception cref="ArgumentNullException">Thrown when the provided writer is null</exception>
+        public void Serialize(ISerializationWriter writer)
+        {
+            _ = writer ?? throw new ArgumentNullException(nameof(writer));
+            writer.WriteStringValue("code", Code);
+            writer.WriteStringValue("message", Message);
+            writer.WriteStringValue("target", Target);
+            writer.WriteCollectionOfObjectValues<ErrorDetail>("details", Details);
+            writer.WriteObjectValue<Error>("innerError", InnerError);
+            writer.WriteAdditionalData(AdditionalData);
+        }
 
         /// <summary>
         /// Concatenates the error into a string.

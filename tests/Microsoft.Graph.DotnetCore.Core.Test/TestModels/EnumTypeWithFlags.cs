@@ -5,11 +5,9 @@
 
 namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels
 {
-    using System.Text.Json.Serialization;
     /// <summary>
     /// Enum for testing enum serialization and deserialization.
     /// </summary>
-    [JsonConverter(typeof(JsonStringEnumConverter))]
     [System.Flags]
     public enum EnumTypeWithFlags
     {

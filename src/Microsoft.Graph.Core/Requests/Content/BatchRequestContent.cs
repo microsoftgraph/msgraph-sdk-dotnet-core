@@ -5,7 +5,6 @@
 namespace Microsoft.Graph
 {
     using Microsoft.Kiota.Abstractions;
-    using Microsoft.Kiota.Abstractions.Authentication;
     using Microsoft.Kiota.Http.HttpClientLibrary;
     using System;
     using System.Collections.Generic;

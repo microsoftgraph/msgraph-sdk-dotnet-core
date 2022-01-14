@@ -21,13 +21,13 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         public async Task HandleUserResponse()
         {
             // Arrange
-            var responseHandler = new ResponseHandler(new Serializer());
+            var responseHandler = new ResponseHandler<TestUser>();
             var hrm = new HttpResponseMessage()
             {
                 Content = new StringContent(@"{
                     ""id"": ""123"",
                     ""givenName"": ""Joe"",
-                    ""surName"": ""Brown"",
+                    ""surname"": ""Brown"",
                     ""@odata.type"":""test""
                 }", Encoding.UTF8, CoreConstants.MimeTypeNames.Application.Json)
             };
@@ -51,7 +51,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         public async Task HandleEventDeltaResponseWithArrayOfPrimitives()
         {
             // Arrange
-            var deltaResponseHandler = new DeltaResponseHandler();
+            var deltaResponseHandler = new DeltaResponseHandler<TestEventDeltaCollectionResponse>();
         
             // Contains string, int, and boolean arrays.
             var testString = "{\"@odata.context\":\"https://graph.microsoft.com/v1.0/$metadata#Collection(user)\",\"@odata.nextLink\":\"https://graph.microsoft.com/v1.0/users/delta?$skiptoken=R0usmci39O\",\"value\":[{\"id\":\"AAMkADVxTAAA=\",\"arrayOfString\":[\"SMTP:alexd@contoso.com\",\"SMTP:meganb@contoso.com\"]},{\"id\":\"AAMkADVxUAAA=\",\"arrayOfBool\":[true,false]},{\"id\":\"AAMkADVxVAAA=\",\"arrayOfInt\":[2,5]}]}";
@@ -96,7 +96,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         public async Task HandleEventDeltaResponse()
         {
             // Arrange
-            var deltaResponseHandler = new DeltaResponseHandler();
+            var deltaResponseHandler = new DeltaResponseHandler<TestEventDeltaCollectionResponse>();
         
             // TestString represents a page of results with a nextLink. There are two changed events.
             // The events have key:value properties, key:object properties, and key:array properties.
@@ -144,7 +144,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         public async Task HandleEventDeltaResponseWithEmptyCollectionPage()
         {
             // Arrange
-            var deltaResponseHandler = new DeltaResponseHandler();
+            var deltaResponseHandler = new DeltaResponseHandler<TestEventDeltaCollectionResponse>();
             var odataContext = @"https://graph.microsoft.com/v1.0/$metadata#Collection(event)";
             var odataDeltalink = @"https://graph.microsoft.com/v1.0/me/mailfolders/inbox/messages/delta?$deltatoken=LztZwWjo5IivWBhyxw5rACKxf7mPm0oW6JZZ7fvKxYPS_67JnEYmfQQMPccy6FRun0DWJF5775dvuXxlZnMYhBubC1v4SBVT9ZjO8f7acZI.uCdGKSBS4YxPEbn_Q5zxLSq91WhpGoz9ZKeNZHMWgSA";
 
@@ -174,7 +174,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         public async Task HandleEventDeltaResponseWithNullValues()
         {
             // Arrange
-            var deltaResponseHandler = new DeltaResponseHandler();
+            var deltaResponseHandler = new DeltaResponseHandler<TestEventDeltaCollectionResponse>();
 
             // TestString represents a page of results with a nextLink. There are two changed events.
             // The events have key:value properties, key:object properties, and key:array properties.
@@ -288,7 +288,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         public async Task HandleEventDeltaResponseWithRemovedItem()
         {
             // Arrange
-            var deltaResponseHandler = new DeltaResponseHandler();
+            var deltaResponseHandler = new DeltaResponseHandler<TestEventDeltaCollectionResponse>();
 
             // Result string with one removed item.
             var testString = "{\"@odata.context\":\"https://graph.microsoft.com/v1.0/$metadata#Collection(event)\",\"@odata.nextLink\":\"https://graph.microsoft.com/v1.0/me/calendarView/delta?$skiptoken=R0usmci39OQxqJrxK4\",\"value\":[{\"@removed\":{\"reason\":\"removed\"},\"id\":\"AAMkADVxTAAA=\"}]}";
@@ -315,7 +315,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         public async Task HandleEventDeltaResponseWithEmptyCollectionProperty()
         {
             // Arrange
-            var deltaResponseHandler = new DeltaResponseHandler();
+            var deltaResponseHandler = new DeltaResponseHandler<TestEventDeltaCollectionResponse>();
 
             // TestString represents a page of results with a nextLink. There are two changed events.
             // The events have key:value properties, key:object properties, and key:array properties.
