@@ -68,40 +68,44 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         [Fact]
         public void Should_CreatePipeline_Without_HttpMessageHandlerInput()
         {
-            using (CompressionHandler compressionHandler = (CompressionHandler)GraphClientFactory.CreatePipeline(handlers))
-            using (RetryHandler retryHandler = (RetryHandler)compressionHandler.InnerHandler)
-            using (RedirectHandler redirectHandler = (RedirectHandler)retryHandler.InnerHandler)
-            using (HttpMessageHandler innerMost = redirectHandler.InnerHandler)
-            {
-                Assert.NotNull(compressionHandler);
-                Assert.NotNull(retryHandler);
-                Assert.NotNull(redirectHandler);
-                Assert.NotNull(innerMost);
-                Assert.IsType<CompressionHandler>(compressionHandler);
-                Assert.IsType<RetryHandler>(retryHandler);
-                Assert.IsType<RedirectHandler>(redirectHandler);
-                Assert.True(innerMost is HttpMessageHandler);
-            }
+            using OdataQueryHandler odataQueryHandler = (OdataQueryHandler)GraphClientFactory.CreatePipeline(handlers);
+            using CompressionHandler compressionHandler = (CompressionHandler)odataQueryHandler.InnerHandler;
+            using RetryHandler retryHandler = (RetryHandler)compressionHandler.InnerHandler;
+            using RedirectHandler redirectHandler = (RedirectHandler)retryHandler.InnerHandler;
+            using HttpMessageHandler innerMost = redirectHandler.InnerHandler;
+
+            Assert.NotNull(odataQueryHandler);
+            Assert.NotNull(compressionHandler);
+            Assert.NotNull(retryHandler);
+            Assert.NotNull(redirectHandler);
+            Assert.NotNull(innerMost);
+            Assert.IsType<OdataQueryHandler>(odataQueryHandler);
+            Assert.IsType<CompressionHandler>(compressionHandler);
+            Assert.IsType<RetryHandler>(retryHandler);
+            Assert.IsType<RedirectHandler>(redirectHandler);
+            Assert.True(innerMost is HttpMessageHandler);
         }
 #endif
 
         [Fact]
         public void CreatePipelineWithHttpMessageHandlerInput()
         {
-            using (CompressionHandler compressionHandler = (CompressionHandler)GraphClientFactory.CreatePipeline(handlers, new MockRedirectHandler()))
-            using (RetryHandler retryHandler = (RetryHandler)compressionHandler.InnerHandler)
-            using (RedirectHandler redirectHandler = (RedirectHandler)retryHandler.InnerHandler)
-            using (MockRedirectHandler innerMost = (MockRedirectHandler)redirectHandler.InnerHandler)
-            {
-                Assert.NotNull(compressionHandler);
-                Assert.NotNull(retryHandler);
-                Assert.NotNull(redirectHandler);
-                Assert.NotNull(innerMost);
-                Assert.IsType<CompressionHandler>(compressionHandler);
-                Assert.IsType<RetryHandler>(retryHandler);
-                Assert.IsType<RedirectHandler>(redirectHandler);
-                Assert.IsType<MockRedirectHandler>(innerMost);
-            }
+            using OdataQueryHandler odataQueryHandler = (OdataQueryHandler)GraphClientFactory.CreatePipeline(handlers, new MockRedirectHandler());
+            using CompressionHandler compressionHandler = (CompressionHandler)odataQueryHandler.InnerHandler;
+            using RetryHandler retryHandler = (RetryHandler)compressionHandler.InnerHandler;
+            using RedirectHandler redirectHandler = (RedirectHandler)retryHandler.InnerHandler;
+            using MockRedirectHandler innerMost = (MockRedirectHandler)redirectHandler.InnerHandler;
+            
+            Assert.NotNull(odataQueryHandler);
+            Assert.NotNull(compressionHandler);
+            Assert.NotNull(retryHandler);
+            Assert.NotNull(redirectHandler);
+            Assert.NotNull(innerMost);
+            Assert.IsType<OdataQueryHandler>(odataQueryHandler);
+            Assert.IsType<CompressionHandler>(compressionHandler);
+            Assert.IsType<RetryHandler>(retryHandler);
+            Assert.IsType<RedirectHandler>(redirectHandler);
+            Assert.IsType<MockRedirectHandler>(innerMost);
         }
 
         [Fact]
@@ -291,7 +295,8 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         {
             FeatureFlag expectedFlag = FeatureFlag.CompressionHandler | FeatureFlag.RetryHandler;
             var handlers = GraphClientFactory.CreateDefaultHandlers();
-            handlers.RemoveAt(2);
+            //Exclude the redirect handler for this test
+            handlers = handlers.Where(handler => !handler.GetType().Equals(typeof(RedirectHandler))).ToList();
             var pipelineWithHandlers = GraphClientFactory.CreatePipelineWithFeatureFlags(handlers);
 
             Assert.NotNull(pipelineWithHandlers.Pipeline);
