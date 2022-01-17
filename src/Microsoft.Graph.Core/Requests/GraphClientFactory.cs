@@ -124,6 +124,7 @@ namespace Microsoft.Graph
         public static IList<DelegatingHandler> CreateDefaultHandlers()
         {
             return new List<DelegatingHandler> {
+                new OdataQueryHandler(),
                 new CompressionHandler(),
                 new RetryHandler(),
                 new RedirectHandler()
