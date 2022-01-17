@@ -17,7 +17,7 @@ namespace Microsoft.Graph
     public class OdataQueryHandler : DelegatingHandler
     {
         private readonly ODataQueryHandlerOption odataQueryHandlerOption;
-        private readonly Regex odataQueryRegex = new Regex("(?i)([^$])(count|deltatoken|expand|filter|format|orderby|search|select|skip|skiptoken|top)=",RegexOptions.Compiled);
+        private readonly Regex odataQueryRegex = new Regex("([^$])(count|deltatoken|expand|filter|format|orderby|search|select|skip|skiptoken|top)=",RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         /// <summary>
         /// The <see cref="OdataQueryHandler"/> constructor
@@ -34,7 +34,7 @@ namespace Microsoft.Graph
         /// <param name="httpRequest">The <see cref="HttpRequestMessage"/> to be sent.</param>
         /// <param name="cancellationToken">The <see cref="CancellationToken"/> for the request.</param>
         /// <returns></returns>
-        protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage httpRequest, CancellationToken cancellationToken)
+        protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage httpRequest, CancellationToken cancellationToken)
         {
             if (httpRequest == null)
                 throw new ArgumentNullException(nameof(httpRequest));
@@ -53,9 +53,7 @@ namespace Microsoft.Graph
                 httpRequest.RequestUri = new UriBuilder(httpRequest.RequestUri) { Query = queryString }.Uri;
             }
 
-            HttpResponseMessage response = await base.SendAsync(httpRequest, cancellationToken);
-
-            return response;
+            return base.SendAsync(httpRequest, cancellationToken);
         }
     }
 }
