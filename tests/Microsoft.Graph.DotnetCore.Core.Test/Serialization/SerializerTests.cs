@@ -5,37 +5,22 @@
 namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
 {
     using Microsoft.Graph.Core.Models;
-    using Microsoft.Graph.DotnetCore.Core.Test.Mocks;
     using Microsoft.Graph.DotnetCore.Core.Test.TestModels;
     using Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels;
-    using Microsoft.Kiota.Abstractions;
     using Microsoft.Kiota.Serialization.Json;
     using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-    using System.Net.Http;
     using System.Text;
-    using System.Text.Json;
     using Xunit;
     public class SerializerTests
     {
-        private Serializer serializer;
+        private readonly JsonParseNodeFactory parseNodeFactory;
 
         public SerializerTests()
         {
-            this.serializer = new Serializer();
-        }
-
-        [Fact]
-        public void AbstractClassDeserializationFailure()
-        {
-            var stringToDeserialize = "{\"jsonKey\":\"jsonValue\"}";
-            ServiceException exception = Assert.Throws<ServiceException>(() => this.serializer.DeserializeObject<AbstractClass>(stringToDeserialize));
-            Assert.True(exception.IsMatch(ErrorConstants.Codes.GeneralException));
-            Assert.Equal(
-                string.Format(ErrorConstants.Messages.UnableToCreateInstanceOfTypeFormatString, typeof(AbstractClass).FullName),
-                exception.Error.Message);
+            this.parseNodeFactory = new JsonParseNodeFactory();
         }
 
         [Fact]
@@ -49,14 +34,16 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
                 id,
                 name);
 
-            var derivedType = this.serializer.DeserializeObject<DerivedTypeClass>(stringToDeserialize);
+            var memoryStream = new MemoryStream(Encoding.UTF8.GetBytes(stringToDeserialize));
+            var parseNode = this.parseNodeFactory.GetRootParseNode(CoreConstants.MimeTypeNames.Application.Json,memoryStream);
+            var derivedType = parseNode.GetObjectValue<DerivedTypeClass>();
 
             Assert.NotNull(derivedType);
             Assert.Equal(id, derivedType.Id);
             Assert.Equal(name, derivedType.Name);
         }
 
-        [Fact]
+        [Fact(Skip = "Odata downcasting is still not yet supported")]
         public void DeserializeDerivedTypeFromAbstractParent()
         {
             var id = "id";
@@ -68,13 +55,16 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
                 name);
 
             //The type information from "@odata.type" should lead to correctly deserializing to the derived type
-            var derivedType = this.serializer.DeserializeObject<AbstractEntityType>(stringToDeserialize) as DerivedTypeClass;
+            var memoryStream = new MemoryStream(Encoding.UTF8.GetBytes(stringToDeserialize));
+            var parseNode = this.parseNodeFactory.GetRootParseNode(CoreConstants.MimeTypeNames.Application.Json, memoryStream);
+            var derivedType = parseNode.GetObjectValue<AbstractEntityType>() as DerivedTypeClass;
 
             Assert.NotNull(derivedType);
             Assert.Equal(id, derivedType.Id);
             Assert.Equal(name, derivedType.Name);
         }
 
+        
         [Fact]
         public void DeserializeInvalidODataType()
         {
@@ -86,7 +76,9 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
                 id,
                 givenName);
 
-            var instance = this.serializer.DeserializeObject<DerivedTypeClass>(stringToDeserialize);
+            var memoryStream = new MemoryStream(Encoding.UTF8.GetBytes(stringToDeserialize));
+            var parseNode = this.parseNodeFactory.GetRootParseNode(CoreConstants.MimeTypeNames.Application.Json, memoryStream);
+            var instance = parseNode.GetObjectValue<DerivedTypeClass>();
 
             Assert.NotNull(instance);
             Assert.Equal(id, instance.Id);
@@ -95,7 +87,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
         }
 
         [Fact]
-        public void DerivedTypeConverterFollowsNamingProperty()
+        public void DeserializerFollowsNamingProperty()
         {
             var id = "id";
             var givenName = "name";
@@ -107,47 +99,15 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
                 givenName,
                 link);
 
-            var instance = this.serializer.DeserializeObject<DerivedTypeClass>(stringToDeserialize);
+            var memoryStream = new MemoryStream(Encoding.UTF8.GetBytes(stringToDeserialize));
+            var parseNode = this.parseNodeFactory.GetRootParseNode(CoreConstants.MimeTypeNames.Application.Json, memoryStream);
+            var instance = parseNode.GetObjectValue<DerivedTypeClass>();
 
             Assert.NotNull(instance);
             Assert.Equal(id, instance.Id);
             Assert.Equal(link, instance.WebUrl);
             Assert.NotNull(instance.AdditionalData);
             Assert.Equal(givenName, instance.AdditionalData["givenName"].ToString());
-        }
-
-        [Fact]
-        public void DeserializeStream()
-        {
-            var id = "id";
-
-            var stringToDeserialize = string.Format("{{\"id\":\"{0}\"}}", id);
-
-            using (var serializedStream = new MemoryStream(Encoding.UTF8.GetBytes(stringToDeserialize)))
-            {
-                var instance = this.serializer.DeserializeObject<DerivedTypeClass>(serializedStream);
-
-                Assert.NotNull(instance);
-                Assert.Equal(id, instance.Id);
-                Assert.Null(instance.AdditionalData);
-            }
-        }
-
-        [Fact]
-        public void DeserializeEmptyStringOrStream()
-        {
-            var stringToDeserialize = string.Empty;
-
-            // Asset empty stream deserializes to null
-            using (var serializedStream = new MemoryStream(Encoding.UTF8.GetBytes(stringToDeserialize)))
-            {
-                var instance = this.serializer.DeserializeObject<DerivedTypeClass>(serializedStream);
-                Assert.Null(instance);
-            }
-
-            // Asset empty string deserializes to null
-            var stringInstance = this.serializer.DeserializeObject<DerivedTypeClass>(stringToDeserialize);
-            Assert.Null(stringInstance);
         }
 
         [Fact]
@@ -161,27 +121,14 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
                 enumValue,
                 id);
 
-            var instance = this.serializer.DeserializeObject<DerivedTypeClass>(stringToDeserialize);
+            var memoryStream = new MemoryStream(Encoding.UTF8.GetBytes(stringToDeserialize));
+            var parseNode = this.parseNodeFactory.GetRootParseNode(CoreConstants.MimeTypeNames.Application.Json, memoryStream);
+            var instance = parseNode.GetObjectValue<DerivedTypeClass>();
 
             Assert.NotNull(instance);
             Assert.Equal(id, instance.Id);
             Assert.Null(instance.EnumType);
             Assert.NotNull(instance.AdditionalData);
-            Assert.Equal(enumValue, instance.AdditionalData["enumType"].ToString());
-        }
-
-        [Fact]
-        public void DerivedTypeWithoutDefaultConstructor()
-        {
-            var stringToDeserialize = "{\"jsonKey\":\"jsonValue\"}";
-            ServiceException exception = Assert.Throws<ServiceException>(() => this.serializer.DeserializeObject<NoDefaultConstructor>(stringToDeserialize));
-
-            Assert.True(exception.IsMatch(ErrorConstants.Codes.GeneralException));
-            Assert.Equal(
-                string.Format(
-                    ErrorConstants.Messages.UnableToCreateInstanceOfTypeFormatString,
-                    typeof(NoDefaultConstructor).AssemblyQualifiedName),
-                exception.Error.Message);
         }
 
         [Fact]
@@ -192,7 +139,9 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
 
             var stringToDeserialize = string.Format("{{\"dateCollection\":[\"{0}\",\"{1}\"]}}", now.ToString("yyyy-MM-dd"), tomorrow.ToString("yyyy-MM-dd"));
 
-            var deserializedObject = this.serializer.DeserializeObject<DateTestClass>(stringToDeserialize);
+            var memoryStream = new MemoryStream(Encoding.UTF8.GetBytes(stringToDeserialize));
+            var parseNode = this.parseNodeFactory.GetRootParseNode(CoreConstants.MimeTypeNames.Application.Json, memoryStream);
+            var deserializedObject = parseNode.GetObjectValue<DateTestClass>();
 
             Assert.Equal(2, deserializedObject.DateCollection.Count());
             Assert.True(deserializedObject.DateCollection.Any(
@@ -208,6 +157,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
                     date.Day == tomorrow.Day);
         }
 
+        
         [Fact]
         public void DeserializeMemorableDatesValue()
         {
@@ -225,9 +175,13 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
                 Name = "Awesome Test"
             };
 
-            string json = this.serializer.SerializeObject(derivedTypeInstance);
-
-            var deserializedInstance = this.serializer.DeserializeObject<DerivedTypeClass>(json);
+            // Serialize
+            using var jsonSerializerWriter = new JsonSerializationWriter();
+            jsonSerializerWriter.WriteObjectValue(string.Empty, derivedTypeInstance);
+            var serializedStream = jsonSerializerWriter.GetSerializedContent();
+            // De serialize
+            var parseNode = this.parseNodeFactory.GetRootParseNode(CoreConstants.MimeTypeNames.Application.Json, serializedStream);
+            var deserializedInstance = parseNode.GetObjectValue<DerivedTypeClass>();
 
             Assert.Equal(derivedTypeInstance.Name ,deserializedInstance.Name);
             Assert.Equal(derivedTypeInstance.Id ,deserializedInstance.Id);
@@ -241,7 +195,9 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
 
             var stringToDeserialize = string.Format("{{\"nullableDate\":\"{0}\"}}", now.ToString("yyyy-MM-dd"));
 
-            var dateClass = this.serializer.DeserializeObject<DateTestClass>(stringToDeserialize);
+            var memoryStream = new MemoryStream(Encoding.UTF8.GetBytes(stringToDeserialize));
+            var parseNode = this.parseNodeFactory.GetRootParseNode(CoreConstants.MimeTypeNames.Application.Json, memoryStream);
+            var dateClass = parseNode.GetObjectValue<DateTestClass>();
 
             Assert.Equal(now.Year, dateClass.NullableDate.Year);
             Assert.Equal(now.Month, dateClass.NullableDate.Month);
@@ -263,7 +219,9 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
                                      "}";
 
             // Act
-            var resourceData = this.serializer.DeserializeObject<TestResourceData>(resourceDataString);
+            var memoryStream = new MemoryStream(Encoding.UTF8.GetBytes(resourceDataString));
+            var parseNode = this.parseNodeFactory.GetRootParseNode(CoreConstants.MimeTypeNames.Application.Json, memoryStream);
+            var resourceData = parseNode.GetObjectValue<TestResourceData>();
 
             // Assert
             Assert.IsType<TestResourceData>(resourceData);
@@ -287,7 +245,9 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
                 additionalKey,
                 additionalValue);
 
-            var instance = this.serializer.DeserializeObject<AbstractEntityType>(stringToDeserialize);
+            var memoryStream = new MemoryStream(Encoding.UTF8.GetBytes(stringToDeserialize));
+            var parseNode = this.parseNodeFactory.GetRootParseNode(CoreConstants.MimeTypeNames.Application.Json, memoryStream);
+            var instance = parseNode.GetObjectValue<AbstractEntityType>();
 
             Assert.NotNull(instance);
             Assert.Equal(entityId, instance.Id);
@@ -305,15 +265,24 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
             };
 
             var expectedSerializedStream = string.Format(
-                "{{\"enumType\":\"{0}\",\"id\":\"{1}\"}}",
+                "{{\"id\":\"{1}\",\"enumType\":\"{0}\"}}",
                 "value",
                 instance.Id);
 
-            var serializedValue = this.serializer.SerializeObject(instance);
 
-            Assert.Equal(expectedSerializedStream, serializedValue);
+            // Serialize
+            using var jsonSerializerWriter = new JsonSerializationWriter();
+            jsonSerializerWriter.WriteObjectValue(string.Empty, instance);
+            var serializedStream = jsonSerializerWriter.GetSerializedContent();
 
-            var newInstance = this.serializer.DeserializeObject<DerivedTypeClass>(serializedValue);
+            //Assert
+            var streamReader = new StreamReader(serializedStream);
+            Assert.Equal(expectedSerializedStream, streamReader.ReadToEnd());
+
+            // De serialize
+            serializedStream.Position = 0; //reset the stream to be read again
+            var parseNode = this.parseNodeFactory.GetRootParseNode(CoreConstants.MimeTypeNames.Application.Json, serializedStream);
+            var newInstance = parseNode.GetObjectValue<DerivedTypeClass>();
 
             Assert.NotNull(newInstance);
             Assert.Equal(instance.Id, instance.Id);
@@ -326,11 +295,15 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
         {
             EnumTypeWithFlags enumValueWithFlags = EnumTypeWithFlags.FirstValue | EnumTypeWithFlags.SecondValue;
 
-            var expectedSerializedValue = "\"firstValue, secondValue\""; // All values should be camelCased
+            var expectedSerializedValue = "\"firstValue,secondValue\""; // All values should be camelCased
 
-            var serializedValue = this.serializer.SerializeObject(enumValueWithFlags);
+            using var jsonSerializerWriter = new JsonSerializationWriter();
+            jsonSerializerWriter.WriteEnumValue<EnumTypeWithFlags>(string.Empty, enumValueWithFlags);
+            var serializedStream = jsonSerializerWriter.GetSerializedContent();
 
-            Assert.Equal(expectedSerializedValue, serializedValue);
+            // Assert
+            var streamReader = new StreamReader(serializedStream);
+            Assert.Equal(expectedSerializedValue, streamReader.ReadToEnd());
         }
 
         [Fact]
@@ -346,23 +319,31 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
                 DateCollection = new List<Date> { new Date(now.Year, now.Month, now.Day), new Date(tomorrow.Year, tomorrow.Month, tomorrow.Day) },
             };
 
-            var serializedString = this.serializer.SerializeObject(recurrence);
+            using var jsonSerializerWriter = new JsonSerializationWriter();
+            jsonSerializerWriter.OnStartObjectSerialization = (pasable, serialiationWriter) => { if ((pasable as DateTestClass).NullableDate == null) serialiationWriter.WriteNullValue("nullableDate"); };
+            jsonSerializerWriter.WriteObjectValue(string.Empty, recurrence);
+            var serializedStream = jsonSerializerWriter.GetSerializedContent();
 
-            Assert.Equal(expectedSerializedString, serializedString);
+            // Assert
+            var streamReader = new StreamReader(serializedStream);
+            Assert.Equal(expectedSerializedString, streamReader.ReadToEnd());
         }
 
         [Fact]
         public void SerializeDateNullValue()
         {
-            var now = DateTimeOffset.UtcNow;
-
             var expectedSerializedString = "{\"nullableDate\":null}";
 
             var recurrence = new DateTestClass();
 
-            var serializedString = this.serializer.SerializeObject(recurrence);
+            using var jsonSerializerWriter = new JsonSerializationWriter();
+            jsonSerializerWriter.OnStartObjectSerialization = (pasable, serialiationWriter) => { if ((pasable as DateTestClass).NullableDate == null) serialiationWriter.WriteNullValue("nullableDate"); };
+            jsonSerializerWriter.WriteObjectValue(string.Empty, recurrence);
+            var serializedStream = jsonSerializerWriter.GetSerializedContent();
 
-            Assert.Equal(expectedSerializedString, serializedString);
+            // Assert
+            var streamReader = new StreamReader(serializedStream);
+            Assert.Equal(expectedSerializedString, streamReader.ReadToEnd());
         }
 
         [Fact]
@@ -377,9 +358,13 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
                 NullableDate = new Date(now.Year, now.Month, now.Day),
             };
 
-            var serializedString = this.serializer.SerializeObject(date);
+            using var jsonSerializerWriter = new JsonSerializationWriter();
+            jsonSerializerWriter.WriteObjectValue(string.Empty, date);
+            var serializedStream = jsonSerializerWriter.GetSerializedContent();
 
-            Assert.Equal(expectedSerializedString, serializedString);
+            // Assert
+            var streamReader = new StreamReader(serializedStream);
+            Assert.Equal(expectedSerializedString, streamReader.ReadToEnd());
         }
 
         [Fact]
@@ -395,7 +380,13 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
                 IgnoredNumber = 230 // we shouldn't see this value
             };
 
-            var serializedString = this.serializer.SerializeObject(date);
+            using var jsonSerializerWriter = new JsonSerializationWriter();
+            jsonSerializerWriter.WriteObjectValue(string.Empty, date);
+            var serializedStream = jsonSerializerWriter.GetSerializedContent();
+
+            // Assert
+            using var streamReader = new StreamReader(serializedStream);
+            var serializedString = streamReader.ReadToEnd();
 
             Assert.Equal(expectedSerializedString, serializedString);
             Assert.DoesNotContain("230", serializedString);
@@ -417,42 +408,26 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
                 }
             };
             var expectedSerializedString = "{" +
+                                               "\"@odata.type\":\"microsoft.graph.itemBody\"," +
                                                "\"contentType\":\"text\"," +
                                                "\"content\":\"Example Content\"," +
                                                "\"length\":\"100\"," + // should be at the same level as other properties
-                                               "\"extraProperty\":null," +
-                                               "\"@odata.type\":\"microsoft.graph.itemBody\"" +
+                                               "\"extraProperty\":null" +
                                            "}";
 
             // Act
-            var serializedString = this.serializer.SerializeObject(testItemBody);
+            using var jsonSerializerWriter = new JsonSerializationWriter();
+            jsonSerializerWriter.WriteObjectValue(string.Empty, testItemBody);
 
-            //Assert
-            Assert.Equal(expectedSerializedString, serializedString);
+            // Assert
+            var serializedStream = jsonSerializerWriter.GetSerializedContent();
+            using var reader = new StreamReader(serializedStream, Encoding.UTF8);
+            var serializedJsonString = reader.ReadToEnd();
+            Assert.Equal(expectedSerializedString, serializedJsonString);
         }
 
         [Fact]
-        public void SerializeInterfaceProperty()
-        {
-            // Arrange
-            var user = new TestUser()
-            {
-                EventDeltas = new List<TestEvent>()
-                {
-                    new TestEvent() { Id = "id" }
-                }
-            };
-            var expectedSerializedString = "{\"@odata.type\":\"microsoft.graph.user\",\"eventDeltas\":[{\"id\":\"id\",\"@odata.type\":\"microsoft.graph.event\"}]}";
-
-            // Act
-            var serializedString = this.serializer.SerializeObject(user);
-
-            // Assert that the interface properties respect the json serializer options
-            Assert.Equal(expectedSerializedString, serializedString);
-        }
-
-        [Fact]
-        public void DerivedTypeConverterSerializeObjectWithEmptyAdditionalDataWithDerivedTypeConverterAndIgnoresNullNextLinkConverter()
+        public void SerializeObjectWithEmptyAdditionalData()
         {
             // This example class uses the derived type converter with an empty/unset AdditionalData
             // Arrange
@@ -462,15 +437,19 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
                 ContentType = TestBodyType.Text
             };
             var expectedSerializedString = "{" +
-                                           "\"contentType\":\"text\"," +
-                                           "\"content\":\"Example Content\"," +
-                                           "\"@odata.type\":\"microsoft.graph.itemBody\"" +
+                                                "\"@odata.type\":\"microsoft.graph.itemBody\"," +
+                                                "\"contentType\":\"text\"," +
+                                                "\"content\":\"Example Content\"" +
                                            "}";
 
             // Act
-            var serializedString = this.serializer.SerializeObject(testItemBody);
+            using var jsonSerializerWriter = new JsonSerializationWriter();
+            jsonSerializerWriter.WriteObjectValue(string.Empty, testItemBody);
 
             //Assert
+            var serializedStream = jsonSerializerWriter.GetSerializedContent();
+            using var reader = new StreamReader(serializedStream, Encoding.UTF8);
+            var serializedString = reader.ReadToEnd();
             Assert.Equal(expectedSerializedString, serializedString);
             Assert.DoesNotContain("@odata.nextLink", serializedString);
         }
@@ -497,10 +476,14 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
                                            "}";
 
             // Act
-            var serializedString = this.serializer.SerializeObject(testEmailAddress);
+            using var jsonSerializerWriter = new JsonSerializationWriter();
+            jsonSerializerWriter.WriteObjectValue(string.Empty, testEmailAddress);
 
             // Assert
-            Assert.Equal(expectedSerializedString, serializedString);
+            var serializedStream = jsonSerializerWriter.GetSerializedContent();
+            using var reader = new StreamReader(serializedStream, Encoding.UTF8);
+            var serializedJsonString = reader.ReadToEnd();
+            Assert.Equal(expectedSerializedString, serializedJsonString);
         }
 
         [Theory]
@@ -511,11 +494,15 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
             // Arrange
             var dateTimeOffset = DateTimeOffset.Parse(dateTimeOffsetString);
             // Act
-            var serializedString = this.serializer.SerializeObject(dateTimeOffset);
+            using var jsonSerializerWriter = new JsonSerializationWriter();
+            jsonSerializerWriter.WriteDateTimeOffsetValue(string.Empty, dateTimeOffset);
 
             // Assert
             // Expect the string to be ISO 8601-1:2019 format
-            Assert.Equal(expectedJsonValue, serializedString);
+            var serializedStream = jsonSerializerWriter.GetSerializedContent();
+            using var reader = new StreamReader(serializedStream, Encoding.UTF8);
+            var serializedJsonString = reader.ReadToEnd();
+            Assert.Equal(expectedJsonValue, serializedJsonString);
         }
 
         [Fact]
@@ -539,177 +526,6 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
             var serializedJsonString = reader.ReadToEnd();
             // Expect the string to be ISO 8601-1:2019 format
             Assert.Equal(expectedString, serializedJsonString);
-        }
-
-        [Fact]
-        public void VerifyTypeMappingCache()
-        {
-            // Clear the cache so it won't have mappings from previous tests.
-            DerivedTypeConverter<object>.TypeMappingCache.Clear();
-
-            var id = "id";
-            var derivedTypeClassTypeString = "microsoft.graph.dotnetCore.core.test.testModels.derivedTypeClass";
-            var dateTestClassTypeString = "microsoft.graph.dotnetCore.core.test.testModels.dateTestClass";
-            var assemblyFullName = typeof(AbstractEntityType).Assembly.FullName;
-
-            var deserializeExistingTypeString = string.Format(
-                "{{\"id\":\"{0}\", \"@odata.type\":\"#{1}\"}}",
-                id,
-                derivedTypeClassTypeString);
-
-            var derivedType = this.serializer.DeserializeObject<AbstractEntityType>(deserializeExistingTypeString) as DerivedTypeClass;
-            var derivedType2 = this.serializer.DeserializeObject<DerivedTypeClass>(deserializeExistingTypeString) as DerivedTypeClass;
-
-            var deserializeUnknownTypeString = string.Format(
-                "{{\"id\":\"{0}\", \"@odata.type\":\"#unknown\"}}",
-                id);
-
-            var upcastType = this.serializer.DeserializeObject<DerivedTypeClass>(deserializeUnknownTypeString) as DerivedTypeClass;
-
-            var dateTestTypeString = string.Format(
-                "{{\"@odata.type\":\"#{1}\"}}",
-                id,
-                dateTestClassTypeString);
-
-            var dateTestType = this.serializer.DeserializeObject<DateTestClass>(dateTestTypeString) as DateTestClass;
-
-            Assert.NotNull(derivedType);
-            Assert.NotNull(derivedType2);
-            Assert.NotNull(upcastType);
-            Assert.NotNull(dateTestType);
-
-            Assert.Equal(2, DerivedTypeConverter<DerivedTypeClass>.TypeMappingCache.Count);
-
-            Assert.Equal(
-                typeof(DerivedTypeClass),
-                DerivedTypeConverter<DerivedTypeClass>.TypeMappingCache[$"{assemblyFullName} : {derivedTypeClassTypeString}"]);
-
-            Assert.Equal(
-                typeof(DerivedTypeClass),
-                DerivedTypeConverter<DerivedTypeClass>.TypeMappingCache[$"{assemblyFullName} : unknown"]);
-
-            Assert.Equal(
-                typeof(DateTestClass),
-                DerivedTypeConverter<DateTestClass>.TypeMappingCache[$"{assemblyFullName} : {dateTestClassTypeString}"]);
-        }
-        
-        [Theory]
-        [InlineData("string", "{\"@odata.context\": \"https://graph.microsoft.com/beta/$metadata#String\", \"value\": \"expectedvalue\"}")]
-        [InlineData("bool", "{\"@odata.context\": \"https://graph.microsoft.com/beta/$metadata#String\", \"value\": true}")]
-        [InlineData("int32", "{\"@odata.context\":\"https://graph.microsoft.com/v1.0/$metadata#Edm.Boolean\",\"value\":1}")]
-        public void MethodResponseSimpleReturnTypeDeserialization(string @case, string payload)
-        {
-            switch (@case)
-            {
-                case "string": 
-                    var actualStringValue = this.serializer.DeserializeObject<ODataMethodStringResponse>(payload).Value;
-                    Assert.Equal("expectedvalue", actualStringValue);
-                    break;
-                case "bool":
-                    var actualBoolValue = this.serializer.DeserializeObject<ODataMethodBooleanResponse>(payload).Value;
-                    Assert.True(actualBoolValue);
-                    break;
-                case "int32":
-                    var actualInt32Value = this.serializer.DeserializeObject<ODataMethodIntResponse>(payload).Value;
-                    Assert.Equal(1, actualInt32Value);
-                    break;
-                default:
-                    Assert.True(false);
-                    break;
-            }
-        }
-
-        [Theory]
-        [InlineData("string")]
-        [InlineData("bool")]
-        [InlineData("int32")]
-        public void MethodResponseUnexpectedReturnObject(string @case)
-        {
-            var payload = "{\"@odata.context\": \"https://graph.microsoft.com/beta/$metadata#String\", \"value\": { \"objProp\": \"objPropValue\" }}";
-
-            switch (@case)
-            {
-                case "string":
-                    JsonException exceptionString = Assert.Throws<JsonException>(() => this.serializer
-                                                                                                       .DeserializeObject<ODataMethodStringResponse>(payload));
-                    Assert.Equal("$.value", exceptionString.Path); // the value property doesn't exist as a string
-                    break;
-                case "bool":
-                    JsonException exceptionBool = Assert.Throws<JsonException>(() => this.serializer
-                                                                                                     .DeserializeObject<ODataMethodBooleanResponse>(payload));
-                    Assert.Equal("$.value", exceptionBool.Path); // the value property doesn't exist as a bool
-                    break;
-                case "int32":
-                    JsonException exceptionInt = Assert.Throws<JsonException>(() => this.serializer
-                                                                                                    .DeserializeObject<ODataMethodIntResponse>(payload));
-                    Assert.Equal("$.value", exceptionInt.Path); // the value property doesn't exist as a int
-                    break;
-                default:
-                    Assert.True(false);
-                    break;
-            }
-        }
-
-        /// <summary>
-        /// Test what happens when the service API returns an unexpected response body.
-        /// https://github.com/microsoftgraph/msgraph-sdk-serviceissues/issues/9
-        /// </summary>
-        [Theory]
-        [InlineData("string")]
-        [InlineData("bool")]
-        [InlineData("int32")]
-        public void MethodResponseMissingValueDeserialization(string @case)
-        {
-            var badPayload = "{\"@odata.context\": \"https://graph.microsoft.com/v1.0/$metadata#Edm.Null\", \"@odata.null\": true}";
-
-            switch (@case)
-            {
-                case "string":
-                    var stringResult = this.serializer.DeserializeObject<ODataMethodStringResponse>(badPayload).Value;
-                    Assert.Null(stringResult);
-                    break;
-                case "bool":
-                    var boolResult = this.serializer.DeserializeObject<ODataMethodBooleanResponse>(badPayload).Value;
-                    Assert.Null(boolResult);
-                    break;
-                case "int32":
-                    var intResult = this.serializer.DeserializeObject<ODataMethodIntResponse>(badPayload).Value;
-                    Assert.Null(intResult);
-                    break;
-                default:
-                    Assert.True(false);
-                    break;
-            }
-        }
-
-        [Theory]
-        [InlineData(
-            "https://graph.microsoft.com/v1.0/groups/xx/threads?%24select=id%2ctopic%2clastDeliveredDateTime%2chasAttachments%2cuniqueSenders&%24expand=Posts(%24expand%3dAttachments(%24select%3did))%2cPosts(%24select%3did%2cfrom%2ccreatedDateTime)&%24orderby=lastDeliveredDateTime+desc&%24skip=10",
-            "lastDeliveredDateTime%20desc")
-        ]
-        [InlineData(
-            "https://graph.microsoft.com/beta/deviceManagement/managedDevices?$filter=(deviceType+eq+%27android%27+or+deviceType+eq+%27androidEnterprise%27+or+deviceType+eq+%27androidForWork%27+or+deviceType+eq+%27iPad%27+or+deviceType+eq+%27iPhone%27)&$skiptoken=LastDeviceName%3d%27Andrew%25e2%2580%2599s%2520iPhone%27%2cLastDeviceId%3d%272dcc19dc-a2b9-434a-8013-ac85b69bece3%27", 
-            "(deviceType%20eq%20'android'%20or%20deviceType%20eq%20'androidEnterprise'%20or%20deviceType%20eq%20'androidForWork'%20or%20deviceType%20eq%20'iPad'%20or%20deviceType%20eq%20'iPhone')")
-        ]
-        public void DeserializeNextLinkValues(string nextLink, string expectedValue)
-        {
-            // Arrange
-            var eventCollectionResponseString = 
-                "{" +
-                    "\"@odata.context\":\"https://graph.microsoft.com/v1.0/$metadata#Collection(event)\"," +
-                    "\"@odata.nextLink\":\"" + nextLink + "\"," +
-                    "\"value\":[{\"@removed\":{\"reason\":\"removed\"},\"id\":\"AAMkADVxTAAA=\"}]" +
-                "}";
-
-            // Act
-            var collectionResponse = this.serializer.DeserializeObject<TestEventDeltaCollectionResponse>(eventCollectionResponseString);
-
-            var requestInformation = new RequestInformation() { UrlTemplate = collectionResponse.NextLink };
-            var queryString = requestInformation.URI.Query;
-
-            // Assert
-            Assert.DoesNotContain("+", queryString); // assert that the plus sign has been replaced with a space character
-            Assert.Contains(expectedValue, queryString); // assert we have a validly decoded nextLink url
         }
     }
 }

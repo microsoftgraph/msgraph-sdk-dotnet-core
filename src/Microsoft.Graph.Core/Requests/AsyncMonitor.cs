@@ -11,7 +11,6 @@ namespace Microsoft.Graph
     using System.Text.Json;
     using System.Threading;
     using System.Threading.Tasks;
-    using HttpMethod = System.Net.Http.HttpMethod;
 
     /// <summary>
     /// Monitor for async operations to the Graph service on the client.

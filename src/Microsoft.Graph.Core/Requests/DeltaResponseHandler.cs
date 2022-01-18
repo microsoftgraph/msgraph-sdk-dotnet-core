@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
@@ -12,6 +12,7 @@ namespace Microsoft.Graph
     using System.IO;
     using System.Text;
     using Microsoft.Kiota.Abstractions;
+    using Microsoft.Kiota.Abstractions.Serialization;
 
     /// <summary>
     /// PREVIEW 
@@ -20,16 +21,17 @@ namespace Microsoft.Graph
     /// deserializer can't express changes to null so you can now discover if a property
     /// has been set to null. This is intended for use with a Delta query scenario.
     /// </summary>
-    public class DeltaResponseHandler : IResponseHandler
+    public class DeltaResponseHandler<T> : IResponseHandler where T : IParsable
     {
-        private readonly ISerializer serializer;
+        private readonly IParseNodeFactory parseNodeFactory;
 
         /// <summary>
-        /// Constructs a new <see cref="ResponseHandler"/>.
+        /// Constructs a new <see cref="DeltaResponseHandler{T}"/>.
         /// </summary>
-        public DeltaResponseHandler()
+        /// <param name="parseNodeFactory"> The <see cref="IParseNodeFactory"/> to use for response handling</param>
+        public DeltaResponseHandler(IParseNodeFactory parseNodeFactory = null)
         {
-            this.serializer = new Serializer();
+            this.parseNodeFactory = parseNodeFactory ?? ParseNodeFactoryRegistry.DefaultInstance;
         }
 
         /// <summary>
@@ -50,11 +52,20 @@ namespace Microsoft.Graph
                 // Get the response body object with the change list 
                 // set on each response item.
                 var responseWithChangelist = await GetResponseBodyWithChangelist(responseString);
+                using var responseWithChangelistStream = new MemoryStream(Encoding.UTF8.GetBytes(responseWithChangelist));
 
-                return this.serializer.DeserializeObject<ModelType>(responseWithChangelist);
+                if(typeof(T).IsAssignableFrom(typeof(ModelType)))
+                {
+                    var responseParseNode = parseNodeFactory.GetRootParseNode(CoreConstants.MimeTypeNames.Application.Json, responseWithChangelistStream);
+                    return (ModelType)(object)responseParseNode.GetObjectValue<T>();
+                }
+                else
+                {
+                    return JsonSerializer.Deserialize<ModelType>(responseWithChangelistStream);
+                }
             }
 
-            return default(ModelType);
+            return default;
         }
 
         /// <summary>
@@ -76,7 +87,7 @@ namespace Microsoft.Graph
                 var statusCode = hrm.StatusCode;
 
                 Dictionary<string, string[]> headerDictionary = responseHeaders.ToDictionary(x => x.Key, x => x.Value.ToArray());
-                var responseHeaderString = serializer.SerializeObject(headerDictionary);
+                var responseHeaderString = JsonSerializer.Serialize(headerDictionary);
 
                 responseContent = content.Substring(0, content.Length - 1) + ", ";
                 responseContent += "\"responseHeaders\": " + responseHeaderString + ", ";
@@ -228,11 +239,9 @@ namespace Microsoft.Graph
                             isReplacement = true; // we are replacing an existing property
                             utf8JsonWriter.WritePropertyName(element.Name); //write the property name
                             // Try to get a JsonElement so that we can write it to the stream
-                            string newJsonElement = this.serializer.SerializeObject(newItem);
-                            using (var newJsonDocument = JsonDocument.Parse(newJsonElement))
-                            {
-                                newJsonDocument.RootElement.WriteTo(utf8JsonWriter); // write the object
-                            }
+                            string newJsonElement = JsonSerializer.Serialize(newItem);
+                            using var newJsonDocument = JsonDocument.Parse(newJsonElement);
+                            newJsonDocument.RootElement.WriteTo(utf8JsonWriter); // write the object
                         }
                         else
                         {
@@ -245,11 +254,9 @@ namespace Microsoft.Graph
                     {
                         utf8JsonWriter.WritePropertyName(propertyName); //write the property name
                         // Try to get a JsonElement so that we can write it to the stream
-                        string newJsonElement = this.serializer.SerializeObject(newItem);
-                        using (var newJsonDocument = JsonDocument.Parse(newJsonElement))
-                        {
-                            newJsonDocument.RootElement.WriteTo(utf8JsonWriter); // write the object
-                        }
+                        string newJsonElement = JsonSerializer.Serialize(newItem);
+                        using var newJsonDocument = JsonDocument.Parse(newJsonElement);
+                        newJsonDocument.RootElement.WriteTo(utf8JsonWriter); // write the object
                     }
 
                     utf8JsonWriter.WriteEndObject(); //write end of object

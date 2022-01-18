@@ -4,14 +4,14 @@
 
 namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
 {
+    using Microsoft.Kiota.Abstractions.Serialization;
+    using System;
     using System.Collections.Generic;
-    using System.Text.Json.Serialization;
 
     /// <summary>
     /// The type DateTimeTimeZone.
     /// </summary>
-    [JsonConverter(typeof(DerivedTypeConverter<TestDateTimeTimeZone>))]
-    public partial class TestDateTimeTimeZone
+    public partial class TestDateTimeTimeZone : IParsable
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TestDateTimeTimeZone"/> class.
@@ -25,27 +25,51 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
         /// Gets or sets dateTime.
         /// A single point of time in a combined date and time representation ({date}T{time}; for example, 2017-08-29T04:00:00.0000000).
         /// </summary>
-        [JsonPropertyName("dateTime")]
         public string DateTime { get; set; }
 
         /// <summary>
         /// Gets or sets timeZone.
         /// Represents a time zone, for example, 'Pacific Standard Time'. See below for more possible values.
         /// </summary>
-        [JsonPropertyName("timeZone")]
         public string TimeZone { get; set; }
 
         /// <summary>
         /// Gets or sets additional data.
         /// </summary>
-        [JsonExtensionData]
-        public IDictionary<string, object> AdditionalData { get; set; }
+        public IDictionary<string, object> AdditionalData { get; set; } = new Dictionary<string, object>();
 
         /// <summary>
         /// Gets or sets @odata.type.
         /// </summary>
-        [JsonPropertyName("@odata.type")]
         public string ODataType { get; set; }
 
+        /// <summary>
+        /// Gets the field deserializers for the <see cref="TestDateTimeTimeZone"/> instance
+        /// </summary>
+        /// <typeparam name="T">The type to deserialize</typeparam>
+        /// <returns></returns>
+        public IDictionary<string, Action<T, IParseNode>> GetFieldDeserializers<T>()
+        {
+            return new Dictionary<string, Action<T, IParseNode>>
+            {
+                {"dateTime", (o,n) => { (o as TestDateTimeTimeZone).DateTime = n.GetStringValue(); } },
+                {"timeZone", (o,n) => { (o as TestDateTimeTimeZone).TimeZone = n.GetStringValue(); } },
+                {"@odata.type", (o,n) => { (o as TestDateTimeTimeZone).ODataType = n.GetStringValue(); } },
+            };
+        }
+
+        /// <summary>
+        /// Serialize the <see cref="TestDateTimeTimeZone"/> instance
+        /// </summary>
+        /// <param name="writer">The <see cref="ISerializationWriter"/> to serialize the instance</param>
+        /// <exception cref="ArgumentNullException">Thrown when the writer is null</exception>
+        public void Serialize(ISerializationWriter writer)
+        {
+            _ = writer ?? throw new ArgumentNullException(nameof(writer));
+            writer.WriteStringValue("dateTime", DateTime);
+            writer.WriteStringValue("timeZone", TimeZone);
+            writer.WriteStringValue("@odata.type", ODataType);
+            writer.WriteAdditionalData(AdditionalData);
+        }
     }
 }

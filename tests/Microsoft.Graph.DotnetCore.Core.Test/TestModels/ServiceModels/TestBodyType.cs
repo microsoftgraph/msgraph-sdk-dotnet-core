@@ -4,12 +4,9 @@
 
 namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
 {
-    using System.Text.Json.Serialization;
-
     /// <summary>
     /// The enum BodyType.
     /// </summary>
-    [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum TestBodyType
     {
 

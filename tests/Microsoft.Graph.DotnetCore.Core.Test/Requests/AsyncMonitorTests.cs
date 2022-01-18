@@ -27,13 +27,11 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         private AsyncMonitor<DerivedTypeClass> asyncMonitor;
         private HttpResponseMessage httpResponseMessage;
         private MockProgress progress;
-        private MockSerializer serializer;
         private BaseClient client;
         private Mock<IRequestAdapter> requestAdapter;
 
         public AsyncMonitorTests()
         {
-            this.serializer = new MockSerializer();
 
             this.httpResponseMessage = new HttpResponseMessage();
 

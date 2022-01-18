@@ -64,7 +64,7 @@ namespace Microsoft.Graph.Core.Requests
                 UrlTemplate = UrlTemplate,
             };
             requestInfo.Content = await batchRequestContent.GetBatchRequestContentAsync();
-            requestInfo.Headers.Add("Content-Type", "application/json");
+            requestInfo.Headers.Add("Content-Type", CoreConstants.MimeTypeNames.Application.Json);
             return requestInfo;
         }
     }

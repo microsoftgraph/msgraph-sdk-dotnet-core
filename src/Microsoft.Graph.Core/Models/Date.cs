@@ -10,7 +10,6 @@ namespace Microsoft.Graph
     /// <summary>
     /// Custom Date model for serialization
     /// </summary>
-    [JsonConverter(typeof(DateConverter))]
     public class Date
     {
         /// <summary>
