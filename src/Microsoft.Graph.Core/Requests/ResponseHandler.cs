@@ -6,7 +6,6 @@ namespace Microsoft.Graph
 {
     using Microsoft.Kiota.Abstractions;
     using Microsoft.Kiota.Abstractions.Serialization;
-    using Microsoft.Kiota.Serialization.Json;
     using System.Net.Http;
     using System.Threading.Tasks;
 

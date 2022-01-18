@@ -10,7 +10,6 @@ namespace Microsoft.Graph
     using System.Net.Http;
     using System.Threading.Tasks;
     using Microsoft.Kiota.Abstractions.Serialization;
-    using Microsoft.Kiota.Serialization.Json;
     using System.Text.Json;
 
     /// <summary>
@@ -18,14 +17,15 @@ namespace Microsoft.Graph
     /// </summary>
     internal class UploadResponseHandler
     {
-        private readonly JsonParseNodeFactory _jsonParseNodeFactory;
+        private readonly IParseNodeFactory _parseNodeFactory;
 
         /// <summary>
         /// Constructs a new <see cref="UploadResponseHandler"/>.
         /// </summary>
-        public UploadResponseHandler()
+        /// <param name="parseNodeFactory"> The <see cref="IParseNodeFactory"/> to use for response handling</param>
+        public UploadResponseHandler(IParseNodeFactory parseNodeFactory = null)
         {
-            _jsonParseNodeFactory = new JsonParseNodeFactory();
+            _parseNodeFactory = parseNodeFactory ?? ParseNodeFactoryRegistry.DefaultInstance;
         }
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace Microsoft.Graph
             {
                 if (!response.IsSuccessStatusCode)
                 {
-                    var jsonParseNode = _jsonParseNodeFactory.GetRootParseNode(response.Content.Headers?.ContentType?.MediaType?.ToLowerInvariant(), responseStream);
+                    var jsonParseNode = _parseNodeFactory.GetRootParseNode(response.Content.Headers?.ContentType?.MediaType?.ToLowerInvariant(), responseStream);
                     ErrorResponse errorResponse = jsonParseNode.GetObjectValue<ErrorResponse>();
                     Error error = errorResponse.Error;
                     string rawResponseBody = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -70,7 +70,7 @@ namespace Microsoft.Graph
                 {
                     if (responseStream.Length > 0) //system.text.json wont deserialize an empty string
                     {
-                        var jsonParseNode = _jsonParseNodeFactory.GetRootParseNode(response.Content.Headers?.ContentType?.MediaType?.ToLowerInvariant(), responseStream);
+                        var jsonParseNode = _parseNodeFactory.GetRootParseNode(response.Content.Headers?.ContentType?.MediaType?.ToLowerInvariant(), responseStream);
                         uploadResult.ItemResponse = jsonParseNode.GetObjectValue<T>();
                     }
                     uploadResult.Location = response.Headers.Location;
@@ -83,7 +83,7 @@ namespace Microsoft.Graph
                      * However, successful upload completion for a DriveItem the response could also come in a 200 response and
                      * hence we validate this by checking the NextExpectedRanges parameter which is present in an ongoing upload
                      */
-                    var uploadSessionParseNode = _jsonParseNodeFactory.GetRootParseNode(response.Content.Headers?.ContentType?.MediaType?.ToLowerInvariant(), responseStream);
+                    var uploadSessionParseNode = _parseNodeFactory.GetRootParseNode(response.Content.Headers?.ContentType?.MediaType?.ToLowerInvariant(), responseStream);
                     UploadSession uploadSession = uploadSessionParseNode.GetObjectValue<UploadSession>();
                     if (uploadSession?.NextExpectedRanges != null)
                     {
@@ -93,7 +93,7 @@ namespace Microsoft.Graph
                     {
                         //Upload is most likely done as DriveItem info may come in a 200 response
                         responseStream.Position = 0; //reset 
-                        var objectParseNode = _jsonParseNodeFactory.GetRootParseNode(response.Content.Headers?.ContentType?.MediaType?.ToLowerInvariant(), responseStream);
+                        var objectParseNode = _parseNodeFactory.GetRootParseNode(response.Content.Headers?.ContentType?.MediaType?.ToLowerInvariant(), responseStream);
                         uploadResult.ItemResponse = objectParseNode.GetObjectValue<T>();
                     }
                 }
