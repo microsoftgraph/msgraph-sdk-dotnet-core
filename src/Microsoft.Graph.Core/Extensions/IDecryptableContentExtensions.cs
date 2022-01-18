@@ -35,7 +35,7 @@ namespace Microsoft.Graph
                 throw new ArgumentNullException(nameof(certificateProvider));
 
             var stringContent = await encryptedContent.DecryptAsync(certificateProvider);
-            var contentStream = new MemoryStream(Encoding.UTF8.GetBytes(stringContent));
+            using var contentStream = new MemoryStream(Encoding.UTF8.GetBytes(stringContent));
             var jsonParseNodeFactory = new JsonParseNodeFactory();
             var rootNode = jsonParseNodeFactory.GetRootParseNode(CoreConstants.MimeTypeNames.Application.Json, contentStream);
             return rootNode.GetObjectValue<T>();

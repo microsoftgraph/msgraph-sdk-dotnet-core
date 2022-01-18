@@ -15,14 +15,15 @@ namespace Microsoft.Graph
     /// </summary>
     public class ResponseHandler<T> : IResponseHandler where T : IParsable
     {
-        private readonly JsonParseNodeFactory _jsonParseNodeFactory;
+        private readonly IParseNodeFactory _jsonParseNodeFactory;
 
         /// <summary>
         /// Constructs a new <see cref="ResponseHandler{T}"/>.
         /// </summary>
-        public ResponseHandler()
+        /// <param name="parseNodeFactory"> The <see cref="IParseNodeFactory"/> to use for response handling</param>
+        public ResponseHandler(IParseNodeFactory parseNodeFactory = null)
         {
-            _jsonParseNodeFactory = new JsonParseNodeFactory();
+            _jsonParseNodeFactory = parseNodeFactory ?? ParseNodeFactoryRegistry.DefaultInstance; ;
         }
 
         /// <summary>

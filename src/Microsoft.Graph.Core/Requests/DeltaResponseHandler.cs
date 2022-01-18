@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
@@ -12,7 +12,6 @@ namespace Microsoft.Graph
     using System.IO;
     using System.Text;
     using Microsoft.Kiota.Abstractions;
-    using Microsoft.Kiota.Serialization.Json;
     using Microsoft.Kiota.Abstractions.Serialization;
 
     /// <summary>
@@ -24,14 +23,15 @@ namespace Microsoft.Graph
     /// </summary>
     public class DeltaResponseHandler<T> : IResponseHandler where T : IParsable
     {
-        private readonly JsonParseNodeFactory parseNodeFactory;
+        private readonly IParseNodeFactory parseNodeFactory;
 
         /// <summary>
         /// Constructs a new <see cref="DeltaResponseHandler{T}"/>.
         /// </summary>
-        public DeltaResponseHandler()
+        /// <param name="parseNodeFactory"> The <see cref="IParseNodeFactory"/> to use for response handling</param>
+        public DeltaResponseHandler(IParseNodeFactory parseNodeFactory = null)
         {
-            this.parseNodeFactory = new JsonParseNodeFactory();
+            this.parseNodeFactory = parseNodeFactory ?? ParseNodeFactoryRegistry.DefaultInstance;
         }
 
         /// <summary>
@@ -52,7 +52,7 @@ namespace Microsoft.Graph
                 // Get the response body object with the change list 
                 // set on each response item.
                 var responseWithChangelist = await GetResponseBodyWithChangelist(responseString);
-                var responseWithChangelistStream = new MemoryStream(Encoding.UTF8.GetBytes(responseWithChangelist));
+                using var responseWithChangelistStream = new MemoryStream(Encoding.UTF8.GetBytes(responseWithChangelist));
 
                 if(typeof(T).IsAssignableFrom(typeof(ModelType)))
                 {

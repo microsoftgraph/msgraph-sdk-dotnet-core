@@ -14,9 +14,17 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
     using Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels;
     using System.Linq;
     using System;
+    using Microsoft.Kiota.Abstractions.Serialization;
+    using Microsoft.Kiota.Serialization.Json;
 
     public class ResponseHandlerTests
     {
+        public ResponseHandlerTests()
+        {
+            // register the default serialization instance as the generator would.
+            ParseNodeFactoryRegistry.DefaultInstance.ContentTypeAssociatedFactories.TryAdd(CoreConstants.MimeTypeNames.Application.Json, new JsonParseNodeFactory());
+        }
+
         [Fact]
         public async Task HandleUserResponse()
         {

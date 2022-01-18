@@ -13,6 +13,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
     using Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels;
     using Xunit;
     using Microsoft.Kiota.Abstractions;
+    using Microsoft.Kiota.Serialization.Json;
 
     public class GraphResponseTests : RequestTestBase
     {
@@ -67,7 +68,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             };
 
             // create a custom responseHandler
-            IResponseHandler responseHandler = new ResponseHandler<TestUser>();
+            IResponseHandler responseHandler = new ResponseHandler<TestUser>(new JsonParseNodeFactory());
             RequestInformation requestInformation = new RequestInformation() { UrlTemplate = "http://localhost" };
 
 

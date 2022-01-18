@@ -11,9 +11,17 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
     using System.Threading.Tasks;
     using Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels;
     using System.IO;
+    using Microsoft.Kiota.Serialization.Json;
+    using Microsoft.Kiota.Abstractions.Serialization;
 
     public class BatchResponseContentTests
     {
+        public BatchResponseContentTests()
+        {
+            // register the default serialization instance as the generator would.
+            ParseNodeFactoryRegistry.DefaultInstance.ContentTypeAssociatedFactories.TryAdd(CoreConstants.MimeTypeNames.Application.Json, new JsonParseNodeFactory());
+        }
+
         [Fact]
         public async Task BatchResponseContent_InitializeWithNoContentAsync()
         {
