@@ -68,17 +68,20 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         [Fact]
         public void Should_CreatePipeline_Without_HttpMessageHandlerInput()
         {
-            using OdataQueryHandler odataQueryHandler = (OdataQueryHandler)GraphClientFactory.CreatePipeline(handlers);
+            using GraphTelemetryHandler telemetryHandler = (GraphTelemetryHandler)GraphClientFactory.CreatePipeline(handlers);
+            using OdataQueryHandler odataQueryHandler = (OdataQueryHandler)telemetryHandler.InnerHandler;
             using CompressionHandler compressionHandler = (CompressionHandler)odataQueryHandler.InnerHandler;
             using RetryHandler retryHandler = (RetryHandler)compressionHandler.InnerHandler;
             using RedirectHandler redirectHandler = (RedirectHandler)retryHandler.InnerHandler;
             using HttpMessageHandler innerMost = redirectHandler.InnerHandler;
 
+            Assert.NotNull(telemetryHandler);
             Assert.NotNull(odataQueryHandler);
             Assert.NotNull(compressionHandler);
             Assert.NotNull(retryHandler);
             Assert.NotNull(redirectHandler);
             Assert.NotNull(innerMost);
+            Assert.IsType<GraphTelemetryHandler>(telemetryHandler);
             Assert.IsType<OdataQueryHandler>(odataQueryHandler);
             Assert.IsType<CompressionHandler>(compressionHandler);
             Assert.IsType<RetryHandler>(retryHandler);
@@ -90,17 +93,20 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         [Fact]
         public void CreatePipelineWithHttpMessageHandlerInput()
         {
-            using OdataQueryHandler odataQueryHandler = (OdataQueryHandler)GraphClientFactory.CreatePipeline(handlers, new MockRedirectHandler());
+            using GraphTelemetryHandler telemetryHandler = (GraphTelemetryHandler)GraphClientFactory.CreatePipeline(handlers, new MockRedirectHandler());
+            using OdataQueryHandler odataQueryHandler = (OdataQueryHandler)telemetryHandler.InnerHandler;
             using CompressionHandler compressionHandler = (CompressionHandler)odataQueryHandler.InnerHandler;
             using RetryHandler retryHandler = (RetryHandler)compressionHandler.InnerHandler;
             using RedirectHandler redirectHandler = (RedirectHandler)retryHandler.InnerHandler;
             using MockRedirectHandler innerMost = (MockRedirectHandler)redirectHandler.InnerHandler;
-            
+
+            Assert.NotNull(telemetryHandler);
             Assert.NotNull(odataQueryHandler);
             Assert.NotNull(compressionHandler);
             Assert.NotNull(retryHandler);
             Assert.NotNull(redirectHandler);
             Assert.NotNull(innerMost);
+            Assert.IsType<GraphTelemetryHandler>(telemetryHandler);
             Assert.IsType<OdataQueryHandler>(odataQueryHandler);
             Assert.IsType<CompressionHandler>(compressionHandler);
             Assert.IsType<RetryHandler>(retryHandler);
@@ -170,27 +176,6 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             {
                 Assert.IsType<ArgumentException>(exception);
                 Assert.Equal(exception.Message, String.Format("{0} is an unexpected national cloud.", nation));
-            }
-        }
-
-        [Fact]
-        public void CreateClient_WithInnerHandler()
-        {
-            using (HttpClient httpClient = GraphClientFactory.Create(finalHandler: this.testHttpMessageHandler))
-            {
-                Assert.NotNull(httpClient);
-                Assert.True(httpClient.DefaultRequestHeaders.Contains(CoreConstants.Headers.SdkVersionHeaderName), "SDK version not set.");
-                Version assemblyVersion = typeof(GraphClientFactory).GetTypeInfo().Assembly.GetName().Version;
-                string value = string.Format(
-                    CoreConstants.Headers.SdkVersionHeaderValueFormatString,
-                    "Graph",
-                    assemblyVersion.Major,
-                    assemblyVersion.Minor,
-                    assemblyVersion.Build);
-                IEnumerable<string> values;
-                Assert.True(httpClient.DefaultRequestHeaders.TryGetValues(CoreConstants.Headers.SdkVersionHeaderName, out values), "SDK version value not set");
-                Assert.Single(values);
-                Assert.Equal(values.First(), value);
             }
         }
 

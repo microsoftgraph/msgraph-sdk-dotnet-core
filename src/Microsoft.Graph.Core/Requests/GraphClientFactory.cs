@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 namespace Microsoft.Graph
@@ -8,29 +8,14 @@ namespace Microsoft.Graph
     using System.Linq;
     using System.Net;
     using System.Net.Http;
-    using System.Reflection;
     using System.Net.Http.Headers;
     using Microsoft.Kiota.Http.HttpClientLibrary.Middleware;
-    using Microsoft.Kiota.Abstractions.Authentication;
+
     /// <summary>
     /// GraphClientFactory class to create the HTTP client
     /// </summary>
     public static class GraphClientFactory
     {
-        /// The key for the SDK version header.
-        private static readonly string SdkVersionHeaderName = CoreConstants.Headers.SdkVersionHeaderName;
-
-        /// The version for current assembly.
-        private static Version assemblyVersion = typeof(GraphClientFactory).GetTypeInfo().Assembly.GetName().Version;
-
-        /// The value for the SDK version header.
-        private static string SdkVersionHeaderValue = string.Format(
-                    CoreConstants.Headers.SdkVersionHeaderValueFormatString,
-                    "Graph",
-                    assemblyVersion.Major,
-                    assemblyVersion.Minor,
-                    assemblyVersion.Build);
-
         /// The default value for the overall request timeout.
         private static readonly TimeSpan defaultTimeout = TimeSpan.FromSeconds(100);
 
@@ -60,17 +45,19 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="version">The graph version to use.</param>
         /// <param name="nationalCloud">The national cloud endpoint to use.</param>
+        /// <param name="graphClientOptions">The <see cref="GraphClientOptions"/> to use with the client</param>
         /// <param name="proxy">The proxy to be used with created client.</param>
         /// <param name="finalHandler">The last HttpMessageHandler to HTTP calls.
         /// The default implementation creates a new instance of <see cref="HttpClientHandler"/> for each HttpClient.</param>
         /// <returns></returns>
         public static HttpClient Create(
+            GraphClientOptions graphClientOptions = null,
             string version = "v1.0",
             string nationalCloud = Global_Cloud,
             IWebProxy proxy = null,
             HttpMessageHandler finalHandler = null)
         {
-            IList<DelegatingHandler> handlers = CreateDefaultHandlers();
+            IList<DelegatingHandler> handlers = CreateDefaultHandlers(graphClientOptions);
             return Create(handlers, version, nationalCloud, proxy, finalHandler);
         }
 
@@ -109,7 +96,6 @@ namespace Microsoft.Graph
 
             var pipelineWithFlags = CreatePipelineWithFeatureFlags(handlers, finalHandler);
             HttpClient client = new HttpClient(pipelineWithFlags.Pipeline);
-            client.DefaultRequestHeaders.Add(SdkVersionHeaderName, SdkVersionHeaderValue);
             client.SetFeatureFlag(pipelineWithFlags.FeatureFlags);
             client.Timeout = defaultTimeout;
             client.BaseAddress = DetermineBaseAddress(nationalCloud, version);
@@ -120,10 +106,12 @@ namespace Microsoft.Graph
         /// <summary>
         /// Create a default set of middleware for calling Microsoft Graph
         /// </summary>
+        /// <param name="graphClientOptions">The <see cref="GraphClientOptions"/> to use with the client</param>
         /// <returns></returns>
-        public static IList<DelegatingHandler> CreateDefaultHandlers()
+        public static IList<DelegatingHandler> CreateDefaultHandlers(GraphClientOptions graphClientOptions = null)
         {
             return new List<DelegatingHandler> {
+                new GraphTelemetryHandler(graphClientOptions),
                 new OdataQueryHandler(),
                 new CompressionHandler(),
                 new RetryHandler(),

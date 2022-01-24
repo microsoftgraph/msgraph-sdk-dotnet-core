@@ -8,6 +8,9 @@ namespace Microsoft.Graph
     using System;
     using System.Net.Http;
 
+    /// <summary>
+    /// The <see cref="IRequestOption"/> to configure the <see cref="OdataQueryHandler"/>
+    /// </summary>
     public class ODataQueryHandlerOption : IRequestOption
     {
         /// <summary>

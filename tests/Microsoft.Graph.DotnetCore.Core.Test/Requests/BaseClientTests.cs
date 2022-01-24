@@ -5,7 +5,6 @@
 namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 {
     using Microsoft.Graph.DotnetCore.Core.Test.Mocks;
-    using Microsoft.Kiota.Http.HttpClientLibrary;
     using Xunit;
     public class BaseClientTests
     {
@@ -36,7 +35,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             var baseClient = new BaseClient(expectedBaseUrl, this.tokenCredential.Object);
 
             Assert.Equal(expectedBaseUrl, baseClient.RequestAdapter.BaseUrl);
-            Assert.IsType<HttpClientRequestAdapter>(baseClient.RequestAdapter);
+            Assert.IsType<BaseGraphRequestAdapter>(baseClient.RequestAdapter);
 
         }
     }

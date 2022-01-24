@@ -12,9 +12,17 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
     using System.Threading.Tasks;
     using Xunit;
     using Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels;
+    using Microsoft.Kiota.Abstractions.Serialization;
+    using Microsoft.Kiota.Serialization.Json;
 
     public class UploadResponseHandlerTests
     {
+        public UploadResponseHandlerTests()
+        {
+            // register the default serialization instance as the generator would.
+            ParseNodeFactoryRegistry.DefaultInstance.ContentTypeAssociatedFactories.TryAdd(CoreConstants.MimeTypeNames.Application.Json, new JsonParseNodeFactory());
+        }
+
         [Theory]
         [InlineData(HttpStatusCode.Created)]
         [InlineData(HttpStatusCode.OK)]
