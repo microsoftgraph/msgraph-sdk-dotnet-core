@@ -21,7 +21,7 @@ namespace Microsoft.Graph
         /// <summary>
         /// The ranges yet to be uploaded to the server
         /// </summary>
-        IEnumerable<string> NextExpectedRanges { get; set; }
+        List<string> NextExpectedRanges { get; set; }
 
         /// <summary>
         /// The URL for upload

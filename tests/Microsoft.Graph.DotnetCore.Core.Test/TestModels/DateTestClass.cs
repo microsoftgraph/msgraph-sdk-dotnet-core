@@ -4,6 +4,7 @@
 
 namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels
 {
+    using Microsoft.Kiota.Abstractions;
     using Microsoft.Kiota.Abstractions.Serialization;
     using System;
     using System.Collections.Generic;
@@ -17,12 +18,12 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels
         /// <summary>
         /// Gets or sets nullableDate.
         /// </summary>
-        public Date NullableDate { get; set; }
+        public Date? NullableDate { get; set; }
 
         /// <summary>
         /// Gets or sets dateCollection.
         /// </summary>
-        public IEnumerable<Date> DateCollection { get; set; }
+        public IEnumerable<Date?> DateCollection { get; set; }
 
         /// <summary>
         /// Gets or sets InvalidType.
@@ -48,8 +49,8 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels
         {
             return new Dictionary<string, Action<T, IParseNode>>
             {
-                {"nullableDate", (o,n) => { (o as DateTestClass).NullableDate = new Date(n.GetDateTimeOffsetValue().Value.DateTime); } },
-                {"dateCollection", (o,n) => { (o as DateTestClass).DateCollection = n.GetCollectionOfPrimitiveValues<DateTimeOffset?>().Select(dateTimeOffset => new Date(dateTimeOffset.Value.DateTime) ); } },
+                {"nullableDate", (o,n) => { (o as DateTestClass).NullableDate = n.GetDateValue(); } },
+                {"dateCollection", (o,n) => { (o as DateTestClass).DateCollection = n.GetCollectionOfPrimitiveValues<Date?>(); } },
                 {"invalidType", (o,n) => { (o as DateTestClass).InvalidType = n.GetIntValue(); } },
             };
         }
@@ -62,8 +63,8 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels
         public void Serialize(ISerializationWriter writer)
         {
             _ = writer ?? throw new ArgumentNullException(nameof(writer));
-            writer.WriteStringValue("nullableDate", NullableDate?.ToString());
-            writer.WriteCollectionOfPrimitiveValues("dateCollection", DateCollection?.Select( date => date.ToString()));
+            writer.WriteDateValue("nullableDate", NullableDate);
+            writer.WriteCollectionOfPrimitiveValues("dateCollection", DateCollection);
             writer.WriteIntValue("invalidType", InvalidType);
             writer.WriteAdditionalData(AdditionalData);
         }

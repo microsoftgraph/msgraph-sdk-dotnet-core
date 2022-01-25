@@ -13,12 +13,19 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
     using System.Threading.Tasks;
     using Microsoft.Graph.DotnetCore.Core.Test.Mocks;
     using Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels;
-    using Microsoft.Kiota.Abstractions;
+    using Microsoft.Kiota.Abstractions.Serialization;
     using Microsoft.Kiota.Http.HttpClientLibrary;
+    using Microsoft.Kiota.Serialization.Json;
     using Xunit;
 
     public class UploadSliceRequests : RequestTestBase
     {
+        public UploadSliceRequests()
+        {
+            // register the default serialization instance as the generator would.
+            ParseNodeFactoryRegistry.DefaultInstance.ContentTypeAssociatedFactories.TryAdd(CoreConstants.MimeTypeNames.Application.Json, new JsonParseNodeFactory());
+        }
+
         [Fact]
         public async Task PutAsyncReturnsExpectedUploadSessionAsync()
         {

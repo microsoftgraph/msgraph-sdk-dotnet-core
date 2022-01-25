@@ -7,6 +7,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
     using Microsoft.Graph.Core.Models;
     using Microsoft.Graph.DotnetCore.Core.Test.TestModels;
     using Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels;
+    using Microsoft.Kiota.Abstractions;
     using Microsoft.Kiota.Serialization.Json;
     using System;
     using System.Collections.Generic;
@@ -146,15 +147,15 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
             Assert.Equal(2, deserializedObject.DateCollection.Count());
             Assert.True(deserializedObject.DateCollection.Any(
                  date =>
-                    date.Year == now.Year &&
-                    date.Month == now.Month &&
-                    date.Day == now.Day),
+                    date.Value.Year == now.Year &&
+                    date.Value.Month == now.Month &&
+                    date.Value.Day == now.Day),
                 "Now date not found.");
 
             Assert.Contains(deserializedObject.DateCollection, date =>
-                    date.Year == tomorrow.Year &&
-                    date.Month == tomorrow.Month &&
-                    date.Day == tomorrow.Day);
+                    date.Value.Year == tomorrow.Year &&
+                    date.Value.Month == tomorrow.Month &&
+                    date.Value.Day == tomorrow.Day);
         }
 
         
@@ -165,7 +166,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
             var tomorrow = now.AddDays(1);
             var recurrence = new DateTestClass
             {
-                DateCollection = new List<Date> { new Date(now.Year, now.Month, now.Day), new Date(tomorrow.Year, tomorrow.Month, tomorrow.Day) },
+                DateCollection = new List<Date?> { new Date(now.Year, now.Month, now.Day), new Date(tomorrow.Year, tomorrow.Month, tomorrow.Day) },
             };
 
             var derivedTypeInstance = new DerivedTypeClass
@@ -199,9 +200,9 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
             var parseNode = this.parseNodeFactory.GetRootParseNode(CoreConstants.MimeTypeNames.Application.Json, memoryStream);
             var dateClass = parseNode.GetObjectValue<DateTestClass>();
 
-            Assert.Equal(now.Year, dateClass.NullableDate.Year);
-            Assert.Equal(now.Month, dateClass.NullableDate.Month);
-            Assert.Equal(now.Day, dateClass.NullableDate.Day);
+            Assert.Equal(now.Year, dateClass.NullableDate.Value.Year);
+            Assert.Equal(now.Month, dateClass.NullableDate.Value.Month);
+            Assert.Equal(now.Day, dateClass.NullableDate.Value.Day);
         }
 
         [Fact]
@@ -316,7 +317,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
 
             var recurrence = new DateTestClass
             {
-                DateCollection = new List<Date> { new Date(now.Year, now.Month, now.Day), new Date(tomorrow.Year, tomorrow.Month, tomorrow.Day) },
+                DateCollection = new List<Date?> { new Date(now.Year, now.Month, now.Day), new Date(tomorrow.Year, tomorrow.Month, tomorrow.Day) },
             };
 
             using var jsonSerializerWriter = new JsonSerializationWriter();

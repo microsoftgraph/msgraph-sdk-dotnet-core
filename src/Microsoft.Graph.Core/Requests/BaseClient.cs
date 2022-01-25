@@ -13,7 +13,6 @@ namespace Microsoft.Graph
     using Microsoft.Kiota.Authentication.Azure;
     using System.Linq;
     using Microsoft.Kiota.Abstractions;
-    using Microsoft.Kiota.Http.HttpClientLibrary;
 
     /// <summary>
     /// A default client implementation.
@@ -45,7 +44,7 @@ namespace Microsoft.Graph
         public BaseClient(
             string baseUrl,
             IAuthenticationProvider authenticationProvider
-            ): this(new HttpClientRequestAdapter(authenticationProvider , httpClient: GraphClientFactory.Create()){ BaseUrl = baseUrl })
+            ): this(new BaseGraphRequestAdapter(authenticationProvider){ BaseUrl = baseUrl })
         {
         }
 
@@ -70,7 +69,7 @@ namespace Microsoft.Graph
         /// <param name="httpClient">The customized <see cref="HttpClient"/> to be used for making requests</param>
         public BaseClient(
             string baseUrl,
-            HttpClient httpClient):this(new HttpClientRequestAdapter(new AnonymousAuthenticationProvider(), httpClient: httpClient) { BaseUrl = baseUrl })
+            HttpClient httpClient):this(new BaseGraphRequestAdapter(new AnonymousAuthenticationProvider(), httpClient: httpClient) { BaseUrl = baseUrl })
         {
         }
 
