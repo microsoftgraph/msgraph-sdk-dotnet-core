@@ -62,19 +62,19 @@ namespace Microsoft.Graph
             try
             {
                 // Try to get the account from the cache
-                IEnumerable<IAccount> accounts = await _clientApplication.GetAccountsAsync();
+                IEnumerable<IAccount> accounts = await _clientApplication.GetAccountsAsync().ConfigureAwait(false);
                 IAccount account = accounts.FirstOrDefault();
 
                 // Try to get the token silently
                 AcquireTokenSilentParameterBuilder tokenSilentBuilder =
                     _clientApplication.AcquireTokenSilent(requestContext.Scopes, account);
 
-                result = await tokenSilentBuilder.ExecuteAsync(cancellationToken);
+                result = await tokenSilentBuilder.ExecuteAsync(cancellationToken).ConfigureAwait(false);
             }
             catch (MsalException)
             {
                 // We can't get the token silently so get a new one
-                result = await GetNewAccessTokenAsync(requestContext);
+                result = await GetNewAccessTokenAsync(requestContext).ConfigureAwait(false);
             }
 
             return new AccessToken(result.AccessToken, result.ExpiresOn);
@@ -94,7 +94,7 @@ namespace Microsoft.Graph
                 try
                 {
                     authenticationResult = await _clientApplication.AcquireTokenByIntegratedWindowsAuth(requestContext.Scopes)
-                                .ExecuteAsync();
+                                .ExecuteAsync().ConfigureAwait(false);
                     break;
                 }
                 catch (MsalServiceException serviceException)
@@ -105,7 +105,7 @@ namespace Microsoft.Graph
                         TimeSpan delay = this.GetRetryAfter(serviceException);
                         retryCount++;
                         // pause execution
-                        await Task.Delay(delay);
+                        await Task.Delay(delay).ConfigureAwait(false);
                     }
                     else
                     {

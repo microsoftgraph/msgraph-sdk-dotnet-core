@@ -56,7 +56,7 @@ namespace Microsoft.Graph
         public async Task<Dictionary<string, HttpResponseMessage>> GetResponsesAsync()
         {
             Dictionary<string, HttpResponseMessage> responseMessages = new Dictionary<string, HttpResponseMessage>();
-            jBatchResponseObject = jBatchResponseObject ?? await GetBatchResponseContentAsync();
+            jBatchResponseObject = jBatchResponseObject ?? await GetBatchResponseContentAsync().ConfigureAwait(false);
             if (jBatchResponseObject == null)
                 return responseMessages;
 
@@ -76,7 +76,7 @@ namespace Microsoft.Graph
         /// <returns>A <see cref="HttpResponseMessage"/> response object for a batch request.</returns>
         public async Task<HttpResponseMessage> GetResponseByIdAsync(string requestId)
         {
-            jBatchResponseObject = jBatchResponseObject ?? await GetBatchResponseContentAsync();
+            jBatchResponseObject = jBatchResponseObject ?? await GetBatchResponseContentAsync().ConfigureAwait(false);
             if (jBatchResponseObject == null)
                 return null;
 
@@ -101,11 +101,11 @@ namespace Microsoft.Graph
         /// <returns>A deserialized object of type T<see cref="HttpResponseMessage"/>.</returns>
         public async Task<T> GetResponseByIdAsync<T>(string requestId)
         {
-            using (var httpResponseMessage = await GetResponseByIdAsync(requestId))
+            using (var httpResponseMessage = await GetResponseByIdAsync(requestId).ConfigureAwait(false))
             {
-                await ValidateSuccessfulResponse(httpResponseMessage);
+                await ValidateSuccessfulResponse(httpResponseMessage).ConfigureAwait(false);
                 // return the deserialized object
-                return await ResponseHandler.HandleResponse<T>(httpResponseMessage);
+                return await ResponseHandler.HandleResponse<T>(httpResponseMessage).ConfigureAwait(false);
             }
         }
 
@@ -117,12 +117,12 @@ namespace Microsoft.Graph
         /// <remarks> Stream should be dispose once done with.</remarks>
         public async Task<Stream> GetResponseStreamByIdAsync(string requestId)
         {
-            using (var httpResponseMessage = await GetResponseByIdAsync(requestId)) 
+            using (var httpResponseMessage = await GetResponseByIdAsync(requestId).ConfigureAwait(false)) 
             {
-                await ValidateSuccessfulResponse(httpResponseMessage);
-                using var stream = await httpResponseMessage.Content.ReadAsStreamAsync();
+                await ValidateSuccessfulResponse(httpResponseMessage).ConfigureAwait(false);
+                using var stream = await httpResponseMessage.Content.ReadAsStreamAsync().ConfigureAwait(false);
                 var memoryStream = new MemoryStream();
-                await stream.CopyToAsync(memoryStream);
+                await stream.CopyToAsync(memoryStream).ConfigureAwait(false);
                 return memoryStream;
             }
         }
@@ -140,7 +140,7 @@ namespace Microsoft.Graph
                 string rawResponseBody = null;
 
                 //deserialize into an ErrorResponse as the result is not a success.
-                ErrorResponse errorResponse = await ResponseHandler.HandleResponse<ErrorResponse>(httpResponseMessage);
+                ErrorResponse errorResponse = await ResponseHandler.HandleResponse<ErrorResponse>(httpResponseMessage).ConfigureAwait(false);
 
                 if (errorResponse?.Error == null)
                 {
@@ -177,7 +177,7 @@ namespace Microsoft.Graph
         /// <returns></returns>
         public async Task<string> GetNextLinkAsync()
         {
-            jBatchResponseObject = jBatchResponseObject ?? await GetBatchResponseContentAsync();
+            jBatchResponseObject = jBatchResponseObject ?? await GetBatchResponseContentAsync().ConfigureAwait(false);
             if (jBatchResponseObject == null)
                 return null;
 
@@ -229,9 +229,9 @@ namespace Microsoft.Graph
 
             try
             {
-                using (Stream streamContent = await this.batchResponseMessage.Content.ReadAsStreamAsync())
+                using (Stream streamContent = await this.batchResponseMessage.Content.ReadAsStreamAsync().ConfigureAwait(false))
                 {
-                    return await JsonDocument.ParseAsync(streamContent);
+                    return await JsonDocument.ParseAsync(streamContent).ConfigureAwait(false);
                 }
             }
             catch (Exception ex)

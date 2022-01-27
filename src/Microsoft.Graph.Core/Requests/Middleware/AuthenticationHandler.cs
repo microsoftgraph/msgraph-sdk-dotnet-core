@@ -79,7 +79,7 @@ namespace Microsoft.Graph
             while (retryAttempt < MaxRetry)
             {
                 // general clone request with internal CloneAsync (see CloneAsync for details) extension method 
-                var newRequest = await httpResponseMessage.RequestMessage.CloneAsync();
+                var newRequest = await httpResponseMessage.RequestMessage.CloneAsync().ConfigureAwait(false);
 
                 // extract the www-authenticate header and add claims to the request context
                 if (httpResponseMessage.Headers.WwwAuthenticate.Any())
@@ -89,8 +89,8 @@ namespace Microsoft.Graph
                 }
 
                 // Authenticate request using AuthenticationProvider
-                await authProvider.AuthenticateRequestAsync(newRequest);
-                httpResponseMessage = await base.SendAsync(newRequest, cancellationToken);
+                await authProvider.AuthenticateRequestAsync(newRequest).ConfigureAwait(false);
+                httpResponseMessage = await base.SendAsync(newRequest, cancellationToken).ConfigureAwait(false);
 
                 retryAttempt++;
 
@@ -121,15 +121,15 @@ namespace Microsoft.Graph
             // Authenticate request using AuthenticationProvider
             if (authProvider != null)
             {
-                await authProvider.AuthenticateRequestAsync(httpRequestMessage);
+                await authProvider.AuthenticateRequestAsync(httpRequestMessage).ConfigureAwait(false);
 
-                HttpResponseMessage response = await base.SendAsync(httpRequestMessage, cancellationToken);
+                HttpResponseMessage response = await base.SendAsync(httpRequestMessage, cancellationToken).ConfigureAwait(false);
 
                 // Check if response is a 401 & is not a streamed body (is buffered)
                 if (IsUnauthorized(response) && httpRequestMessage.IsBuffered())
                 {
                     // re-issue the request to get a new access token
-                    response = await SendRetryAsync(response, authProvider, cancellationToken);
+                    response = await SendRetryAsync(response, authProvider, cancellationToken).ConfigureAwait(false);
                 }
 
                 return response;
@@ -138,7 +138,7 @@ namespace Microsoft.Graph
             {
                 // NOTE: In order to support HttpProvider, we'll skip authentication if no provider is set.
                 // We will add this check once we re-write a new HttpProvider.
-                return await base.SendAsync(httpRequestMessage, cancellationToken);
+                return await base.SendAsync(httpRequestMessage, cancellationToken).ConfigureAwait(false);
             }
         }
 

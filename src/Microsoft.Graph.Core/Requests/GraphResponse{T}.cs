@@ -27,7 +27,7 @@ namespace Microsoft.Graph
         /// </summary>
         public async Task<T> GetResponseObjectAsync()
         {
-            return await this.BaseRequest.ResponseHandler.HandleResponse<T>(this.ToHttpResponseMessage());
+            return await this.BaseRequest.ResponseHandler.HandleResponse<T>(this.ToHttpResponseMessage()).ConfigureAwait(false);
         }
     }
 }

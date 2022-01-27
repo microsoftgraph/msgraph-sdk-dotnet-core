@@ -71,7 +71,7 @@ namespace Microsoft.Graph
 
             if (response == null)
             {
-                response = await base.SendAsync(request, cancellationToken);
+                response = await base.SendAsync(request, cancellationToken).ConfigureAwait(false);
             }
             return response;
         }

@@ -51,7 +51,7 @@ namespace Microsoft.Graph
             RedirectOption = request.GetMiddlewareOption<RedirectHandlerOption>() ?? RedirectOption;
 
             // send request first time to get response
-            var response = await base.SendAsync(request, cancellationToken);
+            var response = await base.SendAsync(request, cancellationToken).ConfigureAwait(false);
 
             // check response status code and redirect handler option
             if (IsRedirect(response.StatusCode) && RedirectOption.ShouldRedirect(response) && RedirectOption.MaxRedirect > 0)
@@ -75,11 +75,11 @@ namespace Microsoft.Graph
                     // Drain response content to free responses.
                     if (response.Content != null)
                     {
-                        await response.Content.ReadAsByteArrayAsync();
+                        await response.Content.ReadAsByteArrayAsync().ConfigureAwait(false);
                     }
 
                     // general clone request with internal CloneAsync (see CloneAsync for details) extension method 
-                    var newRequest = await response.RequestMessage.CloneAsync();
+                    var newRequest = await response.RequestMessage.CloneAsync().ConfigureAwait(false);
 
                     // status code == 303: change request method from post to get and content to be null
                     if (response.StatusCode == HttpStatusCode.SeeOther)
@@ -109,7 +109,7 @@ namespace Microsoft.Graph
                     }
 
                     // Send redirect request to get reponse      
-                    response = await base.SendAsync(newRequest, cancellationToken);
+                    response = await base.SendAsync(newRequest, cancellationToken).ConfigureAwait(false);
 
                     // Check response status code
                     if (!IsRedirect(response.StatusCode))
