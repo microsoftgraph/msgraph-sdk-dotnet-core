@@ -68,7 +68,7 @@ namespace Microsoft.Graph
 
             using (var response = await this.SendRequestAsync(null, cancellationToken).ConfigureAwait(false))
             {
-                var uploadResult = await this.responseHandler.HandleResponse<UploadSession>(response);
+                var uploadResult = await this.responseHandler.HandleResponse<UploadSession>(response).ConfigureAwait(false);
                 return uploadResult.UploadSession;
             }
         }

@@ -86,7 +86,7 @@ namespace Microsoft.Graph
             this.ContentType = CoreConstants.MimeTypeNames.Application.Stream;
             using (var response = await this.SendRequestAsync(stream, cancellationToken).ConfigureAwait(false))
             {
-                return await this.responseHandler.HandleResponse<T>(response);
+                return await this.responseHandler.HandleResponse<T>(response).ConfigureAwait(false);
             }
         }
 

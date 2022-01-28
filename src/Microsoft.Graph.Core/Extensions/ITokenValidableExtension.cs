@@ -43,7 +43,7 @@ namespace Microsoft.Graph
                 throw new ArgumentNullException(nameof(appIds));
 
             var configurationManager = new ConfigurationManager<OpenIdConnectConfiguration>(wellKnownUri, new OpenIdConnectConfigurationRetriever());
-            var openIdConfig = await configurationManager.GetConfigurationAsync();
+            var openIdConfig = await configurationManager.GetConfigurationAsync().ConfigureAwait(false);
             var handler = new JwtSecurityTokenHandler();
             var issuersToValidate = tenantIds.Select(x => $"{issuerPrefix}{x}/");
             var appIdsToValidate = appIds.Select(x => x.ToString());

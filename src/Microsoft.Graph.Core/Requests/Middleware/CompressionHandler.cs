@@ -49,12 +49,12 @@ namespace Microsoft.Graph
                 httpRequest.Headers.AcceptEncoding.Add(gzipQHeaderValue);
             }
 
-            HttpResponseMessage response = await base.SendAsync(httpRequest, cancellationToken);
+            HttpResponseMessage response = await base.SendAsync(httpRequest, cancellationToken).ConfigureAwait(false);
 
             // Decompress response content when Content-Encoding: gzip header is present.
             if (ShouldDecompressContent(response))
             {
-                StreamContent streamContent = new StreamContent(new GZipStream(await response.Content.ReadAsStreamAsync(), CompressionMode.Decompress));
+                StreamContent streamContent = new StreamContent(new GZipStream(await response.Content.ReadAsStreamAsync().ConfigureAwait(false), CompressionMode.Decompress));
                 // Copy Content Headers to the destination stream content
                 foreach (var httpContentHeader in response.Content.Headers)
                 {

@@ -133,7 +133,7 @@ namespace Microsoft.Graph
         {
             using (var response = await this.SendRequestAsync(serializableObject, cancellationToken, completionOption).ConfigureAwait(false))
             {
-                return await this.responseHandler.HandleResponse<T>(response);
+                return await this.responseHandler.HandleResponse<T>(response).ConfigureAwait(false);
             }
         }
         
@@ -152,7 +152,7 @@ namespace Microsoft.Graph
         {
             using (var response = await this.SendMultiPartRequestAsync(multipartContent, cancellationToken, completionOption).ConfigureAwait(false))
             {
-                return await this.responseHandler.HandleResponse<T>(response);
+                return await this.responseHandler.HandleResponse<T>(response).ConfigureAwait(false);
             }
         }
 
@@ -416,7 +416,7 @@ namespace Microsoft.Graph
                     });
             }
 
-            await Client.AuthenticationProvider.AuthenticateRequestAsync(request);
+            await Client.AuthenticationProvider.AuthenticateRequestAsync(request).ConfigureAwait(false);
         }
 
         /// <summary>
