@@ -230,6 +230,8 @@ namespace Microsoft.Graph
             return new Foundation.NSUrlSessionHandler { AllowAutoRedirect = false };
 #elif ANDROID
             return new Xamarin.Android.Net.AndroidClientHandler { Proxy = proxy, AllowAutoRedirect = false, AutomaticDecompression = DecompressionMethods.None };
+#elif NETFRAMEWORK
+            return new WinHttpHandler() { Proxy = proxy, AutomaticRedirection = false, AutomaticDecompression = DecompressionMethods.None };
 #else
             return new HttpClientHandler { Proxy = proxy, AllowAutoRedirect = false, AutomaticDecompression = DecompressionMethods.None };
 #endif
