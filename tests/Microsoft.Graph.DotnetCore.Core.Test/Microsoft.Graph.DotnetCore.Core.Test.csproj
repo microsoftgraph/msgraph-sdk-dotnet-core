@@ -43,6 +43,12 @@
 	<LanguageTargets>$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets</LanguageTargets>
   </PropertyGroup>
 
+    <ItemGroup>
+        <None Update="xunit.runner.json">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+
   <ItemGroup>
 	<PackageReference Include="System.Reflection.Emit" Version="4.7.0">
 	  <ExcludeAssets>all</ExcludeAssets>

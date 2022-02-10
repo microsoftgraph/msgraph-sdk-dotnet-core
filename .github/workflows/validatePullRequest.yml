@@ -31,11 +31,38 @@ jobs:
         shell: pwsh
 
       - name : Nuget Restore
-        run: msbuild -t:restore
+        run: msbuild -t:restore -m
 
       - name: Build Project
-        run: msbuild ${{ env.solutionName }}
+        run: msbuild ${{ env.solutionName }} -m
 
       - name: Test Project
         run: vstest.console.exe ./tests/Microsoft.Graph.DotnetCore.Core.Test/bin/Debug/netcoreapp3.1/Microsoft.Graph.DotnetCore.Core.Test.dll
-            
+
+      - name: Build Nuget Package
+        run: msbuild .\src\Microsoft.Graph.Core\Microsoft.Graph.Core.csproj -t:pack /p:Configuration=Release /p:IncludeSymbols=true /p:SymbolPackageFormat=snupkg -m
+
+      - name: Upload Nuget Package
+        uses: actions/upload-artifact@v2
+        with:
+          name: drop
+          path: |
+            ${{ env.relativePath }}/bin/Release/*.nupkg
+            ${{ env.relativePath }}/bin/Release/*.snupkg
+
+  deploy:
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/feature/3.0' }}
+    environment:
+      name: staging_feeds
+    runs-on: windows-latest
+    needs: [build]
+    steps:
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1.9.0
+        with:
+          dotnet-version: 6.0.x
+      - uses: actions/download-artifact@v2
+        with:
+          name: drop
+      - run: dotnet nuget push "*.nupkg" --skip-duplicate -s https://nuget.pkg.github.com/microsoftgraph/index.json -k ${{ secrets.PUBLISH_GH_TOKEN }}
+
