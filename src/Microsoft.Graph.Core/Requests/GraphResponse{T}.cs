@@ -5,6 +5,9 @@
 namespace Microsoft.Graph
 {
     using Microsoft.Kiota.Abstractions;
+    using Microsoft.Kiota.Abstractions.Serialization;
+    using System;
+    using System.Collections.Generic;
     using System.Net.Http;
     using System.Threading.Tasks;
 
@@ -26,9 +29,11 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets the deserialized object 
         /// </summary>
-        public async Task<T> GetResponseObjectAsync(IResponseHandler responseHandler)
+        /// <param name="responseHandler">The response handler to use for the reponse</param>
+        /// <param name="errorMappings">The errorMappings to use in the event of a non sucess request</param>
+        public async Task<T> GetResponseObjectAsync(IResponseHandler responseHandler, Dictionary<string, Func<IParsable>> errorMappings = null)
         {
-            return await responseHandler.HandleResponseAsync<HttpResponseMessage,T>(this.ToHttpResponseMessage());
+            return await responseHandler.HandleResponseAsync<HttpResponseMessage,T>(this.ToHttpResponseMessage(), errorMappings);
         }
     }
 }

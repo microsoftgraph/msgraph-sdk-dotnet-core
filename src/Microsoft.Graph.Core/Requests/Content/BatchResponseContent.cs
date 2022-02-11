@@ -91,10 +91,9 @@ namespace Microsoft.Graph
         {
             using (var httpResponseMessage = await GetResponseByIdAsync(requestId))
             {
-                await ValidateSuccessfulResponse(httpResponseMessage);
                 // return the deserialized object
                 responseHandler ??= new ResponseHandler<T>();
-                return await responseHandler.HandleResponseAsync<HttpResponseMessage,T>(httpResponseMessage);
+                return await responseHandler.HandleResponseAsync<HttpResponseMessage,T>(httpResponseMessage, null);
             }
         }
 
@@ -108,56 +107,10 @@ namespace Microsoft.Graph
         {
             using (var httpResponseMessage = await GetResponseByIdAsync(requestId)) 
             {
-                await ValidateSuccessfulResponse(httpResponseMessage);
                 using var stream = await httpResponseMessage.Content.ReadAsStreamAsync();
                 var memoryStream = new MemoryStream();
                 await stream.CopyToAsync(memoryStream);
                 return memoryStream;
-            }
-        }
-
-        /// <summary>
-        /// Validates the HttpResponse message is a successful response. Otherwise, throws a ServiceException with the error information
-        /// present in the response body.
-        /// </summary>
-        /// <param name="httpResponseMessage">The <see cref="HttpResponseMessage"/> to validate</param>
-        private async Task ValidateSuccessfulResponse(HttpResponseMessage httpResponseMessage)
-        {
-            if (!httpResponseMessage.IsSuccessStatusCode)
-            {
-                Error error;
-                string rawResponseBody = null;
-
-                //deserialize into an ErrorResponse as the result is not a success.
-                var errorResponseHandler = new ResponseHandler<ErrorResponse>();
-                ErrorResponse errorResponse = await errorResponseHandler.HandleResponseAsync<HttpResponseMessage,ErrorResponse>(httpResponseMessage);
-
-                if (errorResponse?.Error == null)
-                {
-                    if (httpResponseMessage.StatusCode == HttpStatusCode.NotFound)
-                    {
-                        error = new Error { Code = ErrorConstants.Codes.ItemNotFound };
-                    }
-                    else
-                    {
-                        error = new Error
-                        {
-                            Code = ErrorConstants.Codes.GeneralException,
-                            Message = ErrorConstants.Messages.UnexpectedExceptionResponse
-                        };
-                    }
-                }
-                else
-                {
-                    error = errorResponse.Error;
-                }
-
-                if (httpResponseMessage.Content?.Headers.ContentType.MediaType == CoreConstants.MimeTypeNames.Application.Json)
-                {
-                    rawResponseBody = await httpResponseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
-                }
-
-                throw new ServiceException(error, httpResponseMessage.Headers, httpResponseMessage.StatusCode, rawResponseBody);
             }
         }
 

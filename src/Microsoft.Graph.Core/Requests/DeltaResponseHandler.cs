@@ -13,6 +13,7 @@ namespace Microsoft.Graph
     using System.Text;
     using Microsoft.Kiota.Abstractions;
     using Microsoft.Kiota.Abstractions.Serialization;
+    using System;
 
     /// <summary>
     /// PREVIEW 
@@ -40,8 +41,9 @@ namespace Microsoft.Graph
         /// <typeparam name="NativeResponseType">The type of the response</typeparam>
         /// <typeparam name="ModelType">The type to return</typeparam>
         /// <param name="response">The HttpResponseMessage to handle</param>
+        /// <param name="errorMappings">The errorMappings to use in the event of failed requests</param>
         /// <returns></returns>
-        public async Task<ModelType> HandleResponseAsync<NativeResponseType, ModelType>(NativeResponseType response)
+        public async Task<ModelType> HandleResponseAsync<NativeResponseType, ModelType>(NativeResponseType response, Dictionary<string, Func<IParsable>> errorMappings)
         {
             if (response is HttpResponseMessage responseMessage && responseMessage.Content != null)
             {

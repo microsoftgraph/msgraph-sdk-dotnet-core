@@ -5,6 +5,8 @@
 namespace Microsoft.Graph.DotnetCore.Core.Test.Extensions
 {
     using Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels;
+    using Microsoft.Kiota.Abstractions.Serialization;
+    using Microsoft.Kiota.Serialization.Json;
     using System;
     using System.Security.Cryptography.X509Certificates;
     using System.Threading.Tasks;
@@ -50,6 +52,9 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Extensions
                                     "lbEJdiRhGrHv6I+MJd2Gx/1qBU6VO4N/vC/VL3uv5VY/zRcA4r4ff7m7nfsuwyz5JsLMIcQEx0LuKyy74XmayhpdDE1RlovO0+JkzFmMCMGCSqGSIb3DQEJFTEWBBRLlTU+CGrTcZZgas+DShRTLwPm2zA/BgkqhkiG9w0BCRQx" +
                                     "Mh4wAHIAaQBjAGgAbgBvAHQAaQBmAGkAYwBhAHQAaQBvAG4AcwBhAHAAcAAuAGMAbwBtMDEwITAJBgUrDgMCGgUABBShhhfLZmAOmqGltImT+9krDrQGAgQId7jD11L05jECAggA";
             this._certificate = new X509Certificate2(Convert.FromBase64String(certificateString), "rich");
+
+            // register the default serialization instance as the generator would.
+            ParseNodeFactoryRegistry.DefaultInstance.ContentTypeAssociatedFactories.TryAdd(CoreConstants.MimeTypeNames.Application.Json, new JsonParseNodeFactory());
         }
 
         [Fact]
