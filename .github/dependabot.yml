@@ -1,7 +1,15 @@
 version: 2
+registries:
+  nuget-github:
+    type: nuget-feed
+    url: https://nuget.pkg.github.com/microsoft/index.json
+    username: ${{secrets.PUBLISH_GH_USERNAME}}
+    password: ${{secrets.PUBLISH_GH_TOKEN}}
 updates:
 - package-ecosystem: nuget
   directory: "/"
+  registries:
+    - "*"
   schedule:
     interval: daily
   open-pull-requests-limit: 10
