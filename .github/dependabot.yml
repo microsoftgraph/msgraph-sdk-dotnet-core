@@ -9,7 +9,8 @@ updates:
 - package-ecosystem: nuget
   directory: "/"
   registries:
-    - "*"
+    - nuget-github
+  target-branch: feature/3.0
   schedule:
     interval: daily
   open-pull-requests-limit: 10

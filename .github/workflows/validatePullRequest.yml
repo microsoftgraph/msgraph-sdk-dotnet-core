@@ -24,6 +24,11 @@ jobs:
         with:
           nuget-version: '5.x'
 
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v1
+        with:
+          languages: csharp
+
       - name: Setup VSTest
         uses: darenm/Setup-VSTest@v1
 
@@ -38,6 +43,9 @@ jobs:
 
       - name: Test Project
         run: vstest.console.exe ./tests/Microsoft.Graph.DotnetCore.Core.Test/bin/Debug/netcoreapp3.1/Microsoft.Graph.DotnetCore.Core.Test.dll
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v1
 
       - name: Build Nuget Package
         run: msbuild .\src\Microsoft.Graph.Core\Microsoft.Graph.Core.csproj -t:pack /p:Configuration=Release /p:IncludeSymbols=true /p:SymbolPackageFormat=snupkg -m
