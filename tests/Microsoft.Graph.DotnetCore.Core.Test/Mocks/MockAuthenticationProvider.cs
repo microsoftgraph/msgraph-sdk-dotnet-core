@@ -5,11 +5,10 @@
 namespace Microsoft.Graph.DotnetCore.Core.Test.Mocks
 {
     using Moq;
-    using System.Net.Http;
-    using System.Net.Http.Headers;
     using System.Threading.Tasks;
     using Microsoft.Kiota.Abstractions.Authentication;
     using Microsoft.Kiota.Abstractions;
+    using System.Threading;
 
     public class MockAuthenticationProvider : Mock<IAuthenticationProvider>
     {
@@ -19,8 +18,8 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Mocks
             this.SetupAllProperties();
 
             this.Setup(
-                provider => provider.AuthenticateRequestAsync(It.IsAny<RequestInformation>()))
-                .Callback<RequestInformation>(r => r.Headers.Add(CoreConstants.Headers.Bearer, accessToken ?? "Default-Token"))
+                provider => provider.AuthenticateRequestAsync(It.IsAny<RequestInformation>(), It.IsAny<CancellationToken>()))
+                .Callback<RequestInformation, CancellationToken>((r, c)=> r.Headers.Add(CoreConstants.Headers.Bearer, accessToken ?? "Default-Token"))
                 .Returns(Task.FromResult(0));
         }
     }

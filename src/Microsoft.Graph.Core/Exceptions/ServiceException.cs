@@ -4,12 +4,13 @@
 
 namespace Microsoft.Graph
 {
+    using Microsoft.Kiota.Abstractions;
     using System;
 
     /// <summary>
     /// Graph service exception.
     /// </summary>
-    public class ServiceException : Exception
+    public class ServiceException : ApiException
     {
         /// <summary>
         /// Creates a new service exception.

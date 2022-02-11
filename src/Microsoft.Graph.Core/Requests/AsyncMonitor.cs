@@ -46,7 +46,7 @@ namespace Microsoft.Graph
             {
                 var requestInformation = new RequestInformation() { HttpMethod = Method.GET , UrlTemplate = this.monitorUrl};
                 var nativeResponseHandler = new NativeResponseHandler();
-                await this.client.RequestAdapter.SendNoContentAsync(requestInformation, nativeResponseHandler, cancellationToken).ConfigureAwait(false);
+                await this.client.RequestAdapter.SendNoContentAsync(requestInformation, nativeResponseHandler, cancellationToken:cancellationToken).ConfigureAwait(false);
                 using var responseMessage = nativeResponseHandler.Value as HttpResponseMessage;
 
                 // The monitor service will return an Accepted status for any monitor operation that hasn't completed.
