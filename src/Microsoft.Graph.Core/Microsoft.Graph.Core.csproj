@@ -27,6 +27,8 @@
 - Adds missing ConfigureAwait calls to resolve issues with blocking calls
 - Change default http request message version to http/2
 - Change default handler to WinHttpHandler for NetFramework clients to support http/2
+- Fix null reference exception on deserializing batch request items for non existent object
+- Fix for incorrect content type headers set for batch response content when the reponse type is not application/json
     </PackageReleaseNotes>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>

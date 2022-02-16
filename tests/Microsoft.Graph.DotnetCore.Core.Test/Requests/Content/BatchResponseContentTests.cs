@@ -111,7 +111,38 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
                     + "\"status\":409,"
                     + "\"headers\" : {\"Cache-Control\":\"no-cache\"},"
                     + "\"body\":{\"error\": {\"code\": \"20117\",\"message\": \"An item with this name already exists in this location.\",\"innerError\":{\"request-id\": \"nothing1b13-45cd-new-92be873c5781\",\"date\": \"2019-03-22T23:17:50\"}}}"
-                +"}]}";
+                +"}," 
+                + "{" +
+                    "\"id\": \"3\"," +
+                    "\"status\": 200," +
+                    "\"headers\": {" +
+                        "\"Cache-Control\": \"private\"," +
+                        "\"Content-Type\": \"image/jpeg\"," +
+                        "\"ETag\": \"BEB9D79C\"" +
+                    "}," +
+                    "\"body\": \"iVBORw0KGgoAAAANSUhEUgAAABkAAAAZCAYAAADE6YVjAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZ" +
+                        "SBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77" +
+                        "u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM" +
+                        "6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0x" +
+                        "NDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyL" +
+                        "zIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodH" +
+                        "RwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXA" +
+                        "vMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJj" +
+                        "ZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc" +
+                        "3RhbmNlSUQ9InhtcC5paWQ6MEVBMTczNDg3QzA5MTFFNjk3ODM5NjQyRjE2RjA3QTkiIHhtcE1NOkRvY3VtZW" +
+                        "50SUQ9InhtcC5kaWQ6MEVBMTczNDk3QzA5MTFFNjk3ODM5NjQyRjE2RjA3QTkiPiA8eG1wTU06RGVyaXZlZEZ" +
+                        "yb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDowRUExNzM0NjdDMDkxMUU2OTc4Mzk2NDJGMTZGMDdBOSIg" +
+                        "c3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDowRUExNzM0NzdDMDkxMUU2OTc4Mzk2NDJGMTZGMDdBOSIvPiA8L" +
+                        "3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PjjUms" +
+                        "sAAAGASURBVHjatJaxTsMwEIbpIzDA6FaMMPYJkDKzVYU+QFeEGPIKfYU8AETkCYI6wANkZQwIKRNDB1hA0Jr" +
+                        "f0rk6WXZ8BvWkb4kv99vn89kDrfVexBSYgVNwDA7AN+jAK3gEd+AlGMGIBFDgFvzouK3JV/lihQTOwLtOtw9w" +
+                        "IRG5pJn91Tbgqk9kSk7GViADrTD4HCyZ0NQnomi51sb0fUyCMQEbp2WpU67IjfNjwcYyoUDhjJVcZBjYBy40j" +
+                        "4wXgaobWoe8Z6Y80CJBwFpunepIzt2AUgFjtXXshNXjVmMh+K+zzp/CMs0CqeuzrxSRpbOKfdCkiMTS1VBQ41" +
+                        "uxMyQR2qbrXiiwYN3ACh1FDmsdK2Eu4J6Tlo31dYVtCY88h5ELZIJJ+IRMzBHfyJINrigNkt5VsRiub9nXICd" +
+                        "sYyVd2NcVvA3ScE5t2rb5JuEeyZnAhmLt9NK63vX1O5Pe8XaPSuGq1uTrfUgMEp9EJ+CQvr+BJ/AAKvAcCiAR" +
+                        "+bf9CjAAluzmdX4AEIIAAAAASUVORK5CYII=\"" +
+                    "}" +
+                "]}";
 
             HttpContent content = new StringContent(responseJSON);
             HttpResponseMessage httpResponseMessage = new HttpResponseMessage(HttpStatusCode.OK);
@@ -124,6 +155,17 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
             Assert.NotNull(response);
             Assert.Equal(HttpStatusCode.Conflict, response.StatusCode);
             Assert.True(response.Headers.CacheControl.NoCache);
+
+            // Read response object with different content type
+            HttpResponseMessage imageResponse = await batchResponseContent.GetResponseByIdAsync("3");
+
+            Assert.NotNull(imageResponse);
+            Assert.Equal(HttpStatusCode.OK, imageResponse.StatusCode);
+            Assert.Equal("image/jpeg", imageResponse.Content.Headers.ContentType.MediaType);
+
+            //try to get id that doesn't exist
+            var nonExistentMessage = await batchResponseContent.GetResponseByIdAsync("4");
+            Assert.Null(nonExistentMessage);
         }
 
         [Fact]
@@ -240,6 +282,11 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
             Assert.Equal("20117", serviceException.Error.Code);
             Assert.Equal(HttpStatusCode.Conflict, serviceException.StatusCode);//status 409
             Assert.NotNull(serviceException.RawResponseBody);
+
+            // Act by trying to fetch notbook that doesn't exist
+            TestNoteBook nonExistentnotebook = await batchResponseContent.GetResponseByIdAsync<TestNoteBook>("7");
+            // Assert we have a valid notebook object
+            Assert.Null(nonExistentnotebook);
         }
 
         [Fact]
