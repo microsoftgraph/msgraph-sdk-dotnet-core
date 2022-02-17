@@ -9,6 +9,7 @@ namespace Microsoft.Graph
     using System.IO;
     using System.Net;
     using System.Net.Http;
+    using System.Net.Http.Headers;
     using System.Text;
     using System.Text.Json;
     using System.Threading.Tasks;
@@ -56,7 +57,7 @@ namespace Microsoft.Graph
         public async Task<Dictionary<string, HttpResponseMessage>> GetResponsesAsync()
         {
             Dictionary<string, HttpResponseMessage> responseMessages = new Dictionary<string, HttpResponseMessage>();
-            jBatchResponseObject = jBatchResponseObject ?? await GetBatchResponseContentAsync();
+            jBatchResponseObject = jBatchResponseObject ?? await GetBatchResponseContentAsync().ConfigureAwait(false);
             if (jBatchResponseObject == null)
                 return responseMessages;
 
@@ -76,7 +77,7 @@ namespace Microsoft.Graph
         /// <returns>A <see cref="HttpResponseMessage"/> response object for a batch request.</returns>
         public async Task<HttpResponseMessage> GetResponseByIdAsync(string requestId)
         {
-            jBatchResponseObject = jBatchResponseObject ?? await GetBatchResponseContentAsync();
+            jBatchResponseObject = jBatchResponseObject ?? await GetBatchResponseContentAsync().ConfigureAwait(false);
             if (jBatchResponseObject == null)
                 return null;
 
@@ -101,12 +102,13 @@ namespace Microsoft.Graph
         /// <returns>A deserialized object of type T<see cref="HttpResponseMessage"/>.</returns>
         public async Task<T> GetResponseByIdAsync<T>(string requestId)
         {
-            using (var httpResponseMessage = await GetResponseByIdAsync(requestId))
-            {
-                await ValidateSuccessfulResponse(httpResponseMessage);
-                // return the deserialized object
-                return await ResponseHandler.HandleResponse<T>(httpResponseMessage);
-            }
+            using var httpResponseMessage = await GetResponseByIdAsync(requestId).ConfigureAwait(false);
+            if (httpResponseMessage == null)
+                return default;
+
+            await ValidateSuccessfulResponse(httpResponseMessage).ConfigureAwait(false);
+            // return the deserialized object
+            return await ResponseHandler.HandleResponse<T>(httpResponseMessage).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -117,14 +119,15 @@ namespace Microsoft.Graph
         /// <remarks> Stream should be dispose once done with.</remarks>
         public async Task<Stream> GetResponseStreamByIdAsync(string requestId)
         {
-            using (var httpResponseMessage = await GetResponseByIdAsync(requestId)) 
-            {
-                await ValidateSuccessfulResponse(httpResponseMessage);
-                using var stream = await httpResponseMessage.Content.ReadAsStreamAsync();
-                var memoryStream = new MemoryStream();
-                await stream.CopyToAsync(memoryStream);
-                return memoryStream;
-            }
+            using var httpResponseMessage = await GetResponseByIdAsync(requestId).ConfigureAwait(false);
+            if (httpResponseMessage == null)
+                return default;
+
+            await ValidateSuccessfulResponse(httpResponseMessage).ConfigureAwait(false);
+            using var stream = await httpResponseMessage.Content.ReadAsStreamAsync().ConfigureAwait(false);
+            var memoryStream = new MemoryStream();
+            await stream.CopyToAsync(memoryStream).ConfigureAwait(false);
+            return memoryStream;
         }
 
         /// <summary>
@@ -140,7 +143,7 @@ namespace Microsoft.Graph
                 string rawResponseBody = null;
 
                 //deserialize into an ErrorResponse as the result is not a success.
-                ErrorResponse errorResponse = await ResponseHandler.HandleResponse<ErrorResponse>(httpResponseMessage);
+                ErrorResponse errorResponse = await ResponseHandler.HandleResponse<ErrorResponse>(httpResponseMessage).ConfigureAwait(false);
 
                 if (errorResponse?.Error == null)
                 {
@@ -177,7 +180,7 @@ namespace Microsoft.Graph
         /// <returns></returns>
         public async Task<string> GetNextLinkAsync()
         {
-            jBatchResponseObject = jBatchResponseObject ?? await GetBatchResponseContentAsync();
+            jBatchResponseObject = jBatchResponseObject ?? await GetBatchResponseContentAsync().ConfigureAwait(false);
             if (jBatchResponseObject == null)
                 return null;
 
@@ -212,7 +215,14 @@ namespace Microsoft.Graph
             {
                 foreach (var headerKeyValue in headers.EnumerateObject())
                 {
-                    responseMessage.Headers.TryAddWithoutValidation(headerKeyValue.Name, headerKeyValue.Value.ToString());
+                    // try to add the header to the request message otherwise add it to the content message if the content is set
+                    if (!responseMessage.Headers.TryAddWithoutValidation(headerKeyValue.Name, headerKeyValue.Value.ToString()) && responseMessage.Content != null)
+                    {
+                        if(headerKeyValue.Name.Equals("Content-Type",StringComparison.OrdinalIgnoreCase))
+                            responseMessage.Content.Headers.ContentType = MediaTypeHeaderValue.Parse(headerKeyValue.Value.ToString()); // we do this to override the default and to allow content types with parameters e.g. Content-Type: application/json; odata=verbose
+                        else
+                            responseMessage.Content.Headers.TryAddWithoutValidation(headerKeyValue.Name, headerKeyValue.Value.ToString());// Try to add the headers we couldn't add to the HttpResponseMessage to the HttpContent
+                    }
                 }
             }
             return responseMessage;
@@ -229,9 +239,9 @@ namespace Microsoft.Graph
 
             try
             {
-                using (Stream streamContent = await this.batchResponseMessage.Content.ReadAsStreamAsync())
+                using (Stream streamContent = await this.batchResponseMessage.Content.ReadAsStreamAsync().ConfigureAwait(false))
                 {
-                    return await JsonDocument.ParseAsync(streamContent);
+                    return await JsonDocument.ParseAsync(streamContent).ConfigureAwait(false);
                 }
             }
             catch (Exception ex)

@@ -133,7 +133,7 @@ namespace Microsoft.Graph
         {
             using (var response = await this.SendRequestAsync(serializableObject, cancellationToken, completionOption).ConfigureAwait(false))
             {
-                return await this.responseHandler.HandleResponse<T>(response);
+                return await this.responseHandler.HandleResponse<T>(response).ConfigureAwait(false);
             }
         }
         
@@ -152,7 +152,7 @@ namespace Microsoft.Graph
         {
             using (var response = await this.SendMultiPartRequestAsync(multipartContent, cancellationToken, completionOption).ConfigureAwait(false))
             {
-                return await this.responseHandler.HandleResponse<T>(response);
+                return await this.responseHandler.HandleResponse<T>(response).ConfigureAwait(false);
             }
         }
 
@@ -304,7 +304,10 @@ namespace Microsoft.Graph
         public HttpRequestMessage GetHttpRequestMessage(CancellationToken cancellationToken)
         {
             var queryString = this.BuildQueryString();
-            var request = new HttpRequestMessage(new HttpMethod(this.Method.ToString()), string.Concat(this.RequestUrl, queryString));
+            var request = new HttpRequestMessage(new HttpMethod(this.Method.ToString()), string.Concat(this.RequestUrl, queryString))
+            {
+                Version = new Version(2, 0) // default to Http/2. The http client should use the lower version in case of any issues.
+            };
             this.AddHeadersToRequest(request);
             this.AddRequestContextToRequest(request, cancellationToken);
             return request;
@@ -416,7 +419,7 @@ namespace Microsoft.Graph
                     });
             }
 
-            await Client.AuthenticationProvider.AuthenticateRequestAsync(request);
+            await Client.AuthenticationProvider.AuthenticateRequestAsync(request).ConfigureAwait(false);
         }
 
         /// <summary>

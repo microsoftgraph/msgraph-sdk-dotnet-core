@@ -43,11 +43,11 @@ namespace Microsoft.Graph
             {
                 // Gets the response string with response headers and status code
                 // set on the response body object.
-                var responseString = await GetResponseString(response);
+                var responseString = await GetResponseString(response).ConfigureAwait(false);
 
                 // Get the response body object with the change list 
                 // set on each response item.
-                var responseWithChangelist = await GetResponseBodyWithChangelist(responseString);
+                var responseWithChangelist = await GetResponseBodyWithChangelist(responseString).ConfigureAwait(false);
 
                 return this.serializer.DeserializeObject<T>(responseWithChangelist);
             }
@@ -106,7 +106,7 @@ namespace Microsoft.Graph
 
                 foreach (var deltaObject in pageOfDeltaObjects.EnumerateArray())
                 {
-                    var updatedObjectJsonDocument = await DiscoverChangedProperties(deltaObject);
+                    var updatedObjectJsonDocument = await DiscoverChangedProperties(deltaObject).ConfigureAwait(false);
                     updatedObjectsWithChangeList.Add(updatedObjectJsonDocument.RootElement);
                 }
 
@@ -130,7 +130,7 @@ namespace Microsoft.Graph
             var changes = new List<string>();
 
             // Get the list of changed properties on the item.
-            await GetObjectProperties(responseItem, changes);
+            await GetObjectProperties(responseItem, changes).ConfigureAwait(false);
 
             // Add the changes object to the response item.
             var response = AddOrReplacePropertyToObject(responseItem, "changes", changes);
@@ -159,7 +159,7 @@ namespace Microsoft.Graph
                     case JsonValueKind.Object:
                     {
                         string parent = parentName + property.Name;
-                        await GetObjectProperties(property.Value, changes, parent);
+                        await GetObjectProperties(property.Value, changes, parent).ConfigureAwait(false);
                         break;
                     }
                     case JsonValueKind.Array:
@@ -182,7 +182,7 @@ namespace Microsoft.Graph
 
                             if (arrayItem.ValueKind == JsonValueKind.Object)
                             {
-                                await GetObjectProperties(arrayItem, changes, parentWithIndex);
+                                await GetObjectProperties(arrayItem, changes, parentWithIndex).ConfigureAwait(false);
                             }
                             else // Assuming that this is a Value item.
                             {

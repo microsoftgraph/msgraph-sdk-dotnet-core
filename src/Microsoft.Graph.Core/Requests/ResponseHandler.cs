@@ -34,7 +34,7 @@ namespace Microsoft.Graph
         {
             if (response.Content != null)
             {
-                using (var responseStream = await response.Content.ReadAsStreamAsync())
+                using (var responseStream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false))
                 {
                     return serializer.DeserializeObject<T>(responseStream);
                 }

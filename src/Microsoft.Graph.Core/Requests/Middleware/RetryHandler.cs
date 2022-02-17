@@ -56,12 +56,12 @@ namespace Microsoft.Graph
         {
             RetryOption = httpRequest.GetMiddlewareOption<RetryHandlerOption>() ?? RetryOption;
 
-            var response = await base.SendAsync(httpRequest, cancellationToken);
+            var response = await base.SendAsync(httpRequest, cancellationToken).ConfigureAwait(false);
 
             // Check whether retries are permitted and that the MaxRetry value is a non - negative, non - zero value
             if (httpRequest.IsBuffered() && RetryOption.MaxRetry > 0 && (ShouldRetry(response) || RetryOption.ShouldRetry(RetryOption.Delay, 0, response)))
             {
-                response = await SendRetryAsync(response, cancellationToken);
+                response = await SendRetryAsync(response, cancellationToken).ConfigureAwait(false);
             }
 
             return response;
@@ -84,7 +84,7 @@ namespace Microsoft.Graph
                 // before retry attempt and before the TooManyRetries ServiceException.
                 if (response.Content != null)
                 {
-                    await response.Content.ReadAsByteArrayAsync();
+                    await response.Content.ReadAsByteArrayAsync().ConfigureAwait(false);
                 }
 
                 // Call Delay method to get delay time from response's Retry-After header or by exponential backoff 
@@ -104,17 +104,17 @@ namespace Microsoft.Graph
                 }
 
                 // general clone request with internal CloneAsync (see CloneAsync for details) extension method 
-                var request = await response.RequestMessage.CloneAsync();
+                var request = await response.RequestMessage.CloneAsync().ConfigureAwait(false);
 
                 // Increase retryCount and then update Retry-Attempt in request header
                 retryCount++;
                 AddOrUpdateRetryAttempt(request, retryCount);
 
                 // Delay time
-                await delay;
+                await delay.ConfigureAwait(false);
 
                 // Call base.SendAsync to send the request
-                response = await base.SendAsync(request, cancellationToken);
+                response = await base.SendAsync(request, cancellationToken).ConfigureAwait(false);
 
                 if (!(request.IsBuffered() && (ShouldRetry(response) || RetryOption.ShouldRetry(RetryOption.Delay, retryCount, response))))
                 {
@@ -126,7 +126,7 @@ namespace Microsoft.Graph
             // before retry attempt and before the TooManyRetries ServiceException.
             if (response.Content != null)
             {
-                await response.Content.ReadAsByteArrayAsync();
+                await response.Content.ReadAsByteArrayAsync().ConfigureAwait(false);
             }
             
             throw new ServiceException (

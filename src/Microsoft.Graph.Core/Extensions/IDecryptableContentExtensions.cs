@@ -32,7 +32,7 @@ namespace Microsoft.Graph
             if (certificateProvider == null)
                 throw new ArgumentNullException(nameof(certificateProvider));
 
-            return JsonSerializer.Deserialize<T>(await encryptedContent.DecryptAsync(certificateProvider));
+            return JsonSerializer.Deserialize<T>(await encryptedContent.DecryptAsync(certificateProvider).ConfigureAwait(false));
         }
 
         /// <summary>
@@ -52,7 +52,7 @@ namespace Microsoft.Graph
             if (certificateProvider == null)
                 throw new ArgumentNullException(nameof(certificateProvider));
 
-            using var certificate = await certificateProvider(encryptedContent.EncryptionCertificateId, encryptedContent.EncryptionCertificateThumbprint);
+            using var certificate = await certificateProvider(encryptedContent.EncryptionCertificateId, encryptedContent.EncryptionCertificateThumbprint).ConfigureAwait(false);
             using var rsaPrivateKey = certificate.GetRSAPrivateKey();
             var decryptedSymmetricKey = rsaPrivateKey.Decrypt(Convert.FromBase64String(encryptedContent.DataKey), RSAEncryptionPadding.OaepSHA1);
             using var hashAlg = new HMACSHA256(decryptedSymmetricKey);
