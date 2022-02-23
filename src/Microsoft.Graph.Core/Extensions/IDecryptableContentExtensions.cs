@@ -34,7 +34,7 @@ namespace Microsoft.Graph
             if (certificateProvider == null)
                 throw new ArgumentNullException(nameof(certificateProvider));
 
-            var stringContent = await encryptedContent.DecryptAsync(certificateProvider);
+            var stringContent = await encryptedContent.DecryptAsync(certificateProvider).ConfigureAwait(false);
             using var contentStream = new MemoryStream(Encoding.UTF8.GetBytes(stringContent));
             var parseNodeFactory = ParseNodeFactoryRegistry.DefaultInstance;
             var rootNode = parseNodeFactory.GetRootParseNode(CoreConstants.MimeTypeNames.Application.Json, contentStream);
@@ -58,7 +58,7 @@ namespace Microsoft.Graph
             if (certificateProvider == null)
                 throw new ArgumentNullException(nameof(certificateProvider));
 
-            using var certificate = await certificateProvider(encryptedContent.EncryptionCertificateId, encryptedContent.EncryptionCertificateThumbprint);
+            using var certificate = await certificateProvider(encryptedContent.EncryptionCertificateId, encryptedContent.EncryptionCertificateThumbprint).ConfigureAwait(false);
             using var rsaPrivateKey = certificate.GetRSAPrivateKey();
             var decryptedSymmetricKey = rsaPrivateKey.Decrypt(Convert.FromBase64String(encryptedContent.DataKey), RSAEncryptionPadding.OaepSHA1);
             using var hashAlg = new HMACSHA256(decryptedSymmetricKey);

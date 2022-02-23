@@ -33,7 +33,7 @@ namespace Microsoft.Graph
         /// <param name="errorMappings">The errorMappings to use in the event of a non sucess request</param>
         public async Task<T> GetResponseObjectAsync(IResponseHandler responseHandler, Dictionary<string, Func<IParsable>> errorMappings = null)
         {
-            return await responseHandler.HandleResponseAsync<HttpResponseMessage,T>(this.ToHttpResponseMessage(), errorMappings);
+            return await responseHandler.HandleResponseAsync<HttpResponseMessage,T>(this.ToHttpResponseMessage(), errorMappings).ConfigureAwait(false);
         }
     }
 }

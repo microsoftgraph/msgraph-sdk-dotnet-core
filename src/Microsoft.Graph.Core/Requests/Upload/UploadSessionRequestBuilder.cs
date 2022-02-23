@@ -62,8 +62,8 @@ namespace Microsoft.Graph
         {
             var requestInformation = this.CreateGetRequestInformationAsync();
             var responseHandler = new NativeResponseHandler();
-            await this.requestAdapter.SendNoContentAsync(requestInformation, responseHandler, cancellationToken: cancellationToken);
-            var uploadResult = await this.responseHandler.HandleResponse<UploadSession>(responseHandler.Value as HttpResponseMessage);
+            await this.requestAdapter.SendNoContentAsync(requestInformation, responseHandler, cancellationToken: cancellationToken).ConfigureAwait(false);
+            var uploadResult = await this.responseHandler.HandleResponse<UploadSession>(responseHandler.Value as HttpResponseMessage).ConfigureAwait(false);
             return uploadResult.UploadSession;
         }
 

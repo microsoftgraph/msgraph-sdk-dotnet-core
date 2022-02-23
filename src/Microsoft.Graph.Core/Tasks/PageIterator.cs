@@ -182,7 +182,7 @@ namespace Microsoft.Graph
         /// a request.</exception>
         public async Task IterateAsync()
         {
-            await IterateAsync(new CancellationToken());
+            await IterateAsync(new CancellationToken()).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -198,7 +198,7 @@ namespace Microsoft.Graph
             if (State == PagingState.Delta)
             {
                 // Make a call to get the next page of results and add items to queue. 
-                await InterpageIterateAsync(token);
+                await InterpageIterateAsync(token).ConfigureAwait(false);
             }
 
             // Iterate over the contents of queue. The queue could be from the initial page
@@ -210,7 +210,7 @@ namespace Microsoft.Graph
             while (shouldContinueInterpageIteration && !token.IsCancellationRequested)
             {
                 // Make a call to get the next page of results and add items to queue. 
-                await InterpageIterateAsync(token);
+                await InterpageIterateAsync(token).ConfigureAwait(false);
 
                 // Iterate over items added to the queue by InterpageIterateAsync and
                 // determine whether there are more pages to request.
@@ -224,7 +224,7 @@ namespace Microsoft.Graph
         /// <returns>The task object that represents the results of this asynchronous operation.</returns>
         public async Task ResumeAsync()
         {
-            await ResumeAsync(new CancellationToken());
+            await ResumeAsync(new CancellationToken()).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -236,7 +236,7 @@ namespace Microsoft.Graph
         /// a request.</exception>
         public async Task ResumeAsync(CancellationToken token)
         {
-            await IterateAsync(token);
+            await IterateAsync(token).ConfigureAwait(false);
         }
 
         /// <summary>

@@ -26,7 +26,10 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
         public PageIteratorTests()
         {
             this.mockRequestAdapter = new Mock<IRequestAdapter>(MockBehavior.Strict);
-            this.baseClient = new Mock<BaseClient>(this.mockRequestAdapter.Object).Object;
+            var mockClient = new Mock<BaseClient>(this.mockRequestAdapter.Object);
+            mockClient.SetupGet((client) => client.RequestAdapter).Returns(mockRequestAdapter.Object);
+            this.baseClient = mockClient.Object;
+            
         }
 
         [Fact]
