@@ -22,7 +22,7 @@
     <AssemblyOriginatorKeyFile>35MSSharedLib1024.snk</AssemblyOriginatorKeyFile>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <VersionPrefix>3.0.0</VersionPrefix>
-    <VersionSuffix>preview</VersionSuffix>
+    <VersionSuffix>preview.1</VersionSuffix>
     <PackageReleaseNotes>
     </PackageReleaseNotes>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
