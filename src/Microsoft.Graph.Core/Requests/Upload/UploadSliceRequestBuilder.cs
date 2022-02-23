@@ -73,8 +73,8 @@ namespace Microsoft.Graph
         {
             var requestInformation = this.CreatePutRequestInformationAsync(stream);
             var responseHandler = new NativeResponseHandler();
-            await this.RequestAdapter.SendNoContentAsync(requestInformation, responseHandler, cancellationToken: cancellationToken);
-            return await this.ResponseHandler.HandleResponse<T>(responseHandler.Value as HttpResponseMessage);
+            await this.RequestAdapter.SendNoContentAsync(requestInformation, responseHandler, cancellationToken: cancellationToken).ConfigureAwait(false);
+            return await this.ResponseHandler.HandleResponse<T>(responseHandler.Value as HttpResponseMessage).ConfigureAwait(false);
         }
 
         /// <summary>

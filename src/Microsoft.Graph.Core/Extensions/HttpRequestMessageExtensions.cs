@@ -63,7 +63,7 @@ namespace Microsoft.Graph
                         t.Result.Seek(0, SeekOrigin.Begin);
 
                     newRequest.Content = new StreamContent(t.Result);
-                });
+                }).ConfigureAwait(false);
 
                 // Copy content headers.
                 if (originalRequest.Content.Headers != null)

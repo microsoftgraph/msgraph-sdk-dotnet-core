@@ -185,12 +185,12 @@ namespace Microsoft.Graph
                 writer.WriteStartArray();
                 foreach (KeyValuePair<string, BatchRequestStep> batchRequestStep in BatchRequestSteps)
                 {
-                    await WriteBatchRequestStepAsync(batchRequestStep.Value, writer);
+                    await WriteBatchRequestStepAsync(batchRequestStep.Value, writer).ConfigureAwait(false);
                 }
                 writer.WriteEndArray();
 
                 writer.WriteEndObject();//close the root object
-                await writer.FlushAsync();
+                await writer.FlushAsync().ConfigureAwait(false);
 
                 //Reset the position since we want the caller to use this stream
                 stream.Position = 0;
@@ -256,7 +256,7 @@ namespace Microsoft.Graph
             if (batchRequestStep.Request != null && batchRequestStep.Request.Content != null)
             {
                 writer.WritePropertyName(CoreConstants.BatchRequest.Body);
-                using (JsonDocument content = await GetRequestContentAsync(batchRequestStep.Request))
+                using (JsonDocument content = await GetRequestContentAsync(batchRequestStep.Request).ConfigureAwait(false))
                 {
                     content.WriteTo(writer);
                 }
@@ -268,8 +268,8 @@ namespace Microsoft.Graph
         {
             try
             {
-                HttpRequestMessage clonedRequest = await request.CloneAsync();
-                using (Stream streamContent = await clonedRequest.Content.ReadAsStreamAsync())
+                HttpRequestMessage clonedRequest = await request.CloneAsync().ConfigureAwait(false);
+                using (Stream streamContent = await clonedRequest.Content.ReadAsStreamAsync().ConfigureAwait(false))
                 {
                     return JsonDocument.Parse(streamContent);
                 }
@@ -314,9 +314,9 @@ namespace Microsoft.Graph
         /// <returns></returns>
         protected override async Task SerializeToStreamAsync(Stream stream, TransportContext context)
         {
-            using (Stream batchContent = await GetBatchRequestContentAsync())
+            using (Stream batchContent = await GetBatchRequestContentAsync().ConfigureAwait(false))
             {
-                await batchContent.CopyToAsync(stream);
+                await batchContent.CopyToAsync(stream).ConfigureAwait(false);
             }
         }
 

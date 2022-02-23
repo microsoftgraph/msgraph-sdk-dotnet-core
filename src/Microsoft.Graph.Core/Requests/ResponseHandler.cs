@@ -41,8 +41,8 @@ namespace Microsoft.Graph
         {
             if (response is HttpResponseMessage responseMessage && responseMessage.Content != null)
             {
-                await ValidateSuccessfulResponse(responseMessage, errorMappings);
-                using var responseStream = await responseMessage.Content.ReadAsStreamAsync();
+                await ValidateSuccessfulResponse(responseMessage, errorMappings).ConfigureAwait(false);
+                using var responseStream = await responseMessage.Content.ReadAsStreamAsync().ConfigureAwait(false);
                 if (typeof(T).IsAssignableFrom(typeof(ModelType)))
                 {
                     var jsonParseNode = _jsonParseNodeFactory.GetRootParseNode(responseMessage.Content.Headers?.ContentType?.MediaType?.ToLowerInvariant(), responseStream);
@@ -70,7 +70,7 @@ namespace Microsoft.Graph
 
             var statusCodeAsInt = (int)httpResponseMessage.StatusCode;
             var statusCodeAsString = statusCodeAsInt.ToString();
-            using var responseStream = await httpResponseMessage.Content.ReadAsStreamAsync();
+            using var responseStream = await httpResponseMessage.Content.ReadAsStreamAsync().ConfigureAwait(false);
             var rootNode = _jsonParseNodeFactory.GetRootParseNode(httpResponseMessage.Content.Headers?.ContentType?.MediaType?.ToLowerInvariant(), responseStream);
             Func<IParsable> errorFactory;
             if (errorMapping == null ||
