@@ -76,7 +76,7 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets the <see cref="IRequestAdapter"/> for sending requests.
         /// </summary>
-        protected internal IRequestAdapter RequestAdapter { get; set; }
+        protected internal virtual IRequestAdapter RequestAdapter { get; set; }
 
         /// <summary>
         /// Gets the <see cref="BatchRequestBuilder"/> for building batch Requests
