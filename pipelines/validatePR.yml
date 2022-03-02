@@ -58,6 +58,11 @@ steps:
   inputs:
     command: 'restore'
 
+# windows-latest image removes this from windows 2022
+- pwsh: .\sdkmanager "platforms;android-26"
+  displayName: 'Install Xamarin dependencies'
+  workingDirectory: $(ANDROID_HOME)\tools\bin\
+
 - task: MSBuild@1
   displayName: 'Build solution to run unit test'
   inputs:
