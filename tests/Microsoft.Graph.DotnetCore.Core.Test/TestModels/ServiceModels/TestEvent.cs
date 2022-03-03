@@ -81,10 +81,10 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
                 {"@odata.type", (o,n) => { (o as TestEvent).ODataType = n.GetStringValue(); } },
                 {"id", (o,n) => { (o as TestEvent).Id = n.GetStringValue(); } },
                 {"subject", (o,n) => { (o as TestEvent).Subject = n.GetStringValue(); } },
-                {"body", (o,n) => { (o as TestEvent).Body = n.GetObjectValue<TestItemBody>(); } },
-                {"end", (o,n) => { (o as TestEvent).End = n.GetObjectValue<TestDateTimeTimeZone>(); } },
-                {"start", (o,n) => { (o as TestEvent).Start = n.GetObjectValue<TestDateTimeTimeZone>(); } },
-                {"attendees", (o,n) => { (o as TestEvent).Attendees = n.GetCollectionOfObjectValues<TestAttendee>(); } },
+                {"body", (o,n) => { (o as TestEvent).Body = n.GetObjectValue<TestItemBody>(TestItemBody.CreateFromDiscriminatorValue); } },
+                {"end", (o,n) => { (o as TestEvent).End = n.GetObjectValue<TestDateTimeTimeZone>(TestDateTimeTimeZone.CreateFromDiscriminatorValue); } },
+                {"start", (o,n) => { (o as TestEvent).Start = n.GetObjectValue<TestDateTimeTimeZone>(TestDateTimeTimeZone.CreateFromDiscriminatorValue); } },
+                {"attendees", (o,n) => { (o as TestEvent).Attendees = n.GetCollectionOfObjectValues<TestAttendee>(TestAttendee.CreateFromDiscriminatorValue); } },
             };
         }
 
@@ -104,6 +104,16 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
             writer.WriteObjectValue("start", Start);
             writer.WriteCollectionOfObjectValues("attendees", Attendees);
             writer.WriteAdditionalData(AdditionalData);
+        }
+
+        /// <summary>
+        /// Creates a new instance of the appropriate class based on discriminator value
+        /// <param name="parseNode">The parse node to use to read the discriminator value and create the object</param>
+        /// </summary>
+        public static TestEvent CreateFromDiscriminatorValue(IParseNode parseNode)
+        {
+            _ = parseNode ?? throw new ArgumentNullException(nameof(parseNode));
+            return new TestEvent();
         }
     }
 }

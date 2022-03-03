@@ -21,7 +21,7 @@ namespace Microsoft.Graph
     /// </summary>
     /// <typeparam name="TEntity">The Microsoft Graph entity type returned in the result set.</typeparam>
     /// <typeparam name="TCollectionPage">The Microsoft Graph collection response type returned in the collection response.</typeparam>
-    public class PageIterator<TEntity, TCollectionPage> where TCollectionPage : IParsable
+    public class PageIterator<TEntity, TCollectionPage> where TCollectionPage : IParsable,new()
     {
         private BaseClient _client;
         private TCollectionPage _currentPage;
@@ -151,7 +151,7 @@ namespace Microsoft.Graph
                 };
                 // if we have a request configurator, modify the request as desired then execute it to get the next page
                 nextPageRequestInformation = _requestConfigurator == null ? nextPageRequestInformation : _requestConfigurator(nextPageRequestInformation);
-                _currentPage = await _client.RequestAdapter.SendAsync<TCollectionPage>(nextPageRequestInformation,cancellationToken:token);
+                _currentPage = await _client.RequestAdapter.SendAsync<TCollectionPage>(nextPageRequestInformation, (parseNode) => new TCollectionPage(), cancellationToken:token);
 
                 var pageItems = ExtractEntityListFromParsable(_currentPage);
                 // Add all of the items returned in the response to the queue.

@@ -44,7 +44,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels
             {
                 {"enumType", (o,n) => { (o as DerivedTypeClass).EnumType = n.GetEnumValue<EnumType>(); } },
                 {"name", (o,n) => { (o as DerivedTypeClass).Name = n.GetStringValue(); } },
-                {"memorableDates", (o,n) => { (o as DerivedTypeClass).MemorableDates = n.GetCollectionOfObjectValues<DateTestClass>(); } },
+                {"memorableDates", (o,n) => { (o as DerivedTypeClass).MemorableDates = n.GetCollectionOfObjectValues<DateTestClass>(DateTestClass.CreateFromDiscriminatorValue); } },
                 {"link", (o,n) => { (o as DerivedTypeClass).WebUrl = n.GetStringValue(); } },
             };
         }
@@ -63,6 +63,16 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels
             writer.WriteCollectionOfObjectValues("memorableDates", MemorableDates);
             writer.WriteStringValue("link", WebUrl);
             writer.WriteAdditionalData(AdditionalData);
+        }
+
+        /// <summary>
+        /// Creates a new instance of the appropriate class based on discriminator value
+        /// <param name="parseNode">The parse node to use to read the discriminator value and create the object</param>
+        /// </summary>
+        public static DerivedTypeClass CreateFromDiscriminatorValue(IParseNode parseNode)
+        {
+            _ = parseNode ?? throw new ArgumentNullException(nameof(parseNode));
+            return new DerivedTypeClass();
         }
     }
 }

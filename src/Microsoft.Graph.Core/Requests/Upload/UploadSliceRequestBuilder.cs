@@ -12,7 +12,7 @@ namespace Microsoft.Graph
     using System.Threading;
     using System.Threading.Tasks;
 
-    internal class UploadSliceRequestBuilder<T> where T : IParsable
+    internal class UploadSliceRequestBuilder<T> where T : IParsable,new()
     {
         private readonly UploadResponseHandler ResponseHandler;
         private readonly IRequestAdapter RequestAdapter;

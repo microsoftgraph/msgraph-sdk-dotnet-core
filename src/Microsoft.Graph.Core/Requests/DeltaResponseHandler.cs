@@ -22,7 +22,7 @@ namespace Microsoft.Graph
     /// deserializer can't express changes to null so you can now discover if a property
     /// has been set to null. This is intended for use with a Delta query scenario.
     /// </summary>
-    public class DeltaResponseHandler<T> : IResponseHandler where T : IParsable
+    public class DeltaResponseHandler<T> : IResponseHandler where T : IParsable, new()
     {
         private readonly IParseNodeFactory parseNodeFactory;
 
@@ -43,7 +43,7 @@ namespace Microsoft.Graph
         /// <param name="response">The HttpResponseMessage to handle</param>
         /// <param name="errorMappings">The errorMappings to use in the event of failed requests</param>
         /// <returns></returns>
-        public async Task<ModelType> HandleResponseAsync<NativeResponseType, ModelType>(NativeResponseType response, Dictionary<string, Func<IParsable>> errorMappings)
+        public async Task<ModelType> HandleResponseAsync<NativeResponseType, ModelType>(NativeResponseType response, Dictionary<string, ParsableFactory<IParsable>> errorMappings)
         {
             if (response is HttpResponseMessage responseMessage && responseMessage.Content != null)
             {
@@ -59,7 +59,7 @@ namespace Microsoft.Graph
                 if(typeof(T).IsAssignableFrom(typeof(ModelType)))
                 {
                     var responseParseNode = parseNodeFactory.GetRootParseNode(CoreConstants.MimeTypeNames.Application.Json, responseWithChangelistStream);
-                    return (ModelType)(object)responseParseNode.GetObjectValue<T>();
+                    return (ModelType)(object)responseParseNode.GetObjectValue<T>((parsable) => new T());
                 }
                 else
                 {

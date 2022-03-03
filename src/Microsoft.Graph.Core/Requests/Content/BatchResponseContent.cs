@@ -88,7 +88,7 @@ namespace Microsoft.Graph
         /// <param name="requestId">A batch request id.</param>
         /// <param name="responseHandler">ResponseHandler to use for the resonse</param>
         /// <returns>A deserialized object of type T<see cref="HttpResponseMessage"/>.</returns>
-        public async Task<T> GetResponseByIdAsync<T>(string requestId, IResponseHandler responseHandler = null) where T : IParsable
+        public async Task<T> GetResponseByIdAsync<T>(string requestId, IResponseHandler responseHandler = null) where T : IParsable, new()
         {
             using var httpResponseMessage = await GetResponseByIdAsync(requestId).ConfigureAwait(false);
             if (httpResponseMessage == null)

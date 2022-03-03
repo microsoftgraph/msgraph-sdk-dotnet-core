@@ -66,6 +66,16 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
+        /// Creates a new instance of the appropriate class based on discriminator value
+        /// <param name="parseNode">The parse node to use to read the discriminator value and create the object</param>
+        /// </summary>
+        public static ErrorDetail CreateFromDiscriminatorValue(IParseNode parseNode)
+        {
+            _ = parseNode ?? throw new ArgumentNullException(nameof(parseNode));
+            return new ErrorDetail();
+        }
+
+        /// <summary>
         /// Concatenates the error detail into a string.
         /// </summary>
         /// <returns>A string representation of an ErrorDetail object.</returns>

@@ -70,8 +70,8 @@ namespace Microsoft.Graph
                 {"code", (o,n) => { (o as Error).Code = n.GetStringValue(); } },
                 {"message", (o,n) => {(o as Error).Message = n.GetStringValue(); }},
                 {"target", (o,n) => {(o as Error).Target = n.GetStringValue(); }},
-                {"details", (o,n) => {(o as Error).Details = n.GetCollectionOfObjectValues<ErrorDetail>().ToList(); }},
-                {"innerError", (o,n) => {(o as Error).InnerError = n.GetObjectValue<Error>(); }}
+                {"details", (o,n) => {(o as Error).Details = n.GetCollectionOfObjectValues<ErrorDetail>(ErrorDetail.CreateFromDiscriminatorValue).ToList(); }},
+                {"innerError", (o,n) => {(o as Error).InnerError = n.GetObjectValue<Error>(Error.CreateFromDiscriminatorValue); }}
             };
         }
 
@@ -89,6 +89,16 @@ namespace Microsoft.Graph
             writer.WriteCollectionOfObjectValues<ErrorDetail>("details", Details);
             writer.WriteObjectValue<Error>("innerError", InnerError);
             writer.WriteAdditionalData(AdditionalData);
+        }
+
+        /// <summary>
+        /// Creates a new instance of the appropriate class based on discriminator value
+        /// <param name="parseNode">The parse node to use to read the discriminator value and create the object</param>
+        /// </summary>
+        public static Error CreateFromDiscriminatorValue(IParseNode parseNode)
+        {
+            _ = parseNode ?? throw new ArgumentNullException(nameof(parseNode));
+            return new Error();
         }
 
         /// <summary>

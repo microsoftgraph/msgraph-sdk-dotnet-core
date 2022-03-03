@@ -84,7 +84,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
                 {"displayName", (o,n) => { (o as TestUser).DisplayName = n.GetStringValue(); } },
                 {"state", (o,n) => { (o as TestUser).State = n.GetStringValue(); } },
                 {"surname", (o,n) => { (o as TestUser).Surname = n.GetStringValue(); } },
-                {"eventDeltas", (o,n) => { (o as TestUser).EventDeltas = n.GetCollectionOfObjectValues<TestEvent>().ToList(); } },
+                {"eventDeltas", (o,n) => { (o as TestUser).EventDeltas = n.GetCollectionOfObjectValues<TestEvent>(TestEvent.CreateFromDiscriminatorValue).ToList(); } },
             };
         }
 
@@ -104,6 +104,16 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
             writer.WriteStringValue("surname", Surname);
             writer.WriteCollectionOfObjectValues("eventDeltas", EventDeltas);
             writer.WriteAdditionalData(AdditionalData);
+        }
+
+        /// <summary>
+        /// Creates a new instance of the appropriate class based on discriminator value
+        /// <param name="parseNode">The parse node to use to read the discriminator value and create the object</param>
+        /// </summary>
+        public static TestUser CreateFromDiscriminatorValue(IParseNode parseNode)
+        {
+            _ = parseNode ?? throw new ArgumentNullException(nameof(parseNode));
+            return new TestUser();
         }
     }
 }

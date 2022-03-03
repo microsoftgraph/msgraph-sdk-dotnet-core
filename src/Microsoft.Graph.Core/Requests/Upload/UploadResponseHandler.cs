@@ -34,7 +34,7 @@ namespace Microsoft.Graph
         /// <typeparam name="T">The type to return</typeparam>
         /// <param name="response">The HttpResponseMessage to handle.</param>
         /// <returns></returns>
-        public async Task<UploadResult<T>> HandleResponse<T>(HttpResponseMessage response) where T : IParsable
+        public async Task<UploadResult<T>> HandleResponse<T>(HttpResponseMessage response) where T : IParsable,new()
         {
             if (response.Content == null)
             {
@@ -52,7 +52,7 @@ namespace Microsoft.Graph
                 if (!response.IsSuccessStatusCode)
                 {
                     var jsonParseNode = _parseNodeFactory.GetRootParseNode(response.Content.Headers?.ContentType?.MediaType?.ToLowerInvariant(), responseStream);
-                    ErrorResponse errorResponse = jsonParseNode.GetObjectValue<ErrorResponse>();
+                    ErrorResponse errorResponse = jsonParseNode.GetObjectValue<ErrorResponse>(ErrorResponse.CreateFromDiscriminatorValue);
                     Error error = errorResponse.Error;
                     string rawResponseBody = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                     // Throw exception to know something went wrong.
@@ -71,7 +71,7 @@ namespace Microsoft.Graph
                     if (responseStream.Length > 0) //system.text.json wont deserialize an empty string
                     {
                         var jsonParseNode = _parseNodeFactory.GetRootParseNode(response.Content.Headers?.ContentType?.MediaType?.ToLowerInvariant(), responseStream);
-                        uploadResult.ItemResponse = jsonParseNode.GetObjectValue<T>();
+                        uploadResult.ItemResponse = jsonParseNode.GetObjectValue<T>((parsable) => new T());
                     }
                     uploadResult.Location = response.Headers.Location;
                 }
@@ -84,7 +84,7 @@ namespace Microsoft.Graph
                      * hence we validate this by checking the NextExpectedRanges parameter which is present in an ongoing upload
                      */
                     var uploadSessionParseNode = _parseNodeFactory.GetRootParseNode(response.Content.Headers?.ContentType?.MediaType?.ToLowerInvariant(), responseStream);
-                    UploadSession uploadSession = uploadSessionParseNode.GetObjectValue<UploadSession>();
+                    UploadSession uploadSession = uploadSessionParseNode.GetObjectValue<UploadSession>(UploadSession.CreateFromDiscriminatorValue);
                     if (uploadSession?.NextExpectedRanges != null)
                     {
                         uploadResult.UploadSession = uploadSession;
@@ -94,7 +94,7 @@ namespace Microsoft.Graph
                         //Upload is most likely done as DriveItem info may come in a 200 response
                         responseStream.Position = 0; //reset 
                         var objectParseNode = _parseNodeFactory.GetRootParseNode(response.Content.Headers?.ContentType?.MediaType?.ToLowerInvariant(), responseStream);
-                        uploadResult.ItemResponse = objectParseNode.GetObjectValue<T>();
+                        uploadResult.ItemResponse = objectParseNode.GetObjectValue<T>((parsable) => new T());
                     }
                 }
 
