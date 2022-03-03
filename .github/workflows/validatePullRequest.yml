@@ -10,7 +10,7 @@ on:
 jobs:
   build:
     name: Build and Test
-    runs-on: windows-latest
+    runs-on: windows-2019 # windows-latest does not currently support code-QL
     env:
       solutionName: Microsoft.Graph.Core.sln
       relativePath: ./src/Microsoft.Graph.Core

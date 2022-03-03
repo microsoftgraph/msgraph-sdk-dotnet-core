@@ -44,7 +44,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
             return new Dictionary<string, Action<T, IParseNode>>
             {
                 {"@odata.type", (o,n) => { (o as TestRecipient).ODataType = n.GetStringValue(); } },
-                {"emailAddress", (o,n) => { (o as TestRecipient).EmailAddress = n.GetObjectValue<TestEmailAddress>(); } },
+                {"emailAddress", (o,n) => { (o as TestRecipient).EmailAddress = n.GetObjectValue<TestEmailAddress>(TestEmailAddress.CreateFromDiscriminatorValue); } },
             };
         }
 
@@ -59,6 +59,21 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
             writer.WriteStringValue("@odata.type", ODataType);
             writer.WriteObjectValue("emailAddress", EmailAddress);
             writer.WriteAdditionalData(AdditionalData);
+        }
+
+        /// <summary>
+        /// Creates a new instance of the appropriate class based on discriminator value
+        /// <param name="parseNode">The parse node to use to read the discriminator value and create the object</param>
+        /// </summary>
+        public static TestRecipient CreateFromDiscriminatorValue(IParseNode parseNode)
+        {
+            var mappingValueNode = parseNode.GetChildNode("@odata.type");
+            var mappingValue = mappingValueNode?.GetStringValue();
+            return mappingValue switch
+            {
+                "microsoft.graph.attendee" => new TestAttendee(),
+                _ => new TestRecipient()
+            };
         }
     }
 }

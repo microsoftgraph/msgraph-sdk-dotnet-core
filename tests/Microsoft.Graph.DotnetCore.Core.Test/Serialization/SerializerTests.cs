@@ -37,14 +37,14 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
 
             var memoryStream = new MemoryStream(Encoding.UTF8.GetBytes(stringToDeserialize));
             var parseNode = this.parseNodeFactory.GetRootParseNode(CoreConstants.MimeTypeNames.Application.Json,memoryStream);
-            var derivedType = parseNode.GetObjectValue<DerivedTypeClass>();
+            var derivedType = parseNode.GetObjectValue<DerivedTypeClass>(DerivedTypeClass.CreateFromDiscriminatorValue);
 
             Assert.NotNull(derivedType);
             Assert.Equal(id, derivedType.Id);
             Assert.Equal(name, derivedType.Name);
         }
 
-        [Fact(Skip = "Odata downcasting is still not yet supported")]
+        [Fact]
         public void DeserializeDerivedTypeFromAbstractParent()
         {
             var id = "id";
@@ -58,7 +58,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
             //The type information from "@odata.type" should lead to correctly deserializing to the derived type
             var memoryStream = new MemoryStream(Encoding.UTF8.GetBytes(stringToDeserialize));
             var parseNode = this.parseNodeFactory.GetRootParseNode(CoreConstants.MimeTypeNames.Application.Json, memoryStream);
-            var derivedType = parseNode.GetObjectValue<AbstractEntityType>() as DerivedTypeClass;
+            var derivedType = parseNode.GetObjectValue<AbstractEntityType>(AbstractEntityType.CreateFromDiscriminatorValue) as DerivedTypeClass;
 
             Assert.NotNull(derivedType);
             Assert.Equal(id, derivedType.Id);
@@ -79,7 +79,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
 
             var memoryStream = new MemoryStream(Encoding.UTF8.GetBytes(stringToDeserialize));
             var parseNode = this.parseNodeFactory.GetRootParseNode(CoreConstants.MimeTypeNames.Application.Json, memoryStream);
-            var instance = parseNode.GetObjectValue<DerivedTypeClass>();
+            var instance = parseNode.GetObjectValue<DerivedTypeClass>(DerivedTypeClass.CreateFromDiscriminatorValue);
 
             Assert.NotNull(instance);
             Assert.Equal(id, instance.Id);
@@ -102,7 +102,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
 
             var memoryStream = new MemoryStream(Encoding.UTF8.GetBytes(stringToDeserialize));
             var parseNode = this.parseNodeFactory.GetRootParseNode(CoreConstants.MimeTypeNames.Application.Json, memoryStream);
-            var instance = parseNode.GetObjectValue<DerivedTypeClass>();
+            var instance = parseNode.GetObjectValue<DerivedTypeClass>(DerivedTypeClass.CreateFromDiscriminatorValue);
 
             Assert.NotNull(instance);
             Assert.Equal(id, instance.Id);
@@ -124,7 +124,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
 
             var memoryStream = new MemoryStream(Encoding.UTF8.GetBytes(stringToDeserialize));
             var parseNode = this.parseNodeFactory.GetRootParseNode(CoreConstants.MimeTypeNames.Application.Json, memoryStream);
-            var instance = parseNode.GetObjectValue<DerivedTypeClass>();
+            var instance = parseNode.GetObjectValue<DerivedTypeClass>(DerivedTypeClass.CreateFromDiscriminatorValue);
 
             Assert.NotNull(instance);
             Assert.Equal(id, instance.Id);
@@ -142,7 +142,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
 
             var memoryStream = new MemoryStream(Encoding.UTF8.GetBytes(stringToDeserialize));
             var parseNode = this.parseNodeFactory.GetRootParseNode(CoreConstants.MimeTypeNames.Application.Json, memoryStream);
-            var deserializedObject = parseNode.GetObjectValue<DateTestClass>();
+            var deserializedObject = parseNode.GetObjectValue<DateTestClass>(DateTestClass.CreateFromDiscriminatorValue);
 
             Assert.Equal(2, deserializedObject.DateCollection.Count());
             Assert.True(deserializedObject.DateCollection.Any(
@@ -182,7 +182,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
             var serializedStream = jsonSerializerWriter.GetSerializedContent();
             // De serialize
             var parseNode = this.parseNodeFactory.GetRootParseNode(CoreConstants.MimeTypeNames.Application.Json, serializedStream);
-            var deserializedInstance = parseNode.GetObjectValue<DerivedTypeClass>();
+            var deserializedInstance = parseNode.GetObjectValue<DerivedTypeClass>(DerivedTypeClass.CreateFromDiscriminatorValue);
 
             Assert.Equal(derivedTypeInstance.Name ,deserializedInstance.Name);
             Assert.Equal(derivedTypeInstance.Id ,deserializedInstance.Id);
@@ -198,7 +198,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
 
             var memoryStream = new MemoryStream(Encoding.UTF8.GetBytes(stringToDeserialize));
             var parseNode = this.parseNodeFactory.GetRootParseNode(CoreConstants.MimeTypeNames.Application.Json, memoryStream);
-            var dateClass = parseNode.GetObjectValue<DateTestClass>();
+            var dateClass = parseNode.GetObjectValue<DateTestClass>(DateTestClass.CreateFromDiscriminatorValue);
 
             Assert.Equal(now.Year, dateClass.NullableDate.Value.Year);
             Assert.Equal(now.Month, dateClass.NullableDate.Value.Month);
@@ -222,7 +222,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
             // Act
             var memoryStream = new MemoryStream(Encoding.UTF8.GetBytes(resourceDataString));
             var parseNode = this.parseNodeFactory.GetRootParseNode(CoreConstants.MimeTypeNames.Application.Json, memoryStream);
-            var resourceData = parseNode.GetObjectValue<TestResourceData>();
+            var resourceData = parseNode.GetObjectValue<TestResourceData>(TestResourceData.CreateFromDiscriminatorValue);
 
             // Assert
             Assert.IsType<TestResourceData>(resourceData);
@@ -248,7 +248,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
 
             var memoryStream = new MemoryStream(Encoding.UTF8.GetBytes(stringToDeserialize));
             var parseNode = this.parseNodeFactory.GetRootParseNode(CoreConstants.MimeTypeNames.Application.Json, memoryStream);
-            var instance = parseNode.GetObjectValue<AbstractEntityType>();
+            var instance = parseNode.GetObjectValue<AbstractEntityType>(AbstractEntityType.CreateFromDiscriminatorValue);
 
             Assert.NotNull(instance);
             Assert.Equal(entityId, instance.Id);
@@ -283,7 +283,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
             // De serialize
             serializedStream.Position = 0; //reset the stream to be read again
             var parseNode = this.parseNodeFactory.GetRootParseNode(CoreConstants.MimeTypeNames.Application.Json, serializedStream);
-            var newInstance = parseNode.GetObjectValue<DerivedTypeClass>();
+            var newInstance = parseNode.GetObjectValue<DerivedTypeClass>(DerivedTypeClass.CreateFromDiscriminatorValue);
 
             Assert.NotNull(newInstance);
             Assert.Equal(instance.Id, instance.Id);

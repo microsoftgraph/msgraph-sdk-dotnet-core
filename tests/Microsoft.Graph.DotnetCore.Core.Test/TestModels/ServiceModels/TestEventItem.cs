@@ -51,7 +51,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
                 {"hasAttachments", (o,n) => { (o as TestEventItem).HasAttachments = n.GetBoolValue(); } },
                 {"hideAttendees", (o,n) => { (o as TestEventItem).HideAttendees = n.GetBoolValue(); } },
                 {"iCalUId", (o,n) => { (o as TestEventItem).ICalUId = n.GetStringValue(); } },
-                {"instances", (o,n) => { (o as TestEventItem).Instances = n.GetCollectionOfObjectValues<TestEventItem>().ToList(); } },
+                {"instances", (o,n) => { (o as TestEventItem).Instances = n.GetCollectionOfObjectValues<TestEventItem>(TestEventItem.CreateFromDiscriminatorValue).ToList(); } },
                 {"isAllDay", (o,n) => { (o as TestEventItem).IsAllDay = n.GetBoolValue(); } },
                 {"isCancelled", (o,n) => { (o as TestEventItem).IsCancelled = n.GetBoolValue(); } },
                 {"isDraft", (o,n) => { (o as TestEventItem).IsDraft = n.GetBoolValue(); } },
@@ -99,6 +99,16 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
             writer.WriteStringValue("subject", Subject);
             writer.WriteStringValue("transactionId", TransactionId);
             writer.WriteStringValue("webLink", WebLink);
+        }
+
+        /// <summary>
+        /// Creates a new instance of the appropriate class based on discriminator value
+        /// <param name="parseNode">The parse node to use to read the discriminator value and create the object</param>
+        /// </summary>
+        public static TestEventItem CreateFromDiscriminatorValue(IParseNode parseNode)
+        {
+            _ = parseNode ?? throw new ArgumentNullException(nameof(parseNode));
+            return new TestEventItem();
         }
     }
 }

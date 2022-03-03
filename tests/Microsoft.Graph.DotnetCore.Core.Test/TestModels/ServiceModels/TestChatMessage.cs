@@ -58,7 +58,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
                 {"createdDateTime", (o,n) => { (o as TestChatMessage).CreatedDateTime = n.GetDateTimeOffsetValue(); } },
                 {"deletedDateTime", (o,n) => { (o as TestChatMessage).DeletedDateTime = n.GetDateTimeOffsetValue(); } },
                 {"etag", (o,n) => { (o as TestChatMessage).Etag = n.GetStringValue(); } },
-                {"body", (o,n) => { (o as TestChatMessage).Body = n.GetObjectValue<TestItemBody>(); } },
+                {"body", (o,n) => { (o as TestChatMessage).Body = n.GetObjectValue<TestItemBody>(TestItemBody.CreateFromDiscriminatorValue); } },
             };
         }
 
@@ -76,6 +76,16 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
             writer.WriteStringValue("etag", Etag);
             writer.WriteObjectValue("body", Body);
             writer.WriteAdditionalData(AdditionalData);
+        }
+
+        /// <summary>
+        /// Creates a new instance of the appropriate class based on discriminator value
+        /// <param name="parseNode">The parse node to use to read the discriminator value and create the object</param>
+        /// </summary>
+        public static TestChatMessage CreateFromDiscriminatorValue(IParseNode parseNode)
+        {
+            _ = parseNode ?? throw new ArgumentNullException(nameof(parseNode));
+            return new TestChatMessage();
         }
     }
 }

@@ -16,7 +16,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// Provides method(s) to deserialize raw HTTP responses into strong types.
     /// </summary>
-    public class ResponseHandler<T> : IResponseHandler where T : IParsable
+    public class ResponseHandler<T> : IResponseHandler where T : IParsable,new()
     {
         private readonly IParseNodeFactory _jsonParseNodeFactory;
 
@@ -37,7 +37,7 @@ namespace Microsoft.Graph
         /// <param name="response">The HttpResponseMessage to handle</param>
         /// <param name="errorMappings">The errorMappings to use in the event of failed requests</param>
         /// <returns></returns>
-        public async Task<ModelType> HandleResponseAsync<NativeResponseType, ModelType>(NativeResponseType response, Dictionary<string, Func<IParsable>> errorMappings)
+        public async Task<ModelType> HandleResponseAsync<NativeResponseType, ModelType>(NativeResponseType response, Dictionary<string, ParsableFactory<IParsable>> errorMappings)
         {
             if (response is HttpResponseMessage responseMessage && responseMessage.Content != null)
             {
@@ -46,7 +46,7 @@ namespace Microsoft.Graph
                 if (typeof(T).IsAssignableFrom(typeof(ModelType)))
                 {
                     var jsonParseNode = _jsonParseNodeFactory.GetRootParseNode(responseMessage.Content.Headers?.ContentType?.MediaType?.ToLowerInvariant(), responseStream);
-                    return (ModelType)(object)jsonParseNode.GetObjectValue<T>();
+                    return (ModelType)(object)jsonParseNode.GetObjectValue<T>((parsable) => new T());
                 }
                 else
                 {
@@ -63,7 +63,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="httpResponseMessage">The <see cref="HttpResponseMessage"/> to validate</param>
         /// <param name="errorMapping">The errorMappings to use in the event of failed requests</param>
-        private async Task ValidateSuccessfulResponse(HttpResponseMessage httpResponseMessage, Dictionary<string, Func<IParsable>> errorMapping)
+        private async Task ValidateSuccessfulResponse(HttpResponseMessage httpResponseMessage, Dictionary<string, ParsableFactory<IParsable>> errorMapping)
         {
             if (httpResponseMessage.IsSuccessStatusCode)
                 return;
@@ -72,7 +72,7 @@ namespace Microsoft.Graph
             var statusCodeAsString = statusCodeAsInt.ToString();
             using var responseStream = await httpResponseMessage.Content.ReadAsStreamAsync().ConfigureAwait(false);
             var rootNode = _jsonParseNodeFactory.GetRootParseNode(httpResponseMessage.Content.Headers?.ContentType?.MediaType?.ToLowerInvariant(), responseStream);
-            Func<IParsable> errorFactory;
+            ParsableFactory <IParsable> errorFactory;
             if (errorMapping == null ||
                 !errorMapping.TryGetValue(statusCodeAsString, out errorFactory) &&
                 !(statusCodeAsInt >= 400 && statusCodeAsInt < 500 && errorMapping.TryGetValue("4XX", out errorFactory)) &&
@@ -81,7 +81,7 @@ namespace Microsoft.Graph
                 // We don't have an error mapping available to match. So default to using the odata specification
                 Error error;
                 string rawResponseBody = null;
-                ErrorResponse errorResponse = rootNode.GetObjectValue<ErrorResponse>();
+                ErrorResponse errorResponse = rootNode.GetObjectValue<ErrorResponse>(ErrorResponse.CreateFromDiscriminatorValue);
 
                 if (errorResponse?.Error == null)
                 {
@@ -109,7 +109,7 @@ namespace Microsoft.Graph
             else
             {
                 // Use the errorFactory to create an error response
-                var result = rootNode.GetErrorValue(errorFactory);
+                var result = rootNode.GetObjectValue(errorFactory);
                 if (result is not Exception ex)
                     throw new ApiException($"The server returned an unexpected status code and the error registered for this code failed to deserialize: {statusCodeAsString}");
                 else

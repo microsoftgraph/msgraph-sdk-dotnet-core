@@ -28,7 +28,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
         {
             return new Dictionary<string, Action<T, IParseNode>> {
                 {"@odata.nextLink", (o,n) => { (o as TestEventsResponse).NextLink = n.GetStringValue(); } },
-                {"value", (o,n) => { (o as TestEventsResponse).Value = n.GetCollectionOfObjectValues<TestEventItem>().ToList(); } },
+                {"value", (o,n) => { (o as TestEventsResponse).Value = n.GetCollectionOfObjectValues<TestEventItem>(TestEventItem.CreateFromDiscriminatorValue).ToList(); } },
             };
         }
         /// <summary>
@@ -41,6 +41,16 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
             writer.WriteStringValue("@odata.nextLink", NextLink);
             writer.WriteCollectionOfObjectValues<TestEventItem>("value", Value);
             writer.WriteAdditionalData(AdditionalData);
+        }
+
+        /// <summary>
+        /// Creates a new instance of the appropriate class based on discriminator value
+        /// <param name="parseNode">The parse node to use to read the discriminator value and create the object</param>
+        /// </summary>
+        public static TestEventsResponse CreateFromDiscriminatorValue(IParseNode parseNode)
+        {
+            _ = parseNode ?? throw new ArgumentNullException(nameof(parseNode));
+            return new TestEventsResponse();
         }
     }
 }

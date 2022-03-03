@@ -117,7 +117,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Exceptions
         {
             var stream = new MemoryStream(Encoding.UTF8.GetBytes(jsonErrorResponseBody));
             var rootNode = _jsonParseNodeFactory.GetRootParseNode(CoreConstants.MimeTypeNames.Application.Json, stream);
-            Error error = rootNode.GetObjectValue<ErrorResponse>().Error;
+            Error error = rootNode.GetObjectValue<ErrorResponse>(ErrorResponse.CreateFromDiscriminatorValue).Error;
 
             Assert.NotNull(error);
             Assert.Equal("BadRequest", error.Code);
@@ -155,7 +155,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Exceptions
 
             var stream = new MemoryStream(Encoding.UTF8.GetBytes(errorResponseWithNullException));
             var rootNode = _jsonParseNodeFactory.GetRootParseNode(CoreConstants.MimeTypeNames.Application.Json, stream);
-            Error error = rootNode.GetObjectValue<ErrorResponse>().Error;
+            Error error = rootNode.GetObjectValue<ErrorResponse>(ErrorResponse.CreateFromDiscriminatorValue).Error;
 
             // Assert we have deserialized the properties as expected.
             Assert.NotNull(error);

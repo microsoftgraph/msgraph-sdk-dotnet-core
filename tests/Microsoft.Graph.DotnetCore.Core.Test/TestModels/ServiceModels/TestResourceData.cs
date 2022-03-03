@@ -48,5 +48,16 @@ namespace Microsoft.Graph
             writer.WriteStringValue("@odata.type", ODataType);
             writer.WriteAdditionalData(AdditionalData);
         }
+
+
+        /// <summary>
+        /// Creates a new instance of the appropriate class based on discriminator value
+        /// <param name="parseNode">The parse node to use to read the discriminator value and create the object</param>
+        /// </summary>
+        public static TestResourceData CreateFromDiscriminatorValue(IParseNode parseNode)
+        {
+            _ = parseNode ?? throw new ArgumentNullException(nameof(parseNode));
+            return new TestResourceData();
+        }
     }
 }

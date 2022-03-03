@@ -32,7 +32,7 @@ namespace Microsoft.Graph
         {
             return new Dictionary<string, Action<T, IParseNode>>
             {
-                {"error", (o,n) => { (o as ErrorResponse).Error = n.GetObjectValue<Error>(); } }
+                {"error", (o,n) => { (o as ErrorResponse).Error = n.GetObjectValue<Error>(Error.CreateFromDiscriminatorValue); } }
             };
         }
 
@@ -46,6 +46,16 @@ namespace Microsoft.Graph
             _ = writer ?? throw new ArgumentNullException(nameof(writer));
             writer.WriteObjectValue("error", Error);
             writer.WriteAdditionalData(AdditionalData);
+        }
+
+        /// <summary>
+        /// Creates a new instance of the appropriate class based on discriminator value
+        /// <param name="parseNode">The parse node to use to read the discriminator value and create the object</param>
+        /// </summary>
+        public static ErrorResponse CreateFromDiscriminatorValue(IParseNode parseNode)
+        {
+            _ = parseNode ?? throw new ArgumentNullException(nameof(parseNode));
+            return new ErrorResponse();
         }
     }
 }

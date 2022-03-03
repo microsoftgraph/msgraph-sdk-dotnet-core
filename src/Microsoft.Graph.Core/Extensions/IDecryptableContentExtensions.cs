@@ -29,7 +29,7 @@ namespace Microsoft.Graph
         /// The second is the certificate thumbprint. The certificate WILL be disposed at the end of decryption.</param>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="certificateProvider"/> is null</exception>
         /// <returns>Decrypted content as the provided type.</returns>
-        public static async Task<T> DecryptAsync<T>(this IDecryptableContent encryptedContent, Func<string, string, Task<X509Certificate2>> certificateProvider) where T : IParsable
+        public static async Task<T> DecryptAsync<T>(this IDecryptableContent encryptedContent, Func<string, string, Task<X509Certificate2>> certificateProvider) where T : IParsable, new()
         {
             if (certificateProvider == null)
                 throw new ArgumentNullException(nameof(certificateProvider));
@@ -38,7 +38,7 @@ namespace Microsoft.Graph
             using var contentStream = new MemoryStream(Encoding.UTF8.GetBytes(stringContent));
             var parseNodeFactory = ParseNodeFactoryRegistry.DefaultInstance;
             var rootNode = parseNodeFactory.GetRootParseNode(CoreConstants.MimeTypeNames.Application.Json, contentStream);
-            return rootNode.GetObjectValue<T>();
+            return rootNode.GetObjectValue<T>((parsable) => new T()); ;
         }
 
         /// <summary>
