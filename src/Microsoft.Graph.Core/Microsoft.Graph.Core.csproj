@@ -103,6 +103,6 @@
     <PackageReference Include="Microsoft.Kiota.Abstractions" Version="1.0.31" />
     <PackageReference Include="Microsoft.Kiota.Authentication.Azure" Version="1.0.8" />
     <PackageReference Include="Microsoft.Kiota.Http.HttpClientLibrary" Version="1.0.22" />
-    <PackageReference Include="Microsoft.Kiota.Serialization.Json" Version="1.0.14" />
+    <PackageReference Include="Microsoft.Kiota.Serialization.Json" Version="1.0.15" />
   </ItemGroup>
 </Project>
