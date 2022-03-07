@@ -9,7 +9,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
     using System.Collections.Generic;
     using System.Text.Json.Serialization;
 
-    public partial class TestDriveItem : IParsable
+    public partial class TestDriveItem : IParsable, IAdditionalDataHolder
     {
         ///<summary>
         /// The Drive constructor

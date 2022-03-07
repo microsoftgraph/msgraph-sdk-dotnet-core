@@ -86,7 +86,7 @@ namespace Microsoft.Graph
         {
             if (string.IsNullOrEmpty(errorCode))
             {
-                throw new ArgumentException("errorCode cannot be null or empty", "errorCode");
+                throw new ArgumentException("errorCode cannot be null or empty", nameof(errorCode));
             }
 
             var currentError = this.Error;

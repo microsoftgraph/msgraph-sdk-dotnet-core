@@ -11,7 +11,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type AsyncOperationStatus.
     /// </summary>
-    public partial class AsyncOperationStatus: IParsable
+    public partial class AsyncOperationStatus: IParsable, IAdditionalDataHolder
     {
         /// <summary>
         /// Gets or sets operation.

@@ -11,7 +11,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The type ResourceData.
     /// </summary>
-    public partial class TestResourceData : IParsable
+    public partial class TestResourceData : IParsable, IAdditionalDataHolder
     {
 
         /// <summary>

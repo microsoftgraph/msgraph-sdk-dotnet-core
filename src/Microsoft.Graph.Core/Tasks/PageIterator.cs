@@ -21,7 +21,7 @@ namespace Microsoft.Graph
     /// </summary>
     /// <typeparam name="TEntity">The Microsoft Graph entity type returned in the result set.</typeparam>
     /// <typeparam name="TCollectionPage">The Microsoft Graph collection response type returned in the collection response.</typeparam>
-    public class PageIterator<TEntity, TCollectionPage> where TCollectionPage : IParsable,new()
+    public class PageIterator<TEntity, TCollectionPage> where TCollectionPage : IParsable,IAdditionalDataHolder,new()
     {
         private BaseClient _client;
         private TCollectionPage _currentPage;

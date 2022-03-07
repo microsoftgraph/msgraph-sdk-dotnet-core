@@ -15,7 +15,7 @@ namespace Microsoft.Graph
     /// Models OData protocol, 9.4 Error Response Body
     /// http://docs.oasis-open.org/odata/odata/v4.01/csprd05/part1-protocol/odata-v4.01-csprd05-part1-protocol.html#_Toc14172757
     /// </summary>
-    public class Error: IParsable
+    public class Error: IParsable, IAdditionalDataHolder
     {
         /// <summary>
         /// This code represents the HTTP status code when this Error object accessed from the ServiceException.Error object.

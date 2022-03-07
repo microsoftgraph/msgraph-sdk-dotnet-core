@@ -11,7 +11,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The error response object from the service on an unsuccessful call.
     /// </summary>
-    public class ErrorResponse :IParsable
+    public class ErrorResponse :IParsable, IAdditionalDataHolder
     {
         /// <summary>
         /// The <see cref="Error"/> returned by the service.

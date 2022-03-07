@@ -11,7 +11,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels
     /// <summary>
     /// A property bag class for testing derived type deserialization.
     /// </summary>
-    public class DerivedTypeClass : AbstractEntityType, IParsable
+    public class DerivedTypeClass : AbstractEntityType, IParsable, IAdditionalDataHolder
     {
         /// <summary>
         /// Gets or sets enumType.
@@ -69,7 +69,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels
         /// Creates a new instance of the appropriate class based on discriminator value
         /// <param name="parseNode">The parse node to use to read the discriminator value and create the object</param>
         /// </summary>
-        public static DerivedTypeClass CreateFromDiscriminatorValue(IParseNode parseNode)
+        public static new DerivedTypeClass CreateFromDiscriminatorValue(IParseNode parseNode)
         {
             _ = parseNode ?? throw new ArgumentNullException(nameof(parseNode));
             return new DerivedTypeClass();

@@ -8,7 +8,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
     using System;
     using System.Collections.Generic;
 
-    public partial class TestDrive : IParsable
+    public partial class TestDrive : IParsable, IAdditionalDataHolder
     {
         ///<summary>
         /// The Drive constructor

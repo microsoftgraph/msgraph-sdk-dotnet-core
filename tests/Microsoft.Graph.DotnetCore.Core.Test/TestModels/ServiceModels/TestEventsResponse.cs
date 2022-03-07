@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
 {
-    public class TestEventsResponse : IParsable
+    public class TestEventsResponse : IParsable,IAdditionalDataHolder
     {
         /// <summary>Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.</summary>
         public IDictionary<string, object> AdditionalData { get; set; }

@@ -11,7 +11,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
     /// <summary>
     /// The type DateTimeTimeZone.
     /// </summary>
-    public partial class TestDateTimeTimeZone : IParsable
+    public partial class TestDateTimeTimeZone : IParsable, IAdditionalDataHolder
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TestDateTimeTimeZone"/> class.

@@ -12,7 +12,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
     /// <summary>
     /// The type User.
     /// </summary>
-    public partial class TestUser :IParsable
+    public partial class TestUser :IParsable, IAdditionalDataHolder
     {
 
         ///<summary>

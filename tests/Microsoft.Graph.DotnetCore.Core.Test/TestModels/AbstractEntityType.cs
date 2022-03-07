@@ -11,7 +11,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels
     /// <summary>
     /// A class to test abstract entity serialization and deserialization.
     /// </summary>
-    public class AbstractEntityType: IParsable
+    public class AbstractEntityType: IParsable, IAdditionalDataHolder
     {
         /// <summary>
         /// Gets or sets id.

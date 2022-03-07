@@ -11,7 +11,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// The IUploadSession interface
     /// </summary>
-    public interface IUploadSession: IParsable
+    public interface IUploadSession: IParsable, IAdditionalDataHolder
     {
         /// <summary>
         /// Expiration date of the upload session
