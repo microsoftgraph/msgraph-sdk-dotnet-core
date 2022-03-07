@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
 {
-    public class TestEventItem : IParsable
+    public class TestEventItem : IParsable, IAdditionalDataHolder
     {
         /// <summary>true if the meeting organizer allows invitees to propose a new time when responding; otherwise, false. Optional. Default is true.</summary>
         public bool? AllowNewTimeProposals { get; set; }

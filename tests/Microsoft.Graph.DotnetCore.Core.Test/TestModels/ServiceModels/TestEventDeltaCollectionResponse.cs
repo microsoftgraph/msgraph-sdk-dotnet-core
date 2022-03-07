@@ -13,7 +13,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
     /// The type UserEventsCollectionResponse.
     /// </summary>
 
-    public class TestEventDeltaCollectionResponse: IParsable
+    public class TestEventDeltaCollectionResponse: IParsable, IAdditionalDataHolder
     {
         /// <summary>
         /// Gets or sets the event collection value.

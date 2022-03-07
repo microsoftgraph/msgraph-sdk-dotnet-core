@@ -8,7 +8,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
     using System;
     using System.Collections.Generic;
 
-    public class TestChatMessage: IParsable
+    public class TestChatMessage: IParsable, IAdditionalDataHolder
     {
         /// <summary>
         /// Gets or sets chat id.

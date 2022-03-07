@@ -8,7 +8,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
     using System;
     using System.Collections.Generic;
 
-    public class TestAttendee : TestRecipient,IParsable
+    public class TestAttendee : TestRecipient,IParsable, IAdditionalDataHolder
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TestAttendee"/> class.
@@ -46,7 +46,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
         /// Creates a new instance of the appropriate class based on discriminator value
         /// <param name="parseNode">The parse node to use to read the discriminator value and create the object</param>
         /// </summary>
-        public static TestAttendee CreateFromDiscriminatorValue(IParseNode parseNode)
+        public static new TestAttendee CreateFromDiscriminatorValue(IParseNode parseNode)
         {
             _ = parseNode ?? throw new ArgumentNullException(nameof(parseNode));
             return new TestAttendee();

@@ -11,7 +11,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
     /// <summary>
     /// The type ItemBody.
     /// </summary>
-    public partial class TestItemBody:  IParsable
+    public partial class TestItemBody:  IParsable, IAdditionalDataHolder
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TestItemBody"/> class.

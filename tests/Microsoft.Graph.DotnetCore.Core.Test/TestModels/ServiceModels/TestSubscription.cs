@@ -8,7 +8,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
     using System;
     using System.Collections.Generic;
 
-    public class TestSubscription : IEncryptableSubscription,IParsable
+    public class TestSubscription : IEncryptableSubscription,IParsable, IAdditionalDataHolder
     {
         /// <summary>
         /// Gets or sets encryption certificate.

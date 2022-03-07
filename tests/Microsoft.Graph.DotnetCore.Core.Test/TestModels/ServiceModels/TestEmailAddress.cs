@@ -11,7 +11,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
     /// <summary>
     /// The type TestEmailAddress.
     /// </summary>
-    public partial class TestEmailAddress: IParsable
+    public partial class TestEmailAddress: IParsable, IAdditionalDataHolder
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TestEmailAddress"/> class.

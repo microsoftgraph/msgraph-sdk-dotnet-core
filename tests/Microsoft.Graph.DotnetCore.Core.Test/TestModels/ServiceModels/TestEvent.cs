@@ -12,7 +12,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
     /// <summary>
     /// The type TestEvent.
     /// </summary>
-    public partial class TestEvent : IParsable
+    public partial class TestEvent : IParsable, IAdditionalDataHolder
     {
 
         ///<summary>

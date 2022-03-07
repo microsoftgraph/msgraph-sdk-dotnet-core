@@ -8,7 +8,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
     using System;
     using System.Collections.Generic;
 
-    public class TestChangeNotificationEncryptedContent : IDecryptableContent, IParsable
+    public class TestChangeNotificationEncryptedContent : IDecryptableContent, IParsable, IAdditionalDataHolder
     {
         /// <summary>
         /// Gets or sets data.
