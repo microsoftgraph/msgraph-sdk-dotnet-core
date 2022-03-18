@@ -26,17 +26,5 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 
             Assert.Equal(expectedBaseUrl, baseClient.RequestAdapter.BaseUrl);
         }
-
-        [Fact]
-        public void BaseClient_InitializeWithTokenCredential()
-        {
-            var expectedBaseUrl = "https://localhost";
-
-            var baseClient = new BaseClient(expectedBaseUrl, this.tokenCredential.Object);
-
-            Assert.Equal(expectedBaseUrl, baseClient.RequestAdapter.BaseUrl);
-            Assert.IsType<BaseGraphRequestAdapter>(baseClient.RequestAdapter);
-
-        }
     }
 }

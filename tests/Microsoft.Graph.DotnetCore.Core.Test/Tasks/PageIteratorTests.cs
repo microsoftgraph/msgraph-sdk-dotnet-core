@@ -21,12 +21,12 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
     {
         private PageIterator<TestEventItem, TestEventsResponse> eventPageIterator;
         private Mock<IRequestAdapter> mockRequestAdapter;
-        private BaseClient baseClient;
+        private IBaseClient baseClient;
 
         public PageIteratorTests()
         {
             this.mockRequestAdapter = new Mock<IRequestAdapter>(MockBehavior.Strict);
-            var mockClient = new Mock<BaseClient>(this.mockRequestAdapter.Object);
+            var mockClient = new Mock<IBaseClient>();
             mockClient.SetupGet((client) => client.RequestAdapter).Returns(mockRequestAdapter.Object);
             this.baseClient = mockClient.Object;
             

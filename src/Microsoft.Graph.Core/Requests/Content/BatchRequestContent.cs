@@ -35,8 +35,8 @@ namespace Microsoft.Graph
         /// <summary>
         /// Constructs a new <see cref="BatchRequestContent"/>.
         /// </summary>
-        /// <param name="baseClient">The <see cref="BaseClient"/> for making requests</param>
-        public BatchRequestContent(BaseClient baseClient)
+        /// <param name="baseClient">The <see cref="IBaseClient"/> for making requests</param>
+        public BatchRequestContent(IBaseClient baseClient)
             :this(baseClient, new BatchRequestStep[] { })
         {
         }
@@ -44,9 +44,9 @@ namespace Microsoft.Graph
         /// <summary>
         /// Constructs a new <see cref="BatchRequestContent"/>.
         /// </summary>
-        /// <param name="baseClient">The <see cref="BaseClient"/> for making requests</param>
+        /// <param name="baseClient">The <see cref="IBaseClient"/> for making requests</param>
         /// <param name="batchRequestSteps">A list of <see cref="BatchRequestStep"/> to add to the batch request content.</param>
-        public BatchRequestContent(BaseClient baseClient, params BatchRequestStep[] batchRequestSteps)
+        public BatchRequestContent(IBaseClient baseClient, params BatchRequestStep[] batchRequestSteps)
         {
             if (batchRequestSteps == null)
                 throw new ClientException(new Error

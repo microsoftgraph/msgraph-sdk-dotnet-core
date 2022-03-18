@@ -18,7 +18,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         public async Task BatchRequestBuilderAsync()
         {
             // Arrange
-            BaseClient baseClient = new BaseClient("https://localhost", GraphClientFactory.Create());
+            IBaseClient baseClient = new BaseClient("https://localhost", GraphClientFactory.Create());
 
             // Act
             var batchRequestBuilder = new BatchRequestBuilder(baseClient.RequestAdapter);

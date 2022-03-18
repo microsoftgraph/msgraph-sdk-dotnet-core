@@ -19,7 +19,7 @@ namespace Microsoft.Graph
     public class AsyncMonitor<T> : IAsyncMonitor<T>
     {
         private AsyncOperationStatus asyncOperationStatus;
-        private BaseClient client;
+        private IBaseClient client;
 
         internal string monitorUrl;
 
@@ -28,7 +28,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="client">The client to monitor.</param>
         /// <param name="monitorUrl">The URL to monitor.</param>
-        public AsyncMonitor(BaseClient client, string monitorUrl)
+        public AsyncMonitor(IBaseClient client, string monitorUrl)
         {
             this.client = client;
             this.monitorUrl = monitorUrl;

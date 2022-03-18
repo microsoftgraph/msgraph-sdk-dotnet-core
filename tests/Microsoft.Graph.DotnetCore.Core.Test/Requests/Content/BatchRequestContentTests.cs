@@ -19,7 +19,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
     public class BatchRequestContentTests
     {
         private const string REQUEST_URL = "https://graph.microsoft.com/v1.0/me";
-        private readonly BaseClient client = new BaseClient(REQUEST_URL, new MockAuthenticationProvider().Object);
+        private readonly IBaseClient client = new BaseClient(REQUEST_URL, new MockAuthenticationProvider().Object);
 
         [Fact]
         public void BatchRequestContent_DefaultInitialize()
