@@ -32,9 +32,6 @@ jobs:
       - name: Setup VSTest
         uses: darenm/Setup-VSTest@v1
 
-      - run: ./scripts/UpdateNugetCredentials.ps1 -username "${{ secrets.PUBLISH_GH_USERNAME }}" -apiToken "${{ secrets.PUBLISH_GH_TOKEN }}" -nugetFileAbsolutePath "./nuget.config"
-        shell: pwsh
-
       - name : Nuget Restore
         run: msbuild -t:restore -m
 
@@ -47,30 +44,4 @@ jobs:
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v1
 
-      - name: Build Nuget Package
-        run: msbuild .\src\Microsoft.Graph.Core\Microsoft.Graph.Core.csproj -t:pack /p:Configuration=Release /p:IncludeSymbols=true /p:SymbolPackageFormat=snupkg -m
-
-      - name: Upload Nuget Package
-        uses: actions/upload-artifact@v2
-        with:
-          name: drop
-          path: |
-            ${{ env.relativePath }}/bin/Release/*.nupkg
-            ${{ env.relativePath }}/bin/Release/*.snupkg
-
-  deploy:
-    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/feature/3.0' }}
-    environment:
-      name: staging_feeds
-    runs-on: windows-latest
-    needs: [build]
-    steps:
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v1.9.0
-        with:
-          dotnet-version: 6.0.x
-      - uses: actions/download-artifact@v2
-        with:
-          name: drop
-      - run: dotnet nuget push "*.nupkg" --skip-duplicate -s https://nuget.pkg.github.com/microsoftgraph/index.json -k ${{ secrets.PUBLISH_GH_TOKEN }}
 
