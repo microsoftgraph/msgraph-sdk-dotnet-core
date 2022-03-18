@@ -49,8 +49,8 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                 testHttpMessageHandler.AddResponseMapping(requestUrl, responseMessage);
 
                 // 3. Create a batch request object to be tested
-                BaseClient client = new BaseClient(requestUrl, authenticationProvider.Object);
-                BaseClient baseClient = new BaseClient(this.baseUrl, GraphClientFactory.Create(finalHandler: testHttpMessageHandler));
+                IBaseClient client = new BaseClient(requestUrl, authenticationProvider.Object);
+                IBaseClient baseClient = new BaseClient(this.baseUrl, GraphClientFactory.Create(finalHandler: testHttpMessageHandler));
                 UploadSliceRequestBuilder<TestDriveItem> uploadSliceRequestBuilder = new UploadSliceRequestBuilder<TestDriveItem>(requestUrl, baseClient.RequestAdapter, 0, 200, 1000);
                 Stream stream = new MemoryStream(new byte[300]);
 

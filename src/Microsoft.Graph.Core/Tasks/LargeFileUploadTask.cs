@@ -20,7 +20,7 @@ namespace Microsoft.Graph
         private const int DefaultMaxSliceSize = 5 * 1024 * 1024;
         private const int RequiredSliceSizeIncrement = 320 * 1024;
         private IUploadSession Session { get; set; }
-        private readonly BaseClient _client;
+        private readonly IBaseClient _client;
         private readonly Stream _uploadStream;
         private readonly int _maxSliceSize;
         private List<Tuple<long, long>> _rangesRemaining;
@@ -30,18 +30,18 @@ namespace Microsoft.Graph
         /// Task to help with resume able large file uploads. Generates slices based on <paramref name="uploadSession"/>
         /// information, and can control uploading of requests/>
         /// </summary>
-        /// <param name="uploadSession">Session information of type <see cref="IUploadSession"/>></param>
+        /// <param name="uploadSession">Session information of type <see cref="IParsable"/>></param>
         /// <param name="uploadStream">Readable, seekable stream to be uploaded. Length of session is determined via uploadStream.Length</param>
         /// <param name="maxSliceSize">Max size of each slice to be uploaded. Multiple of 320 KiB (320 * 1024) is required.</param>
-        /// <param name="baseClient"><see cref="BaseClient"/> to use for making upload requests. The client should not set Auth headers as upload urls do not need them.
+        /// <param name="baseClient"><see cref="IBaseClient"/> to use for making upload requests. The client should not set Auth headers as upload urls do not need them.
         /// If less than 0, default value of 5 MiB is used. .</param>
-        public LargeFileUploadTask(IUploadSession uploadSession, Stream uploadStream,  int maxSliceSize = -1, BaseClient baseClient = null)
+        public LargeFileUploadTask(IParsable uploadSession, Stream uploadStream,  int maxSliceSize = -1, IBaseClient baseClient = null)
         {
             if (!uploadStream.CanRead || !uploadStream.CanSeek)
             {
                 throw new ArgumentException("Must provide stream that can read and seek");
             }
-            this.Session = uploadSession;
+            this.Session = ExtractSessionFromParsable(uploadSession);
             this._client = baseClient ?? this.InitializeClient(Session.UploadUrl);
             this._uploadStream = uploadStream;
             this._rangesRemaining = this.GetRangesRemaining(Session);
@@ -53,11 +53,36 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
+        /// Extract an <see cref="IUploadSession"/> from an <see cref="IParsable"/>
+        /// </summary>
+        /// <param name="uploadSession"><see cref="IParsable"/> to initiaze an <see cref="IUploadSession"/> from</param>
+        /// <returns>A <see cref="IUploadSession"/> instance</returns>
+        /// <exception cref="NotImplementedException"></exception>
+        private IUploadSession ExtractSessionFromParsable(IParsable uploadSession)
+        {
+            if (!uploadSession.GetFieldDeserializers<IParsable>().ContainsKey("expirationDateTime"))
+                throw new ArgumentException("The Parsable does not contain the 'expirationDateTime' property");
+            if (!uploadSession.GetFieldDeserializers<IParsable>().ContainsKey("nextExpectedRanges"))
+                throw new ArgumentException("The Parsable does not contain the 'nextExpectedRanges' property");
+            if (!uploadSession.GetFieldDeserializers<IParsable>().ContainsKey("uploadUrl"))
+                throw new ArgumentException("The Parsable does not contain the 'uploadUrl' property");
+
+            var uploadSessionType = uploadSession.GetType();
+
+            return new UploadSession()
+            {
+                ExpirationDateTime = uploadSessionType.GetProperty("ExpirationDateTime").GetValue(uploadSession, null) as DateTimeOffset?,
+                NextExpectedRanges = uploadSessionType.GetProperty("NextExpectedRanges").GetValue(uploadSession, null) as List<string>,
+                UploadUrl = uploadSessionType.GetProperty("UploadUrl").GetValue(uploadSession, null) as string
+            };
+        }
+
+        /// <summary>
         /// Initialize a baseClient to use for the upload that does not have Auth enabled as the upload URLs explicitly do not need authentication.
         /// </summary>
         /// <param name="uploadUrl">Url to perform the upload to from the session</param>
         /// <returns></returns>
-        private BaseClient InitializeClient(string uploadUrl)
+        private IBaseClient InitializeClient(string uploadUrl)
         {
             HttpClient httpClient = GraphClientFactory.Create(); //no auth
             httpClient.SetFeatureFlag(FeatureFlag.FileUploadTask);

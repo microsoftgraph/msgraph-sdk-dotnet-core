@@ -13,7 +13,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 
         protected MockAuthenticationProvider authenticationProvider;
         protected HttpResponseMessage httpResponseMessage;
-        protected BaseClient baseClient;
+        protected IBaseClient baseClient;
 
         public RequestTestBase()
         {

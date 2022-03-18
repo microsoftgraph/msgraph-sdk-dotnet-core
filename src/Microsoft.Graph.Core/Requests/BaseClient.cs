@@ -17,7 +17,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// A default client implementation.
     /// </summary>
-    public class BaseClient
+    public class BaseClient: IBaseClient
     {
         /// <summary>
         /// Constructs a new <see cref="BaseClient"/> for use by derived instances.
@@ -58,7 +58,7 @@ namespace Microsoft.Graph
             string baseUrl,
             TokenCredential tokenCredential,
             IEnumerable<string> scopes = null
-            ):this(baseUrl, new AzureIdentityAuthenticationProvider(tokenCredential, scopes?.ToArray() ?? Array.Empty<string>()))
+            ):this(baseUrl, new AzureIdentityAuthenticationProvider(tokenCredential, null,scopes?.ToArray() ?? Array.Empty<string>()))
         {
         }
 
@@ -76,7 +76,7 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets the <see cref="IRequestAdapter"/> for sending requests.
         /// </summary>
-        protected internal virtual IRequestAdapter RequestAdapter { get; set; }
+        public IRequestAdapter RequestAdapter { get; set; }
 
         /// <summary>
         /// Gets the <see cref="BatchRequestBuilder"/> for building batch Requests
