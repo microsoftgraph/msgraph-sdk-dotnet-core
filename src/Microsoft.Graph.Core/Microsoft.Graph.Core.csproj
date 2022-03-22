@@ -24,6 +24,7 @@
     <VersionPrefix>3.0.0</VersionPrefix>
     <VersionSuffix>preview.1</VersionSuffix>
     <PackageReleaseNotes>
+      - Initial release with support for clients generated with Kiota
     </PackageReleaseNotes>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
