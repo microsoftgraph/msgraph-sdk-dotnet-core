@@ -36,15 +36,14 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets the field deserializers for the <see cref="AsyncOperationStatus"/> instance
         /// </summary>
-        /// <typeparam name="T">The type to deserialize</typeparam>
         /// <returns></returns>
-        public IDictionary<string, Action<T, IParseNode>> GetFieldDeserializers<T>()
+        public IDictionary<string, Action<IParseNode>> GetFieldDeserializers()
         {
-            return new Dictionary<string, Action<T, IParseNode>>
+            return new Dictionary<string, Action<IParseNode>>
             {
-                {"operation", (o,n) => { (o as AsyncOperationStatus).Operation = n.GetStringValue(); } },
-                {"percentageComplete", (o,n) => { (o as AsyncOperationStatus).PercentageComplete = n.GetDoubleValue(); } },
-                {"status", (o,n) => { (o as AsyncOperationStatus).Status = n.GetStringValue(); } },
+                {"operation", (n) => { Operation = n.GetStringValue(); } },
+                {"percentageComplete", (n) => { PercentageComplete = n.GetDoubleValue(); } },
+                {"status", (n) => { Status = n.GetStringValue(); } },
             };
         }
 

@@ -53,17 +53,16 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
         /// <summary>
         /// Gets the field deserializers for the <see cref="TestChangeNotificationEncryptedContent"/> instance
         /// </summary>
-        /// <typeparam name="T">The type to deserialize</typeparam>
         /// <returns></returns>
-        public IDictionary<string, Action<T, IParseNode>> GetFieldDeserializers<T>()
+        public IDictionary<string, Action<IParseNode>> GetFieldDeserializers()
         {
-            return new Dictionary<string, Action<T, IParseNode>>
+            return new Dictionary<string, Action<IParseNode>>
             {
-                {"data", (o,n) => { (o as TestChangeNotificationEncryptedContent).Data = n.GetStringValue(); } },
-                {"dataKey", (o,n) => { (o as TestChangeNotificationEncryptedContent).DataKey = n.GetStringValue(); } },
-                {"dataSignature", (o,n) => { (o as TestChangeNotificationEncryptedContent).DataSignature = n.GetStringValue(); } },
-                {"encryptionCertificateId", (o,n) => { (o as TestChangeNotificationEncryptedContent).EncryptionCertificateId = n.GetStringValue(); } },
-                {"encryptionCertificateThumbprint", (o,n) => { (o as TestChangeNotificationEncryptedContent).EncryptionCertificateThumbprint = n.GetStringValue(); } },
+                {"data", (n) => { Data = n.GetStringValue(); } },
+                {"dataKey", (n) => { DataKey = n.GetStringValue(); } },
+                {"dataSignature", (n) => { DataSignature = n.GetStringValue(); } },
+                {"encryptionCertificateId", (n) => { EncryptionCertificateId = n.GetStringValue(); } },
+                {"encryptionCertificateThumbprint", (n) => { EncryptionCertificateThumbprint = n.GetStringValue(); } },
             };
         }
 

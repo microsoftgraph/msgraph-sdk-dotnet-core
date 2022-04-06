@@ -37,14 +37,13 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
         /// <summary>
         /// Gets the field deserializers for the <see cref="TestRecipient"/> instance
         /// </summary>
-        /// <typeparam name="T">The type to deserialize</typeparam>
         /// <returns></returns>
-        public IDictionary<string, Action<T, IParseNode>> GetFieldDeserializers<T>()
+        public IDictionary<string, Action<IParseNode>> GetFieldDeserializers()
         {
-            return new Dictionary<string, Action<T, IParseNode>>
+            return new Dictionary<string, Action<IParseNode>>
             {
-                {"@odata.type", (o,n) => { (o as TestRecipient).ODataType = n.GetStringValue(); } },
-                {"emailAddress", (o,n) => { (o as TestRecipient).EmailAddress = n.GetObjectValue<TestEmailAddress>(TestEmailAddress.CreateFromDiscriminatorValue); } },
+                {"@odata.type", (n) => { ODataType = n.GetStringValue(); } },
+                {"emailAddress", (n) => { EmailAddress = n.GetObjectValue<TestEmailAddress>(TestEmailAddress.CreateFromDiscriminatorValue); } },
             };
         }
 

@@ -43,31 +43,31 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
         /// <summary>
         /// The deserialization information for the current model
         /// </summary>
-        public IDictionary<string, Action<T, IParseNode>> GetFieldDeserializers<T>()
+        public IDictionary<string, Action<IParseNode>> GetFieldDeserializers()
         {
-            return new Dictionary<string, Action<T, IParseNode>>() {
-                {"allowNewTimeProposals", (o,n) => { (o as TestEventItem).AllowNewTimeProposals = n.GetBoolValue(); } },
-                {"bodyPreview", (o,n) => { (o as TestEventItem).BodyPreview = n.GetStringValue(); } },
-                {"hasAttachments", (o,n) => { (o as TestEventItem).HasAttachments = n.GetBoolValue(); } },
-                {"hideAttendees", (o,n) => { (o as TestEventItem).HideAttendees = n.GetBoolValue(); } },
-                {"iCalUId", (o,n) => { (o as TestEventItem).ICalUId = n.GetStringValue(); } },
-                {"instances", (o,n) => { (o as TestEventItem).Instances = n.GetCollectionOfObjectValues<TestEventItem>(TestEventItem.CreateFromDiscriminatorValue).ToList(); } },
-                {"isAllDay", (o,n) => { (o as TestEventItem).IsAllDay = n.GetBoolValue(); } },
-                {"isCancelled", (o,n) => { (o as TestEventItem).IsCancelled = n.GetBoolValue(); } },
-                {"isDraft", (o,n) => { (o as TestEventItem).IsDraft = n.GetBoolValue(); } },
-                {"isOnlineMeeting", (o,n) => { (o as TestEventItem).IsOnlineMeeting = n.GetBoolValue(); } },
-                {"isOrganizer", (o,n) => { (o as TestEventItem).IsOrganizer = n.GetBoolValue(); } },
-                {"isReminderOn", (o,n) => { (o as TestEventItem).IsReminderOn = n.GetBoolValue(); } },
-                {"onlineMeetingUrl", (o,n) => { (o as TestEventItem).OnlineMeetingUrl = n.GetStringValue(); } },
-                {"originalEndTimeZone", (o,n) => { (o as TestEventItem).OriginalEndTimeZone = n.GetStringValue(); } },
-                {"originalStart", (o,n) => { (o as TestEventItem).OriginalStart = n.GetDateTimeOffsetValue(); } },
-                {"originalStartTimeZone", (o,n) => { (o as TestEventItem).OriginalStartTimeZone = n.GetStringValue(); } },
-                {"reminderMinutesBeforeStart", (o,n) => { (o as TestEventItem).ReminderMinutesBeforeStart = n.GetIntValue(); } },
-                {"responseRequested", (o,n) => { (o as TestEventItem).ResponseRequested = n.GetBoolValue(); } },
-                {"seriesMasterId", (o,n) => { (o as TestEventItem).SeriesMasterId = n.GetStringValue(); } },
-                {"subject", (o,n) => { (o as TestEventItem).Subject = n.GetStringValue(); } },
-                {"transactionId", (o,n) => { (o as TestEventItem).TransactionId = n.GetStringValue(); } },
-                {"webLink", (o,n) => { (o as TestEventItem).WebLink = n.GetStringValue(); } },
+            return new Dictionary<string, Action<IParseNode>>() {
+                {"allowNewTimeProposals", (n) => { AllowNewTimeProposals = n.GetBoolValue(); } },
+                {"bodyPreview", (n) => { BodyPreview = n.GetStringValue(); } },
+                {"hasAttachments", (n) => { HasAttachments = n.GetBoolValue(); } },
+                {"hideAttendees", (n) => { HideAttendees = n.GetBoolValue(); } },
+                {"iCalUId", (n) => { ICalUId = n.GetStringValue(); } },
+                {"instances", (n) => { Instances = n.GetCollectionOfObjectValues<TestEventItem>(TestEventItem.CreateFromDiscriminatorValue).ToList(); } },
+                {"isAllDay", (n) => { IsAllDay = n.GetBoolValue(); } },
+                {"isCancelled", (n) => { IsCancelled = n.GetBoolValue(); } },
+                {"isDraft", (n) => { IsDraft = n.GetBoolValue(); } },
+                {"isOnlineMeeting", (n) => { IsOnlineMeeting = n.GetBoolValue(); } },
+                {"isOrganizer", (n) => { IsOrganizer = n.GetBoolValue(); } },
+                {"isReminderOn", (n) => { IsReminderOn = n.GetBoolValue(); } },
+                {"onlineMeetingUrl", (n) => { OnlineMeetingUrl = n.GetStringValue(); } },
+                {"originalEndTimeZone", (n) => { OriginalEndTimeZone = n.GetStringValue(); } },
+                {"originalStart", (n) => { OriginalStart = n.GetDateTimeOffsetValue(); } },
+                {"originalStartTimeZone", (n) => { OriginalStartTimeZone = n.GetStringValue(); } },
+                {"reminderMinutesBeforeStart", (n) => { ReminderMinutesBeforeStart = n.GetIntValue(); } },
+                {"responseRequested", (n) => { ResponseRequested = n.GetBoolValue(); } },
+                {"seriesMasterId", (n) => { SeriesMasterId = n.GetStringValue(); } },
+                {"subject", (n) => { Subject = n.GetStringValue(); } },
+                {"transactionId", (n) => { TransactionId = n.GetStringValue(); } },
+                {"webLink", (n) => { WebLink = n.GetStringValue(); } },
             };
         }
         /// <summary>

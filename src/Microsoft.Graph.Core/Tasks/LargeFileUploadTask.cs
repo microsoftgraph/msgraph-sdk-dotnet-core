@@ -60,11 +60,11 @@ namespace Microsoft.Graph
         /// <exception cref="NotImplementedException"></exception>
         private IUploadSession ExtractSessionFromParsable(IParsable uploadSession)
         {
-            if (!uploadSession.GetFieldDeserializers<IParsable>().ContainsKey("expirationDateTime"))
+            if (!uploadSession.GetFieldDeserializers().ContainsKey("expirationDateTime"))
                 throw new ArgumentException("The Parsable does not contain the 'expirationDateTime' property");
-            if (!uploadSession.GetFieldDeserializers<IParsable>().ContainsKey("nextExpectedRanges"))
+            if (!uploadSession.GetFieldDeserializers().ContainsKey("nextExpectedRanges"))
                 throw new ArgumentException("The Parsable does not contain the 'nextExpectedRanges' property");
-            if (!uploadSession.GetFieldDeserializers<IParsable>().ContainsKey("uploadUrl"))
+            if (!uploadSession.GetFieldDeserializers().ContainsKey("uploadUrl"))
                 throw new ArgumentException("The Parsable does not contain the 'uploadUrl' property");
 
             var uploadSessionType = uploadSession.GetType();

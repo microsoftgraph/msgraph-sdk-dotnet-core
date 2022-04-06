@@ -26,13 +26,12 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets the field deserializers for the class
         /// </summary>
-        /// <typeparam name="T">The type of the class</typeparam>
         /// <returns></returns>
-        public IDictionary<string, Action<T, IParseNode>> GetFieldDeserializers<T>()
+        public IDictionary<string, Action<IParseNode>> GetFieldDeserializers()
         {
-            return new Dictionary<string, Action<T, IParseNode>>
+            return new Dictionary<string, Action<IParseNode>>
             {
-                {"error", (o,n) => { (o as ErrorResponse).Error = n.GetObjectValue<Error>(Error.CreateFromDiscriminatorValue); } }
+                {"error", (n) => { Error = n.GetObjectValue<Error>(Error.CreateFromDiscriminatorValue); } }
             };
         }
 

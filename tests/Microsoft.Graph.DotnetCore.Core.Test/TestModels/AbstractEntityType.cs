@@ -26,13 +26,12 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels
         /// <summary>
         /// Gets the field deserializers for the class
         /// </summary>
-        /// <typeparam name="T">The type to use</typeparam>
         /// <returns></returns>
-        public IDictionary<string, Action<T, IParseNode>> GetFieldDeserializers<T>()
+        public IDictionary<string, Action<IParseNode>> GetFieldDeserializers()
         {
-            return new Dictionary<string, Action<T, IParseNode>>
+            return new Dictionary<string, Action<IParseNode>>
             {
-                {"id", (o,n) => { (o as AbstractEntityType).Id = n.GetStringValue(); } }
+                {"id", (n) => { Id = n.GetStringValue(); } }
             };
         }
 

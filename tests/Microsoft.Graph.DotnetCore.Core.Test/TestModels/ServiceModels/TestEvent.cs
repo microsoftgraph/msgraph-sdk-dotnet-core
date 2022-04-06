@@ -72,19 +72,18 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
         /// <summary>
         /// Gets the field deserializers for the <see cref="TestEvent"/> instance
         /// </summary>
-        /// <typeparam name="T">The type to deserialize</typeparam>
         /// <returns></returns>
-        public IDictionary<string, Action<T, IParseNode>> GetFieldDeserializers<T>()
+        public IDictionary<string, Action<IParseNode>> GetFieldDeserializers()
         {
-            return new Dictionary<string, Action<T, IParseNode>>
+            return new Dictionary<string, Action<IParseNode>>
             {
-                {"@odata.type", (o,n) => { (o as TestEvent).ODataType = n.GetStringValue(); } },
-                {"id", (o,n) => { (o as TestEvent).Id = n.GetStringValue(); } },
-                {"subject", (o,n) => { (o as TestEvent).Subject = n.GetStringValue(); } },
-                {"body", (o,n) => { (o as TestEvent).Body = n.GetObjectValue<TestItemBody>(TestItemBody.CreateFromDiscriminatorValue); } },
-                {"end", (o,n) => { (o as TestEvent).End = n.GetObjectValue<TestDateTimeTimeZone>(TestDateTimeTimeZone.CreateFromDiscriminatorValue); } },
-                {"start", (o,n) => { (o as TestEvent).Start = n.GetObjectValue<TestDateTimeTimeZone>(TestDateTimeTimeZone.CreateFromDiscriminatorValue); } },
-                {"attendees", (o,n) => { (o as TestEvent).Attendees = n.GetCollectionOfObjectValues<TestAttendee>(TestAttendee.CreateFromDiscriminatorValue); } },
+                {"@odata.type", (n) => { ODataType = n.GetStringValue(); } },
+                {"id", (n) => { Id = n.GetStringValue(); } },
+                {"subject", (n) => { Subject = n.GetStringValue(); } },
+                {"body", (n) => { Body = n.GetObjectValue<TestItemBody>(TestItemBody.CreateFromDiscriminatorValue); } },
+                {"end", (n) => { End = n.GetObjectValue<TestDateTimeTimeZone>(TestDateTimeTimeZone.CreateFromDiscriminatorValue); } },
+                {"start", (n) => { Start = n.GetObjectValue<TestDateTimeTimeZone>(TestDateTimeTimeZone.CreateFromDiscriminatorValue); } },
+                {"attendees", (n) => { Attendees = n.GetCollectionOfObjectValues<TestAttendee>(TestAttendee.CreateFromDiscriminatorValue); } },
             };
         }
 
