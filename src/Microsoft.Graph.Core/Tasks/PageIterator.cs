@@ -61,7 +61,7 @@ namespace Microsoft.Graph
             if (callback == null)
                 throw new ArgumentNullException(nameof(callback));
 
-            if (!page.GetFieldDeserializers<IParsable>().ContainsKey("value"))
+            if (!page.GetFieldDeserializers().ContainsKey("value"))
                 throw new ArgumentException("The Parsable does not contain a collection property");
 
             var pageItems = ExtractEntityListFromParsable(page);

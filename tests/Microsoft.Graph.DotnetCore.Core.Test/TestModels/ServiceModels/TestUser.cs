@@ -72,19 +72,18 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
         /// <summary>
         /// Gets the field deserializers for the <see cref="TestUser"/> instance
         /// </summary>
-        /// <typeparam name="T">The type to deserialize</typeparam>
         /// <returns></returns>
-        public IDictionary<string, Action<T, IParseNode>> GetFieldDeserializers<T>()
+        public IDictionary<string, Action<IParseNode>> GetFieldDeserializers()
         {
-            return new Dictionary<string, Action<T, IParseNode>>
+            return new Dictionary<string, Action<IParseNode>>
             {
-                {"id", (o,n) => { (o as TestUser).Id = n.GetStringValue(); } },
-                {"@odata.type", (o,n) => { (o as TestUser).ODataType = n.GetStringValue(); } },
-                {"givenName", (o,n) => { (o as TestUser).GivenName = n.GetStringValue(); } },
-                {"displayName", (o,n) => { (o as TestUser).DisplayName = n.GetStringValue(); } },
-                {"state", (o,n) => { (o as TestUser).State = n.GetStringValue(); } },
-                {"surname", (o,n) => { (o as TestUser).Surname = n.GetStringValue(); } },
-                {"eventDeltas", (o,n) => { (o as TestUser).EventDeltas = n.GetCollectionOfObjectValues<TestEvent>(TestEvent.CreateFromDiscriminatorValue).ToList(); } },
+                {"id", (n) => { Id = n.GetStringValue(); } },
+                {"@odata.type", (n) => { ODataType = n.GetStringValue(); } },
+                {"givenName", (n) => { GivenName = n.GetStringValue(); } },
+                {"displayName", (n) => { DisplayName = n.GetStringValue(); } },
+                {"state", (n) => { State = n.GetStringValue(); } },
+                {"surname", (n) => { Surname = n.GetStringValue(); } },
+                {"eventDeltas", (n) => { EventDeltas = n.GetCollectionOfObjectValues<TestEvent>(TestEvent.CreateFromDiscriminatorValue).ToList(); } },
             };
         }
 

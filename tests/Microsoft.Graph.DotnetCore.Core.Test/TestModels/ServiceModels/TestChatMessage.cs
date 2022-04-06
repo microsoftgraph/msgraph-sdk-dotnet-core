@@ -48,17 +48,16 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
         /// <summary>
         /// Gets the field deserializers for the <see cref="TestChatMessage"/> instance
         /// </summary>
-        /// <typeparam name="T">The type to deserialize</typeparam>
         /// <returns></returns>
-        public IDictionary<string, Action<T, IParseNode>> GetFieldDeserializers<T>()
+        public IDictionary<string, Action<IParseNode>> GetFieldDeserializers()
         {
-            return new Dictionary<string, Action<T, IParseNode>>
+            return new Dictionary<string, Action<IParseNode>>
             {
-                {"chatId", (o,n) => { (o as TestChatMessage).ChatId = n.GetStringValue(); } },
-                {"createdDateTime", (o,n) => { (o as TestChatMessage).CreatedDateTime = n.GetDateTimeOffsetValue(); } },
-                {"deletedDateTime", (o,n) => { (o as TestChatMessage).DeletedDateTime = n.GetDateTimeOffsetValue(); } },
-                {"etag", (o,n) => { (o as TestChatMessage).Etag = n.GetStringValue(); } },
-                {"body", (o,n) => { (o as TestChatMessage).Body = n.GetObjectValue<TestItemBody>(TestItemBody.CreateFromDiscriminatorValue); } },
+                {"chatId", (n) => { ChatId = n.GetStringValue(); } },
+                {"createdDateTime", (n) => { CreatedDateTime = n.GetDateTimeOffsetValue(); } },
+                {"deletedDateTime", (n) => { DeletedDateTime = n.GetDateTimeOffsetValue(); } },
+                {"etag", (n) => { Etag = n.GetStringValue(); } },
+                {"body", (n) => { Body = n.GetObjectValue<TestItemBody>(TestItemBody.CreateFromDiscriminatorValue); } },
             };
         }
 

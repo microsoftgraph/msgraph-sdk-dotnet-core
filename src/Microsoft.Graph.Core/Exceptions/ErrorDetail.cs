@@ -39,15 +39,14 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets the field deserializers for the class
         /// </summary>
-        /// <typeparam name="T">The type of the class</typeparam>
         /// <returns></returns>
-        public IDictionary<string, Action<T, IParseNode>> GetFieldDeserializers<T>()
+        public IDictionary<string, Action<IParseNode>> GetFieldDeserializers()
         {
-            return new Dictionary<string, Action<T, IParseNode>>
+            return new Dictionary<string, Action<IParseNode>>
             {
-                {"code", (o,n) => { (o as ErrorDetail).Code = n.GetStringValue(); } },
-                {"message", (o,n) => {(o as ErrorDetail).Message = n.GetStringValue(); }},
-                {"target", (o,n) => {(o as ErrorDetail).Target = n.GetStringValue(); }}
+                {"code", (n) => { Code = n.GetStringValue(); } },
+                {"message", (n) => {Message = n.GetStringValue(); }},
+                {"target", (n) => {Target = n.GetStringValue(); }}
             };
         }
 

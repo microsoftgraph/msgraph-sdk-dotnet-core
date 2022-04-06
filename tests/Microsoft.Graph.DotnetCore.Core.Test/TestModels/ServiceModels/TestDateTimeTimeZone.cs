@@ -46,15 +46,14 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
         /// <summary>
         /// Gets the field deserializers for the <see cref="TestDateTimeTimeZone"/> instance
         /// </summary>
-        /// <typeparam name="T">The type to deserialize</typeparam>
         /// <returns></returns>
-        public IDictionary<string, Action<T, IParseNode>> GetFieldDeserializers<T>()
+        public IDictionary<string, Action<IParseNode>> GetFieldDeserializers()
         {
-            return new Dictionary<string, Action<T, IParseNode>>
+            return new Dictionary<string, Action<IParseNode>>
             {
-                {"dateTime", (o,n) => { (o as TestDateTimeTimeZone).DateTime = n.GetStringValue(); } },
-                {"timeZone", (o,n) => { (o as TestDateTimeTimeZone).TimeZone = n.GetStringValue(); } },
-                {"@odata.type", (o,n) => { (o as TestDateTimeTimeZone).ODataType = n.GetStringValue(); } },
+                {"dateTime", (n) => { DateTime = n.GetStringValue(); } },
+                {"timeZone", (n) => { TimeZone = n.GetStringValue(); } },
+                {"@odata.type", (n) => { ODataType = n.GetStringValue(); } },
             };
         }
 

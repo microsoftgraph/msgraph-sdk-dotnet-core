@@ -27,13 +27,12 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets the field deserializers for the <see cref="TestResourceData"/> instance
         /// </summary>
-        /// <typeparam name="T">The type to deserialize</typeparam>
         /// <returns></returns>
-        public IDictionary<string, Action<T, IParseNode>> GetFieldDeserializers<T>()
+        public IDictionary<string, Action<IParseNode>> GetFieldDeserializers()
         {
-            return new Dictionary<string, Action<T, IParseNode>>
+            return new Dictionary<string, Action<IParseNode>>
             {
-                {"@odata.type", (o,n) => { (o as TestResourceData).ODataType = n.GetStringValue(); } },
+                {"@odata.type", (n) => { ODataType = n.GetStringValue(); } },
             };
         }
 

@@ -24,13 +24,12 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
         /// <summary>
         /// Gets the field deserializers for the <see cref="TestSubscription"/> instance
         /// </summary>
-        /// <typeparam name="T">The type to deserialize</typeparam>
         /// <returns></returns>
-        public IDictionary<string, Action<T, IParseNode>> GetFieldDeserializers<T>()
+        public IDictionary<string, Action<IParseNode>> GetFieldDeserializers()
         {
-            return new Dictionary<string, Action<T, IParseNode>>
+            return new Dictionary<string, Action<IParseNode>>
             {
-                {"encryptionCertificate", (o,n) => { (o as TestSubscription).EncryptionCertificate = n.GetStringValue(); } },
+                {"encryptionCertificate", (n) => { EncryptionCertificate = n.GetStringValue(); } },
             };
         }
 

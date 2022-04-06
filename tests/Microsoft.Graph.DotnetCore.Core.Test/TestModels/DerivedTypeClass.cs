@@ -36,16 +36,15 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels
         /// <summary>
         /// Gets the field deserializers for the class
         /// </summary>
-        /// <typeparam name="T">The type to use</typeparam>
         /// <returns></returns>
-        public new IDictionary<string, Action<T, IParseNode>> GetFieldDeserializers<T>()
+        public new IDictionary<string, Action<IParseNode>> GetFieldDeserializers()
         {
-            return new Dictionary<string, Action<T, IParseNode>>(base.GetFieldDeserializers<T>())
+            return new Dictionary<string, Action<IParseNode>>(base.GetFieldDeserializers())
             {
-                {"enumType", (o,n) => { (o as DerivedTypeClass).EnumType = n.GetEnumValue<EnumType>(); } },
-                {"name", (o,n) => { (o as DerivedTypeClass).Name = n.GetStringValue(); } },
-                {"memorableDates", (o,n) => { (o as DerivedTypeClass).MemorableDates = n.GetCollectionOfObjectValues<DateTestClass>(DateTestClass.CreateFromDiscriminatorValue); } },
-                {"link", (o,n) => { (o as DerivedTypeClass).WebUrl = n.GetStringValue(); } },
+                {"enumType", (n) => { EnumType = n.GetEnumValue<EnumType>(); } },
+                {"name", (n) => { Name = n.GetStringValue(); } },
+                {"memorableDates", (n) => { MemorableDates = n.GetCollectionOfObjectValues<DateTestClass>(DateTestClass.CreateFromDiscriminatorValue); } },
+                {"link", (n) => { WebUrl = n.GetStringValue(); } },
             };
         }
 

@@ -32,14 +32,13 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
         /// <summary>
         /// Gets the field deserializers for the <see cref="TestEventDeltaCollectionResponse"/> instance
         /// </summary>
-        /// <typeparam name="T">The type to deserialize</typeparam>
         /// <returns></returns>
-        public IDictionary<string, Action<T, IParseNode>> GetFieldDeserializers<T>()
+        public IDictionary<string, Action<IParseNode>> GetFieldDeserializers()
         {
-            return new Dictionary<string, Action<T, IParseNode>>
+            return new Dictionary<string, Action<IParseNode>>
             {
-                {"@odata.nextLink", (o,n) => { (o as TestEventDeltaCollectionResponse).NextLink = n.GetStringValue(); } },
-                {"value", (o,n) => { (o as TestEventDeltaCollectionResponse).Value = n.GetCollectionOfObjectValues<TestEvent>(TestEvent.CreateFromDiscriminatorValue).ToList(); } },
+                {"@odata.nextLink", (n) => { NextLink = n.GetStringValue(); } },
+                {"value", (n) => { Value = n.GetCollectionOfObjectValues<TestEvent>(TestEvent.CreateFromDiscriminatorValue).ToList(); } },
             };
         }
 

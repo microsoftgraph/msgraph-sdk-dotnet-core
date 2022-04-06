@@ -61,17 +61,16 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets the field deserializers for the class
         /// </summary>
-        /// <typeparam name="T">The type of the class</typeparam>
         /// <returns></returns>
-        public IDictionary<string, Action<T, IParseNode>> GetFieldDeserializers<T>()
+        public IDictionary<string, Action<IParseNode>> GetFieldDeserializers()
         {
-            return new Dictionary<string, Action<T, IParseNode>>
+            return new Dictionary<string, Action<IParseNode>>
             {
-                {"code", (o,n) => { (o as Error).Code = n.GetStringValue(); } },
-                {"message", (o,n) => {(o as Error).Message = n.GetStringValue(); }},
-                {"target", (o,n) => {(o as Error).Target = n.GetStringValue(); }},
-                {"details", (o,n) => {(o as Error).Details = n.GetCollectionOfObjectValues<ErrorDetail>(ErrorDetail.CreateFromDiscriminatorValue).ToList(); }},
-                {"innerError", (o,n) => {(o as Error).InnerError = n.GetObjectValue<Error>(Error.CreateFromDiscriminatorValue); }}
+                {"code", (n) => { Code = n.GetStringValue(); } },
+                {"message", (n) => {Message = n.GetStringValue(); }},
+                {"target", (n) => {Target = n.GetStringValue(); }},
+                {"details", (n) => {Details = n.GetCollectionOfObjectValues<ErrorDetail>(ErrorDetail.CreateFromDiscriminatorValue).ToList(); }},
+                {"innerError", (n) => {InnerError = n.GetObjectValue<Error>(Error.CreateFromDiscriminatorValue); }}
             };
         }
 

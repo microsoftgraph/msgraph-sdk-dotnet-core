@@ -54,16 +54,15 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
         /// <summary>
         /// Gets the field deserializers for the <see cref="TestDriveItem"/> instance
         /// </summary>
-        /// <typeparam name="T">The type to deserialize</typeparam>
         /// <returns></returns>
-        public IDictionary<string, Action<T, IParseNode>> GetFieldDeserializers<T>()
+        public IDictionary<string, Action<IParseNode>> GetFieldDeserializers()
         {
-            return new Dictionary<string, Action<T, IParseNode>>
+            return new Dictionary<string, Action<IParseNode>>
             {
-                {"id", (o,n) => { (o as TestDriveItem).Id = n.GetStringValue(); } },
-                {"@odata.type", (o,n) => { (o as TestDriveItem).ODataType = n.GetStringValue(); } },
-                {"name", (o,n) => { (o as TestDriveItem).Name = n.GetStringValue(); } },
-                {"size", (o,n) => { (o as TestDriveItem).Size = n.GetLongValue(); } }
+                {"id", (n) => { Id = n.GetStringValue(); } },
+                {"@odata.type", (n) => { ODataType = n.GetStringValue(); } },
+                {"name", (n) => { Name = n.GetStringValue(); } },
+                {"size", (n) => { Size = n.GetLongValue(); } }
             };
         }
 
