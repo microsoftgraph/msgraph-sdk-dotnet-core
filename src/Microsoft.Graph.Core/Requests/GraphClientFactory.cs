@@ -112,7 +112,7 @@ namespace Microsoft.Graph
         {
             return new List<DelegatingHandler> {
                 new GraphTelemetryHandler(graphClientOptions),
-                new OdataQueryHandler(),
+                new ParametersNameDecodingHandler(),
                 new CompressionHandler(),
                 new RetryHandler(),
                 new RedirectHandler()

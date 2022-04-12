@@ -96,4 +96,17 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Middleware
             Assert.Contains($" runtimeEnvironment={RuntimeInformation.FrameworkDescription};", telemetryHeaderString);
         }
     }
+
+    internal class FakeSuccessHandler : DelegatingHandler
+    {
+        protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+        {
+            var response = new HttpResponseMessage
+            {
+                StatusCode = System.Net.HttpStatusCode.OK,
+                RequestMessage = request
+            };
+            return Task.FromResult(response);
+        }
+    }
 }
