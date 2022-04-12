@@ -72,8 +72,10 @@ namespace Microsoft.Graph
             features += " runtimeEnvironment=" + RuntimeInformation.FrameworkDescription + ";";
 
             var telemetryString = $"{serviceLibraryString} {coreLibraryString} (featureUsage={Enum.Format(typeof(FeatureFlag), httpRequest.GetFeatureFlags(), "x")};{features})";
-            httpRequest.Headers.Add(CoreConstants.Headers.SdkVersionHeaderName, telemetryString);
-            httpRequest.Headers.Add(CoreConstants.Headers.ClientRequestId, Guid.NewGuid().ToString());
+            if(!httpRequest.Headers.Contains(CoreConstants.Headers.SdkVersionHeaderName))
+                httpRequest.Headers.Add(CoreConstants.Headers.SdkVersionHeaderName, telemetryString);
+            if (!httpRequest.Headers.Contains(CoreConstants.Headers.ClientRequestId))
+                httpRequest.Headers.Add(CoreConstants.Headers.ClientRequestId, Guid.NewGuid().ToString());
 
             return base.SendAsync(httpRequest, cancellationToken);
         }

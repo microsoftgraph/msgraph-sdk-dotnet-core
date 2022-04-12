@@ -9,6 +9,7 @@ namespace Microsoft.Graph
     using System.Net;
     using System.Net.Http;
     using System.Net.Http.Headers;
+    using Microsoft.Kiota.Http.HttpClientLibrary;
     using Microsoft.Kiota.Http.HttpClientLibrary.Middleware;
 
     /// <summary>
@@ -110,13 +111,13 @@ namespace Microsoft.Graph
         /// <returns></returns>
         public static IList<DelegatingHandler> CreateDefaultHandlers(GraphClientOptions graphClientOptions = null)
         {
-            return new List<DelegatingHandler> {
-                new GraphTelemetryHandler(graphClientOptions),
-                new OdataQueryHandler(),
-                new CompressionHandler(),
-                new RetryHandler(),
-                new RedirectHandler()
-            };
+            var handlers = KiotaClientFactory.CreateDefaultHandlers();
+            handlers.Add(new GraphTelemetryHandler(graphClientOptions));// add the telemetry handler last.
+
+            // TODO remove this once https://github.com/microsoft/kiota/issues/598 is closed.
+            handlers.Insert(0, new CompressionHandler());
+
+            return handlers;
         }
 
         /// <summary>
