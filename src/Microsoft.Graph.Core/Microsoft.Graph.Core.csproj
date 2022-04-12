@@ -101,10 +101,10 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="6.17.0" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.Kiota.Abstractions" Version="1.0.0-preview.4" />
-    <PackageReference Include="Microsoft.Kiota.Authentication.Azure" Version="1.0.0-preview.1" />
-    <PackageReference Include="Microsoft.Kiota.Serialization.Json" Version="1.0.0-preview.2" />
-    <PackageReference Include="Microsoft.Kiota.Serialization.Text" Version="1.0.0-preview.1" />
-    <PackageReference Include="Microsoft.Kiota.Http.HttpClientLibrary" Version="1.0.0-preview.5" />
+    <PackageReference Include="Microsoft.Kiota.Abstractions" Version="1.0.0-preview.5" />
+    <PackageReference Include="Microsoft.Kiota.Authentication.Azure" Version="1.0.0-preview.2" />
+    <PackageReference Include="Microsoft.Kiota.Serialization.Json" Version="1.0.0-preview.4" />
+    <PackageReference Include="Microsoft.Kiota.Serialization.Text" Version="1.0.0-preview.2" />
+    <PackageReference Include="Microsoft.Kiota.Http.HttpClientLibrary" Version="1.0.0-preview.6" />
   </ItemGroup>
 </Project>
