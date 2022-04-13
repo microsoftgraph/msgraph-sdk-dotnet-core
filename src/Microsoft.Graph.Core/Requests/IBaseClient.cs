@@ -20,12 +20,6 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets the <see cref="BatchRequestBuilder"/> for building batch Requests
         /// </summary>
-        public BatchRequestBuilder Batch
-        {
-            get
-            {
-                return new BatchRequestBuilder(this.RequestAdapter);
-            }
-        }
+        public BatchRequestBuilder Batch { get; }
     }
 }
