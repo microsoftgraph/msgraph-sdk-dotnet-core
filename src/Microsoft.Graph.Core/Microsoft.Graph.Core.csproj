@@ -22,10 +22,10 @@
     <AssemblyOriginatorKeyFile>35MSSharedLib1024.snk</AssemblyOriginatorKeyFile>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <VersionPrefix>3.0.0</VersionPrefix>
-    <VersionSuffix>preview.4</VersionSuffix>
+    <VersionSuffix>preview.5</VersionSuffix>
     <PackageReleaseNotes>
-		- [Breaking] Changes target runtime to netstandard2.0
-	</PackageReleaseNotes>
+        - [Breaking] Request configuration revamp to support [Kiota #1494](https://github.com/microsoft/kiota/issues/1494)
+    </PackageReleaseNotes>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <Deterministic>true</Deterministic>
@@ -101,7 +101,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="6.17.0" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.Kiota.Abstractions" Version="1.0.0-preview.5" />
+    <PackageReference Include="Microsoft.Kiota.Abstractions" Version="1.0.0-preview.6" />
     <PackageReference Include="Microsoft.Kiota.Authentication.Azure" Version="1.0.0-preview.2" />
     <PackageReference Include="Microsoft.Kiota.Serialization.Json" Version="1.0.0-preview.4" />
     <PackageReference Include="Microsoft.Kiota.Serialization.Text" Version="1.0.0-preview.2" />
