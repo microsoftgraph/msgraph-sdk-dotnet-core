@@ -111,7 +111,7 @@
   </None>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="System.Text.Json" Version="6.0.3" />
+    <PackageReference Include="System.Text.Json" Version="6.0.4" />
     <PackageReference Include="Azure.Core" Version="1.24.0" />
     <PackageReference Include="Microsoft.Identity.Client" Version="4.43.2" />
     <PackageReference Include="System.Diagnostics.DiagnosticSource" Version="4.7.1" />
