@@ -17,8 +17,6 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Mocks
         public MockTokenCredential()
             : base(MockBehavior.Strict)
         {
-            this.SetupAllProperties();
-
             this.Setup( tokenCredential => tokenCredential.GetTokenAsync( It.IsAny<TokenRequestContext>(),CancellationToken.None ))
                 .Returns( new ValueTask<AccessToken>(new AccessToken("mockToken", DateTimeOffset.UtcNow.AddMinutes(10))));
         }

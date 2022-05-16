@@ -12,8 +12,6 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Mocks
         public MockHttpProvider(HttpResponseMessage httpResponseMessage, ISerializer serializer = null)
             : base(MockBehavior.Strict)
         {
-            this.SetupAllProperties();
-
             this.Setup(
                 provider => provider.SendAsync(It.IsAny<HttpRequestMessage>()))
                 .Returns(Task.FromResult(httpResponseMessage));

@@ -14,8 +14,6 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Mocks
         public MockAuthenticationProvider(string accessToken = null)
             : base(MockBehavior.Strict)
         {
-            this.SetupAllProperties();
-
             this.Setup(
                 provider => provider.AuthenticateRequestAsync(It.IsAny<HttpRequestMessage>()))
                 .Callback<HttpRequestMessage>(r => r.Headers.Authorization = new AuthenticationHeaderValue(CoreConstants.Headers.Bearer, accessToken ?? "Default-Token"))
