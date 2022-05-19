@@ -22,9 +22,9 @@ Register your application to use Microsoft Graph API by following the steps at [
 
 ### 2. Authenticate for the Microsoft Graph service
 
-The Microsoft Graph .NET Client Library does not currently include any default authentication implementations.
-There are set of preview authentication providers available in the [msgraph-sdk-dotnet-auth](https://github.com/microsoftgraph/msgraph-sdk-dotnet-auth) repo.  Alternatively, you can use the built-in **DelegateAuthenticationProvider** class to authenticate each request.
-For more information on `DelegateAuthenticationProvider`, see the [library overview](docs/overview.md).  
+The Microsoft Graph .NET Client Library supports the use of TokenCredential classes in the [Azure.Identity](https://www.nuget.org/packages/Azure.Identity) library.
+
+You can read more about available Credential classes [here](https://docs.microsoft.com/en-us/dotnet/api/overview/azure/identity-readme#key-concepts) and examples on how to quickly setup TokenCredential instances can be found [here](https://github.com/microsoftgraph/msgraph-sdk-dotnet/blob/feature/5.0/docs/tokencredentials.md).
 
 The recommended library for authenticating against Microsoft Identity (Azure AD) is [MSAL](https://github.com/AzureAD/microsoft-authentication-library-for-dotnet).
 
@@ -32,10 +32,10 @@ For an example of authenticating a UWP app using the V2 Authentication Endpoint,
 
 ### 3. Create a HttpClient object with an authentication provider
 
-You can create an instance of **HttpClient** that is pre-configured for making requests to Microsoft Graph APIs using `GraphClientFactory`. To create an instance of .NET's `HttpClient`, you need to provide an instance of
-`IAuthenticationProvider` which can authenticate requests to Microsoft Graph.
+You can create an instance of **HttpClient** that is pre-configured for making requests to Microsoft Graph APIs using `GraphClientFactory`.
+
 ```cs
-HttpClient httpClient = GraphClientFactory.Create(IAuthenticationProvider, version: "beta");
+HttpClient httpClient = GraphClientFactory.Create( version: "beta");
 ```
 
 For more information on initializing a client instance, see the [library overview](https://docs.microsoft.com/en-us/graph/sdks/sdks-overview)

@@ -77,7 +77,7 @@ var httpClient = GraphClientFactory.Create(handlers);
 GraphServiceClient graphServiceClient = new GraphServiceClient(httpClient);
 
 // make a request with logging enabled!!
-User me = await graphServiceClient.Me.Request().GetAsync();
+User me = await graphServiceClient.Me.GetAsync();
 ```
 
 ## b. Take advantage of OpenTelemetry's instrumentation of HttpClient
@@ -188,5 +188,5 @@ Your requests made using GraphServiceClient will now be instrumented as the Http
 
 ```cs
 // make a request with httpclient tracing enabled!!
-User me = await graphServiceClient.Me.Request().GetAsync();
+User me = await graphServiceClient.Me.GetAsync();
 ```
