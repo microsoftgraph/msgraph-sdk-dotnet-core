@@ -20,28 +20,13 @@ To begin making requests with the library, you will need to initialize a **Graph
 
 | Parameter                                      | Required?      | Default Value                                    |
 |:-----------------------------------------------|:---------------|:-------------------------------------------------|
-|`string` baseUrl                                | No             | https://graph.microsoft.com/currentServiceVersion|
 |`IAuthenticationProvider` authenticationProvider| Yes            | n/a                                              |
-|`IHttpProvider` httpProvider                    | No             | `new HttpProvider(new Serializer())`             |
 
 ## IAuthenticationProvider
 
 The authentication provider is responsible for authenticating requests before sending them to the service. The Microsoft Graph .NET Client Library doesn't implement any authentication by default. Instead, you will need to retrieve access tokens for the service via the authentication library of your choice or by coding against one of the authentication endpoints directly. Please [read here](https://developer.microsoft.com/en-us/graph/docs/concepts/auth_overview) for more details about authenticating the Microsoft Graph service.
 
-### DelegateAuthenticationProvider
-
-The `DelegateAuthenticationProvider` is an implementation of `IAuthenticationProvider` that accepts a delegate to call during `AuthenticateRequestAsync`. This is the simplest way to append a retrieved access token to a request message:
-
-``` csharp
-var graphServiceClient = new GraphServiceClient(new DelegateAuthenticationProvider((requestMessage) => {
-    requestMessage
-        .Headers
-        .Authorization = new AuthenticationHeaderValue("bearer", accessToken);
-
-    return Task.FromResult(0);
-}));
-```
-
+You can also read about authentication with Kiota generated clients [here](https://github.com/microsoft/kiota/blob/main/docs/extending/authentication.md#authentication-with-kiota-clients)
 
 ## Resource model
 
@@ -53,9 +38,7 @@ The resource model classes are generated based on the $metadata description of t
 
 ## Requests
 
-To make requests against the service, you'll need to build a request using the request builders off the client. The request builders are responsible for building the request URL while the `Request()` method off a request builder will build the request object. The request builder patterns are intended to mirror the REST API pattern.
-
-**Note:** Request and request builder classes are generated based on the $metadata description of the service. Interfaces are provided for each of these classes to enable easy unit testing around the logic contained in the classes. Since these interfaces are also generated, their signatures are subject to change without being considered a breaking change in the library. Anybody consuming these interfaces should be prepared for the class names or interface definitions to change between library versions.
+To make requests against the service, you'll need to build a request using the request builders of the client. The request builder patterns are intended to mirror the REST API pattern.
 
 ### 1. Request builders
 
@@ -65,35 +48,23 @@ You get the first request builder from the `GraphServiceClient` object. For exam
 |:----------|:----------------------:|:-------------------------------|
 |Get me     | graphServiceClient.Me  | GET graph.microsoft.com/v1.0/me|
  
-The call will return an `IUserRequestBuilder` object. From Me you can continue to chain the request builders.
+The call will return a `UserRequestBuilder` object. From Me you can continue to chain the request builders.
 
 The [Microsoft Graph service documentation](https://graph.microsoft.io/en-us/docs) has more details about the full functionality of the API.
 
 
 ### 2. Request calls
 
-After you build the request you call the `Request` method on the request builder. This will construct the request object needed to make calls against the service.
-
-For /me/calendar you call:
-
-``` csharp
-var calendarRequest = graphServiceClient
-    .Me
-    .Calendar
-    .Request();
-```
-
-All request builders have a `Request` method that can generate a request object. Request objects may have different methods on them depending on the type of request. To get /me/calendar you call:
+To get /me/calendar you call:
 
 ``` csharp
 var calendar = await graphServiceClient
     .Me
     .Calendar
-    .Request()
     .GetAsync();
 ```
 
-Any errors while building or sending a request will bubble up as a `ServiceException`. See [errors](/docs/errors.md) for more information on errors.
+Any errors while building or sending a request will bubble up as an `ApiException`. See [errors](/docs/errors.md) for more information on errors.
 
 ## Query options
 
@@ -102,77 +73,13 @@ If you only want to retrieve certain properties of a resource you can select the
 ``` csharp
 var user = await graphServiceClient
     .Me
-    .Request()
-    .Select("id")
-    .GetAsync();
+    .GetAsync( requestConfiguration => requestConfiguration.QueryParameters.Select = new string[] { "id"});
 ```
 
 All properties other than `Id` will be null on the returned user object.
 
 Expand, Skip, Top, OrderBy, and Filter are also supported via the client library when supported by the Microsoft Graph service for the request type.
 
-## Custom query options
-
-If you need to include more specific behavior during a request that is not supported by the library, you can create a custom queryOptions List that you can add when calling ```Request```:
-
-``` chsarp
-List<QueryOption> options = new List<QueryOption>
-{
-     new QueryOption("$search", "lunch")
-};
-var messages = await client.Me.Messages.Request(options).GetAsync();
-```
-
-
-
 ## Collections
 
 Please see [collections](/docs/collections.md) for details on collections and paging.
-
-## Send HTTP requests with the .Net Microsoft Graph client library
-
-Sometimes, the functionality that you want to use isn't a part of the .NET client library. In this case, you can still use the client library to make your life easier. The client library can authenticate your requests and provide you the serializers. Here's an example of using the client library to create a OneNote page and deserialize the response object. 
-
-``` csharp
-
-public async Task OneNoteAddPageHtml()
-{
-    // Get a page of OneNote sections.
-    IOnenoteSectionsCollectionPage sectionPage = await graphClient.Me.Onenote.Sections.Request().GetAsync();
-
-    // Get a handle to the first section.
-    string sectionId = sectionPage[0].Id;
-
-    // Get the request URL for adding a page. 
-    string requestUrl = graphClient.Me.Onenote.Sections[sectionId].Pages.Request().RequestUrl;
-
-    string htmlBody = @"<!DOCTYPE html><html><head><title>OneNoteAddPageHtml created this</title></head>
-                        <body>Generated with love</body></html> ";
-
-    // Create the request message and add the content.
-    HttpRequestMessage hrm = new HttpRequestMessage(HttpMethod.Post, requestUrl);
-    hrm.Content = new StringContent(htmlBody, System.Text.Encoding.UTF8, "text/html");
-
-    // Authenticate (add access token) our HttpRequestMessage
-    await graphClient.AuthenticationProvider.AuthenticateRequestAsync(hrm);
-
-    // Send the request and get the response.
-    HttpResponseMessage response = await graphClient.HttpProvider.SendAsync(hrm);
-
-    // Get the OneNote page that we created.
-    if (response.IsSuccessStatusCode)
-    {
-        // Deserialize into OneNotePage object.
-        var content = await response.Content.ReadAsStringAsync();
-        OnenotePage page = graphClient.HttpProvider.Serializer.DeserializeObject<OnenotePage>(content);
-    }
-    else
-        throw new ServiceException(
-            new Error
-            {
-                Code = response.StatusCode.ToString(),
-                Message = await response.Content.ReadAsStringAsync()
-            });
-}
-
-```
