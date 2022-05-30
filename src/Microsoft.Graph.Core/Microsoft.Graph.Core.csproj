@@ -22,10 +22,10 @@
     <AssemblyOriginatorKeyFile>35MSSharedLib1024.snk</AssemblyOriginatorKeyFile>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <VersionPrefix>3.0.0</VersionPrefix>
-    <VersionSuffix>preview.6</VersionSuffix>
+    <VersionSuffix>preview.7</VersionSuffix>
     <PackageReleaseNotes>
-        - [Breaking] Adds CAE support from authentication libraries
-        - Dependency updates to support scalar request bodies
+        - Dependency updates
+        - Fix errors on payload deserialization (https://github.com/microsoftgraph/msgraph-beta-sdk-dotnet/issues/461)
     </PackageReleaseNotes>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
@@ -104,7 +104,7 @@
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
     <PackageReference Include="Microsoft.Kiota.Abstractions" Version="1.0.0-preview.8" />
     <PackageReference Include="Microsoft.Kiota.Authentication.Azure" Version="1.0.0-preview.3" />
-    <PackageReference Include="Microsoft.Kiota.Serialization.Json" Version="1.0.0-preview.5" />
+    <PackageReference Include="Microsoft.Kiota.Serialization.Json" Version="1.0.0-preview.6" />
     <PackageReference Include="Microsoft.Kiota.Serialization.Text" Version="1.0.0-preview.3" />
     <PackageReference Include="Microsoft.Kiota.Http.HttpClientLibrary" Version="1.0.0-preview.8" />
   </ItemGroup>
