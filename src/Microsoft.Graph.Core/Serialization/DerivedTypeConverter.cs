@@ -38,17 +38,11 @@ namespace Microsoft.Graph
         /// <returns></returns>
         public override T Read(ref Utf8JsonReader reader, Type objectType, JsonSerializerOptions options)
         {
-            JsonDocument jsonDocument = JsonDocument.ParseValue(ref reader);
+            using JsonDocument jsonDocument = JsonDocument.ParseValue(ref reader);
             JsonElement type;
-            try
-            {
-                // try to get the @odata.type property if we can
-                if (!jsonDocument.RootElement.TryGetProperty(CoreConstants.Serialization.ODataType, out type))
-                {
-                    type = default;
-                }
-            }
-            catch (InvalidOperationException)
+
+            // try to get the @odata.type property if we can. The jsonDocument should be of kind JsonValueKind.Object.
+            if (jsonDocument.RootElement.ValueKind != JsonValueKind.Object || !jsonDocument.RootElement.TryGetProperty(CoreConstants.Serialization.ODataType, out type))
             {
                 type = default;
             }
@@ -119,7 +113,16 @@ namespace Microsoft.Graph
         private void PopulateObject(object target, JsonElement json, JsonSerializerOptions options)
         {
             // We use the target type information since it maybe be derived. We do not want to leave out extra properties in the child class and put them in the additional data unnecessarily
-            Type objectType = target.GetType();
+            var objectType = target.GetType();
+            var properties = objectType.GetProperties();
+            var typeInfoDictionary = properties
+                .Select(propertyInfo => new KeyValuePair<string,PropertyInfo>(propertyInfo.GetCustomAttribute<JsonPropertyNameAttribute>()?.Name, propertyInfo))
+                .Where( x => !string.IsNullOrEmpty(x.Key))
+                .ToDictionary(x => x.Key, x => x.Value);
+
+            // Get the property with the JsonExtensionData attribute and add the property to the collection
+            var additionalDataInfo = properties.FirstOrDefault(propertyInfo => propertyInfo.GetCustomAttribute(typeof(JsonExtensionDataAttribute)) != null);
+
             switch (json.ValueKind)
             {
                 case JsonValueKind.Object:
@@ -128,28 +131,23 @@ namespace Microsoft.Graph
                     foreach (var property in json.EnumerateObject())
                     {
                         // look up the property in the object definition using the mapping provided in the model attribute
-                        var propertyInfo = objectType.GetProperties().FirstOrDefault((mappedProperty) =>
-                        {
-                            var attribute = mappedProperty.GetCustomAttribute<JsonPropertyNameAttribute>();
-                            return attribute?.Name == property.Name;
-                        });
-                        if (propertyInfo == null)
+                        if(!typeInfoDictionary.TryGetValue(property.Name, out var propertyInfo))
                         {
                             //Add the property to AdditionalData as it doesn't exist as a member of the object
-                            AddToAdditionalDataBag(target, objectType, property);
+                            AddToAdditionalDataBag(target, additionalDataInfo, property);
                             continue;
                         }
 
                         try
                         {
                             // Deserialize the property in and update the current object.
-                            var parsedValue = JsonSerializer.Deserialize(property.Value.GetRawText(), propertyInfo.PropertyType, options);
+                            var parsedValue = property.Value.Deserialize(propertyInfo.PropertyType, options);
                             propertyInfo.SetValue(target, parsedValue);
                         }
                         catch (JsonException)
                         {
                             //Add the property to AdditionalData as it can't be deserialized as a member. Eg. non existing enum member type
-                            AddToAdditionalDataBag(target, objectType, property);
+                            AddToAdditionalDataBag(target, additionalDataInfo, property);
                         }
                     }
 
@@ -167,7 +165,7 @@ namespace Microsoft.Graph
                         foreach (var property in json.EnumerateArray())
                         {
                             // Get the object instance
-                            var instance = JsonSerializer.Deserialize(property.GetRawText(), genericType, options);
+                            var instance = property.Deserialize(genericType, options);
 
                             // Invoke the insert function to add it to the collection as it an IList
                             MethodInfo methodInfo = collectionPropertyInfo.PropertyType.GetMethods().FirstOrDefault(method => method.Name.Equals("Insert"));
@@ -190,16 +188,14 @@ namespace Microsoft.Graph
         /// done for us automagically since we hare using a custom converter
         /// </summary>
         /// <param name="target">The target object</param>
-        /// <param name="objectType">The object type</param>
+        /// <param name="additionalDataInfo">The property for the additionaData</param>
         /// <param name="property">The json property</param>
-        private void AddToAdditionalDataBag(object target, Type objectType, JsonProperty property)
+        private void AddToAdditionalDataBag(object target, PropertyInfo additionalDataInfo, JsonProperty property)
         {
-            // Get the property with the JsonExtensionData attribute and add the property to the collection
-            var additionalDataInfo = objectType.GetProperties().FirstOrDefault(propertyInfo => ((MemberInfo) propertyInfo).GetCustomAttribute<JsonExtensionDataAttribute>() != null);
             if (additionalDataInfo != null)
             {
                 var additionalData = additionalDataInfo.GetValue(target) as IDictionary<string, object> ?? new Dictionary<string, object>();
-                additionalData.Add(property.Name, property.Value);
+                additionalData.Add(property.Name, property.Value.Clone());
                 additionalDataInfo.SetValue(target, additionalData);
             }
         }

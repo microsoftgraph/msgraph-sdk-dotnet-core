@@ -157,14 +157,17 @@ namespace Microsoft.Graph
         /// Replaces the default response handler with a custom response handler for this request.
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="baseRequest">The <see cref="BaseRequest"/> for the request.</param>
+        /// <param name="baseRequest">The <see cref="IBaseRequest"/> for the request.</param>
         /// <param name="responseHandler">The <see cref="IResponseHandler"/> for the request.</param>
         /// <returns></returns>
         /// <exception cref="System.ArgumentNullException">If responseHandler is null.</exception>
-        public static T WithResponseHandler<T>(this T baseRequest, IResponseHandler responseHandler) where T : BaseRequest
+        public static T WithResponseHandler<T>(this T baseRequest, IResponseHandler responseHandler) where T : IBaseRequest
         {
-            baseRequest.ResponseHandler = responseHandler ?? throw new ArgumentNullException(nameof(responseHandler));
-
+            _ = responseHandler ?? throw new ArgumentNullException(nameof(responseHandler));
+            if(baseRequest is BaseRequest request)
+            {
+                request.ResponseHandler = responseHandler;
+            }
             return baseRequest;
         }
 
