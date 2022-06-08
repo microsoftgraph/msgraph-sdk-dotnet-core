@@ -50,7 +50,7 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets the <see cref="IResponseHandler"/> for the request.
         /// </summary>
-        IResponseHandler ResponseHandler { get; }
+        IResponseHandler ResponseHandler { get; set; }
 
         /// <summary>
         /// Gets the <see cref="HttpRequestMessage"/> representation of the request.

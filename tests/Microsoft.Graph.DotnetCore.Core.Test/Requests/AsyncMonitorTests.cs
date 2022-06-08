@@ -38,7 +38,6 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             this.httpProvider = new MockHttpProvider(this.httpResponseMessage, this.serializer.Object);
 
             this.client = new Mock<IBaseClient>(MockBehavior.Strict);
-            this.client.SetupAllProperties();
             this.client.SetupGet(client => client.HttpProvider).Returns(this.httpProvider.Object);
 
             this.progress = new MockProgress();

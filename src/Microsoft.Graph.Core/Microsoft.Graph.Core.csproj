@@ -21,14 +21,11 @@
     <DelaySign>false</DelaySign>
     <AssemblyOriginatorKeyFile>35MSSharedLib1024.snk</AssemblyOriginatorKeyFile>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <VersionPrefix>2.0.8</VersionPrefix>
+    <VersionPrefix>2.0.9</VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <PackageReleaseNotes>
-- Adds missing ConfigureAwait calls to resolve issues with blocking calls
-- Change default http request message version to http/2
-- Change default handler to WinHttpHandler for NetFramework clients to support http/2
-- Fix null reference exception on deserializing batch request items for non existent object
-- Fix for incorrect content type headers set for batch response content when the reponse type is not application/json
+        - Improves performance of DerivedTypeConverter on deserialization of large payloads
+        - Fixes WithResponseHandler extension method to target Interface not Base class
     </PackageReleaseNotes>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
@@ -77,7 +74,7 @@
   </PropertyGroup>
   
   <ItemGroup Condition=" '$(TargetFramework)' == 'net462' ">
-    <PackageReference Include="System.Net.Http.WinHttpHandler" Version="6.0.0" />
+    <PackageReference Include="System.Net.Http.WinHttpHandler" Version="6.0.1" />
   </ItemGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
     <PackageReference Include="System.Security.Claims" Version="4.3.0" />
@@ -111,11 +108,11 @@
   </None>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="System.Text.Json" Version="6.0.2" />
-    <PackageReference Include="Azure.Core" Version="1.22.0" />
-    <PackageReference Include="Microsoft.Identity.Client" Version="4.41.0" />
+    <PackageReference Include="System.Text.Json" Version="6.0.4" />
+    <PackageReference Include="Azure.Core" Version="1.24.0" />
+    <PackageReference Include="Microsoft.Identity.Client" Version="4.44.0" />
     <PackageReference Include="System.Diagnostics.DiagnosticSource" Version="4.7.1" />
-    <PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="6.15.1" />
+    <PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="6.19.0" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
   </ItemGroup>
 </Project>
