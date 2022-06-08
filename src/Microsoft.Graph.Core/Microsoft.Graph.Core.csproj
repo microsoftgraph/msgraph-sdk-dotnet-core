@@ -21,14 +21,11 @@
     <DelaySign>false</DelaySign>
     <AssemblyOriginatorKeyFile>35MSSharedLib1024.snk</AssemblyOriginatorKeyFile>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <VersionPrefix>2.0.8</VersionPrefix>
+    <VersionPrefix>2.0.9</VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <PackageReleaseNotes>
-- Adds missing ConfigureAwait calls to resolve issues with blocking calls
-- Change default http request message version to http/2
-- Change default handler to WinHttpHandler for NetFramework clients to support http/2
-- Fix null reference exception on deserializing batch request items for non existent object
-- Fix for incorrect content type headers set for batch response content when the reponse type is not application/json
+        - Improves performance of DerivedTypeConverter on deserialization of large payloads
+        - Fixes WithResponseHandler extension method to target Interface not Base class
     </PackageReleaseNotes>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
