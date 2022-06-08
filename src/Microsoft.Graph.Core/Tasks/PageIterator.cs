@@ -247,7 +247,7 @@ namespace Microsoft.Graph
         /// <exception cref="ArgumentException">Thrown when the object doesn't contain a collection inside it</exception>
         private static List<TEntity> ExtractEntityListFromParsable(TCollectionPage parsableCollection)
         {
-            return parsableCollection.GetType().GetProperty("Value").GetValue(parsableCollection, null) as List<TEntity> ?? throw new ArgumentException("The Parsable does not contain a collection property");
+            return parsableCollection.GetType().GetProperty("Value")?.GetValue(parsableCollection, null) as List<TEntity> ?? throw new ArgumentException("The Parsable does not contain a collection property");
         }
 
         /// <summary>
@@ -258,7 +258,13 @@ namespace Microsoft.Graph
         /// <returns></returns>
         private static string ExtractNextLinkFromParsable(TCollectionPage parsableCollection, string nextLinkPropertyName = "NextLink")
         {
-            return parsableCollection.GetType().GetProperty(nextLinkPropertyName).GetValue(parsableCollection, null) as string ?? string.Empty;
+            var nextLinkProperty = parsableCollection.GetType().GetProperty(nextLinkPropertyName);
+            if (nextLinkProperty != null)
+            {
+                return nextLinkProperty.GetValue(parsableCollection, null) as string ?? string.Empty;
+            }
+            // the next link property may not be defined in the response schema so we also check its presence in the additional data bag
+            return parsableCollection.AdditionalData.TryGetValue(CoreConstants.OdataInstanceAnnotations.NextLink,out var nextLink) ? nextLink.ToString() : string.Empty;
         }
     }
 

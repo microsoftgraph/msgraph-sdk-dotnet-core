@@ -22,10 +22,9 @@
     <AssemblyOriginatorKeyFile>35MSSharedLib1024.snk</AssemblyOriginatorKeyFile>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <VersionPrefix>3.0.0</VersionPrefix>
-    <VersionSuffix>preview.7</VersionSuffix>
+    <VersionSuffix>preview.8</VersionSuffix>
     <PackageReleaseNotes>
-        - Dependency updates
-        - Fix errors on payload deserialization (https://github.com/microsoftgraph/msgraph-beta-sdk-dotnet/issues/461)
+        - Fixes paging for models in delta requests generated without NextLink property.
     </PackageReleaseNotes>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
