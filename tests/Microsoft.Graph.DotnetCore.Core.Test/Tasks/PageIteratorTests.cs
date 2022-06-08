@@ -6,6 +6,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
 {
     using System;
     using System.Collections.Generic;
+    using System.Text.Json;
     using System.Threading;
     using System.Threading.Tasks;
     using Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels;
@@ -156,6 +157,53 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
 
             // Assert the task was cancelled and did not get to the second page
             Assert.True(cancellationTokenSource.IsCancellationRequested, "The delegate page iterator did not cancel requests to fetch more pages.");
+        }
+
+        [Fact]
+        public async Task Given_CollectionPage_Without_Next_Link_Property_It_Iterates_Across_Pages()
+        {
+            // // Arrange the sample first page of 17 events to initialize the original collection page.
+            var originalPage = new TestEventsDeltaResponse() { Value = new List<TestEventItem>() };
+            originalPage.AdditionalData.Add("@odata.nextLink", JsonDocument.Parse("\"http://localhost/events?$skip=11\"").RootElement);
+            var inputEventCount = 17;
+            for (int i = 0; i < inputEventCount; i++)
+            {
+                originalPage.Value.Add(new TestEventItem() { Subject = $"Subject{i}" });
+            }
+
+            // Create the 5 events to initialize the next collection page.
+            var nextPage = new TestEventsDeltaResponse() { Value = new List<TestEventItem>() };
+            var nextPageEventCount = 5;
+            for (int i = 0; i < nextPageEventCount; i++)
+            {
+                nextPage.Value.Add(new TestEventItem() { Subject = $"Subject for next page events: {i}" });
+            }
+
+            bool reachedNextPage = false;
+
+            // Create the delegate to process each entity returned in the pages. The delegate will 
+            // signal that we reached an event in the next page.
+            Func<TestEventItem, bool> processEachEvent = (e) =>
+            {
+                if (e.Subject.Contains("Subject for next page events"))
+                {
+                    reachedNextPage = true;
+                    return false;
+                }
+
+                return true;
+            };
+
+            this.mockRequestAdapter.Setup(x => x.SendAsync<TestEventsDeltaResponse>(It.IsAny<RequestInformation>(), It.IsAny<ParsableFactory<TestEventsDeltaResponse>>(), It.IsAny<IResponseHandler>(), It.IsAny<Dictionary<string, ParsableFactory<IParsable>>>(), It.IsAny<CancellationToken>()))
+                                    .Returns(() => { return Task.FromResult(nextPage); });
+
+            // Act by calling the iterator
+            var eventsDeltaPageIterator = PageIterator<TestEventItem, TestEventsDeltaResponse>.CreatePageIterator(baseClient, originalPage, processEachEvent);
+            await eventsDeltaPageIterator.IterateAsync();
+
+            // Assert that paging was paused and got to the next page
+            Assert.True(reachedNextPage, "The delegate page iterator did not reach the next page.");
+            Assert.Equal(PagingState.Paused, eventsDeltaPageIterator.State);
         }
 
         [Fact]
