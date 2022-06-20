@@ -22,9 +22,9 @@
     <AssemblyOriginatorKeyFile>35MSSharedLib1024.snk</AssemblyOriginatorKeyFile>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <VersionPrefix>3.0.0</VersionPrefix>
-    <VersionSuffix>preview.8</VersionSuffix>
+    <VersionSuffix>preview.9</VersionSuffix>
     <PackageReleaseNotes>
-        - Fixes paging for models in delta requests generated without NextLink property.
+        - Adds support for async callback in the PageIterator.
     </PackageReleaseNotes>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>

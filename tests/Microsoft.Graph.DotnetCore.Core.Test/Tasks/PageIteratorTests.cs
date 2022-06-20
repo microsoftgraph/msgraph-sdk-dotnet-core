@@ -49,9 +49,15 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
         }
 
         [Fact]
+        public void Given_Null_Async_Delegate_It_Throws_ArgumentNullException()
+        {
+            Assert.Throws<ArgumentNullException>(() => PageIterator<TestEventItem, TestEventsResponse>.CreatePageIterator(baseClient, new TestEventsResponse(), asyncCallback: null));
+        }
+
+        [Fact]
         public void Given_Null_Delegate_It_Throws_ArgumentNullException()
         {
-            Assert.Throws<ArgumentNullException>(() => PageIterator<TestEventItem, TestEventsResponse>.CreatePageIterator(baseClient, new TestEventsResponse(), null));
+            Assert.Throws<ArgumentNullException>(() => PageIterator<TestEventItem, TestEventsResponse>.CreatePageIterator(baseClient, new TestEventsResponse(), callback: null));
         }
 
         [Fact]
@@ -74,6 +80,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
                 return true;
             });
 
+            Assert.False(eventPageIterator.IsProcessPageItemCallbackAsync);
             await eventPageIterator.IterateAsync();
 
             // Assert the collection is not empty and has the same numbers
@@ -207,6 +214,54 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
         }
 
         [Fact]
+        public async Task Given_CollectionPage_It_Iterates_Across_Pages_With_Async_Delegate()
+        {
+            // // Arrange the sample first page of 17 events to initialize the original collection page.
+            var originalPage = new TestEventsResponse() { Value = new List<TestEventItem>(), NextLink = "http://localhost/events?$skip=11" };
+            var inputEventCount = 17;
+            for (int i = 0; i < inputEventCount; i++)
+            {
+                originalPage.Value.Add(new TestEventItem() { Subject = $"Subject{i}" });
+            }
+
+            // Create the 5 events to initialize the next collection page.
+            var nextPage = new TestEventsResponse() { Value = new List<TestEventItem>() };
+            var nextPageEventCount = 5;
+            for (int i = 0; i < nextPageEventCount; i++)
+            {
+                nextPage.Value.Add(new TestEventItem() { Subject = $"Subject for next page events: {i}" });
+            }
+
+            bool reachedNextPage = false;
+
+            // Create the async delegate to process each entity returned in the pages. The delegate will 
+            // signal that we reached an event in the next page.
+            Func<TestEventItem, Task<bool>> processEachEvent = async (e) =>
+            {
+                if (e.Subject.Contains("Subject for next page events"))
+                {
+                    await Task.Delay(100);// pause for no reason
+                    reachedNextPage = true;
+                    return false;
+                }
+
+                return true;
+            };
+
+            this.mockRequestAdapter.Setup(x => x.SendAsync<TestEventsResponse>(It.IsAny<RequestInformation>(), It.IsAny<ParsableFactory<TestEventsResponse>>(), It.IsAny<IResponseHandler>(), It.IsAny<Dictionary<string, ParsableFactory<IParsable>>>(), It.IsAny<CancellationToken>()))
+                                    .Returns(() => { return Task.FromResult(nextPage); });
+
+            // Act by calling the iterator
+            eventPageIterator = PageIterator<TestEventItem, TestEventsResponse>.CreatePageIterator(baseClient, originalPage, processEachEvent);
+            Assert.True(eventPageIterator.IsProcessPageItemCallbackAsync);
+            await eventPageIterator.IterateAsync();
+
+            // Assert that paging was paused and got to the next page
+            Assert.True(reachedNextPage, "The delegate page iterator did not reach the next page.");
+            Assert.Equal(PagingState.Paused, eventPageIterator.State);
+        }
+
+        [Fact]
         public async Task Given_CollectionPage_It_Iterates_Across_Pages()
         {
             // // Arrange the sample first page of 17 events to initialize the original collection page.
@@ -248,6 +303,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
             await eventPageIterator.IterateAsync();
 
             // Assert that paging was paused and got to the next page
+            Assert.False(eventPageIterator.IsProcessPageItemCallbackAsync);
             Assert.True(reachedNextPage, "The delegate page iterator did not reach the next page.");
             Assert.Equal(PagingState.Paused, eventPageIterator.State);
         }

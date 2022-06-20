@@ -27,6 +27,7 @@ namespace Microsoft.Graph
         private TCollectionPage _currentPage;
         private Queue<TEntity> _pageItemQueue;
         private Func<TEntity, bool> _processPageItemCallback;
+        private Func<TEntity, Task<bool>> _asyncProcessPageItemCallback;
         private Func<RequestInformation, RequestInformation> _requestConfigurator;
 
         /// <summary>
@@ -41,6 +42,11 @@ namespace Microsoft.Graph
         /// The PageIterator state.
         /// </summary>
         public PagingState State { get; set; }
+
+        /// <summary>
+        /// Boolean value representing if the callback is Async
+        /// </summary>
+        internal bool IsProcessPageItemCallbackAsync => _processPageItemCallback == default;
 
         /// <summary>
         /// Creates the PageIterator with the results of an initial paged request. 
@@ -78,18 +84,53 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
+        /// Creates the PageIterator with the results of an initial paged request. 
+        /// </summary>
+        /// <param name="client">The GraphServiceClient object used to create the NextPageRequest for a delta query.</param>
+        /// <param name="page">A generated implementation of ICollectionPage.</param>
+        /// <param name="asyncCallback">A Func delegate that processes type TEntity in the result set aynchrnously and should return false if the iterator should cancel processing.</param>
+        /// <param name="requestConfigurator">A Func delegate that configures the NextPageRequest</param>
+        /// <returns>A PageIterator&lt;TEntity&gt; that will process additional result pages based on the rules specified in Func&lt;TEntity,bool&gt; processPageItems</returns>
+        public static PageIterator<TEntity, TCollectionPage> CreatePageIterator(IBaseClient client, TCollectionPage page, Func<TEntity, Task<bool>> asyncCallback, Func<RequestInformation, RequestInformation> requestConfigurator = null)
+        {
+            if (client == null)
+                throw new ArgumentNullException(nameof(client));
+
+            if (page == null)
+                throw new ArgumentNullException(nameof(page));
+
+            if (asyncCallback == null)
+                throw new ArgumentNullException(nameof(asyncCallback));
+
+            if (!page.GetFieldDeserializers().ContainsKey("value"))
+                throw new ArgumentException("The Parsable does not contain a collection property");
+
+            var pageItems = ExtractEntityListFromParsable(page);
+
+            return new PageIterator<TEntity, TCollectionPage>()
+            {
+                _client = client,
+                _currentPage = page,
+                _pageItemQueue = new Queue<TEntity>(pageItems),
+                _asyncProcessPageItemCallback = asyncCallback,
+                _requestConfigurator = requestConfigurator,
+                State = PagingState.NotStarted
+            };
+        }
+
+        /// <summary>
         /// Iterate across the content of a a single results page with the callback.
         /// </summary>
         /// <returns>A boolean value that indicates whether the callback cancelled 
         /// iterating across the page results or whether there are more pages to page. 
         /// A return value of false indicates that the iterator should stop iterating.</returns>
-        private bool IntrapageIterate()
+        private async Task<bool> IntrapageIterate()
         {
             State = PagingState.IntrapageIteration;
 
             while (_pageItemQueue.Count != 0) // && shouldContinue)
             {
-                bool shouldContinue = _processPageItemCallback(_pageItemQueue.Dequeue());
+                bool shouldContinue = IsProcessPageItemCallbackAsync ? await _asyncProcessPageItemCallback(_pageItemQueue.Dequeue()) : _processPageItemCallback(_pageItemQueue.Dequeue());
 
                 // Cancel processing of items in the page and stop requesting more pages.
                 if (!shouldContinue)
@@ -204,7 +245,7 @@ namespace Microsoft.Graph
             // Iterate over the contents of queue. The queue could be from the initial page
             // results passed to the iterator, the results of a delta query, or from a 
             // previously cancelled iteration that gets resumed.
-            bool shouldContinueInterpageIteration = IntrapageIterate();
+            bool shouldContinueInterpageIteration = await IntrapageIterate();
 
             // Request more pages if they are available.
             while (shouldContinueInterpageIteration && !token.IsCancellationRequested)
@@ -214,7 +255,7 @@ namespace Microsoft.Graph
 
                 // Iterate over items added to the queue by InterpageIterateAsync and
                 // determine whether there are more pages to request.
-                shouldContinueInterpageIteration = IntrapageIterate();
+                shouldContinueInterpageIteration = await IntrapageIterate();
             }
         }
 
