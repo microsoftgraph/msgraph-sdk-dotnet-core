@@ -92,7 +92,6 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
-    <PackageReference Include="System.Net.Http" Version="4.3.4" />
   </ItemGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'MonoAndroid80' ">
     <Reference Include="Mono.Android" />
@@ -108,9 +107,10 @@
   </None>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="System.Net.Http" Version="4.3.4" />
     <PackageReference Include="System.Text.Json" Version="6.0.5" />
     <PackageReference Include="Azure.Core" Version="1.24.0" />
-    <PackageReference Include="Microsoft.Identity.Client" Version="4.44.0" />
+    <PackageReference Include="Microsoft.Identity.Client" Version="4.45.0" />
     <PackageReference Include="System.Diagnostics.DiagnosticSource" Version="4.7.1" />
     <PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="6.20.0" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
