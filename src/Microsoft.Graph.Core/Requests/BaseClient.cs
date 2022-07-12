@@ -36,17 +36,6 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Constructs a new <see cref="BaseClient"/>.
-        /// </summary>
-        /// <param name="baseUrl">The base service URL. For example, "https://graph.microsoft.com/v1.0."</param>
-        /// <param name="httpClient">The customized <see cref="HttpClient"/> to be used for making requests</param>
-        internal BaseClient(
-            string baseUrl,
-            HttpClient httpClient):this(new BaseGraphRequestAdapter(new AnonymousAuthenticationProvider(), httpClient: httpClient) { BaseUrl = baseUrl })
-        {
-        }
-
-        /// <summary>
         /// Gets the <see cref="IRequestAdapter"/> for sending requests.
         /// </summary>
         public IRequestAdapter RequestAdapter { get; set; }

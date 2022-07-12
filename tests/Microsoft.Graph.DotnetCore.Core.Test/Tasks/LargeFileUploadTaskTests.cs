@@ -5,16 +5,30 @@
 namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
 {
     using Microsoft.Graph.Core.Models;
+    using Microsoft.Graph.DotnetCore.Core.Test.Mocks;
     using Microsoft.Graph.DotnetCore.Core.Test.Requests;
     using Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels;
+    using Microsoft.Kiota.Abstractions.Authentication;
+    using Microsoft.Kiota.Abstractions.Serialization;
+    using Microsoft.Kiota.Serialization.Json;
     using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using System.Net.Http;
+    using System.Text;
+    using System.Threading;
+    using System.Threading.Tasks;
     using Xunit;
 
     public class LargeFileUploadTests : RequestTestBase
     {
+        public LargeFileUploadTests()
+        {
+            // register the default serialization instance as the generator would.
+            ParseNodeFactoryRegistry.DefaultInstance.ContentTypeAssociatedFactories.TryAdd(CoreConstants.MimeTypeNames.Application.Json, new JsonParseNodeFactory());
+        }
+
         [Fact]
         public void ThrowsArgumentExceptionOnInvalidSliceSize()
         {
@@ -100,6 +114,51 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
             var lastUploadSlice = uploadSlices.Last();
             Assert.Equal(stream.Length - 1, lastUploadSlice.RangeEnd);
             Assert.Equal(stream.Length % maxSliceSize, lastUploadSlice.RangeLength); //verify the last slice is the right size
+        }
+
+        [Fact]
+        public async Task HandlesCancellationToken()
+        {
+            byte[] mockData = new byte[1000000];//create a stream of about 1M so we can split it into a few 320K slices
+            var requestUrl = "https://localhost/";
+            using Stream stream = new MemoryStream(mockData);
+
+            // Arrange
+            var uploadSession = new UploadSession
+            {
+                NextExpectedRanges = new List<string>() { "0-" },
+                UploadUrl = requestUrl,
+                ExpirationDateTime = DateTimeOffset.Parse("2019-11-07T06:39:31.499Z")
+            };
+            int maxSliceSize = 320 * 1024;
+            // 1. create a mock response
+            using var responseMessage = new HttpResponseMessage();
+            var responseJSON = @"{
+                  ""expirationDateTime"": ""2015 - 01 - 29T09: 21:55.523Z"",
+                  ""nextExpectedRanges"": [
+                  ""12345-55232"",
+                  ""77829-99375""
+                  ]
+                }";
+            HttpContent content = new StringContent(responseJSON, Encoding.UTF8, CoreConstants.MimeTypeNames.Application.Json);
+            responseMessage.Content = content;
+
+            // Create mock handler
+            using var testHttpMessageHandler = new TestHttpMessageHandler();
+            testHttpMessageHandler.AddResponseMapping(requestUrl, responseMessage);
+
+            // Create cancelled token
+            var cancellationTokenSource = new CancellationTokenSource();
+            CancellationToken cancellationToken = cancellationTokenSource.Token;
+            cancellationTokenSource.Cancel();
+
+            // Create task
+            IBaseClient baseClient = new BaseClient(new BaseGraphRequestAdapter(new AnonymousAuthenticationProvider(), httpClient: GraphClientFactory.Create(finalHandler: testHttpMessageHandler)));
+            var fileUploadTask = new LargeFileUploadTask<TestDriveItem>(uploadSession, stream, maxSliceSize, baseClient);
+
+            // Assert that the task is cancellable
+            var cancellationException = await Assert.ThrowsAsync<OperationCanceledException>(async () => await fileUploadTask.UploadAsync(cancellationToken: cancellationToken));
+            Assert.Contains("File upload cancelled", cancellationException.Message);
         }
     }
 }

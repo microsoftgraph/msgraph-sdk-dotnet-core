@@ -6,11 +6,13 @@ namespace Microsoft.Graph
 {
     using Microsoft.Graph.Core.Models;
     using Microsoft.Kiota.Abstractions.Serialization;
+    using Microsoft.Kiota.Abstractions.Authentication;
     using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Net.Http;
     using System.Threading.Tasks;
+    using System.Threading;
 
     /// <summary>
     /// Task to help with resume able large file uploads.
@@ -86,7 +88,7 @@ namespace Microsoft.Graph
         {
             HttpClient httpClient = GraphClientFactory.Create(); //no auth
             httpClient.SetFeatureFlag(FeatureFlag.FileUploadTask);
-            return new BaseClient(uploadUrl, httpClient);
+            return new BaseClient(uploadUrl, new AnonymousAuthenticationProvider());
         }
 
         /// <summary>
@@ -94,7 +96,8 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="uploadSliceRequestBuilder">The UploadSliceRequest to make the request with.</param>
         /// <param name="exceptionTrackingList">A list of exceptions to use to track progress. SlicedUpload may retry.</param>
-        private async Task<UploadResult<T>> UploadSliceAsync(UploadSliceRequestBuilder<T> uploadSliceRequestBuilder, ICollection<Exception> exceptionTrackingList)
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> to use for requests</param>
+        private async Task<UploadResult<T>> UploadSliceAsync(UploadSliceRequestBuilder<T> uploadSliceRequestBuilder, ICollection<Exception> exceptionTrackingList, CancellationToken cancellationToken)
         {
             var firstAttempt = true;
             this._uploadStream.Seek(uploadSliceRequestBuilder.RangeBegin, SeekOrigin.Begin);
@@ -105,7 +108,7 @@ namespace Microsoft.Graph
                 {
                     try
                     {
-                        return await uploadSliceRequestBuilder.PutAsync(requestBodyStream).ConfigureAwait(false);
+                        return await uploadSliceRequestBuilder.PutAsync(requestBodyStream,cancellationToken).ConfigureAwait(false);
                     }
                     catch (ServiceException exception)
                     {
@@ -168,8 +171,9 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="maxTries">Number of times to retry entire session before giving up.</param>
         /// <param name="progress">IProgress object to monitor the progress of the upload.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> to use for requests</param>
         /// <returns>Item information returned by server.</returns>
-        public async Task<UploadResult<T>> UploadAsync(IProgress<long> progress = null, int maxTries = 3)
+        public async Task<UploadResult<T>> UploadAsync(IProgress<long> progress = null, int maxTries = 3, CancellationToken cancellationToken = default)
         {
             var uploadTries = 0;
             var trackedExceptions = new List<Exception>();
@@ -180,23 +184,27 @@ namespace Microsoft.Graph
 
                 foreach (var request in sliceRequests)
                 {
-                    var uploadResult = await this.UploadSliceAsync(request, trackedExceptions).ConfigureAwait(false);
-                    
+                    var uploadResult = await this.UploadSliceAsync(request, trackedExceptions, cancellationToken).ConfigureAwait(false);
+
                     progress?.Report(request.RangeBegin);//report the progress of upload
 
                     if (uploadResult.UploadSucceeded)
                     {
                         return uploadResult;
                     }
+
+                    ThrowIfUploadCancelled(cancellationToken, trackedExceptions);
                 }
 
-                await this.UpdateSessionStatusAsync().ConfigureAwait(false);
+                await this.UpdateSessionStatusAsync(cancellationToken).ConfigureAwait(false);
                 uploadTries += 1;
                 if (uploadTries < maxTries)
                 {
                     // Exponential back off in case of failures.
-                    await Task.Delay(2000 * uploadTries * uploadTries).ConfigureAwait(false);
+                    await Task.Delay(2000 * uploadTries * uploadTries, cancellationToken).ConfigureAwait(false);
                 }
+
+                ThrowIfUploadCancelled(cancellationToken, trackedExceptions);
             }
             
             throw new TaskCanceledException("Upload failed too many times. See InnerException for list of exceptions that occured.", new AggregateException(trackedExceptions.ToArray()));
@@ -207,10 +215,11 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="maxTries">Number of times to retry entire session before giving up.</param>
         /// <param name="progress">IProgress object to monitor the progress of the upload.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> to use for requests</param>
         /// <returns>Item information returned by server.</returns>
-        public async Task<UploadResult<T>> ResumeAsync(IProgress<long> progress = null, int maxTries = 3)
+        public async Task<UploadResult<T>> ResumeAsync(IProgress<long> progress = null, int maxTries = 3, CancellationToken cancellationToken = default)
         {
-            var uploadSession = await this.UpdateSessionStatusAsync().ConfigureAwait(false);
+            var uploadSession = await this.UpdateSessionStatusAsync(cancellationToken).ConfigureAwait(false);
             var uploadExpirationTime = uploadSession.ExpirationDateTime ?? DateTimeOffset.Now;
             // validate that the upload can still be resumed.
             if (DateTimeOffset.Compare(uploadExpirationTime, DateTimeOffset.Now) <= 0)
@@ -222,18 +231,19 @@ namespace Microsoft.Graph
                         Message = ErrorConstants.Messages.ExpiredUploadSession
                     });
             }
-            return await this.UploadAsync(progress, maxTries).ConfigureAwait(false);
+            return await this.UploadAsync(progress, maxTries, cancellationToken).ConfigureAwait(false);
         }
 
         /// <summary>
         /// Get the status of the session. Stores returned session internally.
         /// Updates internal list of ranges remaining to be uploaded (according to the server).
         /// </summary>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> to use for requests</param>
         /// <returns><see cref="IUploadSession"/>> returned by the server.</returns>
-        public async Task<IUploadSession> UpdateSessionStatusAsync()
+        public async Task<IUploadSession> UpdateSessionStatusAsync(CancellationToken cancellationToken = default)
         {
             var requestBuilder = new UploadSessionRequestBuilder(this.Session, this._client.RequestAdapter);
-            var newSession = await requestBuilder.GetAsync().ConfigureAwait(false);
+            var newSession = await requestBuilder.GetAsync(cancellationToken).ConfigureAwait(false);
 
             var newRangesRemaining = this.GetRangesRemaining(newSession);
 
@@ -246,8 +256,9 @@ namespace Microsoft.Graph
         /// <summary>
         /// Delete the session.
         /// </summary>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> to use for requests</param>
         /// <returns>Once returned task is complete, the session has been deleted.</returns>
-        public async Task DeleteSessionAsync()
+        public async Task DeleteSessionAsync(CancellationToken cancellationToken = default)
         {
             // validate that the upload can still be deleted.
             var uploadExpirationTime = this.Session.ExpirationDateTime ?? DateTimeOffset.Now;
@@ -261,7 +272,7 @@ namespace Microsoft.Graph
                     });
             }
             var requestBuilder = new UploadSessionRequestBuilder(this.Session, this._client.RequestAdapter);
-            await requestBuilder.DeleteAsync().ConfigureAwait(false);
+            await requestBuilder.DeleteAsync(cancellationToken).ConfigureAwait(false);
         }
 
         private List<Tuple<long, long>> GetRangesRemaining(IUploadSession session)
@@ -286,6 +297,12 @@ namespace Microsoft.Graph
             return sizeBasedOnRange > this._maxSliceSize
                 ? this._maxSliceSize
                 : sizeBasedOnRange;
+        }
+
+        private void ThrowIfUploadCancelled(CancellationToken cancellationToken, ICollection<Exception> trackedExceptions)
+        {
+            if (cancellationToken.IsCancellationRequested)
+                throw new OperationCanceledException("File upload cancelled. See InnerException for list of exceptions that occured.", new AggregateException(trackedExceptions));
         }
     }
 }
