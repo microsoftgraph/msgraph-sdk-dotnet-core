@@ -7,7 +7,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
     using Moq;
     using Xunit;
     using Microsoft.Graph.Core.Requests;
-    using Microsoft.Kiota.Abstractions;
+    using Microsoft.Kiota.Abstractions.Authentication;
     using System.Threading.Tasks;
     using System.Net.Http;
     using System.Collections.Generic;
@@ -18,7 +18,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         public async Task BatchRequestBuilderAsync()
         {
             // Arrange
-            IBaseClient baseClient = new BaseClient("https://localhost", GraphClientFactory.Create());
+            IBaseClient baseClient = new BaseClient("https://localhost", new AnonymousAuthenticationProvider());
 
             // Act
             var batchRequestBuilder = new BatchRequestBuilder(baseClient.RequestAdapter);
