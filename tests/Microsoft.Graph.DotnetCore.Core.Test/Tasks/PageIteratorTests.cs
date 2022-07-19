@@ -217,7 +217,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
         public async Task Given_CollectionPage_It_Iterates_Across_Pages_With_Async_Delegate()
         {
             // // Arrange the sample first page of 17 events to initialize the original collection page.
-            var originalPage = new TestEventsResponse() { Value = new List<TestEventItem>(), NextLink = "http://localhost/events?$skip=11" };
+            var originalPage = new TestEventsResponse() { Value = new List<TestEventItem>(), OdataNextLink = "http://localhost/events?$skip=11" };
             var inputEventCount = 17;
             for (int i = 0; i < inputEventCount; i++)
             {
@@ -265,7 +265,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
         public async Task Given_CollectionPage_It_Iterates_Across_Pages()
         {
             // // Arrange the sample first page of 17 events to initialize the original collection page.
-            var originalPage = new TestEventsResponse() { Value = new List<TestEventItem>(), NextLink = "http://localhost/events?$skip=11" };
+            var originalPage = new TestEventsResponse() { Value = new List<TestEventItem>(), OdataNextLink = "http://localhost/events?$skip=11" };
             var inputEventCount = 17;
             for (int i = 0; i < inputEventCount; i++)
             {
@@ -312,7 +312,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
         public async Task Given_CollectionPage_It_Detects_Next_Link_Loop()
         {
             // Create the 17 events to initialize the original collection page.
-            var originalPage = new TestEventsResponse() { Value = new List<TestEventItem>(), NextLink = "http://localhost/events?$skip=11" };
+            var originalPage = new TestEventsResponse() { Value = new List<TestEventItem>(), OdataNextLink = "http://localhost/events?$skip=11" };
             var inputEventCount = 5;
             for (int i = 0; i < inputEventCount; i++)
             {
@@ -320,7 +320,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
             }
 
             // Create the 5 events to initialize the next collection page.
-            var nextPage = new TestEventsResponse() { Value = new List<TestEventItem>() , NextLink = "http://localhost/events?$skip=11" };//same next link url
+            var nextPage = new TestEventsResponse() { Value = new List<TestEventItem>() , OdataNextLink = "http://localhost/events?$skip=11" };//same next link url
             var nextPageEventCount = 5;
             for (int i = 0; i < nextPageEventCount; i++)
             {
@@ -350,7 +350,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
             try
             {
                 // Create the 17 events to initialize the original collection page.
-                var originalPage = new TestEventsResponse() { Value = new List<TestEventItem>(), NextLink = "http://localhost/events?$skip=11" };
+                var originalPage = new TestEventsResponse() { Value = new List<TestEventItem>(), OdataNextLink = "http://localhost/events?$skip=11" };
                 var inputEventCount = 17;
                 for (int i = 0; i < inputEventCount; i++)
                 {
@@ -398,7 +398,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
         public async Task Given_RequestConfigurator_It_Is_Invoked()
         {
             // Create the 17 events to initialize the original collection page.
-            var originalPage = new TestEventsResponse() { Value = new List<TestEventItem>(), NextLink = "http://localhost/events?$skip=11" };
+            var originalPage = new TestEventsResponse() { Value = new List<TestEventItem>(), OdataNextLink = "http://localhost/events?$skip=11" };
             var inputEventCount = 17;
             for (int i = 0; i < inputEventCount; i++)
             {
