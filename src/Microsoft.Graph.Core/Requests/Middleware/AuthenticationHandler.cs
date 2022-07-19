@@ -11,6 +11,7 @@ namespace Microsoft.Graph
     using System.Linq;
     using System.Net;
     using System.Text;
+    using System.Text.RegularExpressions;
 
     /// <summary>
     /// A <see cref="DelegatingHandler"/> implementation using standard .NET libraries.
@@ -142,6 +143,8 @@ namespace Microsoft.Graph
             }
         }
 
+        private readonly Regex ClaimsRegex = new Regex(@"(claims="")([\w=]+)("")", RegexOptions.Singleline | RegexOptions.Compiled);
+
         /// <summary>
         /// Add claims to the request context of the given request message
         /// </summary>
@@ -149,15 +152,12 @@ namespace Microsoft.Graph
         /// <param name="newRequest">Request message to add claims to</param>
         private void AddClaimsToRequestContext(HttpRequestMessage newRequest, string wwwAuthenticateHeader)
         {
-            var claimsHeaderString = wwwAuthenticateHeader.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).FirstOrDefault( header => header.Contains("claims="));
-            if (string.IsNullOrEmpty(claimsHeaderString)) 
+            var claimsMatch = ClaimsRegex.Match(wwwAuthenticateHeader);
+            if (!claimsMatch.Success || claimsMatch.Groups.Count < 3)
                 return; // do nothing as there is no claims in www Authenticate Header
 
-            claimsHeaderString = claimsHeaderString.Trim();// remove any potential whitespace
-            int claimsStart = 8; // jump to the index after the opening quotation mark
-
-            // extract and decode the Base 64 encoded claims property
-            byte[] bytes = Convert.FromBase64String(claimsHeaderString.Substring(claimsStart, claimsHeaderString.Length - claimsStart - 1));
+            var claimsHeaderString = claimsMatch.Groups[2].Value;
+            byte[] bytes = Convert.FromBase64String(claimsHeaderString); // extract and decode the Base 64 encoded claims property
             string claimsChallenge = Encoding.UTF8.GetString(bytes, 0, bytes.Length);
 
             // Try to get the current options otherwise create new ones
