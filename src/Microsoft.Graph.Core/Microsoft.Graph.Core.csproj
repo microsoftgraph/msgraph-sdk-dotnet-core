@@ -21,11 +21,11 @@
     <DelaySign>false</DelaySign>
     <AssemblyOriginatorKeyFile>35MSSharedLib1024.snk</AssemblyOriginatorKeyFile>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <VersionPrefix>2.0.9</VersionPrefix>
+    <VersionPrefix>2.0.10</VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <PackageReleaseNotes>
-        - Improves performance of DerivedTypeConverter on deserialization of large payloads
-        - Fixes WithResponseHandler extension method to target Interface not Base class
+        - Ensure Content-Type header is set in Large file uploads
+        - Fixes parsing of WWW authenticate header in some scenarios
     </PackageReleaseNotes>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
