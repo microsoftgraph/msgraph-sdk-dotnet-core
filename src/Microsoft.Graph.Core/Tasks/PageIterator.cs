@@ -297,7 +297,7 @@ namespace Microsoft.Graph
         /// <param name="parsableCollection">The <see cref="IParsable"/> to extract the nextLink from</param>
         /// <param name="nextLinkPropertyName">The property name of the nextLink string</param>
         /// <returns></returns>
-        private static string ExtractNextLinkFromParsable(TCollectionPage parsableCollection, string nextLinkPropertyName = "NextLink")
+        private static string ExtractNextLinkFromParsable(TCollectionPage parsableCollection, string nextLinkPropertyName = "OdataNextLink")
         {
             var nextLinkProperty = parsableCollection.GetType().GetProperty(nextLinkPropertyName);
             if (nextLinkProperty != null)

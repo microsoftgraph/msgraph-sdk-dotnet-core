@@ -22,10 +22,9 @@
     <AssemblyOriginatorKeyFile>35MSSharedLib1024.snk</AssemblyOriginatorKeyFile>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <VersionPrefix>3.0.0</VersionPrefix>
-    <VersionSuffix>preview.10</VersionSuffix>
+    <VersionSuffix>preview.11</VersionSuffix>
     <PackageReleaseNotes>
-        - Require AuthProvider param for all BaseClient constructor [#450]
-        - Adds support for cancellation token in LargeFileUploadTask to fully align to spec [#215] [#132]
+        - Refactor pageiterator to use updated nextLink property.
     </PackageReleaseNotes>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>

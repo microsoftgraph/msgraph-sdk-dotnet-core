@@ -21,9 +21,9 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
         public List<TestEvent> Value { get; set; }
 
         /// <summary>
-        /// Gets or sets the nextLink string value.
+        /// Gets or sets the OdataNextLink string value.
         /// </summary>
-        public string NextLink { get; set; }
+        public string OdataNextLink { get; set; }
         /// <summary>
         /// Gets or sets additional data.
         /// </summary>
@@ -37,7 +37,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
         {
             return new Dictionary<string, Action<IParseNode>>
             {
-                {"@odata.nextLink", (n) => { NextLink = n.GetStringValue(); } },
+                {"@odata.nextLink", (n) => { OdataNextLink = n.GetStringValue(); } },
                 {"value", (n) => { Value = n.GetCollectionOfObjectValues<TestEvent>(TestEvent.CreateFromDiscriminatorValue).ToList(); } },
             };
         }
@@ -50,7 +50,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
         public void Serialize(ISerializationWriter writer)
         {
             _ = writer ?? throw new ArgumentNullException(nameof(writer));
-            writer.WriteStringValue("@odata.nextLink", NextLink);
+            writer.WriteStringValue("@odata.nextLink", OdataNextLink);
             writer.WriteCollectionOfObjectValues("value", Value);
             writer.WriteAdditionalData(AdditionalData);
         }
