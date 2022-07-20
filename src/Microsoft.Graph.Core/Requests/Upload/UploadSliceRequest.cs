@@ -108,6 +108,7 @@ namespace Microsoft.Graph
                 request.Content = new StreamContent(stream);
                 request.Content.Headers.ContentRange = new ContentRangeHeaderValue(this.RangeBegin, this.RangeEnd, this.TotalSessionLength);
                 request.Content.Headers.ContentLength = this.RangeLength;
+                request.Content.Headers.ContentType = MediaTypeHeaderValue.Parse(this.ContentType);
 
                 return await this.Client.HttpProvider.SendAsync(request, completionOption, cancellationToken).ConfigureAwait(false);
             }

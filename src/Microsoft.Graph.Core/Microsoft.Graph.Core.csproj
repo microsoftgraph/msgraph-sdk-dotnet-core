@@ -21,11 +21,11 @@
     <DelaySign>false</DelaySign>
     <AssemblyOriginatorKeyFile>35MSSharedLib1024.snk</AssemblyOriginatorKeyFile>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <VersionPrefix>2.0.9</VersionPrefix>
+    <VersionPrefix>2.0.10</VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <PackageReleaseNotes>
-        - Improves performance of DerivedTypeConverter on deserialization of large payloads
-        - Fixes WithResponseHandler extension method to target Interface not Base class
+        - Ensure Content-Type header is set in Large file uploads
+        - Fixes parsing of WWW authenticate header in some scenarios
     </PackageReleaseNotes>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
@@ -92,7 +92,6 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
-    <PackageReference Include="System.Net.Http" Version="4.3.4" />
   </ItemGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'MonoAndroid80' ">
     <Reference Include="Mono.Android" />
@@ -108,11 +107,12 @@
   </None>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="System.Text.Json" Version="6.0.4" />
-    <PackageReference Include="Azure.Core" Version="1.24.0" />
-    <PackageReference Include="Microsoft.Identity.Client" Version="4.44.0" />
+    <PackageReference Include="System.Net.Http" Version="4.3.4" />
+    <PackageReference Include="System.Text.Json" Version="6.0.5" />
+    <PackageReference Include="Azure.Core" Version="1.25.0" />
+    <PackageReference Include="Microsoft.Identity.Client" Version="4.45.0" />
     <PackageReference Include="System.Diagnostics.DiagnosticSource" Version="4.7.1" />
-    <PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="6.19.0" />
+    <PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="6.21.0" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
   </ItemGroup>
 </Project>

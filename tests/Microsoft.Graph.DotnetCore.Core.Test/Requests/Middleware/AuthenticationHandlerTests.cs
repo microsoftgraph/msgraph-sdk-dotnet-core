@@ -270,17 +270,16 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             }
         }
 
-        [Fact]
-        public async Task AuthHandler_ShouldRetryUnauthorizedGetRequestAndExtractWWWAuthenticateHeaders()
+        [Theory]
+        [InlineData("authorization_url =\"https://login.microsoftonline.com/common/oauth2/authorize\",error=\"insufficient_claims\",claims=\"eyJhY2Nlc3NfdG9rZW4iOnsibmJmIjp7ImVzc2VudGlhbCI6ZmFsc2UsInZhbHVlIjoxNTM5Mjg0Mzc2fX19\"", "{\"access_token\":{\"nbf\":{\"essential\":false,\"value\":1539284376}}}")]
+        [InlineData("Bearer realm=\"\", authorization_uri=https://login.microsoftonline.com/common/oauth2/authorize, client_id=\"00000003-0000-0000-c000-000000000000\", error=\"insufficient_claims\", claims=\"eyJhY2Nlc3NfdG9rZW4iOnsibmJmIjp7ImVzc2VudGlhbCI6dHJ1ZSwgInZhbHVlIjoiMTY1NzgzNDQxNyJ9fX0=\", errorDescription=\"Continuous access evaluation resulted in claims challenge with result: InteractionRequired and code: TokenIssuedBeforeRevocationTimestamp\"", "{\"access_token\":{\"nbf\":{\"essential\":true, \"value\":\"1657834417\"}}}")]
+        public async Task AuthHandler_ShouldRetryUnauthorizedGetRequestAndExtractWWWAuthenticateHeaders(string headerValue, string expectedClaims)
         {
             var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, "http://example.com/bar");
             
             var unauthorizedResponse = new HttpResponseMessage(HttpStatusCode.Unauthorized);
             unauthorizedResponse.Headers.WwwAuthenticate.Add(
-                new AuthenticationHeaderValue("authorization_url", 
-                    "authorization_url=\"https://login.microsoftonline.com/common/oauth2/authorize\"," +
-                            "error=\"insufficient_claims\"," +
-                            "claims=\"eyJhY2Nlc3NfdG9rZW4iOnsibmJmIjp7ImVzc2VudGlhbCI6ZmFsc2UsInZhbHVlIjoxNTM5Mjg0Mzc2fX19\""));
+                new AuthenticationHeaderValue("authorization_url", headerValue));
 
             var expectedResponse = new HttpResponseMessage(HttpStatusCode.OK);
 
@@ -297,7 +296,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             Assert.NotNull(authProviderOption);
 
             // Assert the decoded claims string is as expected
-            Assert.Equal("{\"access_token\":{\"nbf\":{\"essential\":false,\"value\":1539284376}}}", authProviderOption.Claims);
+            Assert.Equal(expectedClaims, authProviderOption.Claims);
             Assert.Same(response, expectedResponse);
             Assert.NotSame(response.RequestMessage, httpRequestMessage);
         }
