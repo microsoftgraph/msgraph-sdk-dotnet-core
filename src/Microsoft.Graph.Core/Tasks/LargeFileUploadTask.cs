@@ -29,7 +29,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="uploadSession">Session information of type <see cref="IUploadSession"/>></param>
         /// <param name="uploadStream">Readable, seekable stream to be uploaded. Length of session is determined via uploadStream.Length</param>
-        /// <param name="maxSliceSize">Max size(in bytes) of each slice to be uploaded. Defaults to 5MB</param>
+        /// <param name="maxSliceSize">Max size(in bytes) of each slice to be uploaded. Defaults to 5MB. When uploading to OneDrive or SharePoint, this value needs to be a multiple of 320 KiB (327,680 bytes).</param>
         /// <param name="baseClient"><see cref="IBaseClient"/> to use for making upload requests. The client should not set Auth headers as upload urls do not need them.
         /// If less than 0, default value of 5 MiB is used. .</param>
         public LargeFileUploadTask(IUploadSession uploadSession, Stream uploadStream,  int maxSliceSize = -1, IBaseClient baseClient = null)
