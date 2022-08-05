@@ -21,11 +21,10 @@
     <DelaySign>false</DelaySign>
     <AssemblyOriginatorKeyFile>35MSSharedLib1024.snk</AssemblyOriginatorKeyFile>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <VersionPrefix>2.0.10</VersionPrefix>
+    <VersionPrefix>2.0.11</VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <PackageReleaseNotes>
-        - Ensure Content-Type header is set in Large file uploads
-        - Fixes parsing of WWW authenticate header in some scenarios
+        - Remove 320KB multiple slice size restriction on LargeFileUploadTask
     </PackageReleaseNotes>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
