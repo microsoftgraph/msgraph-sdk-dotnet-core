@@ -16,7 +16,6 @@ namespace Microsoft.Graph
     public class LargeFileUploadTask<T>
     {
         private const int DefaultMaxSliceSize = 5 * 1024 * 1024;
-        private const int RequiredSliceSizeIncrement = 320 * 1024;
         private IUploadSession Session { get; set; }
         private readonly IBaseClient _client;
         private readonly Stream _uploadStream;
@@ -30,7 +29,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="uploadSession">Session information of type <see cref="IUploadSession"/>></param>
         /// <param name="uploadStream">Readable, seekable stream to be uploaded. Length of session is determined via uploadStream.Length</param>
-        /// <param name="maxSliceSize">Max size of each slice to be uploaded. Multiple of 320 KiB (320 * 1024) is required.</param>
+        /// <param name="maxSliceSize">Max size(in bytes) of each slice to be uploaded. Defaults to 5MB</param>
         /// <param name="baseClient"><see cref="IBaseClient"/> to use for making upload requests. The client should not set Auth headers as upload urls do not need them.
         /// If less than 0, default value of 5 MiB is used. .</param>
         public LargeFileUploadTask(IUploadSession uploadSession, Stream uploadStream,  int maxSliceSize = -1, IBaseClient baseClient = null)
@@ -45,10 +44,6 @@ namespace Microsoft.Graph
             this._uploadStream = uploadStream;
             this._rangesRemaining = this.GetRangesRemaining(uploadSession);
             this._maxSliceSize = maxSliceSize < 0 ? DefaultMaxSliceSize : maxSliceSize;
-            if (this._maxSliceSize % RequiredSliceSizeIncrement != 0)
-            {
-                throw new ArgumentException("Max slice size must be a multiple of 320 KiB", nameof(maxSliceSize));
-            }
         }
 
         /// <summary>
