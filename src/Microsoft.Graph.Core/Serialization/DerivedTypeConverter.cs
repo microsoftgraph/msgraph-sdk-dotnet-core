@@ -53,6 +53,14 @@ namespace Microsoft.Graph
                 var typeString = type.ToString();
                 typeString = typeString.TrimStart('#');
                 typeString = StringHelper.ConvertTypeToTitleCase(typeString);
+
+                // The generated classes for resources which end with `Request` (e.g. `microsoft.graph.eventMessageRequest`)
+                // are post-fixed with `Object`. To find the correct class to instantiate, we also need to add that postfix here.
+                if (typeString.EndsWith("Request"))
+                {
+                    typeString += "Object";
+                }
+
                 var typeAssembly = objectType.GetTypeInfo().Assembly;
                 // Use the type assembly as part of the key since users might use v1 and beta at the same causing conflicts
                 var typeMappingCacheKey = $"{typeAssembly.FullName} : {typeString}";

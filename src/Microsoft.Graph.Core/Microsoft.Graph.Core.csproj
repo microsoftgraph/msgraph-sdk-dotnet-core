@@ -21,10 +21,10 @@
     <DelaySign>false</DelaySign>
     <AssemblyOriginatorKeyFile>35MSSharedLib1024.snk</AssemblyOriginatorKeyFile>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <VersionPrefix>2.0.11</VersionPrefix>
+    <VersionPrefix>2.0.12</VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <PackageReleaseNotes>
-        - Remove 320KB multiple slice size restriction on LargeFileUploadTask
+        - Map Graph resources ending with 'Request' to correct type
     </PackageReleaseNotes>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
