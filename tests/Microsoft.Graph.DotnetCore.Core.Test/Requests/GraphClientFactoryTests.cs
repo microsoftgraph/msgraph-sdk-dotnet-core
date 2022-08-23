@@ -287,5 +287,39 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             Assert.NotNull(pipelineWithHandlers.Pipeline);
             Assert.True(pipelineWithHandlers.FeatureFlags.HasFlag(expectedFlag));
         }
+
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void CreateClientWithFinalHandlerDisposesTheFinalHandler(bool shouldDisposeHandler)
+        {
+            // Arrange
+            var finalHandler = new MockHttpHandler();
+
+            // Act
+            using (var client = GraphClientFactory.Create(handlers: GraphClientFactory.CreateDefaultHandlers(), finalHandler: finalHandler, disposeHandler: shouldDisposeHandler)) 
+            {
+                Assert.NotNull(client);
+            }
+
+            // Assert
+            Assert.Equal(shouldDisposeHandler, finalHandler.Disposed);
+        }
+
+        private class MockHttpHandler : HttpMessageHandler
+        {
+            public bool Disposed;
+
+            protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+            {
+                throw new NotImplementedException();
+            }
+
+            protected override void Dispose(bool disposing)
+            {
+                Disposed = true;
+                base.Dispose(disposing);
+            }
+        }
     }
 }

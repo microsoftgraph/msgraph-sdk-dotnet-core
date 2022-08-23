@@ -74,13 +74,15 @@ namespace Microsoft.Graph
         /// an outbound request message but last for an inbound response message.</param>
         /// <param name="proxy">The proxy to be used with created client.</param>
         /// <param name="finalHandler">The last HttpMessageHandler to HTTP calls.</param>
+        /// <param name="disposeHandler">true if the inner handler should be disposed of by Dispose(), false if you intend to reuse the inner handler..</param>
         /// <returns>An <see cref="HttpClient"/> instance with the configured handlers.</returns>
         public static HttpClient Create(
             IEnumerable<DelegatingHandler> handlers,
             string version = "v1.0",
             string nationalCloud = Global_Cloud,
             IWebProxy proxy = null,
-            HttpMessageHandler finalHandler = null)
+            HttpMessageHandler finalHandler = null,
+            bool disposeHandler = true)
         {
             if (finalHandler == null)
             {
@@ -96,7 +98,7 @@ namespace Microsoft.Graph
             }
 
             var pipelineWithFlags = CreatePipelineWithFeatureFlags(handlers, finalHandler);
-            HttpClient client = new HttpClient(pipelineWithFlags.Pipeline);
+            HttpClient client = new HttpClient(pipelineWithFlags.Pipeline, disposeHandler);
             client.SetFeatureFlag(pipelineWithFlags.FeatureFlags);
             client.Timeout = defaultTimeout;
             client.BaseAddress = DetermineBaseAddress(nationalCloud, version);
