@@ -177,7 +177,7 @@ namespace Microsoft.Graph
         /// <returns>A batch response content as <see cref="JsonDocument"/>.</returns>
         private async Task<JsonDocument> GetBatchResponseContentAsync()
         {
-            if (this.batchResponseMessage.Content == null)
+            if (this.batchResponseMessage.Content == null || this.batchResponseMessage.Content.Headers.ContentLength == 0 )
                 return null;
 
             try

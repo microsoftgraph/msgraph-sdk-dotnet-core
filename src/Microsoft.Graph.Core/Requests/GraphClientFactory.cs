@@ -204,22 +204,22 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Gets a platform's native http handler i.e. NSUrlSessionHandler for Xamarin.iOS and Xamarin.Mac, AndroidClientHandler for Xamarin.Android and HttpClientHandler for others.
+        /// Gets a platform's native http handler i.e. NSUrlSessionHandler for Xamarin.iOS and Xamarin.Mac, AndroidMessageHandler for Xamarin.Android and HttpClientHandler for others.
         /// </summary>
         /// <param name="proxy">The proxy to be used with created client.</param>
         /// <returns>
         /// 1. NSUrlSessionHandler for Xamarin.iOS and Xamarin.Mac
-        /// 2. AndroidClientHandler for Xamarin.Android.
+        /// 2. AndroidMessageHandler for Xamarin.Android.
         /// 3. HttpClientHandler for other platforms.
         /// </returns>
         internal static HttpMessageHandler GetNativePlatformHttpHandler(IWebProxy proxy = null)
         {
-#if iOS
+#if IOS || MACCATALYST
             return new NSUrlSessionHandler { AllowAutoRedirect = false };
-#elif macOS
+#elif MACOS
             return new Foundation.NSUrlSessionHandler { AllowAutoRedirect = false };
 #elif ANDROID
-            return new Xamarin.Android.Net.AndroidClientHandler { Proxy = proxy, AllowAutoRedirect = false, AutomaticDecompression = DecompressionMethods.None };
+            return new Xamarin.Android.Net.AndroidMessageHandler { Proxy = proxy, AllowAutoRedirect = false, AutomaticDecompression = DecompressionMethods.None };
 #else
             return new HttpClientHandler { Proxy = proxy, AllowAutoRedirect = false, AutomaticDecompression = DecompressionMethods.None };
 #endif
