@@ -22,9 +22,11 @@
     <AssemblyOriginatorKeyFile>35MSSharedLib1024.snk</AssemblyOriginatorKeyFile>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <VersionPrefix>3.0.0</VersionPrefix>
-    <VersionSuffix>preview.11</VersionSuffix>
+    <VersionSuffix>preview.12</VersionSuffix>
     <PackageReleaseNotes>
-        - Refactor pageiterator to use updated nextLink property.
+        - Adds support for MAUI TargetFrameworks
+        - Adds ability to build project with dotnet CLI
+        - Adds optional parameter to prevent disposal of created HttpClient 
     </PackageReleaseNotes>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
