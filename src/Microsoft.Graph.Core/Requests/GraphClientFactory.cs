@@ -74,13 +74,15 @@ namespace Microsoft.Graph
         /// an outbound request message but last for an inbound response message.</param>
         /// <param name="proxy">The proxy to be used with created client.</param>
         /// <param name="finalHandler">The last HttpMessageHandler to HTTP calls.</param>
+        /// <param name="disposeHandler">true if the inner handler should be disposed of by Dispose(), false if you intend to reuse the inner handler..</param>
         /// <returns>An <see cref="HttpClient"/> instance with the configured handlers.</returns>
         public static HttpClient Create(
             IEnumerable<DelegatingHandler> handlers,
             string version = "v1.0",
             string nationalCloud = Global_Cloud,
             IWebProxy proxy = null,
-            HttpMessageHandler finalHandler = null)
+            HttpMessageHandler finalHandler = null,
+            bool disposeHandler = true)
         {
             if (finalHandler == null)
             {
@@ -96,7 +98,7 @@ namespace Microsoft.Graph
             }
 
             var pipelineWithFlags = CreatePipelineWithFeatureFlags(handlers, finalHandler);
-            HttpClient client = new HttpClient(pipelineWithFlags.Pipeline);
+            HttpClient client = new HttpClient(pipelineWithFlags.Pipeline, disposeHandler);
             client.SetFeatureFlag(pipelineWithFlags.FeatureFlags);
             client.Timeout = defaultTimeout;
             client.BaseAddress = DetermineBaseAddress(nationalCloud, version);
@@ -202,22 +204,22 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Gets a platform's native http handler i.e. NSUrlSessionHandler for Xamarin.iOS and Xamarin.Mac, AndroidClientHandler for Xamarin.Android and HttpClientHandler for others.
+        /// Gets a platform's native http handler i.e. NSUrlSessionHandler for Xamarin.iOS and Xamarin.Mac, AndroidMessageHandler for Xamarin.Android and HttpClientHandler for others.
         /// </summary>
         /// <param name="proxy">The proxy to be used with created client.</param>
         /// <returns>
         /// 1. NSUrlSessionHandler for Xamarin.iOS and Xamarin.Mac
-        /// 2. AndroidClientHandler for Xamarin.Android.
+        /// 2. AndroidMessageHandler for Xamarin.Android.
         /// 3. HttpClientHandler for other platforms.
         /// </returns>
         internal static HttpMessageHandler GetNativePlatformHttpHandler(IWebProxy proxy = null)
         {
-#if iOS
+#if IOS || MACCATALYST
             return new NSUrlSessionHandler { AllowAutoRedirect = false };
-#elif macOS
+#elif MACOS
             return new Foundation.NSUrlSessionHandler { AllowAutoRedirect = false };
 #elif ANDROID
-            return new Xamarin.Android.Net.AndroidClientHandler { Proxy = proxy, AllowAutoRedirect = false, AutomaticDecompression = DecompressionMethods.None };
+            return new Xamarin.Android.Net.AndroidMessageHandler { Proxy = proxy, AllowAutoRedirect = false, AutomaticDecompression = DecompressionMethods.None };
 #else
             return new HttpClientHandler { Proxy = proxy, AllowAutoRedirect = false, AutomaticDecompression = DecompressionMethods.None };
 #endif

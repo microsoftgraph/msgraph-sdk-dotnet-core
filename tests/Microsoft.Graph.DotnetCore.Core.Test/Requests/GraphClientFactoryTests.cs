@@ -40,15 +40,15 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         // and 'GraphClientFactory.DefaultHttpHandler' can easily be modified
         // by other tests since it's a static delegate.
 
-#if iOS || macOS
+#if IOS || MACOS
         [Fact]
         public void Should_CreatePipeline_Without_CompressionHandler()
         {
             using (RetryHandler retryHandler = (RetryHandler)GraphClientFactory.CreatePipeline(handlers))
             using (RedirectHandler redirectHandler = (RedirectHandler)retryHandler.InnerHandler)
-#if iOS
+#if IOS
             using (NSUrlSessionHandler innerMost = (NSUrlSessionHandler)redirectHandler.InnerHandler)
-#elif macOS
+#elif MACOS
             using (Foundation.NSUrlSessionHandler innerMost = (Foundation.NSUrlSessionHandler)redirectHandler.InnerHandler)
 #endif
             {
@@ -57,9 +57,9 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                 Assert.NotNull(innerMost);
                 Assert.IsType<RetryHandler>(retryHandler);
                 Assert.IsType<RedirectHandler>(redirectHandler);
-#if iOS
+#if IOS
                 Assert.IsType<NSUrlSessionHandler>(innerMost);
-#elif macOS
+#elif MACOS
                 Assert.IsType<Foundation.NSUrlSessionHandler>(innerMost);
 #endif
             }
@@ -286,6 +286,40 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 
             Assert.NotNull(pipelineWithHandlers.Pipeline);
             Assert.True(pipelineWithHandlers.FeatureFlags.HasFlag(expectedFlag));
+        }
+
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void CreateClientWithFinalHandlerDisposesTheFinalHandler(bool shouldDisposeHandler)
+        {
+            // Arrange
+            var finalHandler = new MockHttpHandler();
+
+            // Act
+            using (var client = GraphClientFactory.Create(handlers: GraphClientFactory.CreateDefaultHandlers(), finalHandler: finalHandler, disposeHandler: shouldDisposeHandler)) 
+            {
+                Assert.NotNull(client);
+            }
+
+            // Assert
+            Assert.Equal(shouldDisposeHandler, finalHandler.Disposed);
+        }
+
+        private class MockHttpHandler : HttpMessageHandler
+        {
+            public bool Disposed;
+
+            protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+            {
+                throw new NotImplementedException();
+            }
+
+            protected override void Dispose(bool disposing)
+            {
+                Disposed = true;
+                base.Dispose(disposing);
+            }
         }
     }
 }

@@ -157,8 +157,8 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
             var fileUploadTask = new LargeFileUploadTask<TestDriveItem>(uploadSession, stream, maxSliceSize, baseClient);
 
             // Assert that the task is cancellable
-            var cancellationException = await Assert.ThrowsAsync<OperationCanceledException>(async () => await fileUploadTask.UploadAsync(cancellationToken: cancellationToken));
-            Assert.Contains("File upload cancelled", cancellationException.Message);
+            var cancellationException = await Assert.ThrowsAsync<TaskCanceledException>(async () => await fileUploadTask.UploadAsync(cancellationToken: cancellationToken));
+            Assert.Contains("A task was canceled", cancellationException.Message);
         }
     }
 }
