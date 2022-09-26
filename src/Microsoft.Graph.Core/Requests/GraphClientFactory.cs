@@ -231,7 +231,10 @@ namespace Microsoft.Graph
 #elif ANDROID
             return new Xamarin.Android.Net.AndroidClientHandler { Proxy = proxy, AllowAutoRedirect = false, AutomaticDecompression = DecompressionMethods.None };
 #elif NETFRAMEWORK
-            return new WinHttpHandler() { Proxy = proxy, AutomaticRedirection = false, AutomaticDecompression = DecompressionMethods.None };
+            // If custom proxy is passed, the WindowsProxyUsePolicy will need updating
+            // https://github.com/dotnet/runtime/blob/main/src/libraries/System.Net.Http.WinHttpHandler/src/System/Net/Http/WinHttpHandler.cs#L575
+            var proxyPolicy = proxy != null ? WindowsProxyUsePolicy.UseCustomProxy : WindowsProxyUsePolicy.UseWinHttpProxy;
+            return new WinHttpHandler { Proxy = proxy, AutomaticDecompression = DecompressionMethods.None , WindowsProxyUsePolicy = proxyPolicy };
 #else
             return new HttpClientHandler { Proxy = proxy, AllowAutoRedirect = false, AutomaticDecompression = DecompressionMethods.None };
 #endif

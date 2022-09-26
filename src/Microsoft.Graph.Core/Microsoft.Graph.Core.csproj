@@ -21,10 +21,10 @@
     <DelaySign>false</DelaySign>
     <AssemblyOriginatorKeyFile>35MSSharedLib1024.snk</AssemblyOriginatorKeyFile>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <VersionPrefix>2.0.12</VersionPrefix>
+    <VersionPrefix>2.0.13</VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <PackageReleaseNotes>
-        - Map Graph resources ending with 'Request' to correct type
+        - Fixes WinHttpHandler initialization with proxy for .NetFramework clients
     </PackageReleaseNotes>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
