@@ -220,6 +220,14 @@ namespace Microsoft.Graph
             return new Foundation.NSUrlSessionHandler { AllowAutoRedirect = false };
 #elif ANDROID
             return new Xamarin.Android.Net.AndroidMessageHandler { Proxy = proxy, AllowAutoRedirect = false, AutomaticDecompression = DecompressionMethods.None };
+#elif NETFRAMEWORK
+            // If custom proxy is passed, the WindowsProxyUsePolicy will need updating
+            // https://github.com/dotnet/runtime/blob/main/src/libraries/System.Net.Http.WinHttpHandler/src/System/Net/Http/WinHttpHandler.cs#L575
+            var proxyPolicy = proxy != null ? WindowsProxyUsePolicy.UseCustomProxy : WindowsProxyUsePolicy.UseWinHttpProxy;
+            return new WinHttpHandler { Proxy = proxy, AutomaticDecompression = DecompressionMethods.None , WindowsProxyUsePolicy = proxyPolicy };
+#elif NET6_0_OR_GREATER
+            //use resilient configs when we can https://learn.microsoft.com/en-us/aspnet/core/fundamentals/http-requests?view=aspnetcore-5.0#alternatives-to-ihttpclientfactory-1
+            return new SocketsHttpHandler { Proxy = proxy, AllowAutoRedirect = false, AutomaticDecompression = DecompressionMethods.None, PooledConnectionLifetime = TimeSpan.FromMinutes(1)}; 
 #else
             return new HttpClientHandler { Proxy = proxy, AllowAutoRedirect = false, AutomaticDecompression = DecompressionMethods.None };
 #endif

@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
@@ -260,7 +260,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             // Creation should ignore the InnerHandler on RetryHandler
             HttpClient client = GraphClientFactory.Create(handlers: handlers);
             Assert.NotNull(client);
-            Assert.IsType<HttpClientHandler>(handlers[0].InnerHandler);
+            Assert.IsType<SocketsHttpHandler>(handlers[0].InnerHandler);
         }
 
         [Fact]
