@@ -41,7 +41,7 @@ namespace Microsoft.Graph
                 throw new ArgumentNullException(nameof(tenantIds));
             if (appIds == null || !appIds.Any())
                 throw new ArgumentNullException(nameof(appIds));
-            if(!issuerFormats?.Any() ?? true)
+            if(!(issuerFormats?.Any() ?? false))
                 issuerFormats = new string[] { "https://sts.windows.net/{0}/", "https://login.microsoftonline.com/{0}/v2.0" };
 
             var configurationManager = new ConfigurationManager<OpenIdConnectConfiguration>(wellKnownUri, new OpenIdConnectConfigurationRetriever());
@@ -52,7 +52,7 @@ namespace Microsoft.Graph
             {
                 var issuersToValidate = tenantIds.Select(x => string.Format(issuerFormat,x));
                 var result = collection.ValidationTokens.Select(x => IsTokenValid(x, handler, openIdConfig, issuersToValidate, appIdsToValidate))
-                            .Aggregate((z, y) => z && y);
+                            .Aggregate(static (z, y) => z && y);
 
                 if(result)
                     return result;// no need to try the other issuer if this one worked.
