@@ -5,12 +5,14 @@
 namespace Microsoft.Graph
 {
     using Microsoft.Kiota.Abstractions;
+    using Microsoft.Kiota.Abstractions.Serialization;
     using System;
+    using System.Collections.Generic;
 
     /// <summary>
     /// Graph service exception.
     /// </summary>
-    public class ServiceException : ApiException
+    public class ServiceException : ApiException,IParsable, IAdditionalDataHolder
     {
         /// <summary>
         /// Creates a new service exception.
@@ -58,24 +60,27 @@ namespace Microsoft.Graph
         /// <summary>
         /// The error from the service exception.
         /// </summary>
-        public Error Error { get; }
+        public Error Error { get; private set; }
 
         // ResponseHeaders and StatusCode exposed as pass-through.
 
         /// <summary>
         /// The HTTP response headers from the response.
         /// </summary>
-        public System.Net.Http.Headers.HttpResponseHeaders ResponseHeaders { get; }
+        public System.Net.Http.Headers.HttpResponseHeaders ResponseHeaders { get; private set; }
 
         /// <summary>
         /// The HTTP status code from the response.
         /// </summary>
-        public System.Net.HttpStatusCode StatusCode { get; }
+        public System.Net.HttpStatusCode StatusCode { get; private set; }
 
         /// <summary>
         /// Provide the raw JSON response body.
         /// </summary>
-        public string RawResponseBody { get; }
+        public string RawResponseBody { get; private set; }
+
+        /// <summary>Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.</summary>
+        public IDictionary<string, object> AdditionalData { get; set; }
 
         /// <summary>
         /// Checks if a given error code has been returned in the response at any level in the error stack.
@@ -108,6 +113,30 @@ namespace Microsoft.Graph
         public override string ToString()
         {
             return $@"Status Code: {this.StatusCode}{Environment.NewLine}{base.ToString()}";
+        }
+
+        /// <summary>
+        /// The deserialization information for the current model
+        /// </summary>
+        public IDictionary<string, Action<IParseNode>> GetFieldDeserializers()
+        {
+            return new Dictionary<string, Action<IParseNode>> {
+                {"error", n => { Error = n.GetObjectValue<Error>(Error.CreateFromDiscriminatorValue); } },
+                {"statusCode", n => { StatusCode = n.GetEnumValue<System.Net.HttpStatusCode>().Value; } },
+                {"rawResponseBody", n => { RawResponseBody = n.GetStringValue(); } },
+            };
+        }
+        /// <summary>
+        /// Serializes information the current object
+        /// <param name="writer">Serialization writer to use to serialize this model</param>
+        /// </summary>
+        public void Serialize(ISerializationWriter writer)
+        {
+            _ = writer ?? throw new ArgumentNullException(nameof(writer));
+            writer.WriteObjectValue<Error>("error", Error);
+            writer.WriteEnumValue<System.Net.HttpStatusCode>("statusCode", StatusCode);
+            writer.WriteStringValue("rawResponseBody", RawResponseBody);
+            writer.WriteAdditionalData(AdditionalData);
         }
     }
 }

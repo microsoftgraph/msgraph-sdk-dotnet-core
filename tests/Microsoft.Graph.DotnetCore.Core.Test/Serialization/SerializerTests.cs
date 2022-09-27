@@ -528,5 +528,31 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
             // Expect the string to be ISO 8601-1:2019 format
             Assert.Equal(expectedString, serializedJsonString);
         }
+
+        [Fact]
+        public void SerializeServiceExceptionValues()
+        {
+            // Arrange
+            var error = new Error
+            {
+                Code = "Unknown",
+                ClientRequestId = new Guid().ToString(),
+                Message = "Unknown Error"
+            };
+            var serviceException = new ServiceException(error, null, System.Net.HttpStatusCode.InternalServerError);
+            using var jsonSerializerWriter = new JsonSerializationWriter();
+
+            // Act
+            jsonSerializerWriter.WriteObjectValue(string.Empty, serviceException);
+            // Assert
+            // Get the json string from the stream.
+            var serializedStream = jsonSerializerWriter.GetSerializedContent();
+            using var reader = new StreamReader(serializedStream, Encoding.UTF8);
+            var serializedJsonString = reader.ReadToEnd();
+
+            var expectedString = @"{""error"":{""code"":""Unknown"",""message"":""Unknown Error""},""statusCode"":""internalServerError""}";
+            // Expect the string to be ISO 8601-1:2019 format
+            Assert.Equal(expectedString, serializedJsonString);
+        }
     }
 }
