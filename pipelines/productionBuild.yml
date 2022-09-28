@@ -37,6 +37,11 @@ steps:
   clean: true
   fetchDepth: 1
 
+- task: UseDotNet@2
+  displayName: 'Use .NET 6'
+  inputs:
+    version: 6.x
+
 - task: securedevelopmentteam.vss-secure-development-tools.build-task-credscan.CredScan@2
   displayName: 'Run CredScan'
   inputs:
