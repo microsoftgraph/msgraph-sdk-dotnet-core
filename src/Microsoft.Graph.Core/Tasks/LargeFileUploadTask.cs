@@ -13,6 +13,7 @@ namespace Microsoft.Graph
     using System.Net.Http;
     using System.Threading.Tasks;
     using System.Threading;
+    using Microsoft.Kiota.Abstractions;
 
     /// <summary>
     /// Task to help with resume able large file uploads.
@@ -22,7 +23,7 @@ namespace Microsoft.Graph
         private const int DefaultMaxSliceSize = 5 * 1024 * 1024;
         private const int RequiredSliceSizeIncrement = 320 * 1024;
         private IUploadSession Session { get; set; }
-        private readonly IBaseClient _client;
+        private readonly IRequestAdapter _requestAdapter;
         private readonly Stream _uploadStream;
         private readonly int _maxSliceSize;
         private List<Tuple<long, long>> _rangesRemaining;
@@ -35,16 +36,16 @@ namespace Microsoft.Graph
         /// <param name="uploadSession">Session information of type <see cref="IParsable"/>></param>
         /// <param name="uploadStream">Readable, seekable stream to be uploaded. Length of session is determined via uploadStream.Length</param>
         /// <param name="maxSliceSize">Max size of each slice to be uploaded. Multiple of 320 KiB (320 * 1024) is required.</param>
-        /// <param name="baseClient"><see cref="IBaseClient"/> to use for making upload requests. The client should not set Auth headers as upload urls do not need them.
+        /// <param name="requestAdapter"><see cref="IRequestAdapter"/> to use for making upload requests. The client should not set Auth headers as upload urls do not need them.
         /// If less than 0, default value of 5 MiB is used. .</param>
-        public LargeFileUploadTask(IParsable uploadSession, Stream uploadStream,  int maxSliceSize = -1, IBaseClient baseClient = null)
+        public LargeFileUploadTask(IParsable uploadSession, Stream uploadStream, int maxSliceSize = -1, IRequestAdapter requestAdapter = null)
         {
             if (!uploadStream.CanRead || !uploadStream.CanSeek)
             {
                 throw new ArgumentException("Must provide stream that can read and seek");
             }
             this.Session = ExtractSessionFromParsable(uploadSession);
-            this._client = baseClient ?? this.InitializeClient(Session.UploadUrl);
+            this._requestAdapter = requestAdapter ?? this.InitializeClient(Session.UploadUrl).RequestAdapter;
             this._uploadStream = uploadStream;
             this._rangesRemaining = this.GetRangesRemaining(Session);
             this._maxSliceSize = maxSliceSize < 0 ? DefaultMaxSliceSize : maxSliceSize;
@@ -154,7 +155,7 @@ namespace Microsoft.Graph
                     var nextSliceSize = NextSliceSize(currentRangeBegins, item2);
                     var uploadRequest = new UploadSliceRequestBuilder<T>(
                         this.Session.UploadUrl,
-                        this._client.RequestAdapter,
+                        this._requestAdapter,
                         currentRangeBegins,
                         currentRangeBegins + nextSliceSize - 1,
                         this.TotalUploadLength);
@@ -242,7 +243,7 @@ namespace Microsoft.Graph
         /// <returns><see cref="IUploadSession"/>> returned by the server.</returns>
         public async Task<IUploadSession> UpdateSessionStatusAsync(CancellationToken cancellationToken = default)
         {
-            var requestBuilder = new UploadSessionRequestBuilder(this.Session, this._client.RequestAdapter);
+            var requestBuilder = new UploadSessionRequestBuilder(this.Session, this._requestAdapter);
             var newSession = await requestBuilder.GetAsync(cancellationToken).ConfigureAwait(false);
 
             var newRangesRemaining = this.GetRangesRemaining(newSession);
@@ -271,7 +272,7 @@ namespace Microsoft.Graph
                         Message = ErrorConstants.Messages.ExpiredUploadSession
                     });
             }
-            var requestBuilder = new UploadSessionRequestBuilder(this.Session, this._client.RequestAdapter);
+            var requestBuilder = new UploadSessionRequestBuilder(this.Session, this._requestAdapter);
             await requestBuilder.DeleteAsync(cancellationToken).ConfigureAwait(false);
         }
 

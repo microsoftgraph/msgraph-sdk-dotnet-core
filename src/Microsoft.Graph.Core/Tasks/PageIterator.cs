@@ -23,7 +23,7 @@ namespace Microsoft.Graph
     /// <typeparam name="TCollectionPage">The Microsoft Graph collection response type returned in the collection response.</typeparam>
     public class PageIterator<TEntity, TCollectionPage> where TCollectionPage : IParsable,IAdditionalDataHolder,new()
     {
-        private IBaseClient _client;
+        private IRequestAdapter _requestAdapter;
         private TCollectionPage _currentPage;
         private Queue<TEntity> _pageItemQueue;
         private Func<TEntity, bool> _processPageItemCallback;
@@ -51,7 +51,7 @@ namespace Microsoft.Graph
         /// <summary>
         /// Creates the PageIterator with the results of an initial paged request. 
         /// </summary>
-        /// <param name="client">The GraphServiceClient object used to create the NextPageRequest for a delta query.</param>
+        /// <param name="client">The GraphServiceClient object used to execute the next request on paging </param>
         /// <param name="page">A generated implementation of ICollectionPage.</param>
         /// <param name="callback">A Func delegate that processes type TEntity in the result set and should return false if the iterator should cancel processing.</param>
         /// <param name="requestConfigurator">A Func delegate that configures the NextPageRequest</param>
@@ -60,6 +60,22 @@ namespace Microsoft.Graph
         {
             if (client == null)
                 throw new ArgumentNullException(nameof(client));
+
+            return CreatePageIterator(client.RequestAdapter, page, callback, requestConfigurator);
+        }
+
+        /// <summary>
+        /// Creates the PageIterator with the results of an initial paged request. 
+        /// </summary>
+        /// <param name="requestAdapter">The <see cref="IRequestAdapter"/> object used to create the NextPageRequest for a delta query.</param>
+        /// <param name="page">A generated implementation of ICollectionPage.</param>
+        /// <param name="callback">A Func delegate that processes type TEntity in the result set and should return false if the iterator should cancel processing.</param>
+        /// <param name="requestConfigurator">A Func delegate that configures the NextPageRequest</param>
+        /// <returns>A PageIterator&lt;TEntity&gt; that will process additional result pages based on the rules specified in Func&lt;TEntity,bool&gt; processPageItems</returns>
+        public static PageIterator<TEntity, TCollectionPage> CreatePageIterator(IRequestAdapter requestAdapter, TCollectionPage page, Func<TEntity, bool> callback, Func<RequestInformation, RequestInformation> requestConfigurator = null)
+        {
+            if (requestAdapter == null)
+                throw new ArgumentNullException(nameof(requestAdapter));
 
             if (page == null)
                 throw new ArgumentNullException(nameof(page));
@@ -74,7 +90,7 @@ namespace Microsoft.Graph
 
             return new PageIterator<TEntity, TCollectionPage>()
             {
-                _client = client,
+                _requestAdapter = requestAdapter,
                 _currentPage = page,
                 _pageItemQueue = new Queue<TEntity>(pageItems),
                 _processPageItemCallback = callback,
@@ -96,6 +112,22 @@ namespace Microsoft.Graph
             if (client == null)
                 throw new ArgumentNullException(nameof(client));
 
+            return CreatePageIterator(client.RequestAdapter, page, asyncCallback, requestConfigurator);
+        }
+
+        /// <summary>
+        /// Creates the PageIterator with the results of an initial paged request. 
+        /// </summary>
+        /// <param name="requestAdapter">The <see cref="IRequestAdapter"/> object used to execute the next request on paging .</param>
+        /// <param name="page">A generated implementation of ICollectionPage.</param>
+        /// <param name="asyncCallback">A Func delegate that processes type TEntity in the result set aynchrnously and should return false if the iterator should cancel processing.</param>
+        /// <param name="requestConfigurator">A Func delegate that configures the NextPageRequest</param>
+        /// <returns>A PageIterator&lt;TEntity&gt; that will process additional result pages based on the rules specified in Func&lt;TEntity,bool&gt; processPageItems</returns>
+        public static PageIterator<TEntity, TCollectionPage> CreatePageIterator(IRequestAdapter requestAdapter, TCollectionPage page, Func<TEntity, Task<bool>> asyncCallback, Func<RequestInformation, RequestInformation> requestConfigurator = null)
+        {
+            if (requestAdapter == null)
+                throw new ArgumentNullException(nameof(requestAdapter));
+
             if (page == null)
                 throw new ArgumentNullException(nameof(page));
 
@@ -109,7 +141,7 @@ namespace Microsoft.Graph
 
             return new PageIterator<TEntity, TCollectionPage>()
             {
-                _client = client,
+                _requestAdapter = requestAdapter,
                 _currentPage = page,
                 _pageItemQueue = new Queue<TEntity>(pageItems),
                 _asyncProcessPageItemCallback = asyncCallback,
@@ -192,7 +224,7 @@ namespace Microsoft.Graph
                 };
                 // if we have a request configurator, modify the request as desired then execute it to get the next page
                 nextPageRequestInformation = _requestConfigurator == null ? nextPageRequestInformation : _requestConfigurator(nextPageRequestInformation);
-                _currentPage = await _client.RequestAdapter.SendAsync<TCollectionPage>(nextPageRequestInformation, (parseNode) => new TCollectionPage(), cancellationToken:token);
+                _currentPage = await _requestAdapter.SendAsync<TCollectionPage>(nextPageRequestInformation, (parseNode) => new TCollectionPage(), cancellationToken:token);
 
                 var pageItems = ExtractEntityListFromParsable(_currentPage);
                 // Add all of the items returned in the response to the queue.
