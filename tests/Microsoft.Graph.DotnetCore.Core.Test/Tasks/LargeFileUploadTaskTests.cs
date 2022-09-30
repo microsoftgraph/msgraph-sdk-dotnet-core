@@ -154,7 +154,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
 
             // Create task
             IBaseClient baseClient = new BaseClient(new BaseGraphRequestAdapter(new AnonymousAuthenticationProvider(), httpClient: GraphClientFactory.Create(finalHandler: testHttpMessageHandler)));
-            var fileUploadTask = new LargeFileUploadTask<TestDriveItem>(uploadSession, stream, maxSliceSize, baseClient);
+            var fileUploadTask = new LargeFileUploadTask<TestDriveItem>(uploadSession, stream, maxSliceSize, baseClient.RequestAdapter);
 
             // Assert that the task is cancellable
             var cancellationException = await Assert.ThrowsAsync<TaskCanceledException>(async () => await fileUploadTask.UploadAsync(cancellationToken: cancellationToken));
