@@ -15,7 +15,7 @@ jobs:
       solutionName: Microsoft.Graph.Core.sln
       relativePath: ./src/Microsoft.Graph.Core
     steps:
-      - uses: actions/checkout@v3.0.2
+      - uses: actions/checkout@v3.1.0
 
       - name: Add msbuild to PATH
         uses: microsoft/setup-msbuild@v1.1 # use msbuild due to dotnet commands not supporting some targets https://github.com/microsoftgraph/msgraph-sdk-dotnet-core/issues/227
