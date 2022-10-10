@@ -67,7 +67,7 @@ namespace Microsoft.Graph
                 // Use the type assembly as part of the key since users might use v1 and beta at the same causing conflicts
                 var typeMappingCacheKey = $"{typeAssembly.FullName} : {typeString}";
 
-                if (DerivedTypeConverter<T>.TypeMappingCache.TryGetValue(typeMappingCacheKey, out var instanceType))
+                if (TypeMappingCache.TryGetValue(typeMappingCacheKey, out var instanceType))
                 {
                     instance = this.Create(instanceType);
                 }
@@ -88,7 +88,7 @@ namespace Microsoft.Graph
                 if (instance != null && instanceType == null)
                 {
                     // Cache the type mapping resolution if we haven't pulled it from the cache already.
-                    DerivedTypeConverter<T>.TypeMappingCache.TryAdd(typeMappingCacheKey, instance.GetType());
+                    TypeMappingCache.TryAdd(typeMappingCacheKey, instance.GetType());
                 }
             }
             else
@@ -214,7 +214,7 @@ namespace Microsoft.Graph
             writer.WriteStartObject();
             foreach (var propertyInfo in value.GetType().GetProperties())
             {
-                var ignoreConverterAttribute = propertyInfo.GetCustomAttribute<System.Text.Json.Serialization.JsonIgnoreAttribute>();
+                var ignoreConverterAttribute = propertyInfo.GetCustomAttribute<JsonIgnoreAttribute>();
                 if(ignoreConverterAttribute != null)
                 {
                     continue;// Don't serialize a property we are asked to ignore
@@ -222,7 +222,7 @@ namespace Microsoft.Graph
 
                 string propertyName;
                 // Try to get the property name off the JsonAttribute otherwise camel case the property name
-                var jsonProperty = propertyInfo.GetCustomAttribute<System.Text.Json.Serialization.JsonPropertyNameAttribute>();
+                var jsonProperty = propertyInfo.GetCustomAttribute<JsonPropertyNameAttribute>();
                 if (jsonProperty != null && !string.IsNullOrWhiteSpace(jsonProperty.Name))
                 {
                     propertyName = jsonProperty.Name;
@@ -233,7 +233,7 @@ namespace Microsoft.Graph
                 }
 
                 // Check so that we are not serializing the JsonExtensionDataAttribute(i.e AdditionalData) at a nested level
-                var jsonExtensionData = propertyInfo.GetCustomAttribute<System.Text.Json.Serialization.JsonExtensionDataAttribute>();
+                var jsonExtensionData = propertyInfo.GetCustomAttribute<JsonExtensionDataAttribute>();
                 if (jsonExtensionData != null)
                 {
                     var additionalData = propertyInfo.GetValue(value) as IDictionary<string, object> ?? new Dictionary<string, object>();
@@ -256,7 +256,7 @@ namespace Microsoft.Graph
                 else
                 {
                     // Check to see if the property has a special converter specified
-                    var jsonConverter = propertyInfo.GetCustomAttribute<System.Text.Json.Serialization.JsonConverterAttribute>();
+                    var jsonConverter = propertyInfo.GetCustomAttribute<JsonConverterAttribute>();
                     if ((propertyInfo.GetValue(value) == null && 
                          (jsonConverter == null || jsonConverter.ConverterType == typeof(NextLinkConverter))))
                     {
