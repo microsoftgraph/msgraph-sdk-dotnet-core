@@ -19,6 +19,8 @@ namespace Microsoft.Graph
     {
         internal static readonly ConcurrentDictionary<string, Type> TypeMappingCache = new ConcurrentDictionary<string, Type>(StringComparer.OrdinalIgnoreCase);
 
+        private static readonly ConcurrentDictionary<Type, PropertyMapping> PropertyMappingCache = new();
+
         /// <summary>
         /// Checks if the given object can be converted. In this instance, all object can be converted.
         /// </summary>
@@ -122,14 +124,7 @@ namespace Microsoft.Graph
         {
             // We use the target type information since it maybe be derived. We do not want to leave out extra properties in the child class and put them in the additional data unnecessarily
             var objectType = target.GetType();
-            var properties = objectType.GetProperties();
-            var typeInfoDictionary = properties
-                .Select(propertyInfo => new KeyValuePair<string,PropertyInfo>(propertyInfo.GetCustomAttribute<JsonPropertyNameAttribute>()?.Name, propertyInfo))
-                .Where( x => !string.IsNullOrEmpty(x.Key))
-                .ToDictionary(x => x.Key, x => x.Value);
-
-            // Get the property with the JsonExtensionData attribute and add the property to the collection
-            var additionalDataInfo = properties.FirstOrDefault(propertyInfo => propertyInfo.GetCustomAttribute(typeof(JsonExtensionDataAttribute)) != null);
+            var propertyMapping = PropertyMappingCache.GetOrAdd(objectType, t => ReadPropertyMapping(t));
 
             switch (json.ValueKind)
             {
@@ -139,10 +134,10 @@ namespace Microsoft.Graph
                     foreach (var property in json.EnumerateObject())
                     {
                         // look up the property in the object definition using the mapping provided in the model attribute
-                        if(!typeInfoDictionary.TryGetValue(property.Name, out var propertyInfo))
+                        if(!propertyMapping.Properties.TryGetValue(property.Name, out var propertyInfo))
                         {
                             //Add the property to AdditionalData as it doesn't exist as a member of the object
-                            AddToAdditionalDataBag(target, additionalDataInfo, property);
+                            AddToAdditionalDataBag(target, propertyMapping.ExtensionDataProperty, property);
                             continue;
                         }
 
@@ -155,7 +150,7 @@ namespace Microsoft.Graph
                         catch (JsonException)
                         {
                             //Add the property to AdditionalData as it can't be deserialized as a member. Eg. non existing enum member type
-                            AddToAdditionalDataBag(target, additionalDataInfo, property);
+                            AddToAdditionalDataBag(target, propertyMapping.ExtensionDataProperty, property);
                         }
                     }
 
@@ -321,6 +316,50 @@ namespace Microsoft.Graph
                     },
                     exception);
             }
+        }
+
+        private static PropertyMapping ReadPropertyMapping(Type type)
+        {
+            var properties = type.GetProperties();
+
+            // Pre-allocate worst case scenario...
+            var propertyMapping = new Dictionary<string, PropertyInfo>(properties.Length);
+            PropertyInfo extensionDataProperty = null;
+
+            foreach (var property in properties)
+            {
+                if (property.IsDefined(typeof(JsonIgnoreAttribute)))
+                {
+                    continue;
+                }
+
+                if (property.IsDefined(typeof(JsonExtensionDataAttribute)))
+                {
+                    extensionDataProperty = property;
+                    continue;
+                }
+
+                var jsonPropertyName = property.GetCustomAttribute<JsonPropertyNameAttribute>()?.Name;
+                if (!string.IsNullOrEmpty(jsonPropertyName))
+                {
+                    propertyMapping.Add(jsonPropertyName, property);
+                }
+            }
+
+            return new PropertyMapping(propertyMapping, extensionDataProperty);
+        }
+
+        private class PropertyMapping
+        {
+            public PropertyMapping(Dictionary<string, PropertyInfo> properties, PropertyInfo extensionDataProperty)
+            {
+                Properties = properties;
+                ExtensionDataProperty = extensionDataProperty;
+            }
+
+            public Dictionary<string, PropertyInfo> Properties { get; }
+
+            public PropertyInfo ExtensionDataProperty { get; }
         }
     }
 }
