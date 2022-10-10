@@ -214,8 +214,7 @@ namespace Microsoft.Graph
             writer.WriteStartObject();
             foreach (var propertyInfo in value.GetType().GetProperties())
             {
-                var ignoreConverterAttribute = propertyInfo.GetCustomAttribute<JsonIgnoreAttribute>();
-                if(ignoreConverterAttribute != null)
+                if (propertyInfo.IsDefined(typeof(JsonIgnoreAttribute)))
                 {
                     continue;// Don't serialize a property we are asked to ignore
                 }
@@ -233,8 +232,7 @@ namespace Microsoft.Graph
                 }
 
                 // Check so that we are not serializing the JsonExtensionDataAttribute(i.e AdditionalData) at a nested level
-                var jsonExtensionData = propertyInfo.GetCustomAttribute<JsonExtensionDataAttribute>();
-                if (jsonExtensionData != null)
+                if (propertyInfo.IsDefined(typeof(JsonExtensionDataAttribute)))
                 {
                     var additionalData = propertyInfo.GetValue(value) as IDictionary<string, object> ?? new Dictionary<string, object>();
                     foreach (var item in additionalData)
