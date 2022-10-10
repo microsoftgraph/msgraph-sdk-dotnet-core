@@ -11,6 +11,7 @@ namespace Microsoft.Graph
     using System.Text.Json;
     using System.Text.Json.Serialization;
     using System.Collections.Generic;
+    using System.Linq.Expressions;
 
     /// <summary>
     /// Handles resolving interfaces to the correct derived class during serialization/deserialization.
@@ -20,6 +21,8 @@ namespace Microsoft.Graph
         internal static readonly ConcurrentDictionary<string, Type> TypeMappingCache = new ConcurrentDictionary<string, Type>(StringComparer.OrdinalIgnoreCase);
 
         private static readonly ConcurrentDictionary<Type, PropertyMapping> PropertyMappingCache = new();
+
+        private static readonly ConcurrentDictionary<Type, Func<object>> FactoryCache = new();
 
         /// <summary>
         /// Checks if the given object can be converted. In this instance, all object can be converted.
@@ -293,16 +296,7 @@ namespace Microsoft.Graph
 
             try
             {
-                // Find the default constructor. Abstract entity classes use non-public constructors.
-                var constructorInfo = type.GetTypeInfo().DeclaredConstructors.FirstOrDefault(
-                    constructor => !constructor.GetParameters().Any() && !constructor.IsStatic);
-
-                if (constructorInfo == null)
-                {
-                    return null;
-                }
-
-                return constructorInfo.Invoke( new object[] { } );
+                return FactoryCache.GetOrAdd(type, t => CompileFactory(t))?.Invoke();
             }
             catch (Exception exception)
             {
@@ -314,6 +308,23 @@ namespace Microsoft.Graph
                     },
                     exception);
             }
+        }
+
+        private static Func<object> CompileFactory(Type type)
+        {
+            // Find the default constructor. Abstract entity classes use non-public constructors.
+            var constructorInfo = type.GetTypeInfo().DeclaredConstructors.FirstOrDefault(
+                constructor => constructor.GetParameters().Length == 0 && !constructor.IsStatic);
+
+            if (constructorInfo == null)
+            {
+                return null;
+            }
+
+            var body = Expression.New(constructorInfo);
+            var lambda = Expression.Lambda<Func<object>>(body);
+
+            return lambda.Compile();
         }
 
         private static PropertyMapping ReadPropertyMapping(Type type)
