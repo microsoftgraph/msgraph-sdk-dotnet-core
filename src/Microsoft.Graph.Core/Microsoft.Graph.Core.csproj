@@ -21,10 +21,10 @@
     <DelaySign>false</DelaySign>
     <AssemblyOriginatorKeyFile>35MSSharedLib1024.snk</AssemblyOriginatorKeyFile>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <VersionPrefix>2.0.13</VersionPrefix>
+    <VersionPrefix>2.0.14</VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <PackageReleaseNotes>
-        - Fixes WinHttpHandler initialization with proxy for .NetFramework clients
+        - Cache property mapping in DerivedTypeConverter to improve perfomance
     </PackageReleaseNotes>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
