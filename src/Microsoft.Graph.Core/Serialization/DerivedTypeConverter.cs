@@ -11,6 +11,7 @@ namespace Microsoft.Graph
     using System.Text.Json;
     using System.Text.Json.Serialization;
     using System.Collections.Generic;
+    using System.Linq.Expressions;
 
     /// <summary>
     /// Handles resolving interfaces to the correct derived class during serialization/deserialization.
@@ -18,6 +19,10 @@ namespace Microsoft.Graph
     public class DerivedTypeConverter<T> : JsonConverter<T> where T : class
     {
         internal static readonly ConcurrentDictionary<string, Type> TypeMappingCache = new ConcurrentDictionary<string, Type>(StringComparer.OrdinalIgnoreCase);
+
+        private static readonly ConcurrentDictionary<Type, PropertyMapping> PropertyMappingCache = new();
+
+        private static readonly ConcurrentDictionary<Type, Func<object>> FactoryCache = new();
 
         /// <summary>
         /// Checks if the given object can be converted. In this instance, all object can be converted.
@@ -65,7 +70,7 @@ namespace Microsoft.Graph
                 // Use the type assembly as part of the key since users might use v1 and beta at the same causing conflicts
                 var typeMappingCacheKey = $"{typeAssembly.FullName} : {typeString}";
 
-                if (DerivedTypeConverter<T>.TypeMappingCache.TryGetValue(typeMappingCacheKey, out var instanceType))
+                if (TypeMappingCache.TryGetValue(typeMappingCacheKey, out var instanceType))
                 {
                     instance = this.Create(instanceType);
                 }
@@ -86,7 +91,7 @@ namespace Microsoft.Graph
                 if (instance != null && instanceType == null)
                 {
                     // Cache the type mapping resolution if we haven't pulled it from the cache already.
-                    DerivedTypeConverter<T>.TypeMappingCache.TryAdd(typeMappingCacheKey, instance.GetType());
+                    TypeMappingCache.TryAdd(typeMappingCacheKey, instance.GetType());
                 }
             }
             else
@@ -122,14 +127,7 @@ namespace Microsoft.Graph
         {
             // We use the target type information since it maybe be derived. We do not want to leave out extra properties in the child class and put them in the additional data unnecessarily
             var objectType = target.GetType();
-            var properties = objectType.GetProperties();
-            var typeInfoDictionary = properties
-                .Select(propertyInfo => new KeyValuePair<string,PropertyInfo>(propertyInfo.GetCustomAttribute<JsonPropertyNameAttribute>()?.Name, propertyInfo))
-                .Where( x => !string.IsNullOrEmpty(x.Key))
-                .ToDictionary(x => x.Key, x => x.Value);
-
-            // Get the property with the JsonExtensionData attribute and add the property to the collection
-            var additionalDataInfo = properties.FirstOrDefault(propertyInfo => propertyInfo.GetCustomAttribute(typeof(JsonExtensionDataAttribute)) != null);
+            var propertyMapping = PropertyMappingCache.GetOrAdd(objectType, t => ReadPropertyMapping(t));
 
             switch (json.ValueKind)
             {
@@ -139,10 +137,10 @@ namespace Microsoft.Graph
                     foreach (var property in json.EnumerateObject())
                     {
                         // look up the property in the object definition using the mapping provided in the model attribute
-                        if(!typeInfoDictionary.TryGetValue(property.Name, out var propertyInfo))
+                        if(!propertyMapping.Properties.TryGetValue(property.Name, out var propertyInfo))
                         {
                             //Add the property to AdditionalData as it doesn't exist as a member of the object
-                            AddToAdditionalDataBag(target, additionalDataInfo, property);
+                            AddToAdditionalDataBag(target, propertyMapping.ExtensionDataProperty, property);
                             continue;
                         }
 
@@ -155,7 +153,7 @@ namespace Microsoft.Graph
                         catch (JsonException)
                         {
                             //Add the property to AdditionalData as it can't be deserialized as a member. Eg. non existing enum member type
-                            AddToAdditionalDataBag(target, additionalDataInfo, property);
+                            AddToAdditionalDataBag(target, propertyMapping.ExtensionDataProperty, property);
                         }
                     }
 
@@ -219,15 +217,14 @@ namespace Microsoft.Graph
             writer.WriteStartObject();
             foreach (var propertyInfo in value.GetType().GetProperties())
             {
-                var ignoreConverterAttribute = propertyInfo.GetCustomAttribute<System.Text.Json.Serialization.JsonIgnoreAttribute>();
-                if(ignoreConverterAttribute != null)
+                if (propertyInfo.IsDefined(typeof(JsonIgnoreAttribute)))
                 {
                     continue;// Don't serialize a property we are asked to ignore
                 }
 
                 string propertyName;
                 // Try to get the property name off the JsonAttribute otherwise camel case the property name
-                var jsonProperty = propertyInfo.GetCustomAttribute<System.Text.Json.Serialization.JsonPropertyNameAttribute>();
+                var jsonProperty = propertyInfo.GetCustomAttribute<JsonPropertyNameAttribute>();
                 if (jsonProperty != null && !string.IsNullOrWhiteSpace(jsonProperty.Name))
                 {
                     propertyName = jsonProperty.Name;
@@ -238,8 +235,7 @@ namespace Microsoft.Graph
                 }
 
                 // Check so that we are not serializing the JsonExtensionDataAttribute(i.e AdditionalData) at a nested level
-                var jsonExtensionData = propertyInfo.GetCustomAttribute<System.Text.Json.Serialization.JsonExtensionDataAttribute>();
-                if (jsonExtensionData != null)
+                if (propertyInfo.IsDefined(typeof(JsonExtensionDataAttribute)))
                 {
                     var additionalData = propertyInfo.GetValue(value) as IDictionary<string, object> ?? new Dictionary<string, object>();
                     foreach (var item in additionalData)
@@ -261,7 +257,7 @@ namespace Microsoft.Graph
                 else
                 {
                     // Check to see if the property has a special converter specified
-                    var jsonConverter = propertyInfo.GetCustomAttribute<System.Text.Json.Serialization.JsonConverterAttribute>();
+                    var jsonConverter = propertyInfo.GetCustomAttribute<JsonConverterAttribute>();
                     if ((propertyInfo.GetValue(value) == null && 
                          (jsonConverter == null || jsonConverter.ConverterType == typeof(NextLinkConverter))))
                     {
@@ -300,16 +296,7 @@ namespace Microsoft.Graph
 
             try
             {
-                // Find the default constructor. Abstract entity classes use non-public constructors.
-                var constructorInfo = type.GetTypeInfo().DeclaredConstructors.FirstOrDefault(
-                    constructor => !constructor.GetParameters().Any() && !constructor.IsStatic);
-
-                if (constructorInfo == null)
-                {
-                    return null;
-                }
-
-                return constructorInfo.Invoke( new object[] { } );
+                return FactoryCache.GetOrAdd(type, t => CompileFactory(t))?.Invoke();
             }
             catch (Exception exception)
             {
@@ -321,6 +308,67 @@ namespace Microsoft.Graph
                     },
                     exception);
             }
+        }
+
+        private static Func<object> CompileFactory(Type type)
+        {
+            // Find the default constructor. Abstract entity classes use non-public constructors.
+            var constructorInfo = type.GetTypeInfo().DeclaredConstructors.FirstOrDefault(
+                constructor => constructor.GetParameters().Length == 0 && !constructor.IsStatic);
+
+            if (constructorInfo == null)
+            {
+                return null;
+            }
+
+            var body = Expression.New(constructorInfo);
+            var lambda = Expression.Lambda<Func<object>>(body);
+
+            return lambda.Compile();
+        }
+
+        private static PropertyMapping ReadPropertyMapping(Type type)
+        {
+            var properties = type.GetProperties();
+
+            // Pre-allocate worst case scenario...
+            var propertyMapping = new Dictionary<string, PropertyInfo>(properties.Length);
+            PropertyInfo extensionDataProperty = null;
+
+            foreach (var property in properties)
+            {
+                if (property.IsDefined(typeof(JsonIgnoreAttribute)))
+                {
+                    continue;
+                }
+
+                if (property.IsDefined(typeof(JsonExtensionDataAttribute)))
+                {
+                    extensionDataProperty = property;
+                    continue;
+                }
+
+                var jsonPropertyName = property.GetCustomAttribute<JsonPropertyNameAttribute>()?.Name;
+                if (!string.IsNullOrEmpty(jsonPropertyName))
+                {
+                    propertyMapping.Add(jsonPropertyName, property);
+                }
+            }
+
+            return new PropertyMapping(propertyMapping, extensionDataProperty);
+        }
+
+        private class PropertyMapping
+        {
+            public PropertyMapping(Dictionary<string, PropertyInfo> properties, PropertyInfo extensionDataProperty)
+            {
+                Properties = properties;
+                ExtensionDataProperty = extensionDataProperty;
+            }
+
+            public Dictionary<string, PropertyInfo> Properties { get; }
+
+            public PropertyInfo ExtensionDataProperty { get; }
         }
     }
 }
