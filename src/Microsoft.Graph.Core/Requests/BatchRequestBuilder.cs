@@ -46,9 +46,10 @@ namespace Microsoft.Graph.Core.Requests
         {
             _ = batchRequestContent ?? throw new ArgumentNullException(nameof(batchRequestContent));
             var requestInfo = await CreatePostRequestInformationAsync(batchRequestContent);
-            var responseHandler = new NativeResponseHandler();
-            await this.RequestAdapter.SendNoContentAsync(requestInfo, responseHandler, cancellationToken:cancellationToken);
-            return new BatchResponseContent(responseHandler.Value as HttpResponseMessage);
+            var nativeResponseHandler = new NativeResponseHandler();
+            requestInfo.SetResponseHandler(nativeResponseHandler);
+            await this.RequestAdapter.SendNoContentAsync(requestInfo, cancellationToken:cancellationToken);
+            return new BatchResponseContent(nativeResponseHandler.Value as HttpResponseMessage);
         }
 
         /// <summary>

@@ -61,9 +61,10 @@ namespace Microsoft.Graph
         public async Task<IUploadSession> GetAsync(CancellationToken cancellationToken = default)
         {
             var requestInformation = this.CreateGetRequestInformationAsync();
-            var responseHandler = new NativeResponseHandler();
-            await this.requestAdapter.SendNoContentAsync(requestInformation, responseHandler, cancellationToken: cancellationToken).ConfigureAwait(false);
-            var uploadResult = await this.responseHandler.HandleResponse<UploadSession>(responseHandler.Value as HttpResponseMessage).ConfigureAwait(false);
+            var nativeResponseHandler = new NativeResponseHandler();
+            requestInformation.SetResponseHandler(nativeResponseHandler);
+            await this.requestAdapter.SendNoContentAsync(requestInformation, cancellationToken: cancellationToken).ConfigureAwait(false);
+            var uploadResult = await this.responseHandler.HandleResponse<UploadSession>(nativeResponseHandler.Value as HttpResponseMessage).ConfigureAwait(false);
             return uploadResult.UploadSession;
         }
 

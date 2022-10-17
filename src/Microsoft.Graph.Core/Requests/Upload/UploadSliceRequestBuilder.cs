@@ -72,9 +72,10 @@ namespace Microsoft.Graph
         public async Task<UploadResult<T>> PutAsync(Stream stream, CancellationToken cancellationToken = default)
         {
             var requestInformation = this.CreatePutRequestInformationAsync(stream);
-            var responseHandler = new NativeResponseHandler();
-            await this.RequestAdapter.SendNoContentAsync(requestInformation, responseHandler, cancellationToken: cancellationToken).ConfigureAwait(false);
-            return await this.ResponseHandler.HandleResponse<T>(responseHandler.Value as HttpResponseMessage).ConfigureAwait(false);
+            var nativeResponseHandler = new NativeResponseHandler();
+            requestInformation.SetResponseHandler(nativeResponseHandler);
+            await this.RequestAdapter.SendNoContentAsync(requestInformation, cancellationToken: cancellationToken).ConfigureAwait(false);
+            return await this.ResponseHandler.HandleResponse<T>(nativeResponseHandler.Value as HttpResponseMessage).ConfigureAwait(false);
         }
 
         /// <summary>

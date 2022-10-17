@@ -71,9 +71,10 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             redirectedResponseMessage.Content = redirectedStringContent;
 
             this.requestAdapter
-                .Setup(requestAdapter => requestAdapter.SendNoContentAsync(It.IsAny<RequestInformation>(), It.IsAny<NativeResponseHandler>(), It.IsAny<Dictionary<string, ParsableFactory<IParsable>>>(), It.IsAny<CancellationToken>()))
-                .Callback((RequestInformation requestInfo, IResponseHandler responseHandler, Dictionary<string, ParsableFactory<IParsable>> errorMapping, CancellationToken cancellationToken) =>
+                .Setup(requestAdapter => requestAdapter.SendNoContentAsync(It.IsAny<RequestInformation>(), It.IsAny<Dictionary<string, ParsableFactory<IParsable>>>(), It.IsAny<CancellationToken>()))
+                .Callback((RequestInformation requestInfo, Dictionary<string, ParsableFactory<IParsable>> errorMapping, CancellationToken cancellationToken) =>
                 {
+                    var responseHandler = requestInfo.GetRequestOption<ResponseHandlerOption>().ResponseHandler;
                     if (!called)
                     {
                         called = true;
@@ -96,8 +97,8 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         public async Task PollForOperationCompletionAsync_OperationCancelled()
         {
             this.requestAdapter
-                .Setup(requestAdapter => requestAdapter.SendNoContentAsync(It.IsAny<RequestInformation>(), It.IsAny<NativeResponseHandler>(), It.IsAny<Dictionary<string, ParsableFactory<IParsable>>>(), It.IsAny<CancellationToken>()))
-                .Callback((RequestInformation requestInfo, IResponseHandler responseHandler, Dictionary<string, ParsableFactory<IParsable>> errorMapping, CancellationToken cancellationToken) => ((NativeResponseHandler)responseHandler).Value = this.httpResponseMessage)
+                .Setup(requestAdapter => requestAdapter.SendNoContentAsync(It.IsAny<RequestInformation>(), It.IsAny<Dictionary<string, ParsableFactory<IParsable>>>(), It.IsAny<CancellationToken>()))
+                .Callback((RequestInformation requestInfo, Dictionary<string, ParsableFactory<IParsable>> errorMapping, CancellationToken cancellationToken) => ((NativeResponseHandler)requestInfo.GetRequestOption<ResponseHandlerOption>().ResponseHandler).Value = this.httpResponseMessage)
                 .Returns(Task.FromResult(0));
 
             using var stringContent = new StringContent(JsonSerializer.Serialize(new AsyncOperationStatus { Status = "cancelled" }));
@@ -112,8 +113,8 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         public async Task PollForOperationCompletionAsync_OperationDeleteFailed()
         {
             this.requestAdapter
-                .Setup(requestAdapter => requestAdapter.SendNoContentAsync(It.IsAny<RequestInformation>(), It.IsAny<NativeResponseHandler>(), It.IsAny<Dictionary<string, ParsableFactory<IParsable>>>(), It.IsAny<CancellationToken>()))
-                .Callback((RequestInformation requestInfo, IResponseHandler responseHandler, Dictionary<string, ParsableFactory<IParsable>> errorMapping, CancellationToken cancellationToken) => ((NativeResponseHandler)responseHandler).Value = this.httpResponseMessage)
+                .Setup(requestAdapter => requestAdapter.SendNoContentAsync(It.IsAny<RequestInformation>(), It.IsAny<Dictionary<string, ParsableFactory<IParsable>>>(), It.IsAny<CancellationToken>()))
+                .Callback((RequestInformation requestInfo, Dictionary<string, ParsableFactory<IParsable>> errorMapping, CancellationToken cancellationToken) => ((NativeResponseHandler)requestInfo.GetRequestOption<ResponseHandlerOption>().ResponseHandler).Value = this.httpResponseMessage)
                 .Returns(Task.FromResult(0));
 
             using var stringContent = new StringContent(JsonSerializer.Serialize(new AsyncOperationStatus { Status = "deleteFailed" }));
@@ -128,8 +129,8 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         public async Task PollForOperationCompletionAsync_OperationFailed()
         {
             this.requestAdapter
-                .Setup(requestAdapter => requestAdapter.SendNoContentAsync(It.IsAny<RequestInformation>(), It.IsAny<NativeResponseHandler>(), It.IsAny<Dictionary<string, ParsableFactory<IParsable>>>(), It.IsAny<CancellationToken>()))
-                .Callback((RequestInformation requestInfo, IResponseHandler responseHandler, Dictionary<string, ParsableFactory<IParsable>> errorMapping, CancellationToken cancellationToken) => ((NativeResponseHandler)responseHandler).Value = this.httpResponseMessage)
+                .Setup(requestAdapter => requestAdapter.SendNoContentAsync(It.IsAny<RequestInformation>(), It.IsAny<Dictionary<string, ParsableFactory<IParsable>>>(), It.IsAny<CancellationToken>()))
+                .Callback((RequestInformation requestInfo, Dictionary<string, ParsableFactory<IParsable>> errorMapping, CancellationToken cancellationToken) => ((NativeResponseHandler)requestInfo.GetRequestOption<ResponseHandlerOption>().ResponseHandler).Value = this.httpResponseMessage)
                 .Returns(Task.FromResult(0));
 
             using var stringContent = new StringContent(JsonSerializer.Serialize(new AsyncOperationStatus
@@ -149,8 +150,8 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         public async Task PollForOperationCompletionAsync_OperationNull()
         {
             this.requestAdapter
-                .Setup(requestAdapter => requestAdapter.SendNoContentAsync(It.IsAny<RequestInformation>(), It.IsAny<NativeResponseHandler>(), It.IsAny<Dictionary<string, ParsableFactory<IParsable>>>(), It.IsAny<CancellationToken>()))
-                .Callback((RequestInformation requestInfo, IResponseHandler responseHandler, Dictionary<string, ParsableFactory<IParsable>> errorMapping, CancellationToken cancellationToken) => ((NativeResponseHandler)responseHandler).Value = this.httpResponseMessage)
+                .Setup(requestAdapter => requestAdapter.SendNoContentAsync(It.IsAny<RequestInformation>(), It.IsAny<Dictionary<string, ParsableFactory<IParsable>>>(), It.IsAny<CancellationToken>()))
+                .Callback((RequestInformation requestInfo, Dictionary<string, ParsableFactory<IParsable>> errorMapping, CancellationToken cancellationToken) => ((NativeResponseHandler)requestInfo.GetRequestOption<ResponseHandlerOption>().ResponseHandler).Value = this.httpResponseMessage)
                 .Returns(Task.FromResult(0));
 
             using var stringContent = new StringContent("");
