@@ -21,9 +21,9 @@
     <AssemblyOriginatorKeyFile>35MSSharedLib1024.snk</AssemblyOriginatorKeyFile>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <VersionPrefix>3.0.0</VersionPrefix>
-    <VersionSuffix>preview.16</VersionSuffix>
+    <VersionSuffix>preview.17</VersionSuffix>
     <PackageReleaseNotes>
-        - Updates Kiota dependencies to align to changing the ResponeHandler parameter in IRequestAdapter to be a RequestOption
+        - Updates Kiota dependencies to use updated UriTemplates library
     </PackageReleaseNotes>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
