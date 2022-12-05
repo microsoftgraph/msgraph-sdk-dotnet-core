@@ -172,13 +172,13 @@ namespace Microsoft.Graph
                     throw new ArgumentNullException(nameof(handlers), "DelegatingHandler array contains null item.");
                 }
 
-#if iOS || macOS
-#if iOS
+#if IOS || MACOS || MACCATALYST
+#if IOS || MACCATALYST
                 // Skip CompressionHandler since NSUrlSessionHandler automatically handles decompression on iOS and macOS and it can't be turned off.
                 // See issue https://github.com/microsoftgraph/msgraph-sdk-dotnet/issues/481 for more details.
                 if (finalHandler.GetType().Equals(typeof(NSUrlSessionHandler)) && handler.GetType().Equals(typeof(CompressionHandler)))
-#elif macOS
-                 if (finalHandler.GetType().Equals(typeof(Foundation.NSUrlSessionHandler)) && handler.GetType().Equals(typeof(CompressionHandler)))
+#elif MACOS
+                if (finalHandler.GetType().Equals(typeof(Foundation.NSUrlSessionHandler)) && handler.GetType().Equals(typeof(CompressionHandler)))
 #endif
                 {
                     // Skip chaining of CompressionHandler.
