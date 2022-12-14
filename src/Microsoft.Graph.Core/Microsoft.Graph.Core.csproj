@@ -21,10 +21,9 @@
     <AssemblyOriginatorKeyFile>35MSSharedLib1024.snk</AssemblyOriginatorKeyFile>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <VersionPrefix>3.0.0</VersionPrefix>
-    <VersionSuffix>preview.18</VersionSuffix>
+    <VersionSuffix>preview.19</VersionSuffix>
     <PackageReleaseNotes>
-        - Updates Kiota dependencies
-        - Fixes MACCATALYST preprocessor directive to omit CompressionHandler that is already handler by the NSUrlSessionHandler
+        - Updates Kiota dependencies to support multi-value headers
     </PackageReleaseNotes>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
@@ -53,10 +52,10 @@
     <PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="6.25.1" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
     <PackageReference Include="Microsoft.Kiota.Abstractions" Version="1.0.0-preview.19" />
-    <PackageReference Include="Microsoft.Kiota.Authentication.Azure" Version="1.0.0-preview.4" />
+    <PackageReference Include="Microsoft.Kiota.Authentication.Azure" Version="1.0.0-preview.5" />
     <PackageReference Include="Microsoft.Kiota.Serialization.Json" Version="1.0.0-preview.7" />
     <PackageReference Include="Microsoft.Kiota.Serialization.Text" Version="1.0.0-preview.4" />
-    <PackageReference Include="Microsoft.Kiota.Http.HttpClientLibrary" Version="1.0.0-preview.12" />
+    <PackageReference Include="Microsoft.Kiota.Http.HttpClientLibrary" Version="1.0.0-preview.13" />
   </ItemGroup>
   <ItemGroup Condition=" '$(TargetFramework)' != 'netstandard2.0' ">
     <PackageReference Include="NETStandard.Library" Version="2.0.3" />
