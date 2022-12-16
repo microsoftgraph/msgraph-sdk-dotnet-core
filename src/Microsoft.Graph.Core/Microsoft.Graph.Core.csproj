@@ -109,7 +109,7 @@
     <PackageReference Include="System.Net.Http" Version="4.3.4" />
     <PackageReference Include="System.Text.Json" Version="7.0.1" />
     <PackageReference Include="Azure.Core" Version="1.26.0" />
-    <PackageReference Include="Microsoft.Identity.Client" Version="4.48.1" />
+    <PackageReference Include="Microsoft.Identity.Client" Version="4.49.0" />
     <PackageReference Include="System.Diagnostics.DiagnosticSource" Version="4.7.1" />
     <PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="6.25.1" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
