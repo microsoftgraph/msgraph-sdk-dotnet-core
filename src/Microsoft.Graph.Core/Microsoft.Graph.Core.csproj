@@ -21,14 +21,15 @@
     <AssemblyOriginatorKeyFile>35MSSharedLib1024.snk</AssemblyOriginatorKeyFile>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <VersionPrefix>3.0.0</VersionPrefix>
-    <VersionSuffix>preview.19</VersionSuffix>
+    <VersionSuffix>rc.1</VersionSuffix>
     <PackageReleaseNotes>
-        - Updates Kiota dependencies to support multi-value headers
+        - Release candidate 1
     </PackageReleaseNotes>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <Deterministic>true</Deterministic>
     <EnableNETAnalyzers>True</EnableNETAnalyzers>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
   <!-- https://github.com/clairernovotny/DeterministicBuilds#deterministic-builds -->
   <PropertyGroup Condition="'$(TF_BUILD)' == 'true'">
@@ -42,20 +43,25 @@
     <DocumentationFile>bin\Release\netstandard2.0\Microsoft.Graph.Core.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-  <None Include="..\..\LICENSE.txt">
-    <Pack>True</Pack>
-    <PackagePath></PackagePath>
-  </None>
+    <None Include="..\..\LICENSE.txt">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="..\..\README.md">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="System.Security.Claims" Version="4.3.0" />
     <PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="6.25.1" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.Kiota.Abstractions" Version="1.0.0-preview.19" />
-    <PackageReference Include="Microsoft.Kiota.Authentication.Azure" Version="1.0.0-preview.5" />
-    <PackageReference Include="Microsoft.Kiota.Serialization.Json" Version="1.0.0-preview.7" />
-    <PackageReference Include="Microsoft.Kiota.Serialization.Text" Version="1.0.0-preview.4" />
-    <PackageReference Include="Microsoft.Kiota.Http.HttpClientLibrary" Version="1.0.0-preview.13" />
+    <PackageReference Include="Microsoft.Kiota.Abstractions" Version="1.0.0-rc.1" />
+    <PackageReference Include="Microsoft.Kiota.Authentication.Azure" Version="1.0.0-rc.1" />
+    <PackageReference Include="Microsoft.Kiota.Serialization.Json" Version="1.0.0-rc.1" />
+    <PackageReference Include="Microsoft.Kiota.Serialization.Text" Version="1.0.0-rc.1" />
+    <PackageReference Include="Microsoft.Kiota.Serialization.Form" Version="1.0.0-rc.1" />
+    <PackageReference Include="Microsoft.Kiota.Http.HttpClientLibrary" Version="1.0.0-rc.1" />
   </ItemGroup>
   <ItemGroup Condition=" '$(TargetFramework)' != 'netstandard2.0' ">
     <PackageReference Include="NETStandard.Library" Version="2.0.3" />
