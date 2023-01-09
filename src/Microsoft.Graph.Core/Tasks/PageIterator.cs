@@ -246,10 +246,13 @@ namespace Microsoft.Graph
                 });
             }
         }
-
+#pragma warning disable CS1574
+#pragma warning disable CS1587
         /// <summary>
         /// Fetches page collections and iterates through each page of items and processes it according to the Func&lt;TEntity, bool&gt; set in <see cref="CreatePageIterator"/>. 
         /// </summary>
+#pragma warning restore CS1587
+#pragma warning restore CS1574
         /// <returns>The task object that represents the results of this asynchronous operation.</returns>
         /// <exception cref="Microsoft.Graph.ServiceException">Thrown when the service encounters an error with
         /// a request.</exception>
@@ -258,9 +261,13 @@ namespace Microsoft.Graph
             await IterateAsync(new CancellationToken()).ConfigureAwait(false);
         }
 
+#pragma warning disable CS1574
+#pragma warning disable CS1587
         /// <summary>
         /// Fetches page collections and iterates through each page of items and processes it according to the Func&lt;TEntity, bool&gt; set in <see cref="CreatePageIterator"/>. 
         /// </summary>
+#pragma warning restore CS1587
+#pragma warning restore CS1574
         /// <param name="token">The CancellationToken used to stop iterating calls for more pages.</param>
         /// <returns>The task object that represents the results of this asynchronous operation.</returns>
         /// <exception cref="Microsoft.Graph.ServiceException">Thrown when the service encounters an error with
@@ -291,18 +298,26 @@ namespace Microsoft.Graph
             }
         }
 
+#pragma warning disable CS1574
+#pragma warning disable CS1587
         /// <summary>
         /// Resumes iterating through each page of items and processes it according to the Func&lt;TEntity, bool&gt; set in <see cref="CreatePageIterator"/>. 
         /// </summary>
+#pragma warning restore CS1587
+#pragma warning restore CS1574
         /// <returns>The task object that represents the results of this asynchronous operation.</returns>
         public async Task ResumeAsync()
         {
             await ResumeAsync(new CancellationToken()).ConfigureAwait(false);
         }
 
+#pragma warning disable CS1574
+#pragma warning disable CS1587
         /// <summary>
         /// Resumes iterating through each page of items and processes it according to the Func&lt;TEntity, bool&gt; set in <see cref="CreatePageIterator"/>. 
         /// </summary>
+#pragma warning restore CS1574
+#pragma warning restore CS1587
         /// <param name="token">The CancellationToken used to stop iterating calls for more pages.</param>
         /// <returns>The task object that represents the results of this asynchronous operation.</returns>
         /// <exception cref="Microsoft.Graph.ServiceException">Thrown when the service encounters an error with

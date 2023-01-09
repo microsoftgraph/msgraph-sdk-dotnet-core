@@ -77,7 +77,9 @@ namespace Microsoft.Graph
         {
             try
             {
+#pragma warning disable SYSLIB0021
                 using var cryptoServiceProvider = new AesCryptoServiceProvider
+#pragma warning restore SYSLIB0021
                 {
                     Mode = CipherMode.CBC,
                     Padding = PaddingMode.PKCS7,

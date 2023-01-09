@@ -51,8 +51,10 @@ namespace Microsoft.Graph
                 newRequest.Headers.TryAddWithoutValidation(header.Key, header.Value);
 
             // Copy request properties.
+#pragma warning disable CS0618
             foreach (var property in originalRequest.Properties)
                 newRequest.Properties.Add(property);
+#pragma warning restore CS0618
 
             // Set Content if previous request had one.
             if (originalRequest.Content != null)
@@ -82,7 +84,9 @@ namespace Microsoft.Graph
         public static GraphRequestContext GetRequestContext(this HttpRequestMessage httpRequestMessage)
         {
             GraphRequestContext requestContext = new GraphRequestContext();
+#pragma warning disable CS0618
             if (httpRequestMessage.Properties.TryGetValue(nameof(GraphRequestContext), out var requestContextObject))
+#pragma warning restore CS0618
             {
                 requestContext = (GraphRequestContext)requestContextObject;
             }
