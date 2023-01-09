@@ -72,10 +72,12 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             using RetryHandler retryHandler = (RetryHandler)compressionHandler.InnerHandler;
             using RedirectHandler redirectHandler = (RedirectHandler)retryHandler.InnerHandler;
             using ParametersNameDecodingHandler odataQueryHandler = (ParametersNameDecodingHandler)redirectHandler.InnerHandler;
-            using GraphTelemetryHandler telemetryHandler = (GraphTelemetryHandler)odataQueryHandler.InnerHandler;
+            using UserAgentHandler userAgentHandler = (UserAgentHandler)odataQueryHandler.InnerHandler;
+            using GraphTelemetryHandler telemetryHandler = (GraphTelemetryHandler)userAgentHandler.InnerHandler;
             using MockRedirectHandler innerMost = (MockRedirectHandler)telemetryHandler.InnerHandler;
 
             Assert.NotNull(telemetryHandler);
+            Assert.NotNull(userAgentHandler);
             Assert.NotNull(odataQueryHandler);
             Assert.NotNull(compressionHandler);
             Assert.NotNull(retryHandler);
@@ -84,6 +86,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             Assert.IsType<GraphTelemetryHandler>(telemetryHandler);
             Assert.IsType<ParametersNameDecodingHandler>(odataQueryHandler);
             Assert.IsType<CompressionHandler>(compressionHandler);
+            Assert.IsType<UserAgentHandler>(userAgentHandler);
             Assert.IsType<RetryHandler>(retryHandler);
             Assert.IsType<RedirectHandler>(redirectHandler);
             Assert.True(innerMost is HttpMessageHandler);
@@ -97,10 +100,12 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             using RetryHandler retryHandler = (RetryHandler)compressionHandler.InnerHandler;
             using RedirectHandler redirectHandler = (RedirectHandler)retryHandler.InnerHandler;
             using ParametersNameDecodingHandler odataQueryHandler = (ParametersNameDecodingHandler)redirectHandler.InnerHandler;
-            using GraphTelemetryHandler telemetryHandler = (GraphTelemetryHandler)odataQueryHandler.InnerHandler;
+            using UserAgentHandler userAgentHandler = (UserAgentHandler)odataQueryHandler.InnerHandler;
+            using GraphTelemetryHandler telemetryHandler = (GraphTelemetryHandler)userAgentHandler.InnerHandler;
             using MockRedirectHandler innerMost = (MockRedirectHandler)telemetryHandler.InnerHandler;
 
             Assert.NotNull(telemetryHandler);
+            Assert.NotNull(userAgentHandler);
             Assert.NotNull(odataQueryHandler);
             Assert.NotNull(compressionHandler);
             Assert.NotNull(retryHandler);
@@ -110,6 +115,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             Assert.IsType<ParametersNameDecodingHandler>(odataQueryHandler);
             Assert.IsType<CompressionHandler>(compressionHandler);
             Assert.IsType<RetryHandler>(retryHandler);
+            Assert.IsType<UserAgentHandler>(userAgentHandler);
             Assert.IsType<RedirectHandler>(redirectHandler);
             Assert.IsType<MockRedirectHandler>(innerMost);
         }
