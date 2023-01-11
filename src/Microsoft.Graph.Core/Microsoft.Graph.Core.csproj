@@ -63,7 +63,7 @@
     <PackageReference Include="Microsoft.Kiota.Authentication.Azure" Version="1.0.0-rc.1" />
     <PackageReference Include="Microsoft.Kiota.Serialization.Json" Version="1.0.0-rc.1" />
     <PackageReference Include="Microsoft.Kiota.Serialization.Text" Version="1.0.0-rc.1" />
-    <PackageReference Include="Microsoft.Kiota.Serialization.Form" Version="1.0.0-rc.1" />
+    <PackageReference Include="Microsoft.Kiota.Serialization.Form" Version="1.0.0-rc.2" />
     <PackageReference Include="Microsoft.Kiota.Http.HttpClientLibrary" Version="1.0.0-rc.3" />
   </ItemGroup>
   <ItemGroup Condition=" '$(TargetFramework)' != 'netstandard2.0' ">
