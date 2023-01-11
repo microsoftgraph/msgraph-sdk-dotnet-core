@@ -46,7 +46,16 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="baseClient">The <see cref="IBaseClient"/> for making requests</param>
         /// <param name="batchRequestSteps">A list of <see cref="BatchRequestStep"/> to add to the batch request content.</param>
-        public BatchRequestContent(IBaseClient baseClient, params BatchRequestStep[] batchRequestSteps)
+        public BatchRequestContent(IBaseClient baseClient, params BatchRequestStep[] batchRequestSteps): this(baseClient?.RequestAdapter ?? throw new ArgumentNullException(nameof(baseClient)), batchRequestSteps)
+        {
+        }
+
+        /// <summary>
+        /// Constructs a new <see cref="BatchRequestContent"/>.
+        /// </summary>
+        /// <param name="requestAdapter">The <see cref="IRequestAdapter"/> for making requests</param>
+        /// <param name="batchRequestSteps">A list of <see cref="BatchRequestStep"/> to add to the batch request content.</param>
+        public BatchRequestContent(IRequestAdapter requestAdapter, params BatchRequestStep[] batchRequestSteps)
         {
             if (batchRequestSteps == null)
                 throw new ClientException(new Error
@@ -78,7 +87,7 @@ namespace Microsoft.Graph
                 AddBatchRequestStep(requestStep);
             }
 
-            this.RequestAdapter = baseClient?.RequestAdapter ?? throw new ArgumentNullException(nameof(baseClient.RequestAdapter));
+            this.RequestAdapter = requestAdapter ?? throw new ArgumentNullException(nameof(requestAdapter));
         }
 
         /// <summary>
@@ -125,7 +134,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="requestInformation">A <see cref="RequestInformation"/> to use to build a <see cref="BatchRequestStep"/> to add.</param>
         /// <returns>The requestId of the  newly created <see cref="BatchRequestStep"/></returns>
-        public string AddBatchRequestStep(RequestInformation requestInformation)
+        public async Task<string> AddBatchRequestStepAsync(RequestInformation requestInformation)
         {
             if (BatchRequestSteps.Count >= CoreConstants.BatchRequest.MaxNumberOfRequests)
                 throw new ClientException(new Error
@@ -134,9 +143,9 @@ namespace Microsoft.Graph
                     Message = string.Format(ErrorConstants.Messages.MaximumValueExceeded, "Number of batch request steps", CoreConstants.BatchRequest.MaxNumberOfRequests)
                 });
             string requestId = Guid.NewGuid().ToString();
-            var requestMessage = ((HttpClientRequestAdapter)RequestAdapter).GetRequestMessageFromRequestInformation(requestInformation);
+            var requestMessage = await RequestAdapter.ConvertToNativeRequestAsync<HttpRequestMessage>(requestInformation);
             BatchRequestStep batchRequestStep = new BatchRequestStep(requestId, requestMessage);
-            (BatchRequestSteps as IDictionary<string, BatchRequestStep>).Add(batchRequestStep.RequestId, batchRequestStep);
+            (BatchRequestSteps as IDictionary<string, BatchRequestStep>)!.Add(batchRequestStep.RequestId, batchRequestStep);
             return requestId;
         }
 

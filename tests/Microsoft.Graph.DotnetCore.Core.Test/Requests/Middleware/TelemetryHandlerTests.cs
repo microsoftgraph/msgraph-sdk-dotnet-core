@@ -38,7 +38,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Middleware
             };
 
             // Act and get a request message
-            var requestMessage = requestAdapter.GetRequestMessageFromRequestInformation(requestInfo);
+            var requestMessage = await requestAdapter.ConvertToNativeRequestAsync<HttpRequestMessage>(requestInfo);
             Assert.Empty(requestMessage.Headers);
 
             // Act
@@ -78,7 +78,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Middleware
             };
 
             // Act and get a request message
-            var requestMessage = requestAdapter.GetRequestMessageFromRequestInformation(requestInfo);
+            var requestMessage = await requestAdapter.ConvertToNativeRequestAsync<HttpRequestMessage>(requestInfo);
             Assert.Empty(requestMessage.Headers);
 
             // Act
