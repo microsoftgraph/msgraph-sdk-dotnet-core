@@ -23,7 +23,10 @@
     <VersionPrefix>3.0.0</VersionPrefix>
     <VersionSuffix>rc.2</VersionSuffix>
     <PackageReleaseNotes>
-        - Release candidate 2
+- Release candidate 2
+- Updates to latest Kiota Abstraction packages
+- Adds UserAgentHandler to the request middleware
+- [Breaking] Renames method AddBatchRequestStep(RequestInformation) to AddBatchRequestStepAsync(RequestInformation)
     </PackageReleaseNotes>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>

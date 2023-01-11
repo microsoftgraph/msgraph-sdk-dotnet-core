@@ -341,7 +341,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
         }
 
         [Fact]
-        public void BatchRequestContent_AddBatchRequestStepWithBaseRequest()
+        public async Task BatchRequestContent_AddBatchRequestStepWithBaseRequest()
         {
             // Arrange
             RequestInformation requestInformation = new RequestInformation() { HttpMethod = Method.GET, UrlTemplate = REQUEST_URL };
@@ -349,7 +349,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
             Assert.False(batchRequestContent.BatchRequestSteps.Any());//Its empty
 
             // Act
-            string batchRequestStepId = batchRequestContent.AddBatchRequestStep(requestInformation);
+            string batchRequestStepId = await batchRequestContent.AddBatchRequestStepAsync(requestInformation);
 
             // Assert we added successfully and contents are as expected
             Assert.NotNull(batchRequestStepId);
@@ -396,7 +396,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
         }
 
         [Fact]
-        public void BatchRequestContent_AddBatchRequestStepWithBaseRequestToBatchRequestContentWithMaxSteps()
+        public async Task BatchRequestContent_AddBatchRequestStepWithBaseRequestToBatchRequestContentWithMaxSteps()
         {
             // Arrange
             BatchRequestContent batchRequestContent = new BatchRequestContent(client);
@@ -404,14 +404,14 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
             for (var i = 0; i < CoreConstants.BatchRequest.MaxNumberOfRequests; i++)
             {
                 RequestInformation requestInformation = new RequestInformation() { HttpMethod = Method.GET, UrlTemplate = REQUEST_URL };
-                string batchRequestStepId = batchRequestContent.AddBatchRequestStep(requestInformation);
+                string batchRequestStepId = await batchRequestContent.AddBatchRequestStepAsync(requestInformation);
                 Assert.NotNull(batchRequestStepId);
                 Assert.True(batchRequestContent.BatchRequestSteps.Count.Equals(i + 1));//Assert we can add steps up to the max
             }
 
             // Act
             RequestInformation extraRequestInformation = new RequestInformation() { HttpMethod = Method.GET, UrlTemplate = REQUEST_URL };
-            var exception = Assert.Throws<ClientException>(() => batchRequestContent.AddBatchRequestStep(extraRequestInformation));
+            var exception = await Assert.ThrowsAsync<ClientException>(() => batchRequestContent.AddBatchRequestStepAsync(extraRequestInformation));
             
             // Assert
             Assert.Equal(ErrorConstants.Codes.MaximumValueExceeded, exception.Error.Code);
