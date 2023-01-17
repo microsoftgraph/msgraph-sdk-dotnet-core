@@ -4,6 +4,7 @@
 
 using Azure.Core;
 using Microsoft.Kiota.Abstractions.Authentication;
+using System.Linq;
 
 namespace Microsoft.Graph.Authentication;
 
