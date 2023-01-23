@@ -62,7 +62,7 @@
     <PackageReference Include="Microsoft.Kiota.Serialization.Json" Version="1.0.0-rc.2" />
     <PackageReference Include="Microsoft.Kiota.Serialization.Text" Version="1.0.0-rc.2" />
     <PackageReference Include="Microsoft.Kiota.Serialization.Form" Version="1.0.0-rc.3" />
-    <PackageReference Include="Microsoft.Kiota.Http.HttpClientLibrary" Version="1.0.0-rc.4" />
+    <PackageReference Include="Microsoft.Kiota.Http.HttpClientLibrary" Version="1.0.0-rc.5" />
   </ItemGroup>
   <ItemGroup Condition=" '$(TargetFramework)' != 'netstandard2.0' ">
     <PackageReference Include="NETStandard.Library" Version="2.0.3" />
