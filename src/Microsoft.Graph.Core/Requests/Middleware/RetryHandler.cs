@@ -180,7 +180,7 @@ namespace Microsoft.Graph
             }                    
 
             TimeSpan delayTimeSpan = TimeSpan.FromSeconds(Math.Min(delayInSeconds, RetryHandlerOption.MAX_DELAY));
-
+            delayInSeconds=delayTimeSpan.TotalSeconds;
             return Task.Delay(delayTimeSpan, cancellationToken);
 
         }
