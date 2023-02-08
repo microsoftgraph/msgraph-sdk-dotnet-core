@@ -187,7 +187,7 @@ namespace Microsoft.Graph
                 {
                     var uploadResult = await this.UploadSliceAsync(request, trackedExceptions, cancellationToken).ConfigureAwait(false);
 
-                    progress?.Report(request.RangeBegin);//report the progress of upload
+                    progress?.Report(request.RangeEnd);//report the progress of upload (how many bytes have been uploaded so far)
 
                     if (uploadResult.UploadSucceeded)
                     {

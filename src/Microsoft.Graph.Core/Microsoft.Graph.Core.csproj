@@ -21,9 +21,9 @@
     <AssemblyOriginatorKeyFile>35MSSharedLib1024.snk</AssemblyOriginatorKeyFile>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <VersionPrefix>3.0.0</VersionPrefix>
-    <VersionSuffix>rc.5</VersionSuffix>
+    <VersionSuffix>rc.6</VersionSuffix>
     <PackageReleaseNotes>
-- Use ConcurrentDictionary for the serialization registries.
+- Fixes inability to set OverallTimeout when the WinHttpHandler is used by the client.
     </PackageReleaseNotes>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
