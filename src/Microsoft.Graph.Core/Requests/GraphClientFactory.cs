@@ -9,6 +9,7 @@ namespace Microsoft.Graph
     using System.Net;
     using System.Net.Http;
     using System.Net.Http.Headers;
+    using System.Threading;
     using Microsoft.Kiota.Http.HttpClientLibrary;
     using Microsoft.Kiota.Http.HttpClientLibrary.Middleware;
 
@@ -224,7 +225,7 @@ namespace Microsoft.Graph
             // If custom proxy is passed, the WindowsProxyUsePolicy will need updating
             // https://github.com/dotnet/runtime/blob/main/src/libraries/System.Net.Http.WinHttpHandler/src/System/Net/Http/WinHttpHandler.cs#L575
             var proxyPolicy = proxy != null ? WindowsProxyUsePolicy.UseCustomProxy : WindowsProxyUsePolicy.UseWinHttpProxy;
-            return new WinHttpHandler { Proxy = proxy, AutomaticDecompression = DecompressionMethods.None , WindowsProxyUsePolicy = proxyPolicy };
+            return new WinHttpHandler { Proxy = proxy, AutomaticDecompression = DecompressionMethods.None , WindowsProxyUsePolicy = proxyPolicy, SendTimeout = Timeout.InfiniteTimeSpan, ReceiveDataTimeout = Timeout.InfiniteTimeSpan, ReceiveHeadersTimeout = Timeout.InfiniteTimeSpan };
 #elif NET6_0_OR_GREATER
             //use resilient configs when we can https://learn.microsoft.com/en-us/aspnet/core/fundamentals/http-requests?view=aspnetcore-5.0#alternatives-to-ihttpclientfactory-1
             return new SocketsHttpHandler { Proxy = proxy, AllowAutoRedirect = false, AutomaticDecompression = DecompressionMethods.None, PooledConnectionLifetime = TimeSpan.FromMinutes(1)}; 
