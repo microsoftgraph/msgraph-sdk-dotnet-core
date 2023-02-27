@@ -30,24 +30,28 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
         }
 
         [Fact]
-        public void ThrowsArgumentExceptionOnInvalidSliceSize()
+        public void AllowsVariableSliceSize()
         {
-            using Stream stream = new MemoryStream();
-            // Arrange
+            byte[] mockData = new byte[1000000];
+            using Stream stream = new MemoryStream(mockData);
             var uploadSession = new UploadSession
             {
-                NextExpectedRanges = new List<string>() { "0-" },
-                UploadUrl = "http://localhost",
-                ExpirationDateTime = DateTimeOffset.Parse("2019-11-07T06:39:31.499Z")
+            NextExpectedRanges = new List<string>() { "0-" },
+            UploadUrl = "http://localhost",
+            ExpirationDateTime = DateTimeOffset.Parse("2019-11-07T06:39:31.499Z")
             };
 
-            int maxSliceSize = 1000;//invalid slice size that is not a multiple of 320
+            int maxSliceSize = 200 * 1024;//slice size that is 200 KB
 
             // Act 
-            var exception = Assert.Throws<ArgumentException>(() => new LargeFileUploadTask<TestDriveItem>(uploadSession, stream, maxSliceSize));
+            var largeFileUploadTask = new LargeFileUploadTask<TestDriveItem>(uploadSession, stream, maxSliceSize);
+            var uploadSlices = largeFileUploadTask.GetUploadSliceRequests();
+            var onlyUploadSlice = uploadSlices.First();
 
-            // Assert
-            Assert.Equal("maxSliceSize", exception.ParamName);
+            //Assert
+            Assert.Equal(0, onlyUploadSlice.RangeBegin);
+            Assert.Equal(204800, onlyUploadSlice.RangeLength);
+            Assert.Equal(204799, onlyUploadSlice.RangeEnd);
         }
 
         [Fact]

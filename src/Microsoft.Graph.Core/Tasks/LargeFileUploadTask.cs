@@ -21,7 +21,6 @@ namespace Microsoft.Graph
     public class LargeFileUploadTask<T> where T : IParsable,new()
     {
         private const int DefaultMaxSliceSize = 5 * 1024 * 1024;
-        private const int RequiredSliceSizeIncrement = 320 * 1024;
         private IUploadSession Session { get; set; }
         private readonly IRequestAdapter _requestAdapter;
         private readonly Stream _uploadStream;
@@ -35,9 +34,9 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="uploadSession">Session information of type <see cref="IParsable"/>></param>
         /// <param name="uploadStream">Readable, seekable stream to be uploaded. Length of session is determined via uploadStream.Length</param>
-        /// <param name="maxSliceSize">Max size of each slice to be uploaded. Multiple of 320 KiB (320 * 1024) is required.</param>
-        /// <param name="requestAdapter"><see cref="IRequestAdapter"/> to use for making upload requests. The client should not set Auth headers as upload urls do not need them.
+        /// <param name="maxSliceSize">Max size(in bytes) of each slice to be uploaded. Defaults to 5MB. When uploading to OneDrive or SharePoint, this value needs to be a multiple of 320 KiB (327,680 bytes).
         /// If less than 0, default value of 5 MiB is used. .</param>
+        /// <param name="requestAdapter"><see cref="IRequestAdapter"/> to use for making upload requests. The client should not set Auth headers as upload urls do not need them.</param>
         public LargeFileUploadTask(IParsable uploadSession, Stream uploadStream, int maxSliceSize = -1, IRequestAdapter requestAdapter = null)
         {
             if (!uploadStream.CanRead || !uploadStream.CanSeek)
@@ -49,10 +48,6 @@ namespace Microsoft.Graph
             this._uploadStream = uploadStream;
             this._rangesRemaining = this.GetRangesRemaining(Session);
             this._maxSliceSize = maxSliceSize < 0 ? DefaultMaxSliceSize : maxSliceSize;
-            if (this._maxSliceSize % RequiredSliceSizeIncrement != 0)
-            {
-                throw new ArgumentException("Max slice size must be a multiple of 320 KiB", nameof(maxSliceSize));
-            }
         }
 
         /// <summary>
