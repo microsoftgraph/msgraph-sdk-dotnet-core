@@ -49,7 +49,7 @@ namespace Microsoft.Graph
             {
                 // Gets the response string with response headers and status code
                 // set on the response body object.
-                var responseString = await GetResponseString(responseMessage);
+                var responseString = await GetResponseString(response).ConfigureAwait(false);
 
                 // Get the response body object with the change list 
                 // set on each response item.
