@@ -220,12 +220,7 @@ namespace Microsoft.Graph
             // validate that the upload can still be resumed.
             if (DateTimeOffset.Compare(uploadExpirationTime, DateTimeOffset.Now) <= 0)
             {
-                throw new ClientException(
-                    new Error
-                    {
-                        Code = ErrorConstants.Codes.Timeout,
-                        Message = ErrorConstants.Messages.ExpiredUploadSession
-                    });
+                throw new ClientException(ErrorConstants.Messages.ExpiredUploadSession);
             }
             return await this.UploadAsync(progress, maxTries, cancellationToken).ConfigureAwait(false);
         }
@@ -260,12 +255,7 @@ namespace Microsoft.Graph
             var uploadExpirationTime = this.Session.ExpirationDateTime ?? DateTimeOffset.Now;
             if (DateTimeOffset.Compare(uploadExpirationTime, DateTimeOffset.Now) <= 0)
             {
-                throw new ClientException(
-                    new Error
-                    {
-                        Code = ErrorConstants.Codes.Timeout,
-                        Message = ErrorConstants.Messages.ExpiredUploadSession
-                    });
+                throw new ClientException(ErrorConstants.Messages.ExpiredUploadSession);
             }
             var requestBuilder = new UploadSessionRequestBuilder(this.Session, this._requestAdapter);
             await requestBuilder.DeleteAsync(cancellationToken).ConfigureAwait(false);

@@ -79,32 +79,7 @@ namespace Microsoft.Graph
                 !(statusCodeAsInt >= 500 && statusCodeAsInt < 600 && errorMapping.TryGetValue("5XX", out errorFactory)))
             {
                 // We don't have an error mapping available to match. So default to using the odata specification
-                Error error;
-                string rawResponseBody = null;
-                ErrorResponse errorResponse = rootNode.GetObjectValue<ErrorResponse>(ErrorResponse.CreateFromDiscriminatorValue);
-
-                if (errorResponse?.Error == null)
-                {
-                    if (httpResponseMessage.StatusCode == HttpStatusCode.NotFound)
-                        error = new Error { Code = ErrorConstants.Codes.ItemNotFound };
-                    else
-                        error = new Error
-                        {
-                            Code = ErrorConstants.Codes.GeneralException,
-                            Message = ErrorConstants.Messages.UnexpectedExceptionResponse
-                        };
-                }
-                else
-                {
-                    error = errorResponse.Error;
-                }
-
-                if (httpResponseMessage.Content?.Headers.ContentType.MediaType == CoreConstants.MimeTypeNames.Application.Json)
-                {
-                    rawResponseBody = await httpResponseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
-                }
-
-                throw new ServiceException(error, httpResponseMessage.Headers, httpResponseMessage.StatusCode, rawResponseBody);
+                throw new ServiceException(ErrorConstants.Codes.GeneralException, httpResponseMessage.Headers, (int)httpResponseMessage.StatusCode, await httpResponseMessage.Content.ReadAsStringAsync().ConfigureAwait(false));
             }
             else
             {

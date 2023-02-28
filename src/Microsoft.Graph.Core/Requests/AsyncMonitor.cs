@@ -60,16 +60,11 @@ namespace Microsoft.Graph
 
                 using (var responseStream = await responseMessage.Content.ReadAsStreamAsync().ConfigureAwait(false))
                 {
-                    this.asyncOperationStatus = responseStream.Length > 0 ? await JsonSerializer.DeserializeAsync<AsyncOperationStatus>(responseStream) : null;
+                    this.asyncOperationStatus = responseStream.Length > 0 ? await JsonSerializer.DeserializeAsync<AsyncOperationStatus>(responseStream, cancellationToken:cancellationToken) : null;
 
                     if (this.asyncOperationStatus == null)
                     {
-                        throw new ServiceException(
-                            new Error
-                            {
-                                Code = ErrorConstants.Codes.GeneralException,
-                                Message = "Error retrieving monitor status."
-                            });
+                        throw new ServiceException("Error retrieving monitor status.");
                     }
 
                     if (string.Equals(this.asyncOperationStatus.Status, "cancelled", StringComparison.OrdinalIgnoreCase))
@@ -86,12 +81,7 @@ namespace Microsoft.Graph
                             this.asyncOperationStatus.AdditionalData.TryGetValue("message", out message);
                         }
 
-                        throw new ServiceException(
-                            new Error
-                            {
-                                Code = ErrorConstants.Codes.GeneralException,
-                                Message = message?.ToString()
-                            });
+                        throw new ServiceException( message?.ToString() ?? "delete operation failed");
                     }
 
                     if (progress != null)

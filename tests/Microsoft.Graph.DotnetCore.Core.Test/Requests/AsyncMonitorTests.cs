@@ -122,7 +122,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             this.httpResponseMessage.StatusCode = HttpStatusCode.Accepted;
 
             ServiceException exception = await Assert.ThrowsAsync<ServiceException>(() => this.asyncMonitor.PollForOperationCompletionAsync(this.progress.Object, CancellationToken.None));
-            Assert.Equal(ErrorConstants.Codes.GeneralException, exception.Error.Code);
+            Assert.Equal("delete operation failed", exception.Message);
         }
 
         [Fact]
@@ -142,8 +142,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             this.httpResponseMessage.StatusCode = HttpStatusCode.Accepted;
 
             ServiceException exception = await Assert.ThrowsAsync<ServiceException>(() => this.asyncMonitor.PollForOperationCompletionAsync(this.progress.Object, CancellationToken.None));
-            Assert.Equal(ErrorConstants.Codes.GeneralException, exception.Error.Code);
-            Assert.Equal("message", exception.Error.Message);
+            Assert.Equal("message", exception.Message);
         }
 
         [Fact]
@@ -159,7 +158,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             this.httpResponseMessage.StatusCode = HttpStatusCode.Accepted;
 
             ServiceException exception = await Assert.ThrowsAsync<ServiceException>(() => this.asyncMonitor.PollForOperationCompletionAsync(this.progress.Object, CancellationToken.None));
-            Assert.Equal(ErrorConstants.Codes.GeneralException, exception.Error.Code);
+            Assert.Equal("Error retrieving monitor status.", exception.Message);
         }
 
         private void ProgressCallback(AsyncOperationStatus asyncOperationStatus, out bool called)

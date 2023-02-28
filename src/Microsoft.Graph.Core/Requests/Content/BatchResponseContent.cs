@@ -22,18 +22,17 @@ namespace Microsoft.Graph
     {
         private JsonDocument jBatchResponseObject;
         private readonly HttpResponseMessage batchResponseMessage;
+        private readonly Dictionary<string, ParsableFactory<IParsable>> apiErrorMappings;
 
         /// <summary>
         /// Constructs a new <see cref="BatchResponseContent"/>
         /// </summary>
         /// <param name="httpResponseMessage">A <see cref="HttpResponseMessage"/> of a batch request execution.</param>
-        public BatchResponseContent(HttpResponseMessage httpResponseMessage)
+        /// <param name="errorMappings">A dictionary of error mappings to handle failed responses.</param>
+        public BatchResponseContent(HttpResponseMessage httpResponseMessage, Dictionary<string, ParsableFactory<IParsable>> errorMappings = null)
         {
-            this.batchResponseMessage = httpResponseMessage ?? throw new ClientException(new Error
-            {
-                Code = ErrorConstants.Codes.InvalidArgument,
-                Message = string.Format(ErrorConstants.Messages.NullParameter, nameof(httpResponseMessage))
-            });
+            this.batchResponseMessage = httpResponseMessage ?? throw new ArgumentNullException(nameof(httpResponseMessage));
+            this.apiErrorMappings = errorMappings ?? new();
         }
 
         /// <summary>
@@ -86,7 +85,7 @@ namespace Microsoft.Graph
         /// Gets a batch response as a requested type for the specified batch request id.
         /// </summary>
         /// <param name="requestId">A batch request id.</param>
-        /// <param name="responseHandler">ResponseHandler to use for the resonse</param>
+        /// <param name="responseHandler">ResponseHandler to use for the response</param>
         /// <returns>A deserialized object of type T<see cref="HttpResponseMessage"/>.</returns>
         public async Task<T> GetResponseByIdAsync<T>(string requestId, IResponseHandler responseHandler = null) where T : IParsable, new()
         {
@@ -96,7 +95,7 @@ namespace Microsoft.Graph
 
             // return the deserialized object
             responseHandler ??= new ResponseHandler<T>();
-            return await responseHandler.HandleResponseAsync<HttpResponseMessage, T>(httpResponseMessage, null).ConfigureAwait(false);
+            return await responseHandler.HandleResponseAsync<HttpResponseMessage, T>(httpResponseMessage, apiErrorMappings).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -189,11 +188,7 @@ namespace Microsoft.Graph
             }
             catch (Exception ex)
             {
-                throw new ClientException(new Error
-                {
-                    Code = ErrorConstants.Codes.InvalidRequest,
-                    Message = ErrorConstants.Messages.UnableToDeserializeContent
-                }, ex);
+                throw new ClientException(ErrorConstants.Messages.UnableToDeserializeContent, ex);
             }
         }
     }
