@@ -29,11 +29,7 @@ namespace Microsoft.Graph
         /// <param name="httpResponseMessage">A <see cref="HttpResponseMessage"/> of a batch request execution.</param>
         public BatchResponseContent(HttpResponseMessage httpResponseMessage)
         {
-            this.batchResponseMessage = httpResponseMessage ?? throw new ClientException(new Error
-            {
-                Code = ErrorConstants.Codes.InvalidArgument,
-                Message = string.Format(ErrorConstants.Messages.NullParameter, nameof(httpResponseMessage))
-            });
+            this.batchResponseMessage = httpResponseMessage ?? throw new ArgumentNullException(nameof(httpResponseMessage));
         }
 
         /// <summary>
@@ -189,11 +185,7 @@ namespace Microsoft.Graph
             }
             catch (Exception ex)
             {
-                throw new ClientException(new Error
-                {
-                    Code = ErrorConstants.Codes.InvalidRequest,
-                    Message = ErrorConstants.Messages.UnableToDeserializeContent
-                }, ex);
+                throw new ClientException(ErrorConstants.Messages.UnableToDeserializeContent, ex);
             }
         }
     }

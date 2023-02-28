@@ -130,9 +130,8 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 
             //Assert
             Assert.NotNull(serviceException);
-            Assert.Equal("Access token is empty.", serviceException.Error.Message);
-            Assert.Equal("InvalidAuthenticationToken", serviceException.Error.Code);
-            Assert.Equal(HttpStatusCode.Unauthorized, serviceException.StatusCode);
+            Assert.Equal(ErrorConstants.Codes.GeneralException, serviceException.Message);
+            Assert.Equal(HttpStatusCode.Unauthorized, (HttpStatusCode)serviceException.ResponseStatusCode);
         }
 
         [Fact]
@@ -163,8 +162,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 
             //Assert
             Assert.NotNull(serviceException);
-            Assert.Equal(ErrorConstants.Codes.GeneralException, serviceException.Error.Code);
-            Assert.Equal(ErrorConstants.Messages.UnableToDeserializeContent, serviceException.Error.Message);
+            Assert.Equal(ErrorConstants.Codes.GeneralException, serviceException.Message);
             Assert.Equal(malformedResponse, serviceException.RawResponseBody);
         }
     }

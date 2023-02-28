@@ -240,10 +240,7 @@ namespace Microsoft.Graph
             // Detect nextLink loop
             if (Nextlink.Equals(ExtractNextLinkFromParsable(_currentPage)))
             {
-                throw new ServiceException(new Error()
-                {
-                    Message = $"Detected nextLink loop. Nextlink value: {Nextlink}"
-                });
+                throw new ServiceException($"Detected nextLink loop. Nextlink value: {Nextlink}");
             }
         }
 #pragma warning disable CS1574

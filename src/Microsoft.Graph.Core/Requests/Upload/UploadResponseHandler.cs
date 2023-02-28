@@ -38,11 +38,7 @@ namespace Microsoft.Graph
         {
             if (response.Content == null)
             {
-                throw new ServiceException(new Error
-                {
-                    Code = ErrorConstants.Codes.GeneralException,
-                    Message = ErrorConstants.Messages.NoResponseForUpload
-                });
+                throw new ServiceException(ErrorConstants.Messages.NoResponseForUpload);
             }
 
             // Give back the info from the server for ongoing upload as the upload is ongoing
@@ -51,12 +47,9 @@ namespace Microsoft.Graph
             {
                 if (!response.IsSuccessStatusCode)
                 {
-                    var jsonParseNode = _parseNodeFactory.GetRootParseNode(response.Content.Headers?.ContentType?.MediaType?.ToLowerInvariant(), responseStream);
-                    ErrorResponse errorResponse = jsonParseNode.GetObjectValue<ErrorResponse>(ErrorResponse.CreateFromDiscriminatorValue);
-                    Error error = errorResponse.Error;
                     string rawResponseBody = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                     // Throw exception to know something went wrong.
-                    throw new ServiceException(error, response.Headers, response.StatusCode, rawResponseBody);
+                    throw new ServiceException(ErrorConstants.Codes.GeneralException, response.Headers, (int)response.StatusCode, rawResponseBody);
                 }
 
                 var uploadResult = new UploadResult<T>();
@@ -102,16 +95,7 @@ namespace Microsoft.Graph
             }
             catch (JsonException exception)
             {
-                string rawResponseBody = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                throw new ServiceException(new Error()
-                {
-                    Code = ErrorConstants.Codes.GeneralException,
-                    Message = ErrorConstants.Messages.UnableToDeserializeContent,
-                },
-                    response.Headers,
-                    response.StatusCode,
-                    rawResponseBody,
-                    exception);
+                throw new ClientException(ErrorConstants.Messages.UnableToDeserializeContent, exception);
             }
         }
     }

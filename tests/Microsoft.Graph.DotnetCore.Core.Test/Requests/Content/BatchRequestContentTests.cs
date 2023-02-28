@@ -5,6 +5,7 @@
 namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
 {
     using Microsoft.Graph.DotnetCore.Core.Test.Mocks;
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Net.Http;
@@ -66,10 +67,9 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
             BatchRequestStep batchRequestStep1 = new BatchRequestStep("1", new HttpRequestMessage(HttpMethod.Get, REQUEST_URL));
             BatchRequestStep batchRequestStep2 = new BatchRequestStep("2", new HttpRequestMessage(HttpMethod.Get, REQUEST_URL), new List<string> { "3" });
 
-            ClientException ex = Assert.Throws<ClientException>(() => new BatchRequestContent(client, batchRequestStep1, batchRequestStep2));
-
-            Assert.Equal(ErrorConstants.Codes.InvalidArgument, ex.Error.Code);
-            Assert.Equal(ErrorConstants.Messages.InvalidDependsOnRequestId, ex.Error.Message);
+            ArgumentException ex = Assert.Throws<ArgumentException>(() => new BatchRequestContent(client, batchRequestStep1, batchRequestStep2));
+            
+            Assert.Equal(ErrorConstants.Messages.InvalidDependsOnRequestId, ex.Message);
         }
 
         [Fact]
@@ -334,8 +334,8 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
             HttpRequestMessage extraHttpRequestMessage = new HttpRequestMessage(HttpMethod.Get, REQUEST_URL);
             
             // Assert
-            var exception = Assert.Throws<ClientException>(() => batchRequestContent.AddBatchRequestStep(extraHttpRequestMessage));//Assert we throw exception on excess add
-            Assert.Equal(ErrorConstants.Codes.MaximumValueExceeded, exception.Error.Code);
+            var exception = Assert.Throws<ArgumentException>(() => batchRequestContent.AddBatchRequestStep(extraHttpRequestMessage));//Assert we throw exception on excess add
+            //Assert.Equal(ErrorConstants.Codes.MaximumValueExceeded, exception.Error.Code);
             Assert.NotNull(batchRequestContent.BatchRequestSteps);
             Assert.True(batchRequestContent.BatchRequestSteps.Count.Equals(CoreConstants.BatchRequest.MaxNumberOfRequests));
         }
@@ -411,10 +411,10 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
 
             // Act
             RequestInformation extraRequestInformation = new RequestInformation() { HttpMethod = Method.GET, UrlTemplate = REQUEST_URL };
-            var exception = await Assert.ThrowsAsync<ClientException>(() => batchRequestContent.AddBatchRequestStepAsync(extraRequestInformation));
+            var exception = await Assert.ThrowsAsync<ArgumentException>(() => batchRequestContent.AddBatchRequestStepAsync(extraRequestInformation));
             
             // Assert
-            Assert.Equal(ErrorConstants.Codes.MaximumValueExceeded, exception.Error.Code);
+            //Assert.Equal(ErrorConstants.Codes.MaximumValueExceeded, exception.Error.Code);
             Assert.NotNull(batchRequestContent.BatchRequestSteps);
             Assert.True(batchRequestContent.BatchRequestSteps.Count.Equals(CoreConstants.BatchRequest.MaxNumberOfRequests));
         }
