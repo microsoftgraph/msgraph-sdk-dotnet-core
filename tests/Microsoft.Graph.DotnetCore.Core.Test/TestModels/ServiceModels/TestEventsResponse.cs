@@ -6,52 +6,40 @@ using Microsoft.Kiota.Abstractions.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
 namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
 {
-    /// <summary>
-    /// The type UserEventsCollectionResponse.
-    /// </summary>
-
-    public class TestEventDeltaCollectionResponse: IParsable, IAdditionalDataHolder
+    public class TestEventsResponse : IParsable,IAdditionalDataHolder
     {
-        /// <summary>
-        /// Gets or sets the event collection value.
-        /// </summary>
-        public List<TestEvent> Value { get; set; }
-
-        /// <summary>
-        /// Gets or sets the OdataNextLink string value.
-        /// </summary>
-        public string OdataNextLink { get; set; }
-        /// <summary>
-        /// Gets or sets additional data.
-        /// </summary>
+        /// <summary>Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.</summary>
         public IDictionary<string, object> AdditionalData { get; set; }
-
+        public string OdataNextLink { get; set; }
+        public List<TestEventItem> Value { get; set; }
         /// <summary>
-        /// Gets the field deserializers for the <see cref="TestEventDeltaCollectionResponse"/> instance
+        /// Instantiates a new eventsResponse and sets the default values.
         /// </summary>
-        /// <returns></returns>
+        public TestEventsResponse()
+        {
+            AdditionalData = new Dictionary<string, object>();
+        }
+        /// <summary>
+        /// The deserialization information for the current model
+        /// </summary>
         public IDictionary<string, Action<IParseNode>> GetFieldDeserializers()
         {
-            return new Dictionary<string, Action<IParseNode>>
-            {
+            return new Dictionary<string, Action<IParseNode>> {
                 {"@odata.nextLink", (n) => { OdataNextLink = n.GetStringValue(); } },
-                {"value", (n) => { Value = n.GetCollectionOfObjectValues<TestEvent>(TestEvent.CreateFromDiscriminatorValue).ToList(); } },
+                {"value", (n) => { Value = n.GetCollectionOfObjectValues<TestEventItem>(TestEventItem.CreateFromDiscriminatorValue).ToList(); } },
             };
         }
-
         /// <summary>
-        /// Serialize the <see cref="TestEventDeltaCollectionResponse"/> instance
+        /// Serializes information the current object
+        /// <param name="writer">Serialization writer to use to serialize this model</param>
         /// </summary>
-        /// <param name="writer">The <see cref="ISerializationWriter"/> to serialize the instance</param>
-        /// <exception cref="ArgumentNullException">Thrown when the writer is null</exception>
         public void Serialize(ISerializationWriter writer)
         {
             _ = writer ?? throw new ArgumentNullException(nameof(writer));
             writer.WriteStringValue("@odata.nextLink", OdataNextLink);
-            writer.WriteCollectionOfObjectValues("value", Value);
+            writer.WriteCollectionOfObjectValues<TestEventItem>("value", Value);
             writer.WriteAdditionalData(AdditionalData);
         }
 
@@ -59,10 +47,10 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
         /// Creates a new instance of the appropriate class based on discriminator value
         /// <param name="parseNode">The parse node to use to read the discriminator value and create the object</param>
         /// </summary>
-        public static TestEventDeltaCollectionResponse CreateFromDiscriminatorValue(IParseNode parseNode)
+        public static TestEventsResponse CreateFromDiscriminatorValue(IParseNode parseNode)
         {
             _ = parseNode ?? throw new ArgumentNullException(nameof(parseNode));
-            return new TestEventDeltaCollectionResponse();
+            return new TestEventsResponse();
         }
     }
 }

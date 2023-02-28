@@ -12,9 +12,17 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
     using System.Threading.Tasks;
     using Xunit;
     using Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels;
+    using Microsoft.Kiota.Abstractions.Serialization;
+    using Microsoft.Kiota.Serialization.Json;
 
     public class UploadResponseHandlerTests
     {
+        public UploadResponseHandlerTests()
+        {
+            // register the default serialization instance as the generator would.
+            ParseNodeFactoryRegistry.DefaultInstance.ContentTypeAssociatedFactories.TryAdd(CoreConstants.MimeTypeNames.Application.Json, new JsonParseNodeFactory());
+        }
+
         [Theory]
         [InlineData(HttpStatusCode.Created)]
         [InlineData(HttpStatusCode.OK)]
@@ -122,9 +130,8 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 
             //Assert
             Assert.NotNull(serviceException);
-            Assert.Equal("Access token is empty.", serviceException.Error.Message);
-            Assert.Equal("InvalidAuthenticationToken", serviceException.Error.Code);
-            Assert.Equal(HttpStatusCode.Unauthorized, serviceException.StatusCode);
+            Assert.Equal(ErrorConstants.Codes.GeneralException, serviceException.Message);
+            Assert.Equal(HttpStatusCode.Unauthorized, (HttpStatusCode)serviceException.ResponseStatusCode);
         }
 
         [Fact]
@@ -155,8 +162,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 
             //Assert
             Assert.NotNull(serviceException);
-            Assert.Equal(ErrorConstants.Codes.GeneralException, serviceException.Error.Code);
-            Assert.Equal(ErrorConstants.Messages.UnableToDeserializeContent, serviceException.Error.Message);
+            Assert.Equal(ErrorConstants.Codes.GeneralException, serviceException.Message);
             Assert.Equal(malformedResponse, serviceException.RawResponseBody);
         }
     }

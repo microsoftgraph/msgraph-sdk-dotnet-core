@@ -24,37 +24,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 
             var baseClient = new BaseClient(expectedBaseUrl, this.authenticationProvider.Object);
 
-            Assert.Equal(expectedBaseUrl, baseClient.BaseUrl);
-        }
-
-        [Fact]
-        public void BaseClient_InitializeBaseUrlWithTrailingSlash()
-        {
-            var expectedBaseUrl = "https://localhost";
-
-            var baseClient = new BaseClient("https://localhost/", this.authenticationProvider.Object);
-
-            Assert.Equal(expectedBaseUrl, baseClient.BaseUrl);
-        }
-
-        [Fact]
-        public void BaseClient_InitializeEmptyBaseUrl()
-        {
-            ServiceException exception = Assert.Throws<ServiceException>(() => new BaseClient(null, this.authenticationProvider.Object));
-            Assert.Equal(ErrorConstants.Codes.InvalidRequest, exception.Error.Code);
-            Assert.Equal(ErrorConstants.Messages.BaseUrlMissing, exception.Error.Message);
-        }
-
-        [Fact]
-        public void BaseClient_InitializeWithTokenCredential()
-        {
-            var expectedBaseUrl = "https://localhost";
-
-            var baseClient = new BaseClient(expectedBaseUrl, this.tokenCredential.Object);
-
-            Assert.Equal(expectedBaseUrl, baseClient.BaseUrl);
-            Assert.IsType<TokenCredentialAuthProvider>(baseClient.AuthenticationProvider);
-
+            Assert.Equal(expectedBaseUrl, baseClient.RequestAdapter.BaseUrl);
         }
     }
 }

@@ -4,6 +4,8 @@
 
 namespace Microsoft.Graph
 {
+    using Microsoft.Kiota.Abstractions;
+    using Microsoft.Kiota.Abstractions.Serialization;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -20,33 +22,17 @@ namespace Microsoft.Graph
     {
         private JsonDocument jBatchResponseObject;
         private readonly HttpResponseMessage batchResponseMessage;
-
-        /// <summary>
-        /// Gets a serializer for serializing and deserializing JSON objects.
-        /// </summary>
-        public ISerializer Serializer { get; private set; }
-
-        /// <summary>
-        /// Gets a <see cref="IResponseHandler"/> for handling responses.
-        /// </summary>
-        public IResponseHandler ResponseHandler { get; private set; }
+        private readonly Dictionary<string, ParsableFactory<IParsable>> apiErrorMappings;
 
         /// <summary>
         /// Constructs a new <see cref="BatchResponseContent"/>
         /// </summary>
         /// <param name="httpResponseMessage">A <see cref="HttpResponseMessage"/> of a batch request execution.</param>
-        /// <param name="serializer">A serializer for serializing and deserializing JSON objects.</param>
-        /// <param name="responseHandler">A <see cref="IResponseHandler"/> for handling responses..</param>
-        public BatchResponseContent(HttpResponseMessage httpResponseMessage, ISerializer serializer = null, IResponseHandler responseHandler = null)
+        /// <param name="errorMappings">A dictionary of error mappings to handle failed responses.</param>
+        public BatchResponseContent(HttpResponseMessage httpResponseMessage, Dictionary<string, ParsableFactory<IParsable>> errorMappings = null)
         {
-            this.batchResponseMessage = httpResponseMessage ?? throw new ClientException(new Error
-            {
-                Code = ErrorConstants.Codes.InvalidArgument,
-                Message = string.Format(ErrorConstants.Messages.NullParameter, nameof(httpResponseMessage))
-            });
-
-            this.Serializer = serializer ?? new Serializer();
-            this.ResponseHandler = responseHandler ?? new ResponseHandler(this.Serializer);
+            this.batchResponseMessage = httpResponseMessage ?? throw new ArgumentNullException(nameof(httpResponseMessage));
+            this.apiErrorMappings = errorMappings ?? new();
         }
 
         /// <summary>
@@ -99,16 +85,17 @@ namespace Microsoft.Graph
         /// Gets a batch response as a requested type for the specified batch request id.
         /// </summary>
         /// <param name="requestId">A batch request id.</param>
+        /// <param name="responseHandler">ResponseHandler to use for the response</param>
         /// <returns>A deserialized object of type T<see cref="HttpResponseMessage"/>.</returns>
-        public async Task<T> GetResponseByIdAsync<T>(string requestId)
+        public async Task<T> GetResponseByIdAsync<T>(string requestId, IResponseHandler responseHandler = null) where T : IParsable, new()
         {
             using var httpResponseMessage = await GetResponseByIdAsync(requestId).ConfigureAwait(false);
             if (httpResponseMessage == null)
                 return default;
 
-            await ValidateSuccessfulResponse(httpResponseMessage).ConfigureAwait(false);
             // return the deserialized object
-            return await ResponseHandler.HandleResponse<T>(httpResponseMessage).ConfigureAwait(false);
+            responseHandler ??= new ResponseHandler<T>();
+            return await responseHandler.HandleResponseAsync<HttpResponseMessage, T>(httpResponseMessage, apiErrorMappings).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -123,55 +110,10 @@ namespace Microsoft.Graph
             if (httpResponseMessage == null)
                 return default;
 
-            await ValidateSuccessfulResponse(httpResponseMessage).ConfigureAwait(false);
             using var stream = await httpResponseMessage.Content.ReadAsStreamAsync().ConfigureAwait(false);
             var memoryStream = new MemoryStream();
             await stream.CopyToAsync(memoryStream).ConfigureAwait(false);
             return memoryStream;
-        }
-
-        /// <summary>
-        /// Validates the HttpResponse message is a successful response. Otherwise, throws a ServiceException with the error information
-        /// present in the response body.
-        /// </summary>
-        /// <param name="httpResponseMessage">The <see cref="HttpResponseMessage"/> to validate</param>
-        private async Task ValidateSuccessfulResponse(HttpResponseMessage httpResponseMessage)
-        {
-            if (!httpResponseMessage.IsSuccessStatusCode)
-            {
-                Error error;
-                string rawResponseBody = null;
-
-                //deserialize into an ErrorResponse as the result is not a success.
-                ErrorResponse errorResponse = await ResponseHandler.HandleResponse<ErrorResponse>(httpResponseMessage).ConfigureAwait(false);
-
-                if (errorResponse?.Error == null)
-                {
-                    if (httpResponseMessage.StatusCode == HttpStatusCode.NotFound)
-                    {
-                        error = new Error { Code = ErrorConstants.Codes.ItemNotFound };
-                    }
-                    else
-                    {
-                        error = new Error
-                        {
-                            Code = ErrorConstants.Codes.GeneralException,
-                            Message = ErrorConstants.Messages.UnexpectedExceptionResponse
-                        };
-                    }
-                }
-                else
-                {
-                    error = errorResponse.Error;
-                }
-
-                if (httpResponseMessage.Content?.Headers.ContentType.MediaType == CoreConstants.MimeTypeNames.Application.Json)
-                {
-                    rawResponseBody = await httpResponseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
-                }
-
-                throw new ServiceException(error, httpResponseMessage.Headers, httpResponseMessage.StatusCode, rawResponseBody);
-            }
         }
 
         /// <summary>
@@ -234,7 +176,7 @@ namespace Microsoft.Graph
         /// <returns>A batch response content as <see cref="JsonDocument"/>.</returns>
         private async Task<JsonDocument> GetBatchResponseContentAsync()
         {
-            if (this.batchResponseMessage.Content == null)
+            if (this.batchResponseMessage.Content == null || this.batchResponseMessage.Content.Headers.ContentLength == 0 )
                 return null;
 
             try
@@ -246,11 +188,7 @@ namespace Microsoft.Graph
             }
             catch (Exception ex)
             {
-                throw new ClientException(new Error
-                {
-                    Code = ErrorConstants.Codes.InvalidRequest,
-                    Message = ErrorConstants.Messages.UnableToDeserializeContent
-                }, ex);
+                throw new ClientException(ErrorConstants.Messages.UnableToDeserializeContent, ex);
             }
         }
     }

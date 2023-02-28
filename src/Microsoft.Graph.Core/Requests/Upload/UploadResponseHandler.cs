@@ -9,6 +9,7 @@ namespace Microsoft.Graph
     using System.Net;
     using System.Net.Http;
     using System.Threading.Tasks;
+    using Microsoft.Kiota.Abstractions.Serialization;
     using System.Text.Json;
 
     /// <summary>
@@ -16,15 +17,15 @@ namespace Microsoft.Graph
     /// </summary>
     internal class UploadResponseHandler
     {
-        private readonly ISerializer _serializer;
+        private readonly IParseNodeFactory _parseNodeFactory;
 
         /// <summary>
-        /// Constructs a new <see cref="ResponseHandler"/>.
+        /// Constructs a new <see cref="UploadResponseHandler"/>.
         /// </summary>
-        /// <param name="serializer"></param>
-        public UploadResponseHandler(ISerializer serializer = null)
+        /// <param name="parseNodeFactory"> The <see cref="IParseNodeFactory"/> to use for response handling</param>
+        public UploadResponseHandler(IParseNodeFactory parseNodeFactory = null)
         {
-            this._serializer = serializer ?? new Serializer();
+            _parseNodeFactory = parseNodeFactory ?? ParseNodeFactoryRegistry.DefaultInstance;
         }
 
         /// <summary>
@@ -33,82 +34,68 @@ namespace Microsoft.Graph
         /// <typeparam name="T">The type to return</typeparam>
         /// <param name="response">The HttpResponseMessage to handle.</param>
         /// <returns></returns>
-        public async Task<UploadResult<T>> HandleResponse<T>(HttpResponseMessage response) 
+        public async Task<UploadResult<T>> HandleResponse<T>(HttpResponseMessage response) where T : IParsable,new()
         {
             if (response.Content == null)
             {
-                throw new ServiceException(new Error
-                {
-                    Code = ErrorConstants.Codes.GeneralException,
-                    Message = ErrorConstants.Messages.NoResponseForUpload
-                });
+                throw new ServiceException(ErrorConstants.Messages.NoResponseForUpload);
             }
 
             // Give back the info from the server for ongoing upload as the upload is ongoing
-            using (Stream responseSteam = await response.Content.ReadAsStreamAsync().ConfigureAwait(false))
+            using Stream responseStream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
+            try
             {
-                try
+                if (!response.IsSuccessStatusCode)
                 {
-                    if (!response.IsSuccessStatusCode)
+                    string rawResponseBody = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                    // Throw exception to know something went wrong.
+                    throw new ServiceException(ErrorConstants.Codes.GeneralException, response.Headers, (int)response.StatusCode, rawResponseBody);
+                }
+
+                var uploadResult = new UploadResult<T>();
+
+                /*
+                 * Check if we have a status code 201 to know if the upload completed successfully.
+                 * This will be returned when uploading a FileAttachment with a location header but empty response hence
+                 * This could also be returned when uploading a DriveItem with  an ItemResponse but no location header.
+                 */
+                if (response.StatusCode == HttpStatusCode.Created)
+                {
+                    if (responseStream.Length > 0) //system.text.json wont deserialize an empty string
                     {
-                        ErrorResponse errorResponse = this._serializer.DeserializeObject<ErrorResponse>(responseSteam);
-                        Error error = errorResponse.Error;
-                        string rawResponseBody = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                        // Throw exception to know something went wrong.
-                        throw new ServiceException(error, response.Headers, response.StatusCode, rawResponseBody);
+                        var jsonParseNode = _parseNodeFactory.GetRootParseNode(response.Content.Headers?.ContentType?.MediaType?.ToLowerInvariant(), responseStream);
+                        uploadResult.ItemResponse = jsonParseNode.GetObjectValue<T>((parsable) => new T());
                     }
-
-                    var uploadResult = new UploadResult<T>();
-
+                    uploadResult.Location = response.Headers.Location;
+                }
+                else
+                {
                     /*
-                     * Check if we have a status code 201 to know if the upload completed successfully.
-                     * This will be returned when uploading a FileAttachment with a location header but empty response hence
-                     * This could also be returned when uploading a DriveItem with  an ItemResponse but no location header.
+                     * The response could be either a 200 or a 202 response.
+                     * DriveItem Upload returns the upload session in a 202 response while FileAttachment in a 200 response
+                     * However, successful upload completion for a DriveItem the response could also come in a 200 response and
+                     * hence we validate this by checking the NextExpectedRanges parameter which is present in an ongoing upload
                      */
-                    if (response.StatusCode == HttpStatusCode.Created)
+                    var uploadSessionParseNode = _parseNodeFactory.GetRootParseNode(response.Content.Headers?.ContentType?.MediaType?.ToLowerInvariant(), responseStream);
+                    UploadSession uploadSession = uploadSessionParseNode.GetObjectValue<UploadSession>(UploadSession.CreateFromDiscriminatorValue);
+                    if (uploadSession?.NextExpectedRanges != null)
                     {
-                        if(responseSteam.Length > 0) //system.text.json wont deserialize an empty string
-                        {
-                            uploadResult.ItemResponse = this._serializer.DeserializeObject<T>(responseSteam);
-                        }
-                        uploadResult.Location = response.Headers.Location;
+                        uploadResult.UploadSession = uploadSession;
                     }
                     else
                     {
-                        /*
-                         * The response could be either a 200 or a 202 response.
-                         * DriveItem Upload returns the upload session in a 202 response while FileAttachment in a 200 response
-                         * However, successful upload completion for a DriveItem the response could also come in a 200 response and
-                         * hence we validate this by checking the NextExpectedRanges parameter which is present in an ongoing upload
-                         */
-                        UploadSession uploadSession = this._serializer.DeserializeObject<UploadSession>(responseSteam);
-                        if (uploadSession?.NextExpectedRanges != null)
-                        {
-                            uploadResult.UploadSession = uploadSession;
-                        }
-                        else
-                        {
-                            //Upload is most likely done as DriveItem info may come in a 200 response
-                            responseSteam.Position = 0; //reset 
-                            uploadResult.ItemResponse = this._serializer.DeserializeObject<T>(responseSteam);
-                        }
+                        //Upload is most likely done as DriveItem info may come in a 200 response
+                        responseStream.Position = 0; //reset 
+                        var objectParseNode = _parseNodeFactory.GetRootParseNode(response.Content.Headers?.ContentType?.MediaType?.ToLowerInvariant(), responseStream);
+                        uploadResult.ItemResponse = objectParseNode.GetObjectValue<T>((parsable) => new T());
                     }
+                }
 
-                    return uploadResult;
-                }
-                catch (JsonException exception)
-                {
-                    string rawResponseBody = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                    throw new ServiceException(new Error()
-                        {
-                            Code = ErrorConstants.Codes.GeneralException,
-                            Message = ErrorConstants.Messages.UnableToDeserializeContent,
-                        }, 
-                        response.Headers,
-                        response.StatusCode,
-                        rawResponseBody,
-                        exception);
-                }
+                return uploadResult;
+            }
+            catch (JsonException exception)
+            {
+                throw new ClientException(ErrorConstants.Messages.UnableToDeserializeContent, exception);
             }
         }
     }

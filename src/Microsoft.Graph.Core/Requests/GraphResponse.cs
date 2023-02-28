@@ -4,6 +4,7 @@
 
 namespace Microsoft.Graph
 {
+    using Microsoft.Kiota.Abstractions;
     using System;
     using System.Net;
     using System.Net.Http;
@@ -16,14 +17,14 @@ namespace Microsoft.Graph
         /// <summary>
         /// The GraphResponse Constructor
         /// </summary>
-        /// <param name="iBaseRequest">The Request made for the response</param>
+        /// <param name="requestInformation">The Request made for the response</param>
         /// <param name="httpResponseMessage">The response</param>
-        public GraphResponse(IBaseRequest iBaseRequest, HttpResponseMessage httpResponseMessage)
+        public GraphResponse(RequestInformation requestInformation, HttpResponseMessage httpResponseMessage)
         {
             this.httpResponseMessage = httpResponseMessage ?? 
                                throw new ArgumentException(string.Format(ErrorConstants.Messages.NullParameter, nameof(httpResponseMessage)));
-            this.BaseRequest = iBaseRequest ??
-                               throw new ArgumentException(string.Format(ErrorConstants.Messages.NullParameter, nameof(iBaseRequest)));
+            this.RequestInformation = requestInformation ??
+                               throw new ArgumentException(string.Format(ErrorConstants.Messages.NullParameter, nameof(requestInformation)));
         }
 
         private readonly HttpResponseMessage httpResponseMessage;
@@ -44,9 +45,9 @@ namespace Microsoft.Graph
         public HttpResponseHeaders HttpHeaders => httpResponseMessage.Headers;
 
         /// <summary>
-        /// The reference to the Request
+        /// The reference to the original request
         /// </summary>
-        public IBaseRequest BaseRequest;
+        public RequestInformation RequestInformation;
 
         /// <summary>
         /// Get the native Response Message

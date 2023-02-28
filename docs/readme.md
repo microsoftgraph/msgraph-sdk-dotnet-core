@@ -31,16 +31,16 @@ long offset = 0;         // cursor location for updating the Range header.
 byte[] bytesInStream;                    // bytes in range returned by chunk download.
 
 // Get the collection of drive items. We'll only use one.
-IDriveItemChildrenCollectionPage driveItems = await graphClient.Me.Drive.Root.Children.Request().GetAsync();
+var driveItems = await graphClient.Drive.Root.Children.GetAsync();
 
-foreach (var item in driveItems)
+foreach (var item in driveItems.Value)
 {
     // Let's download the first file we get in the response.
     if (item.File != null)
     {
         // We'll use the file metadata to determine size and the name of the downloaded file
         // and to get the download URL.
-        var driveItemInfo = await graphClient.Me.Drive.Items[item.Id].Request().GetAsync();
+        var driveItemInfo = await graphClient.Drive.Items[item.Id].GetAsync();
 
         // Get the download URL. This URL is preauthenticated and has a short TTL.
         object downloadUrl;

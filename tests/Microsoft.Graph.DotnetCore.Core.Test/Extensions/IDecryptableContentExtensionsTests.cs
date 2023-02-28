@@ -5,7 +5,10 @@
 namespace Microsoft.Graph.DotnetCore.Core.Test.Extensions
 {
     using Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels;
+    using Microsoft.Kiota.Abstractions.Serialization;
+    using Microsoft.Kiota.Serialization.Json;
     using System;
+    using System.Security;
     using System.Security.Cryptography.X509Certificates;
     using System.Threading.Tasks;
     using Xunit;
@@ -49,7 +52,15 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Extensions
                                     "T6wjPT4x2lYvXd+AwOBY/3CY2eAslCN+4nmoRZnovDH4Ffp2bnId9FrsViBDWLKWV63yN2OTnTPJxj7ZQEC6T78sdqEpw5vKdi3xYYj2MhBXNohE0lK3Ig4ijsB9P16bXA8PcKaIwhnpeTKsLcdBPwVapuDku24u4u/Z/A+Q3Ls" +
                                     "lbEJdiRhGrHv6I+MJd2Gx/1qBU6VO4N/vC/VL3uv5VY/zRcA4r4ff7m7nfsuwyz5JsLMIcQEx0LuKyy74XmayhpdDE1RlovO0+JkzFmMCMGCSqGSIb3DQEJFTEWBBRLlTU+CGrTcZZgas+DShRTLwPm2zA/BgkqhkiG9w0BCRQx" +
                                     "Mh4wAHIAaQBjAGgAbgBvAHQAaQBmAGkAYwBhAHQAaQBvAG4AcwBhAHAAcAAuAGMAbwBtMDEwITAJBgUrDgMCGgUABBShhhfLZmAOmqGltImT+9krDrQGAgQId7jD11L05jECAggA";
-            this._certificate = new X509Certificate2(Convert.FromBase64String(certificateString), "rich");
+            var secureString = new SecureString();
+            secureString.AppendChar('r');
+            secureString.AppendChar('i');
+            secureString.AppendChar('c');
+            secureString.AppendChar('h');
+            this._certificate = new X509Certificate2(Convert.FromBase64String(certificateString), secureString);
+
+            // register the default serialization instance as the generator would.
+            ParseNodeFactoryRegistry.DefaultInstance.ContentTypeAssociatedFactories.TryAdd(CoreConstants.MimeTypeNames.Application.Json, new JsonParseNodeFactory());
         }
 
         [Fact]

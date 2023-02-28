@@ -1,93 +1,29 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp3.1;Xamarin.iOS10;MonoAndroid80</TargetFrameworks>
-    <AssemblyName>Microsoft.Graph.DotnetCore.Core.Test</AssemblyName>
-    <PackageId>Microsoft.Graph.DotnetCore.Core.Test</PackageId>
-    <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
-    <NetStandardImplicitPackageVersion>2.0.0</NetStandardImplicitPackageVersion>
-    <AssetTargetFallback>$(AssetTargetFallback);dnxcore50</AssetTargetFallback>
-    <RuntimeFrameworkVersion>3.1.0</RuntimeFrameworkVersion>
+    <TargetFrameworks>net6.0</TargetFrameworks>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
-  
-  <PropertyGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1'">
-	<DefineConstants>$(DefineConstants);NETCORE</DefineConstants>
-  </PropertyGroup>
-
-  <!--We manually configure LanguageTargets for Xamarin due to .Net SDK TFMs limitation https://github.com/dotnet/sdk/issues/491 -->
-  <PropertyGroup Condition="'$(TargetFramework)' == 'Xamarin.iOS10'">
-    <TargetFrameworkIdentifier>Xamarin.iOS</TargetFrameworkIdentifier>
-    <TargetFrameworkVersion>v1.0</TargetFrameworkVersion>
-    <DefineConstants>$(DefineConstants);iOS</DefineConstants>
-    <DebugType>full</DebugType>
-    <LanguageTargets>$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets</LanguageTargets>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(TargetFramework)' == 'Xamarin.Mac20'">
-    <TargetFrameworkIdentifier>Xamarin.Mac</TargetFrameworkIdentifier>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
-    <DefineConstants>$(DefineConstants);macOS</DefineConstants>
-    <DebugType>full</DebugType>
-    <LanguageTargets>$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets</LanguageTargets>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(TargetFramework)' == 'MonoAndroid80'">
-	<TargetFrameworkIdentifier>MonoAndroid</TargetFrameworkIdentifier>
-	<TargetFrameworkVersion>v8.0</TargetFrameworkVersion>
-	<AndroidUseLatestPlatformSdk>False</AndroidUseLatestPlatformSdk>
-	<DebugType>full</DebugType>
-	<DefineConstants>$(DefineConstants);ANDROID</DefineConstants>
-	<LanguageTargets>$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets</LanguageTargets>
-  </PropertyGroup>
-
+    <ItemGroup>
+      <None Update="xunit.runner.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
   <ItemGroup>
-	<PackageReference Include="System.Reflection.Emit" Version="4.7.0">
-	  <ExcludeAssets>all</ExcludeAssets>
-	</PackageReference>
-	<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.4.1" />
-	<PackageReference Include="Moq" Version="4.18.4" />
-	<PackageReference Include="xunit" Version="2.4.2" />
-	<ProjectReference Include="..\..\src\Microsoft.Graph.Core\Microsoft.Graph.Core.csproj" />
-  </ItemGroup>
-  
-  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1'">
+    <PackageReference Include="System.Reflection.Emit" Version="4.7.0">
+      <ExcludeAssets>all</ExcludeAssets>
+    </PackageReference>
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.5">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.5.0" />
+    <PackageReference Include="Moq" Version="4.18.4" />
+    <PackageReference Include="xunit" Version="2.4.2" />
+    <ProjectReference Include="..\..\src\Microsoft.Graph.Core\Microsoft.Graph.Core.csproj" />
   </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'Xamarin.iOS10' ">
-	<Reference Include="Microsoft.CSharp" />
-	<Reference Include="Xamarin.iOS" />
-	<Reference Include="System" />
-	<Reference Include="System.Core" />
-	<Reference Include="System.Xml" />
-	<Reference Include="System.Runtime.Serialization" />
-  </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'Xamarin.Mac20' ">
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Xamarin.Mac" />
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Runtime.Serialization" />
-    <PackageReference Include="System.Net.Http" Version="4.3.4" />
-  </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'MonoAndroid80' ">
-	<Reference Include="Microsoft.CSharp" />
-	<Reference Include="Mono.Android" />
-	<Reference Include="System" />
-	<Reference Include="System.Core" />
-	<Reference Include="System.Xml" />
-	<Reference Include="System.Runtime.Serialization" />
-  </ItemGroup>
-
    <ItemGroup>
     <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
   </ItemGroup>

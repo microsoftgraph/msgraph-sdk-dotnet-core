@@ -4,9 +4,11 @@
 
 namespace Microsoft.Graph
 {
+    using Microsoft.Kiota.Abstractions;
     using System;
     using System.Net;
     using System.Net.Http;
+    using System.Text.Json;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -42,61 +44,49 @@ namespace Microsoft.Graph
         {
             while (!cancellationToken.IsCancellationRequested)
             {
-                using (var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, this.monitorUrl))
+                var requestInformation = new RequestInformation() { HttpMethod = Method.GET , UrlTemplate = this.monitorUrl};
+                var nativeResponseHandler = new NativeResponseHandler();
+                requestInformation.SetResponseHandler(nativeResponseHandler);
+                await this.client.RequestAdapter.SendNoContentAsync(requestInformation, cancellationToken:cancellationToken).ConfigureAwait(false);
+                using var responseMessage = nativeResponseHandler.Value as HttpResponseMessage;
+
+                // The monitor service will return an Accepted status for any monitor operation that hasn't completed.
+                // If we have a success code that isn't Accepted, the operation is complete. Return the resulting object.
+                if (responseMessage.StatusCode != HttpStatusCode.Accepted && responseMessage.IsSuccessStatusCode)
                 {
-                    using (var responseMessage = await this.client.HttpProvider.SendAsync(httpRequestMessage).ConfigureAwait(false))
+                    using var responseStream = await responseMessage.Content.ReadAsStreamAsync().ConfigureAwait(false);
+                    return responseStream.Length > 0 ? await JsonSerializer.DeserializeAsync<T>(responseStream) : default(T);
+                }
+
+                using (var responseStream = await responseMessage.Content.ReadAsStreamAsync().ConfigureAwait(false))
+                {
+                    this.asyncOperationStatus = responseStream.Length > 0 ? await JsonSerializer.DeserializeAsync<AsyncOperationStatus>(responseStream, cancellationToken:cancellationToken) : null;
+
+                    if (this.asyncOperationStatus == null)
                     {
-                        // The monitor service will return an Accepted status for any monitor operation that hasn't completed.
-                        // If we have a success code that isn't Accepted, the operation is complete. Return the resulting object.
-                        if (responseMessage.StatusCode != HttpStatusCode.Accepted && responseMessage.IsSuccessStatusCode)
+                        throw new ServiceException("Error retrieving monitor status.");
+                    }
+
+                    if (string.Equals(this.asyncOperationStatus.Status, "cancelled", StringComparison.OrdinalIgnoreCase))
+                    {
+                        return default(T);
+                    }
+
+                    if (string.Equals(this.asyncOperationStatus.Status, "failed", StringComparison.OrdinalIgnoreCase)
+                        || string.Equals(this.asyncOperationStatus.Status, "deleteFailed", StringComparison.OrdinalIgnoreCase))
+                    {
+                        object message = null;
+                        if (this.asyncOperationStatus.AdditionalData != null)
                         {
-                            using (var responseStream = await responseMessage.Content.ReadAsStreamAsync().ConfigureAwait(false))
-                            {
-                                return this.client.HttpProvider.Serializer.DeserializeObject<T>(responseStream);
-                            }
+                            this.asyncOperationStatus.AdditionalData.TryGetValue("message", out message);
                         }
 
-                        using (var responseStream = await responseMessage.Content.ReadAsStreamAsync().ConfigureAwait(false))
-                        {
-                            this.asyncOperationStatus = this.client.HttpProvider.Serializer.DeserializeObject<AsyncOperationStatus>(responseStream);
+                        throw new ServiceException( message?.ToString() ?? "delete operation failed");
+                    }
 
-                            if (this.asyncOperationStatus == null)
-                            {
-                                throw new ServiceException(
-                                    new Error
-                                    {
-                                        Code = ErrorConstants.Codes.GeneralException,
-                                        Message = "Error retrieving monitor status."
-                                    });
-                            }
-
-                            if (string.Equals(this.asyncOperationStatus.Status, "cancelled", StringComparison.OrdinalIgnoreCase))
-                            {
-                                return default(T);
-                            }
-
-                            if (string.Equals(this.asyncOperationStatus.Status, "failed", StringComparison.OrdinalIgnoreCase)
-                                || string.Equals(this.asyncOperationStatus.Status, "deleteFailed", StringComparison.OrdinalIgnoreCase))
-                            {
-                                object message = null;
-                                if (this.asyncOperationStatus.AdditionalData != null)
-                                {
-                                    this.asyncOperationStatus.AdditionalData.TryGetValue("message", out message);
-                                }
-
-                                throw new ServiceException(
-                                    new Error
-                                    {
-                                        Code = ErrorConstants.Codes.GeneralException,
-                                        Message = message as string
-                                    });
-                            }
-                            
-                            if (progress != null)
-                            {
-                                progress.Report(this.asyncOperationStatus);
-                            }
-                        }
+                    if (progress != null)
+                    {
+                        progress.Report(this.asyncOperationStatus);
                     }
                 }
 

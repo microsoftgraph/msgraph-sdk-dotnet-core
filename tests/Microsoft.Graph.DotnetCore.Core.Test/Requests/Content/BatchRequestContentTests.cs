@@ -5,6 +5,7 @@
 namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
 {
     using Microsoft.Graph.DotnetCore.Core.Test.Mocks;
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Net.Http;
@@ -13,17 +14,20 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
     using System.Threading.Tasks;
     using System.Text.Json;
     using Xunit;
+    using Microsoft.Kiota.Abstractions;
+    using HttpMethod = System.Net.Http.HttpMethod;
 
     public class BatchRequestContentTests
     {
         private const string REQUEST_URL = "https://graph.microsoft.com/v1.0/me";
+        private readonly IBaseClient client = new BaseClient(REQUEST_URL, new MockAuthenticationProvider().Object);
+
         [Fact]
         public void BatchRequestContent_DefaultInitialize()
         {
-            BatchRequestContent batchRequestContent = new BatchRequestContent();
+            BatchRequestContent batchRequestContent = new BatchRequestContent(client);
 
             Assert.NotNull(batchRequestContent.BatchRequestSteps);
-            Assert.NotNull(batchRequestContent.Serializer);
             Assert.True(batchRequestContent.BatchRequestSteps.Count.Equals(0));
         }
 
@@ -36,10 +40,9 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
                 requestSteps.Add(new BatchRequestStep(i.ToString(), new HttpRequestMessage(HttpMethod.Get, REQUEST_URL)));
             }
 
-            BatchRequestContent batchRequestContent = new BatchRequestContent(requestSteps.ToArray(),new Serializer());
+            BatchRequestContent batchRequestContent = new BatchRequestContent(client,requestSteps.ToArray());
 
             Assert.NotNull(batchRequestContent.BatchRequestSteps);
-            Assert.NotNull(batchRequestContent.Serializer);
             Assert.True(batchRequestContent.BatchRequestSteps.Count.Equals(5));
         }
 
@@ -52,10 +55,9 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
                 requestSteps.Add(new BatchRequestStep(i.ToString(), new HttpRequestMessage(HttpMethod.Get, REQUEST_URL)));
             }
 
-            BatchRequestContent batchRequestContent = new BatchRequestContent(requestSteps.ToArray());
+            BatchRequestContent batchRequestContent = new BatchRequestContent(client, requestSteps.ToArray());
 
             Assert.NotNull(batchRequestContent.BatchRequestSteps);
-            Assert.NotNull(batchRequestContent.Serializer);
             Assert.True(batchRequestContent.BatchRequestSteps.Count.Equals(5));
         }
 
@@ -65,10 +67,9 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
             BatchRequestStep batchRequestStep1 = new BatchRequestStep("1", new HttpRequestMessage(HttpMethod.Get, REQUEST_URL));
             BatchRequestStep batchRequestStep2 = new BatchRequestStep("2", new HttpRequestMessage(HttpMethod.Get, REQUEST_URL), new List<string> { "3" });
 
-            ClientException ex = Assert.Throws<ClientException>(() => new BatchRequestContent(batchRequestStep1, batchRequestStep2));
-
-            Assert.Equal(ErrorConstants.Codes.InvalidArgument, ex.Error.Code);
-            Assert.Equal(ErrorConstants.Messages.InvalidDependsOnRequestId, ex.Error.Message);
+            ArgumentException ex = Assert.Throws<ArgumentException>(() => new BatchRequestContent(client, batchRequestStep1, batchRequestStep2));
+            
+            Assert.Equal(ErrorConstants.Messages.InvalidDependsOnRequestId, ex.Message);
         }
 
         [Fact]
@@ -76,7 +77,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
         {
             // Arrange
             BatchRequestStep batchRequestStep = new BatchRequestStep("1", new HttpRequestMessage(HttpMethod.Get, REQUEST_URL));
-            BatchRequestContent batchRequestContent = new BatchRequestContent();
+            BatchRequestContent batchRequestContent = new BatchRequestContent(client);
             
             // Act
             Assert.False(batchRequestContent.BatchRequestSteps.Any());//Its empty
@@ -92,7 +93,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
         public void BatchRequestContent_AddBatchRequestStepToBatchRequestContentWithMaxSteps()
         {
             // Arrange
-            BatchRequestContent batchRequestContent = new BatchRequestContent();
+            BatchRequestContent batchRequestContent = new BatchRequestContent(client);
             //Add MaxNumberOfRequests number of steps
             for (var i = 0; i < CoreConstants.BatchRequest.MaxNumberOfRequests; i++)
             {
@@ -115,7 +116,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
         public void BatchRequestContent_AddBatchRequestStepWithExistingRequestStep()
         {
             BatchRequestStep batchRequestStep = new BatchRequestStep("1", new HttpRequestMessage(HttpMethod.Get, REQUEST_URL));
-            BatchRequestContent batchRequestContent = new BatchRequestContent(batchRequestStep);
+            BatchRequestContent batchRequestContent = new BatchRequestContent(client, batchRequestStep);
             bool isSuccess = batchRequestContent.AddBatchRequestStep(batchRequestStep);
 
             Assert.False(isSuccess);
@@ -127,7 +128,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
         public void BatchRequestContent_AddBatchRequestStepWithNullRequestStep()
         {
             BatchRequestStep batchRequestStep = new BatchRequestStep("1", new HttpRequestMessage(HttpMethod.Get, REQUEST_URL));
-            BatchRequestContent batchRequestContent = new BatchRequestContent(batchRequestStep);
+            BatchRequestContent batchRequestContent = new BatchRequestContent(client, batchRequestStep);
 
             bool isSuccess = batchRequestContent.AddBatchRequestStep(batchRequestStep: null);
 
@@ -142,7 +143,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
             BatchRequestStep batchRequestStep1 = new BatchRequestStep("1", new HttpRequestMessage(HttpMethod.Get, REQUEST_URL));
             BatchRequestStep batchRequestStep2 = new BatchRequestStep("2", new HttpRequestMessage(HttpMethod.Get, REQUEST_URL), new List<string> { "1" });
 
-            BatchRequestContent batchRequestContent = new BatchRequestContent(batchRequestStep1, batchRequestStep2);
+            BatchRequestContent batchRequestContent = new BatchRequestContent(client, batchRequestStep1, batchRequestStep2);
 
             bool isSuccess = batchRequestContent.RemoveBatchRequestStepWithId("1");
 
@@ -157,7 +158,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
             BatchRequestStep batchRequestStep1 = new BatchRequestStep("1", new HttpRequestMessage(HttpMethod.Get, REQUEST_URL));
             BatchRequestStep batchRequestStep2 = new BatchRequestStep("2", new HttpRequestMessage(HttpMethod.Get, REQUEST_URL), new List<string> { "1" });
 
-            BatchRequestContent batchRequestContent = new BatchRequestContent(batchRequestStep1, batchRequestStep2);
+            BatchRequestContent batchRequestContent = new BatchRequestContent(client, batchRequestStep1, batchRequestStep2);
 
             bool isSuccess = batchRequestContent.RemoveBatchRequestStepWithId("5");
 
@@ -172,7 +173,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
             BatchRequestStep batchRequestStep1 = new BatchRequestStep("1", new HttpRequestMessage(HttpMethod.Get, REQUEST_URL));
             BatchRequestStep batchRequestStep2 = new BatchRequestStep("2", new HttpRequestMessage(HttpMethod.Get, REQUEST_URL), new List<string> { "1" });
 
-            BatchRequestContent batchRequestContent = new BatchRequestContent();
+            BatchRequestContent batchRequestContent = new BatchRequestContent(client);
             batchRequestContent.AddBatchRequestStep(batchRequestStep1);
             batchRequestContent.AddBatchRequestStep(batchRequestStep2);
 
@@ -231,7 +232,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
             };
             BatchRequestStep batchRequestStep2 = new BatchRequestStep("2", createEventMessage, new List<string> { "1" });
 
-            BatchRequestContent batchRequestContent = new BatchRequestContent();
+            BatchRequestContent batchRequestContent = new BatchRequestContent(client);
             batchRequestContent.AddBatchRequestStep(batchRequestStep1);
             batchRequestContent.AddBatchRequestStep(batchRequestStep2);
 
@@ -300,7 +301,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
         public void BatchRequestContent_AddBatchRequestStepWithHttpRequestMessage()
         {
             // Arrange 
-            BatchRequestContent batchRequestContent = new BatchRequestContent();
+            BatchRequestContent batchRequestContent = new BatchRequestContent(client);
             Assert.False(batchRequestContent.BatchRequestSteps.Any());//Its empty
 
             // Act
@@ -319,7 +320,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
         public void BatchRequestContent_AddBatchRequestStepWithHttpRequestMessageToBatchRequestContentWithMaxSteps()
         {
             // Arrange
-            BatchRequestContent batchRequestContent = new BatchRequestContent();
+            BatchRequestContent batchRequestContent = new BatchRequestContent(client);
             // Add MaxNumberOfRequests number of steps
             for (var i = 0; i < CoreConstants.BatchRequest.MaxNumberOfRequests; i++)
             {
@@ -333,37 +334,36 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
             HttpRequestMessage extraHttpRequestMessage = new HttpRequestMessage(HttpMethod.Get, REQUEST_URL);
             
             // Assert
-            var exception = Assert.Throws<ClientException>(() => batchRequestContent.AddBatchRequestStep(extraHttpRequestMessage));//Assert we throw exception on excess add
-            Assert.Equal(ErrorConstants.Codes.MaximumValueExceeded, exception.Error.Code);
+            var exception = Assert.Throws<ArgumentException>(() => batchRequestContent.AddBatchRequestStep(extraHttpRequestMessage));//Assert we throw exception on excess add
+            //Assert.Equal(ErrorConstants.Codes.MaximumValueExceeded, exception.Error.Code);
             Assert.NotNull(batchRequestContent.BatchRequestSteps);
             Assert.True(batchRequestContent.BatchRequestSteps.Count.Equals(CoreConstants.BatchRequest.MaxNumberOfRequests));
         }
 
         [Fact]
-        public void BatchRequestContent_AddBatchRequestStepWithBaseRequest()
+        public async Task BatchRequestContent_AddBatchRequestStepWithBaseRequest()
         {
             // Arrange
-            BaseClient client = new BaseClient(REQUEST_URL, new MockAuthenticationProvider().Object);
-            BaseRequest baseRequest = new BaseRequest(REQUEST_URL, client);
-            BatchRequestContent batchRequestContent = new BatchRequestContent();
+            RequestInformation requestInformation = new RequestInformation() { HttpMethod = Method.GET, UrlTemplate = REQUEST_URL };
+            BatchRequestContent batchRequestContent = new BatchRequestContent(client);
             Assert.False(batchRequestContent.BatchRequestSteps.Any());//Its empty
 
             // Act
-            string batchRequestStepId = batchRequestContent.AddBatchRequestStep(baseRequest);
+            string batchRequestStepId = await batchRequestContent.AddBatchRequestStepAsync(requestInformation);
 
             // Assert we added successfully and contents are as expected
             Assert.NotNull(batchRequestStepId);
             Assert.NotNull(batchRequestContent.BatchRequestSteps);
             Assert.True(batchRequestContent.BatchRequestSteps.Count.Equals(1));
-            Assert.Equal(batchRequestContent.BatchRequestSteps.First().Value.Request.RequestUri.OriginalString, baseRequest.RequestUrl);
-            Assert.Equal(batchRequestContent.BatchRequestSteps.First().Value.Request.Method.Method, baseRequest.Method.ToString());
+            Assert.Equal(batchRequestContent.BatchRequestSteps.First().Value.Request.RequestUri.OriginalString, requestInformation.URI.OriginalString);
+            Assert.Equal(batchRequestContent.BatchRequestSteps.First().Value.Request.Method.Method, requestInformation.HttpMethod.ToString());
         }
 
         [Fact]
         public async Task BatchRequestContent_AddBatchRequestStepWithBaseRequestWithHeaderOptions()
         {
             // Create a BatchRequestContent from a BaseRequest object
-            BatchRequestContent batchRequestContent = new BatchRequestContent();
+            BatchRequestContent batchRequestContent = new BatchRequestContent(client);
 
             // Create a BatchRequestContent from a HttpRequestMessage object
             HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Post, REQUEST_URL)
@@ -396,26 +396,25 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
         }
 
         [Fact]
-        public void BatchRequestContent_AddBatchRequestStepWithBaseRequestToBatchRequestContentWithMaxSteps()
+        public async Task BatchRequestContent_AddBatchRequestStepWithBaseRequestToBatchRequestContentWithMaxSteps()
         {
             // Arrange
-            BatchRequestContent batchRequestContent = new BatchRequestContent();
-            BaseClient client = new BaseClient(REQUEST_URL, new MockAuthenticationProvider().Object);
+            BatchRequestContent batchRequestContent = new BatchRequestContent(client);
             // Add MaxNumberOfRequests number of steps
             for (var i = 0; i < CoreConstants.BatchRequest.MaxNumberOfRequests; i++)
             {
-                BaseRequest baseRequest = new BaseRequest(REQUEST_URL, client);
-                string batchRequestStepId = batchRequestContent.AddBatchRequestStep(baseRequest);
+                RequestInformation requestInformation = new RequestInformation() { HttpMethod = Method.GET, UrlTemplate = REQUEST_URL };
+                string batchRequestStepId = await batchRequestContent.AddBatchRequestStepAsync(requestInformation);
                 Assert.NotNull(batchRequestStepId);
                 Assert.True(batchRequestContent.BatchRequestSteps.Count.Equals(i + 1));//Assert we can add steps up to the max
             }
 
             // Act
-            BaseRequest extraBaseRequest = new BaseRequest(REQUEST_URL, client);
-            var exception = Assert.Throws<ClientException>(() => batchRequestContent.AddBatchRequestStep(extraBaseRequest));
+            RequestInformation extraRequestInformation = new RequestInformation() { HttpMethod = Method.GET, UrlTemplate = REQUEST_URL };
+            var exception = await Assert.ThrowsAsync<ArgumentException>(() => batchRequestContent.AddBatchRequestStepAsync(extraRequestInformation));
             
             // Assert
-            Assert.Equal(ErrorConstants.Codes.MaximumValueExceeded, exception.Error.Code);
+            //Assert.Equal(ErrorConstants.Codes.MaximumValueExceeded, exception.Error.Code);
             Assert.NotNull(batchRequestContent.BatchRequestSteps);
             Assert.True(batchRequestContent.BatchRequestSteps.Count.Equals(CoreConstants.BatchRequest.MaxNumberOfRequests));
         }
@@ -431,7 +430,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
         {
             // Arrange
             BatchRequestStep batchRequestStep = new BatchRequestStep("1", new HttpRequestMessage(HttpMethod.Get, requestUrl));
-            BatchRequestContent batchRequestContent = new BatchRequestContent();
+            BatchRequestContent batchRequestContent = new BatchRequestContent(client);
             Assert.False(batchRequestContent.BatchRequestSteps.Any());//Its empty
 
             // Act

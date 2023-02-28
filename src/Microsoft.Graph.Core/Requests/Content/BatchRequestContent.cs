@@ -4,6 +4,8 @@
 
 namespace Microsoft.Graph
 {
+    using Microsoft.Kiota.Abstractions;
+    using Microsoft.Kiota.Http.HttpClientLibrary;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -26,47 +28,40 @@ namespace Microsoft.Graph
         public IReadOnlyDictionary<string, BatchRequestStep> BatchRequestSteps { get; private set; }
 
         /// <summary>
-        /// Gets a serializer for serializing and deserializing JSON objects.
+        /// The request adapter for sending the batch request
         /// </summary>
-        public ISerializer Serializer { get; private set; }
+        public IRequestAdapter RequestAdapter { get; set; }
 
         /// <summary>
         /// Constructs a new <see cref="BatchRequestContent"/>.
         /// </summary>
-        public BatchRequestContent()
-            :this(new BatchRequestStep[] { },null)
+        /// <param name="baseClient">The <see cref="IBaseClient"/> for making requests</param>
+        public BatchRequestContent(IBaseClient baseClient)
+            :this(baseClient, new BatchRequestStep[] { })
         {
         }
 
         /// <summary>
         /// Constructs a new <see cref="BatchRequestContent"/>.
         /// </summary>
+        /// <param name="baseClient">The <see cref="IBaseClient"/> for making requests</param>
         /// <param name="batchRequestSteps">A list of <see cref="BatchRequestStep"/> to add to the batch request content.</param>
-        /// <param name="serializer">A serializer for serializing and deserializing JSON objects.</param>
-        public BatchRequestContent(BatchRequestStep [] batchRequestSteps, ISerializer serializer = null)
-            : this(batchRequestSteps)
+        public BatchRequestContent(IBaseClient baseClient, params BatchRequestStep[] batchRequestSteps): this(baseClient?.RequestAdapter ?? throw new ArgumentNullException(nameof(baseClient)), batchRequestSteps)
         {
-            this.Serializer = serializer ?? new Serializer();
         }
 
         /// <summary>
         /// Constructs a new <see cref="BatchRequestContent"/>.
         /// </summary>
+        /// <param name="requestAdapter">The <see cref="IRequestAdapter"/> for making requests</param>
         /// <param name="batchRequestSteps">A list of <see cref="BatchRequestStep"/> to add to the batch request content.</param>
-        public BatchRequestContent(params BatchRequestStep[] batchRequestSteps)
+        public BatchRequestContent(IRequestAdapter requestAdapter, params BatchRequestStep[] batchRequestSteps)
         {
             if (batchRequestSteps == null)
-                throw new ClientException(new Error
-                {
-                    Code = ErrorConstants.Codes.InvalidArgument,
-                    Message = string.Format(ErrorConstants.Messages.NullParameter, nameof(batchRequestSteps))
-                });
+                throw new ArgumentNullException(nameof(batchRequestSteps));
 
             if (batchRequestSteps.Count() > CoreConstants.BatchRequest.MaxNumberOfRequests)
-                throw new ClientException(new Error {
-                    Code = ErrorConstants.Codes.MaximumValueExceeded,
-                    Message = string.Format(ErrorConstants.Messages.MaximumValueExceeded, "Number of batch request steps", CoreConstants.BatchRequest.MaxNumberOfRequests)
-                });
+                throw new ArgumentException(string.Format(ErrorConstants.Messages.MaximumValueExceeded, "Number of batch request steps", CoreConstants.BatchRequest.MaxNumberOfRequests));
 
             this.Headers.ContentType = new MediaTypeHeaderValue(CoreConstants.MimeTypeNames.Application.Json);
 
@@ -76,16 +71,12 @@ namespace Microsoft.Graph
             {
                 if(requestStep.DependsOn != null && !ContainsCorrespondingRequestId(requestStep.DependsOn))
                 {
-                    throw new ClientException(new Error
-                    {
-                        Code = ErrorConstants.Codes.InvalidArgument,
-                        Message = ErrorConstants.Messages.InvalidDependsOnRequestId
-                    });
+                    throw new ArgumentException(ErrorConstants.Messages.InvalidDependsOnRequestId);
                 }
                 AddBatchRequestStep(requestStep);
             }
 
-            this.Serializer = new Serializer();
+            this.RequestAdapter = requestAdapter ?? throw new ArgumentNullException(nameof(requestAdapter));
         }
 
         /// <summary>
@@ -115,11 +106,7 @@ namespace Microsoft.Graph
         public string AddBatchRequestStep(HttpRequestMessage httpRequestMessage)
         {
             if (BatchRequestSteps.Count >= CoreConstants.BatchRequest.MaxNumberOfRequests)
-                throw new ClientException(new Error
-                {
-                    Code = ErrorConstants.Codes.MaximumValueExceeded,
-                    Message = string.Format(ErrorConstants.Messages.MaximumValueExceeded, "Number of batch request steps", CoreConstants.BatchRequest.MaxNumberOfRequests)
-                });
+                throw new ArgumentException(string.Format(ErrorConstants.Messages.MaximumValueExceeded, "Number of batch request steps", CoreConstants.BatchRequest.MaxNumberOfRequests));
 
             string requestId = Guid.NewGuid().ToString();
             BatchRequestStep batchRequestStep = new BatchRequestStep(requestId, httpRequestMessage);
@@ -128,22 +115,18 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Adds a <see cref="IBaseRequest"/> to batch request content
+        /// Adds a <see cref="RequestInformation"/> to batch request content
         /// </summary>
-        /// <param name="request">A <see cref="BaseRequest"/> to use to build a <see cref="BatchRequestStep"/> to add.</param>
+        /// <param name="requestInformation">A <see cref="RequestInformation"/> to use to build a <see cref="BatchRequestStep"/> to add.</param>
         /// <returns>The requestId of the  newly created <see cref="BatchRequestStep"/></returns>
-        public string AddBatchRequestStep(IBaseRequest request)
+        public async Task<string> AddBatchRequestStepAsync(RequestInformation requestInformation)
         {
             if (BatchRequestSteps.Count >= CoreConstants.BatchRequest.MaxNumberOfRequests)
-                throw new ClientException(new Error
-                {
-                    Code = ErrorConstants.Codes.MaximumValueExceeded,
-                    Message = string.Format(ErrorConstants.Messages.MaximumValueExceeded, "Number of batch request steps", CoreConstants.BatchRequest.MaxNumberOfRequests)
-                });
-
+                throw new ArgumentException(string.Format(ErrorConstants.Messages.MaximumValueExceeded, "Number of batch request steps", CoreConstants.BatchRequest.MaxNumberOfRequests));
             string requestId = Guid.NewGuid().ToString();
-            BatchRequestStep batchRequestStep = new BatchRequestStep(requestId, request.GetHttpRequestMessage());
-            (BatchRequestSteps as IDictionary<string, BatchRequestStep>).Add(batchRequestStep.RequestId, batchRequestStep);
+            var requestMessage = await RequestAdapter.ConvertToNativeRequestAsync<HttpRequestMessage>(requestInformation);
+            BatchRequestStep batchRequestStep = new BatchRequestStep(requestId, requestMessage);
+            (BatchRequestSteps as IDictionary<string, BatchRequestStep>)!.Add(batchRequestStep.RequestId, batchRequestStep);
             return requestId;
         }
 
@@ -155,12 +138,7 @@ namespace Microsoft.Graph
         public bool RemoveBatchRequestStepWithId(string requestId)
         {
             if (string.IsNullOrEmpty(requestId))
-                throw new ClientException(
-                    new Error
-                        {
-                            Code = ErrorConstants.Codes.InvalidArgument,
-                            Message = string.Format(ErrorConstants.Messages.NullParameter, nameof(requestId))
-                        });
+                throw new ArgumentNullException(nameof(requestId));
 
             bool isRemoved = false;
             if (BatchRequestSteps.ContainsKey(requestId)) {
@@ -278,16 +256,12 @@ namespace Microsoft.Graph
                 HttpRequestMessage clonedRequest = await request.CloneAsync().ConfigureAwait(false);
                 using (Stream streamContent = await clonedRequest.Content.ReadAsStreamAsync().ConfigureAwait(false))
                 {
-                    return JsonDocument.Parse(streamContent);
+                    return await JsonDocument.ParseAsync(streamContent);
                 }
             }
             catch (Exception ex)
             {
-                throw new ClientException(new Error
-                {
-                    Code = ErrorConstants.Codes.InvalidRequest,
-                    Message = ErrorConstants.Messages.UnableToDeserializeContent
-                }, ex);
+                throw new ClientException( ErrorConstants.Messages.UnableToDeserializeContent, ex);
             }
         }
 

@@ -4,13 +4,14 @@
 
 namespace Microsoft.Graph
 {
+    using Microsoft.Kiota.Abstractions.Serialization;
     using System;
     using System.Collections.Generic;
 
     /// <summary>
     /// The IUploadSession interface
     /// </summary>
-    public interface IUploadSession
+    public interface IUploadSession: IParsable, IAdditionalDataHolder
     {
         /// <summary>
         /// Expiration date of the upload session
@@ -20,7 +21,7 @@ namespace Microsoft.Graph
         /// <summary>
         /// The ranges yet to be uploaded to the server
         /// </summary>
-        IEnumerable<string> NextExpectedRanges { get; set; }
+        List<string> NextExpectedRanges { get; set; }
 
         /// <summary>
         /// The URL for upload
