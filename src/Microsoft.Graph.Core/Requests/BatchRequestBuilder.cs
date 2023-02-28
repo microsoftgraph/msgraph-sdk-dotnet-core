@@ -45,7 +45,7 @@ namespace Microsoft.Graph.Core.Requests
         public async Task<BatchResponseContent> PostAsync(BatchRequestContent batchRequestContent, CancellationToken cancellationToken = default)
         {
             _ = batchRequestContent ?? throw new ArgumentNullException(nameof(batchRequestContent));
-            var requestInfo = await CreatePostRequestInformationAsync(batchRequestContent);
+            var requestInfo = await ToPostRequestInformationAsync(batchRequestContent);
             var nativeResponseHandler = new NativeResponseHandler();
             requestInfo.SetResponseHandler(nativeResponseHandler);
             await this.RequestAdapter.SendNoContentAsync(requestInfo, cancellationToken:cancellationToken);
@@ -56,7 +56,7 @@ namespace Microsoft.Graph.Core.Requests
         /// Create <see cref="RequestInformation"/> instance to post to batch endpoint
         /// <param name="batchRequestContent">The <see cref="BatchRequestContent"/> for the request</param>
         /// </summary>
-        public async Task<RequestInformation> CreatePostRequestInformationAsync(BatchRequestContent batchRequestContent)
+        public async Task<RequestInformation> ToPostRequestInformationAsync(BatchRequestContent batchRequestContent)
         {
             _ = batchRequestContent ?? throw new ArgumentNullException(nameof(batchRequestContent));
             var requestInfo = new RequestInformation

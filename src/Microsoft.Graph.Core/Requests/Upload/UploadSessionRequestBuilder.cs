@@ -35,7 +35,7 @@ namespace Microsoft.Graph
         /// <returns>The task to await.</returns>
         public async Task DeleteAsync(CancellationToken cancellationToken = default)
         {
-            var requestInformation = this.CreateDeleteRequestInformationAsync();
+            var requestInformation = this.ToDeleteRequestInformation();
             await this.requestAdapter.SendNoContentAsync(requestInformation, cancellationToken: cancellationToken);
         }
 
@@ -43,7 +43,7 @@ namespace Microsoft.Graph
         /// Creates <see cref="RequestInformation"/> instance for a DELETE request
         /// </summary>
         /// <returns>The <see cref="RequestInformation"/> instance.</returns>
-        public RequestInformation CreateDeleteRequestInformationAsync()
+        public RequestInformation ToDeleteRequestInformation()
         {
             var requestInfo = new RequestInformation
             {
@@ -60,7 +60,7 @@ namespace Microsoft.Graph
         /// <returns>The Item.</returns>
         public async Task<IUploadSession> GetAsync(CancellationToken cancellationToken = default)
         {
-            var requestInformation = this.CreateGetRequestInformationAsync();
+            var requestInformation = this.ToGetRequestInformation();
             var nativeResponseHandler = new NativeResponseHandler();
             requestInformation.SetResponseHandler(nativeResponseHandler);
             await this.requestAdapter.SendNoContentAsync(requestInformation, cancellationToken: cancellationToken).ConfigureAwait(false);
@@ -72,7 +72,7 @@ namespace Microsoft.Graph
         /// Creates <see cref="RequestInformation"/> instance for a GET request
         /// </summary>
         /// <returns>The <see cref="RequestInformation"/> instance.</returns>
-        public RequestInformation CreateGetRequestInformationAsync()
+        public RequestInformation ToGetRequestInformation()
         {
             var requestInfo = new RequestInformation
             {
