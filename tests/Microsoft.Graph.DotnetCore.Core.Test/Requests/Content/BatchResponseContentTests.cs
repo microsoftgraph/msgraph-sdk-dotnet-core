@@ -285,8 +285,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
             // Act
             ServiceException serviceException = await Assert.ThrowsAsync<ServiceException>(() => batchResponseContent.GetResponseByIdAsync<TestDriveItem>("4"));
             // Assert we detect the incorrect response and give usable Service Exception
-            //Assert.Equal("20117", serviceException.Error.Code);
-            ///Assert.Equal(HttpStatusCode.Conflict, serviceException.StatusCode);//status 409
+            Assert.Equal(HttpStatusCode.Conflict, (HttpStatusCode)serviceException.ResponseStatusCode);//status 409
             Assert.NotNull(serviceException.RawResponseBody);
 
             // Act by trying to fetch notbook that doesn't exist
