@@ -5,11 +5,12 @@
 namespace Microsoft.Graph
 {
     using System;
-
+    using Microsoft.Kiota.Abstractions;
+    
     /// <summary>
     /// Graph client exception.
     /// </summary>
-    public class ClientException : Exception
+    public class ClientException : ApiException
     {
         /// <summary>
         /// Creates a new client exception.
