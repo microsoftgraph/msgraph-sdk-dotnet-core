@@ -6,14 +6,23 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
 {
     using System.Collections.Generic;
     using System.Net;
+    using System;
     using System.Net.Http;
     using Xunit;
     using System.Threading.Tasks;
     using Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels;
     using System.IO;
+    using Microsoft.Kiota.Serialization.Json;
+    using Microsoft.Kiota.Abstractions.Serialization;
 
     public class BatchResponseContentTests
     {
+        public BatchResponseContentTests()
+        {
+            // register the default serialization instance as the generator would.
+            ParseNodeFactoryRegistry.DefaultInstance.ContentTypeAssociatedFactories.TryAdd(CoreConstants.MimeTypeNames.Application.Json, new JsonParseNodeFactory());
+        }
+
         [Fact]
         public async Task BatchResponseContent_InitializeWithNoContentAsync()
         {
@@ -25,7 +34,6 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
 
             Assert.NotNull(responses);
             Assert.Null(httpResponse);
-            Assert.NotNull(batchResponseContent.Serializer);
             Assert.True(responses.Count.Equals(0));
         }
 
@@ -44,17 +52,15 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
 
             Assert.NotNull(responses);
             Assert.Null(httpResponse);
-            Assert.NotNull(batchResponseContent.Serializer);
             Assert.True(responses.Count.Equals(0));
         }
 
         [Fact]
         public void BatchResponseContent_InitializeWithNullResponseMessage()
         {
-            ClientException ex = Assert.Throws<ClientException>(() => new BatchResponseContent(null));
+            ArgumentNullException ex = Assert.Throws<ArgumentNullException>(() => new BatchResponseContent(null));
 
-            Assert.Equal(ErrorConstants.Codes.InvalidArgument, ex.Error.Code);
-            Assert.Equal(string.Format(ErrorConstants.Messages.NullParameter, "httpResponseMessage"), ex.Error.Message);
+            Assert.Contains("httpResponseMessage", ex.Message);
         }
 
         [Fact]
@@ -279,8 +285,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
             // Act
             ServiceException serviceException = await Assert.ThrowsAsync<ServiceException>(() => batchResponseContent.GetResponseByIdAsync<TestDriveItem>("4"));
             // Assert we detect the incorrect response and give usable Service Exception
-            Assert.Equal("20117", serviceException.Error.Code);
-            Assert.Equal(HttpStatusCode.Conflict, serviceException.StatusCode);//status 409
+            Assert.Equal(HttpStatusCode.Conflict, (HttpStatusCode)serviceException.ResponseStatusCode);//status 409
             Assert.NotNull(serviceException.RawResponseBody);
 
             // Act by trying to fetch notbook that doesn't exist

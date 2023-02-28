@@ -10,37 +10,42 @@ on:
 jobs:
   build:
     name: Build and Test
-    runs-on: windows-2019 # windows-latest does not currently support code-QL
+    runs-on: windows-latest
     env:
       solutionName: Microsoft.Graph.Core.sln
       relativePath: ./src/Microsoft.Graph.Core
     steps:
-      - uses: actions/checkout@v3.3.0
+      - uses: actions/checkout@v3.0.2
 
-      - name: Add msbuild to PATH
-        uses: microsoft/setup-msbuild@v1.3 # use msbuild due to dotnet commands not supporting some targets https://github.com/microsoftgraph/msgraph-sdk-dotnet-core/issues/227
-
-      - uses: nuget/setup-nuget@v1
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v2.1.0
         with:
-          nuget-version: '5.x'
+          dotnet-version: 6.0.x
+
+      - name: Setup JDK for android targets
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'microsoft'
+          java-version: '11'
 
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v2
         with:
           languages: csharp
 
-      - name: Setup VSTest
-        uses: darenm/Setup-VSTest@v1
+      - name: Install needed dotnet workloads
+        run: dotnet workload restore ${{ env.solutionName }}
 
-      - name : Nuget Restore
-        run: msbuild -t:restore -m
+      - name: Restore nuget dependencies
+        run: dotnet restore ${{ env.solutionName }}
 
-      - name: Build Project
-        run: msbuild ${{ env.solutionName }} -m
+      - name: Build
+        run: dotnet build ${{ env.solutionName }} --no-restore -c Debug /p:UseSharedCompilation=false
 
-      - name: Test Project
-        run: vstest.console.exe ./tests/Microsoft.Graph.DotnetCore.Core.Test/bin/Debug/netcoreapp3.1/Microsoft.Graph.DotnetCore.Core.Test.dll
+      - name: Test
+        run: dotnet test ${{ env.solutionName }} --no-build --verbosity normal -c Debug /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=opencover
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v2
+
 

@@ -10,29 +10,13 @@ namespace Microsoft.Graph
     using System.Linq;
     using System.Net.Http;
     using System.Threading.Tasks;
+    using Microsoft.Kiota.Http.HttpClientLibrary.Extensions;
 
     /// <summary>
     /// Contains extension methods for <see cref="HttpRequestMessage"/>
     /// </summary>
     public static class HttpRequestMessageExtensions
     {
-        /// <summary>
-        /// Checks the HTTP request's content to determine if it's buffered or streamed content.
-        /// </summary>
-        /// <param name="httpRequestMessage">The <see cref="HttpRequestMessage"/>needs to be sent.</param>
-        /// <returns></returns>
-        internal static bool IsBuffered(this HttpRequestMessage httpRequestMessage)
-        {
-            HttpContent requestContent = httpRequestMessage.Content;
-
-            if ((httpRequestMessage.Method == HttpMethod.Put || httpRequestMessage.Method == HttpMethod.Post || httpRequestMessage.Method.Method.Equals("PATCH"))
-                && requestContent != null && (requestContent.Headers.ContentLength == null || (int)requestContent.Headers.ContentLength == -1))
-            {
-                return false;
-            }
-            return true;
-        }
-
         /// <summary>
         /// Get's feature request header value from the incoming <see cref="HttpRequestMessage"/>
         /// </summary>
@@ -67,8 +51,10 @@ namespace Microsoft.Graph
                 newRequest.Headers.TryAddWithoutValidation(header.Key, header.Value);
 
             // Copy request properties.
+#pragma warning disable CS0618
             foreach (var property in originalRequest.Properties)
                 newRequest.Properties.Add(property);
+#pragma warning restore CS0618
 
             // Set Content if previous request had one.
             if (originalRequest.Content != null)
@@ -98,41 +84,13 @@ namespace Microsoft.Graph
         public static GraphRequestContext GetRequestContext(this HttpRequestMessage httpRequestMessage)
         {
             GraphRequestContext requestContext = new GraphRequestContext();
+#pragma warning disable CS0618
             if (httpRequestMessage.Properties.TryGetValue(nameof(GraphRequestContext), out var requestContextObject))
+#pragma warning restore CS0618
             {
                 requestContext = (GraphRequestContext)requestContextObject;
             }
             return requestContext;
         }
-
-        /// <summary>
-        /// Gets a <see cref="IMiddlewareOption"/> from <see cref="HttpRequestMessage"/>
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="httpRequestMessage">The <see cref="HttpRequestMessage"/> representation of the request.</param>
-        /// <returns>A middleware option</returns>
-        public static T GetMiddlewareOption<T>(this HttpRequestMessage httpRequestMessage) where T : IMiddlewareOption
-        {
-            IMiddlewareOption option = null;
-            GraphRequestContext requestContext = httpRequestMessage.GetRequestContext();
-            if (requestContext.MiddlewareOptions != null)
-            {
-                requestContext.MiddlewareOptions.TryGetValue(typeof(T).Name, out option);
-            }
-            return (T)option;
-        }
-
-        /// <summary>
-        /// Gets a <see cref="ScopedAuthenticationProviderOptions"/> from <see cref="HttpRequestMessage"/>
-        /// </summary>
-        /// <param name="httpRequestMessage">The <see cref="HttpRequestMessage"/> representation of the request.</param>
-        /// <returns>A middleware option of type <see cref="ScopedAuthenticationProviderOptions"/></returns>
-        internal static ScopedAuthenticationProviderOptions GetScopedAuthenticationProviderOption(this HttpRequestMessage httpRequestMessage)
-        {
-            AuthenticationHandlerOption authHandlerOption = httpRequestMessage.GetMiddlewareOption<AuthenticationHandlerOption>();
-
-            return authHandlerOption?.AuthenticationProviderOption as ScopedAuthenticationProviderOptions ?? new ScopedAuthenticationProviderOptions();
-        }
-
     }
 }

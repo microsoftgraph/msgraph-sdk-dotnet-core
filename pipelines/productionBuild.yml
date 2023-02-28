@@ -30,15 +30,17 @@ variables:
   PROJECT_PATH: '.\src\Microsoft.Graph.Core\Microsoft.Graph.Core.csproj'
 
 pool:
-  name: Hosted Windows 2019 with VS2019
-  demands:
-  - msbuild
-  - vstest
+  vmImage: 'windows-latest'
 
 steps:
 - checkout: self
   clean: true
   fetchDepth: 1
+
+- task: UseDotNet@2
+  displayName: 'Use .NET 6'
+  inputs:
+    version: 6.x
 
 - task: securedevelopmentteam.vss-secure-development-tools.build-task-credscan.CredScan@2
   displayName: 'Run CredScan'
@@ -53,27 +55,22 @@ steps:
     arguments: '-packageName "$(PACKAGE_NAME)" -projectPath "$(PROJECT_PATH)"'
   enabled: true
 
-- task: NuGetCommand@2
-  displayName: 'NuGet restore'
+- powershell: |
+    dotnet workload restore $(Build.SourcesDirectory)\Microsoft.Graph.Core.sln
+  displayName: 'dotnet workload restore'
 
-- task: MSBuild@1
-  displayName: 'Build solution to run tests'
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet restore'
   inputs:
-    configuration: debug
-    clean: true
+    command: restore
+    projects: '**/*.csproj'
 
-- task: VSTest@2
-  displayName: 'Run enabled tests'
+- task: DotNetCoreCLI@2
+  displayName: 'run tests'
   inputs:
-    testAssemblyVer2: |
-      **/netcoreapp3.1/Microsoft.Graph.DotnetCore.Core.Test.dll
-      !**/*TestAdapter.dll
-      !**/obj/**
-    diagnosticsEnabled: true
-    configuration: debug
-    searchFolder: 'tests'
-    platform: AnyCPU
-    otherConsoleOptions: '/Framework:.NETCoreApp,Version=v3.1'
+    command: 'test'
+    projects: '$(Build.SourcesDirectory)\tests\Microsoft.Graph.DotnetCore.Core.Test\Microsoft.Graph.DotnetCore.Core.Test.csproj'
+    arguments: '--configuration Debug --verbosity normal'
 
 - task: PowerShell@2
   displayName: 'Enable signing'
@@ -83,12 +80,11 @@ steps:
     arguments: '-projectPath "$(PROJECT_PATH)"'
   enabled: true
 
-- task: MSBuild@1
-  displayName: 'Build solution for production release signing'
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet build'
   inputs:
-    solution: src/**/Microsoft.Graph.Core.csproj
-    configuration: release
-    clean: true
+    projects: '$(Build.SourcesDirectory)\src\Microsoft.Graph.Core\Microsoft.Graph.Core.csproj'
+    arguments: '-c Release --no-incremental'
 
 - task: SFP.build-tasks.custom-build-task-1.EsrpCodeSigning@1
   displayName: 'ESRP DLL Strong Name (Microsoft.Graph.Core) (AKV)'
@@ -163,12 +159,10 @@ steps:
      ]
     SessionTimeout: 20
 
-- task: MSBuild@1
-  displayName: 'Create NuGet package for production release'
-  inputs:
-    solution: '**/Microsoft.Graph.Core.csproj'
-    configuration: 'release'
-    msbuildArguments: '-t:pack /p:NoBuild=true /p:PackageOutputPath=$(Build.ArtifactStagingDirectory) /p:IncludeSymbols=true /p:SymbolPackageFormat=snupkg'
+# arguments are not parsed in DotNetCoreCLI@2 task for `pack` command, that's why we have a custom pack command here
+- powershell: |
+    dotnet pack $env:BUILD_SOURCESDIRECTORY/src/Microsoft.Graph.Core/Microsoft.Graph.Core.csproj /p:IncludeSymbols=true /p:SymbolPackageFormat=snupkg --no-build --output $env:BUILD_ARTIFACTSTAGINGDIRECTORY --configuration Release
+  displayName: dotnet pack
 
 - task: SFP.build-tasks.custom-build-task-1.EsrpCodeSigning@1
   displayName: 'ESRP NuGet CodeSigning'

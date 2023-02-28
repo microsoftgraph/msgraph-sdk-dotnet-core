@@ -5,18 +5,19 @@
 namespace Microsoft.Graph
 {
     using System;
-
+    using Microsoft.Kiota.Abstractions;
+    
     /// <summary>
     /// Graph client exception.
     /// </summary>
-    public class ClientException : ServiceException
+    public class ClientException : ApiException
     {
         /// <summary>
         /// Creates a new client exception.
         /// </summary>
-        /// <param name="error">The error that triggered the exception.</param>
+        /// <param name="message">The exception message.</param>
         /// <param name="innerException">The possible innerException.</param>
-        public ClientException(Error error, Exception innerException = null) : base(error, innerException)
+        public ClientException(string message, Exception innerException = null) : base(message, innerException)
         {
         }
     }

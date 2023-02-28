@@ -4,6 +4,7 @@
 
 namespace Microsoft.Graph
 {
+    using Microsoft.Kiota.Abstractions;
     using System.Collections.Generic;
     using System.Threading;
 
@@ -18,14 +19,6 @@ namespace Microsoft.Graph
         public string ClientRequestId { get; set; }
 
         /// <summary>
-        /// A MiddlewareOptions property
-        /// </summary>
-        public IDictionary<string, IMiddlewareOption> MiddlewareOptions {
-            get => _middlewareOptions ?? (_middlewareOptions = new Dictionary<string, IMiddlewareOption>());
-            set => _middlewareOptions = value;
-        }
-
-        /// <summary>
         /// A CancellationToken property
         /// </summary>
         public CancellationToken CancellationToken { get; set; }
@@ -34,12 +27,5 @@ namespace Microsoft.Graph
         /// A FeatureUsage property
         /// </summary>
         public FeatureFlag FeatureUsage { get; set; }
-
-        /// <summary>
-        /// A <see cref="GraphUserAccount"/> property representing the logged in user
-        /// </summary>
-        public GraphUserAccount User { get; set; }
-
-        private IDictionary<string, IMiddlewareOption> _middlewareOptions;
     }
 }
