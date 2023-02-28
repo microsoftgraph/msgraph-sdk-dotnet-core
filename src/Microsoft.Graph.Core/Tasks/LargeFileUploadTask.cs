@@ -44,7 +44,7 @@ namespace Microsoft.Graph
                 throw new ArgumentException("Must provide stream that can read and seek");
             }
             this.Session = ExtractSessionFromParsable(uploadSession);
-            this._requestAdapter = requestAdapter ?? this.InitializeClient(Session.UploadUrl).RequestAdapter;
+            this._requestAdapter = requestAdapter ?? this.InitializeAdapter(Session.UploadUrl);
             this._uploadStream = uploadStream;
             this._rangesRemaining = this.GetRangesRemaining(Session);
             this._maxSliceSize = maxSliceSize < 0 ? DefaultMaxSliceSize : maxSliceSize;
@@ -80,11 +80,11 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="uploadUrl">Url to perform the upload to from the session</param>
         /// <returns></returns>
-        private IBaseClient InitializeClient(string uploadUrl)
+        private IRequestAdapter InitializeAdapter(string uploadUrl)
         {
             HttpClient httpClient = GraphClientFactory.Create(); //no auth
             httpClient.SetFeatureFlag(FeatureFlag.FileUploadTask);
-            return new BaseClient(uploadUrl, new AnonymousAuthenticationProvider());
+            return new BaseGraphRequestAdapter(new AnonymousAuthenticationProvider(),httpClient: httpClient){ BaseUrl = uploadUrl };
         }
 
         /// <summary>
