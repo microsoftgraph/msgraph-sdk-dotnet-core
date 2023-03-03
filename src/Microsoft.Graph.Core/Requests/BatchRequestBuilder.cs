@@ -55,7 +55,6 @@ namespace Microsoft.Graph.Core.Requests
         /// <summary>
         /// Sends out the <see cref="BatchRequestContentCollection"/> using the POST method
         /// </summary>
-        /// <param name="builder"></param>
         /// <param name="batchRequestContentCollection">The <see cref="BatchRequestContentCollection"/> for the request</param>
         /// <param name="cancellationToken"><see cref="CancellationToken"/> to use for cancelling requests</param>
         /// <returns></returns>

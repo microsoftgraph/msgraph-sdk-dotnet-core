@@ -30,7 +30,7 @@
             batchResponses.Add(new KeyedBatchResponseContent(keys, content));
         }
 
-        private BatchResponseContent? GetBatchResponseContaining(string requestId)
+        private BatchResponseContent GetBatchResponseContaining(string requestId)
         {
             return batchResponses.FirstOrDefault(b => b.Keys.Contains(requestId))?.Response;
         }
