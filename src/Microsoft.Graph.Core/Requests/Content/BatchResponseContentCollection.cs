@@ -6,13 +6,9 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-    using System.Net;
     using System.Net.Http;
-    using System.Net.Http.Headers;
-    using System.Text;
-    using System.Text.Json;
-    using System.Threading;
     using System.Threading.Tasks;
+
     /// <summary>
     /// Handles batch request responses.
     /// </summary>
@@ -27,7 +23,7 @@
 
         internal void AddResponse(IEnumerable<string> keys, BatchResponseContent content)
         {
-            batchResponses.Add(new KeyedBatchResponseContent(keys, content));
+            batchResponses.Add(new KeyedBatchResponseContent(new HashSet<string>(keys), content));
         }
 
         private BatchResponseContent GetBatchResponseContaining(string requestId)
