@@ -53,6 +53,26 @@ namespace Microsoft.Graph.Core.Requests
         }
 
         /// <summary>
+        /// Sends out the <see cref="BatchRequestContentCollection"/> using the POST method
+        /// </summary>
+        /// <param name="batchRequestContentCollection">The <see cref="BatchRequestContentCollection"/> for the request</param>
+        /// <param name="cancellationToken"><see cref="CancellationToken"/> to use for cancelling requests</param>
+        /// <returns></returns>
+        public async Task<BatchResponseContentCollection> PostAsync(BatchRequestContentCollection batchRequestContentCollection, CancellationToken cancellationToken = default)
+        {
+            var collection = new BatchResponseContentCollection();
+
+            var requests = batchRequestContentCollection.GetBatchRequestsForExecution();
+            foreach (var request in requests)
+            {
+                var response = await PostAsync(request, cancellationToken);
+                collection.AddResponse(request.BatchRequestSteps.Keys, response);
+            }
+
+            return collection;
+        }
+
+        /// <summary>
         /// Create <see cref="RequestInformation"/> instance to post to batch endpoint
         /// <param name="batchRequestContent">The <see cref="BatchRequestContent"/> for the request</param>
         /// </summary>
