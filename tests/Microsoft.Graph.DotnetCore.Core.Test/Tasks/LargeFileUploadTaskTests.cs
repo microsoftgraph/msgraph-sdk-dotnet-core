@@ -30,6 +30,27 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
         }
 
         [Fact]
+        public void ThrowsOnEmptyStream()
+        {
+            
+            var uploadSession = new UploadSession
+            {
+                NextExpectedRanges = new List<string>() { "0-" },
+                UploadUrl = "http://localhost",
+                ExpirationDateTime = DateTimeOffset.Parse("2019-11-07T06:39:31.499Z")
+            };
+
+            int maxSliceSize = 200 * 1024;//slice size that is 200 KB
+
+            // Act 
+            var exception = Assert.Throws<ArgumentException>(() =>
+            {
+                using Stream stream = new MemoryStream();
+                return new LargeFileUploadTask<TestDriveItem>(uploadSession, stream, maxSliceSize);
+            });
+            Assert.NotNull(exception);
+        }
+        [Fact]
         public void AllowsVariableSliceSize()
         {
             byte[] mockData = new byte[1000000];

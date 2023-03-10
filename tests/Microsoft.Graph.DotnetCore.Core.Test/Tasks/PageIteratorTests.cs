@@ -214,6 +214,29 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
         }
 
         [Fact]
+        public async Task Given_CollectionPage_Delta_Link_Property_It_Iterates_Across_Pages()
+        {
+            // // Arrange the sample first page of 17 events to initialize the original collection page.
+            var originalPage = new TestEventsDeltaResponse() { Value = new List<TestEventItem>() };
+            originalPage.OdataDeltaLink = "http://localhost/events?$skip=11";
+            var inputEventCount = 17;
+            for (int i = 0; i < inputEventCount; i++)
+            {
+                originalPage.Value.Add(new TestEventItem() { Subject = $"Subject{i}" });
+            }
+            
+            Func<TestEventItem, bool> processEachEvent = (e) => true;
+
+            // Act by calling the iterator
+            var eventsDeltaPageIterator = PageIterator<TestEventItem, TestEventsDeltaResponse>.CreatePageIterator(baseClient, originalPage, processEachEvent);
+            await eventsDeltaPageIterator.IterateAsync();
+
+            // Assert that paging was paused and got to the next page
+            Assert.Equal(PagingState.Delta, eventsDeltaPageIterator.State);
+            Assert.Equal("http://localhost/events?$skip=11",eventsDeltaPageIterator.Deltalink);
+        }
+
+        [Fact]
         public async Task Given_CollectionPage_It_Iterates_Across_Pages_With_Async_Delegate()
         {
             // // Arrange the sample first page of 17 events to initialize the original collection page.

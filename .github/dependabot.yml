@@ -2,12 +2,6 @@ version: 2
 updates:
 - package-ecosystem: nuget
   directory: "/"
-  target-branch: feature/3.0
-  schedule:
-    interval: daily
-  open-pull-requests-limit: 10
-- package-ecosystem: nuget
-  directory: "/"
   schedule:
     interval: daily
   open-pull-requests-limit: 10

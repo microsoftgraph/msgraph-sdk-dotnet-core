@@ -43,6 +43,10 @@ namespace Microsoft.Graph
             {
                 throw new ArgumentException("Must provide stream that can read and seek");
             }
+            if (uploadStream.Length < 1)
+            {
+                throw new ArgumentException("Must a stream that is not empty");
+            }
             this.Session = ExtractSessionFromParsable(uploadSession);
             this._requestAdapter = requestAdapter ?? this.InitializeAdapter(Session.UploadUrl);
             this._uploadStream = uploadStream;
