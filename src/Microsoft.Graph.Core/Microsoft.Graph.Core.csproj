@@ -20,10 +20,10 @@
     <DelaySign>false</DelaySign>
     <AssemblyOriginatorKeyFile>35MSSharedLib1024.snk</AssemblyOriginatorKeyFile>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <VersionPrefix>3.0.1</VersionPrefix>
+    <VersionPrefix>3.0.2</VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <PackageReleaseNotes>
-- Adds support for enhanced batch requests (https://github.com/microsoftgraph/msgraph-sdk-dotnet-core/issues/612)
+- Fixes missing delta link after completed iteration in the PageIterator (https://github.com/microsoftgraph/msgraph-sdk-dotnet-core/issues/619)
     </PackageReleaseNotes>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>

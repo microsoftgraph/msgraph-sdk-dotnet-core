@@ -12,6 +12,11 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
     {
         /// <summary>Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.</summary>
         public IDictionary<string, object> AdditionalData { get; set; }
+        
+        public string OdataDeltaLink { get; set; }
+        
+        public string OdataNextLink { get; set; }
+
         public List<TestEventItem> Value { get; set; }
         /// <summary>
         /// Instantiates a new eventsResponse and sets the default values.
@@ -26,6 +31,8 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
         public IDictionary<string, Action<IParseNode>> GetFieldDeserializers()
         {
             return new Dictionary<string, Action<IParseNode>> {
+                {"@odata.deltaLink", n => { OdataDeltaLink = n.GetStringValue(); } },
+                {"@odata.nextLink", n => { OdataNextLink = n.GetStringValue(); } },
                 {"value", (n) => { Value = n.GetCollectionOfObjectValues<TestEventItem>(TestEventItem.CreateFromDiscriminatorValue).ToList(); } },
             };
         }
@@ -36,6 +43,8 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
         public void Serialize(ISerializationWriter writer)
         {
             _ = writer ?? throw new ArgumentNullException(nameof(writer));
+            writer.WriteStringValue("@odata.deltaLink", OdataDeltaLink);
+            writer.WriteStringValue("@odata.nextLink", OdataNextLink);
             writer.WriteCollectionOfObjectValues<TestEventItem>("value", Value);
             writer.WriteAdditionalData(AdditionalData);
         }
