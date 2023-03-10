@@ -354,11 +354,11 @@ namespace Microsoft.Graph
         private static string ExtractNextLinkFromParsable(TCollectionPage parsableCollection, string nextLinkPropertyName = "OdataNextLink")
         {
             var nextLinkProperty = parsableCollection.GetType().GetProperty(nextLinkPropertyName);
-            if (nextLinkProperty != null)
+            if (nextLinkProperty != null && 
+                nextLinkProperty.GetValue(parsableCollection, null) is string nextLinkString  
+                && !string.IsNullOrEmpty(nextLinkString))
             {
-                var nextLinkString = nextLinkProperty.GetValue(parsableCollection, null) as string ?? string.Empty;
-                if (!string.IsNullOrEmpty(nextLinkString))
-                    return nextLinkString;
+                return nextLinkString;
             }
             
             // the next link property may not be defined in the response schema so we also check its presence in the additional data bag
