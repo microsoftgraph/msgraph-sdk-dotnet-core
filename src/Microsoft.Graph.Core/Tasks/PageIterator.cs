@@ -183,9 +183,19 @@ namespace Microsoft.Graph
             }
 
             // There are no pages CURRENTLY ready to be paged. Attempt to call delta query later.
-            else if (_currentPage.AdditionalData != null && _currentPage.AdditionalData.TryGetValue(CoreConstants.OdataInstanceAnnotations.DeltaLink, out object deltalink))
+            if (_currentPage.AdditionalData != null && _currentPage.AdditionalData.TryGetValue(CoreConstants.OdataInstanceAnnotations.DeltaLink, out object deltalink))
             {
                 Deltalink = deltalink.ToString();
+                State = PagingState.Delta;
+                Nextlink = string.Empty;
+
+                return false;
+            }
+            var deltaLink = ExtractNextLinkFromParsable(_currentPage, "OdataDeltaLink");
+            // There are no pages CURRENTLY ready to be paged. Attempt to call delta query later.
+            if (!string.IsNullOrEmpty(deltaLink))
+            {
+                Deltalink = deltaLink;
                 State = PagingState.Delta;
                 Nextlink = string.Empty;
 
@@ -344,10 +354,13 @@ namespace Microsoft.Graph
         private static string ExtractNextLinkFromParsable(TCollectionPage parsableCollection, string nextLinkPropertyName = "OdataNextLink")
         {
             var nextLinkProperty = parsableCollection.GetType().GetProperty(nextLinkPropertyName);
-            if (nextLinkProperty != null)
+            if (nextLinkProperty != null && 
+                nextLinkProperty.GetValue(parsableCollection, null) is string nextLinkString  
+                && !string.IsNullOrEmpty(nextLinkString))
             {
-                return nextLinkProperty.GetValue(parsableCollection, null) as string ?? string.Empty;
+                return nextLinkString;
             }
+            
             // the next link property may not be defined in the response schema so we also check its presence in the additional data bag
             return parsableCollection.AdditionalData.TryGetValue(CoreConstants.OdataInstanceAnnotations.NextLink,out var nextLink) ? nextLink.ToString() : string.Empty;
         }
