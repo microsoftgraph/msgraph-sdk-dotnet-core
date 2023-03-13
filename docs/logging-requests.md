@@ -66,15 +66,15 @@ The best practice for this is to add this to the end of the handler list so that
 
 ```cs
 // create the auth provider
-var authenticationProvider = new TokenCredentialAuthProvider(clientCertificateCredential,scopes);
+var authProvider = new AzureIdentityAuthenticationProvider(clientSecretCredential, scopes);
 
 // get the default list of handlers and add the logging handler to the list
-var handlers = GraphClientFactory.CreateDefaultHandlers(authenticationProvider);
+var handlers = GraphClientFactory.CreateDefaultHandlers();
 handlers.Add(new LoggingHandler());
 
 // create the GraphServiceClient with logging support
 var httpClient = GraphClientFactory.Create(handlers);
-GraphServiceClient graphServiceClient = new GraphServiceClient(httpClient);
+GraphServiceClient graphServiceClient = new GraphServiceClient(httpClient, authProvider);
 
 // make a request with logging enabled!!
 User me = await graphServiceClient.Me.GetAsync();
