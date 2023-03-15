@@ -34,6 +34,10 @@
         /// <param name="batchRequestLimit">Number of requests that may be placed in a single batch</param>
         public BatchRequestContentCollection(IBaseClient baseClient, int batchRequestLimit)
         {
+            if(baseClient == null)
+            {
+                throw new ArgumentNullException(nameof(baseClient));
+            }
             if (batchRequestLimit < 2 || batchRequestLimit > CoreConstants.BatchRequest.MaxNumberOfRequests)
             {
                 throw new ArgumentOutOfRangeException(nameof(batchRequestLimit));
