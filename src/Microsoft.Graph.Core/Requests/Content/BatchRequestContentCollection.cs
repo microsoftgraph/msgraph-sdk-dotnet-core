@@ -3,6 +3,7 @@
     using Microsoft.Kiota.Abstractions;
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Net.Http;
     using System.Threading.Tasks;
 
@@ -13,6 +14,7 @@
     {
         private readonly IBaseClient baseClient;
         private readonly List<BatchRequestContent> batchRequests;
+        private readonly int batchRequestLimit;
         private BatchRequestContent currentRequest;
         private bool readOnly = false;
 
@@ -20,9 +22,24 @@
         /// Constructs a new <see cref="BatchRequestContentCollection"/>.
         /// </summary>
         /// <param name="baseClient">The <see cref="IBaseClient"/> for making requests</param>
-        public BatchRequestContentCollection(IBaseClient baseClient)
+        public BatchRequestContentCollection(IBaseClient baseClient) : this (baseClient, CoreConstants.BatchRequest.MaxNumberOfRequests)
         {
+            
+        }
+
+        /// <summary>
+        /// Constructs a new <see cref="BatchRequestContentCollection"/>.
+        /// </summary>
+        /// <param name="baseClient">The <see cref="IBaseClient"/> for making requests</param>
+        /// <param name="batchRequestLimit">Number of requests that may be placed in a single batch</param>
+        public BatchRequestContentCollection(IBaseClient baseClient, int batchRequestLimit)
+        {
+            if (batchRequestLimit < 2 || batchRequestLimit > CoreConstants.BatchRequest.MaxNumberOfRequests)
+            {
+                throw new ArgumentOutOfRangeException(nameof(batchRequestLimit));
+            }
             this.baseClient = baseClient;
+            this.batchRequestLimit = batchRequestLimit;
             batchRequests = new List<BatchRequestContent>();
             currentRequest = new BatchRequestContent(baseClient);
         }
@@ -38,7 +55,7 @@
         private void SetupCurrentRequest()
         {
             ValidateReadOnly();
-            if (currentRequest.BatchRequestSteps.Count >= CoreConstants.BatchRequest.MaxNumberOfRequests)
+            if (currentRequest.BatchRequestSteps.Count >= batchRequestLimit)
             {
                 batchRequests.Add(currentRequest);
                 currentRequest = new BatchRequestContent(baseClient);
@@ -99,6 +116,26 @@
             }
 
             return batchRequests;
+        }
+
+        /// <summary>
+        /// A BatchRequestSteps property.
+        /// </summary>
+        public IReadOnlyDictionary<string, BatchRequestStep> BatchRequestSteps { get
+            {
+                if (batchRequests.Count > 0)
+                {
+                    IEnumerable<KeyValuePair<string, BatchRequestStep>> result = currentRequest.BatchRequestSteps;
+                    foreach ( var request in batchRequests)
+                    {
+                        result = result.Concat(request.BatchRequestSteps);
+                    }
+
+                    return result.ToDictionary(x => x.Key, x => x.Value);
+                }
+
+                return currentRequest.BatchRequestSteps;
+            }
         }
     }
 }
