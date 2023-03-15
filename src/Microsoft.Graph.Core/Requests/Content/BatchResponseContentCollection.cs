@@ -6,7 +6,9 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using System.Net;
     using System.Net.Http;
+    using System.Text.Json;
     using System.Threading.Tasks;
 
     /// <summary>
@@ -77,10 +79,29 @@
         /// All <see cref="HttpResponseMessage"/> in the dictionary MUST be disposed since they implement <see cref="IDisposable"/>.
         /// </summary>
         /// <returns>A Dictionary of id and <see cref="HttpResponseMessage"/> representing batch responses.</returns>
-        /// <remarks>Not implemented, need help</remarks>
+        /// <remarks>Not implemented, use GetResponsesStatusCodesAsync and fetch individual responses</remarks>
+        [Obsolete("use GetResponsesStatusCodesAsync and then GetResponseByIdAsync")]
         public Task<Dictionary<string, HttpResponseMessage>> GetResponsesAsync()
         {
             throw new NotImplementedException("GetResponsesAsync() is not available in the BatchCollection");
+        }
+
+        /// <summary>
+        /// Gets all batch responses statuscodes <see cref="Dictionary{String, HttpStatusCode}"/>.
+        /// </summary>
+        /// <returns>A Dictionary of id and <see cref="HttpStatusCode"/> representing batch responses.</returns>
+        public async Task<Dictionary<string, HttpStatusCode>> GetResponsesStatusCodesAsync()
+        {
+            Dictionary<string, HttpStatusCode> statuscodes = new Dictionary<string, HttpStatusCode>();
+            foreach(var response in batchResponses)
+            {
+                var batchStatusCodes = await response.Response.GetResponsesStatusCodesAsync();
+                foreach(var result in batchStatusCodes)
+                {
+                    statuscodes.Add(result.Key, result.Value);
+                }
+            }
+            return statuscodes;
         }
     }
 }
