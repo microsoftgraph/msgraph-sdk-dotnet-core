@@ -20,11 +20,12 @@
     <DelaySign>false</DelaySign>
     <AssemblyOriginatorKeyFile>35MSSharedLib1024.snk</AssemblyOriginatorKeyFile>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <VersionPrefix>3.0.2</VersionPrefix>
+    <VersionPrefix>3.0.3</VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <PackageReleaseNotes>
-- Fixes missing delta link after completed iteration in the PageIterator (https://github.com/microsoftgraph/msgraph-sdk-dotnet-core/issues/619)
-- Updates kiota abstraction library dependencies
+- Allows checking for status codes without parsing request bodies in batch requests (https://github.com/microsoftgraph/msgraph-sdk-dotnet-core/pull/626)
+- Updates kiota abstraction library dependencies to fix serialization errors.
+      
     </PackageReleaseNotes>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
@@ -59,7 +60,7 @@
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
     <PackageReference Include="Microsoft.Kiota.Abstractions" Version="1.0.1" />
     <PackageReference Include="Microsoft.Kiota.Authentication.Azure" Version="1.0.1" />
-    <PackageReference Include="Microsoft.Kiota.Serialization.Json" Version="1.0.2" />
+    <PackageReference Include="Microsoft.Kiota.Serialization.Json" Version="1.0.3" />
     <PackageReference Include="Microsoft.Kiota.Serialization.Text" Version="1.0.1" />
     <PackageReference Include="Microsoft.Kiota.Serialization.Form" Version="1.0.1" />
     <PackageReference Include="Microsoft.Kiota.Http.HttpClientLibrary" Version="1.0.1" />

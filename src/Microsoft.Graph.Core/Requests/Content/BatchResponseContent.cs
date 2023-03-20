@@ -56,6 +56,25 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
+        /// Gets all batch responses statuscodes <see cref="Dictionary{String, HttpStatusCode}"/>.
+        /// </summary>
+        /// <returns>A Dictionary of id and <see cref="HttpStatusCode"/> representing batch responses.</returns>
+        public async Task<Dictionary<string, HttpStatusCode>> GetResponsesStatusCodesAsync()
+        {
+            Dictionary<string, HttpStatusCode> statuscodes = new Dictionary<string, HttpStatusCode>();
+            jBatchResponseObject = jBatchResponseObject ?? await GetBatchResponseContentAsync().ConfigureAwait(false);
+            if (jBatchResponseObject == null)
+                return statuscodes;
+
+            if (jBatchResponseObject.RootElement.TryGetProperty(CoreConstants.BatchRequest.Responses, out JsonElement jResponses) && jResponses.ValueKind == JsonValueKind.Array)
+            {
+                foreach (JsonElement jResponseItem in jResponses.EnumerateArray())
+                    statuscodes.Add(jResponseItem.GetProperty(CoreConstants.BatchRequest.Id).ToString(), GetStatusCodeFromJObject(jResponseItem));
+            }
+            return statuscodes;
+        }
+
+        /// <summary>
         /// Gets a batch response as <see cref="HttpResponseMessage"/> for the specified batch request id.
         /// The returned <see cref="HttpResponseMessage"/> MUST be disposed since it implements an <see cref="IDisposable"/>.
         /// </summary>
@@ -170,6 +189,15 @@ namespace Microsoft.Graph
             return responseMessage;
         }
 
+
+        private HttpStatusCode GetStatusCodeFromJObject(JsonElement jResponseItem)
+        {
+            if (jResponseItem.TryGetProperty(CoreConstants.BatchRequest.Status, out JsonElement status))
+            {
+                return (HttpStatusCode)int.Parse(status.ToString());
+            }
+            throw new ArgumentException("Response does not contain statuscode");
+        }
         /// <summary>
         /// Gets the <see cref="HttpContent"/> of a batch response as a <see cref="JsonDocument"/>.
         /// </summary>
