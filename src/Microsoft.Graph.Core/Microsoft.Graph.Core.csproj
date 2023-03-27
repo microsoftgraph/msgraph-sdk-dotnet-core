@@ -20,12 +20,10 @@
     <DelaySign>false</DelaySign>
     <AssemblyOriginatorKeyFile>35MSSharedLib1024.snk</AssemblyOriginatorKeyFile>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <VersionPrefix>3.0.3</VersionPrefix>
+    <VersionPrefix>3.0.4</VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <PackageReleaseNotes>
-- Allows checking for status codes without parsing request bodies in batch requests (https://github.com/microsoftgraph/msgraph-sdk-dotnet-core/pull/626)
-- Updates kiota abstraction library dependencies to fix serialization errors.
-      
+- Updates kiota abstraction library dependencies to for generation updates to reduce code size 
     </PackageReleaseNotes>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
