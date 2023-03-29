@@ -154,6 +154,16 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
+        /// Checks is a <see cref="HttpStatusCode"/> can be marked as successful
+        /// </summary>
+        /// <param name="statusCode">A single <see cref="HttpStatusCode"/>.</param>
+        /// <returns>Returns true if status code is between 200 and 300.</returns>
+        public static bool IsSuccessStatusCode(HttpStatusCode statusCode)
+        {
+            return ((int)statusCode >= 200) && ((int)statusCode <= 299); 
+        }
+
+        /// <summary>
         /// Gets a <see cref="HttpResponseMessage"/> from <see cref="JsonElement"/> representing a batch response item.
         /// </summary>
         /// <param name="jResponseItem">A single batch response item of type <see cref="JsonElement"/>.</param>

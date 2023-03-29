@@ -4,6 +4,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Net;
     using System.Net.Http;
     using System.Threading.Tasks;
 
@@ -140,6 +141,24 @@
 
                 return currentRequest.BatchRequestSteps;
             }
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="BatchRequestContentCollection"/> with all <see cref="BatchRequestStep"/> that failed.
+        /// </summary>
+        /// <param name="responseStatusCodes">A dictionary with response codes, get by executing batchResponseContentCollection.GetResponsesStatusCodesAsync()</param>
+        /// <returns>new <see cref="BatchRequestContentCollection"/> with all failed requests.</returns>
+        public BatchRequestContentCollection NewBatchWithFailedRequests(Dictionary<string, HttpStatusCode> responseStatusCodes)
+        {
+            var request = new BatchRequestContentCollection(this.baseClient, batchRequestLimit);
+            var steps = this.BatchRequestSteps;
+            foreach(var response in responseStatusCodes)
+            {
+                if (steps.ContainsKey(response.Key) && !BatchResponseContent.IsSuccessStatusCode(response.Value)) {
+                    request.AddBatchRequestStep(steps[response.Key].Request);
+                }
+            }
+            return request;
         }
     }
 }
