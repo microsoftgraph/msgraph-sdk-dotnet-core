@@ -5,7 +5,6 @@
 namespace Microsoft.Graph
 {
     using Microsoft.Kiota.Abstractions;
-    using Microsoft.Kiota.Http.HttpClientLibrary;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -152,6 +151,25 @@ namespace Microsoft.Graph
             }
             return isRemoved;
         }
+
+        /// <summary>
+        /// Creates a new <see cref="BatchRequestContent"/> with all <see cref="BatchRequestStep"/> that failed.
+        /// </summary>
+        /// <param name="responseStatusCodes">A dictionary with response codes, get with batchResponseContent.GetResponsesStatusCodesAsync()</param>
+        /// <returns>new <see cref="BatchRequestContent"/> with all failed requests.</returns>
+        public BatchRequestContent NewBatchWithFailedRequests(Dictionary<string, HttpStatusCode> responseStatusCodes)
+        {
+            var request = new BatchRequestContent(this.RequestAdapter);
+            foreach(var response in responseStatusCodes)
+            {
+                if (BatchRequestSteps.ContainsKey(response.Key) && !BatchResponseContent.IsSuccessStatusCode(response.Value)) {
+                    request.AddBatchRequestStep(BatchRequestSteps[response.Key]);
+                }
+            }
+            return request;
+        }
+
+        
 
         /// <summary>
         /// Get the content of the batchRequest in the form of a stream.

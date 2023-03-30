@@ -20,10 +20,11 @@
     <DelaySign>false</DelaySign>
     <AssemblyOriginatorKeyFile>35MSSharedLib1024.snk</AssemblyOriginatorKeyFile>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <VersionPrefix>3.0.4</VersionPrefix>
+    <VersionPrefix>3.0.5</VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <PackageReleaseNotes>
-- Updates kiota abstraction library dependencies to for generation updates to reduce code size 
+- Adds support from create a new batch request from failed requests(https://github.com/microsoftgraph/msgraph-sdk-dotnet-core/pull/636)
+- Updates batchReqeust builders to allow passing of error mappings from service libraries.      
     </PackageReleaseNotes>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
