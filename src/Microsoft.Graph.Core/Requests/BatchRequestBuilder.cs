@@ -5,10 +5,12 @@
 namespace Microsoft.Graph.Core.Requests
 {
     using Microsoft.Kiota.Abstractions;
+    using Microsoft.Kiota.Abstractions.Serialization;
     using System;
     using System.Net.Http;
     using System.Threading;
     using System.Threading.Tasks;
+    using System.Collections.Generic;
 
     /// <summary>
     /// The type BatchRequestBuilder
@@ -41,15 +43,16 @@ namespace Microsoft.Graph.Core.Requests
         /// </summary>
         /// <param name="batchRequestContent">The <see cref="BatchRequestContent"/> for the request</param>
         /// <param name="cancellationToken"><see cref="CancellationToken"/> to use for cancelling requests</param>
+        /// <param name="errorMappings">The error mappings to use for handling error responses</param>
         /// <returns></returns>
-        public async Task<BatchResponseContent> PostAsync(BatchRequestContent batchRequestContent, CancellationToken cancellationToken = default)
+        public async Task<BatchResponseContent> PostAsync(BatchRequestContent batchRequestContent, CancellationToken cancellationToken = default, Dictionary<string, ParsableFactory<IParsable>> errorMappings = null)
         {
             _ = batchRequestContent ?? throw new ArgumentNullException(nameof(batchRequestContent));
             var requestInfo = await ToPostRequestInformationAsync(batchRequestContent);
             var nativeResponseHandler = new NativeResponseHandler();
             requestInfo.SetResponseHandler(nativeResponseHandler);
             await this.RequestAdapter.SendNoContentAsync(requestInfo, cancellationToken:cancellationToken);
-            return new BatchResponseContent(nativeResponseHandler.Value as HttpResponseMessage);
+            return new BatchResponseContent(nativeResponseHandler.Value as HttpResponseMessage, errorMappings);
         }
 
         /// <summary>
@@ -57,15 +60,16 @@ namespace Microsoft.Graph.Core.Requests
         /// </summary>
         /// <param name="batchRequestContentCollection">The <see cref="BatchRequestContentCollection"/> for the request</param>
         /// <param name="cancellationToken"><see cref="CancellationToken"/> to use for cancelling requests</param>
+        /// <param name="errorMappings">The error mappings to use for handling error responses</param>
         /// <returns></returns>
-        public async Task<BatchResponseContentCollection> PostAsync(BatchRequestContentCollection batchRequestContentCollection, CancellationToken cancellationToken = default)
+        public async Task<BatchResponseContentCollection> PostAsync(BatchRequestContentCollection batchRequestContentCollection, CancellationToken cancellationToken = default, Dictionary<string, ParsableFactory<IParsable>> errorMappings = null)
         {
             var collection = new BatchResponseContentCollection();
 
             var requests = batchRequestContentCollection.GetBatchRequestsForExecution();
             foreach (var request in requests)
             {
-                var response = await PostAsync(request, cancellationToken);
+                var response = await PostAsync(request, cancellationToken, errorMappings);
                 collection.AddResponse(request.BatchRequestSteps.Keys, response);
             }
 
