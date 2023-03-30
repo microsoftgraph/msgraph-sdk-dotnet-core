@@ -42,9 +42,11 @@ steps:
   inputs:
     version: 6.x
 
-- task: securedevelopmentteam.vss-secure-development-tools.build-task-credscan.CredScan@2
+- task: securedevelopmentteam.vss-secure-development-tools.build-task-credscan.CredScan@3
   displayName: 'Run CredScan'
   inputs:
+    toolMajorVersion: 'V2'
+    scanFolder: '$(Build.SourcesDirectory)'
     debugMode: false
 
 - task: PowerShell@2
@@ -86,12 +88,13 @@ steps:
     projects: '$(Build.SourcesDirectory)\src\Microsoft.Graph.Core\Microsoft.Graph.Core.csproj'
     arguments: '-c Release --no-incremental'
 
-- task: SFP.build-tasks.custom-build-task-1.EsrpCodeSigning@1
+- task: EsrpCodeSigning@2
   displayName: 'ESRP DLL Strong Name (Microsoft.Graph.Core) (AKV)'
   inputs:
     ConnectedServiceName: 'microsoftgraph ESRP CodeSign DLL and NuGet (AKV)'
     FolderPath: src/Microsoft.Graph.Core/bin/release
-    Pattern: Microsoft.Graph.Core.dll
+    Pattern: '**\*Microsoft.Graph.Core.dll'
+    UseMinimatch: true
     signConfigType: inlineSignParams
     inlineOperation: |
      [
@@ -112,12 +115,13 @@ steps:
      ]
     SessionTimeout: 20
 
-- task: SFP.build-tasks.custom-build-task-1.EsrpCodeSigning@1
+- task: EsrpCodeSigning@2
   displayName: 'ESRP DLL CodeSigning (Microsoft.Graph.Core)'
   inputs:
     ConnectedServiceName: 'microsoftgraph ESRP CodeSign DLL and NuGet (AKV)'
     FolderPath: src/Microsoft.Graph.Core/bin/release
-    Pattern: Microsoft.Graph.Core.dll
+    Pattern: '**\*Microsoft.Graph.Core.dll'
+    UseMinimatch: true
     signConfigType: inlineSignParams
     inlineOperation: |
      [
@@ -164,12 +168,13 @@ steps:
     dotnet pack $env:BUILD_SOURCESDIRECTORY/src/Microsoft.Graph.Core/Microsoft.Graph.Core.csproj /p:IncludeSymbols=true /p:SymbolPackageFormat=snupkg --no-build --output $env:BUILD_ARTIFACTSTAGINGDIRECTORY --configuration Release
   displayName: dotnet pack
 
-- task: SFP.build-tasks.custom-build-task-1.EsrpCodeSigning@1
+- task: EsrpCodeSigning@2
   displayName: 'ESRP NuGet CodeSigning'
   inputs:
     ConnectedServiceName: 'microsoftgraph ESRP CodeSign DLL and NuGet (AKV)'
     FolderPath: '$(Build.ArtifactStagingDirectory)'
     Pattern: '*.nupkg'
+    UseMinimatch: true
     signConfigType: inlineSignParams
     inlineOperation: |
           [
