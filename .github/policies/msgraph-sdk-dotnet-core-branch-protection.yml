@@ -22,7 +22,7 @@ configuration:
     # Specifies the number of pull request reviews before merging. int (0-6)
     requiredApprovingReviewsCount: 1
     # Require review from Code Owners. Requires requiredApprovingReviewsCount. boolean
-    requireCodeOwnersReview: false
+    requireCodeOwnersReview: true
     # Are commits required to be signed. boolean
     requiresCommitSignatures: false
     # Are merge commits prohibited from being pushed to this branch. boolean
@@ -49,7 +49,7 @@ configuration:
     # Specifies the number of pull request reviews before merging. int (0-6)
     requiredApprovingReviewsCount: 1
     # Require review from Code Owners. Requires requiredApprovingReviewsCount. boolean
-    requireCodeOwnersReview: false
+    requireCodeOwnersReview: true
     # Are commits required to be signed. boolean
     requiresCommitSignatures: false
     # Are merge commits prohibited from being pushed to this branch. boolean
