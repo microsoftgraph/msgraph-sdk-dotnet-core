@@ -20,10 +20,11 @@
     <DelaySign>false</DelaySign>
     <AssemblyOriginatorKeyFile>35MSSharedLib1024.snk</AssemblyOriginatorKeyFile>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <VersionPrefix>3.0.6</VersionPrefix>
+    <VersionPrefix>3.0.7</VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <PackageReleaseNotes>
-- Include Request headers in APIException instances 
+- Bumps up abstractions packages for Backing store fixes involving nested properties
+- Includes graph.microsoft-ppe.com in Azure Identity default token provider.
     </PackageReleaseNotes>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
@@ -54,11 +55,11 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="System.Security.Claims" Version="4.3.0" />
-    <PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="6.29.0" />
+    <PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="6.30.1" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.Kiota.Abstractions" Version="1.1.1" />
+    <PackageReference Include="Microsoft.Kiota.Abstractions" Version="1.1.2" />
     <PackageReference Include="Microsoft.Kiota.Authentication.Azure" Version="1.0.2" />
-    <PackageReference Include="Microsoft.Kiota.Serialization.Json" Version="1.0.5" />
+    <PackageReference Include="Microsoft.Kiota.Serialization.Json" Version="1.0.6" />
     <PackageReference Include="Microsoft.Kiota.Serialization.Text" Version="1.0.1" />
     <PackageReference Include="Microsoft.Kiota.Serialization.Form" Version="1.0.1" />
     <PackageReference Include="Microsoft.Kiota.Http.HttpClientLibrary" Version="1.0.2" />
