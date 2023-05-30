@@ -25,11 +25,14 @@ configuration:
     requireCodeOwnersReview: true
     # Are commits required to be signed. boolean
     requiresCommitSignatures: false
+    # Are conversations required to be resolved before merging? boolean
+    requiresConversationResolution: true
     # Are merge commits prohibited from being pushed to this branch. boolean
     requiresLinearHistory: false
     # Requires requiresStrictStatusChecks. Values can be any string, but if the value does not correspond to any existing status check, the status check will be stuck on pending for status since nothing exists to push an actual status
     requiredStatusChecks:
     - Build and Test
+    - license/cla
     # The docs conflict. Are branches required to be up to date before merging. Or Require status checks to pass before merging
     requiresStrictStatusChecks: true
     # Restrict who can push to matching branches
@@ -52,11 +55,14 @@ configuration:
     requireCodeOwnersReview: true
     # Are commits required to be signed. boolean
     requiresCommitSignatures: false
+    # Are conversations required to be resolved before merging? boolean
+    requiresConversationResolution: true
     # Are merge commits prohibited from being pushed to this branch. boolean
     requiresLinearHistory: false
     # Requires requiresStrictStatusChecks. Values can be any string, but if the value does not correspond to any existing status check, the status check will be stuck on pending for status since nothing exists to push an actual status
     requiredStatusChecks:
     - Build and Test
+    - license/cla
     # The docs conflict. Are branches required to be up to date before merging. Or Require status checks to pass before merging
     requiresStrictStatusChecks: false
     # Restrict who can push to matching branches
@@ -79,6 +85,8 @@ configuration:
     requireCodeOwnersReview: false
     # Are commits required to be signed. boolean
     requiresCommitSignatures: false
+    # Are conversations required to be resolved before merging? boolean
+    requiresConversationResolution: true
     # Are merge commits prohibited from being pushed to this branch. boolean
     requiresLinearHistory: false
     # Requires requiresStrictStatusChecks. Values can be any string, but if the value does not correspond to any existing status check, the status check will be stuck on pending for status since nothing exists to push an actual status
@@ -105,6 +113,8 @@ configuration:
     requireCodeOwnersReview: false
     # Are commits required to be signed. boolean
     requiresCommitSignatures: false
+    # Are conversations required to be resolved before merging? boolean
+    requiresConversationResolution: true
     # Are merge commits prohibited from being pushed to this branch. boolean
     requiresLinearHistory: false
     # Requires requiresStrictStatusChecks. Values can be any string, but if the value does not correspond to any existing status check, the status check will be stuck on pending for status since nothing exists to push an actual status
