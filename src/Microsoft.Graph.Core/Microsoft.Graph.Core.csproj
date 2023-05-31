@@ -20,10 +20,11 @@
     <DelaySign>false</DelaySign>
     <AssemblyOriginatorKeyFile>35MSSharedLib1024.snk</AssemblyOriginatorKeyFile>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <VersionPrefix>3.0.6</VersionPrefix>
+    <VersionPrefix>3.0.7</VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <PackageReleaseNotes>
-- Include Request headers in APIException instances 
+- Bumps up abstractions packages for Backing store fixes involving nested properties
+- Includes graph.microsoft-ppe.com in Azure Identity default token provider.
     </PackageReleaseNotes>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
