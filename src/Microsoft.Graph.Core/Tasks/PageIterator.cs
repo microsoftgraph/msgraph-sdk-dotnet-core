@@ -248,7 +248,7 @@ namespace Microsoft.Graph
             }
 
             // Detect nextLink loop
-            if (Nextlink.Equals(ExtractNextLinkFromParsable(_currentPage)))
+            if (!string.IsNullOrEmpty(Nextlink) && Nextlink.Equals(ExtractNextLinkFromParsable(_currentPage)))
             {
                 throw new ServiceException($"Detected nextLink loop. Nextlink value: {Nextlink}");
             }

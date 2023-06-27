@@ -61,7 +61,7 @@ namespace Microsoft.Graph
         /// <summary>
         /// The HTTP response headers from the response.
         /// </summary>
-        public System.Net.Http.Headers.HttpResponseHeaders ResponseHeaders { get; private set; }
+        public new System.Net.Http.Headers.HttpResponseHeaders ResponseHeaders { get; private set; }
         
         /// <summary>
         /// Provide the raw JSON response body.

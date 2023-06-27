@@ -235,6 +235,70 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
             Assert.Equal(PagingState.Delta, eventsDeltaPageIterator.State);
             Assert.Equal("http://localhost/events?$skip=11",eventsDeltaPageIterator.Deltalink);
         }
+        
+        [Fact]
+        public async Task Given_CollectionPage_Delta_Link_Property_It_Iterates_Across_Pages_And_Resumes()
+        {
+            // // Arrange the sample first page of 17 events to initialize the original collection page.
+            var eventBag = new List<TestEventItem>();
+            var originalPage = new TestEventsDeltaResponse() { Value = new List<TestEventItem>() };
+            originalPage.OdataDeltaLink = "http://localhost/events?$skip=11";
+            var inputEventCount = 17;
+            for (int i = 0; i < inputEventCount; i++)
+            {
+                originalPage.Value.Add(new TestEventItem() { Subject = $"Subject{i}" });
+            }
+
+            Func<TestEventItem, bool> processEachEvent = (e) =>
+            {
+                eventBag.Add(e);
+                return true;
+            };
+
+            // Act by calling the iterator
+            var eventsDeltaPageIterator = PageIterator<TestEventItem, TestEventsDeltaResponse>.CreatePageIterator(baseClient, originalPage, processEachEvent);
+            await eventsDeltaPageIterator.IterateAsync();
+
+            // Assert that paging was paused and got to the next page
+            Assert.Equal(PagingState.Delta, eventsDeltaPageIterator.State);
+            Assert.Equal("http://localhost/events?$skip=11",eventsDeltaPageIterator.Deltalink);
+            Assert.Equal(17, eventBag.Count);
+            
+            // create new page after the delta
+            var nextPage = new TestEventsDeltaResponse() { Value = new List<TestEventItem>() };
+            nextPage.OdataNextLink = "http://localhost/events?$skip=18";
+            var nextPageEventCount = 10;
+            for (int i = 0; i < nextPageEventCount; i++)
+            {
+                nextPage.Value.Add(new TestEventItem() { Subject = $"Subject for next page events: {i}" });
+            }
+
+            bool isFirstCall = true;
+            this.mockRequestAdapter.Setup(x => x.SendAsync<TestEventsDeltaResponse>(It.IsAny<RequestInformation>(), It.IsAny<ParsableFactory<TestEventsDeltaResponse>>(), It.IsAny<Dictionary<string, ParsableFactory<IParsable>>>(), It.IsAny<CancellationToken>()))
+                .Returns(() =>
+                {
+                    if (isFirstCall)
+                    {
+                        isFirstCall = false;
+                    }
+                    else
+                    {
+                        // let the second page have a delta link instead
+                        nextPage.OdataNextLink = null;
+                        nextPage.OdataDeltaLink = "http://localhost/events?$skip=145";
+                    }
+                    
+                    return Task.FromResult(nextPage);
+                });
+            
+            
+            // Resume the iteration
+            await eventsDeltaPageIterator.IterateAsync();
+            
+            Assert.Equal(PagingState.Delta, eventsDeltaPageIterator.State);
+            Assert.Equal("http://localhost/events?$skip=145",eventsDeltaPageIterator.Deltalink);
+            Assert.Equal(37, eventBag.Count);// 17 initial items + 10 items from second page + 10 from last page
+        }
 
         [Fact]
         public async Task Given_CollectionPage_It_Iterates_Across_Pages_With_Async_Delegate()
