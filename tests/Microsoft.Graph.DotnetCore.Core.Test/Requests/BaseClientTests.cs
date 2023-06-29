@@ -26,5 +26,15 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 
             Assert.Equal(expectedBaseUrl, baseClient.RequestAdapter.BaseUrl);
         }
+        
+        [Fact]
+        public void BaseClient_InitializeBaseUrlTrailingSlash()
+        {
+            var expectedBaseUrl = "https://localhost";
+
+            var baseClient = new BaseClient("https://localhost/", this.authenticationProvider.Object);
+
+            Assert.Equal(expectedBaseUrl, baseClient.RequestAdapter.BaseUrl);
+        }
     }
 }

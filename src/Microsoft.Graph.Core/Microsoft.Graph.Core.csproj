@@ -21,11 +21,10 @@
     <DelaySign>false</DelaySign>
     <AssemblyOriginatorKeyFile>35MSSharedLib1024.snk</AssemblyOriginatorKeyFile>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <VersionPrefix>3.0.8</VersionPrefix>
+    <VersionPrefix>3.0.9</VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <PackageReleaseNotes>
-- Fixes nextLink loop exception when making delta requests with the page iterator(https://github.com/microsoftgraph/msgraph-sdk-dotnet/issues/1948)
-- Bumps kiota abstraction packages to fix bugs in Backing store and allow large stream downloads.   
+- Fixes regression in url building when the httpClient base addresss is used.   
     </PackageReleaseNotes>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
@@ -64,7 +63,7 @@
     <PackageReference Include="Microsoft.Kiota.Serialization.Json" Version="1.0.6" />
     <PackageReference Include="Microsoft.Kiota.Serialization.Text" Version="1.0.1" />
     <PackageReference Include="Microsoft.Kiota.Serialization.Form" Version="1.0.1" />
-    <PackageReference Include="Microsoft.Kiota.Http.HttpClientLibrary" Version="1.0.4" />
+    <PackageReference Include="Microsoft.Kiota.Http.HttpClientLibrary" Version="1.0.5" />
   </ItemGroup>
   <ItemGroup Condition=" '$(TargetFramework)' != 'netstandard2.0' ">
     <PackageReference Include="NETStandard.Library" Version="2.0.3" />
