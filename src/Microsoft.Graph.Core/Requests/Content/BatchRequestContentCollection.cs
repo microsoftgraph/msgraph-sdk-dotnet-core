@@ -1,4 +1,4 @@
-﻿namespace Microsoft.Graph
+namespace Microsoft.Graph
 {
     using Microsoft.Kiota.Abstractions;
     using System;
@@ -14,7 +14,7 @@
     public class BatchRequestContentCollection
     {
         private readonly IBaseClient baseClient;
-        private readonly List<BatchRequestContent> batchRequests;
+        private readonly HashSet<BatchRequestContent> batchRequests;
         private readonly int batchRequestLimit;
         private BatchRequestContent currentRequest;
         private bool readOnly = false;
@@ -35,17 +35,13 @@
         /// <param name="batchRequestLimit">Number of requests that may be placed in a single batch</param>
         public BatchRequestContentCollection(IBaseClient baseClient, int batchRequestLimit)
         {
-            if(baseClient == null)
-            {
-                throw new ArgumentNullException(nameof(baseClient));
-            }
             if (batchRequestLimit < 2 || batchRequestLimit > CoreConstants.BatchRequest.MaxNumberOfRequests)
             {
                 throw new ArgumentOutOfRangeException(nameof(batchRequestLimit));
             }
-            this.baseClient = baseClient;
+            this.baseClient = baseClient ?? throw new ArgumentNullException(nameof(baseClient));
             this.batchRequestLimit = batchRequestLimit;
-            batchRequests = new List<BatchRequestContent>();
+            batchRequests = new HashSet<BatchRequestContent>();
             currentRequest = new BatchRequestContent(baseClient);
         }
 
@@ -100,9 +96,9 @@
             var removed = currentRequest.RemoveBatchRequestStepWithId(requestId);
             if (!removed && batchRequests.Count > 0)
             {
-                for (int i = 0; i < batchRequests.Count; i++)
+                foreach (var batchRequest in batchRequests)
                 {
-                    removed = batchRequests[i].RemoveBatchRequestStepWithId(requestId);
+                    removed = batchRequest.RemoveBatchRequestStepWithId(requestId);
                     if (removed)
                     {
                         return true;
@@ -130,7 +126,10 @@
             {
                 if (batchRequests.Count > 0)
                 {
-                    IEnumerable<KeyValuePair<string, BatchRequestStep>> result = currentRequest.BatchRequestSteps;
+                    IEnumerable<KeyValuePair<string, BatchRequestStep>> result = batchRequests.Contains(currentRequest) ? 
+                        new List<KeyValuePair<string, BatchRequestStep>>() 
+                        : currentRequest.BatchRequestSteps;
+                    
                     foreach ( var request in batchRequests)
                     {
                         result = result.Concat(request.BatchRequestSteps);
