@@ -11,6 +11,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
     using System.Net.Http;
     using System.IO;
     using System.Net.Http.Headers;
+    using System.Net;
     using System.Threading.Tasks;
     using System.Text.Json;
     using Xunit;
@@ -167,6 +168,52 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
             Assert.Same(batchRequestStep2.DependsOn.First(), batchRequestContent.BatchRequestSteps["2"].DependsOn.First());
         }
 
+        [Fact]
+        public async Task BatchRequestContent_NewBatchWithFailedRequests()
+        {
+            BatchRequestContentCollection batchRequestContent = new BatchRequestContentCollection(client);
+            var requestIds = new List<string>();
+            for (int i = 0; i < 50; i++)
+            {
+                var requestId = await batchRequestContent.AddBatchRequestStepAsync(new RequestInformation()
+                {
+                    HttpMethod = Method.DELETE,
+                    UrlTemplate = REQUEST_URL
+                });
+                requestIds.Add(requestId);
+            }
+
+            batchRequestContent.GetBatchRequestsForExecution();// this is called when request is executed
+            
+            Dictionary<string, HttpStatusCode> responseStatusCodes = requestIds.ToDictionary(requestId => requestId, requestId => HttpStatusCode.OK);
+
+            var retryBatch = batchRequestContent.NewBatchWithFailedRequests(responseStatusCodes);
+            
+            Assert.Empty(retryBatch.BatchRequestSteps);
+        }
+        
+        [Fact]
+        public async Task BatchRequestContent_NewBatchWithFailedRequests2()
+        {
+            BatchRequestContentCollection batchRequestContent = new BatchRequestContentCollection(client);
+            var requestIds = new List<string>();
+            for (int i = 0; i < 50; i++)
+            {
+                var requestId = await batchRequestContent.AddBatchRequestStepAsync(new RequestInformation()
+                {
+                    HttpMethod = Method.DELETE,
+                    UrlTemplate = REQUEST_URL
+                });
+                requestIds.Add(requestId);
+            }
+
+            Dictionary<string, HttpStatusCode> responseStatusCodes = requestIds.ToDictionary(requestId => requestId, requestId => HttpStatusCode.OK);
+
+            var retryBatch = batchRequestContent.NewBatchWithFailedRequests(responseStatusCodes);
+
+            Assert.Empty(retryBatch.BatchRequestSteps);// All requests were succesfful
+        }
+        
         [Fact]
         public async System.Threading.Tasks.Task BatchRequestContent_GetBatchRequestContentFromStepAsync()
         {
