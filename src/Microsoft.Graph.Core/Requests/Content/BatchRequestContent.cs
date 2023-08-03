@@ -37,7 +37,7 @@ namespace Microsoft.Graph
         /// Constructs a new <see cref="BatchRequestContent"/>.
         /// </summary>
         /// <param name="baseClient">The <see cref="IBaseClient"/> for making requests</param>
-        [Obsolete("Please use the BatchRequestContentCollection for making batch requests as it supports handling more than 20 requests. This class will not be available publicly in the next major version of SDK.")]
+        [Obsolete("Please use the BatchRequestContentCollection for making batch requests as it supports handling more than 20 requests and provides a similar API experience.")]
         public BatchRequestContent(IBaseClient baseClient)
             :this(baseClient, new BatchRequestStep[] { })
         {
@@ -48,7 +48,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="baseClient">The <see cref="IBaseClient"/> for making requests</param>
         /// <param name="batchRequestSteps">A list of <see cref="BatchRequestStep"/> to add to the batch request content.</param>
-        [Obsolete("Please use the BatchRequestContentCollection for making batch requests as it supports handling more than 20 requests. This class will not be available publicly in the next major version of SDK.")]
+        [Obsolete("Please use the BatchRequestContentCollection for making batch requests as it supports handling more than 20 requests and provides a similar API experience.")]
         public BatchRequestContent(IBaseClient baseClient, params BatchRequestStep[] batchRequestSteps): this(baseClient?.RequestAdapter ?? throw new ArgumentNullException(nameof(baseClient)), batchRequestSteps)
         {
         }
@@ -58,7 +58,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="requestAdapter">The <see cref="IRequestAdapter"/> for making requests</param>
         /// <param name="batchRequestSteps">A list of <see cref="BatchRequestStep"/> to add to the batch request content.</param>
-        [Obsolete("Please use the BatchRequestContentCollection for making batch requests as it supports handling more than 20 requests. This class will not be available publicly in the next major version of SDK.")]
+        [Obsolete("Please use the BatchRequestContentCollection for making batch requests as it supports handling more than 20 requests and provides a similar API experience.")]
         public BatchRequestContent(IRequestAdapter requestAdapter, params BatchRequestStep[] batchRequestSteps)
         {
             if (batchRequestSteps == null)
@@ -89,7 +89,7 @@ namespace Microsoft.Graph
         /// <param name="batchRequestStep">A <see cref="BatchRequestStep"/> to add.</param>
         /// <returns>True or false based on addition or not addition of the provided <see cref="BatchRequestStep"/>. </returns>
         /// <exception cref="ArgumentException"> When the the request step contains a depends on to a request id that is not present.</exception>
-        [Obsolete("Please use the BatchRequestContentCollection for making batch requests as it supports handling more than 20 requests. This class will not be available publicly in the next major version of SDK.")]
+        [Obsolete("Please use the BatchRequestContentCollection for making batch requests as it supports handling more than 20 requests and provides a similar API experience.")]
         public bool AddBatchRequestStep(BatchRequestStep batchRequestStep)
         {
             if (batchRequestStep == null
@@ -113,7 +113,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="httpRequestMessage">A <see cref="HttpRequestMessage"/> to use to build a <see cref="BatchRequestStep"/> to add.</param>
         /// <returns>The requestId of the newly created <see cref="BatchRequestStep"/></returns>
-        [Obsolete("Please use the BatchRequestContentCollection for making batch requests as it supports handling more than 20 requests. This class will not be available publicly in the next major version of SDK.")]
+        [Obsolete("Please use the BatchRequestContentCollection for making batch requests as it supports handling more than 20 requests and provides a similar API experience.")]
         public string AddBatchRequestStep(HttpRequestMessage httpRequestMessage)
         {
             if (BatchRequestSteps.Count >= CoreConstants.BatchRequest.MaxNumberOfRequests)
@@ -130,7 +130,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="requestInformation">A <see cref="RequestInformation"/> to use to build a <see cref="BatchRequestStep"/> to add.</param>
         /// <returns>The requestId of the  newly created <see cref="BatchRequestStep"/></returns>
-        [Obsolete("Please use the BatchRequestContentCollection for making batch requests as it supports handling more than 20 requests. This class will not be available publicly in the next major version of SDK.")]
+        [Obsolete("Please use the BatchRequestContentCollection for making batch requests as it supports handling more than 20 requests and provides a similar API experience.")]
         public async Task<string> AddBatchRequestStepAsync(RequestInformation requestInformation)
         {
             if (BatchRequestSteps.Count >= CoreConstants.BatchRequest.MaxNumberOfRequests)
