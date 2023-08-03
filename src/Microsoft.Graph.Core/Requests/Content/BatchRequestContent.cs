@@ -277,7 +277,8 @@ namespace Microsoft.Graph
             {
                 writer.WritePropertyName(CoreConstants.BatchRequest.Body);
                 // allow for non json content by checking the header value
-                if (batchRequestStep.Request.Content?.Headers?.ContentType?.MediaType?.ToLowerInvariant().Contains(CoreConstants.MimeTypeNames.Application.Json)?? true)
+                var vendorSpecificContentType = batchRequestStep.Request.Content?.Headers?.ContentType?.MediaType?.Split(";".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).FirstOrDefault();
+                if (string.IsNullOrEmpty(vendorSpecificContentType) || vendorSpecificContentType.Equals(CoreConstants.MimeTypeNames.Application.Json, StringComparison.OrdinalIgnoreCase))
                 {
                     using JsonDocument content = await GetRequestContentAsync(batchRequestStep.Request).ConfigureAwait(false);
                     content.WriteTo(writer);
