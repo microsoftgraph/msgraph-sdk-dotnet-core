@@ -153,7 +153,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
 
                 if (e.Subject.Contains("Subject for next page events"))
                 {
-                    Assert.True(false, "Unexpectedly paged the next page of results.");
+                    Assert.Fail("Unexpectedly paged the next page of results.");
                 }
 
                 return true;
@@ -464,7 +464,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
             }
             catch (Exception)
             {
-                Assert.True(false, "Unexpected exception occurred when next page contains no elements.");
+                Assert.Fail("Unexpected exception occurred when next page contains no elements.");
             }
         }
 

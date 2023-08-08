@@ -11,7 +11,9 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
     using System.Net.Http;
     using System.IO;
     using System.Net.Http.Headers;
+    using System.Net;
     using System.Threading.Tasks;
+    using System.Text;
     using System.Text.Json;
     using Xunit;
     using Microsoft.Kiota.Abstractions;
@@ -168,6 +170,52 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
         }
 
         [Fact]
+        public async Task BatchRequestContent_NewBatchWithFailedRequests()
+        {
+            BatchRequestContentCollection batchRequestContent = new BatchRequestContentCollection(client);
+            var requestIds = new List<string>();
+            for (int i = 0; i < 50; i++)
+            {
+                var requestId = await batchRequestContent.AddBatchRequestStepAsync(new RequestInformation()
+                {
+                    HttpMethod = Method.DELETE,
+                    UrlTemplate = REQUEST_URL
+                });
+                requestIds.Add(requestId);
+            }
+
+            batchRequestContent.GetBatchRequestsForExecution();// this is called when request is executed
+            
+            Dictionary<string, HttpStatusCode> responseStatusCodes = requestIds.ToDictionary(requestId => requestId, requestId => HttpStatusCode.OK);
+
+            var retryBatch = batchRequestContent.NewBatchWithFailedRequests(responseStatusCodes);
+            
+            Assert.Empty(retryBatch.BatchRequestSteps);
+        }
+        
+        [Fact]
+        public async Task BatchRequestContent_NewBatchWithFailedRequests2()
+        {
+            BatchRequestContentCollection batchRequestContent = new BatchRequestContentCollection(client);
+            var requestIds = new List<string>();
+            for (int i = 0; i < 50; i++)
+            {
+                var requestId = await batchRequestContent.AddBatchRequestStepAsync(new RequestInformation()
+                {
+                    HttpMethod = Method.DELETE,
+                    UrlTemplate = REQUEST_URL
+                });
+                requestIds.Add(requestId);
+            }
+
+            Dictionary<string, HttpStatusCode> responseStatusCodes = requestIds.ToDictionary(requestId => requestId, requestId => HttpStatusCode.OK);
+
+            var retryBatch = batchRequestContent.NewBatchWithFailedRequests(responseStatusCodes);
+
+            Assert.Empty(retryBatch.BatchRequestSteps);// All requests were succesfful
+        }
+        
+        [Fact]
         public async System.Threading.Tasks.Task BatchRequestContent_GetBatchRequestContentFromStepAsync()
         {
             BatchRequestStep batchRequestStep1 = new BatchRequestStep("1", new HttpRequestMessage(HttpMethod.Get, REQUEST_URL));
@@ -194,6 +242,58 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
             Assert.Equal(expectedContent, requestContent);
         }
 
+        [Fact]
+        public async System.Threading.Tasks.Task BatchRequestContent_GetBatchRequestContentSupportsNonJsonPayload()
+        {
+            using var fileStream = File.Open("ms-logo.png",FileMode.Open);
+            BatchRequestStep batchRequestStep1 = new BatchRequestStep("1", new HttpRequestMessage(HttpMethod.Get, REQUEST_URL));
+            HttpRequestMessage createImageMessage = new HttpRequestMessage(HttpMethod.Post, REQUEST_URL)
+            {
+                Content = new StreamContent(fileStream)
+            };
+            createImageMessage.Content.Headers.ContentType = new MediaTypeHeaderValue("image/png");
+            
+            BatchRequestStep batchRequestStep2 = new BatchRequestStep("2", createImageMessage, new List<string> { "1" });
+
+            BatchRequestContent batchRequestContent = new BatchRequestContent(client);
+            batchRequestContent.AddBatchRequestStep(batchRequestStep1);
+            batchRequestContent.AddBatchRequestStep(batchRequestStep2);
+
+            string requestContent;
+            // we do this to get a version of the json that is indented 
+            using (Stream requestStream = await batchRequestContent.GetBatchRequestContentAsync())
+            using (JsonDocument jsonDocument = JsonDocument.Parse(requestStream))
+            {
+                requestContent = JsonSerializer.Serialize(jsonDocument.RootElement, new JsonSerializerOptions() { WriteIndented = true });
+            }
+
+            string expectedJson = "{\r\n" +
+                                  "  \"requests\": [\r\n" +
+                                  "    {\r\n" +
+                                  "      \"id\": \"1\",\r\n" +
+                                  "      \"url\": \"/me\",\r\n" +
+                                  "      \"method\": \"GET\"\r\n" +
+                                  "    },\r\n" +
+                                  "    {\r\n" +
+                                  "      \"id\": \"2\",\r\n" +
+                                  "      \"url\": \"/me\",\r\n" +
+                                  "      \"method\": \"POST\",\r\n" +
+                                  "      \"dependsOn\": [\r\n" +
+                                  "        \"1\"\r\n" +
+                                  "      ],\r\n" +
+                                  "      \"headers\": {\r\n" +
+                                  "        \"Content-Type\": \"image/png\"\r\n" +
+                                  "      },\r\n" +
+                                  "      \"body\": \"iVBORw0KGgoAAAANSUhEUgAAAFAAAABQCAYAAACOEfKtAAAACXBIWXMAAA7EAAAOxAGVKw4bAAABO0lEQVR42u3bMWoCQRSA4X8Xq0UE8QZ2scwhYusBchfBs3gA2\\u002BQKaSwsUnmFQALDkmLWYlTGwiqQvMD/Vys2j09msXgDZn9Zc3n4XM0BxoFmS5PdMQOsX2mBLshceYC0eSofRtUXY\\u002BArEOAD8H5\\u002BfgTeovywDcyAHqD1EP4sAQUUUEABTUABBRTQBBRQQAFNQAEFFNAEFFBAAU1AAQUU0AQUUEABTUABBRTwt8r/BbBe8U2UtdooHavnQ6DZMvDt2bMYXa85sP1oKdvwUTrwPO0Bhhc6YBHoCO\\u002BbZXlP1\\u002B/AjjhXCeD2msMi0GwJrzn4P1BAAU1AAQUUUEAJBBRQQAFNQAEFFNAEFFBAAU1AAQUU0AQUUEABTUABBRTQ7ldvqGbK9mWUctDZ0j3Ay\\u002BpqlOqrBPtgs/WePYvRCfKZLRIUo/e5AAAAAElFTkSuQmCC\"\r\n" +
+                                  "    }\r\n" +
+                                  "  ]\r\n" +
+                                  "}";
+
+            Assert.NotNull(requestContent);
+            Assert.True(batchRequestContent.BatchRequestSteps.Count.Equals(2));
+            Assert.Equal(expectedJson, requestContent);
+        }
+        
         [Fact]
         public async System.Threading.Tasks.Task BatchRequestContent_GetBatchRequestContentFromStepAsyncDoesNotModifyDateTimes()
         {
@@ -228,7 +328,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
             BatchRequestStep batchRequestStep1 = new BatchRequestStep("1", new HttpRequestMessage(HttpMethod.Get, REQUEST_URL));
             HttpRequestMessage createEventMessage = new HttpRequestMessage(HttpMethod.Post, REQUEST_URL)
             {
-                Content = new StringContent(payloadString)
+                Content = new StringContent(payloadString,Encoding.UTF8,"application/json")
             };
             BatchRequestStep batchRequestStep2 = new BatchRequestStep("2", createEventMessage, new List<string> { "1" });
 
@@ -259,7 +359,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
                                   "        \"1\"\r\n" +
                                   "      ],\r\n" +
                                   "      \"headers\": {\r\n" +
-                                  "        \"Content-Type\": \"text/plain; charset=utf-8\"\r\n" +
+                                  "        \"Content-Type\": \"application/json; charset=utf-8\"\r\n" +
                                   "      },\r\n" +
                                   "      \"body\": {\r\n" +
                                   "        \"subject\": \"Lets go for lunch\",\r\n" +

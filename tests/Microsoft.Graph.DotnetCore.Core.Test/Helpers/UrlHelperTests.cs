@@ -15,7 +15,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Helpers
 
             var queryValues = UrlHelper.GetQueryOptions(uri);
 
-            Assert.Equal(0, queryValues.Count);
+            Assert.Empty(queryValues);
         }
 
         [Fact]
@@ -25,7 +25,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Helpers
 
             var queryValues = UrlHelper.GetQueryOptions(uri);
 
-            Assert.Equal(0, queryValues.Count);
+            Assert.Empty(queryValues);
         }
 
         [Fact]
@@ -35,7 +35,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Helpers
 
             var queryValues = UrlHelper.GetQueryOptions(uri);
 
-            Assert.Equal(0, queryValues.Count);
+            Assert.Empty(queryValues);
         }
 
         [Fact]
@@ -57,7 +57,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Helpers
 
             var queryValues = UrlHelper.GetQueryOptions(uri);
 
-            Assert.Equal(1, queryValues.Count);
+            Assert.Single(queryValues);
             Assert.Equal("value", queryValues["key"]);
         }
 
@@ -79,7 +79,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Helpers
 
             var queryValues = UrlHelper.GetQueryOptions(uri);
 
-            Assert.Equal(1, queryValues.Count);
+            Assert.Single(queryValues);
             Assert.Equal("value", queryValues["key"]);
         }
 
@@ -90,7 +90,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Helpers
 
             var queryValues = UrlHelper.GetQueryOptions(uri);
 
-            Assert.Equal(1, queryValues.Count);
+            Assert.Single(queryValues);
             Assert.Equal("value", queryValues["key"]);
         }
     }

@@ -1,4 +1,8 @@
-﻿namespace Microsoft.Graph
+// ------------------------------------------------------------------------------
+//  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
+// ------------------------------------------------------------------------------
+
+namespace Microsoft.Graph
 {
     using Microsoft.Kiota.Abstractions;
     using System;
@@ -14,7 +18,7 @@
     public class BatchRequestContentCollection
     {
         private readonly IBaseClient baseClient;
-        private readonly List<BatchRequestContent> batchRequests;
+        private readonly HashSet<BatchRequestContent> batchRequests;
         private readonly int batchRequestLimit;
         private BatchRequestContent currentRequest;
         private bool readOnly = false;
@@ -35,18 +39,16 @@
         /// <param name="batchRequestLimit">Number of requests that may be placed in a single batch</param>
         public BatchRequestContentCollection(IBaseClient baseClient, int batchRequestLimit)
         {
-            if(baseClient == null)
-            {
-                throw new ArgumentNullException(nameof(baseClient));
-            }
             if (batchRequestLimit < 2 || batchRequestLimit > CoreConstants.BatchRequest.MaxNumberOfRequests)
             {
                 throw new ArgumentOutOfRangeException(nameof(batchRequestLimit));
             }
-            this.baseClient = baseClient;
+            this.baseClient = baseClient ?? throw new ArgumentNullException(nameof(baseClient));
             this.batchRequestLimit = batchRequestLimit;
-            batchRequests = new List<BatchRequestContent>();
+            batchRequests = new HashSet<BatchRequestContent>();
+#pragma warning disable CS0618
             currentRequest = new BatchRequestContent(baseClient);
+#pragma warning restore CS0618
         }
 
         private void ValidateReadOnly()
@@ -63,10 +65,25 @@
             if (currentRequest.BatchRequestSteps.Count >= batchRequestLimit)
             {
                 batchRequests.Add(currentRequest);
+#pragma warning disable CS0618
                 currentRequest = new BatchRequestContent(baseClient);
+#pragma warning restore CS0618
             }
         }
 
+        /// <summary>
+        /// Adds a <see cref="BatchRequestStep"/> to batch request content.
+        /// </summary>
+        /// <param name="batchRequestStep">A <see cref="BatchRequestStep"/> to add.</param>
+        /// <returns>True or false based on addition or not addition of the provided <see cref="BatchRequestStep"/>. </returns>
+        public bool AddBatchRequestStep(BatchRequestStep batchRequestStep)
+        {
+            SetupCurrentRequest();
+#pragma warning disable CS0618
+            return currentRequest.AddBatchRequestStep(batchRequestStep);
+#pragma warning restore CS0618
+        }
+        
         /// <summary>
         /// Adds a <see cref="HttpRequestMessage"/> to batch request content.
         /// </summary>
@@ -75,7 +92,9 @@
         public string AddBatchRequestStep(HttpRequestMessage httpRequestMessage)
         {
             SetupCurrentRequest();
+#pragma warning disable CS0618
             return currentRequest.AddBatchRequestStep(httpRequestMessage);
+#pragma warning restore CS0618
         }
 
         /// <summary>
@@ -86,7 +105,9 @@
         public Task<string> AddBatchRequestStepAsync(RequestInformation requestInformation)
         {
             SetupCurrentRequest();
+#pragma warning disable CS0618
             return currentRequest.AddBatchRequestStepAsync(requestInformation);
+#pragma warning restore CS0618
         }
 
         /// <summary>
@@ -100,9 +121,9 @@
             var removed = currentRequest.RemoveBatchRequestStepWithId(requestId);
             if (!removed && batchRequests.Count > 0)
             {
-                for (int i = 0; i < batchRequests.Count; i++)
+                foreach (var batchRequest in batchRequests)
                 {
-                    removed = batchRequests[i].RemoveBatchRequestStepWithId(requestId);
+                    removed = batchRequest.RemoveBatchRequestStepWithId(requestId);
                     if (removed)
                     {
                         return true;
@@ -130,7 +151,10 @@
             {
                 if (batchRequests.Count > 0)
                 {
-                    IEnumerable<KeyValuePair<string, BatchRequestStep>> result = currentRequest.BatchRequestSteps;
+                    IEnumerable<KeyValuePair<string, BatchRequestStep>> result = batchRequests.Contains(currentRequest) ? 
+                        new List<KeyValuePair<string, BatchRequestStep>>() 
+                        : currentRequest.BatchRequestSteps;
+                    
                     foreach ( var request in batchRequests)
                     {
                         result = result.Concat(request.BatchRequestSteps);
