@@ -139,6 +139,7 @@ namespace Microsoft.Graph
         /// Gets the @NextLink of a batch response.
         /// </summary>
         /// <returns></returns>
+        [Obsolete("This method is deprecated as a batch response does not contain a next link",true)]
         public async Task<string> GetNextLinkAsync()
         {
             jBatchResponseObject = jBatchResponseObject ?? await GetBatchResponseContentAsync().ConfigureAwait(false);

@@ -9,6 +9,7 @@ namespace Microsoft.Graph
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using System.ComponentModel;
     using System.Net;
     using System.Net.Http;
     using System.Net.Http.Headers;
@@ -19,6 +20,7 @@ namespace Microsoft.Graph
     /// <summary>
     /// A <see cref="HttpContent"/> implementation to handle json batch requests.
     /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public class BatchRequestContent: HttpContent
     {
         /// <summary>
@@ -35,6 +37,7 @@ namespace Microsoft.Graph
         /// Constructs a new <see cref="BatchRequestContent"/>.
         /// </summary>
         /// <param name="baseClient">The <see cref="IBaseClient"/> for making requests</param>
+        [Obsolete("Please use the BatchRequestContentCollection for making batch requests as it supports handling more than 20 requests and provides a similar API experience.")]
         public BatchRequestContent(IBaseClient baseClient)
             :this(baseClient, new BatchRequestStep[] { })
         {
@@ -45,6 +48,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="baseClient">The <see cref="IBaseClient"/> for making requests</param>
         /// <param name="batchRequestSteps">A list of <see cref="BatchRequestStep"/> to add to the batch request content.</param>
+        [Obsolete("Please use the BatchRequestContentCollection for making batch requests as it supports handling more than 20 requests and provides a similar API experience.")]
         public BatchRequestContent(IBaseClient baseClient, params BatchRequestStep[] batchRequestSteps): this(baseClient?.RequestAdapter ?? throw new ArgumentNullException(nameof(baseClient)), batchRequestSteps)
         {
         }
@@ -54,6 +58,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="requestAdapter">The <see cref="IRequestAdapter"/> for making requests</param>
         /// <param name="batchRequestSteps">A list of <see cref="BatchRequestStep"/> to add to the batch request content.</param>
+        [Obsolete("Please use the BatchRequestContentCollection for making batch requests as it supports handling more than 20 requests and provides a similar API experience.")]
         public BatchRequestContent(IRequestAdapter requestAdapter, params BatchRequestStep[] batchRequestSteps)
         {
             if (batchRequestSteps == null)
@@ -83,6 +88,8 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="batchRequestStep">A <see cref="BatchRequestStep"/> to add.</param>
         /// <returns>True or false based on addition or not addition of the provided <see cref="BatchRequestStep"/>. </returns>
+        /// <exception cref="ArgumentException"> When the the request step contains a depends on to a request id that is not present.</exception>
+        [Obsolete("Please use the BatchRequestContentCollection for making batch requests as it supports handling more than 20 requests and provides a similar API experience.")]
         public bool AddBatchRequestStep(BatchRequestStep batchRequestStep)
         {
             if (batchRequestStep == null
@@ -92,7 +99,11 @@ namespace Microsoft.Graph
             {
                 return false;
             }
-
+            // validate the depends on exists before adding it
+            if(batchRequestStep.DependsOn != null && !ContainsCorrespondingRequestId(batchRequestStep.DependsOn))
+            {
+                throw new ArgumentException(ErrorConstants.Messages.InvalidDependsOnRequestId);
+            }
             (BatchRequestSteps as IDictionary<string, BatchRequestStep>).Add(batchRequestStep.RequestId, batchRequestStep);
             return true;
         }
@@ -102,6 +113,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="httpRequestMessage">A <see cref="HttpRequestMessage"/> to use to build a <see cref="BatchRequestStep"/> to add.</param>
         /// <returns>The requestId of the newly created <see cref="BatchRequestStep"/></returns>
+        [Obsolete("Please use the BatchRequestContentCollection for making batch requests as it supports handling more than 20 requests and provides a similar API experience.")]
         public string AddBatchRequestStep(HttpRequestMessage httpRequestMessage)
         {
             if (BatchRequestSteps.Count >= CoreConstants.BatchRequest.MaxNumberOfRequests)
@@ -118,6 +130,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="requestInformation">A <see cref="RequestInformation"/> to use to build a <see cref="BatchRequestStep"/> to add.</param>
         /// <returns>The requestId of the  newly created <see cref="BatchRequestStep"/></returns>
+        [Obsolete("Please use the BatchRequestContentCollection for making batch requests as it supports handling more than 20 requests and provides a similar API experience.")]
         public async Task<string> AddBatchRequestStepAsync(RequestInformation requestInformation)
         {
             if (BatchRequestSteps.Count >= CoreConstants.BatchRequest.MaxNumberOfRequests)
@@ -159,11 +172,15 @@ namespace Microsoft.Graph
         /// <returns>new <see cref="BatchRequestContent"/> with all failed requests.</returns>
         public BatchRequestContent NewBatchWithFailedRequests(Dictionary<string, HttpStatusCode> responseStatusCodes)
         {
+#pragma warning disable CS0618
             var request = new BatchRequestContent(this.RequestAdapter);
+#pragma warning restore CS0618
             foreach(var response in responseStatusCodes)
             {
                 if (BatchRequestSteps.ContainsKey(response.Key) && !BatchResponseContent.IsSuccessStatusCode(response.Value)) {
+#pragma warning disable CS0618
                     request.AddBatchRequestStep(BatchRequestSteps[response.Key]);
+#pragma warning restore CS0618
                 }
             }
             return request;
@@ -256,12 +273,19 @@ namespace Microsoft.Graph
             }
 
             // write the content of the step if it has any
-            if (batchRequestStep.Request != null && batchRequestStep.Request.Content != null)
+            if (batchRequestStep.Request?.Content != null)
             {
                 writer.WritePropertyName(CoreConstants.BatchRequest.Body);
-                using (JsonDocument content = await GetRequestContentAsync(batchRequestStep.Request).ConfigureAwait(false))
+                // allow for non json content by checking the header value
+                var vendorSpecificContentType = batchRequestStep.Request.Content?.Headers?.ContentType?.MediaType?.Split(";".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).FirstOrDefault();
+                if (string.IsNullOrEmpty(vendorSpecificContentType) || vendorSpecificContentType.Equals(CoreConstants.MimeTypeNames.Application.Json, StringComparison.OrdinalIgnoreCase))
                 {
+                    using JsonDocument content = await GetRequestContentAsync(batchRequestStep.Request).ConfigureAwait(false);
                     content.WriteTo(writer);
+                }
+                else
+                {
+                    writer.WriteStringValue(Convert.ToBase64String(await batchRequestStep.Request.Content.ReadAsByteArrayAsync()));
                 }
             }
             writer.WriteEndObject();//close root object.
@@ -285,7 +309,7 @@ namespace Microsoft.Graph
 
         private string GetHeaderValuesAsString(IEnumerable<string> headerValues)
         {
-            if (headerValues == null || headerValues.Count() == 0)
+            if (headerValues == null || !headerValues.Any())
                 return string.Empty;
 
             StringBuilder builder = new StringBuilder();

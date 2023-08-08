@@ -1,3 +1,7 @@
+// ------------------------------------------------------------------------------
+//  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
+// ------------------------------------------------------------------------------
+
 namespace Microsoft.Graph
 {
     using Microsoft.Kiota.Abstractions;
@@ -42,7 +46,9 @@ namespace Microsoft.Graph
             this.baseClient = baseClient ?? throw new ArgumentNullException(nameof(baseClient));
             this.batchRequestLimit = batchRequestLimit;
             batchRequests = new HashSet<BatchRequestContent>();
+#pragma warning disable CS0618
             currentRequest = new BatchRequestContent(baseClient);
+#pragma warning restore CS0618
         }
 
         private void ValidateReadOnly()
@@ -59,10 +65,25 @@ namespace Microsoft.Graph
             if (currentRequest.BatchRequestSteps.Count >= batchRequestLimit)
             {
                 batchRequests.Add(currentRequest);
+#pragma warning disable CS0618
                 currentRequest = new BatchRequestContent(baseClient);
+#pragma warning restore CS0618
             }
         }
 
+        /// <summary>
+        /// Adds a <see cref="BatchRequestStep"/> to batch request content.
+        /// </summary>
+        /// <param name="batchRequestStep">A <see cref="BatchRequestStep"/> to add.</param>
+        /// <returns>True or false based on addition or not addition of the provided <see cref="BatchRequestStep"/>. </returns>
+        public bool AddBatchRequestStep(BatchRequestStep batchRequestStep)
+        {
+            SetupCurrentRequest();
+#pragma warning disable CS0618
+            return currentRequest.AddBatchRequestStep(batchRequestStep);
+#pragma warning restore CS0618
+        }
+        
         /// <summary>
         /// Adds a <see cref="HttpRequestMessage"/> to batch request content.
         /// </summary>
@@ -71,7 +92,9 @@ namespace Microsoft.Graph
         public string AddBatchRequestStep(HttpRequestMessage httpRequestMessage)
         {
             SetupCurrentRequest();
+#pragma warning disable CS0618
             return currentRequest.AddBatchRequestStep(httpRequestMessage);
+#pragma warning restore CS0618
         }
 
         /// <summary>
@@ -82,7 +105,9 @@ namespace Microsoft.Graph
         public Task<string> AddBatchRequestStepAsync(RequestInformation requestInformation)
         {
             SetupCurrentRequest();
+#pragma warning disable CS0618
             return currentRequest.AddBatchRequestStepAsync(requestInformation);
+#pragma warning restore CS0618
         }
 
         /// <summary>
