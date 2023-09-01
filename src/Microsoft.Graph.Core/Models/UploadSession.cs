@@ -1,4 +1,4 @@
-﻿// ------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
@@ -39,12 +39,10 @@ namespace Microsoft.Graph.Core.Models
         /// </summary>
         public IDictionary<string, Action<IParseNode>> GetFieldDeserializers()
         {
-            return new Dictionary<string, Action<IParseNode>> 
+            return new Dictionary<string, Action<IParseNode>> (StringComparer.OrdinalIgnoreCase)
             {
                 {"expirationDateTime", (n) => { ExpirationDateTime = n.GetDateTimeOffsetValue(); } },
-                {"ExpirationDateTime", (n) => { ExpirationDateTime = n.GetDateTimeOffsetValue(); } },//this is a duplicate to handle for different cased payload.
                 {"nextExpectedRanges", (n) => { NextExpectedRanges = n.GetCollectionOfPrimitiveValues<string>().ToList(); } },
-                {"NextExpectedRanges", (n) => { NextExpectedRanges = n.GetCollectionOfPrimitiveValues<string>().ToList(); } },//this is a duplicate to handle for different cased payload.
                 {"uploadUrl", (n) => { UploadUrl = n.GetStringValue(); } },
             };
         }
