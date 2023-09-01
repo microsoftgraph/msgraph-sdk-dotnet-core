@@ -42,7 +42,9 @@ namespace Microsoft.Graph.Core.Models
             return new Dictionary<string, Action<IParseNode>> 
             {
                 {"expirationDateTime", (n) => { ExpirationDateTime = n.GetDateTimeOffsetValue(); } },
+                {"ExpirationDateTime", (n) => { ExpirationDateTime = n.GetDateTimeOffsetValue(); } },//this is a duplicate to handle for different cased payload.
                 {"nextExpectedRanges", (n) => { NextExpectedRanges = n.GetCollectionOfPrimitiveValues<string>().ToList(); } },
+                {"NextExpectedRanges", (n) => { NextExpectedRanges = n.GetCollectionOfPrimitiveValues<string>().ToList(); } },//this is a duplicate to handle for different cased payload.
                 {"uploadUrl", (n) => { UploadUrl = n.GetStringValue(); } },
             };
         }
