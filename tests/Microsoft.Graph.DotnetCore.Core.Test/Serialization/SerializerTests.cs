@@ -528,6 +528,30 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
             // Expect the string to be ISO 8601-1:2019 format
             Assert.Equal(expectedString, serializedJsonString);
         }
+        
+        [Fact]
+        public void DeserializeUploadSessionValues()
+        {
+            // Act 1
+            const string camelCasedPayload = @"{""expirationDateTime"":""2016-11-20T18:23:45.9356913+00:00"",""nextExpectedRanges"":[""0 - 1000""],""uploadUrl"":""http://localhost""}";
+            var memoryStream = new MemoryStream(Encoding.UTF8.GetBytes(camelCasedPayload));
+            var parseNode = this.parseNodeFactory.GetRootParseNode(CoreConstants.MimeTypeNames.Application.Json, memoryStream);
+            var uploadSession = parseNode.GetObjectValue(UploadSession.CreateFromDiscriminatorValue);
+            Assert.NotNull(uploadSession);
+            Assert.NotNull(uploadSession.ExpirationDateTime);
+            Assert.NotNull(uploadSession.NextExpectedRanges);
+            Assert.Single(uploadSession.NextExpectedRanges);
+            
+            // Act 1
+            const string pascalCasedPayload = @"{""ExpirationDateTime"":""2016-11-20T18:23:45.9356913+00:00"",""NextExpectedRanges"":[""0 - 1000""],""uploadUrl"":""http://localhost""}";
+            var memoryStream2 = new MemoryStream(Encoding.UTF8.GetBytes(pascalCasedPayload));
+            var parseNode2 = this.parseNodeFactory.GetRootParseNode(CoreConstants.MimeTypeNames.Application.Json, memoryStream2);
+            var uploadSession2 = parseNode2.GetObjectValue(UploadSession.CreateFromDiscriminatorValue);
+            Assert.NotNull(uploadSession2);
+            Assert.NotNull(uploadSession2.ExpirationDateTime);
+            Assert.NotNull(uploadSession2.NextExpectedRanges);
+            Assert.Single(uploadSession2.NextExpectedRanges);
+        }
 
         [Fact]
         public void SerializeServiceExceptionValues()
