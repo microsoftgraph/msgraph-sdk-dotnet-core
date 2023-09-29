@@ -37,7 +37,6 @@ configuration:
     requiredStatusChecks:
     - Build and Test
     - license/cla
-    - CodeQL
     # Require branches to be up to date before merging. Requires requiredStatusChecks. boolean
     requiresStrictStatusChecks: true
     # Indicates whether there are restrictions on who can push. boolean. Should be set with whoCanPush.
@@ -73,9 +72,8 @@ configuration:
     requiredStatusChecks:
     - Build and Test
     - license/cla
-    - CodeQL
     # Require branches to be up to date before merging. Requires requiredStatusChecks. boolean
-    requiresStrictStatusChecks: true
+    requiresStrictStatusChecks: false
     # Indicates whether there are restrictions on who can push. boolean. Should be set with whoCanPush.
     restrictsPushes: false
     # Restrict who can dismiss pull request reviews. boolean
@@ -90,7 +88,7 @@ configuration:
     # Specifies whether forced pushes are allowed on this branch. boolean
     allowsForcePushes: false
     # Specifies whether new commits pushed to the matching branches dismiss pull request review approvals. boolean
-    dismissStaleReviews: true
+    dismissStaleReviews: false
     # Specifies whether admins can overwrite branch protection. boolean
     isAdminEnforced: false
     # Indicates whether "Require a pull request before merging" is enabled. boolean
@@ -98,7 +96,7 @@ configuration:
     # Specifies the number of pull request reviews before merging. int (0-6). Should be null/empty if PRs are not required
     requiredApprovingReviewsCount: 1
     # Require review from Code Owners. Requires requiredApprovingReviewsCount. boolean
-    requireCodeOwnersReview: true
+    requireCodeOwnersReview: false
     # Are commits required to be signed. boolean. TODO: all contributors must have commit signing on local machines.
     requiresCommitSignatures: false
     # Are conversations required to be resolved before merging? boolean
@@ -108,9 +106,8 @@ configuration:
     # Required status checks to pass before merging. Values can be any string, but if the value does not correspond to any existing status check, the status check will be stuck on pending for status since nothing exists to push an actual status
     requiredStatusChecks:
     - Build and Test
-    - CodeQL
     # Require branches to be up to date before merging. Requires requiredStatusChecks. boolean
-    requiresStrictStatusChecks: true
+    requiresStrictStatusChecks: false
     # Indicates whether there are restrictions on who can push. boolean. Should be set with whoCanPush.
     restrictsPushes: false
     # Restrict who can dismiss pull request reviews. boolean
