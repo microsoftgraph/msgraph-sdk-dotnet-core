@@ -125,8 +125,8 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             string attendeeName = deltaJObjectResponse.GetProperty("value").EnumerateArray().ElementAt(0)
                 .GetProperty("attendees").EnumerateArray().ElementAt(0).GetProperty("emailAddress").GetProperty("name")
                 .ToString(); // value[0].attendees[0].emailAddress.name
-            string attendeeNameInChangelist = deltaJObjectResponse.GetProperty("value").EnumerateArray().ElementAt(0)
-                .GetProperty("changes").EnumerateArray().ElementAt(9).ToString();//eltaJObjectResponse["value"][0]["changes"][9]
+            string attendeeNameInChangeList = deltaJObjectResponse.GetProperty("value").EnumerateArray().ElementAt(0)
+                .GetProperty("changes").EnumerateArray().ElementAt(9).ToString();//deltaJObjectResponse["value"][0]["changes"][9]
             
             var collectionPage = deltaServiceLibResponse.Value;
             var collectionPageHasChanges = collectionPage[0].AdditionalData.TryGetValue("changes", out object obj);
@@ -140,7 +140,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             // Assert
             Assert.NotEmpty(deltaServiceLibResponse.Value);
             Assert.Equal("George", attendeeName); // We maintain the expected response body when we change it.
-            Assert.Equal("attendees[0].emailAddress.name", attendeeNameInChangelist); // We expect that this property is in changelist.
+            Assert.Equal("attendees[0].emailAddress.name", attendeeNameInChangeList); // We expect that this property is in change list.
             Assert.True(collectionPageHasChanges); // We expect that the CollectionPage is populated with the changes.
         }
 
