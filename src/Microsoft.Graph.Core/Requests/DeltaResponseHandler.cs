@@ -50,7 +50,7 @@ namespace Microsoft.Graph
         /// <returns></returns>
         public async Task<ModelType> HandleResponseAsync<NativeResponseType, ModelType>(NativeResponseType response, Dictionary<string, ParsableFactory<IParsable>> errorMappings)
         {
-            if (response is HttpResponseMessage responseMessage && responseMessage.Content != null)
+            if (response is HttpResponseMessage responseMessage && responseMessage.Content != null && typeof(T).IsAssignableFrom(typeof(ModelType)))
             {
                 // Gets the response string with response headers and status code
                 // set on the response body object.
@@ -61,15 +61,8 @@ namespace Microsoft.Graph
                 var responseWithChangeList = await GetResponseBodyWithChangelist(responseString).ConfigureAwait(false);
                 using var responseWithChangeListStream = new MemoryStream(Encoding.UTF8.GetBytes(responseWithChangeList));
 
-                if(typeof(T).IsAssignableFrom(typeof(ModelType)))
-                {
-                    var responseParseNode = parseNodeFactory.GetRootParseNode(CoreConstants.MimeTypeNames.Application.Json, responseWithChangeListStream);
-                    return (ModelType)(object)responseParseNode.GetObjectValue<T>((parsable) => new T());
-                }
-                else
-                {
-                    return JsonSerializer.Deserialize<ModelType>(responseWithChangeListStream);
-                }
+                var responseParseNode = parseNodeFactory.GetRootParseNode(CoreConstants.MimeTypeNames.Application.Json, responseWithChangeListStream);
+                return (ModelType)(object)responseParseNode.GetObjectValue<T>((parsable) => new T());
             }
 
             return default;
