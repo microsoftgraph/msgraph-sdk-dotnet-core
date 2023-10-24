@@ -16,7 +16,7 @@ namespace Microsoft.Graph
     using Microsoft.Kiota.Abstractions;
 
     /// <summary>
-    /// Task to help with resume able large file uploads.
+    /// Task to help with resumable large file uploads.
     /// </summary>
     public class LargeFileUploadTask<T> where T : IParsable,new()
     {
@@ -29,13 +29,13 @@ namespace Microsoft.Graph
         private long TotalUploadLength => _uploadStream.Length;
 
         /// <summary>
-        /// Task to help with resume able large file uploads. Generates slices based on <paramref name="uploadSession"/>
-        /// information, and can control uploading of requests/>
+        /// Task to help with resumable large file uploads. Generates slices based on <paramref name="uploadSession"/>
+        /// information, and can control uploading of requests.
         /// </summary>
         /// <param name="uploadSession">Session information of type <see cref="IParsable"/>></param>
         /// <param name="uploadStream">Readable, seekable stream to be uploaded. Length of session is determined via uploadStream.Length</param>
         /// <param name="maxSliceSize">Max size(in bytes) of each slice to be uploaded. Defaults to 5MB. When uploading to OneDrive or SharePoint, this value needs to be a multiple of 320 KiB (327,680 bytes).
-        /// If less than 0, default value of 5 MiB is used. .</param>
+        /// If less than 0, default value of 5 MiB is used.</param>
         /// <param name="requestAdapter"><see cref="IRequestAdapter"/> to use for making upload requests. The client should not set Auth headers as upload urls do not need them.</param>
         public LargeFileUploadTask(IParsable uploadSession, Stream uploadStream, int maxSliceSize = -1, IRequestAdapter requestAdapter = null)
         {
@@ -55,9 +55,9 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Extract an <see cref="IUploadSession"/> from an <see cref="IParsable"/>
+        /// Extract an <see cref="IUploadSession"/> from an <see cref="IParsable"/>.
         /// </summary>
-        /// <param name="uploadSession"><see cref="IParsable"/> to initiaze an <see cref="IUploadSession"/> from</param>
+        /// <param name="uploadSession"><see cref="IParsable"/> to initialize an <see cref="IUploadSession"/> from</param>
         /// <returns>A <see cref="IUploadSession"/> instance</returns>
         /// <exception cref="NotImplementedException"></exception>
         private IUploadSession ExtractSessionFromParsable(IParsable uploadSession)

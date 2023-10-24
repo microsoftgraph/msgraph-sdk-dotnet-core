@@ -21,10 +21,10 @@
     <DelaySign>false</DelaySign>
     <AssemblyOriginatorKeyFile>35MSSharedLib1024.snk</AssemblyOriginatorKeyFile>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <VersionPrefix>3.0.11</VersionPrefix>
+    <VersionPrefix>3.1.0</VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <PackageReleaseNotes>
-- Fixes a bug where large file uploads would not complete due to different cased properties.  
+- Adds support for trimming
     </PackageReleaseNotes>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
@@ -32,6 +32,7 @@
     <EnableNETAnalyzers>True</EnableNETAnalyzers>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <NoWarn>NU5048</NoWarn>
+    <IsTrimmable>true</IsTrimmable>
   </PropertyGroup>
   <!-- https://github.com/clairernovotny/DeterministicBuilds#deterministic-builds -->
   <PropertyGroup Condition="'$(TF_BUILD)' == 'true'">
@@ -56,15 +57,15 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="System.Security.Claims" Version="4.3.0" />
-    <PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="6.32.2" />
+    <PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="7.0.3" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.Kiota.Abstractions" Version="1.3.1" />
-    <PackageReference Include="Microsoft.Kiota.Authentication.Azure" Version="1.0.3" />
-    <PackageReference Include="Microsoft.Kiota.Serialization.Json" Version="1.0.8" />
-    <PackageReference Include="Microsoft.Kiota.Serialization.Text" Version="1.0.3" />
-    <PackageReference Include="Microsoft.Kiota.Serialization.Form" Version="1.0.1" />
-    <PackageReference Include="Microsoft.Kiota.Http.HttpClientLibrary" Version="1.1.1" />
-    <PackageReference Include="Microsoft.Kiota.Serialization.Multipart" Version="1.0.0" />
+    <PackageReference Include="Microsoft.Kiota.Abstractions" Version="1.5.0" />
+    <PackageReference Include="Microsoft.Kiota.Authentication.Azure" Version="1.1.0" />
+    <PackageReference Include="Microsoft.Kiota.Serialization.Json" Version="1.1.1" />
+    <PackageReference Include="Microsoft.Kiota.Serialization.Text" Version="1.1.0" />
+    <PackageReference Include="Microsoft.Kiota.Serialization.Form" Version="1.1.0" />
+    <PackageReference Include="Microsoft.Kiota.Http.HttpClientLibrary" Version="1.2.0" />
+    <PackageReference Include="Microsoft.Kiota.Serialization.Multipart" Version="1.1.0" />
   </ItemGroup>
   <ItemGroup Condition=" '$(TargetFramework)' != 'netstandard2.0' ">
     <PackageReference Include="NETStandard.Library" Version="2.0.3" />

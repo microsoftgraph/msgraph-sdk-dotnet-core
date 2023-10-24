@@ -5,6 +5,7 @@
 namespace Microsoft.Graph
 {
     using Microsoft.Kiota.Abstractions;
+    using Microsoft.Kiota.Abstractions.Serialization;
     using System;
     using System.Net;
     using System.Net.Http;
@@ -16,22 +17,25 @@ namespace Microsoft.Graph
     /// Monitor for async operations to the Graph service on the client.
     /// </summary>
     /// <typeparam name="T">The object type to return.</typeparam>
-    public class AsyncMonitor<T> : IAsyncMonitor<T>
+    public class AsyncMonitor<T> : IAsyncMonitor<T> where T: IParsable, new()
     {
         private AsyncOperationStatus asyncOperationStatus;
         private IBaseClient client;
 
         internal string monitorUrl;
 
+        private readonly IParseNodeFactory parseNodeFactory;
         /// <summary>
         /// Construct an Async Monitor.
         /// </summary>
         /// <param name="client">The client to monitor.</param>
         /// <param name="monitorUrl">The URL to monitor.</param>
-        public AsyncMonitor(IBaseClient client, string monitorUrl)
+        /// <param name="parseNodeFactory"> The <see cref="IParseNodeFactory"/> to use for response handling</param>
+        public AsyncMonitor(IBaseClient client, string monitorUrl, IParseNodeFactory parseNodeFactory = null)
         {
             this.client = client;
             this.monitorUrl = monitorUrl;
+            this.parseNodeFactory = parseNodeFactory ?? ParseNodeFactoryRegistry.DefaultInstance;
         }
         
         /// <summary>
@@ -55,12 +59,12 @@ namespace Microsoft.Graph
                 if (responseMessage.StatusCode != HttpStatusCode.Accepted && responseMessage.IsSuccessStatusCode)
                 {
                     using var responseStream = await responseMessage.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return responseStream.Length > 0 ? await JsonSerializer.DeserializeAsync<T>(responseStream) : default(T);
+                    return responseStream.Length > 0 ? parseNodeFactory.GetRootParseNode(CoreConstants.MimeTypeNames.Application.Json, responseStream).GetObjectValue(_ => new T()) : default;
                 }
 
                 using (var responseStream = await responseMessage.Content.ReadAsStreamAsync().ConfigureAwait(false))
                 {
-                    this.asyncOperationStatus = responseStream.Length > 0 ? await JsonSerializer.DeserializeAsync<AsyncOperationStatus>(responseStream, cancellationToken:cancellationToken) : null;
+                    this.asyncOperationStatus = responseStream.Length > 0 ? parseNodeFactory.GetRootParseNode(CoreConstants.MimeTypeNames.Application.Json, responseStream).GetObjectValue(_ => new AsyncOperationStatus()) : null;
 
                     if (this.asyncOperationStatus == null)
                     {
@@ -76,12 +80,9 @@ namespace Microsoft.Graph
                         || string.Equals(this.asyncOperationStatus.Status, "deleteFailed", StringComparison.OrdinalIgnoreCase))
                     {
                         object message = null;
-                        if (this.asyncOperationStatus.AdditionalData != null)
-                        {
-                            this.asyncOperationStatus.AdditionalData.TryGetValue("message", out message);
-                        }
+                        this.asyncOperationStatus.AdditionalData?.TryGetValue("message", out message);
 
-                        throw new ServiceException( message?.ToString() ?? "delete operation failed");
+                        throw new ServiceException(message?.ToString() ?? "delete operation failed");
                     }
 
                     if (progress != null)

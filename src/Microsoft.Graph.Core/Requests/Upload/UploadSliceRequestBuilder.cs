@@ -90,10 +90,11 @@ namespace Microsoft.Graph
                 HttpMethod = Method.PUT,
                 UrlTemplate = UrlTemplate,
             };
-            requestInfo.SetStreamContent(stream);
+            requestInfo.SetStreamContent(stream, binaryContentType);
             requestInfo.Headers.Add("Content-Range", $"bytes {this.RangeBegin}-{this.RangeEnd}/{this.TotalSessionLength}");
             requestInfo.Headers.Add("Content-Length", $"{this.RangeLength}");
             return requestInfo;
         }
+        private const string binaryContentType = "application/octet-stream";
     }
 }

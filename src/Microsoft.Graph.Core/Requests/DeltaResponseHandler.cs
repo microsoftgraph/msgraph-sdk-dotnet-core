@@ -14,6 +14,11 @@ namespace Microsoft.Graph
     using Microsoft.Kiota.Abstractions;
     using Microsoft.Kiota.Abstractions.Serialization;
     using System;
+    #if NET5_0_OR_GREATER
+    using System.Text.Json.Serialization;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Text.Json.Serialization.Metadata;
+    #endif
 
     /// <summary>
     /// PREVIEW 
@@ -45,7 +50,7 @@ namespace Microsoft.Graph
         /// <returns></returns>
         public async Task<ModelType> HandleResponseAsync<NativeResponseType, ModelType>(NativeResponseType response, Dictionary<string, ParsableFactory<IParsable>> errorMappings)
         {
-            if (response is HttpResponseMessage responseMessage && responseMessage.Content != null)
+            if (response is HttpResponseMessage responseMessage && responseMessage.Content != null && typeof(T).IsAssignableFrom(typeof(ModelType)))
             {
                 // Gets the response string with response headers and status code
                 // set on the response body object.
@@ -53,18 +58,11 @@ namespace Microsoft.Graph
 
                 // Get the response body object with the change list 
                 // set on each response item.
-                var responseWithChangelist = await GetResponseBodyWithChangelist(responseString).ConfigureAwait(false);
-                using var responseWithChangelistStream = new MemoryStream(Encoding.UTF8.GetBytes(responseWithChangelist));
+                var responseWithChangeList = await GetResponseBodyWithChangelist(responseString).ConfigureAwait(false);
+                using var responseWithChangeListStream = new MemoryStream(Encoding.UTF8.GetBytes(responseWithChangeList));
 
-                if(typeof(T).IsAssignableFrom(typeof(ModelType)))
-                {
-                    var responseParseNode = parseNodeFactory.GetRootParseNode(CoreConstants.MimeTypeNames.Application.Json, responseWithChangelistStream);
-                    return (ModelType)(object)responseParseNode.GetObjectValue<T>((parsable) => new T());
-                }
-                else
-                {
-                    return JsonSerializer.Deserialize<ModelType>(responseWithChangelistStream);
-                }
+                var responseParseNode = parseNodeFactory.GetRootParseNode(CoreConstants.MimeTypeNames.Application.Json, responseWithChangeListStream);
+                return (ModelType)(object)responseParseNode.GetObjectValue<T>((parsable) => new T());
             }
 
             return default;
@@ -89,7 +87,11 @@ namespace Microsoft.Graph
                 var statusCode = hrm.StatusCode;
 
                 Dictionary<string, string[]> headerDictionary = responseHeaders.ToDictionary(x => x.Key, x => x.Value.ToArray());
+#if NET5_0_OR_GREATER
+                var responseHeaderString = JsonSerializer.Serialize(headerDictionary, SourceGenerationContext.Default.DictionaryStringStringArray);
+#else
                 var responseHeaderString = JsonSerializer.Serialize(headerDictionary);
+#endif
 
                 responseContent = content.Substring(0, content.Length - 1) + ", ";
                 responseContent += "\"responseHeaders\": " + responseHeaderString + ", ";
@@ -127,7 +129,11 @@ namespace Microsoft.Graph
 
                 // Replace the original page of changed items with a page of items that
                 // have a self describing change list.
+#if NET5_0_OR_GREATER
+                var response = AddOrReplacePropertyToObject(responseJsonDocument.RootElement, "value", updatedObjectsWithChangeList, SourceGenerationContext.Default.ListJsonElement);
+#else
                 var response = AddOrReplacePropertyToObject(responseJsonDocument.RootElement, "value", updatedObjectsWithChangeList);
+#endif
 
                 return response;
             }
@@ -148,7 +154,11 @@ namespace Microsoft.Graph
             await GetObjectProperties(responseItem, changes).ConfigureAwait(false);
 
             // Add the changes object to the response item.
+#if NET5_0_OR_GREATER
+            var response = AddOrReplacePropertyToObject(responseItem, "changes", changes, SourceGenerationContext.Default.ListString);
+#else
             var response = AddOrReplacePropertyToObject(responseItem, "changes", changes);
+#endif
 
             return JsonDocument.Parse(response);
         }
@@ -218,6 +228,8 @@ namespace Microsoft.Graph
             }
         }
 
+        
+#if NET5_0_OR_GREATER
         /// <summary>
         /// Adds a property with the given property name to the JsonElement object. This function is currently necessary as
         /// <see cref="JsonElement"/> is currently readonly.
@@ -225,8 +237,22 @@ namespace Microsoft.Graph
         /// <param name="jsonElement">The Original JsonElement to add/replace a property</param>
         /// <param name="propertyName">The property name to use</param>
         /// <param name="newItem">The object to be added</param>
+        /// <typeparam name="NewItemType">The type of the object to be added</typeparam>
+        /// <param name="jsonTypeInfo">The Type info for serialization</param>
         /// <returns></returns>
-        private string AddOrReplacePropertyToObject(JsonElement jsonElement, string propertyName, object newItem)
+        private string AddOrReplacePropertyToObject<NewItemType>(JsonElement jsonElement, string propertyName, NewItemType newItem, JsonTypeInfo<NewItemType> jsonTypeInfo)
+#else
+        /// <summary>
+        /// Adds a property with the given property name to the JsonElement object. This function is currently necessary as
+        /// <see cref="JsonElement"/> is currently readonly.
+        /// </summary>
+        /// <param name="jsonElement">The Original JsonElement to add/replace a property</param>
+        /// <param name="propertyName">The property name to use</param>
+        /// <param name="newItem">The object to be added</param>
+        /// <typeparam name="NewItemType">The type of the object to be added</typeparam>
+        /// <returns></returns>
+        private string AddOrReplacePropertyToObject<NewItemType>(JsonElement jsonElement, string propertyName, NewItemType newItem)
+#endif
         {
             using (MemoryStream memoryStream = new MemoryStream())
             {
@@ -241,7 +267,11 @@ namespace Microsoft.Graph
                             isReplacement = true; // we are replacing an existing property
                             utf8JsonWriter.WritePropertyName(element.Name); //write the property name
                             // Try to get a JsonElement so that we can write it to the stream
+#if NET5_0_OR_GREATER
+                            string newJsonElement = JsonSerializer.Serialize(newItem, jsonTypeInfo);
+#else
                             string newJsonElement = JsonSerializer.Serialize(newItem);
+#endif
                             using var newJsonDocument = JsonDocument.Parse(newJsonElement);
                             newJsonDocument.RootElement.WriteTo(utf8JsonWriter); // write the object
                         }
@@ -256,7 +286,11 @@ namespace Microsoft.Graph
                     {
                         utf8JsonWriter.WritePropertyName(propertyName); //write the property name
                         // Try to get a JsonElement so that we can write it to the stream
+#if NET5_0_OR_GREATER
+                        string newJsonElement = JsonSerializer.Serialize(newItem, jsonTypeInfo);
+#else
                         string newJsonElement = JsonSerializer.Serialize(newItem);
+#endif
                         using var newJsonDocument = JsonDocument.Parse(newJsonElement);
                         newJsonDocument.RootElement.WriteTo(utf8JsonWriter); // write the object
                     }
@@ -268,4 +302,12 @@ namespace Microsoft.Graph
             }
         }
     }
+#if NET5_0_OR_GREATER
+        [JsonSerializable(typeof(Dictionary<string, string[]>))]
+        [JsonSerializable(typeof(List<string>))]
+        [JsonSerializable(typeof(List<JsonElement>))]
+        internal partial class SourceGenerationContext : JsonSerializerContext
+        {
+        }
+#endif
 }
