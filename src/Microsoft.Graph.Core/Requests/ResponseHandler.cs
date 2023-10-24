@@ -39,19 +39,12 @@ namespace Microsoft.Graph
         /// <returns></returns>
         public async Task<ModelType> HandleResponseAsync<NativeResponseType, ModelType>(NativeResponseType response, Dictionary<string, ParsableFactory<IParsable>> errorMappings)
         {
-            if (response is HttpResponseMessage responseMessage && responseMessage.Content != null)
+            if (response is HttpResponseMessage responseMessage && responseMessage.Content != null && typeof(T).IsAssignableFrom(typeof(ModelType)))
             {
                 await ValidateSuccessfulResponse(responseMessage, errorMappings).ConfigureAwait(false);
                 using var responseStream = await responseMessage.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                if (typeof(T).IsAssignableFrom(typeof(ModelType)))
-                {
-                    var jsonParseNode = _jsonParseNodeFactory.GetRootParseNode(responseMessage.Content.Headers?.ContentType?.MediaType?.ToLowerInvariant(), responseStream);
-                    return (ModelType)(object)jsonParseNode.GetObjectValue<T>((parsable) => new T());
-                }
-                else
-                {
-                    return JsonSerializer.Deserialize<ModelType>(responseStream);
-                }
+                var jsonParseNode = _jsonParseNodeFactory.GetRootParseNode(responseMessage.Content.Headers?.ContentType?.MediaType?.ToLowerInvariant(), responseStream);
+                return (ModelType)(object)jsonParseNode.GetObjectValue<T>((parsable) => new T());
             }
 
             return default;

@@ -19,6 +19,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
     using Microsoft.Kiota.Abstractions;
     using System.Text.Json;
     using Microsoft.Kiota.Abstractions.Serialization;
+    using Microsoft.Kiota.Serialization.Json;
 
     public class AsyncMonitorTests : IDisposable
     {
@@ -40,6 +41,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             this.requestAdapter = new Mock<IRequestAdapter>(MockBehavior.Strict);
             this.client = new BaseClient(this.requestAdapter.Object);
             this.asyncMonitor = new AsyncMonitor<DerivedTypeClass>(this.client, AsyncMonitorTests.monitorUrl);
+            ParseNodeFactoryRegistry.DefaultInstance.ContentTypeAssociatedFactories.TryAdd(CoreConstants.MimeTypeNames.Application.Json, new JsonParseNodeFactory());
         }
 
         public void Dispose()
@@ -64,8 +66,8 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                 .Callback<AsyncOperationStatus>(status => this.ProgressCallback(status, out called));
 
             using var redirectedResponseMessage = new HttpResponseMessage();
-            using var stringContent = new StringContent(JsonSerializer.Serialize(new AsyncOperationStatus()));
-            using var redirectedStringContent = new StringContent(JsonSerializer.Serialize(new DerivedTypeClass { Id = "id" }));
+            using var stringContent = new StringContent(JsonSerializer.Serialize(new AsyncOperationStatus(), new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase }));
+            using var redirectedStringContent = new StringContent(JsonSerializer.Serialize(new DerivedTypeClass { Id = "id" }, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase }));
             this.httpResponseMessage.Content = stringContent;
             this.httpResponseMessage.StatusCode = HttpStatusCode.Accepted;
             redirectedResponseMessage.Content = redirectedStringContent;
@@ -101,7 +103,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                 .Callback((RequestInformation requestInfo, Dictionary<string, ParsableFactory<IParsable>> errorMapping, CancellationToken cancellationToken) => ((NativeResponseHandler)requestInfo.GetRequestOption<ResponseHandlerOption>().ResponseHandler).Value = this.httpResponseMessage)
                 .Returns(Task.FromResult(0));
 
-            using var stringContent = new StringContent(JsonSerializer.Serialize(new AsyncOperationStatus { Status = "cancelled" }));
+            using var stringContent = new StringContent(JsonSerializer.Serialize(new AsyncOperationStatus { Status = "cancelled" }, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase }));
             this.httpResponseMessage.Content = stringContent;
             this.httpResponseMessage.StatusCode = HttpStatusCode.Accepted;
 
@@ -117,7 +119,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                 .Callback((RequestInformation requestInfo, Dictionary<string, ParsableFactory<IParsable>> errorMapping, CancellationToken cancellationToken) => ((NativeResponseHandler)requestInfo.GetRequestOption<ResponseHandlerOption>().ResponseHandler).Value = this.httpResponseMessage)
                 .Returns(Task.FromResult(0));
 
-            using var stringContent = new StringContent(JsonSerializer.Serialize(new AsyncOperationStatus { Status = "deleteFailed" }));
+            using var stringContent = new StringContent(JsonSerializer.Serialize(new AsyncOperationStatus { Status = "deleteFailed" }, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase }));
             this.httpResponseMessage.Content = stringContent;
             this.httpResponseMessage.StatusCode = HttpStatusCode.Accepted;
 
@@ -133,11 +135,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                 .Callback((RequestInformation requestInfo, Dictionary<string, ParsableFactory<IParsable>> errorMapping, CancellationToken cancellationToken) => ((NativeResponseHandler)requestInfo.GetRequestOption<ResponseHandlerOption>().ResponseHandler).Value = this.httpResponseMessage)
                 .Returns(Task.FromResult(0));
 
-            using var stringContent = new StringContent(JsonSerializer.Serialize(new AsyncOperationStatus
-            {
-                AdditionalData = new Dictionary<string, object> { { "message", "message" } },
-                Status = "failed"
-            }));
+            using var stringContent = new StringContent("{\"message\": \"message\",\"status\": \"failed\"}");
             this.httpResponseMessage.Content = stringContent;
             this.httpResponseMessage.StatusCode = HttpStatusCode.Accepted;
 

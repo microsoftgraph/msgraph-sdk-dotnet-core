@@ -74,20 +74,17 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             // Act
             var deltaServiceLibResponse = await deltaResponseHandler.HandleResponseAsync<HttpResponseMessage, TestEventDeltaCollectionResponse>(hrm, null);
         
-            var deltaJObjectResponse = await deltaResponseHandler.HandleResponseAsync<HttpResponseMessage, JsonElement>(hrm, null);
-            string actualStringValue = deltaJObjectResponse.GetProperty("value").EnumerateArray().ElementAt(0)
-                .GetProperty("arrayOfString").EnumerateArray().ElementAt(0).ToString(); //value[0].arrayOfString[0]
-            bool actualBoolValue = Convert.ToBoolean(deltaJObjectResponse.GetProperty("value").EnumerateArray()
-                .ElementAt(1).GetProperty("arrayOfBool").EnumerateArray().ElementAt(1).ToString()); //value[1].arrayOfBool[1]
-            int actualIntValue = Convert.ToInt32((string)deltaJObjectResponse.GetProperty("value").EnumerateArray()
-                .ElementAt(2).GetProperty("arrayOfInt").EnumerateArray().ElementAt(1).ToString());// value[2].arrayOfInt[1]
+            var collectionPage = deltaServiceLibResponse.Value;
+            string actualStringValue = ((JsonElement)collectionPage.First().AdditionalData["arrayOfString"]).EnumerateArray().ElementAt(0).ToString(); //value[0].arrayOfString[0]
+            bool actualBoolValue = Convert.ToBoolean(((JsonElement)collectionPage.Skip(1).First().AdditionalData["arrayOfBool"]).EnumerateArray().ElementAt(1).ToString()); //value[1].arrayOfBool[1]
+            int actualIntValue = Convert.ToInt32(((JsonElement)collectionPage.Skip(2).First().AdditionalData["arrayOfInt"]).EnumerateArray().ElementAt(1).ToString());// value[2].arrayOfInt[1]
 
-            string arrayOfString = deltaJObjectResponse.GetProperty("value").EnumerateArray().ElementAt(0)
-                .GetProperty("changes").EnumerateArray().ElementAt(2).ToString();
-            string arrayOfBool = deltaJObjectResponse.GetProperty("value").EnumerateArray().ElementAt(1)
-                .GetProperty("changes").EnumerateArray().ElementAt(2).ToString();
-            string arrayOfInt = deltaJObjectResponse.GetProperty("value").EnumerateArray().ElementAt(2)
-                .GetProperty("changes").EnumerateArray().ElementAt(2).ToString();
+            string arrayOfString = ((JsonElement)collectionPage.First()
+                .AdditionalData["changes"]).EnumerateArray().ElementAt(2).ToString();
+            string arrayOfBool = ((JsonElement)collectionPage.Skip(1).First()
+                .AdditionalData["changes"]).EnumerateArray().ElementAt(2).ToString();
+            string arrayOfInt = ((JsonElement)collectionPage.Skip(2).First()
+                .AdditionalData["changes"]).EnumerateArray().ElementAt(2).ToString();
         
             // Assert that the value is set.
             Assert.Equal("SMTP:alexd@contoso.com", actualStringValue);
@@ -121,15 +118,10 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         
             // Act
             var deltaServiceLibResponse = await deltaResponseHandler.HandleResponseAsync<HttpResponseMessage, TestEventDeltaCollectionResponse>(hrm, null);
-            var deltaJObjectResponse = await deltaResponseHandler.HandleResponseAsync<HttpResponseMessage, JsonElement>(hrm, null);
-            string attendeeName = deltaJObjectResponse.GetProperty("value").EnumerateArray().ElementAt(0)
-                .GetProperty("attendees").EnumerateArray().ElementAt(0).GetProperty("emailAddress").GetProperty("name")
-                .ToString(); // value[0].attendees[0].emailAddress.name
-            string attendeeNameInChangelist = deltaJObjectResponse.GetProperty("value").EnumerateArray().ElementAt(0)
-                .GetProperty("changes").EnumerateArray().ElementAt(9).ToString();//eltaJObjectResponse["value"][0]["changes"][9]
-            
             var collectionPage = deltaServiceLibResponse.Value;
-            var collectionPageHasChanges = collectionPage[0].AdditionalData.TryGetValue("changes", out object obj);
+            string attendeeName = collectionPage.First().Attendees.First().EmailAddress.Name;
+            
+            var collectionPageHasChanges = collectionPage[0].AdditionalData.TryGetValue("changes", out var obj);
             
             // IEventDeltaCollectionPage is what the service library provides.
             // Can't test against the service library model, since it has a reference to the signed
@@ -140,7 +132,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             // Assert
             Assert.NotEmpty(deltaServiceLibResponse.Value);
             Assert.Equal("George", attendeeName); // We maintain the expected response body when we change it.
-            Assert.Equal("attendees[0].emailAddress.name", attendeeNameInChangelist); // We expect that this property is in changelist.
+            Assert.Equal("attendees[0].emailAddress.name", ((JsonElement)obj).EnumerateArray().ElementAt(9).ToString()); // We expect that this property is in change list.
             Assert.True(collectionPageHasChanges); // We expect that the CollectionPage is populated with the changes.
         }
 
@@ -154,11 +146,11 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             // Arrange
             var deltaResponseHandler = new DeltaResponseHandler<TestEventDeltaCollectionResponse>();
             var odataContext = @"https://graph.microsoft.com/v1.0/$metadata#Collection(event)";
-            var odataDeltalink = @"https://graph.microsoft.com/v1.0/me/mailfolders/inbox/messages/delta?$deltatoken=LztZwWjo5IivWBhyxw5rACKxf7mPm0oW6JZZ7fvKxYPS_67JnEYmfQQMPccy6FRun0DWJF5775dvuXxlZnMYhBubC1v4SBVT9ZjO8f7acZI.uCdGKSBS4YxPEbn_Q5zxLSq91WhpGoz9ZKeNZHMWgSA";
+            var odataDeltaLink = @"https://graph.microsoft.com/v1.0/me/mailfolders/inbox/messages/delta?$deltatoken=LztZwWjo5IivWBhyxw5rACKxf7mPm0oW6JZZ7fvKxYPS_67JnEYmfQQMPccy6FRun0DWJF5775dvuXxlZnMYhBubC1v4SBVT9ZjO8f7acZI.uCdGKSBS4YxPEbn_Q5zxLSq91WhpGoz9ZKeNZHMWgSA";
 
 
             // Empty result
-            var testString = "{\"@odata.context\":\"" + odataContext + "\",\"@odata.deltaLink\":\"" + odataDeltalink + "\",\"value\":[]}";
+            var testString = "{\"@odata.context\":\"" + odataContext + "\",\"@odata.deltaLink\":\"" + odataDeltaLink + "\",\"value\":[]}";
 
             var hrm = new HttpResponseMessage()
             {
@@ -168,14 +160,15 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             };
 
             // Act
-            var deltaJObjectResponse = await deltaResponseHandler.HandleResponseAsync<HttpResponseMessage, JsonElement>(hrm, null);
-            var itemsCount = deltaJObjectResponse.GetProperty("value").GetArrayLength();
-            var odataContextFromJObject = deltaJObjectResponse.GetProperty("@odata.context").ToString();
-            var odataDeltalinkFromJObject = deltaJObjectResponse.GetProperty("@odata.deltaLink").ToString();
+            var deltaServiceLibResponse = await deltaResponseHandler.HandleResponseAsync<HttpResponseMessage, TestEventDeltaCollectionResponse>(hrm, null);
+            var collectionPage = deltaServiceLibResponse.Value;
+            var itemsCount = collectionPage.Count;
+            var odataContextFromJObject = deltaServiceLibResponse.AdditionalData["@odata.context"] as string;
+            var odataDeltaLinkFromJObject = deltaServiceLibResponse.AdditionalData["@odata.deltaLink"] as string;
 
             Assert.Equal(0 ,itemsCount); // We don't expect items in an empty collection page
             Assert.Equal(odataContext, odataContextFromJObject); // We expect that the odata.context isn't transformed.
-            Assert.Equal(odataDeltalink, odataDeltalinkFromJObject); // We expect that the odata.deltalink isn't transformed.
+            Assert.Equal(odataDeltaLink, odataDeltaLinkFromJObject); // We expect that the odata.deltalink isn't transformed.
         }
 
         [Fact]
