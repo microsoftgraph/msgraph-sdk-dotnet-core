@@ -427,7 +427,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
             eventPageIterator = PageIterator<TestEventItem, TestEventsResponse>.CreatePageIterator(baseClient, originalPage, processEachEvent);
 
             // Assert that the exception is thrown since the next page had the same nextLink URL
-            ServiceException exception = await Assert.ThrowsAsync<ServiceException>(async () => await eventPageIterator.IterateAsync());
+            ServiceException exception = await Assert.ThrowsAsync<ServiceException>(() => eventPageIterator.IterateAsync());
             Assert.Contains("Detected nextLink loop", exception.Message);
         }
 
