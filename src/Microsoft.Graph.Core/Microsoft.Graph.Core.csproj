@@ -21,17 +21,17 @@
     <DelaySign>false</DelaySign>
     <AssemblyOriginatorKeyFile>35MSSharedLib1024.snk</AssemblyOriginatorKeyFile>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <VersionPrefix>3.1.0</VersionPrefix>
+    <VersionPrefix>3.1.1</VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <PackageReleaseNotes>
-- Adds support for trimming
+- Improves error messages when using the page iterator.
     </PackageReleaseNotes>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <Deterministic>true</Deterministic>
     <EnableNETAnalyzers>True</EnableNETAnalyzers>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <NoWarn>NU5048</NoWarn>
+    <NoWarn>NU5048;NETSDK1202</NoWarn>
     <IsTrimmable>true</IsTrimmable>
   </PropertyGroup>
   <!-- https://github.com/clairernovotny/DeterministicBuilds#deterministic-builds -->

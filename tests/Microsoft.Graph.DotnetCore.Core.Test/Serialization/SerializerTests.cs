@@ -8,6 +8,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
     using Microsoft.Graph.DotnetCore.Core.Test.TestModels;
     using Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels;
     using Microsoft.Kiota.Abstractions;
+    using Microsoft.Kiota.Abstractions.Serialization;
     using Microsoft.Kiota.Serialization.Json;
     using System;
     using System.Collections.Generic;
@@ -17,13 +18,12 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
     using Xunit;
     public class SerializerTests
     {
-        private readonly JsonParseNodeFactory parseNodeFactory;
-
         public SerializerTests()
         {
-            this.parseNodeFactory = new JsonParseNodeFactory();
+            ApiClientBuilder.RegisterDefaultSerializer<JsonSerializationWriterFactory>();
+            ApiClientBuilder.RegisterDefaultDeserializer<JsonParseNodeFactory>();
         }
-
+        
         [Fact]
         public void DeserializeDerivedType()
         {
@@ -35,9 +35,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
                 id,
                 name);
 
-            var memoryStream = new MemoryStream(Encoding.UTF8.GetBytes(stringToDeserialize));
-            var parseNode = this.parseNodeFactory.GetRootParseNode(CoreConstants.MimeTypeNames.Application.Json,memoryStream);
-            var derivedType = parseNode.GetObjectValue<DerivedTypeClass>(DerivedTypeClass.CreateFromDiscriminatorValue);
+            var derivedType = KiotaJsonSerializer.Deserialize<DerivedTypeClass>(stringToDeserialize);
 
             Assert.NotNull(derivedType);
             Assert.Equal(id, derivedType.Id);
@@ -56,9 +54,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
                 name);
 
             //The type information from "@odata.type" should lead to correctly deserializing to the derived type
-            var memoryStream = new MemoryStream(Encoding.UTF8.GetBytes(stringToDeserialize));
-            var parseNode = this.parseNodeFactory.GetRootParseNode(CoreConstants.MimeTypeNames.Application.Json, memoryStream);
-            var derivedType = parseNode.GetObjectValue<AbstractEntityType>(AbstractEntityType.CreateFromDiscriminatorValue) as DerivedTypeClass;
+            var derivedType = KiotaJsonSerializer.Deserialize<AbstractEntityType>(stringToDeserialize) as DerivedTypeClass;
 
             Assert.NotNull(derivedType);
             Assert.Equal(id, derivedType.Id);
@@ -77,9 +73,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
                 id,
                 givenName);
 
-            var memoryStream = new MemoryStream(Encoding.UTF8.GetBytes(stringToDeserialize));
-            var parseNode = this.parseNodeFactory.GetRootParseNode(CoreConstants.MimeTypeNames.Application.Json, memoryStream);
-            var instance = parseNode.GetObjectValue<DerivedTypeClass>(DerivedTypeClass.CreateFromDiscriminatorValue);
+            var instance = KiotaJsonSerializer.Deserialize<DerivedTypeClass>(stringToDeserialize);
 
             Assert.NotNull(instance);
             Assert.Equal(id, instance.Id);
@@ -100,9 +94,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
                 givenName,
                 link);
 
-            var memoryStream = new MemoryStream(Encoding.UTF8.GetBytes(stringToDeserialize));
-            var parseNode = this.parseNodeFactory.GetRootParseNode(CoreConstants.MimeTypeNames.Application.Json, memoryStream);
-            var instance = parseNode.GetObjectValue<DerivedTypeClass>(DerivedTypeClass.CreateFromDiscriminatorValue);
+            var instance = KiotaJsonSerializer.Deserialize<DerivedTypeClass>(stringToDeserialize);
 
             Assert.NotNull(instance);
             Assert.Equal(id, instance.Id);
@@ -122,9 +114,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
                 enumValue,
                 id);
 
-            var memoryStream = new MemoryStream(Encoding.UTF8.GetBytes(stringToDeserialize));
-            var parseNode = this.parseNodeFactory.GetRootParseNode(CoreConstants.MimeTypeNames.Application.Json, memoryStream);
-            var instance = parseNode.GetObjectValue<DerivedTypeClass>(DerivedTypeClass.CreateFromDiscriminatorValue);
+            var instance = KiotaJsonSerializer.Deserialize<DerivedTypeClass>(stringToDeserialize);
 
             Assert.NotNull(instance);
             Assert.Equal(id, instance.Id);
@@ -140,9 +130,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
 
             var stringToDeserialize = string.Format("{{\"dateCollection\":[\"{0}\",\"{1}\"]}}", now.ToString("yyyy-MM-dd"), tomorrow.ToString("yyyy-MM-dd"));
 
-            var memoryStream = new MemoryStream(Encoding.UTF8.GetBytes(stringToDeserialize));
-            var parseNode = this.parseNodeFactory.GetRootParseNode(CoreConstants.MimeTypeNames.Application.Json, memoryStream);
-            var deserializedObject = parseNode.GetObjectValue<DateTestClass>(DateTestClass.CreateFromDiscriminatorValue);
+            var deserializedObject = KiotaJsonSerializer.Deserialize<DateTestClass>(stringToDeserialize);
 
             Assert.Equal(2, deserializedObject.DateCollection.Count());
             Assert.True(deserializedObject.DateCollection.Any(
@@ -177,12 +165,9 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
             };
 
             // Serialize
-            using var jsonSerializerWriter = new JsonSerializationWriter();
-            jsonSerializerWriter.WriteObjectValue(string.Empty, derivedTypeInstance);
-            var serializedStream = jsonSerializerWriter.GetSerializedContent();
+            var serializedStream = KiotaJsonSerializer.SerializeAsStream(derivedTypeInstance);
             // De serialize
-            var parseNode = this.parseNodeFactory.GetRootParseNode(CoreConstants.MimeTypeNames.Application.Json, serializedStream);
-            var deserializedInstance = parseNode.GetObjectValue<DerivedTypeClass>(DerivedTypeClass.CreateFromDiscriminatorValue);
+            var deserializedInstance = KiotaJsonSerializer.Deserialize<DerivedTypeClass>(serializedStream);
 
             Assert.Equal(derivedTypeInstance.Name ,deserializedInstance.Name);
             Assert.Equal(derivedTypeInstance.Id ,deserializedInstance.Id);
@@ -196,9 +181,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
 
             var stringToDeserialize = string.Format("{{\"nullableDate\":\"{0}\"}}", now.ToString("yyyy-MM-dd"));
 
-            var memoryStream = new MemoryStream(Encoding.UTF8.GetBytes(stringToDeserialize));
-            var parseNode = this.parseNodeFactory.GetRootParseNode(CoreConstants.MimeTypeNames.Application.Json, memoryStream);
-            var dateClass = parseNode.GetObjectValue<DateTestClass>(DateTestClass.CreateFromDiscriminatorValue);
+            var dateClass = KiotaJsonSerializer.Deserialize<DateTestClass>(stringToDeserialize);
 
             Assert.Equal(now.Year, dateClass.NullableDate.Value.Year);
             Assert.Equal(now.Month, dateClass.NullableDate.Value.Month);
@@ -220,9 +203,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
                                      "}";
 
             // Act
-            var memoryStream = new MemoryStream(Encoding.UTF8.GetBytes(resourceDataString));
-            var parseNode = this.parseNodeFactory.GetRootParseNode(CoreConstants.MimeTypeNames.Application.Json, memoryStream);
-            var resourceData = parseNode.GetObjectValue<TestResourceData>(TestResourceData.CreateFromDiscriminatorValue);
+            var resourceData = KiotaJsonSerializer.Deserialize<TestResourceData>(resourceDataString);
 
             // Assert
             Assert.IsType<TestResourceData>(resourceData);
@@ -246,9 +227,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
                 additionalKey,
                 additionalValue);
 
-            var memoryStream = new MemoryStream(Encoding.UTF8.GetBytes(stringToDeserialize));
-            var parseNode = this.parseNodeFactory.GetRootParseNode(CoreConstants.MimeTypeNames.Application.Json, memoryStream);
-            var instance = parseNode.GetObjectValue<AbstractEntityType>(AbstractEntityType.CreateFromDiscriminatorValue);
+            var instance = KiotaJsonSerializer.Deserialize<AbstractEntityType>(stringToDeserialize);
 
             Assert.NotNull(instance);
             Assert.Equal(entityId, instance.Id);
@@ -272,9 +251,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
 
 
             // Serialize
-            using var jsonSerializerWriter = new JsonSerializationWriter();
-            jsonSerializerWriter.WriteObjectValue(string.Empty, instance);
-            var serializedStream = jsonSerializerWriter.GetSerializedContent();
+            var serializedStream = KiotaJsonSerializer.SerializeAsStream(instance);
 
             //Assert
             var streamReader = new StreamReader(serializedStream);
@@ -282,8 +259,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
 
             // De serialize
             serializedStream.Position = 0; //reset the stream to be read again
-            var parseNode = this.parseNodeFactory.GetRootParseNode(CoreConstants.MimeTypeNames.Application.Json, serializedStream);
-            var newInstance = parseNode.GetObjectValue<DerivedTypeClass>(DerivedTypeClass.CreateFromDiscriminatorValue);
+            var newInstance = KiotaJsonSerializer.Deserialize<DerivedTypeClass>(serializedStream);
 
             Assert.NotNull(newInstance);
             Assert.Equal(instance.Id, instance.Id);
@@ -361,11 +337,10 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
 
             using var jsonSerializerWriter = new JsonSerializationWriter();
             jsonSerializerWriter.WriteObjectValue(string.Empty, date);
-            var serializedStream = jsonSerializerWriter.GetSerializedContent();
+            var serializedString = KiotaJsonSerializer.SerializeAsString(date);
 
             // Assert
-            var streamReader = new StreamReader(serializedStream);
-            Assert.Equal(expectedSerializedString, streamReader.ReadToEnd());
+            Assert.Equal(expectedSerializedString, serializedString);
         }
 
         [Fact]
@@ -381,13 +356,8 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
                 IgnoredNumber = 230 // we shouldn't see this value
             };
 
-            using var jsonSerializerWriter = new JsonSerializationWriter();
-            jsonSerializerWriter.WriteObjectValue(string.Empty, date);
-            var serializedStream = jsonSerializerWriter.GetSerializedContent();
-
             // Assert
-            using var streamReader = new StreamReader(serializedStream);
-            var serializedString = streamReader.ReadToEnd();
+            var serializedString = KiotaJsonSerializer.SerializeAsString(date);
 
             Assert.Equal(expectedSerializedString, serializedString);
             Assert.DoesNotContain("230", serializedString);
@@ -417,13 +387,8 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
                                            "}";
 
             // Act
-            using var jsonSerializerWriter = new JsonSerializationWriter();
-            jsonSerializerWriter.WriteObjectValue(string.Empty, testItemBody);
-
+            var serializedJsonString = KiotaJsonSerializer.SerializeAsString(testItemBody);
             // Assert
-            var serializedStream = jsonSerializerWriter.GetSerializedContent();
-            using var reader = new StreamReader(serializedStream, Encoding.UTF8);
-            var serializedJsonString = reader.ReadToEnd();
             Assert.Equal(expectedSerializedString, serializedJsonString);
         }
 
@@ -444,13 +409,9 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
                                            "}";
 
             // Act
-            using var jsonSerializerWriter = new JsonSerializationWriter();
-            jsonSerializerWriter.WriteObjectValue(string.Empty, testItemBody);
+            var serializedString = KiotaJsonSerializer.SerializeAsString(testItemBody);
 
             //Assert
-            var serializedStream = jsonSerializerWriter.GetSerializedContent();
-            using var reader = new StreamReader(serializedStream, Encoding.UTF8);
-            var serializedString = reader.ReadToEnd();
             Assert.Equal(expectedSerializedString, serializedString);
             Assert.DoesNotContain("@odata.nextLink", serializedString);
         }
@@ -477,13 +438,8 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
                                            "}";
 
             // Act
-            using var jsonSerializerWriter = new JsonSerializationWriter();
-            jsonSerializerWriter.WriteObjectValue(string.Empty, testEmailAddress);
-
             // Assert
-            var serializedStream = jsonSerializerWriter.GetSerializedContent();
-            using var reader = new StreamReader(serializedStream, Encoding.UTF8);
-            var serializedJsonString = reader.ReadToEnd();
+            var serializedJsonString = KiotaJsonSerializer.SerializeAsString(testEmailAddress);
             Assert.Equal(expectedSerializedString, serializedJsonString);
         }
 
@@ -516,15 +472,10 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
                 UploadUrl = "http://localhost",
                 NextExpectedRanges = new List<string> { "0 - 1000" }
             };
-            using var jsonSerializerWriter = new JsonSerializationWriter();
             var expectedString = @"{""expirationDateTime"":""2016-11-20T18:23:45.9356913+00:00"",""nextExpectedRanges"":[""0 - 1000""],""uploadUrl"":""http://localhost""}";
             // Act
-            jsonSerializerWriter.WriteObjectValue(string.Empty, uploadSession);
             // Assert
-            // Get the json string from the stream.
-            var serializedStream = jsonSerializerWriter.GetSerializedContent();
-            using var reader = new StreamReader(serializedStream, Encoding.UTF8);
-            var serializedJsonString = reader.ReadToEnd();
+            var serializedJsonString = KiotaJsonSerializer.SerializeAsString(uploadSession);
             // Expect the string to be ISO 8601-1:2019 format
             Assert.Equal(expectedString, serializedJsonString);
         }
@@ -534,9 +485,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
         {
             // Act 1
             const string camelCasedPayload = @"{""expirationDateTime"":""2016-11-20T18:23:45.9356913+00:00"",""nextExpectedRanges"":[""0 - 1000""],""uploadUrl"":""http://localhost""}";
-            var memoryStream = new MemoryStream(Encoding.UTF8.GetBytes(camelCasedPayload));
-            var parseNode = this.parseNodeFactory.GetRootParseNode(CoreConstants.MimeTypeNames.Application.Json, memoryStream);
-            var uploadSession = parseNode.GetObjectValue(UploadSession.CreateFromDiscriminatorValue);
+            var uploadSession = KiotaJsonSerializer.Deserialize<UploadSession>(camelCasedPayload);
             Assert.NotNull(uploadSession);
             Assert.NotNull(uploadSession.ExpirationDateTime);
             Assert.NotNull(uploadSession.NextExpectedRanges);
@@ -544,9 +493,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
             
             // Act 1
             const string pascalCasedPayload = @"{""ExpirationDateTime"":""2016-11-20T18:23:45.9356913+00:00"",""NextExpectedRanges"":[""0 - 1000""],""uploadUrl"":""http://localhost""}";
-            var memoryStream2 = new MemoryStream(Encoding.UTF8.GetBytes(pascalCasedPayload));
-            var parseNode2 = this.parseNodeFactory.GetRootParseNode(CoreConstants.MimeTypeNames.Application.Json, memoryStream2);
-            var uploadSession2 = parseNode2.GetObjectValue(UploadSession.CreateFromDiscriminatorValue);
+            var uploadSession2 = KiotaJsonSerializer.Deserialize<UploadSession>(pascalCasedPayload);
             Assert.NotNull(uploadSession2);
             Assert.NotNull(uploadSession2.ExpirationDateTime);
             Assert.NotNull(uploadSession2.NextExpectedRanges);
@@ -558,13 +505,9 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
         {
             // Arrange
             var serviceException = new ServiceException("Unknown Error", null, (int)System.Net.HttpStatusCode.InternalServerError);
-            using var jsonSerializerWriter = new JsonSerializationWriter();
-
-            // Act
-            jsonSerializerWriter.WriteObjectValue(string.Empty, serviceException);
             // Assert
             // Get the json string from the stream.
-            var serializedStream = jsonSerializerWriter.GetSerializedContent();
+            var serializedStream = KiotaJsonSerializer.SerializeAsStream(serviceException);
             using var reader = new StreamReader(serializedStream, Encoding.UTF8);
             var serializedJsonString = reader.ReadToEnd();
 
