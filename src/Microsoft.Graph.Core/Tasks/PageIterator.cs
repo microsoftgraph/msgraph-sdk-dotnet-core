@@ -98,7 +98,7 @@ namespace Microsoft.Graph
                 _pageItemQueue = new Queue<TEntity>(pageItems),
                 _processPageItemCallback = callback,
                 _requestConfigurator = requestConfigurator,
-                _errorMapping = errorMapping ?? new Dictionary<string, ParsableFactory<IParsable>> {
+                _errorMapping = errorMapping ?? new Dictionary<string, ParsableFactory<IParsable>>(StringComparer.OrdinalIgnoreCase) {
                     {"4XX", (parsable) => new ServiceException(ErrorConstants.Messages.PageIteratorRequestError,new Exception(GetErrorMessageFromParsable(parsable))) },
                     {"5XX", (parsable) => new ServiceException(ErrorConstants.Messages.PageIteratorRequestError,new Exception(GetErrorMessageFromParsable(parsable))) }
                 },
@@ -155,7 +155,7 @@ namespace Microsoft.Graph
                 _pageItemQueue = new Queue<TEntity>(pageItems),
                 _asyncProcessPageItemCallback = asyncCallback,
                 _requestConfigurator = requestConfigurator,
-                _errorMapping = errorMapping ?? new Dictionary<string, ParsableFactory<IParsable>> {
+                _errorMapping = errorMapping ?? new Dictionary<string, ParsableFactory<IParsable>>(StringComparer.OrdinalIgnoreCase) {
                     {"4XX", (parsable) => new ServiceException(ErrorConstants.Messages.PageIteratorRequestError,new Exception(GetErrorMessageFromParsable(parsable))) },
                     {"5XX", (parsable) =>new ServiceException(ErrorConstants.Messages.PageIteratorRequestError,new Exception(GetErrorMessageFromParsable(parsable))) },
                 },
