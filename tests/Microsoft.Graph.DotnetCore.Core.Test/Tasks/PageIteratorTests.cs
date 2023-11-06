@@ -411,7 +411,6 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
             {
                 originalPage.Value.Add(new TestEventItem() { Subject = $"Subject{i}" });
             }
-            bool reachedNextPage = false;
 
             // Create the delegate to process each entity returned in the pages. The delegate will 
             // signal that we reached an event in the next page.
@@ -419,10 +418,8 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
             {
                 if (e.Subject.Contains("Subject for next page events"))
                 {
-                    reachedNextPage = true;
                     return false;
                 }
-
                 return true;
             };
 
