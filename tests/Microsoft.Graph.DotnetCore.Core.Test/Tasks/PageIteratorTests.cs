@@ -6,12 +6,18 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
 {
     using System;
     using System.Collections.Generic;
+    using System.Net;
+    using System.Net.Http;
+    using System.Text;
     using System.Text.Json;
     using System.Threading;
     using System.Threading.Tasks;
+    using Microsoft.Graph.DotnetCore.Core.Test.Mocks;
     using Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels;
     using Microsoft.Kiota.Abstractions;
+    using Microsoft.Kiota.Abstractions.Authentication;
     using Microsoft.Kiota.Abstractions.Serialization;
+    using Microsoft.Kiota.Serialization.Json;
     using Moq;
     using Xunit;
 
@@ -396,6 +402,58 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
         }
 
         [Fact]
+        public async Task Given_ApiError_It_Shows_Helpful_Message()
+        {
+            // // Arrange the sample first page of 17 events to initialize the original collection page.
+            var originalPage = new TestEventsResponse() { Value = new List<TestEventItem>(), OdataNextLink = "http://localhost/events?$skip=11" };
+            var inputEventCount = 17;
+            for (int i = 0; i < inputEventCount; i++)
+            {
+                originalPage.Value.Add(new TestEventItem() { Subject = $"Subject{i}" });
+            }
+
+            // Create the delegate to process each entity returned in the pages. The delegate will 
+            // signal that we reached an event in the next page.
+            Func<TestEventItem, bool> processEachEvent = (e) =>
+            {
+                if (e.Subject.Contains("Subject for next page events"))
+                {
+                    return false;
+                }
+                return true;
+            };
+
+            var errorResponseMessage = new HttpResponseMessage()
+            {
+                StatusCode = HttpStatusCode.BadRequest,
+                Content = new StringContent(@"{
+                    ""error"": {
+                        ""code"": ""ErrorInvalidParameter"",
+                        ""message"": ""The parameter is not currently supported on the resource."",
+                        ""innerError"": {
+                            ""request-id"": ""e8a0a3c8-7e8d-4b0b-8a0a-3c87e8d4b0b8"",
+                            ""date"": ""2019-08-01T19:26:29""
+                        }
+                    }
+                }", Encoding.UTF8, CoreConstants.MimeTypeNames.Application.Json)
+            };
+
+            using var testHttpMessageHandler = new TestHttpMessageHandler();
+            testHttpMessageHandler.AddResponseMapping("http://localhost/events?$skip=11",errorResponseMessage);
+            var customBaseClient = new BaseClient(new BaseGraphRequestAdapter(new AnonymousAuthenticationProvider(),httpClient: GraphClientFactory.Create(finalHandler: testHttpMessageHandler)));
+            ApiClientBuilder.RegisterDefaultDeserializer<JsonParseNodeFactory>();
+
+            // Act by calling the iterator
+            eventPageIterator = PageIterator<TestEventItem, TestEventsResponse>.CreatePageIterator(customBaseClient, originalPage, processEachEvent);
+            var serviceException = await Assert.ThrowsAsync<ServiceException>(() => eventPageIterator.IterateAsync());
+
+            Assert.Equal(ErrorConstants.Messages.PageIteratorRequestError, serviceException.Message);
+            Assert.NotNull(serviceException.InnerException);
+            Assert.Equal("ErrorInvalidParameter : The parameter is not currently supported on the resource.",serviceException.InnerException.Message);
+            Assert.Equal(400,serviceException.ResponseStatusCode);// matching status code
+        }
+        
+        [Fact]
         public async Task Given_CollectionPage_It_Detects_Next_Link_Loop()
         {
             // Create the 17 events to initialize the original collection page.
@@ -427,7 +485,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
             eventPageIterator = PageIterator<TestEventItem, TestEventsResponse>.CreatePageIterator(baseClient, originalPage, processEachEvent);
 
             // Assert that the exception is thrown since the next page had the same nextLink URL
-            ServiceException exception = await Assert.ThrowsAsync<ServiceException>(async () => await eventPageIterator.IterateAsync());
+            ServiceException exception = await Assert.ThrowsAsync<ServiceException>(() => eventPageIterator.IterateAsync());
             Assert.Contains("Detected nextLink loop", exception.Message);
         }
 
