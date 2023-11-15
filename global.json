@@ -1,0 +1,5 @@
+{
+  "sdk": {
+    "version": "6.0.417" /* https://github.com/dotnet/maui/wiki/.NET-7-and-.NET-MAUI */
+  }
+}
