@@ -278,33 +278,26 @@ namespace Microsoft.Graph
                 writer.WritePropertyName(CoreConstants.BatchRequest.Body);
                 // allow for non json content by checking the header value
                 var vendorSpecificContentType = batchRequestStep.Request.Content?.Headers?.ContentType?.MediaType?.Split(";".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).FirstOrDefault();
+                using var contentStream = await GetRequestContentAsync(batchRequestStep.Request).ConfigureAwait(false);
                 if (string.IsNullOrEmpty(vendorSpecificContentType) || vendorSpecificContentType.Equals(CoreConstants.MimeTypeNames.Application.Json, StringComparison.OrdinalIgnoreCase))
                 {
-                    using JsonDocument content = await GetRequestContentAsync(batchRequestStep.Request).ConfigureAwait(false);
-                    content.WriteTo(writer);
+                    using var jsonDocument = await JsonDocument.ParseAsync(contentStream).ConfigureAwait(false);
+                    jsonDocument.WriteTo(writer);
                 }
                 else
                 {
-                    writer.WriteStringValue(Convert.ToBase64String(await batchRequestStep.Request.Content.ReadAsByteArrayAsync()));
+                    writer.WriteStringValue(Convert.ToBase64String(contentStream.ToArray()));
                 }
             }
             writer.WriteEndObject();//close root object.
         }
 
-        private async Task<JsonDocument> GetRequestContentAsync(HttpRequestMessage request)
+        private static async Task<MemoryStream> GetRequestContentAsync(HttpRequestMessage request)
         {
-            try
-            {
-                HttpRequestMessage clonedRequest = await request.CloneAsync().ConfigureAwait(false);
-                using (Stream streamContent = await clonedRequest.Content.ReadAsStreamAsync().ConfigureAwait(false))
-                {
-                    return await JsonDocument.ParseAsync(streamContent);
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new ClientException( ErrorConstants.Messages.UnableToDeserializeContent, ex);
-            }
+            var memoryStream = new MemoryStream();
+            await request.Content.CopyToAsync(memoryStream);
+            memoryStream.Position = 0; //reset the stream to start
+            return memoryStream;
         }
 
         private string GetHeaderValuesAsString(IEnumerable<string> headerValues)
