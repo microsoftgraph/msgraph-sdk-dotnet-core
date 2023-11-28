@@ -16,6 +16,7 @@ namespace Microsoft.Graph
     using System.Text;
     using System.Text.Json;
     using System.Threading.Tasks;
+    using System.Threading;
 
     /// <summary>
     /// A <see cref="HttpContent"/> implementation to handle json batch requests.
@@ -192,8 +193,9 @@ namespace Microsoft.Graph
         /// Get the content of the batchRequest in the form of a stream.
         /// It is the responsibility of the caller to dispose of the stream returned.
         /// </summary>
+        /// <param name="cancellationToken"><see cref="CancellationToken"/> to use for cancelling requests</param>
         /// <returns>A stream object with the contents of the batch request</returns>
-        internal async Task<Stream> GetBatchRequestContentAsync()
+        internal async Task<Stream> GetBatchRequestContentAsync(CancellationToken cancellationToken = default)
         {
             var stream = new MemoryStream();
             using (var writer = new Utf8JsonWriter(stream))
@@ -205,12 +207,12 @@ namespace Microsoft.Graph
                 writer.WriteStartArray();
                 foreach (KeyValuePair<string, BatchRequestStep> batchRequestStep in BatchRequestSteps)
                 {
-                    await WriteBatchRequestStepAsync(batchRequestStep.Value, writer).ConfigureAwait(false);
+                    await WriteBatchRequestStepAsync(batchRequestStep.Value, writer,cancellationToken).ConfigureAwait(false);
                 }
                 writer.WriteEndArray();
 
                 writer.WriteEndObject();//close the root object
-                await writer.FlushAsync().ConfigureAwait(false);
+                await writer.FlushAsync(cancellationToken).ConfigureAwait(false);
 
                 //Reset the position since we want the caller to use this stream
                 stream.Position = 0;
@@ -224,7 +226,7 @@ namespace Microsoft.Graph
         	return dependsOn.All(requestId => BatchRequestSteps.ContainsKey(requestId));
         }
 
-        private async Task WriteBatchRequestStepAsync(BatchRequestStep batchRequestStep, Utf8JsonWriter writer)
+        private async Task WriteBatchRequestStepAsync(BatchRequestStep batchRequestStep, Utf8JsonWriter writer, CancellationToken cancellationToken)
         {
             writer.WriteStartObject();// open root object
             writer.WriteString(CoreConstants.BatchRequest.Id, batchRequestStep.RequestId);//write the id property
@@ -278,33 +280,30 @@ namespace Microsoft.Graph
                 writer.WritePropertyName(CoreConstants.BatchRequest.Body);
                 // allow for non json content by checking the header value
                 var vendorSpecificContentType = batchRequestStep.Request.Content?.Headers?.ContentType?.MediaType?.Split(";".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).FirstOrDefault();
+                using var contentStream = await GetRequestContentAsync(batchRequestStep.Request,cancellationToken).ConfigureAwait(false);
                 if (string.IsNullOrEmpty(vendorSpecificContentType) || vendorSpecificContentType.Equals(CoreConstants.MimeTypeNames.Application.Json, StringComparison.OrdinalIgnoreCase))
                 {
-                    using JsonDocument content = await GetRequestContentAsync(batchRequestStep.Request).ConfigureAwait(false);
-                    content.WriteTo(writer);
+                    using var jsonDocument = await JsonDocument.ParseAsync(contentStream,cancellationToken:cancellationToken).ConfigureAwait(false);
+                    jsonDocument.WriteTo(writer);
                 }
                 else
                 {
-                    writer.WriteStringValue(Convert.ToBase64String(await batchRequestStep.Request.Content.ReadAsByteArrayAsync()));
+                    writer.WriteStringValue(Convert.ToBase64String(contentStream.ToArray()));
                 }
             }
             writer.WriteEndObject();//close root object.
         }
 
-        private async Task<JsonDocument> GetRequestContentAsync(HttpRequestMessage request)
+        private static async Task<MemoryStream> GetRequestContentAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            try
-            {
-                HttpRequestMessage clonedRequest = await request.CloneAsync().ConfigureAwait(false);
-                using (Stream streamContent = await clonedRequest.Content.ReadAsStreamAsync().ConfigureAwait(false))
-                {
-                    return await JsonDocument.ParseAsync(streamContent);
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new ClientException( ErrorConstants.Messages.UnableToDeserializeContent, ex);
-            }
+            var memoryStream = new MemoryStream();
+#if NET5_0_OR_GREATER
+            await request.Content.CopyToAsync(memoryStream,cancellationToken);
+#else
+            await request.Content.CopyToAsync(memoryStream);
+#endif
+            memoryStream.Position = 0; //reset the stream to start
+            return memoryStream;
         }
 
         private string GetHeaderValuesAsString(IEnumerable<string> headerValues)

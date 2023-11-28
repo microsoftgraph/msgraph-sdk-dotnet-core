@@ -5,6 +5,7 @@
 namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
 {
     using Microsoft.Graph.DotnetCore.Core.Test.Mocks;
+    using Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -17,12 +18,22 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
     using System.Text.Json;
     using Xunit;
     using Microsoft.Kiota.Abstractions;
+    using Microsoft.Kiota.Serialization.Json;
+    using Microsoft.Kiota.Serialization.Text;
     using HttpMethod = System.Net.Http.HttpMethod;
 
     public class BatchRequestContentTests
     {
         private const string REQUEST_URL = "https://graph.microsoft.com/v1.0/me";
         private readonly IBaseClient client = new BaseClient(REQUEST_URL, new MockAuthenticationProvider().Object);
+
+        public BatchRequestContentTests()
+        {
+            ApiClientBuilder.RegisterDefaultDeserializer<JsonParseNodeFactory>();
+            ApiClientBuilder.RegisterDefaultDeserializer<TextParseNodeFactory>();
+            ApiClientBuilder.RegisterDefaultSerializer<JsonSerializationWriterFactory>();
+            ApiClientBuilder.RegisterDefaultSerializer<TextSerializationWriterFactory>();
+        }
 
         [Fact]
         public void BatchRequestContent_DefaultInitialize()
@@ -34,7 +45,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
         }
 
         [Fact]
-        public void BatchRequestContent_InitializeWithSerilizer()
+        public void BatchRequestContent_InitializeWithSerializer()
         {
             List<BatchRequestStep> requestSteps = new List<BatchRequestStep>();
             for (int i = 0; i < 5; i++)
@@ -214,6 +225,60 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
 
             Assert.Empty(retryBatch.BatchRequestSteps);// All requests were succesfful
         }
+        
+        [Fact]
+        public async Task BatchRequestContent_NewBatchWithFailedRequestsWithBody()
+        {
+            BatchRequestContentCollection batchRequestContent = new BatchRequestContentCollection(client);
+            var requestIds = new List<string>();
+
+            // Add the first request
+            var postRequestInformation = new RequestInformation
+            {
+                HttpMethod = Method.POST,
+                UrlTemplate = REQUEST_URL
+            };
+            postRequestInformation.SetContentFromParsable(client.RequestAdapter, "application/json", new TestDrive
+            {
+                Name = "testDrive"
+            });
+            var postRequestId = await batchRequestContent.AddBatchRequestStepAsync(postRequestInformation);
+            requestIds.Add(postRequestId);
+            
+            // Add the second request with plain text
+            var postRequestInformation2 = new RequestInformation
+            {
+                HttpMethod = Method.POST,
+                UrlTemplate = REQUEST_URL
+            };
+            postRequestInformation2.SetContentFromScalar(client.RequestAdapter, "text/plain", "This is a test");
+            var postRequestId2 = await batchRequestContent.AddBatchRequestStepAsync(postRequestInformation2);
+            requestIds.Add(postRequestId2);
+
+            // 1. Simulate the first time building the request and serializing it.
+            var batchRequestContents = batchRequestContent.GetBatchRequestsForExecution();
+            var stringContentFirst = await batchRequestContents.First().ReadAsStringAsync();
+            
+            // Assert the body is present
+            Assert.Contains("\"body\":{\"@odata.type\":\"microsoft.graph.drive\",\"name\":\"testDrive\"}",stringContentFirst);
+            Assert.Contains(Convert.ToBase64String(Encoding.UTF8.GetBytes("This is a test")), stringContentFirst);
+            JsonDocument.Parse(stringContentFirst);// verify its valid json otherwise it will throw
+            
+            Dictionary<string, HttpStatusCode> responseStatusCodes = requestIds.ToDictionary(requestId => requestId, requestId => HttpStatusCode.BadGateway);
+            var retryBatch = batchRequestContent.NewBatchWithFailedRequests(responseStatusCodes);
+            
+            // 2. Failed request is present
+            Assert.NotEmpty(retryBatch.BatchRequestSteps);
+
+            batchRequestContents = retryBatch.GetBatchRequestsForExecution();
+            var retryStringContentFirst = await batchRequestContents.First().ReadAsStringAsync();
+            
+            // Assert the body is still present
+            Assert.Contains("\"body\":{\"@odata.type\":\"microsoft.graph.drive\",\"name\":\"testDrive\"}",retryStringContentFirst);
+            Assert.Contains(Convert.ToBase64String(Encoding.UTF8.GetBytes("This is a test")), retryStringContentFirst);
+            JsonDocument.Parse(retryStringContentFirst);// verify its valid json otherwise it will throw
+        }
+        
         
         [Fact]
         public async System.Threading.Tasks.Task BatchRequestContent_GetBatchRequestContentFromStepAsync()
