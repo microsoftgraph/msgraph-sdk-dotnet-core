@@ -48,7 +48,7 @@ namespace Microsoft.Graph.Core.Requests
         public async Task<BatchResponseContent> PostAsync(BatchRequestContent batchRequestContent, CancellationToken cancellationToken = default, Dictionary<string, ParsableFactory<IParsable>> errorMappings = null)
         {
             _ = batchRequestContent ?? throw new ArgumentNullException(nameof(batchRequestContent));
-            var requestInfo = await ToPostRequestInformationAsync(batchRequestContent);
+            var requestInfo = await ToPostRequestInformationAsync(batchRequestContent,cancellationToken);
             var nativeResponseHandler = new NativeResponseHandler();
             requestInfo.SetResponseHandler(nativeResponseHandler);
             await this.RequestAdapter.SendNoContentAsync(requestInfo, cancellationToken:cancellationToken);
@@ -79,8 +79,9 @@ namespace Microsoft.Graph.Core.Requests
         /// <summary>
         /// Create <see cref="RequestInformation"/> instance to post to batch endpoint
         /// <param name="batchRequestContent">The <see cref="BatchRequestContent"/> for the request</param>
+        /// <param name="cancellationToken"><see cref="CancellationToken"/> to use for cancelling requests</param>
         /// </summary>
-        public async Task<RequestInformation> ToPostRequestInformationAsync(BatchRequestContent batchRequestContent)
+        public async Task<RequestInformation> ToPostRequestInformationAsync(BatchRequestContent batchRequestContent, CancellationToken cancellationToken = default)
         {
             _ = batchRequestContent ?? throw new ArgumentNullException(nameof(batchRequestContent));
             var requestInfo = new RequestInformation
@@ -88,7 +89,7 @@ namespace Microsoft.Graph.Core.Requests
                 HttpMethod = Method.POST,
                 UrlTemplate = UrlTemplate,
             };
-            requestInfo.Content = await batchRequestContent.GetBatchRequestContentAsync();
+            requestInfo.Content = await batchRequestContent.GetBatchRequestContentAsync(cancellationToken).ConfigureAwait(false);
             requestInfo.Headers.Add("Content-Type", CoreConstants.MimeTypeNames.Application.Json);
             return requestInfo;
         }
