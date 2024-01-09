@@ -25,6 +25,7 @@
     <VersionSuffix></VersionSuffix>
     <PackageReleaseNotes>
 - Bumps abstraction dependencies to fix url encoding of special characters
+- Bumps abstractions http dependencies to fix `ActicitySource` memory leak when the HttpClientRequestAdapter does not construct the HttpClient internally.
     </PackageReleaseNotes>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
@@ -64,7 +65,7 @@
     <PackageReference Include="Microsoft.Kiota.Serialization.Json" Version="1.1.2" />
     <PackageReference Include="Microsoft.Kiota.Serialization.Text" Version="1.1.1" />
     <PackageReference Include="Microsoft.Kiota.Serialization.Form" Version="1.1.1" />
-    <PackageReference Include="Microsoft.Kiota.Http.HttpClientLibrary" Version="1.3.3" />
+    <PackageReference Include="Microsoft.Kiota.Http.HttpClientLibrary" Version="1.3.4" />
     <PackageReference Include="Microsoft.Kiota.Serialization.Multipart" Version="1.1.1" />
   </ItemGroup>
   <ItemGroup Condition=" '$(TargetFramework)' != 'netstandard2.0' ">
