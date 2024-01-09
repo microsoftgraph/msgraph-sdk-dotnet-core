@@ -21,10 +21,10 @@
     <DelaySign>false</DelaySign>
     <AssemblyOriginatorKeyFile>35MSSharedLib1024.snk</AssemblyOriginatorKeyFile>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <VersionPrefix>3.1.3</VersionPrefix>
+    <VersionPrefix>3.1.4</VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <PackageReleaseNotes>
-- Fixes a bug when getting failed batch requests with a body.
+- Bumps abstraction dependencies to fix url encoding of special characters
     </PackageReleaseNotes>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
@@ -59,7 +59,7 @@
     <PackageReference Include="System.Security.Claims" Version="4.3.0" />
     <PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="7.0.3" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.Kiota.Abstractions" Version="1.7.2" />
+    <PackageReference Include="Microsoft.Kiota.Abstractions" Version="1.7.4" />
     <PackageReference Include="Microsoft.Kiota.Authentication.Azure" Version="1.1.2" />
     <PackageReference Include="Microsoft.Kiota.Serialization.Json" Version="1.1.2" />
     <PackageReference Include="Microsoft.Kiota.Serialization.Text" Version="1.1.1" />
