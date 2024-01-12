@@ -14,11 +14,11 @@ namespace Microsoft.Graph
         /// <summary>
         /// The collection of validation tokens
         /// </summary>
-        IEnumerable<string> ValidationTokens { get; set; }
+        List<string> ValidationTokens { get; set; }
 
         /// <summary>
         /// The collection of encrypted token bearers
         /// </summary>
-        IEnumerable<T1> Value { get; set; }
+        List<T1> Value { get; set; }
     }
 }
