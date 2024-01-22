@@ -63,7 +63,7 @@ namespace Microsoft.Graph
                 if(value > int.MaxValue || value < 0 || value > Length)
                     throw new ArgumentOutOfRangeException("value is out of range");
 
-                if (value + _startInSuperStream > Length)
+                if (value + _startInSuperStream > _endInSuperStream)
                     throw new ArgumentOutOfRangeException("value is out of range of stream length");
 
                 _positionInSuperStream = value + _startInSuperStream;
