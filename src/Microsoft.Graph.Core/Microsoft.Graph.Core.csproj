@@ -21,11 +21,10 @@
     <DelaySign>false</DelaySign>
     <AssemblyOriginatorKeyFile>35MSSharedLib1024.snk</AssemblyOriginatorKeyFile>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <VersionPrefix>3.1.5</VersionPrefix>
+    <VersionPrefix>3.1.6</VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <PackageReleaseNotes>
-- Bumps JWT dependencies to sucurity vlunerability(https://github.com/microsoftgraph/msgraph-sdk-dotnet-core/issues/792).
-- Fixes ITokenValidable interface to use kiota generated types.
+- ReadOnlySubstream is seekable to be compatible with RetryHandler.
     </PackageReleaseNotes>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
