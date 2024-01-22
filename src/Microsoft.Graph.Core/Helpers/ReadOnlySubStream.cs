@@ -21,6 +21,7 @@ namespace Microsoft.Graph
         private readonly long _endInSuperStream;
         private readonly Stream _superStream;
         private bool _canRead;
+        private bool _canSeek;
         private bool _isDisposed;
 
         public ReadOnlySubStream(Stream superStream, long startPosition, long maxLength)
@@ -30,6 +31,7 @@ namespace Microsoft.Graph
             this._endInSuperStream = startPosition + maxLength;
             this._superStream = superStream;
             this._canRead = true;
+            this._canSeek = true;
             this._isDisposed = false;
         }
 
@@ -55,13 +57,23 @@ namespace Microsoft.Graph
             {
                 ThrowIfDisposed();
 
-                throw new NotSupportedException("seek not support");
+                if(!CanSeek)
+                    throw new NotSupportedException("seek not support");
+
+                if(value > int.MaxValue || value < 0 || value > Length)
+                    throw new ArgumentOutOfRangeException("value is out of range");
+
+                if (value + _startInSuperStream > Length)
+                    throw new ArgumentOutOfRangeException("value is out of range of stream length");
+
+                _positionInSuperStream = value + _startInSuperStream;
+                _superStream.Seek(_positionInSuperStream, SeekOrigin.Begin);
             }
         }
 
         public override bool CanRead => _superStream.CanRead && _canRead;
 
-        public override bool CanSeek => false;
+        public override bool CanSeek => _superStream.CanSeek && _canSeek;
 
         public override bool CanWrite => false;
 
@@ -102,13 +114,26 @@ namespace Microsoft.Graph
         public override long Seek(long offset, SeekOrigin origin)
         {
             ThrowIfDisposed();
-            throw new NotSupportedException("seek not support");
+            switch (origin)
+            {
+                case SeekOrigin.Begin:
+                    Position = offset;
+                    break;
+                case SeekOrigin.Current:
+                    Position += offset;
+                    break;
+                case SeekOrigin.End:
+                    Position = Length - offset;
+                    break;
+            }
+            
+            return Position;
         }
 
         public override void SetLength(long value)
         {
             ThrowIfDisposed();
-            throw new NotSupportedException("seek and write not support");
+            throw new NotSupportedException("write not support");
         }
 
         public override void Write(byte[] buffer, int offset, int count)
