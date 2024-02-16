@@ -64,5 +64,15 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Exceptions
 
             Assert.Null(serviceException.ToString());
         }
+
+        [Fact]
+        public void IsMatch_ThrowsNoException() 
+        {
+            var serviceException = new ServiceException(null);
+
+            bool result = serviceException.IsMatch("Any Error");
+            
+            Assert.False(result);
+        }
     }
 }

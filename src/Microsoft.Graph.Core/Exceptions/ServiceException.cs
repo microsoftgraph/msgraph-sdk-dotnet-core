@@ -83,12 +83,12 @@ namespace Microsoft.Graph
                 throw new ArgumentException("errorCode cannot be null or empty", nameof(errorCode));
             }
             
-            if (RawResponseBody.IndexOf(errorCode,StringComparison.OrdinalIgnoreCase) >= 0)
+            if (RawResponseBody is not null && RawResponseBody.IndexOf(errorCode,StringComparison.OrdinalIgnoreCase) >= 0)
             {
                 return true;
             }
             
-            if (Message.IndexOf(errorCode,StringComparison.OrdinalIgnoreCase) >= 0)
+            if (!string.IsNullOrWhiteSpace(Message) && Message.IndexOf(errorCode,StringComparison.OrdinalIgnoreCase) >= 0)
             {
                 return true;
             }
