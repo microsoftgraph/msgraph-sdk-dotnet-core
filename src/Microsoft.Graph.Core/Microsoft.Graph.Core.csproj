@@ -21,10 +21,11 @@
     <DelaySign>false</DelaySign>
     <AssemblyOriginatorKeyFile>35MSSharedLib1024.snk</AssemblyOriginatorKeyFile>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <VersionPrefix>3.1.7</VersionPrefix>
+    <VersionPrefix>3.1.8</VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <PackageReleaseNotes>
 - Updates the Kiota dependencies to the latest version.
+- Add null-checks to properties of ServiceException when IsMatch is called to prevent a NullReferenceException
     </PackageReleaseNotes>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
