@@ -11,7 +11,7 @@
     script will fail and indicate that the version needs to be updated.
 
 .Parameter packageName
-    Specifies the package name of the package. For example, 'microsoft.graph.core'
+    Specifies the package name of the package. For example, 'microsoft.kiota.abstractions'
     is a valid package name.
 
 .Parameter projectPath
@@ -30,37 +30,40 @@ Param(
 
 # Assumption: VersionPrefix is set in the first property group.
 $versionPrefixString = $xmlDoc.Project.PropertyGroup[0].VersionPrefix
+if($xmlDoc.Project.PropertyGroup[0].VersionSuffix){
+    $versionPrefixString = $versionPrefixString + "-"  + $xmlDoc.Project.PropertyGroup[0].VersionSuffix
+}
+
 
 # System.Version, get the version prefix.
-$currentProjectVersion = [version]"$versionPrefixString"
-
-# Get the current version in SDK.
-$majorVersion = $currentProjectVersion.Major.ToString()
-$minorVersion = $currentProjectVersion.Minor.ToString()
-$patchVersion = $currentProjectVersion.Build.ToString()
+$currentProjectVersion = [System.Management.Automation.SemanticVersion]"$versionPrefixString"
 
 # API is case-sensitive
 $packageName = $packageName.ToLower()
-$url = "https://api.nuget.org/v3/registration3/$packageName/index.json"
+$url = "https://api.nuget.org/v3/registration5-gz-semver2/$packageName/index.json"
 
 # Call the NuGet API for the package and get the current published version.
-$nugetIndex = Invoke-RestMethod -Uri $url -Method Get
-$currentPublishedVersion = $nugetIndex.items[0].upper
+Try {
+    $nugetIndex = Invoke-RestMethod -Uri $url -Method Get
+}
+Catch {
+    if ($_.ErrorDetails.Message && $_.ErrorDetails.Message.Contains("The specified blob does not exist.")) {
+        Write-Host "No package exists. You will probably be publishing $packageName for the first time."
+        Exit # exit gracefully
+    }
+    
+    Write-Host $_
+    Exit 1
+}
 
-$publishedMajorVersion = $currentPublishedVersion.Split(".")[0]
-$publishedMinorVersion = $currentPublishedVersion.Split(".")[1]
-$publishedPatchVersion = $currentPublishedVersion.Split(".")[2]
+$currentPublishedVersion = [System.Management.Automation.SemanticVersion]$nugetIndex.items[$nugetIndex.items.Count-1].upper
 
 # Validate that the version number has been updated.
-if ($majorVersion -eq $publishedMajorVersion -and `
-        $minorVersion -eq $publishedMinorVersion -and `
-        $patchVersion -eq $publishedPatchVersion) {
+if ($currentProjectVersion -le $currentPublishedVersion) {
 
     Write-Error "The current published version number, $currentPublishedVersion, and the version number `
-               in the csproj file, $currentProjectVersion, match. You must increment the version `
-               before you complete this pull request."
+               in the csproj file, $currentProjectVersion, match. You must increment the version"
 }
-else
-{
+else {
     Write-Host "Validated that the version has been updated from $currentPublishedVersion to $currentProjectVersion" -ForegroundColor Green
 }
