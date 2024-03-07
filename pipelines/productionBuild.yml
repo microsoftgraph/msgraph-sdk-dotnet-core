@@ -247,7 +247,7 @@ extends:
                     targetType: 'filePath'
                     filePath: $(Pipeline.Workspace)\scripts\GetNugetPackageVersion.ps1
                     pwsh: true
-                    arguments: '-packageDirPath "$(Pipeline.Workspace)/Nugets/"'
+                    arguments: '-packageDirPath "$(Pipeline.Workspace)/"'
                 - task: 1ES.PublishNuget@1
                   displayName: 'Push release to NuGet.org'
                   inputs:
@@ -266,7 +266,7 @@ extends:
                     releaseNotesSource: inline
                     assets: |
                       !**/**
-                      $(Pipeline.Workspace)/**/*.nupkg
+                      $(Pipeline.Workspace)/Microsoft.Graph.Core.*.*nupkg
                     changeLogType: issueBased
                     isPreRelease: '$(IS_PRE_RELEASE)'
                     addChangeLog: true
