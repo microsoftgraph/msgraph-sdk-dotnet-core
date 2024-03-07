@@ -98,7 +98,7 @@ extends:
           inputs:
             projects: '$(Build.SourcesDirectory)\src\Microsoft.Graph.Core\Microsoft.Graph.Core.csproj'
             arguments: '-c Release --no-incremental'
-        - task: EsrpCodeSigning@2
+        - task: EsrpCodeSigning@3
           displayName: 'ESRP DLL Strong Name (Microsoft.Graph.Core) (AKV)'
           inputs:
             ConnectedServiceName: 'microsoftgraph ESRP CodeSign DLL and NuGet (AKV)'
@@ -124,7 +124,7 @@ extends:
                   }
               ]
             SessionTimeout: 20
-        - task: EsrpCodeSigning@2
+        - task: EsrpCodeSigning@3
           displayName: 'ESRP DLL CodeSigning (Microsoft.Graph.Core)'
           inputs:
             ConnectedServiceName: 'microsoftgraph ESRP CodeSign DLL and NuGet (AKV)'
@@ -174,7 +174,7 @@ extends:
         - powershell: |
             dotnet pack $env:BUILD_SOURCESDIRECTORY/src/Microsoft.Graph.Core/Microsoft.Graph.Core.csproj /p:IncludeSymbols=true /p:SymbolPackageFormat=snupkg --no-build --output $env:BUILD_ARTIFACTSTAGINGDIRECTORY --configuration Release
           displayName: dotnet pack
-        - task: EsrpCodeSigning@2
+        - task: EsrpCodeSigning@3
           displayName: 'ESRP NuGet CodeSigning'
           inputs:
             ConnectedServiceName: 'microsoftgraph ESRP CodeSign DLL and NuGet (AKV)'
