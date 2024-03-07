@@ -35,7 +35,7 @@ extends:
   parameters:
     pool:
       name: Azure-Pipelines-1ESPT-ExDShared
-      image: windows-2022
+      image: windows-latest
       os: windows
     customBuildTags:
     - ES365AIMigrationTooling
@@ -217,7 +217,7 @@ extends:
           pool:
             name: Azure-Pipelines-1ESPT-ExDShared
             os: windows
-            image: windows-2022
+            image: windows-latest
           dependsOn: []
           environment: nuget-org
           strategy:
