@@ -252,6 +252,7 @@ extends:
                   displayName: 'Push release to NuGet.org'
                   inputs:
                     command: push
+                    packageParentPath: '$(Pipeline.Workspace)'
                     packagesToPush: '$(Pipeline.Workspace)\Microsoft.Graph.Core.*.nupkg'
                     nuGetFeedType: external
                     publishFeedCredentials: 'microsoftgraph NuGet connection'
