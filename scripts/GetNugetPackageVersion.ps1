@@ -12,7 +12,7 @@
 
     Assumption:
         Targets Microsoft.Graph.
-
+    
 .Parameter packageDirPath
     Specifies the fully qualified path to the NuGet package directory.
 #>
@@ -32,3 +32,7 @@ $packageVersion = $nugetPackageName.Replace("Microsoft.Graph.Core.", "").Replace
 
 Write-Host "##vso[task.setvariable variable=VERSION_STRING]$($packageVersion)";
 Write-Host "Updated the VERSION_STRING environment variable with the package version value '$packageVersion'." -ForegroundColor Green
+
+$isPrerelease = $packageVersion.Contains("preview")
+Write-Host "##vso[task.setvariable variable=IS_PRE_RELEASE]$($isPrerelease)";
+Write-Host "Updated the IS_PRE_RELEASE environment variable with the pre-release value '$isPrerelease'." -ForegroundColor Green
