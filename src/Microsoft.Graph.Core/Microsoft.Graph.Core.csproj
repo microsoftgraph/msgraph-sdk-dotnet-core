@@ -21,11 +21,10 @@
     <DelaySign>false</DelaySign>
     <AssemblyOriginatorKeyFile>35MSSharedLib1024.snk</AssemblyOriginatorKeyFile>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <VersionPrefix>3.1.8</VersionPrefix>
+    <VersionPrefix>3.1.9</VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <PackageReleaseNotes>
-- Updates the Kiota dependencies to the latest version.
-- Add null-checks to properties of ServiceException when IsMatch is called to prevent a NullReferenceException
+- Cleans up unreferenced dependencies [https://github.com/microsoftgraph/msgraph-sdk-dotnet-core/issues/809] 
     </PackageReleaseNotes>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
@@ -57,19 +56,15 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="System.Security.Claims" Version="4.3.0" />
-    <PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="7.3.1" />
+    <PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="7.4.1" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.Kiota.Abstractions" Version="1.7.9" />
-    <PackageReference Include="Microsoft.Kiota.Authentication.Azure" Version="1.1.3" />
-    <PackageReference Include="Microsoft.Kiota.Serialization.Json" Version="1.1.5" />
-    <PackageReference Include="Microsoft.Kiota.Serialization.Text" Version="1.1.2" />
-    <PackageReference Include="Microsoft.Kiota.Serialization.Form" Version="1.1.3" />
-    <PackageReference Include="Microsoft.Kiota.Http.HttpClientLibrary" Version="1.3.6" />
-    <PackageReference Include="Microsoft.Kiota.Serialization.Multipart" Version="1.1.2" />
-  </ItemGroup>
-  <ItemGroup Condition=" '$(TargetFramework)' != 'netstandard2.0' ">
-    <PackageReference Include="NETStandard.Library" Version="2.0.3" />
+    <PackageReference Include="Microsoft.Kiota.Abstractions" Version="1.7.12" />
+    <PackageReference Include="Microsoft.Kiota.Authentication.Azure" Version="1.1.4" />
+    <PackageReference Include="Microsoft.Kiota.Serialization.Json" Version="1.1.8" />
+    <PackageReference Include="Microsoft.Kiota.Serialization.Text" Version="1.1.4" />
+    <PackageReference Include="Microsoft.Kiota.Serialization.Form" Version="1.1.5" />
+    <PackageReference Include="Microsoft.Kiota.Http.HttpClientLibrary" Version="1.3.7" />
+    <PackageReference Include="Microsoft.Kiota.Serialization.Multipart" Version="1.1.3" />
   </ItemGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'net462' ">
     <PackageReference Include="System.Net.Http.WinHttpHandler" Version="[6.0,9.0)" />

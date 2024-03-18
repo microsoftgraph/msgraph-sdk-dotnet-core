@@ -1,220 +1,273 @@
 # Copyright (c) Microsoft Corporation. All rights reserved.
 # Licensed under the MIT License.
-
-# Create a production build artifact from the HEAD of the master branch.
 trigger:
   branches:
     include:
     - master
   paths:
     include:
-      - src/*
+    - src/*
     exclude:
-      - .github/*
-      - build/*
-      - docs/*
-      - pipelines/*
-      - scripts/*
-      - .gitignore
-      - CONTRIBUTING.md
-      - LICENSE.txt
-      - Microsoft.Graph.Core.sln
-      - README.md
-      - THIRD PARTY NOTICES
-      - appveyor.yml
-
+    - .github/*
+    - build/*
+    - docs/*
+    - pipelines/*
+    - scripts/*
+    - .gitignore
+    - CONTRIBUTING.md
+    - LICENSE.txt
+    - Microsoft.Graph.Core.sln
+    - README.md
+    - THIRD PARTY NOTICES
+    - appveyor.yml
 pr: none
-
 variables:
   PACKAGE_NAME: 'microsoft.graph.core'
   PROJECT_PATH: '.\src\Microsoft.Graph.Core\Microsoft.Graph.Core.csproj'
+resources:
+  repositories:
+  - repository: 1ESPipelineTemplates
+    type: git
+    name: 1ESPipelineTemplates/1ESPipelineTemplates
+    ref: refs/tags/release
+extends:
+  template: v1/1ES.Official.PipelineTemplate.yml@1ESPipelineTemplates
+  parameters:
+    pool:
+      name: Azure-Pipelines-1ESPT-ExDShared
+      image: windows-latest
+      os: windows
+    customBuildTags:
+    - ES365AIMigrationTooling
+    stages:
+    - stage: build
+      jobs:
+      - job: build
+        templateContext:
+          outputs:
+          - output: pipelineArtifact
+            displayName: 'Publish Artifact: Microsoft.Graph.Core.nupkg and release pipeline scripts'
+            targetPath: '$(Build.ArtifactStagingDirectory)'
+            artifactName: ProductionReleaseArtifact
+        steps:
+        - checkout: self
+          clean: true
+          fetchDepth: 1
+        - task: UseDotNet@2
+          displayName: 'Use .NET 6'
+          inputs:
+            version: 6.x
+        - task: PowerShell@2
+          displayName: 'Set Java Home to use Java 11'
+          inputs:
+            targetType: 'inline'
+            script: |
+              echo "##vso[task.setvariable variable=JAVA_HOME]$(JAVA_HOME_11_X64)"
+              echo "##vso[task.setvariable variable=PATH]$(JAVA_HOME_11_X64)\bin;$(PATH)"
+        - task: PowerShell@2
+          displayName: 'Validate updated version'
+          inputs:
+            targetType: filePath
+            filePath: 'scripts\ValidateUpdatedNugetVersion.ps1'
+            arguments: '-packageName "$(PACKAGE_NAME)" -projectPath "$(PROJECT_PATH)"'
+            pwsh: true
+          enabled: true
+        - powershell: |
+            dotnet workload restore $(Build.SourcesDirectory)\Microsoft.Graph.Core.sln
+          displayName: 'dotnet workload restore'
+        - task: DotNetCoreCLI@2
+          displayName: 'dotnet restore'
+          inputs:
+            command: restore
+            projects: '**/*.csproj'
+        - task: DotNetCoreCLI@2
+          displayName: 'run tests'
+          inputs:
+            command: 'test'
+            projects: '$(Build.SourcesDirectory)\tests\Microsoft.Graph.DotnetCore.Core.Test\Microsoft.Graph.DotnetCore.Core.Test.csproj'
+            arguments: '--configuration Debug --verbosity normal'
+        - task: PowerShell@2
+          displayName: 'Enable signing'
+          inputs:
+            targetType: filePath
+            filePath: 'scripts\EnableSigning.ps1'
+            arguments: '-projectPath "$(PROJECT_PATH)"'
+          enabled: true
+        - task: DotNetCoreCLI@2
+          displayName: 'dotnet build'
+          inputs:
+            projects: '$(Build.SourcesDirectory)\src\Microsoft.Graph.Core\Microsoft.Graph.Core.csproj'
+            arguments: '-c Release --no-incremental'
+        - task: EsrpCodeSigning@3
+          displayName: 'ESRP DLL Strong Name (Microsoft.Graph.Core) (AKV)'
+          inputs:
+            ConnectedServiceName: 'microsoftgraph ESRP CodeSign DLL and NuGet (AKV)'
+            FolderPath: src/Microsoft.Graph.Core/bin/release
+            Pattern: '**\*Microsoft.Graph.Core.dll'
+            UseMinimatch: true
+            signConfigType: inlineSignParams
+            inlineOperation: |
+              [
+                  {
+                      "keyCode": "CP-233863-SN",
+                      "operationSetCode": "StrongNameSign",
+                      "parameters": [],
+                      "toolName": "sign",
+                      "toolVersion": "1.0"
+                  },
+                  {
+                      "keyCode": "CP-233863-SN",
+                      "operationSetCode": "StrongNameVerify",
+                      "parameters": [],
+                      "toolName": "sign",
+                      "toolVersion": "1.0"
+                  }
+              ]
+            SessionTimeout: 20
+        - task: EsrpCodeSigning@3
+          displayName: 'ESRP DLL CodeSigning (Microsoft.Graph.Core)'
+          inputs:
+            ConnectedServiceName: 'microsoftgraph ESRP CodeSign DLL and NuGet (AKV)'
+            FolderPath: src/Microsoft.Graph.Core/bin/release
+            Pattern: '**\*Microsoft.Graph.Core.dll'
+            UseMinimatch: true
+            signConfigType: inlineSignParams
+            inlineOperation: |
+              [
+                  {
+                      "keyCode": "CP-230012",
+                      "operationSetCode": "SigntoolSign",
+                      "parameters": [
+                          {
+                              "parameterName": "OpusName",
+                              "parameterValue": "Microsoft"
+                          },
+                          {
+                              "parameterName": "OpusInfo",
+                              "parameterValue": "http://www.microsoft.com"
+                          },
+                          {
+                              "parameterName": "FileDigest",
+                              "parameterValue": "/fd \"SHA256\""
+                          },
+                          {
+                              "parameterName": "PageHash",
+                              "parameterValue": "/NPH"
+                          },
+                          {
+                              "parameterName": "TimeStamp",
+                              "parameterValue": "/tr \"http://rfc3161.gtm.corp.microsoft.com/TSS/HttpTspServer\" /td sha256"
+                          }
+                      ],
+                      "toolName": "sign",
+                      "toolVersion": "1.0"
+                  },
+                  {
+                      "keyCode": "CP-230012",
+                      "operationSetCode": "SigntoolVerify",
+                      "parameters": [],
+                      "toolName": "sign",
+                      "toolVersion": "1.0"
+                  }
+              ]
+            SessionTimeout: 20
+        - powershell: |
+            dotnet pack $env:BUILD_SOURCESDIRECTORY/src/Microsoft.Graph.Core/Microsoft.Graph.Core.csproj /p:IncludeSymbols=true /p:SymbolPackageFormat=snupkg --no-build --output $env:BUILD_ARTIFACTSTAGINGDIRECTORY --configuration Release
+          displayName: dotnet pack
+        - task: EsrpCodeSigning@3
+          displayName: 'ESRP NuGet CodeSigning'
+          inputs:
+            ConnectedServiceName: 'microsoftgraph ESRP CodeSign DLL and NuGet (AKV)'
+            FolderPath: '$(Build.ArtifactStagingDirectory)'
+            Pattern: '*.nupkg'
+            UseMinimatch: true
+            signConfigType: inlineSignParams
+            inlineOperation: |
+              [
+                  {
+                      "keyCode": "CP-401405",
+                      "operationSetCode": "NuGetSign",
+                      "parameters": [ ],
+                      "toolName": "sign",
+                      "toolVersion": "1.0"
+                  },
+                  {
+                      "keyCode": "CP-401405",
+                      "operationSetCode": "NuGetVerify",
+                      "parameters": [ ],
+                      "toolName": "sign",
+                      "toolVersion": "1.0"
+                  }
+              ]
+            SessionTimeout: 20
+        - task: CopyFiles@2
+          displayName: 'Copy release scripts to artifact staging directory'
+          inputs:
+            SourceFolder: '$(Build.SourcesDirectory)'
+            Contents: |
+              scripts\GetNugetPackageVersion.ps1
+              scripts\GetLatestCommitSHA.ps1
+            TargetFolder: '$(Build.ArtifactStagingDirectory) '
 
-pool:
-  vmImage: 'windows-latest'
-
-steps:
-- checkout: self
-  clean: true
-  fetchDepth: 1
-
-- task: UseDotNet@2
-  displayName: 'Use .NET 6'
-  inputs:
-    version: 6.x
-
-- task: PowerShell@2
-  displayName: 'Set Java Home to use Java 11'
-  inputs:
-    targetType: 'inline'
-    script: |
-      echo "##vso[task.setvariable variable=JAVA_HOME]$(JAVA_HOME_11_X64)"
-      echo "##vso[task.setvariable variable=PATH]$(JAVA_HOME_11_X64)\bin;$(PATH)"
-
-- task: securedevelopmentteam.vss-secure-development-tools.build-task-credscan.CredScan@3
-  displayName: 'Run CredScan'
-  inputs:
-    toolMajorVersion: 'V2'
-    scanFolder: '$(Build.SourcesDirectory)'
-    debugMode: false
-
-- task: PowerShell@2
-  displayName: 'Validate updated version'
-  inputs:
-    targetType: filePath
-    filePath: 'scripts\ValidateUpdatedNugetVersion.ps1'
-    arguments: '-packageName "$(PACKAGE_NAME)" -projectPath "$(PROJECT_PATH)"'
-  enabled: true
-
-- powershell: |
-    dotnet workload restore $(Build.SourcesDirectory)\Microsoft.Graph.Core.sln
-  displayName: 'dotnet workload restore'
-
-- task: DotNetCoreCLI@2
-  displayName: 'dotnet restore'
-  inputs:
-    command: restore
-    projects: '**/*.csproj'
-
-- task: DotNetCoreCLI@2
-  displayName: 'run tests'
-  inputs:
-    command: 'test'
-    projects: '$(Build.SourcesDirectory)\tests\Microsoft.Graph.DotnetCore.Core.Test\Microsoft.Graph.DotnetCore.Core.Test.csproj'
-    arguments: '--configuration Debug --verbosity normal'
-
-- task: PowerShell@2
-  displayName: 'Enable signing'
-  inputs:
-    targetType: filePath
-    filePath: 'scripts\EnableSigning.ps1'
-    arguments: '-projectPath "$(PROJECT_PATH)"'
-  enabled: true
-
-- task: DotNetCoreCLI@2
-  displayName: 'dotnet build'
-  inputs:
-    projects: '$(Build.SourcesDirectory)\src\Microsoft.Graph.Core\Microsoft.Graph.Core.csproj'
-    arguments: '-c Release --no-incremental'
-
-- task: EsrpCodeSigning@2
-  displayName: 'ESRP DLL Strong Name (Microsoft.Graph.Core) (AKV)'
-  inputs:
-    ConnectedServiceName: 'microsoftgraph ESRP CodeSign DLL and NuGet (AKV)'
-    FolderPath: src/Microsoft.Graph.Core/bin/release
-    Pattern: '**\*Microsoft.Graph.Core.dll'
-    UseMinimatch: true
-    signConfigType: inlineSignParams
-    inlineOperation: |
-     [
-         {
-             "keyCode": "CP-233863-SN",
-             "operationSetCode": "StrongNameSign",
-             "parameters": [],
-             "toolName": "sign",
-             "toolVersion": "1.0"
-         },
-         {
-             "keyCode": "CP-233863-SN",
-             "operationSetCode": "StrongNameVerify",
-             "parameters": [],
-             "toolName": "sign",
-             "toolVersion": "1.0"
-         }
-     ]
-    SessionTimeout: 20
-
-- task: EsrpCodeSigning@2
-  displayName: 'ESRP DLL CodeSigning (Microsoft.Graph.Core)'
-  inputs:
-    ConnectedServiceName: 'microsoftgraph ESRP CodeSign DLL and NuGet (AKV)'
-    FolderPath: src/Microsoft.Graph.Core/bin/release
-    Pattern: '**\*Microsoft.Graph.Core.dll'
-    UseMinimatch: true
-    signConfigType: inlineSignParams
-    inlineOperation: |
-     [
-         {
-             "keyCode": "CP-230012",
-             "operationSetCode": "SigntoolSign",
-             "parameters": [
-                 {
-                     "parameterName": "OpusName",
-                     "parameterValue": "Microsoft"
-                 },
-                 {
-                     "parameterName": "OpusInfo",
-                     "parameterValue": "http://www.microsoft.com"
-                 },
-                 {
-                     "parameterName": "FileDigest",
-                     "parameterValue": "/fd \"SHA256\""
-                 },
-                 {
-                     "parameterName": "PageHash",
-                     "parameterValue": "/NPH"
-                 },
-                 {
-                     "parameterName": "TimeStamp",
-                     "parameterValue": "/tr \"http://rfc3161.gtm.corp.microsoft.com/TSS/HttpTspServer\" /td sha256"
-                 }
-             ],
-             "toolName": "sign",
-             "toolVersion": "1.0"
-         },
-         {
-             "keyCode": "CP-230012",
-             "operationSetCode": "SigntoolVerify",
-             "parameters": [],
-             "toolName": "sign",
-             "toolVersion": "1.0"
-         }
-     ]
-    SessionTimeout: 20
-
-# arguments are not parsed in DotNetCoreCLI@2 task for `pack` command, that's why we have a custom pack command here
-- powershell: |
-    dotnet pack $env:BUILD_SOURCESDIRECTORY/src/Microsoft.Graph.Core/Microsoft.Graph.Core.csproj /p:IncludeSymbols=true /p:SymbolPackageFormat=snupkg --no-build --output $env:BUILD_ARTIFACTSTAGINGDIRECTORY --configuration Release
-  displayName: dotnet pack
-
-- task: EsrpCodeSigning@2
-  displayName: 'ESRP NuGet CodeSigning'
-  inputs:
-    ConnectedServiceName: 'microsoftgraph ESRP CodeSign DLL and NuGet (AKV)'
-    FolderPath: '$(Build.ArtifactStagingDirectory)'
-    Pattern: '*.nupkg'
-    UseMinimatch: true
-    signConfigType: inlineSignParams
-    inlineOperation: |
-          [
-              {
-                  "keyCode": "CP-401405",
-                  "operationSetCode": "NuGetSign",
-                  "parameters": [ ],
-                  "toolName": "sign",
-                  "toolVersion": "1.0"
-              },
-              {
-                  "keyCode": "CP-401405",
-                  "operationSetCode": "NuGetVerify",
-                  "parameters": [ ],
-                  "toolName": "sign",
-                  "toolVersion": "1.0"
-              }
-          ]
-    SessionTimeout: 20
-
-- task: CopyFiles@2
-  displayName: 'Copy release scripts to artifact staging directory'
-  inputs:
-    SourceFolder: '$(Build.SourcesDirectory)'
-    Contents: |
-     scripts\GetNugetPackageVersion.ps1
-     scripts\GetLatestCommitSHA.ps1
-    TargetFolder: '$(Build.ArtifactStagingDirectory) '
-
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact: Microsoft.Graph.Core.nupkg and release pipeline scripts'
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: ProductionReleaseArtifact
-
+    - stage: deploy
+      condition: and(contains(variables['build.sourceBranch'], 'refs/heads/master'), succeeded())
+      dependsOn: build
+      jobs:
+        - deployment: deploy_nuget
+          pool:
+            name: Azure-Pipelines-1ESPT-ExDShared
+            os: windows
+            image: windows-latest
+          dependsOn: []
+          environment: nuget-org
+          strategy:
+            runOnce:
+              deploy:
+                steps:
+                - task: NuGetToolInstaller@1
+                  displayName: 'Use NuGet >=5.2.0'
+                  inputs:
+                    versionSpec: '>=5.2.0'
+                    checkLatest: true
+                - task: DownloadPipelineArtifact@2
+                  displayName: Download nupkg from artifacts
+                  inputs:
+                    artifact: ProductionReleaseArtifact
+                    source: current
+                - task: PowerShell@2
+                  displayName: 'Get Latest Commit SHA from repo'
+                  inputs:
+                    targetType: filePath
+                    filePath: '$(Pipeline.Workspace)\scripts\GetLatestCommitSHA.ps1'
+                    arguments: '-repo "msgraph-sdk-dotnet-core" -owner "microsoftgraph" -branchName "master"'
+                    pwsh: true
+                - task: PowerShell@2
+                  displayName: 'Extract release information to pipeline'
+                  inputs:
+                    targetType: 'filePath'
+                    filePath: $(Pipeline.Workspace)\scripts\GetNugetPackageVersion.ps1
+                    pwsh: true
+                    arguments: '-packageDirPath "$(Pipeline.Workspace)/"'
+                - task: 1ES.PublishNuget@1
+                  displayName: 'Push release to NuGet.org'
+                  inputs:
+                    command: push
+                    packageParentPath: '$(Pipeline.Workspace)'
+                    packagesToPush: '$(Pipeline.Workspace)\Microsoft.Graph.Core.*.nupkg'
+                    nuGetFeedType: external
+                    publishFeedCredentials: 'microsoftgraph NuGet connection'
+                - task: GitHubRelease@1
+                  displayName: 'GitHub release (create)'
+                  inputs:
+                    gitHubConnection: 'Kiota_Release'
+                    target: $(Build.SourceVersion)
+                    tagSource: userSpecifiedTag
+                    tag: 'v$(VERSION_STRING)'
+                    title: '$(VERSION_STRING)'
+                    releaseNotesSource: inline
+                    assets: |
+                      !**/**
+                      $(Pipeline.Workspace)/Microsoft.Graph.Core.*.*nupkg
+                    changeLogType: issueBased
+                    isPreRelease: '$(IS_PRE_RELEASE)'
+                    addChangeLog: true
