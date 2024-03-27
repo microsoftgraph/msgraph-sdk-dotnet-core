@@ -73,8 +73,8 @@ extends:
             pwsh: true
           enabled: true
         - powershell: |
-            dotnet workload restore $(Build.SourcesDirectory)\Microsoft.Graph.Core.sln
-          displayName: 'dotnet workload restore'
+            dotnet workload install android macos ios maccatalyst 
+          displayName: 'Install needed dotnet workloads'
         - task: DotNetCoreCLI@2
           displayName: 'dotnet restore'
           inputs:
@@ -97,7 +97,7 @@ extends:
           displayName: 'dotnet build'
           inputs:
             projects: '$(Build.SourcesDirectory)\src\Microsoft.Graph.Core\Microsoft.Graph.Core.csproj'
-            arguments: '-c Release --no-incremental'
+            arguments: '-c Release --no-incremental -p:IncludeMauiTargets=true'
         - task: EsrpCodeSigning@3
           displayName: 'ESRP DLL Strong Name (Microsoft.Graph.Core) (AKV)'
           inputs:

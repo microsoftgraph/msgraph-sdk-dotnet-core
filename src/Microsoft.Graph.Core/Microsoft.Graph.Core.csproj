@@ -5,7 +5,6 @@
     <Copyright>© Microsoft Corporation. All rights reserved.</Copyright>
     <AssemblyTitle>Microsoft Graph Core Client Library</AssemblyTitle>
     <Authors>Microsoft</Authors>
-    <TargetFrameworks>netstandard2.0;net462;net6.0;net6.0-android;net6.0-ios;net6.0-maccatalyst;net6.0-macos;net6.0-windows</TargetFrameworks>
     <LangVersion>latest</LangVersion>
     <PreserveCompilationContext>false</PreserveCompilationContext>
     <AssemblyName>Microsoft.Graph.Core</AssemblyName>
@@ -21,10 +20,10 @@
     <DelaySign>false</DelaySign>
     <AssemblyOriginatorKeyFile>35MSSharedLib1024.snk</AssemblyOriginatorKeyFile>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <VersionPrefix>3.1.9</VersionPrefix>
+    <VersionPrefix>3.1.10</VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <PackageReleaseNotes>
-- Cleans up unreferenced dependencies [https://github.com/microsoftgraph/msgraph-sdk-dotnet-core/issues/809] 
+- https://github.com/microsoftgraph/msgraph-sdk-dotnet-core/blob/dev/CHANGELOG.md
     </PackageReleaseNotes>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
@@ -34,6 +33,19 @@
     <NoWarn>NU5048;NETSDK1202</NoWarn>
     <IsTrimmable>true</IsTrimmable>
   </PropertyGroup>
+  <!-- By default let the Maui targets be excluded to make contribution for external parties easier and dependabot updates. They can be enabled by adding `-p:IncludeMauiTargets=true` to the target build/restore command which is done in the CI.-->
+  <Choose>
+    <When Condition="'$(IncludeMauiTargets)'=='true'">
+      <PropertyGroup>
+        <TargetFrameworks Condition="">netstandard2.0;net462;net6.0;net6.0-android;net6.0-ios;net6.0-maccatalyst;net6.0-macos;net6.0-windows</TargetFrameworks>
+      </PropertyGroup>
+    </When>
+    <Otherwise>
+      <PropertyGroup>
+        <TargetFrameworks Condition="">netstandard2.0;net462;net6.0;</TargetFrameworks>
+      </PropertyGroup>
+    </Otherwise>
+  </Choose>
   <!-- https://github.com/clairernovotny/DeterministicBuilds#deterministic-builds -->
   <PropertyGroup Condition="'$(TF_BUILD)' == 'true'">
     <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>

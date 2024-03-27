@@ -17,7 +17,7 @@ namespace Microsoft.Graph
     /// </summary>
     public class BatchRequestContentCollection
     {
-        private readonly IBaseClient baseClient;
+        private readonly IRequestAdapter requestAdapter;
         private readonly HashSet<BatchRequestContent> batchRequests;
         private readonly int batchRequestLimit;
         private BatchRequestContent currentRequest;
@@ -27,27 +27,27 @@ namespace Microsoft.Graph
         /// Constructs a new <see cref="BatchRequestContentCollection"/>.
         /// </summary>
         /// <param name="baseClient">The <see cref="IBaseClient"/> for making requests</param>
-        public BatchRequestContentCollection(IBaseClient baseClient) : this (baseClient, CoreConstants.BatchRequest.MaxNumberOfRequests)
+        /// <param name="batchRequestLimit">Number of requests that may be placed in a single batch</param>
+        public BatchRequestContentCollection(IBaseClient baseClient, int batchRequestLimit = CoreConstants.BatchRequest.MaxNumberOfRequests) : this(baseClient?.RequestAdapter, batchRequestLimit)
         {
-            
         }
 
         /// <summary>
         /// Constructs a new <see cref="BatchRequestContentCollection"/>.
         /// </summary>
-        /// <param name="baseClient">The <see cref="IBaseClient"/> for making requests</param>
+        /// <param name="requestAdapter">The <see cref="IRequestAdapter"/> for making requests</param>
         /// <param name="batchRequestLimit">Number of requests that may be placed in a single batch</param>
-        public BatchRequestContentCollection(IBaseClient baseClient, int batchRequestLimit)
+        public BatchRequestContentCollection(IRequestAdapter requestAdapter, int batchRequestLimit = CoreConstants.BatchRequest.MaxNumberOfRequests)
         {
             if (batchRequestLimit < 2 || batchRequestLimit > CoreConstants.BatchRequest.MaxNumberOfRequests)
             {
                 throw new ArgumentOutOfRangeException(nameof(batchRequestLimit));
             }
-            this.baseClient = baseClient ?? throw new ArgumentNullException(nameof(baseClient));
+            this.requestAdapter = requestAdapter ?? throw new ArgumentNullException(nameof(requestAdapter));
             this.batchRequestLimit = batchRequestLimit;
             batchRequests = new HashSet<BatchRequestContent>();
 #pragma warning disable CS0618
-            currentRequest = new BatchRequestContent(baseClient);
+            currentRequest = new BatchRequestContent(this.requestAdapter);
 #pragma warning restore CS0618
         }
 
@@ -66,7 +66,7 @@ namespace Microsoft.Graph
             {
                 batchRequests.Add(currentRequest);
 #pragma warning disable CS0618
-                currentRequest = new BatchRequestContent(baseClient);
+                currentRequest = new BatchRequestContent(requestAdapter);
 #pragma warning restore CS0618
             }
         }
@@ -174,7 +174,7 @@ namespace Microsoft.Graph
         /// <returns>new <see cref="BatchRequestContentCollection"/> with all failed requests.</returns>
         public BatchRequestContentCollection NewBatchWithFailedRequests(Dictionary<string, HttpStatusCode> responseStatusCodes)
         {
-            var request = new BatchRequestContentCollection(this.baseClient, batchRequestLimit);
+            var request = new BatchRequestContentCollection(this.requestAdapter, batchRequestLimit);
             var steps = this.BatchRequestSteps;
             foreach(var response in responseStatusCodes)
             {
