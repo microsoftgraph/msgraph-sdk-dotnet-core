@@ -1,0 +1,5 @@
+<Project>
+ <PropertyGroup>
+   <MauiTargets Condition="'$(IncludeMauiTargets)'=='true'">net6.0-android;net6.0-ios;net6.0-maccatalyst;net6.0-macos;net6.0-windows</MauiTargets>
+ </PropertyGroup>
+</Project>

@@ -25,6 +25,8 @@
     <PackageReleaseNotes>
 - https://github.com/microsoftgraph/msgraph-sdk-dotnet-core/blob/dev/CHANGELOG.md
     </PackageReleaseNotes>
+    <!-- By default let the Maui targets be excluded to make contribution for external parties easier and dependabot updates. They can be enabled by adding `-p:IncludeMauiTargets=true` to the target build/restore command which is done in the CI.-->
+    <TargetFrameworks>netstandard2.0;net462;net6.0;$(MauiTargets)</TargetFrameworks>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <Deterministic>true</Deterministic>
@@ -33,19 +35,6 @@
     <NoWarn>NU5048;NETSDK1202</NoWarn>
     <IsTrimmable>true</IsTrimmable>
   </PropertyGroup>
-  <!-- By default let the Maui targets be excluded to make contribution for external parties easier and dependabot updates. They can be enabled by adding `-p:IncludeMauiTargets=true` to the target build/restore command which is done in the CI.-->
-  <Choose>
-    <When Condition="'$(IncludeMauiTargets)'=='true'">
-      <PropertyGroup>
-        <TargetFrameworks Condition="">netstandard2.0;net462;net6.0;net6.0-android;net6.0-ios;net6.0-maccatalyst;net6.0-macos;net6.0-windows</TargetFrameworks>
-      </PropertyGroup>
-    </When>
-    <Otherwise>
-      <PropertyGroup>
-        <TargetFrameworks Condition="">netstandard2.0;net462;net6.0;</TargetFrameworks>
-      </PropertyGroup>
-    </Otherwise>
-  </Choose>
   <!-- https://github.com/clairernovotny/DeterministicBuilds#deterministic-builds -->
   <PropertyGroup Condition="'$(TF_BUILD)' == 'true'">
     <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
