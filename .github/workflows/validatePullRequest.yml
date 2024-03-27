@@ -39,13 +39,13 @@ jobs:
           languages: csharp
 
       - name: Install needed dotnet workloads
-        run: dotnet workload restore ${{ env.solutionName }}
+        run: dotnet workload install android macos ios maccatalyst
 
       - name: Restore nuget dependencies
         run: dotnet restore ${{ env.solutionName }}
 
       - name: Build
-        run: dotnet build ${{ env.solutionName }} --no-restore -c Debug /p:UseSharedCompilation=false
+        run: dotnet build ${{ env.solutionName }} -c Debug /p:UseSharedCompilation=false,IncludeMauiTargets=true
 
       - name: Test
         run: dotnet test ${{ env.solutionName }} --no-build --verbosity normal -c Debug /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=opencover

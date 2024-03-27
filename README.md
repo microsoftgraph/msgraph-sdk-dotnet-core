@@ -1,11 +1,12 @@
 # Microsoft Graph .NET Core Client Library
-[![Build Status](https://o365exchange.visualstudio.com/O365%20Sandbox/_apis/build/status/Microsoft%20Graph/.Net/msgraph-sdk-dotnet-build-and-packaging-core?branchName=dev)](https://o365exchange.visualstudio.com/O365%20Sandbox/_build/latest?definitionId=1410&branchName=dev)
+
+[![Build Status](https://dev.azure.com/microsoftgraph/Graph%20Developer%20Experiences/_apis/build/status%2FDotnet%2FDotnet%20Core%20Production?repoName=microsoftgraph%2Fmsgraph-sdk-dotnet-core&branchName=andrueastman%2FContributions)](https://dev.azure.com/microsoftgraph/Graph%20Developer%20Experiences/_build/latest?definitionId=197&repoName=microsoftgraph%2Fmsgraph-sdk-dotnet-core&branchName=andrueastman%2FContributions)
 [![NuGet Version](https://buildstats.info/nuget/Microsoft.Graph.Core)](https://www.nuget.org/packages/Microsoft.Graph.Core/)
 
 Integrate the [Microsoft Graph API](https://graph.microsoft.com) into your .NET
 project!
 
-The Microsoft Graph .NET Core Client Library contains core classes and interfaces used by [Microsoft.Graph Client Library](https://github.com/microsoftgraph/msgraph-sdk-dotnet) to send native HTTP requests to [Microsoft Graph API](https://graph.microsoft.com). The core client library targets .NetStandard 1.1 and .Net Framework 4.5.
+The Microsoft Graph .NET Core Client Library contains core classes and interfaces used by [Microsoft.Graph Client Library](https://github.com/microsoftgraph/msgraph-sdk-dotnet) to send native HTTP requests to [Microsoft Graph API](https://graph.microsoft.com). The latest core client library targets .NetStandard 2.0.
 
 ## Installation via NuGet
 
@@ -67,6 +68,7 @@ if (response.IsSuccessStatusCode)
 ```
 
 ## Documentation and resources
+
 * [Microsoft Graph API](https://graph.microsoft.com)
 * [Release notes](https://github.com/microsoftgraph/msgraph-sdk-dotnet-core/releases)
 
@@ -88,9 +90,11 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 
 If you are looking to build the library locally for the purposes of contributing code or running tests, you will need to:
 
-- Have the .NET Core SDK (> 1.0) installed
-- Run `dotnet restore` from the command line in your package directory
-- Run `nuget restore` and `msbuild` from CLI or run Build from Visual Studio to restore Nuget packages and build the project
+* Have the .NET Core SDK (> 1.0) installed
+* Run `dotnet restore` from the command line in your package directory
+* Run `nuget restore` and `msbuild` from CLI or run Build from Visual Studio to restore Nuget packages and build the project
+
+> Run `dotnet build -p:IncludeMauiTargets=true` if you wish to build the MAUI targets for the projects as well.
 
 ## License
 
