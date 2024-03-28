@@ -5,7 +5,6 @@
     <Copyright>© Microsoft Corporation. All rights reserved.</Copyright>
     <AssemblyTitle>Microsoft Graph Core Client Library</AssemblyTitle>
     <Authors>Microsoft</Authors>
-    <TargetFrameworks>netstandard2.0;net462;net6.0;net6.0-android;net6.0-ios;net6.0-maccatalyst;net6.0-macos;net6.0-windows</TargetFrameworks>
     <LangVersion>latest</LangVersion>
     <PreserveCompilationContext>false</PreserveCompilationContext>
     <AssemblyName>Microsoft.Graph.Core</AssemblyName>
@@ -21,11 +20,13 @@
     <DelaySign>false</DelaySign>
     <AssemblyOriginatorKeyFile>35MSSharedLib1024.snk</AssemblyOriginatorKeyFile>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <VersionPrefix>3.1.9</VersionPrefix>
+    <VersionPrefix>3.1.10</VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <PackageReleaseNotes>
-- Cleans up unreferenced dependencies [https://github.com/microsoftgraph/msgraph-sdk-dotnet-core/issues/809] 
+- https://github.com/microsoftgraph/msgraph-sdk-dotnet-core/blob/dev/CHANGELOG.md
     </PackageReleaseNotes>
+    <!-- By default let the Maui targets be excluded to make contribution for external parties easier and dependabot updates. They can be enabled by adding `-p:IncludeMauiTargets=true` to the target build/restore command which is done in the CI.-->
+    <TargetFrameworks>netstandard2.0;net462;$(MauiTargets)</TargetFrameworks>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <Deterministic>true</Deterministic>
@@ -58,12 +59,12 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="7.4.1" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.Kiota.Abstractions" Version="1.7.12" />
+    <PackageReference Include="Microsoft.Kiota.Abstractions" Version="1.8.0" />
     <PackageReference Include="Microsoft.Kiota.Authentication.Azure" Version="1.1.4" />
-    <PackageReference Include="Microsoft.Kiota.Serialization.Json" Version="1.1.8" />
+    <PackageReference Include="Microsoft.Kiota.Serialization.Json" Version="1.2.0" />
     <PackageReference Include="Microsoft.Kiota.Serialization.Text" Version="1.1.4" />
     <PackageReference Include="Microsoft.Kiota.Serialization.Form" Version="1.1.5" />
-    <PackageReference Include="Microsoft.Kiota.Http.HttpClientLibrary" Version="1.3.7" />
+    <PackageReference Include="Microsoft.Kiota.Http.HttpClientLibrary" Version="1.3.8" />
     <PackageReference Include="Microsoft.Kiota.Serialization.Multipart" Version="1.1.3" />
   </ItemGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'net462' ">
