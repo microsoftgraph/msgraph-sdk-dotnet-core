@@ -23,6 +23,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         {
             // register the default serialization instance as the generator would.
             ParseNodeFactoryRegistry.DefaultInstance.ContentTypeAssociatedFactories.TryAdd(CoreConstants.MimeTypeNames.Application.Json, new JsonParseNodeFactory());
+            SerializationWriterFactoryRegistry.DefaultInstance.ContentTypeAssociatedFactories.TryAdd(CoreConstants.MimeTypeNames.Application.Json, new JsonSerializationWriterFactory());
         }
 
         [Fact]
@@ -75,26 +76,26 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             var deltaServiceLibResponse = await deltaResponseHandler.HandleResponseAsync<HttpResponseMessage, TestEventDeltaCollectionResponse>(hrm, null);
         
             var collectionPage = deltaServiceLibResponse.Value;
-            string actualStringValue = ((JsonElement)collectionPage.First().AdditionalData["arrayOfString"]).EnumerateArray().ElementAt(0).ToString(); //value[0].arrayOfString[0]
-            bool actualBoolValue = Convert.ToBoolean(((JsonElement)collectionPage.Skip(1).First().AdditionalData["arrayOfBool"]).EnumerateArray().ElementAt(1).ToString()); //value[1].arrayOfBool[1]
-            int actualIntValue = Convert.ToInt32(((JsonElement)collectionPage.Skip(2).First().AdditionalData["arrayOfInt"]).EnumerateArray().ElementAt(1).ToString());// value[2].arrayOfInt[1]
+            var stringCollection = collectionPage[0].AdditionalData["arrayOfString"] as UntypedArray;
+            UntypedString actualStringValue = stringCollection.GetValue().ElementAt(0) as UntypedString; //value[0].arrayOfString[0]
+            var boolCollection = collectionPage[1].AdditionalData["arrayOfBool"] as UntypedArray;
+            UntypedBoolean actualBoolValue = boolCollection.GetValue().ElementAt(1) as UntypedBoolean; //value[1].arrayOfBool[1]
+            var intCollection = collectionPage[2].AdditionalData["arrayOfInt"] as UntypedArray;
+            UntypedInteger actualIntValue = intCollection.GetValue().ElementAt(1) as UntypedInteger;// value[2].arrayOfInt[1]
 
-            string arrayOfString = ((JsonElement)collectionPage.First()
-                .AdditionalData["changes"]).EnumerateArray().ElementAt(2).ToString();
-            string arrayOfBool = ((JsonElement)collectionPage.Skip(1).First()
-                .AdditionalData["changes"]).EnumerateArray().ElementAt(2).ToString();
-            string arrayOfInt = ((JsonElement)collectionPage.Skip(2).First()
-                .AdditionalData["changes"]).EnumerateArray().ElementAt(2).ToString();
-        
+            UntypedString arrayOfString = ((UntypedArray)collectionPage[0].AdditionalData["changes"]).GetValue().ElementAt(2) as UntypedString;
+            UntypedString arrayOfBool = ((UntypedArray)collectionPage[1].AdditionalData["changes"]).GetValue().ElementAt(2) as UntypedString;
+            UntypedString arrayOfInt = ((UntypedArray)collectionPage[2].AdditionalData["changes"]).GetValue().ElementAt(2) as UntypedString;
+
             // Assert that the value is set.
-            Assert.Equal("SMTP:alexd@contoso.com", actualStringValue);
-            Assert.False(actualBoolValue);
-            Assert.Equal(5, actualIntValue);
+            Assert.Equal("SMTP:alexd@contoso.com", actualStringValue.GetValue());
+            Assert.False(actualBoolValue.GetValue());
+            Assert.Equal(5, actualIntValue.GetValue());
         
             // Assert that the change manifest is set.
-            Assert.Equal("arrayOfString[1]", arrayOfString); // The third change is the second string array item.
-            Assert.Equal("arrayOfBool[1]", arrayOfBool);
-            Assert.Equal("arrayOfInt[1]", arrayOfInt);
+            Assert.Equal("arrayOfString[1]", arrayOfString.GetValue()); // The third change is the second string array item.
+            Assert.Equal("arrayOfBool[1]", arrayOfBool.GetValue());
+            Assert.Equal("arrayOfInt[1]", arrayOfInt.GetValue());
         }
 
         [Fact]
@@ -132,7 +133,9 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             // Assert
             Assert.NotEmpty(deltaServiceLibResponse.Value);
             Assert.Equal("George", attendeeName); // We maintain the expected response body when we change it.
-            Assert.Equal("attendees[0].emailAddress.name", ((JsonElement)obj).EnumerateArray().ElementAt(9).ToString()); // We expect that this property is in change list.
+            var objectCollection = obj as UntypedArray;
+            var expectedItem = objectCollection.GetValue().ElementAt(9) as UntypedString;
+            Assert.Equal("attendees[0].emailAddress.name", expectedItem.GetValue()); // We expect that this property is in change list.
             Assert.True(collectionPageHasChanges); // We expect that the CollectionPage is populated with the changes.
         }
 
@@ -207,8 +210,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             var deltaServiceLibResponse = await deltaResponseHandler.HandleResponseAsync<HttpResponseMessage, TestEventDeltaCollectionResponse>(hrm, null);
             var eventsDeltaCollectionPage = deltaServiceLibResponse.Value;
             eventsDeltaCollectionPage[0].AdditionalData.TryGetValue("changes", out object changes);
-            var changesElement = (JsonElement)changes;
-            var changeList = JsonSerializer.Deserialize<List<string>>(changesElement.GetRawText());
+            var changeList = JsonSerializer.Deserialize<List<string>>(KiotaJsonSerializer.SerializeAsString(changes as UntypedArray));
 
             // Updating a non-schematized property on a model such as instance annotations, open types,
             // and schema extensions. We can assume that a customer's  model would not use a dictionary.
@@ -305,8 +307,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             var deltaServiceLibResponse = await deltaResponseHandler.HandleResponseAsync<HttpResponseMessage, TestEventDeltaCollectionResponse>(hrm, null);
             var eventsDeltaCollectionPage = deltaServiceLibResponse.Value;
             eventsDeltaCollectionPage[0].AdditionalData.TryGetValue("changes", out object changes);
-            var changesElement = (JsonElement)changes;
-            var changeList = JsonSerializer.Deserialize<List<string>>(changesElement.GetRawText());
+            var changeList = JsonSerializer.Deserialize<List<string>>(KiotaJsonSerializer.SerializeAsString(changes as UntypedArray));
 
             // Assert
             Assert.True(changeList.Exists(x => x.Equals("@removed.reason")));
@@ -341,7 +342,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             Assert.True(deltaServiceLibResponse.Value[0].AdditionalData.TryGetValue("changes", out object changesElement)); // The first element has a list of changes
             
             // Deserialize the change list to a list of strings
-            var firstItemChangeList = JsonSerializer.Deserialize<List<string>>(((JsonElement)changesElement).GetRawText());
+            var firstItemChangeList = JsonSerializer.Deserialize<List<string>>(KiotaJsonSerializer.SerializeAsString(changesElement as UntypedNode));
 
             Assert.NotNull(firstItemChangeList);
             Assert.NotEmpty(firstItemChangeList);
