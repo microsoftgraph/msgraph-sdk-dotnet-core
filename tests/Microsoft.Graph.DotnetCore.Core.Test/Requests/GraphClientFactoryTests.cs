@@ -16,6 +16,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
     using System.Net;
     using Xunit;
     using Microsoft.Kiota.Http.HttpClientLibrary.Middleware;
+    using Microsoft.Kiota.Http.HttpClientLibrary.Middleware.Options;
 
     public class GraphClientFactoryTests : IDisposable
     {
@@ -69,7 +70,8 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         public void Should_CreatePipeline_Without_HttpMessageHandlerInput()
         {
             using CompressionHandler compressionHandler = (CompressionHandler)GraphClientFactory.CreatePipeline(handlers, new MockRedirectHandler());
-            using RetryHandler retryHandler = (RetryHandler)compressionHandler.InnerHandler;
+            using UriReplacementHandler<UriReplacementHandlerOption> uriReplacementHandler = (UriReplacementHandler<UriReplacementHandlerOption>)compressionHandler.InnerHandler;
+            using RetryHandler retryHandler = (RetryHandler)uriReplacementHandler.InnerHandler;
             using RedirectHandler redirectHandler = (RedirectHandler)retryHandler.InnerHandler;
             using ParametersNameDecodingHandler odataQueryHandler = (ParametersNameDecodingHandler)redirectHandler.InnerHandler;
             using UserAgentHandler userAgentHandler = (UserAgentHandler)odataQueryHandler.InnerHandler;
@@ -100,7 +102,8 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         public void CreatePipelineWithHttpMessageHandlerInput()
         {
             using CompressionHandler compressionHandler = (CompressionHandler)GraphClientFactory.CreatePipeline(handlers, new MockRedirectHandler());
-            using RetryHandler retryHandler = (RetryHandler)compressionHandler.InnerHandler;
+            using UriReplacementHandler<UriReplacementHandlerOption> uriReplacementHandler = (UriReplacementHandler<UriReplacementHandlerOption>)compressionHandler.InnerHandler;
+            using RetryHandler retryHandler = (RetryHandler)uriReplacementHandler.InnerHandler;
             using RedirectHandler redirectHandler = (RedirectHandler)retryHandler.InnerHandler;
             using ParametersNameDecodingHandler odataQueryHandler = (ParametersNameDecodingHandler)redirectHandler.InnerHandler;
             using UserAgentHandler userAgentHandler = (UserAgentHandler)odataQueryHandler.InnerHandler;
