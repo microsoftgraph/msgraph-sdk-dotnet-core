@@ -7,6 +7,12 @@ and this project does adheres to [Semantic Versioning](https://semver.org/spec/v
 
 ## [Unreleased]
 
+## [3.1.11] - 2024-04-30
+
+### Changed
+
+- Updates the Kiota dependencies to the latest version.
+
 ## [3.1.10] - 2024-03-28
 
 ### Changed
