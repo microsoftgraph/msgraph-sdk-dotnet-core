@@ -24,7 +24,7 @@ namespace Microsoft.Graph
 
         internal string monitorUrl;
 
-        private readonly IParseNodeFactory parseNodeFactory;
+        private readonly IAsyncParseNodeFactory parseNodeFactory;
         /// <summary>
         /// Construct an Async Monitor.
         /// </summary>
@@ -35,7 +35,7 @@ namespace Microsoft.Graph
         {
             this.client = client;
             this.monitorUrl = monitorUrl;
-            this.parseNodeFactory = parseNodeFactory ?? ParseNodeFactoryRegistry.DefaultInstance;
+            this.parseNodeFactory = parseNodeFactory as IAsyncParseNodeFactory ?? ParseNodeFactoryRegistry.DefaultInstance;
         }
         
         /// <summary>
@@ -59,12 +59,12 @@ namespace Microsoft.Graph
                 if (responseMessage.StatusCode != HttpStatusCode.Accepted && responseMessage.IsSuccessStatusCode)
                 {
                     using var responseStream = await responseMessage.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                    return responseStream.Length > 0 ? parseNodeFactory.GetRootParseNode(CoreConstants.MimeTypeNames.Application.Json, responseStream).GetObjectValue(_ => new T()) : default;
+                    return responseStream.Length > 0 ? (await parseNodeFactory.GetRootParseNodeAsync(CoreConstants.MimeTypeNames.Application.Json, responseStream, cancellationToken)).GetObjectValue(_ => new T()) : default;
                 }
 
                 using (var responseStream = await responseMessage.Content.ReadAsStreamAsync().ConfigureAwait(false))
                 {
-                    this.asyncOperationStatus = responseStream.Length > 0 ? parseNodeFactory.GetRootParseNode(CoreConstants.MimeTypeNames.Application.Json, responseStream).GetObjectValue(_ => new AsyncOperationStatus()) : null;
+                    this.asyncOperationStatus = responseStream.Length > 0 ? (await parseNodeFactory.GetRootParseNodeAsync(CoreConstants.MimeTypeNames.Application.Json, responseStream, cancellationToken).ConfigureAwait(false)).GetObjectValue(_ => new AsyncOperationStatus()) : null;
 
                     if (this.asyncOperationStatus == null)
                     {

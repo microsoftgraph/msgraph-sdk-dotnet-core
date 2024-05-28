@@ -18,7 +18,7 @@ namespace Microsoft.Graph
     /// </summary>
     public class ResponseHandler<T> : IResponseHandler where T : IParsable,new()
     {
-        private readonly IParseNodeFactory _jsonParseNodeFactory;
+        private readonly IAsyncParseNodeFactory _jsonParseNodeFactory;
 
         /// <summary>
         /// Constructs a new <see cref="ResponseHandler{T}"/>.
@@ -26,7 +26,7 @@ namespace Microsoft.Graph
         /// <param name="parseNodeFactory"> The <see cref="IParseNodeFactory"/> to use for response handling</param>
         public ResponseHandler(IParseNodeFactory parseNodeFactory = null)
         {
-            _jsonParseNodeFactory = parseNodeFactory ?? ParseNodeFactoryRegistry.DefaultInstance; ;
+            _jsonParseNodeFactory = parseNodeFactory as IAsyncParseNodeFactory ?? ParseNodeFactoryRegistry.DefaultInstance; ;
         }
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace Microsoft.Graph
             {
                 await ValidateSuccessfulResponse(responseMessage, errorMappings).ConfigureAwait(false);
                 using var responseStream = await responseMessage.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                var jsonParseNode = _jsonParseNodeFactory.GetRootParseNode(responseMessage.Content.Headers?.ContentType?.MediaType?.ToLowerInvariant(), responseStream);
+                var jsonParseNode = await _jsonParseNodeFactory.GetRootParseNodeAsync(responseMessage.Content.Headers?.ContentType?.MediaType?.ToLowerInvariant(), responseStream);
                 return (ModelType)(object)jsonParseNode.GetObjectValue<T>((parsable) => new T());
             }
 
@@ -64,7 +64,7 @@ namespace Microsoft.Graph
             var statusCodeAsInt = (int)httpResponseMessage.StatusCode;
             var statusCodeAsString = statusCodeAsInt.ToString();
             using var responseStream = await httpResponseMessage.Content.ReadAsStreamAsync().ConfigureAwait(false);
-            var rootNode = _jsonParseNodeFactory.GetRootParseNode(httpResponseMessage.Content.Headers?.ContentType?.MediaType?.ToLowerInvariant(), responseStream);
+            var rootNode = await _jsonParseNodeFactory.GetRootParseNodeAsync(httpResponseMessage.Content.Headers?.ContentType?.MediaType?.ToLowerInvariant(), responseStream);
             ParsableFactory <IParsable> errorFactory;
             if (errorMapping == null ||
                 !errorMapping.TryGetValue(statusCodeAsString, out errorFactory) &&

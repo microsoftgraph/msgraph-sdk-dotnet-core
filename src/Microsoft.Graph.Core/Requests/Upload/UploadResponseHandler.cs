@@ -17,7 +17,7 @@ namespace Microsoft.Graph
     /// </summary>
     internal class UploadResponseHandler
     {
-        private readonly IParseNodeFactory _parseNodeFactory;
+        private readonly IAsyncParseNodeFactory _parseNodeFactory;
 
         /// <summary>
         /// Constructs a new <see cref="UploadResponseHandler"/>.
@@ -25,7 +25,7 @@ namespace Microsoft.Graph
         /// <param name="parseNodeFactory"> The <see cref="IParseNodeFactory"/> to use for response handling</param>
         public UploadResponseHandler(IParseNodeFactory parseNodeFactory = null)
         {
-            _parseNodeFactory = parseNodeFactory ?? ParseNodeFactoryRegistry.DefaultInstance;
+            _parseNodeFactory = parseNodeFactory as IAsyncParseNodeFactory ?? ParseNodeFactoryRegistry.DefaultInstance;
         }
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace Microsoft.Graph
                 {
                     if (responseStream.Length > 0) //system.text.json wont deserialize an empty string
                     {
-                        var jsonParseNode = _parseNodeFactory.GetRootParseNode(response.Content.Headers?.ContentType?.MediaType?.ToLowerInvariant(), responseStream);
+                        var jsonParseNode = await _parseNodeFactory.GetRootParseNodeAsync(response.Content.Headers?.ContentType?.MediaType?.ToLowerInvariant(), responseStream);
                         uploadResult.ItemResponse = jsonParseNode.GetObjectValue<T>((parsable) => new T());
                     }
                     uploadResult.Location = response.Headers.Location;
@@ -76,7 +76,7 @@ namespace Microsoft.Graph
                      * However, successful upload completion for a DriveItem the response could also come in a 200 response and
                      * hence we validate this by checking the NextExpectedRanges parameter which is present in an ongoing upload
                      */
-                    var uploadSessionParseNode = _parseNodeFactory.GetRootParseNode(response.Content.Headers?.ContentType?.MediaType?.ToLowerInvariant(), responseStream);
+                    var uploadSessionParseNode = await _parseNodeFactory.GetRootParseNodeAsync(response.Content.Headers?.ContentType?.MediaType?.ToLowerInvariant(), responseStream);
                     UploadSession uploadSession = uploadSessionParseNode.GetObjectValue<UploadSession>(UploadSession.CreateFromDiscriminatorValue);
                     if (uploadSession?.NextExpectedRanges != null)
                     {
@@ -86,7 +86,7 @@ namespace Microsoft.Graph
                     {
                         //Upload is most likely done as DriveItem info may come in a 200 response
                         responseStream.Position = 0; //reset 
-                        var objectParseNode = _parseNodeFactory.GetRootParseNode(response.Content.Headers?.ContentType?.MediaType?.ToLowerInvariant(), responseStream);
+                        var objectParseNode = await _parseNodeFactory.GetRootParseNodeAsync(response.Content.Headers?.ContentType?.MediaType?.ToLowerInvariant(), responseStream);
                         uploadResult.ItemResponse = objectParseNode.GetObjectValue<T>((parsable) => new T());
                     }
                 }

@@ -29,7 +29,7 @@ namespace Microsoft.Graph
     /// </summary>
     public class DeltaResponseHandler<T> : IResponseHandler where T : IParsable, new()
     {
-        private readonly IParseNodeFactory parseNodeFactory;
+        private readonly IAsyncParseNodeFactory parseNodeFactory;
 
         /// <summary>
         /// Constructs a new <see cref="DeltaResponseHandler{T}"/>.
@@ -37,7 +37,7 @@ namespace Microsoft.Graph
         /// <param name="parseNodeFactory"> The <see cref="IParseNodeFactory"/> to use for response handling</param>
         public DeltaResponseHandler(IParseNodeFactory parseNodeFactory = null)
         {
-            this.parseNodeFactory = parseNodeFactory ?? ParseNodeFactoryRegistry.DefaultInstance;
+            this.parseNodeFactory = parseNodeFactory as IAsyncParseNodeFactory ?? ParseNodeFactoryRegistry.DefaultInstance;
         }
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace Microsoft.Graph
                 var responseWithChangeList = await GetResponseBodyWithChangelist(responseString).ConfigureAwait(false);
                 using var responseWithChangeListStream = new MemoryStream(Encoding.UTF8.GetBytes(responseWithChangeList));
 
-                var responseParseNode = parseNodeFactory.GetRootParseNode(CoreConstants.MimeTypeNames.Application.Json, responseWithChangeListStream);
+                var responseParseNode = await parseNodeFactory.GetRootParseNodeAsync(CoreConstants.MimeTypeNames.Application.Json, responseWithChangeListStream);
                 return (ModelType)(object)responseParseNode.GetObjectValue<T>((parsable) => new T());
             }
 
