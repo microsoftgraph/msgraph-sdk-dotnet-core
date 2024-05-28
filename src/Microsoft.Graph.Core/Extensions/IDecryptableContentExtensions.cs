@@ -37,8 +37,8 @@ namespace Microsoft.Graph
             var stringContent = await encryptedContent.DecryptAsync(certificateProvider).ConfigureAwait(false);
             using var contentStream = new MemoryStream(Encoding.UTF8.GetBytes(stringContent));
             var parseNodeFactory = ParseNodeFactoryRegistry.DefaultInstance;
-            var rootNode = parseNodeFactory.GetRootParseNode(CoreConstants.MimeTypeNames.Application.Json, contentStream);
-            return rootNode.GetObjectValue<T>((parsable) => new T()); ;
+            var rootNode = await parseNodeFactory.GetRootParseNodeAsync(CoreConstants.MimeTypeNames.Application.Json, contentStream);
+            return rootNode.GetObjectValue<T>((parsable) => new T());
         }
 
         /// <summary>
