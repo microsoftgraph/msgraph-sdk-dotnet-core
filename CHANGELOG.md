@@ -7,6 +7,12 @@ and this project does adheres to [Semantic Versioning](https://semver.org/spec/v
 
 ## [Unreleased]
 
+## [3.1.12] - 2024-07-03
+
+### Changed
+
+- Updates the Kiota dependencies to the latest version for generation updates removing Linq usage.
+
 ## [3.1.12] - 2024-05-28
 
 ### Changed
