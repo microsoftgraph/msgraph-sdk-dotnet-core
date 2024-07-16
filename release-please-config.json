@@ -6,7 +6,7 @@
     ".github",
     ".vscode"
   ],
-  "release-type": "dotnet",
+  "release-type": "dotnet-yoshi",
   "include-component-in-tag": false,
   "include-v-in-tag": true,
   "packages": {
