@@ -64,6 +64,14 @@ extends:
             script: |
               echo "##vso[task.setvariable variable=JAVA_HOME]$(JAVA_HOME_11_X64)"
               echo "##vso[task.setvariable variable=PATH]$(JAVA_HOME_11_X64)\bin;$(PATH)"
+        - task: PowerShell@2
+          displayName: 'Validate updated version'
+          inputs:
+            targetType: filePath
+            filePath: 'scripts\ValidateUpdatedNugetVersion.ps1'
+            arguments: '-packageName "$(PACKAGE_NAME)" -projectPath "$(PROJECT_PATH)"'
+            pwsh: true
+          enabled: true
         - powershell: |
             dotnet workload install android macos ios maccatalyst 
           displayName: 'Install needed dotnet workloads'
