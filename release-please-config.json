@@ -14,8 +14,7 @@
       "package-name": "src/Microsoft.Graph.Core/",
       "changelog-path": "CHANGELOG.md",
       "extra-files": [
-        "src/Microsoft.Graph.Core/Microsoft.Graph.Core.csproj",
-        "README.md"
+        "src/Microsoft.Graph.Core/Microsoft.Graph.Core.csproj"
       ]
     }
   },
