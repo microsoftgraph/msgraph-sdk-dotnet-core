@@ -117,9 +117,6 @@ namespace Microsoft.Graph
             var handlers = KiotaClientFactory.CreateDefaultHandlers();
             handlers.Add(new GraphTelemetryHandler(graphClientOptions));// add the telemetry handler last.
 
-            // TODO remove this once https://github.com/microsoft/kiota/issues/598 is closed.
-            handlers.Insert(0, new CompressionHandler());
-
             return handlers;
         }
 
@@ -220,17 +217,17 @@ namespace Microsoft.Graph
 #elif MACOS
             return new Foundation.NSUrlSessionHandler { AllowAutoRedirect = false };
 #elif ANDROID
-            return new Xamarin.Android.Net.AndroidMessageHandler { Proxy = proxy, AllowAutoRedirect = false, AutomaticDecompression = DecompressionMethods.None };
+            return new Xamarin.Android.Net.AndroidMessageHandler { Proxy = proxy, AllowAutoRedirect = false, AutomaticDecompression = DecompressionMethods.All };
 #elif NETFRAMEWORK
             // If custom proxy is passed, the WindowsProxyUsePolicy will need updating
             // https://github.com/dotnet/runtime/blob/main/src/libraries/System.Net.Http.WinHttpHandler/src/System/Net/Http/WinHttpHandler.cs#L575
             var proxyPolicy = proxy != null ? WindowsProxyUsePolicy.UseCustomProxy : WindowsProxyUsePolicy.UseWinHttpProxy;
-            return new WinHttpHandler { Proxy = proxy, AutomaticDecompression = DecompressionMethods.None , WindowsProxyUsePolicy = proxyPolicy, SendTimeout = Timeout.InfiniteTimeSpan, ReceiveDataTimeout = Timeout.InfiniteTimeSpan, ReceiveHeadersTimeout = Timeout.InfiniteTimeSpan };
+            return new WinHttpHandler { Proxy = proxy, AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate , WindowsProxyUsePolicy = proxyPolicy, SendTimeout = Timeout.InfiniteTimeSpan, ReceiveDataTimeout = Timeout.InfiniteTimeSpan, ReceiveHeadersTimeout = Timeout.InfiniteTimeSpan };
 #elif NET6_0_OR_GREATER
             //use resilient configs when we can https://learn.microsoft.com/en-us/aspnet/core/fundamentals/http-requests?view=aspnetcore-5.0#alternatives-to-ihttpclientfactory-1
-            return new SocketsHttpHandler { Proxy = proxy, AllowAutoRedirect = false, AutomaticDecompression = DecompressionMethods.None, PooledConnectionLifetime = TimeSpan.FromMinutes(1)}; 
+            return new SocketsHttpHandler { Proxy = proxy, AllowAutoRedirect = false, AutomaticDecompression = DecompressionMethods.All, PooledConnectionLifetime = TimeSpan.FromMinutes(1)}; 
 #else
-            return new HttpClientHandler { Proxy = proxy, AllowAutoRedirect = false, AutomaticDecompression = DecompressionMethods.None };
+            return new HttpClientHandler { Proxy = proxy, AllowAutoRedirect = false, AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate };
 #endif
         }
 
@@ -241,14 +238,16 @@ namespace Microsoft.Graph
         /// <returns>Delegating handler feature flag.</returns>
         private static FeatureFlag GetHandlerFeatureFlag(DelegatingHandler delegatingHandler)
         {
-            if (delegatingHandler is CompressionHandler)
-                return FeatureFlag.CompressionHandler;
-            else if (delegatingHandler is RetryHandler)
-                return FeatureFlag.RetryHandler;
-            else if (delegatingHandler is RedirectHandler)
-                return FeatureFlag.RedirectHandler;
-            else
-                return FeatureFlag.None;
+            return delegatingHandler switch
+            {
+                // Type or member is obsolete
+#pragma warning disable CS0618 // Type or member is obsolete
+                CompressionHandler => FeatureFlag.CompressionHandler,
+#pragma warning restore CS0618 // Type or member is obsolete
+                RetryHandler => FeatureFlag.RetryHandler,
+                RedirectHandler => FeatureFlag.RedirectHandler,
+                _ => FeatureFlag.None
+            };
         }
 
         private static Uri DetermineBaseAddress(string nationalCloud, string version)

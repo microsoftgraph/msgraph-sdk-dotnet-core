@@ -7,6 +7,12 @@ and this project does adheres to [Semantic Versioning](https://semver.org/spec/v
 
 ## [Unreleased]
 
+## [3.1.14] - 2024-07-23
+
+### Changed
+
+- Obsoletes custom decompression handler in favor of native client capabilities at https://github.com/microsoft/kiota-dotnet/pull/303
+
 ## [3.1.12] - 2024-07-03
 
 ### Changed
