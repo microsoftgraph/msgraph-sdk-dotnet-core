@@ -69,8 +69,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         [Fact]
         public void Should_CreatePipeline_Without_HttpMessageHandlerInput()
         {
-            using CompressionHandler compressionHandler = (CompressionHandler)GraphClientFactory.CreatePipeline(handlers, new MockRedirectHandler());
-            using UriReplacementHandler<UriReplacementHandlerOption> uriReplacementHandler = (UriReplacementHandler<UriReplacementHandlerOption>)compressionHandler.InnerHandler;
+            using UriReplacementHandler<UriReplacementHandlerOption> uriReplacementHandler = (UriReplacementHandler<UriReplacementHandlerOption>)GraphClientFactory.CreatePipeline(handlers, new MockRedirectHandler());
             using RetryHandler retryHandler = (RetryHandler)uriReplacementHandler.InnerHandler;
             using RedirectHandler redirectHandler = (RedirectHandler)retryHandler.InnerHandler;
             using ParametersNameDecodingHandler odataQueryHandler = (ParametersNameDecodingHandler)redirectHandler.InnerHandler;
@@ -83,14 +82,12 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             Assert.NotNull(userAgentHandler);
             Assert.NotNull(headersInspectionHandler);
             Assert.NotNull(odataQueryHandler);
-            Assert.NotNull(compressionHandler);
             Assert.NotNull(retryHandler);
             Assert.NotNull(redirectHandler);
             Assert.NotNull(innerMost);
             Assert.IsType<GraphTelemetryHandler>(telemetryHandler);
             Assert.IsType<ParametersNameDecodingHandler>(odataQueryHandler);
             Assert.IsType<HeadersInspectionHandler>(headersInspectionHandler);
-            Assert.IsType<CompressionHandler>(compressionHandler);
             Assert.IsType<UserAgentHandler>(userAgentHandler);
             Assert.IsType<RetryHandler>(retryHandler);
             Assert.IsType<RedirectHandler>(redirectHandler);
@@ -101,8 +98,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         [Fact]
         public void CreatePipelineWithHttpMessageHandlerInput()
         {
-            using CompressionHandler compressionHandler = (CompressionHandler)GraphClientFactory.CreatePipeline(handlers, new MockRedirectHandler());
-            using UriReplacementHandler<UriReplacementHandlerOption> uriReplacementHandler = (UriReplacementHandler<UriReplacementHandlerOption>)compressionHandler.InnerHandler;
+            using UriReplacementHandler<UriReplacementHandlerOption> uriReplacementHandler = (UriReplacementHandler<UriReplacementHandlerOption>)GraphClientFactory.CreatePipeline(handlers, new MockRedirectHandler());
             using RetryHandler retryHandler = (RetryHandler)uriReplacementHandler.InnerHandler;
             using RedirectHandler redirectHandler = (RedirectHandler)retryHandler.InnerHandler;
             using ParametersNameDecodingHandler odataQueryHandler = (ParametersNameDecodingHandler)redirectHandler.InnerHandler;
@@ -115,14 +111,12 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             Assert.NotNull(userAgentHandler);
             Assert.NotNull(headersInspectionHandler);
             Assert.NotNull(odataQueryHandler);
-            Assert.NotNull(compressionHandler);
             Assert.NotNull(retryHandler);
             Assert.NotNull(redirectHandler);
             Assert.NotNull(innerMost);
             Assert.IsType<GraphTelemetryHandler>(telemetryHandler);
             Assert.IsType<ParametersNameDecodingHandler>(odataQueryHandler);
             Assert.IsType<HeadersInspectionHandler>(headersInspectionHandler);
-            Assert.IsType<CompressionHandler>(compressionHandler);
             Assert.IsType<RetryHandler>(retryHandler);
             Assert.IsType<UserAgentHandler>(userAgentHandler);
             Assert.IsType<RedirectHandler>(redirectHandler);
@@ -143,11 +137,11 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         public void CreatePipeline_Should_Throw_Exception_With_Duplicate_Handlers()
         {
             var handlers = GraphClientFactory.CreateDefaultHandlers();
-            handlers.Add(new CompressionHandler());
+            handlers.Add(new GraphTelemetryHandler());
 
             ArgumentException exception =  Assert.Throws<ArgumentException>(() => GraphClientFactory.CreatePipeline(handlers));
 
-            Assert.Contains($"{typeof(CompressionHandler)} has a duplicate handler.", exception.Message);
+            Assert.Contains($"{typeof(GraphTelemetryHandler)} has a duplicate handler.", exception.Message);
         }
 
         [Fact]
@@ -281,7 +275,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         [Fact]
         public void CreatePipelineWithFeatureFlags_Should_Set_FeatureFlag_For_Default_Handlers()
         {
-            FeatureFlag expectedFlag = FeatureFlag.CompressionHandler | FeatureFlag.RetryHandler | FeatureFlag.RedirectHandler;
+            FeatureFlag expectedFlag = FeatureFlag.RetryHandler | FeatureFlag.RedirectHandler;
             string expectedFlagHeaderValue = Enum.Format(typeof(FeatureFlag), expectedFlag, "x");
             var handlers = GraphClientFactory.CreateDefaultHandlers();
             var pipelineWithHandlers = GraphClientFactory.CreatePipelineWithFeatureFlags(handlers);
@@ -293,7 +287,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         [Fact]
         public void CreatePipelineWithFeatureFlags_Should_Set_FeatureFlag_For_Speficied_Handlers()
         {
-            FeatureFlag expectedFlag = FeatureFlag.CompressionHandler | FeatureFlag.RetryHandler;
+            FeatureFlag expectedFlag = FeatureFlag.RetryHandler;
             var handlers = GraphClientFactory.CreateDefaultHandlers();
             //Exclude the redirect handler for this test
             handlers = handlers.Where(handler => !handler.GetType().Equals(typeof(RedirectHandler))).ToList();
