@@ -3,6 +3,8 @@
 // ------------------------------------------------------------------------------
 
 
+using System.Runtime.Serialization;
+
 namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels
 {
     /// <summary>
@@ -10,6 +12,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels
     /// </summary>
     public enum EnumType
     {
+        [EnumMember(Value = "value")]
         Value,
     }
 }

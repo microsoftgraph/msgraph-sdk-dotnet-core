@@ -3,6 +3,8 @@
 // ------------------------------------------------------------------------------
 
 
+using System.Runtime.Serialization;
+
 namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels
 {
     /// <summary>
@@ -11,8 +13,9 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels
     [System.Flags]
     public enum EnumTypeWithFlags
     {
+        [EnumMember(Value = "firstValue")]
         FirstValue = 1,
-
+        [EnumMember(Value = "secondValue")]
         SecondValue = 2
     }
 }
