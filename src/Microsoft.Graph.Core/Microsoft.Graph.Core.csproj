@@ -21,7 +21,7 @@
     <AssemblyOriginatorKeyFile>35MSSharedLib1024.snk</AssemblyOriginatorKeyFile>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <!-- x-release-please-start-version -->
-    <VersionPrefix>3.1.14</VersionPrefix>
+    <VersionPrefix>3.1.15</VersionPrefix>
     <!-- x-release-please-end -->
     <!-- VersionPrefix minor version should not be set when the change comes from the generator. It will be updated automatically. -->
     <!-- VersionPrefix minor version must be manually set when making manual changes to code. -->
@@ -64,13 +64,13 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="8.0.1" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.Kiota.Abstractions" Version="1.10.1" />
-    <PackageReference Include="Microsoft.Kiota.Authentication.Azure" Version="1.10.1" />
-    <PackageReference Include="Microsoft.Kiota.Serialization.Json" Version="1.10.1" />
-    <PackageReference Include="Microsoft.Kiota.Serialization.Text" Version="1.10.1" />
-    <PackageReference Include="Microsoft.Kiota.Serialization.Form" Version="1.10.1" />
-    <PackageReference Include="Microsoft.Kiota.Http.HttpClientLibrary" Version="1.10.1" />
-    <PackageReference Include="Microsoft.Kiota.Serialization.Multipart" Version="1.9.11" />
+    <PackageReference Include="Microsoft.Kiota.Abstractions" Version="1.11.0" />
+    <PackageReference Include="Microsoft.Kiota.Authentication.Azure" Version="1.11.0" />
+    <PackageReference Include="Microsoft.Kiota.Serialization.Json" Version="1.11.0" />
+    <PackageReference Include="Microsoft.Kiota.Serialization.Text" Version="1.11.0" />
+    <PackageReference Include="Microsoft.Kiota.Serialization.Form" Version="1.11.0" />
+    <PackageReference Include="Microsoft.Kiota.Http.HttpClientLibrary" Version="1.11.0" />
+    <PackageReference Include="Microsoft.Kiota.Serialization.Multipart" Version="1.11.0" />
   </ItemGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'net462' ">
     <PackageReference Include="System.Net.Http.WinHttpHandler" Version="[6.0,9.0)" />

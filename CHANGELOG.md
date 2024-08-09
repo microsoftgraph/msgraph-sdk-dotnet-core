@@ -7,6 +7,13 @@ and this project does adheres to [Semantic Versioning](https://semver.org/spec/v
 
 ## [Unreleased]
 
+## [3.1.15] - 2024-08-09
+
+### Changed
+
+- Updates the Kiota dependencies to the latest version
+- Enabled Continuous Access evaluation by default.
+
 ## [3.1.14] - 2024-07-23
 
 ### Changed
