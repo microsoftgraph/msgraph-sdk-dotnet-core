@@ -99,10 +99,15 @@ extends:
           inputs:
             projects: '$(Build.SourcesDirectory)\src\Microsoft.Graph.Core\Microsoft.Graph.Core.csproj'
             arguments: '-c Release --no-incremental -p:IncludeMauiTargets=true'
-        - task: EsrpCodeSigning@3
-          displayName: 'ESRP DLL Strong Name (Microsoft.Graph.Core) (AKV)'
+        - task: EsrpCodeSigning@5
+          displayName: 'ESRP DLL Strong Name (Microsoft.Graph.Core)'
           inputs:
-            ConnectedServiceName: 'microsoftgraph ESRP CodeSign DLL and NuGet (AKV)'
+            ConnectedServiceName: 'Federated DevX ESRP Managed Identity Connection'
+            AppRegistrationClientId: '65035b7f-7357-4f29-bf25-c5ee5c3949f8'
+            AppRegistrationTenantId: 'cdc5aeea-15c5-4db6-b079-fcadd2505dc2'
+            AuthAKVName: 'akv-prod-eastus'
+            AuthCertName: 'ReferenceLibraryPrivateCert'
+            AuthSignCertName: 'ReferencePackagePublisherCertificate'
             FolderPath: src/Microsoft.Graph.Core/bin/release
             Pattern: '**\*Microsoft.Graph.Core.dll'
             UseMinimatch: true
@@ -125,10 +130,18 @@ extends:
                   }
               ]
             SessionTimeout: 20
-        - task: EsrpCodeSigning@3
+            MaxConcurrency: 50
+            MaxRetryAttempts: 5
+            PendingAnalysisWaitTimeoutMinutes: 5
+        - task: EsrpCodeSigning@5
           displayName: 'ESRP DLL CodeSigning (Microsoft.Graph.Core)'
           inputs:
-            ConnectedServiceName: 'microsoftgraph ESRP CodeSign DLL and NuGet (AKV)'
+            ConnectedServiceName: 'Federated DevX ESRP Managed Identity Connection'
+            AppRegistrationClientId: '65035b7f-7357-4f29-bf25-c5ee5c3949f8'
+            AppRegistrationTenantId: 'cdc5aeea-15c5-4db6-b079-fcadd2505dc2'
+            AuthAKVName: 'akv-prod-eastus'
+            AuthCertName: 'ReferenceLibraryPrivateCert'
+            AuthSignCertName: 'ReferencePackagePublisherCertificate'
             FolderPath: src/Microsoft.Graph.Core/bin/release
             Pattern: '**\*Microsoft.Graph.Core.dll'
             UseMinimatch: true
@@ -172,13 +185,21 @@ extends:
                   }
               ]
             SessionTimeout: 20
+            MaxConcurrency: 50
+            MaxRetryAttempts: 5
+            PendingAnalysisWaitTimeoutMinutes: 5
         - powershell: |
             dotnet pack $env:BUILD_SOURCESDIRECTORY/src/Microsoft.Graph.Core/Microsoft.Graph.Core.csproj /p:IncludeSymbols=true /p:SymbolPackageFormat=snupkg --no-build --output $env:BUILD_ARTIFACTSTAGINGDIRECTORY --configuration Release
           displayName: dotnet pack
-        - task: EsrpCodeSigning@3
-          displayName: 'ESRP NuGet CodeSigning'
+        - task: EsrpCodeSigning@5
+          displayName: 'ESRP NuGet CodeSigning (Microsoft.Graph.Core)'
           inputs:
-            ConnectedServiceName: 'microsoftgraph ESRP CodeSign DLL and NuGet (AKV)'
+            ConnectedServiceName: 'Federated DevX ESRP Managed Identity Connection'
+            AppRegistrationClientId: '65035b7f-7357-4f29-bf25-c5ee5c3949f8'
+            AppRegistrationTenantId: 'cdc5aeea-15c5-4db6-b079-fcadd2505dc2'
+            AuthAKVName: 'akv-prod-eastus'
+            AuthCertName: 'ReferenceLibraryPrivateCert'
+            AuthSignCertName: 'ReferencePackagePublisherCertificate'
             FolderPath: '$(Build.ArtifactStagingDirectory)'
             Pattern: '*.nupkg'
             UseMinimatch: true
@@ -201,6 +222,9 @@ extends:
                   }
               ]
             SessionTimeout: 20
+            MaxConcurrency: 50
+            MaxRetryAttempts: 5
+            PendingAnalysisWaitTimeoutMinutes: 5
         - task: CopyFiles@2
           displayName: 'Copy release scripts to artifact staging directory'
           inputs:
