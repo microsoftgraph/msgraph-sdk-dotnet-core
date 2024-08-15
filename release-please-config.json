@@ -1,5 +1,5 @@
 {
-  "bootstrap-sha": "9903e0c129683979234f287d59f7468ca5cd7341",
+  "bootstrap-sha": "ee54a79fcbc6d412ed8b9cef875371558de3627e",
   "exclude-paths": [
     ".git",
     ".idea",
@@ -8,10 +8,10 @@
   ],
   "release-type": "simple",
   "include-component-in-tag": false,
-  "include-v-in-tag": true,
+  "include-v-in-tag": false,
   "packages": {
     ".": {
-      "package-name": "src/Microsoft.Graph.Core/",
+      "package-name": "Microsoft.Graph.Core",
       "changelog-path": "CHANGELOG.md",
       "extra-files": [
         "src/Microsoft.Graph.Core/Microsoft.Graph.Core.csproj"
