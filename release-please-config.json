@@ -11,11 +11,11 @@
   "include-v-in-tag": true,
   "packages": {
     ".": {
-      "package-name": "src/Microsoft.Graph.Core/",
       "changelog-path": "CHANGELOG.md",
-      "extra-files": [
-        "src/Microsoft.Graph.Core/Microsoft.Graph.Core.csproj"
-      ]
+      "bump-minor-pre-major": false,
+      "bump-patch-for-minor-pre-major": false,
+      "draft": false,
+      "prerelease": false
     }
   },
   "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json"
