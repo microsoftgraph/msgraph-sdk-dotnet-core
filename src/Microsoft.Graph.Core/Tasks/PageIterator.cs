@@ -12,7 +12,7 @@ namespace Microsoft.Graph
     using System.Threading.Tasks;
 
     /*
-     Spec https://github.com/microsoftgraph/msgraph-sdk-design/blob/master/tasks/PageIteratorTask.md
+     Spec https://github.com/microsoftgraph/msgraph-sdk-design/blob/main/tasks/PageIteratorTask.md
     */
 
     /// <summary>

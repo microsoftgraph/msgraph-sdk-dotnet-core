@@ -28,7 +28,7 @@
     <!-- VersionPrefix major and patch versions must be manually set. -->
     <VersionSuffix></VersionSuffix>
     <PackageReleaseNotes>
-- https://github.com/microsoftgraph/msgraph-sdk-dotnet-core/blob/dev/CHANGELOG.md
+- https://github.com/microsoftgraph/msgraph-sdk-dotnet-core/blob/main/CHANGELOG.md
     </PackageReleaseNotes>
     <!-- By default let the Maui targets be excluded to make contribution for external parties easier and dependabot updates. They can be enabled by adding `-p:IncludeMauiTargets=true` to the target build/restore command which is done in the CI.-->
     <TargetFrameworks>netstandard2.0;net462;$(MauiTargets)</TargetFrameworks>
