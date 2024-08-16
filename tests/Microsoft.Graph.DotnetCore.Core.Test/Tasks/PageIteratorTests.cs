@@ -22,7 +22,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
     using Xunit;
 
     /**
-     Spec https://github.com/microsoftgraph/msgraph-sdk-design/blob/master/tasks/PageIteratorTask.md
+     Spec https://github.com/microsoftgraph/msgraph-sdk-design/blob/main/tasks/PageIteratorTask.md
     **/
     public class PageIteratorTests
     {

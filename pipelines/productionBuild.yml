@@ -3,7 +3,7 @@
 trigger:
   branches:
     include:
-    - master
+    - main
   paths:
     include:
     - src/*
@@ -65,7 +65,7 @@ extends:
               echo "##vso[task.setvariable variable=JAVA_HOME]$(JAVA_HOME_11_X64)"
               echo "##vso[task.setvariable variable=PATH]$(JAVA_HOME_11_X64)\bin;$(PATH)"
         - task: PowerShell@2
-          condition: and(contains(variables['build.sourceBranch'], 'refs/heads/master'), succeeded())
+          condition: and(contains(variables['build.sourceBranch'], 'refs/heads/main'), succeeded())
           displayName: 'Validate updated version'
           inputs:
             targetType: filePath
@@ -235,7 +235,7 @@ extends:
             TargetFolder: '$(Build.ArtifactStagingDirectory) '
 
     - stage: deploy
-      condition: and(contains(variables['build.sourceBranch'], 'refs/heads/master'), succeeded())
+      condition: and(contains(variables['build.sourceBranch'], 'refs/heads/main'), succeeded())
       dependsOn: build
       jobs:
         - deployment: deploy_nuget
@@ -264,7 +264,7 @@ extends:
                   inputs:
                     targetType: filePath
                     filePath: '$(Pipeline.Workspace)\scripts\GetLatestCommitSHA.ps1'
-                    arguments: '-repo "msgraph-sdk-dotnet-core" -owner "microsoftgraph" -branchName "master"'
+                    arguments: '-repo "msgraph-sdk-dotnet-core" -owner "microsoftgraph" -branchName "main"'
                     pwsh: true
                 - task: PowerShell@2
                   displayName: 'Extract release information to pipeline'
