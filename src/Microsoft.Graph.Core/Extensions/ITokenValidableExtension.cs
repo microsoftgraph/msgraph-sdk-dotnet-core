@@ -7,6 +7,7 @@ namespace Microsoft.Graph
     using Microsoft.IdentityModel.Protocols.OpenIdConnect;
     using Microsoft.IdentityModel.Tokens;
     using Microsoft.IdentityModel.Protocols;
+    using Microsoft.IdentityModel.Validators;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -65,7 +66,7 @@ namespace Microsoft.Graph
         {
             try
             {
-                handler.ValidateToken(token, new TokenValidationParameters
+                var tokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuer = true,
                     ValidateAudience = true,
@@ -74,7 +75,9 @@ namespace Microsoft.Graph
                     ValidIssuers = issuersToValidate,
                     ValidAudiences = appIds,
                     IssuerSigningKeys = openIdConfig.SigningKeys
-                }, out _);
+                };
+                tokenValidationParameters.EnableAadSigningKeyIssuerValidation();
+                handler.ValidateToken(token,  tokenValidationParameters, out _);
             }
             catch
             {
