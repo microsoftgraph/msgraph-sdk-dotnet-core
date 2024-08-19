@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project does adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.1.17](https://github.com/microsoftgraph/msgraph-sdk-dotnet-core/compare/v3.1.16...3.1.17) (2024-08-19)
+
+
+### Bug Fixes
+
+* Add option to specify requestId manually when calling `AddBatchRequestStepAsync()` ([#871](https://github.com/microsoftgraph/msgraph-sdk-dotnet-core/issues/871))
+* Fixing code scanning alert on AAD issuer validation ([523a5dc](https://github.com/microsoftgraph/msgraph-sdk-dotnet-core/commit/523a5dc26edfe2f11270658928680eacacfe2f25))
+
 ## [3.1.16](https://github.com/microsoftgraph/msgraph-sdk-dotnet-core/compare/v3.1.15...3.1.16) (2024-08-15)
 
 
