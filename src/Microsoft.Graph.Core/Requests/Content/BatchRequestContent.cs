@@ -130,13 +130,17 @@ namespace Microsoft.Graph
         /// Adds a <see cref="RequestInformation"/> to batch request content
         /// </summary>
         /// <param name="requestInformation">A <see cref="RequestInformation"/> to use to build a <see cref="BatchRequestStep"/> to add.</param>
+        /// <param name="requestId">An optional string that will be used as the requestId of the batch request</param>
         /// <returns>The requestId of the  newly created <see cref="BatchRequestStep"/></returns>
         [Obsolete("Please use the BatchRequestContentCollection for making batch requests as it supports handling more than 20 requests and provides a similar API experience.")]
-        public async Task<string> AddBatchRequestStepAsync(RequestInformation requestInformation)
+        public async Task<string> AddBatchRequestStepAsync(RequestInformation requestInformation, string requestId = null)
         {
             if (BatchRequestSteps.Count >= CoreConstants.BatchRequest.MaxNumberOfRequests)
                 throw new ArgumentException(string.Format(ErrorConstants.Messages.MaximumValueExceeded, "Number of batch request steps", CoreConstants.BatchRequest.MaxNumberOfRequests));
-            string requestId = Guid.NewGuid().ToString();
+            if (string.IsNullOrEmpty(requestId))
+            {
+                requestId = Guid.NewGuid().ToString();
+            }
             var requestMessage = await RequestAdapter.ConvertToNativeRequestAsync<HttpRequestMessage>(requestInformation);
             BatchRequestStep batchRequestStep = new BatchRequestStep(requestId, requestMessage);
             (BatchRequestSteps as IDictionary<string, BatchRequestStep>)!.Add(batchRequestStep.RequestId, batchRequestStep);

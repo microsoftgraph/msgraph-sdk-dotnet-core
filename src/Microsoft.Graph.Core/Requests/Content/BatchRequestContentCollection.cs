@@ -101,12 +101,13 @@ namespace Microsoft.Graph
         /// Adds a <see cref="RequestInformation"/> to batch request content
         /// </summary>
         /// <param name="requestInformation">A <see cref="RequestInformation"/> to use to build a <see cref="BatchRequestStep"/> to add.</param>
+        /// <param name="requestId">An optional string that will be used as the requestId of the batch request</param>
         /// <returns>The requestId of the  newly created <see cref="BatchRequestStep"/></returns>
-        public Task<string> AddBatchRequestStepAsync(RequestInformation requestInformation)
+        public Task<string> AddBatchRequestStepAsync(RequestInformation requestInformation, string requestId = null)
         {
             SetupCurrentRequest();
 #pragma warning disable CS0618
-            return currentRequest.AddBatchRequestStepAsync(requestInformation);
+            return currentRequest.AddBatchRequestStepAsync(requestInformation, requestId);
 #pragma warning restore CS0618
         }
 
