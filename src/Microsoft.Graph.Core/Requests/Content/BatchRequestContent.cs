@@ -137,7 +137,7 @@ namespace Microsoft.Graph
         {
             if (BatchRequestSteps.Count >= CoreConstants.BatchRequest.MaxNumberOfRequests)
                 throw new ArgumentException(string.Format(ErrorConstants.Messages.MaximumValueExceeded, "Number of batch request steps", CoreConstants.BatchRequest.MaxNumberOfRequests));
-            if (requestId == null)
+            if (string.IsNullOrEmpty(requestId))
             {
                 requestId = Guid.NewGuid().ToString();
             }
