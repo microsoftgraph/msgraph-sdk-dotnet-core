@@ -286,13 +286,11 @@ extends:
                   inputs:
                     gitHubConnection: 'Kiota_Release'
                     target: $(Build.SourceVersion)
-                    tagSource: userSpecifiedTag
-                    tag: 'v$(VERSION_STRING)'
-                    title: '$(VERSION_STRING)'
-                    releaseNotesSource: inline
+                    repositoryName: '$(Build.Repository.Name)'
+                    action: edit
+                    tag: $(VERSION_STRING)
+                    addChangeLog: false
+                    assetUploadMode: replace
                     assets: |
                       !**/**
                       $(Pipeline.Workspace)/Microsoft.Graph.Core.*.*nupkg
-                    changeLogType: issueBased
-                    isPreRelease: '$(IS_PRE_RELEASE)'
-                    addChangeLog: true
