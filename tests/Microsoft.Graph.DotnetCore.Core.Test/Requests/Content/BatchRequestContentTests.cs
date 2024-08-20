@@ -21,11 +21,14 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
     using Microsoft.Kiota.Serialization.Json;
     using Microsoft.Kiota.Serialization.Text;
     using HttpMethod = System.Net.Http.HttpMethod;
+    using System.Text.RegularExpressions;
 
     public class BatchRequestContentTests
     {
         private const string REQUEST_URL = "https://graph.microsoft.com/v1.0/me";
         private readonly IBaseClient client = new BaseClient(REQUEST_URL, new MockAuthenticationProvider().Object);
+
+        private readonly Regex whitespacePattern = new Regex("\\s");
 
         public BatchRequestContentTests()
         {
@@ -353,10 +356,11 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
                                   "    }\r\n" +
                                   "  ]\r\n" +
                                   "}";
+            expectedJson = whitespacePattern.Replace(expectedJson, "");
 
             Assert.NotNull(requestContent);
             Assert.True(batchRequestContent.BatchRequestSteps.Count.Equals(2));
-            Assert.Equal(expectedJson, requestContent);
+            Assert.Equal(expectedJson, whitespacePattern.Replace(requestContent, ""));
         }
 
         [Fact]
@@ -456,10 +460,11 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
                                   "    }\r\n" +
                                   "  ]\r\n" +
                                   "}";
+            expectedJson = whitespacePattern.Replace(expectedJson, "");
 
             Assert.NotNull(requestContent);
             Assert.True(batchRequestContent.BatchRequestSteps.Count.Equals(2));
-            Assert.Equal(expectedJson, requestContent);
+            Assert.Equal(expectedJson, whitespacePattern.Replace(requestContent, ""));
         }
 
         [Fact]
@@ -583,7 +588,8 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
                                          "        \"ConsistencyLevel\": \"eventual\",\r\n" + // Ensure the requestMessage headers are present
                                          "        \"Content-Type\": \"application/json\"\r\n" + // Ensure the content headers are present
                                          "      }";
-            Assert.Contains(expectedJsonSection, requestContentString);
+            expectedJsonSection = whitespacePattern.Replace(expectedJsonSection, "");
+            Assert.Contains(expectedJsonSection, whitespacePattern.Replace(requestContentString, ""));
         }
 
         [Fact]

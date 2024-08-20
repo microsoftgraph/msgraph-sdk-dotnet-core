@@ -167,6 +167,7 @@ namespace Microsoft.Graph
             bool isRemoved = false;
             if (BatchRequestSteps.ContainsKey(requestId)) {
                 (BatchRequestSteps as IDictionary<string, BatchRequestStep>).Remove(requestId);
+                OrderedBatchRequestIds.Remove(requestId);
                 isRemoved = true;
                 foreach (KeyValuePair<string, BatchRequestStep> batchRequestStep in BatchRequestSteps)
                 {
