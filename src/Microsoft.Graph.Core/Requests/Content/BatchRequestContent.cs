@@ -17,6 +17,7 @@ namespace Microsoft.Graph
     using System.Text.Json;
     using System.Threading.Tasks;
     using System.Threading;
+    using System.Collections;
 
     /// <summary>
     /// A <see cref="HttpContent"/> implementation to handle json batch requests.
@@ -28,6 +29,8 @@ namespace Microsoft.Graph
         /// A BatchRequestSteps property.
         /// </summary>
         public IReadOnlyDictionary<string, BatchRequestStep> BatchRequestSteps { get; private set; }
+
+        private ArrayList OrderedBatchRequestIds { get; set; }
 
         /// <summary>
         /// The request adapter for sending the batch request
@@ -71,6 +74,7 @@ namespace Microsoft.Graph
             this.Headers.ContentType = new MediaTypeHeaderValue(CoreConstants.MimeTypeNames.Application.Json);
 
             BatchRequestSteps = new Dictionary<string, BatchRequestStep>();
+            OrderedBatchRequestIds = new ArrayList();
 
             foreach (BatchRequestStep requestStep in batchRequestSteps)
             {
@@ -106,6 +110,7 @@ namespace Microsoft.Graph
                 throw new ArgumentException(ErrorConstants.Messages.InvalidDependsOnRequestId);
             }
             (BatchRequestSteps as IDictionary<string, BatchRequestStep>).Add(batchRequestStep.RequestId, batchRequestStep);
+            OrderedBatchRequestIds.Add(batchRequestStep.RequestId);
             return true;
         }
 
@@ -123,6 +128,7 @@ namespace Microsoft.Graph
             string requestId = Guid.NewGuid().ToString();
             BatchRequestStep batchRequestStep = new BatchRequestStep(requestId, httpRequestMessage);
             (BatchRequestSteps as IDictionary<string, BatchRequestStep>).Add(batchRequestStep.RequestId, batchRequestStep);
+            OrderedBatchRequestIds.Add(requestId);
             return requestId;
         }
 
@@ -144,6 +150,7 @@ namespace Microsoft.Graph
             var requestMessage = await RequestAdapter.ConvertToNativeRequestAsync<HttpRequestMessage>(requestInformation);
             BatchRequestStep batchRequestStep = new BatchRequestStep(requestId, requestMessage);
             (BatchRequestSteps as IDictionary<string, BatchRequestStep>)!.Add(batchRequestStep.RequestId, batchRequestStep);
+            OrderedBatchRequestIds.Add(requestId);
             return requestId;
         }
 
@@ -191,7 +198,7 @@ namespace Microsoft.Graph
             return request;
         }
 
-        
+
 
         /// <summary>
         /// Get the content of the batchRequest in the form of a stream.
@@ -209,9 +216,9 @@ namespace Microsoft.Graph
 
                 //write the elements of the requests array
                 writer.WriteStartArray();
-                foreach (KeyValuePair<string, BatchRequestStep> batchRequestStep in BatchRequestSteps)
+                foreach (string requestId in OrderedBatchRequestIds)
                 {
-                    await WriteBatchRequestStepAsync(batchRequestStep.Value, writer,cancellationToken).ConfigureAwait(false);
+                    await WriteBatchRequestStepAsync(BatchRequestSteps[requestId], writer, cancellationToken).ConfigureAwait(false);
                 }
                 writer.WriteEndArray();
 
@@ -250,7 +257,7 @@ namespace Microsoft.Graph
             }
 
             // write any headers if the step contains any request headers or content headers
-            if ((batchRequestStep.Request.Headers?.Any() ?? false) 
+            if ((batchRequestStep.Request.Headers?.Any() ?? false)
                 || (batchRequestStep.Request.Content?.Headers?.Any() ?? false))
             {
                 // write the Headers property name for the batch object

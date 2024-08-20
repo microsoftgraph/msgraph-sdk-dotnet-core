@@ -35,3 +35,5 @@ Backup*/
 UpgradeLog*.XML
 UpgradeLog*.htm
 .idea/
+
+.mono/
