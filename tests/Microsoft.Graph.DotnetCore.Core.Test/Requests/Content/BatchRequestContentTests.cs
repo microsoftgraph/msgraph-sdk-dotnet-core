@@ -589,8 +589,8 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
         [InlineData("https://graph.microsoft.com/beta/me", "/me")]
         [InlineData("https://graph.microsoft.com/v1.0/users/abcbeta123@wonderemail.com/events", "/users/abcbeta123@wonderemail.com/events")]
         [InlineData("https://graph.microsoft.com/beta/users/abcbeta123@wonderemail.com/events", "/users/abcbeta123@wonderemail.com/events")]
-        [InlineData("https://graph.microsoft.com/v1.0/users?$filter=identities/any(id:id/issuer%20eq%20'$74707853-18b3-411f-ad57-2ef65f6fdeb0'%20and%20id/issuerAssignedId%20eq%20'**bobbetancourt@fakeemail.com**')", "/users?$filter=identities/any(id:id/issuer%20eq%20'$74707853-18b3-411f-ad57-2ef65f6fdeb0'%20and%20id/issuerAssignedId%20eq%20'**bobbetancourt@fakeemail.com**')")]
-        [InlineData("https://graph.microsoft.com/beta/users?$filter=identities/any(id:id/issuer%20eq%20'$74707853-18b3-411f-ad57-2ef65f6fdeb0'%20and%20id/issuerAssignedId%20eq%20'**bobbetancourt@fakeemail.com**')&$top=1", "/users?$filter=identities/any(id:id/issuer%20eq%20'$74707853-18b3-411f-ad57-2ef65f6fdeb0'%20and%20id/issuerAssignedId%20eq%20'**bobbetancourt@fakeemail.com**')&$top=1")]
+        [InlineData("https://graph.microsoft.com/v1.0/users?$filter=identities/any(id:id/issuer%20eq%20'$74707853-18b3-411f-ad57-2ef65f6fdeb0'%20and%20id/issuerAssignedId%20eq%20'**bobbetancourt@fakeemail.com**')", "/users?$filter=identities/any(id:id/issuer eq '$74707853-18b3-411f-ad57-2ef65f6fdeb0' and id/issuerAssignedId eq '**bobbetancourt@fakeemail.com**')")]
+        [InlineData("https://graph.microsoft.com/beta/users?$filter=identities/any(id:id/issuer%20eq%20'$74707853-18b3-411f-ad57-2ef65f6fdeb0'%20and%20id/issuerAssignedId%20eq%20'**bobbetancourt@fakeemail.com**')&$top=1", "/users?$filter=identities/any(id:id/issuer eq '$74707853-18b3-411f-ad57-2ef65f6fdeb0' and id/issuerAssignedId eq '**bobbetancourt@fakeemail.com**')&$top=1")]
         public async Task BatchRequestContent_AddBatchRequestStepWithBaseRequestProperlySetsVersion(string requestUrl, string expectedUrl)
         {
             // Arrange
@@ -607,12 +607,34 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
                 requestContent = await reader.ReadToEndAsync();
             }
 
-            var expectedContent = "{\"requests\":[{\"id\":\"1\",\"url\":\""+ expectedUrl +"\",\"method\":\"GET\"}]}";
+            var expectedContent = "{\"requests\":[{\"id\":\"1\",\"url\":\"" + expectedUrl + "\",\"method\":\"GET\"}]}";
 
-
-            // Assert we added successfully and contents are as expected
+            // Assert we added successfully and contents are as expected and URI is not encoded
             Assert.Equal(expectedContent, System.Text.RegularExpressions.Regex.Unescape(requestContent));
         }
 
+        [Theory]
+        [InlineData("https://graph.microsoft.com/v1.0/drives/b%21ynG/items/74707853-18b3-411f-ad57-2ef65f6fdeb0:/test.txt:/textfilecontentbytes", "/drives/b!ynG/items/74707853-18b3-411f-ad57-2ef65f6fdeb0:/test.txt:/textfilecontentbytes")]
+        public async Task BatchRequestContent_AddBatchRequestPutStepWithBaseRequestProperlyEncodedURI(string requestUrl, string expectedUrl)
+        {
+            // Arrange
+            BatchRequestStep batchRequestStep = new BatchRequestStep("1", new HttpRequestMessage(HttpMethod.Put, requestUrl));
+            BatchRequestContent batchRequestContent = new BatchRequestContent(client);
+            Assert.False(batchRequestContent.BatchRequestSteps.Any());//Its empty
+
+            // Act
+            batchRequestContent.AddBatchRequestStep(batchRequestStep);
+            var requestContentStream = await batchRequestContent.GetBatchRequestContentAsync();
+            string requestContent;
+            using (StreamReader reader = new StreamReader(requestContentStream))
+            {
+                requestContent = await reader.ReadToEndAsync();
+            }
+
+            var expectedContent = "{\"requests\":[{\"id\":\"1\",\"url\":\"" + expectedUrl + "\",\"method\":\"PUT\"}]}";
+
+            // Assert we added successfully and contents are as expected and URI is not encoded
+            Assert.Equal(expectedContent, System.Text.RegularExpressions.Regex.Unescape(requestContent));
+        }
     }
 }
