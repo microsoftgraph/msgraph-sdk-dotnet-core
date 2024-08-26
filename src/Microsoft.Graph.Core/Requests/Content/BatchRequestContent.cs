@@ -329,7 +329,9 @@ namespace Microsoft.Graph
             if (requestUri == null)
                 throw new ArgumentNullException(nameof(requestUri));
 
-            return requestUri.PathAndQuery.Substring(5); // `v1.0/` and `beta/` are both 5 characters
+            var encodedUri = requestUri.PathAndQuery.Substring(5); // `v1.0/` and `beta/` are both 5 characters
+
+            return Uri.UnescapeDataString(encodedUri); // removes encoded chars from URI since graph batch encodes for us
         }
 
         /// <summary>
