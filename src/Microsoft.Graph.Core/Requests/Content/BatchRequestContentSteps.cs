@@ -7,7 +7,7 @@ namespace Microsoft.Graph;
 /// <summary>
 /// Represents a collection of ordered <see cref="BatchRequestStep"/> objects.
 /// </summary>
-public class BatchRequestContentSteps : IReadOnlyDictionary<string, BatchRequestStep>, IDictionary<string, BatchRequestStep>
+internal class BatchRequestContentSteps : IReadOnlyDictionary<string, BatchRequestStep>, IDictionary<string, BatchRequestStep>
 {
     private readonly Dictionary<string, BatchRequestStep> _steps;
 
@@ -64,9 +64,9 @@ public class BatchRequestContentSteps : IReadOnlyDictionary<string, BatchRequest
     /// </summary>
     public bool IsReadOnly => true;
 
-    IEnumerable<string> IReadOnlyDictionary<string, BatchRequestStep>.Keys => throw new NotImplementedException();
+    IEnumerable<string> IReadOnlyDictionary<string, BatchRequestStep>.Keys => Keys.AsEnumerable();
 
-    IEnumerable<BatchRequestStep> IReadOnlyDictionary<string, BatchRequestStep>.Values => throw new NotImplementedException();
+    IEnumerable<BatchRequestStep> IReadOnlyDictionary<string, BatchRequestStep>.Values => Values.AsEnumerable();
 
     /// <summary>
     /// Adds a <see cref="BatchRequestStep"/> to the collection.
