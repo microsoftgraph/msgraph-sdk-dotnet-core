@@ -17,6 +17,7 @@ namespace Microsoft.Graph
     using System.Text.Json;
     using System.Threading.Tasks;
     using System.Threading;
+    using System.Collections;
 
     /// <summary>
     /// A <see cref="HttpContent"/> implementation to handle json batch requests.
@@ -70,7 +71,7 @@ namespace Microsoft.Graph
 
             this.Headers.ContentType = new MediaTypeHeaderValue(CoreConstants.MimeTypeNames.Application.Json);
 
-            BatchRequestSteps = new Dictionary<string, BatchRequestStep>();
+            BatchRequestSteps = new BatchRequestContentSteps();
 
             foreach (BatchRequestStep requestStep in batchRequestSteps)
             {
@@ -191,7 +192,7 @@ namespace Microsoft.Graph
             return request;
         }
 
-        
+
 
         /// <summary>
         /// Get the content of the batchRequest in the form of a stream.
@@ -250,7 +251,7 @@ namespace Microsoft.Graph
             }
 
             // write any headers if the step contains any request headers or content headers
-            if ((batchRequestStep.Request.Headers?.Any() ?? false) 
+            if ((batchRequestStep.Request.Headers?.Any() ?? false)
                 || (batchRequestStep.Request.Content?.Headers?.Any() ?? false))
             {
                 // write the Headers property name for the batch object

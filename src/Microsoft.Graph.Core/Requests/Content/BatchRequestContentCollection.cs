@@ -83,7 +83,7 @@ namespace Microsoft.Graph
             return currentRequest.AddBatchRequestStep(batchRequestStep);
 #pragma warning restore CS0618
         }
-        
+
         /// <summary>
         /// Adds a <see cref="HttpRequestMessage"/> to batch request content.
         /// </summary>
@@ -152,10 +152,10 @@ namespace Microsoft.Graph
             {
                 if (batchRequests.Count > 0)
                 {
-                    IEnumerable<KeyValuePair<string, BatchRequestStep>> result = batchRequests.Contains(currentRequest) ? 
-                        new List<KeyValuePair<string, BatchRequestStep>>() 
+                    IEnumerable<KeyValuePair<string, BatchRequestStep>> result = batchRequests.Contains(currentRequest) ?
+                        new List<KeyValuePair<string, BatchRequestStep>>()
                         : currentRequest.BatchRequestSteps;
-                    
+
                     foreach ( var request in batchRequests)
                     {
                         result = result.Concat(request.BatchRequestSteps);

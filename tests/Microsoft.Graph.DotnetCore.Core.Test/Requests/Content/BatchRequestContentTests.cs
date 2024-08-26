@@ -21,11 +21,14 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
     using Microsoft.Kiota.Serialization.Json;
     using Microsoft.Kiota.Serialization.Text;
     using HttpMethod = System.Net.Http.HttpMethod;
+    using System.Text.RegularExpressions;
 
     public class BatchRequestContentTests
     {
         private const string REQUEST_URL = "https://graph.microsoft.com/v1.0/me";
         private readonly IBaseClient client = new BaseClient(REQUEST_URL, new MockAuthenticationProvider().Object);
+
+        private readonly Regex whitespacePattern = new Regex("\\s");
 
         public BatchRequestContentTests()
         {
@@ -81,7 +84,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
             BatchRequestStep batchRequestStep2 = new BatchRequestStep("2", new HttpRequestMessage(HttpMethod.Get, REQUEST_URL), new List<string> { "3" });
 
             ArgumentException ex = Assert.Throws<ArgumentException>(() => new BatchRequestContent(client, batchRequestStep1, batchRequestStep2));
-            
+
             Assert.Equal(ErrorConstants.Messages.InvalidDependsOnRequestId, ex.Message);
         }
 
@@ -91,7 +94,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
             // Arrange
             BatchRequestStep batchRequestStep = new BatchRequestStep("1", new HttpRequestMessage(HttpMethod.Get, REQUEST_URL));
             BatchRequestContent batchRequestContent = new BatchRequestContent(client);
-            
+
             // Act
             Assert.False(batchRequestContent.BatchRequestSteps.Any());//Its empty
             bool isSuccess = batchRequestContent.AddBatchRequestStep(batchRequestStep);
@@ -196,14 +199,14 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
             }
 
             batchRequestContent.GetBatchRequestsForExecution();// this is called when request is executed
-            
+
             Dictionary<string, HttpStatusCode> responseStatusCodes = requestIds.ToDictionary(requestId => requestId, requestId => HttpStatusCode.OK);
 
             var retryBatch = batchRequestContent.NewBatchWithFailedRequests(responseStatusCodes);
-            
+
             Assert.Empty(retryBatch.BatchRequestSteps);
         }
-        
+
         [Fact]
         public async Task BatchRequestContent_NewBatchWithFailedRequests2()
         {
@@ -225,7 +228,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
 
             Assert.Empty(retryBatch.BatchRequestSteps);// All requests were succesfful
         }
-        
+
         [Fact]
         public async Task BatchRequestContent_NewBatchWithFailedRequestsWithBody()
         {
@@ -244,7 +247,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
             });
             var postRequestId = await batchRequestContent.AddBatchRequestStepAsync(postRequestInformation);
             requestIds.Add(postRequestId);
-            
+
             // Add the second request with plain text
             var postRequestInformation2 = new RequestInformation
             {
@@ -258,28 +261,28 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
             // 1. Simulate the first time building the request and serializing it.
             var batchRequestContents = batchRequestContent.GetBatchRequestsForExecution();
             var stringContentFirst = await batchRequestContents.First().ReadAsStringAsync();
-            
+
             // Assert the body is present
             Assert.Contains("\"body\":{\"@odata.type\":\"microsoft.graph.drive\",\"name\":\"testDrive\"}",stringContentFirst);
             Assert.Contains(Convert.ToBase64String(Encoding.UTF8.GetBytes("This is a test")), stringContentFirst);
             JsonDocument.Parse(stringContentFirst);// verify its valid json otherwise it will throw
-            
+
             Dictionary<string, HttpStatusCode> responseStatusCodes = requestIds.ToDictionary(requestId => requestId, requestId => HttpStatusCode.BadGateway);
             var retryBatch = batchRequestContent.NewBatchWithFailedRequests(responseStatusCodes);
-            
+
             // 2. Failed request is present
             Assert.NotEmpty(retryBatch.BatchRequestSteps);
 
             batchRequestContents = retryBatch.GetBatchRequestsForExecution();
             var retryStringContentFirst = await batchRequestContents.First().ReadAsStringAsync();
-            
+
             // Assert the body is still present
             Assert.Contains("\"body\":{\"@odata.type\":\"microsoft.graph.drive\",\"name\":\"testDrive\"}",retryStringContentFirst);
             Assert.Contains(Convert.ToBase64String(Encoding.UTF8.GetBytes("This is a test")), retryStringContentFirst);
             JsonDocument.Parse(retryStringContentFirst);// verify its valid json otherwise it will throw
         }
-        
-        
+
+
         [Fact]
         public async System.Threading.Tasks.Task BatchRequestContent_GetBatchRequestContentFromStepAsync()
         {
@@ -299,9 +302,9 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
             {
                 requestContent = await reader.ReadToEndAsync();
             }
-            
+
             string expectedContent = "{\"requests\":[{\"id\":\"2\",\"url\":\"/me\",\"method\":\"GET\"}]}";
-            
+
             Assert.NotNull(requestContent);
             Assert.True(batchRequestContent.BatchRequestSteps.Count.Equals(1));
             Assert.Equal(expectedContent, requestContent);
@@ -317,7 +320,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
                 Content = new StreamContent(fileStream)
             };
             createImageMessage.Content.Headers.ContentType = new MediaTypeHeaderValue("image/png");
-            
+
             BatchRequestStep batchRequestStep2 = new BatchRequestStep("2", createImageMessage, new List<string> { "1" });
 
             BatchRequestContent batchRequestContent = new BatchRequestContent(client);
@@ -325,7 +328,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
             batchRequestContent.AddBatchRequestStep(batchRequestStep2);
 
             string requestContent;
-            // we do this to get a version of the json that is indented 
+            // we do this to get a version of the json that is indented
             using (Stream requestStream = await batchRequestContent.GetBatchRequestContentAsync())
             using (JsonDocument jsonDocument = JsonDocument.Parse(requestStream))
             {
@@ -353,16 +356,17 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
                                   "    }\r\n" +
                                   "  ]\r\n" +
                                   "}";
+            expectedJson = whitespacePattern.Replace(expectedJson, "");
 
             Assert.NotNull(requestContent);
             Assert.True(batchRequestContent.BatchRequestSteps.Count.Equals(2));
-            Assert.Equal(expectedJson, requestContent);
+            Assert.Equal(expectedJson, whitespacePattern.Replace(requestContent, ""));
         }
-        
+
         [Fact]
         public async System.Threading.Tasks.Task BatchRequestContent_GetBatchRequestContentFromStepAsyncDoesNotModifyDateTimes()
         {
-            // System.Text.Json is strict on json content by default. So make sure that there are no 
+            // System.Text.Json is strict on json content by default. So make sure that there are no
             // trailing comma's and special characters
             var payloadString = "{\r\n" +
                                 "  \"subject\": \"Lets go for lunch\",\r\n" +
@@ -402,7 +406,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
             batchRequestContent.AddBatchRequestStep(batchRequestStep2);
 
             string requestContent;
-            // we do this to get a version of the json that is indented 
+            // we do this to get a version of the json that is indented
             using (Stream requestStream = await batchRequestContent.GetBatchRequestContentAsync())
             using (JsonDocument jsonDocument = JsonDocument.Parse(requestStream))
             {
@@ -456,16 +460,43 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
                                   "    }\r\n" +
                                   "  ]\r\n" +
                                   "}";
+            expectedJson = whitespacePattern.Replace(expectedJson, "");
 
             Assert.NotNull(requestContent);
             Assert.True(batchRequestContent.BatchRequestSteps.Count.Equals(2));
-            Assert.Equal(expectedJson, requestContent);
+            Assert.Equal(expectedJson, whitespacePattern.Replace(requestContent, ""));
+        }
+
+        [Fact]
+        public async Task BatchRequest_GetBathRequestContentAsyncRetainsInsertionOrder()
+        {
+            BatchRequestStep batchRequestStep1 = new BatchRequestStep("1", new HttpRequestMessage(HttpMethod.Get, REQUEST_URL));
+            BatchRequestStep batchRequestStep2 = new BatchRequestStep(Guid.NewGuid().ToString(), new HttpRequestMessage(HttpMethod.Get, REQUEST_URL), new List<string> { "1" });
+            BatchRequestStep batchRequestStep3 = new BatchRequestStep(Guid.NewGuid().ToString(), new HttpRequestMessage(HttpMethod.Post, REQUEST_URL));
+            BatchRequestStep batchRequestStep4 = new BatchRequestStep("5", new HttpRequestMessage(HttpMethod.Put, REQUEST_URL));
+
+            BatchRequestContent batchRequestContent = new BatchRequestContent(client, batchRequestStep1, batchRequestStep2, batchRequestStep3, batchRequestStep4);
+
+            // We get the contents of the stream as string for comparison.
+            using (Stream requestStream = await batchRequestContent.GetBatchRequestContentAsync())
+            {
+                // Parse requestStream to JSON object and check the "requests" array
+                using (JsonDocument jsonDocument = await JsonDocument.ParseAsync(requestStream))
+                {
+                    var requests = jsonDocument.RootElement.GetProperty("requests");
+                    Assert.True(requests.GetArrayLength().Equals(4));
+                    Assert.Equal(batchRequestStep1.RequestId, requests[0].GetProperty("id").GetString());
+                    Assert.Equal(batchRequestStep2.RequestId, requests[1].GetProperty("id").GetString());
+                    Assert.Equal(batchRequestStep3.RequestId, requests[2].GetProperty("id").GetString());
+                    Assert.Equal(batchRequestStep4.RequestId, requests[3].GetProperty("id").GetString());
+                }
+            }
         }
 
         [Fact]
         public void BatchRequestContent_AddBatchRequestStepWithHttpRequestMessage()
         {
-            // Arrange 
+            // Arrange
             BatchRequestContent batchRequestContent = new BatchRequestContent(client);
             Assert.False(batchRequestContent.BatchRequestSteps.Any());//Its empty
 
@@ -497,7 +528,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
 
             // Act
             HttpRequestMessage extraHttpRequestMessage = new HttpRequestMessage(HttpMethod.Get, REQUEST_URL);
-            
+
             // Assert
             var exception = Assert.Throws<ArgumentException>(() => batchRequestContent.AddBatchRequestStep(extraHttpRequestMessage));//Assert we throw exception on excess add
             //Assert.Equal(ErrorConstants.Codes.MaximumValueExceeded, exception.Error.Code);
@@ -545,7 +576,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
             Assert.True(batchRequestContent.BatchRequestSteps[batchRequestStepId].Request.Headers.Any());
             Assert.True(batchRequestContent.BatchRequestSteps[batchRequestStepId].Request.Content.Headers.Any());
 
-            // we do this to get a version of the json payload that is indented 
+            // we do this to get a version of the json payload that is indented
             await using var requestStream = await batchRequestContent.GetBatchRequestContentAsync();
             using var jsonDocument = await JsonDocument.ParseAsync(requestStream);
             string requestContentString = JsonSerializer.Serialize(jsonDocument.RootElement, new JsonSerializerOptions() { WriteIndented = true });
@@ -557,7 +588,8 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
                                          "        \"ConsistencyLevel\": \"eventual\",\r\n" + // Ensure the requestMessage headers are present
                                          "        \"Content-Type\": \"application/json\"\r\n" + // Ensure the content headers are present
                                          "      }";
-            Assert.Contains(expectedJsonSection, requestContentString);
+            expectedJsonSection = whitespacePattern.Replace(expectedJsonSection, "");
+            Assert.Contains(expectedJsonSection, whitespacePattern.Replace(requestContentString, ""));
         }
 
         [Fact]
@@ -577,7 +609,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
             // Act
             RequestInformation extraRequestInformation = new RequestInformation() { HttpMethod = Method.GET, UrlTemplate = REQUEST_URL };
             var exception = await Assert.ThrowsAsync<ArgumentException>(() => batchRequestContent.AddBatchRequestStepAsync(extraRequestInformation));
-            
+
             // Assert
             //Assert.Equal(ErrorConstants.Codes.MaximumValueExceeded, exception.Error.Code);
             Assert.NotNull(batchRequestContent.BatchRequestSteps);
