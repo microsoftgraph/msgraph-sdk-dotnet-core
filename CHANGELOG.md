@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project does adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.1.18](https://github.com/microsoftgraph/msgraph-sdk-dotnet-core/compare/v3.1.17...3.1.18) (2024-08-26)
+
+
+### Bug Fixes
+
+* encoded batch request URI issue ([b1714c9](https://github.com/microsoftgraph/msgraph-sdk-dotnet-core/commit/b1714c97cd7fda9f752c4b40fda211f3fd9a33f6))
+
 ## [3.1.17](https://github.com/microsoftgraph/msgraph-sdk-dotnet-core/compare/v3.1.16...3.1.17) (2024-08-19)
 
 
