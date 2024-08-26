@@ -30,8 +30,6 @@ namespace Microsoft.Graph
         /// </summary>
         public IReadOnlyDictionary<string, BatchRequestStep> BatchRequestSteps { get; private set; }
 
-        private ArrayList OrderedBatchRequestIds { get; set; }
-
         /// <summary>
         /// The request adapter for sending the batch request
         /// </summary>
@@ -73,8 +71,7 @@ namespace Microsoft.Graph
 
             this.Headers.ContentType = new MediaTypeHeaderValue(CoreConstants.MimeTypeNames.Application.Json);
 
-            BatchRequestSteps = new Dictionary<string, BatchRequestStep>();
-            OrderedBatchRequestIds = new ArrayList();
+            BatchRequestSteps = new BatchRequestContentSteps();
 
             foreach (BatchRequestStep requestStep in batchRequestSteps)
             {
@@ -110,7 +107,6 @@ namespace Microsoft.Graph
                 throw new ArgumentException(ErrorConstants.Messages.InvalidDependsOnRequestId);
             }
             (BatchRequestSteps as IDictionary<string, BatchRequestStep>).Add(batchRequestStep.RequestId, batchRequestStep);
-            OrderedBatchRequestIds.Add(batchRequestStep.RequestId);
             return true;
         }
 
@@ -128,7 +124,6 @@ namespace Microsoft.Graph
             string requestId = Guid.NewGuid().ToString();
             BatchRequestStep batchRequestStep = new BatchRequestStep(requestId, httpRequestMessage);
             (BatchRequestSteps as IDictionary<string, BatchRequestStep>).Add(batchRequestStep.RequestId, batchRequestStep);
-            OrderedBatchRequestIds.Add(requestId);
             return requestId;
         }
 
@@ -150,7 +145,6 @@ namespace Microsoft.Graph
             var requestMessage = await RequestAdapter.ConvertToNativeRequestAsync<HttpRequestMessage>(requestInformation);
             BatchRequestStep batchRequestStep = new BatchRequestStep(requestId, requestMessage);
             (BatchRequestSteps as IDictionary<string, BatchRequestStep>)!.Add(batchRequestStep.RequestId, batchRequestStep);
-            OrderedBatchRequestIds.Add(requestId);
             return requestId;
         }
 
@@ -167,7 +161,6 @@ namespace Microsoft.Graph
             bool isRemoved = false;
             if (BatchRequestSteps.ContainsKey(requestId)) {
                 (BatchRequestSteps as IDictionary<string, BatchRequestStep>).Remove(requestId);
-                OrderedBatchRequestIds.Remove(requestId);
                 isRemoved = true;
                 foreach (KeyValuePair<string, BatchRequestStep> batchRequestStep in BatchRequestSteps)
                 {
@@ -217,9 +210,9 @@ namespace Microsoft.Graph
 
                 //write the elements of the requests array
                 writer.WriteStartArray();
-                foreach (string requestId in OrderedBatchRequestIds)
+                foreach (KeyValuePair<string, BatchRequestStep> batchRequestStep in BatchRequestSteps)
                 {
-                    await WriteBatchRequestStepAsync(BatchRequestSteps[requestId], writer, cancellationToken).ConfigureAwait(false);
+                    await WriteBatchRequestStepAsync(batchRequestStep.Value, writer,cancellationToken).ConfigureAwait(false);
                 }
                 writer.WriteEndArray();
 
