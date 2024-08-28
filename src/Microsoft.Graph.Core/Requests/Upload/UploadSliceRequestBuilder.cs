@@ -4,16 +4,16 @@
 
 namespace Microsoft.Graph
 {
-    using Microsoft.Kiota.Abstractions;
-    using Microsoft.Kiota.Abstractions.Serialization;
     using System;
     using System.ComponentModel;
     using System.IO;
     using System.Net.Http;
     using System.Threading;
     using System.Threading.Tasks;
+    using Microsoft.Kiota.Abstractions;
+    using Microsoft.Kiota.Abstractions.Serialization;
 
-    internal class UploadSliceRequestBuilder<T> where T : IParsable,new()
+    internal class UploadSliceRequestBuilder<T> where T : IParsable, new()
     {
         private readonly UploadResponseHandler ResponseHandler;
         private readonly IRequestAdapter RequestAdapter;
@@ -21,17 +21,26 @@ namespace Microsoft.Graph
         /// <summary>
         /// The beginning of the slice range to send.
         /// </summary>
-        public long RangeBegin { get; private set; }
+        public long RangeBegin
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// The end of the slice range to send.
         /// </summary>
-        public long RangeEnd { get; private set; }
+        public long RangeEnd
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// The length in bytes of the session.
         /// </summary>
-        public long TotalSessionLength { get; private set; }
+        public long TotalSessionLength
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// The range length of the slice to send.

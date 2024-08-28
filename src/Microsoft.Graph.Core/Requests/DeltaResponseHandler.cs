@@ -1,24 +1,24 @@
-// ------------------------------------------------------------------------------
+﻿// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
 namespace Microsoft.Graph
 {
+    using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.Net.Http;
-    using System.Threading.Tasks;
-    using System.Text.Json;
-    using System.IO;
     using System.Text;
+    using System.Text.Json;
+    using System.Threading.Tasks;
     using Microsoft.Kiota.Abstractions;
     using Microsoft.Kiota.Abstractions.Serialization;
-    using System;
-    #if NET5_0_OR_GREATER
+#if NET5_0_OR_GREATER
     using System.Text.Json.Serialization;
     using System.Diagnostics.CodeAnalysis;
     using System.Text.Json.Serialization.Metadata;
-    #endif
+#endif
 
     /// <summary>
     /// PREVIEW 
@@ -182,53 +182,53 @@ namespace Microsoft.Graph
                 switch (property.Value.ValueKind)
                 {
                     case JsonValueKind.Object:
-                    {
-                        string parent = parentName + property.Name;
-                        await GetObjectPropertiesAsync(property.Value, changes, parent).ConfigureAwait(false);
-                        break;
-                    }
-                    case JsonValueKind.Array:
-                    {
-                        string parent = parentName + property.Name;
-                        var arrayEnumerator = property.Value.EnumerateArray();
-                        if (!arrayEnumerator.Any())
                         {
-                            // Handle the edge case when the change involves changing to an empty array 
-                            // as we can't observe elements in an empty collection in the foreach loop below
-                            changes.Add(parent); 
+                            string parent = parentName + property.Name;
+                            await GetObjectPropertiesAsync(property.Value, changes, parent).ConfigureAwait(false);
                             break;
                         }
-
-                        int index = 0;
-                        // Extract change elements from the array collection
-                        foreach ( var arrayItem in arrayEnumerator)
+                    case JsonValueKind.Array:
                         {
-                            string parentWithIndex = $"{parent}[{index}]";
+                            string parent = parentName + property.Name;
+                            var arrayEnumerator = property.Value.EnumerateArray();
+                            if (!arrayEnumerator.Any())
+                            {
+                                // Handle the edge case when the change involves changing to an empty array 
+                                // as we can't observe elements in an empty collection in the foreach loop below
+                                changes.Add(parent);
+                                break;
+                            }
 
-                            if (arrayItem.ValueKind == JsonValueKind.Object)
+                            int index = 0;
+                            // Extract change elements from the array collection
+                            foreach (var arrayItem in arrayEnumerator)
                             {
-                                await GetObjectPropertiesAsync(arrayItem, changes, parentWithIndex).ConfigureAwait(false);
+                                string parentWithIndex = $"{parent}[{index}]";
+
+                                if (arrayItem.ValueKind == JsonValueKind.Object)
+                                {
+                                    await GetObjectPropertiesAsync(arrayItem, changes, parentWithIndex).ConfigureAwait(false);
+                                }
+                                else // Assuming that this is a Value item.
+                                {
+                                    changes.Add(parentWithIndex);
+                                }
+                                index++;
                             }
-                            else // Assuming that this is a Value item.
-                            {
-                                changes.Add(parentWithIndex);
-                            }
-                            index++;
+
+                            break;
                         }
-
-                        break;
-                    }
                     default:
-                    {
-                        var name = parentName + property.Name;
-                        changes.Add(name);
-                        break;
-                    }
+                        {
+                            var name = parentName + property.Name;
+                            changes.Add(name);
+                            break;
+                        }
                 }
             }
         }
 
-        
+
 #if NET5_0_OR_GREATER
         /// <summary>
         /// Adds a property with the given property name to the JsonElement object. This function is currently necessary as

@@ -32,7 +32,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Exceptions
                     }
                 }
             });
-            var serviceException = new ServiceException("errorCode",null ,0,responsebody);
+            var serviceException = new ServiceException("errorCode", null, 0, responsebody);
 
             Assert.True(serviceException.IsMatch("errorcodematch"));
         }
@@ -43,7 +43,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Exceptions
             var responsebody = JsonSerializer.Serialize(new
             {
                 Code = "errorCode",
-                InnerError = new 
+                InnerError = new
                 {
                     Code = "differentErrorCode",
                     InnerError = new
@@ -52,11 +52,11 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Exceptions
                     }
                 }
             });
-            var serviceException = new ServiceException("errorCode",null ,0,responsebody);
+            var serviceException = new ServiceException("errorCode", null, 0, responsebody);
 
             Assert.False(serviceException.IsMatch("noMatch"));
         }
-        
+
         [Fact(Skip = "Changed the signature of ServiceException.ToString() in ccecc486cce5769313c0cb59ab56142d1b43ce5a")]
         public void ToString_ErrorNull()
         {
@@ -66,12 +66,12 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Exceptions
         }
 
         [Fact]
-        public void IsMatch_ThrowsNoException() 
+        public void IsMatch_ThrowsNoException()
         {
             var serviceException = new ServiceException(null);
 
             bool result = serviceException.IsMatch("Any Error");
-            
+
             Assert.False(result);
         }
     }

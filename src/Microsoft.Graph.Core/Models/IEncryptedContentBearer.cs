@@ -7,11 +7,14 @@ namespace Microsoft.Graph
     /// <summary>
     /// The IEncryptedContentBearer interface
     /// </summary>
-    public interface IEncryptedContentBearer<T> where T: IDecryptableContent
+    public interface IEncryptedContentBearer<T> where T : IDecryptableContent
     {
         /// <summary>
         /// The encrypted content
         /// </summary>
-        T EncryptedContent { get; set; }
+        T EncryptedContent
+        {
+            get; set;
+        }
     }
 }

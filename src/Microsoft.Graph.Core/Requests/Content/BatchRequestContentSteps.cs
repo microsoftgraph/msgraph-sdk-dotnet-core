@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -223,7 +223,8 @@ internal class BatchRequestContentSteps : IReadOnlyDictionary<string, BatchReque
 
         public KeyValuePair<string, BatchRequestStep> Current
         {
-            get {
+            get
+            {
                 if (_currentRequestIdIndex < 0 || _currentRequestIdIndex >= _requestIds.Count)
                 {
                     throw new InvalidOperationException();

@@ -1,22 +1,22 @@
-// ------------------------------------------------------------------------------
+﻿// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
 namespace Microsoft.Graph
 {
-    using Microsoft.Kiota.Abstractions;
-    using Microsoft.Kiota.Abstractions.Serialization;
     using System;
     using System.Collections.Generic;
     using System.Net;
     using System.Net.Http;
     using System.Text.Json;
     using System.Threading.Tasks;
+    using Microsoft.Kiota.Abstractions;
+    using Microsoft.Kiota.Abstractions.Serialization;
 
     /// <summary>
     /// Provides method(s) to deserialize raw HTTP responses into strong types.
     /// </summary>
-    public class ResponseHandler<T> : IResponseHandler where T : IParsable,new()
+    public class ResponseHandler<T> : IResponseHandler where T : IParsable, new()
     {
         private readonly IAsyncParseNodeFactory _jsonParseNodeFactory;
 
@@ -65,7 +65,7 @@ namespace Microsoft.Graph
             var statusCodeAsString = statusCodeAsInt.ToString();
             using var responseStream = await httpResponseMessage.Content.ReadAsStreamAsync().ConfigureAwait(false);
             var rootNode = await _jsonParseNodeFactory.GetRootParseNodeAsync(httpResponseMessage.Content.Headers?.ContentType?.MediaType?.ToLowerInvariant(), responseStream);
-            ParsableFactory <IParsable> errorFactory;
+            ParsableFactory<IParsable> errorFactory;
             if (errorMapping == null ||
                 !errorMapping.TryGetValue(statusCodeAsString, out errorFactory) &&
                 !(statusCodeAsInt >= 400 && statusCodeAsInt < 500 && errorMapping.TryGetValue("4XX", out errorFactory)) &&

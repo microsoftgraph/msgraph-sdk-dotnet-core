@@ -4,9 +4,9 @@
 
 namespace Microsoft.Graph
 {
-    using Microsoft.Kiota.Abstractions;
     using System.Collections.Generic;
     using System.Threading;
+    using Microsoft.Kiota.Abstractions;
 
     /// <summary>
     /// The graph request context class
@@ -16,16 +16,25 @@ namespace Microsoft.Graph
         /// <summary>
         /// A ClientRequestId property
         /// </summary>
-        public string ClientRequestId { get; set; }
+        public string ClientRequestId
+        {
+            get; set;
+        }
 
         /// <summary>
         /// A CancellationToken property
         /// </summary>
-        public CancellationToken CancellationToken { get; set; }
+        public CancellationToken CancellationToken
+        {
+            get; set;
+        }
 
         /// <summary>
         /// A FeatureUsage property
         /// </summary>
-        public FeatureFlag FeatureUsage { get; set; }
+        public FeatureFlag FeatureUsage
+        {
+            get; set;
+        }
     }
 }

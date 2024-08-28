@@ -4,14 +4,14 @@
 
 namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
 {
-    using Microsoft.Kiota.Abstractions.Serialization;
     using System;
     using System.Collections.Generic;
+    using Microsoft.Kiota.Abstractions.Serialization;
 
     /// <summary>
     /// The type ItemBody.
     /// </summary>
-    public partial class TestItemBody:  IParsable, IAdditionalDataHolder
+    public partial class TestItemBody : IParsable, IAdditionalDataHolder
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TestItemBody"/> class.
@@ -25,13 +25,19 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
         /// Gets or sets contentType.
         /// The type of the content. Possible values are text and html.
         /// </summary>
-        public TestBodyType? ContentType { get; set; }
+        public TestBodyType? ContentType
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Gets or sets content.
         /// The content of the item.
         /// </summary>
-        public string Content { get; set; }
+        public string Content
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Gets or sets additional data.
@@ -41,7 +47,10 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
         /// <summary>
         /// Gets or sets @odata.type.
         /// </summary>
-        public string ODataType { get; set; }
+        public string ODataType
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Gets the field deserializers for the <see cref="TestItemBody"/> instance

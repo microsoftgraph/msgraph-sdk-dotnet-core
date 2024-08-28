@@ -1,39 +1,45 @@
-// ------------------------------------------------------------------------------
+﻿// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
 namespace Microsoft.Graph
 {
-    using Microsoft.Kiota.Abstractions;
     using System;
+    using System.Collections;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.IO;
     using System.Linq;
-    using System.ComponentModel;
     using System.Net;
     using System.Net.Http;
     using System.Net.Http.Headers;
     using System.Text;
     using System.Text.Json;
-    using System.Threading.Tasks;
     using System.Threading;
-    using System.Collections;
+    using System.Threading.Tasks;
+    using Microsoft.Kiota.Abstractions;
 
     /// <summary>
     /// A <see cref="HttpContent"/> implementation to handle json batch requests.
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public class BatchRequestContent: HttpContent
+    public class BatchRequestContent : HttpContent
     {
         /// <summary>
         /// A BatchRequestSteps property.
         /// </summary>
-        public IReadOnlyDictionary<string, BatchRequestStep> BatchRequestSteps { get; private set; }
+        public IReadOnlyDictionary<string, BatchRequestStep> BatchRequestSteps
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// The request adapter for sending the batch request
         /// </summary>
-        public IRequestAdapter RequestAdapter { get; set; }
+        public IRequestAdapter RequestAdapter
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Constructs a new <see cref="BatchRequestContent"/>.
@@ -41,7 +47,7 @@ namespace Microsoft.Graph
         /// <param name="baseClient">The <see cref="IBaseClient"/> for making requests</param>
         [Obsolete("Please use the BatchRequestContentCollection for making batch requests as it supports handling more than 20 requests and provides a similar API experience.")]
         public BatchRequestContent(IBaseClient baseClient)
-            :this(baseClient, new BatchRequestStep[] { })
+            : this(baseClient, new BatchRequestStep[] { })
         {
         }
 
@@ -51,7 +57,7 @@ namespace Microsoft.Graph
         /// <param name="baseClient">The <see cref="IBaseClient"/> for making requests</param>
         /// <param name="batchRequestSteps">A list of <see cref="BatchRequestStep"/> to add to the batch request content.</param>
         [Obsolete("Please use the BatchRequestContentCollection for making batch requests as it supports handling more than 20 requests and provides a similar API experience.")]
-        public BatchRequestContent(IBaseClient baseClient, params BatchRequestStep[] batchRequestSteps): this(baseClient?.RequestAdapter ?? throw new ArgumentNullException(nameof(baseClient)), batchRequestSteps)
+        public BatchRequestContent(IBaseClient baseClient, params BatchRequestStep[] batchRequestSteps) : this(baseClient?.RequestAdapter ?? throw new ArgumentNullException(nameof(baseClient)), batchRequestSteps)
         {
         }
 
@@ -75,7 +81,7 @@ namespace Microsoft.Graph
 
             foreach (BatchRequestStep requestStep in batchRequestSteps)
             {
-                if(requestStep.DependsOn != null && !ContainsCorrespondingRequestId(requestStep.DependsOn))
+                if (requestStep.DependsOn != null && !ContainsCorrespondingRequestId(requestStep.DependsOn))
                 {
                     throw new ArgumentException(ErrorConstants.Messages.InvalidDependsOnRequestId);
                 }
@@ -102,7 +108,7 @@ namespace Microsoft.Graph
                 return false;
             }
             // validate the depends on exists before adding it
-            if(batchRequestStep.DependsOn != null && !ContainsCorrespondingRequestId(batchRequestStep.DependsOn))
+            if (batchRequestStep.DependsOn != null && !ContainsCorrespondingRequestId(batchRequestStep.DependsOn))
             {
                 throw new ArgumentException(ErrorConstants.Messages.InvalidDependsOnRequestId);
             }
@@ -159,7 +165,8 @@ namespace Microsoft.Graph
                 throw new ArgumentNullException(nameof(requestId));
 
             bool isRemoved = false;
-            if (BatchRequestSteps.ContainsKey(requestId)) {
+            if (BatchRequestSteps.ContainsKey(requestId))
+            {
                 (BatchRequestSteps as IDictionary<string, BatchRequestStep>).Remove(requestId);
                 isRemoved = true;
                 foreach (KeyValuePair<string, BatchRequestStep> batchRequestStep in BatchRequestSteps)
@@ -181,9 +188,10 @@ namespace Microsoft.Graph
 #pragma warning disable CS0618
             var request = new BatchRequestContent(this.RequestAdapter);
 #pragma warning restore CS0618
-            foreach(var response in responseStatusCodes)
+            foreach (var response in responseStatusCodes)
             {
-                if (BatchRequestSteps.ContainsKey(response.Key) && !BatchResponseContent.IsSuccessStatusCode(response.Value)) {
+                if (BatchRequestSteps.ContainsKey(response.Key) && !BatchResponseContent.IsSuccessStatusCode(response.Value))
+                {
 #pragma warning disable CS0618
                     request.AddBatchRequestStep(BatchRequestSteps[response.Key]);
 #pragma warning restore CS0618
@@ -212,7 +220,7 @@ namespace Microsoft.Graph
                 writer.WriteStartArray();
                 foreach (KeyValuePair<string, BatchRequestStep> batchRequestStep in BatchRequestSteps)
                 {
-                    await WriteBatchRequestStepAsync(batchRequestStep.Value, writer,cancellationToken).ConfigureAwait(false);
+                    await WriteBatchRequestStepAsync(batchRequestStep.Value, writer, cancellationToken).ConfigureAwait(false);
                 }
                 writer.WriteEndArray();
 
@@ -228,7 +236,7 @@ namespace Microsoft.Graph
 
         private bool ContainsCorrespondingRequestId(IList<string> dependsOn)
         {
-        	return dependsOn.All(requestId => BatchRequestSteps.ContainsKey(requestId));
+            return dependsOn.All(requestId => BatchRequestSteps.ContainsKey(requestId));
         }
 
         private async Task WriteBatchRequestStepAsync(BatchRequestStep batchRequestStep, Utf8JsonWriter writer, CancellationToken cancellationToken)
@@ -285,10 +293,10 @@ namespace Microsoft.Graph
                 writer.WritePropertyName(CoreConstants.BatchRequest.Body);
                 // allow for non json content by checking the header value
                 var vendorSpecificContentType = batchRequestStep.Request.Content?.Headers?.ContentType?.MediaType?.Split(";".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).FirstOrDefault();
-                using var contentStream = await GetRequestContentAsync(batchRequestStep.Request,cancellationToken).ConfigureAwait(false);
+                using var contentStream = await GetRequestContentAsync(batchRequestStep.Request, cancellationToken).ConfigureAwait(false);
                 if (string.IsNullOrEmpty(vendorSpecificContentType) || vendorSpecificContentType.Equals(CoreConstants.MimeTypeNames.Application.Json, StringComparison.OrdinalIgnoreCase))
                 {
-                    using var jsonDocument = await JsonDocument.ParseAsync(contentStream,cancellationToken:cancellationToken).ConfigureAwait(false);
+                    using var jsonDocument = await JsonDocument.ParseAsync(contentStream, cancellationToken: cancellationToken).ConfigureAwait(false);
                     jsonDocument.WriteTo(writer);
                 }
                 else

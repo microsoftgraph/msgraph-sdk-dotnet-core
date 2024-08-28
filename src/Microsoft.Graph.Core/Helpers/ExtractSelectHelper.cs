@@ -1,4 +1,4 @@
-// ------------------------------------------------------------------------------
+﻿// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
@@ -8,7 +8,7 @@ namespace Microsoft.Graph
     using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection;
-    
+
     /// <summary>
     /// Helper class to extract $select or $expand parameters from strongly-typed expressions.
     /// </summary>
@@ -73,8 +73,8 @@ namespace Microsoft.Graph
                 // Search only for direct members of the lambda's parameter
                 // Should already be validated above, but doesn't hurt to be sure.
                 var members = from m in newExpression.Arguments.OfType<MemberExpression>()
-                    where m.Expression is ParameterExpression && m.Member.DeclaringType.GetTypeInfo().IsAssignableFrom(typeof(T).GetTypeInfo())
-                    select GetMemberWireName(m.Member);
+                              where m.Expression is ParameterExpression && m.Member.DeclaringType.GetTypeInfo().IsAssignableFrom(typeof(T).GetTypeInfo())
+                              select GetMemberWireName(m.Member);
                 return string.Join(",", members);
             }
             error = "Unrecognized lambda expression.";
@@ -83,9 +83,9 @@ namespace Microsoft.Graph
 
         private static string ProcessSimpleMemberExpression<T>(MemberExpression memberExpression, ref string error)
         {
-            if (!memberExpression.Member.DeclaringType.GetTypeInfo().IsAssignableFrom(typeof (T).GetTypeInfo()))
+            if (!memberExpression.Member.DeclaringType.GetTypeInfo().IsAssignableFrom(typeof(T).GetTypeInfo()))
             {
-                error = $"Anonymous type in lambda expression may only be initialized with direct members of type {typeof (T).Name}";
+                error = $"Anonymous type in lambda expression may only be initialized with direct members of type {typeof(T).Name}";
                 return null;
             }
             return GetMemberWireName(memberExpression.Member);

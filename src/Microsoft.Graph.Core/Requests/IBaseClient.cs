@@ -15,11 +15,17 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets the <see cref="IRequestAdapter"/> for sending requests.
         /// </summary>
-        IRequestAdapter RequestAdapter { get; set; }
+        IRequestAdapter RequestAdapter
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Gets the <see cref="BatchRequestBuilder"/> for building batch Requests
         /// </summary>
-        public BatchRequestBuilder Batch { get; }
+        public BatchRequestBuilder Batch
+        {
+            get;
+        }
     }
 }

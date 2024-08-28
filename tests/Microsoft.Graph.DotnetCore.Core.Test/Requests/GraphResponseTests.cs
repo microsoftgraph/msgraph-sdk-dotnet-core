@@ -5,15 +5,15 @@
 
 namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 {
+    using System.Linq;
     using System.Net;
     using System.Net.Http;
     using System.Text;
     using System.Threading.Tasks;
-    using System.Linq;
     using Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels;
-    using Xunit;
     using Microsoft.Kiota.Abstractions;
     using Microsoft.Kiota.Serialization.Json;
+    using Xunit;
 
     public class GraphResponseTests : RequestTestBase
     {
@@ -22,7 +22,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         {
             // Arrange
             HttpResponseMessage responseMessage = new HttpResponseMessage(HttpStatusCode.OK);
-            RequestInformation requestInformation = new RequestInformation() { UrlTemplate = "http://localhost" } ;
+            RequestInformation requestInformation = new RequestInformation() { UrlTemplate = "http://localhost" };
 
             // Act
             GraphResponse response = new GraphResponse(requestInformation, responseMessage);
@@ -39,7 +39,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         {
             // Arrange
             HttpResponseMessage responseMessage = new HttpResponseMessage(HttpStatusCode.OK);
-            responseMessage.Headers.Add("Authorization","bearer token");// add a test header
+            responseMessage.Headers.Add("Authorization", "bearer token");// add a test header
             RequestInformation requestInformation = new RequestInformation() { UrlTemplate = "http://localhost" };
 
             // Act

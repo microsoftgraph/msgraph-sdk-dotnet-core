@@ -1,4 +1,4 @@
-// ------------------------------------------------------------------------------
+﻿// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
@@ -10,10 +10,10 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
     using System.Net.Http;
     using System.Text;
     using System.Threading.Tasks;
-    using Xunit;
     using Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels;
     using Microsoft.Kiota.Abstractions.Serialization;
     using Microsoft.Kiota.Serialization.Json;
+    using Xunit;
 
     public class UploadResponseHandlerTests
     {
@@ -98,7 +98,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             //Assert
             Assert.False(uploadResult.UploadSucceeded);
             Assert.NotNull(uploadSession);
-            Assert.Null( uploadSession.UploadUrl);
+            Assert.Null(uploadSession.UploadUrl);
             Assert.Equal(DateTimeOffset.Parse("2015 - 01 - 29T09: 21:55.523Z"), uploadSession.ExpirationDateTime);
             Assert.Equal("12345-55232", uploadSession.NextExpectedRanges.First());
             Assert.Equal("77829-99375", uploadSession.NextExpectedRanges.Last());

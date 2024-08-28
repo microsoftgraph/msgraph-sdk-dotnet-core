@@ -4,10 +4,10 @@
 
 namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
 {
-    using Microsoft.Kiota.Abstractions.Serialization;
     using System;
     using System.Collections.Generic;
     using System.Text.Json.Serialization;
+    using Microsoft.Kiota.Abstractions.Serialization;
 
     public partial class TestDriveItem : IParsable, IAdditionalDataHolder
     {
@@ -23,33 +23,48 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
         /// Gets or sets id.
         /// Read-only.
         /// </summary>
-        public string Id { get; set; }
+        public string Id
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Gets or sets @odata.type.
         /// </summary>
         [JsonPropertyName("@odata.type")]
-        public string ODataType { get; set; }
+        public string ODataType
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Gets or sets name.
         /// The name of the item. Read-write.
         /// </summary>
         [JsonPropertyName("name")]
-        public string Name { get; set; }
+        public string Name
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Gets or sets additional data.
         /// </summary>
         [JsonExtensionData]
-        public IDictionary<string, object> AdditionalData { get; set; }
+        public IDictionary<string, object> AdditionalData
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Gets or sets size.
         /// Size of the item in bytes. Read-only.
         /// </summary>
         [JsonPropertyName("size")]
-        public Int64? Size { get; set; }
+        public Int64? Size
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Gets the field deserializers for the <see cref="TestDriveItem"/> instance

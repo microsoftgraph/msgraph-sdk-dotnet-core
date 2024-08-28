@@ -1,27 +1,33 @@
-// ------------------------------------------------------------------------------
+﻿// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
 namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels
 {
-    using Microsoft.Kiota.Abstractions.Serialization;
     using System;
     using System.Collections.Generic;
+    using Microsoft.Kiota.Abstractions.Serialization;
 
     /// <summary>
     /// A class to test abstract entity serialization and deserialization.
     /// </summary>
-    public class AbstractEntityType: IParsable, IAdditionalDataHolder
+    public class AbstractEntityType : IParsable, IAdditionalDataHolder
     {
         /// <summary>
         /// Gets or sets id.
         /// </summary>
-        public string Id { get; set; }
+        public string Id
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Gets or sets additional data.
         /// </summary>
-        public IDictionary<string, object> AdditionalData { get; set; }
+        public IDictionary<string, object> AdditionalData
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Gets the field deserializers for the class
@@ -57,10 +63,10 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels
             var mappingValueNode = parseNode.GetChildNode("@odata.type");
             var mappingValue = mappingValueNode?.GetStringValue();
             return mappingValue switch
-                {
-                    "#microsoft.graph.dotnetCore.core.test.testModels.derivedTypeClass" => new DerivedTypeClass(),
-                    _ => new AbstractEntityType()
-                };
+            {
+                "#microsoft.graph.dotnetCore.core.test.testModels.derivedTypeClass" => new DerivedTypeClass(),
+                _ => new AbstractEntityType()
+            };
         }
     }
 }

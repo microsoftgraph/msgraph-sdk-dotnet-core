@@ -1,20 +1,20 @@
-// ------------------------------------------------------------------------------
+﻿// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
 namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Text;
     using Microsoft.Graph.Core.Models;
     using Microsoft.Graph.DotnetCore.Core.Test.TestModels;
     using Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels;
     using Microsoft.Kiota.Abstractions;
     using Microsoft.Kiota.Abstractions.Serialization;
     using Microsoft.Kiota.Serialization.Json;
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-    using System.Text;
     using Xunit;
     public class SerializerTests
     {
@@ -23,7 +23,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
             ApiClientBuilder.RegisterDefaultSerializer<JsonSerializationWriterFactory>();
             ApiClientBuilder.RegisterDefaultDeserializer<JsonParseNodeFactory>();
         }
-        
+
         [Fact]
         public void DeserializeDerivedType()
         {
@@ -61,7 +61,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
             Assert.Equal(name, derivedType.Name);
         }
 
-        
+
         [Fact]
         public void DeserializeInvalidODataType()
         {
@@ -146,7 +146,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
                     date.Value.Day == tomorrow.Day);
         }
 
-        
+
         [Fact]
         public void DeserializeMemorableDatesValue()
         {
@@ -160,7 +160,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
             var derivedTypeInstance = new DerivedTypeClass
             {
                 Id = "Id",
-                MemorableDates = new DateTestClass[] {recurrence, recurrence},
+                MemorableDates = new DateTestClass[] { recurrence, recurrence },
                 Name = "Awesome Test"
             };
 
@@ -169,9 +169,9 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
             // De serialize
             var deserializedInstance = KiotaJsonSerializer.Deserialize<DerivedTypeClass>(serializedStream);
 
-            Assert.Equal(derivedTypeInstance.Name ,deserializedInstance.Name);
-            Assert.Equal(derivedTypeInstance.Id ,deserializedInstance.Id);
-            Assert.Equal(derivedTypeInstance.MemorableDates.Count() ,deserializedInstance.MemorableDates.Count());
+            Assert.Equal(derivedTypeInstance.Name, deserializedInstance.Name);
+            Assert.Equal(derivedTypeInstance.Id, deserializedInstance.Id);
+            Assert.Equal(derivedTypeInstance.MemorableDates.Count(), deserializedInstance.MemorableDates.Count());
         }
 
         [Fact]
@@ -479,7 +479,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
             // Expect the string to be ISO 8601-1:2019 format
             Assert.Equal(expectedString, serializedJsonString);
         }
-        
+
         [Fact]
         public void DeserializeUploadSessionValues()
         {
@@ -490,7 +490,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
             Assert.NotNull(uploadSession.ExpirationDateTime);
             Assert.NotNull(uploadSession.NextExpectedRanges);
             Assert.Single(uploadSession.NextExpectedRanges);
-            
+
             // Act 1
             const string pascalCasedPayload = @"{""ExpirationDateTime"":""2016-11-20T18:23:45.9356913+00:00"",""NextExpectedRanges"":[""0 - 1000""],""uploadUrl"":""http://localhost""}";
             var uploadSession2 = KiotaJsonSerializer.Deserialize<UploadSession>(pascalCasedPayload);

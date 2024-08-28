@@ -4,15 +4,15 @@
 
 namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
 {
-    using Microsoft.Kiota.Abstractions.Serialization;
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Microsoft.Kiota.Abstractions.Serialization;
 
     /// <summary>
     /// The type User.
     /// </summary>
-    public partial class TestUser :IParsable, IAdditionalDataHolder
+    public partial class TestUser : IParsable, IAdditionalDataHolder
     {
 
         ///<summary>
@@ -27,47 +27,71 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
         /// Gets or sets id.
         /// Read-only.
         /// </summary>
-        public string Id { get; set; }
+        public string Id
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Gets or sets @odata.type.
         /// </summary>
-        public string ODataType { get; set; }
+        public string ODataType
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Gets or sets additional data.
         /// </summary>
-        public IDictionary<string, object> AdditionalData { get; set; }
+        public IDictionary<string, object> AdditionalData
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Gets or sets given name.
         /// The given name (first name) of the user. Supports $filter.
         /// </summary>
-        public string GivenName { get; set; }
+        public string GivenName
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Gets or sets Display name.
         /// The displayName of the user. Supports $filter.
         /// </summary>
-        public string DisplayName { get; set; }
+        public string DisplayName
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Gets or sets state.
         /// The state or province in the user's address. Supports $filter.
         /// </summary>
-        public string State { get; set; }
+        public string State
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Gets or sets surname.
         /// The user's surname (family name or last name). Supports $filter.
         /// </summary>
-        public string Surname { get; set; }
+        public string Surname
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Gets or sets eventDeltas.
         /// The user's event deltas. This property is just a testing value.
         /// </summary>
-        public List<TestEvent> EventDeltas { get; set; }
+        public List<TestEvent> EventDeltas
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Gets the field deserializers for the <see cref="TestUser"/> instance

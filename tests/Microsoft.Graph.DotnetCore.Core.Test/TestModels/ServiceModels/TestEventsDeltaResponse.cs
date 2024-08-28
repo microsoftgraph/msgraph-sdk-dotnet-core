@@ -2,22 +2,34 @@
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
-using Microsoft.Kiota.Abstractions.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Kiota.Abstractions.Serialization;
 namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
 {
-    public class TestEventsDeltaResponse : IParsable,IAdditionalDataHolder
+    public class TestEventsDeltaResponse : IParsable, IAdditionalDataHolder
     {
         /// <summary>Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.</summary>
-        public IDictionary<string, object> AdditionalData { get; set; }
-        
-        public string OdataDeltaLink { get; set; }
-        
-        public string OdataNextLink { get; set; }
+        public IDictionary<string, object> AdditionalData
+        {
+            get; set;
+        }
 
-        public List<TestEventItem> Value { get; set; }
+        public string OdataDeltaLink
+        {
+            get; set;
+        }
+
+        public string OdataNextLink
+        {
+            get; set;
+        }
+
+        public List<TestEventItem> Value
+        {
+            get; set;
+        }
         /// <summary>
         /// Instantiates a new eventsResponse and sets the default values.
         /// </summary>

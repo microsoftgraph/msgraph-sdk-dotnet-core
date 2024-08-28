@@ -4,13 +4,13 @@
 
 namespace Microsoft.Graph.Core.Requests
 {
-    using Microsoft.Kiota.Abstractions;
-    using Microsoft.Kiota.Abstractions.Serialization;
     using System;
+    using System.Collections.Generic;
     using System.Net.Http;
     using System.Threading;
     using System.Threading.Tasks;
-    using System.Collections.Generic;
+    using Microsoft.Kiota.Abstractions;
+    using Microsoft.Kiota.Abstractions.Serialization;
 
     /// <summary>
     /// The type BatchRequestBuilder
@@ -31,12 +31,18 @@ namespace Microsoft.Graph.Core.Requests
         /// <summary>
         /// Url template to use to build the URL for the current request builder
         /// </summary>
-        internal string UrlTemplate { get; set; }
+        internal string UrlTemplate
+        {
+            get; set;
+        }
 
         /// <summary>
         /// The request adapter to use to execute the requests.
         /// </summary>
-        internal IRequestAdapter RequestAdapter { get; set; }
+        internal IRequestAdapter RequestAdapter
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Sends out the <see cref="BatchRequestContent"/> using the POST method
@@ -48,10 +54,10 @@ namespace Microsoft.Graph.Core.Requests
         public async Task<BatchResponseContent> PostAsync(BatchRequestContent batchRequestContent, CancellationToken cancellationToken = default, Dictionary<string, ParsableFactory<IParsable>> errorMappings = null)
         {
             _ = batchRequestContent ?? throw new ArgumentNullException(nameof(batchRequestContent));
-            var requestInfo = await ToPostRequestInformationAsync(batchRequestContent,cancellationToken);
+            var requestInfo = await ToPostRequestInformationAsync(batchRequestContent, cancellationToken);
             var nativeResponseHandler = new NativeResponseHandler();
             requestInfo.SetResponseHandler(nativeResponseHandler);
-            await this.RequestAdapter.SendNoContentAsync(requestInfo, cancellationToken:cancellationToken);
+            await this.RequestAdapter.SendNoContentAsync(requestInfo, cancellationToken: cancellationToken);
             return new BatchResponseContent(nativeResponseHandler.Value as HttpResponseMessage, errorMappings);
         }
 

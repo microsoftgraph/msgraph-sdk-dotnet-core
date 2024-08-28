@@ -1,27 +1,27 @@
-// ------------------------------------------------------------------------------
+﻿// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
 namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
 {
-    using Microsoft.Graph.DotnetCore.Core.Test.Mocks;
-    using Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels;
     using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Net.Http;
     using System.IO;
-    using System.Net.Http.Headers;
+    using System.Linq;
     using System.Net;
-    using System.Threading.Tasks;
+    using System.Net.Http;
+    using System.Net.Http.Headers;
     using System.Text;
     using System.Text.Json;
-    using Xunit;
+    using System.Text.RegularExpressions;
+    using System.Threading.Tasks;
+    using Microsoft.Graph.DotnetCore.Core.Test.Mocks;
+    using Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels;
     using Microsoft.Kiota.Abstractions;
     using Microsoft.Kiota.Serialization.Json;
     using Microsoft.Kiota.Serialization.Text;
+    using Xunit;
     using HttpMethod = System.Net.Http.HttpMethod;
-    using System.Text.RegularExpressions;
 
     public class BatchRequestContentTests
     {
@@ -56,7 +56,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
                 requestSteps.Add(new BatchRequestStep(i.ToString(), new HttpRequestMessage(HttpMethod.Get, REQUEST_URL)));
             }
 
-            BatchRequestContent batchRequestContent = new BatchRequestContent(client,requestSteps.ToArray());
+            BatchRequestContent batchRequestContent = new BatchRequestContent(client, requestSteps.ToArray());
 
             Assert.NotNull(batchRequestContent.BatchRequestSteps);
             Assert.True(batchRequestContent.BatchRequestSteps.Count.Equals(5));
@@ -263,7 +263,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
             var stringContentFirst = await batchRequestContents.First().ReadAsStringAsync();
 
             // Assert the body is present
-            Assert.Contains("\"body\":{\"@odata.type\":\"microsoft.graph.drive\",\"name\":\"testDrive\"}",stringContentFirst);
+            Assert.Contains("\"body\":{\"@odata.type\":\"microsoft.graph.drive\",\"name\":\"testDrive\"}", stringContentFirst);
             Assert.Contains(Convert.ToBase64String(Encoding.UTF8.GetBytes("This is a test")), stringContentFirst);
             JsonDocument.Parse(stringContentFirst);// verify its valid json otherwise it will throw
 
@@ -277,7 +277,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
             var retryStringContentFirst = await batchRequestContents.First().ReadAsStringAsync();
 
             // Assert the body is still present
-            Assert.Contains("\"body\":{\"@odata.type\":\"microsoft.graph.drive\",\"name\":\"testDrive\"}",retryStringContentFirst);
+            Assert.Contains("\"body\":{\"@odata.type\":\"microsoft.graph.drive\",\"name\":\"testDrive\"}", retryStringContentFirst);
             Assert.Contains(Convert.ToBase64String(Encoding.UTF8.GetBytes("This is a test")), retryStringContentFirst);
             JsonDocument.Parse(retryStringContentFirst);// verify its valid json otherwise it will throw
         }
@@ -313,7 +313,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
         [Fact]
         public async System.Threading.Tasks.Task BatchRequestContent_GetBatchRequestContentSupportsNonJsonPayload()
         {
-            using var fileStream = File.Open("ms-logo.png",FileMode.Open);
+            using var fileStream = File.Open("ms-logo.png", FileMode.Open);
             BatchRequestStep batchRequestStep1 = new BatchRequestStep("1", new HttpRequestMessage(HttpMethod.Get, REQUEST_URL));
             HttpRequestMessage createImageMessage = new HttpRequestMessage(HttpMethod.Post, REQUEST_URL)
             {
@@ -397,7 +397,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
             BatchRequestStep batchRequestStep1 = new BatchRequestStep("1", new HttpRequestMessage(HttpMethod.Get, REQUEST_URL));
             HttpRequestMessage createEventMessage = new HttpRequestMessage(HttpMethod.Post, REQUEST_URL)
             {
-                Content = new StringContent(payloadString,Encoding.UTF8,"application/json")
+                Content = new StringContent(payloadString, Encoding.UTF8, "application/json")
             };
             BatchRequestStep batchRequestStep2 = new BatchRequestStep("2", createEventMessage, new List<string> { "1" });
 
@@ -523,7 +523,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
                 HttpRequestMessage httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, REQUEST_URL);
                 string batchRequestStepId = batchRequestContent.AddBatchRequestStep(httpRequestMessage);
                 Assert.NotNull(batchRequestStepId);
-                Assert.True(batchRequestContent.BatchRequestSteps.Count.Equals(i+1));//Assert we can add steps up to the max
+                Assert.True(batchRequestContent.BatchRequestSteps.Count.Equals(i + 1));//Assert we can add steps up to the max
             }
 
             // Act

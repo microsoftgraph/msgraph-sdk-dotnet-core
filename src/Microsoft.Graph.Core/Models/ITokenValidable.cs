@@ -9,16 +9,22 @@ namespace Microsoft.Graph
     /// <summary>
     /// The ITokenValidable interface
     /// </summary>
-    public interface ITokenValidable<T1,T2> where T1 : IEncryptedContentBearer<T2> where T2 : IDecryptableContent
+    public interface ITokenValidable<T1, T2> where T1 : IEncryptedContentBearer<T2> where T2 : IDecryptableContent
     {
         /// <summary>
         /// The collection of validation tokens
         /// </summary>
-        List<string> ValidationTokens { get; set; }
+        List<string> ValidationTokens
+        {
+            get; set;
+        }
 
         /// <summary>
         /// The collection of encrypted token bearers
         /// </summary>
-        List<T1> Value { get; set; }
+        List<T1> Value
+        {
+            get; set;
+        }
     }
 }

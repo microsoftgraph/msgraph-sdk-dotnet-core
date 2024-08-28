@@ -1,4 +1,4 @@
-// ------------------------------------------------------------------------------
+﻿// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
@@ -9,17 +9,17 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
     using System.IO;
     using System.Net;
     using System.Net.Http;
+    using System.Text.Json;
     using System.Threading;
     using System.Threading.Tasks;
     using Microsoft.Graph;
     using Microsoft.Graph.DotnetCore.Core.Test.Mocks;
-    using Moq;
     using Microsoft.Graph.DotnetCore.Core.Test.TestModels;
-    using Xunit;
     using Microsoft.Kiota.Abstractions;
-    using System.Text.Json;
     using Microsoft.Kiota.Abstractions.Serialization;
     using Microsoft.Kiota.Serialization.Json;
+    using Moq;
+    using Xunit;
 
     public class AsyncMonitorTests : IDisposable
     {

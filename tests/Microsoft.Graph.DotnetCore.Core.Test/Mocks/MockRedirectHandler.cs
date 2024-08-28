@@ -1,18 +1,22 @@
-﻿   // ------------------------------------------------------------------------------
+﻿// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
 namespace Microsoft.Graph.DotnetCore.Core.Test.Mocks
 {
     using System.Net.Http;
-    using System.Threading.Tasks;
     using System.Threading;
+    using System.Threading.Tasks;
     public class MockRedirectHandler : HttpMessageHandler
     {
         private HttpResponseMessage _response1
-        { get; set; }
+        {
+            get; set;
+        }
         private HttpResponseMessage _response2
-        { get; set; }
+        {
+            get; set;
+        }
 
         private bool _response1Sent = false;
 
@@ -38,6 +42,6 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Mocks
             this._response1 = response1;
             this._response2 = response2;
         }
-            
+
     }
 }

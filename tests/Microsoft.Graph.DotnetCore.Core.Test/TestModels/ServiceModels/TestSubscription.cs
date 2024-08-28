@@ -4,17 +4,20 @@
 
 namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
 {
-    using Microsoft.Kiota.Abstractions.Serialization;
     using System;
     using System.Collections.Generic;
+    using Microsoft.Kiota.Abstractions.Serialization;
 
-    public class TestSubscription : IEncryptableSubscription,IParsable, IAdditionalDataHolder
+    public class TestSubscription : IEncryptableSubscription, IParsable, IAdditionalDataHolder
     {
         /// <summary>
         /// Gets or sets encryption certificate.
         /// A base64-encoded representation of a certificate with a public key used to encrypt resource data in change notifications. Optional. Required when includeResourceData is true.
         /// </summary>
-        public string EncryptionCertificate { get; set; }
+        public string EncryptionCertificate
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Gets or set the additional data bag.

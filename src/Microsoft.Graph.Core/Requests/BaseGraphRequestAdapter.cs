@@ -4,11 +4,11 @@
 
 namespace Microsoft.Graph
 {
+    using System.Net.Http;
     using Microsoft.Kiota.Abstractions;
     using Microsoft.Kiota.Abstractions.Authentication;
     using Microsoft.Kiota.Abstractions.Serialization;
     using Microsoft.Kiota.Http.HttpClientLibrary;
-    using System.Net.Http;
 
     /// <summary>
     /// The <see cref="IRequestAdapter"/> instance for use with microsoft graph

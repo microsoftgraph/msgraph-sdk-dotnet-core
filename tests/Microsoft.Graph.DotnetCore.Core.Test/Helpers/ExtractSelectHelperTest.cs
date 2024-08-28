@@ -1,4 +1,4 @@
-// ------------------------------------------------------------------------------
+﻿// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
@@ -15,7 +15,10 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Helpers
         /// </summary>
         private class EventBase
         {
-            public DateTimeOffset CreatedDateTime { get; set; }
+            public DateTimeOffset CreatedDateTime
+            {
+                get; set;
+            }
         }
 
         /// <summary>
@@ -24,9 +27,15 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Helpers
         private class Event : EventBase
         {
             [JsonPropertyName("body")]//use property name
-            public string Body { get; set; }
+            public string Body
+            {
+                get; set;
+            }
 
-            public string Subject { get; set; }
+            public string Subject
+            {
+                get; set;
+            }
 
         }
 
@@ -35,9 +44,15 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Helpers
         /// </summary>
         private class User
         {
-            public string DisplayName { get; set; }
+            public string DisplayName
+            {
+                get; set;
+            }
 
-            public User Manager { get; set; }
+            public User Manager
+            {
+                get; set;
+            }
 
         }
 

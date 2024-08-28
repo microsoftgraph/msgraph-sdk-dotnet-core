@@ -57,10 +57,10 @@ namespace Microsoft.Graph
             {
                 ThrowIfDisposed();
 
-                if(!CanSeek)
+                if (!CanSeek)
                     throw new NotSupportedException("seek not support");
 
-                if(value > int.MaxValue || value < 0 || value > Length)
+                if (value > int.MaxValue || value < 0 || value > Length)
                     throw new ArgumentOutOfRangeException("value is out of range");
 
                 // update the position in base stream and seek to that position
@@ -124,7 +124,7 @@ namespace Microsoft.Graph
                     Position = Length - offset;
                     break;
             }
-            
+
             return Position;
         }
 

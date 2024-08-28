@@ -1,16 +1,16 @@
-// ------------------------------------------------------------------------------
+﻿// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
 namespace Microsoft.Graph
 {
-    using Microsoft.Kiota.Abstractions;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
     using System.Threading.Tasks;
+    using Microsoft.Kiota.Abstractions;
 
     /// <summary>
     /// A collection of batch requests that are automatically managed.
@@ -148,7 +148,9 @@ namespace Microsoft.Graph
         /// <summary>
         /// A BatchRequestSteps property.
         /// </summary>
-        public IReadOnlyDictionary<string, BatchRequestStep> BatchRequestSteps { get
+        public IReadOnlyDictionary<string, BatchRequestStep> BatchRequestSteps
+        {
+            get
             {
                 if (batchRequests.Count > 0)
                 {
@@ -156,7 +158,7 @@ namespace Microsoft.Graph
                         new List<KeyValuePair<string, BatchRequestStep>>()
                         : currentRequest.BatchRequestSteps;
 
-                    foreach ( var request in batchRequests)
+                    foreach (var request in batchRequests)
                     {
                         result = result.Concat(request.BatchRequestSteps);
                     }
@@ -177,9 +179,10 @@ namespace Microsoft.Graph
         {
             var request = new BatchRequestContentCollection(this.requestAdapter, batchRequestLimit);
             var steps = this.BatchRequestSteps;
-            foreach(var response in responseStatusCodes)
+            foreach (var response in responseStatusCodes)
             {
-                if (steps.ContainsKey(response.Key) && !BatchResponseContent.IsSuccessStatusCode(response.Value)) {
+                if (steps.ContainsKey(response.Key) && !BatchResponseContent.IsSuccessStatusCode(response.Value))
+                {
                     request.AddBatchRequestStep(steps[response.Key].Request);
                 }
             }

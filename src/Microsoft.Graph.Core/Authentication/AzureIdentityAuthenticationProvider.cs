@@ -1,4 +1,4 @@
-// ------------------------------------------------------------------------------
+﻿// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
@@ -22,7 +22,7 @@ public class AzureIdentityAuthenticationProvider : BaseBearerTokenAuthentication
     /// <param name="isCaeEnabled">Determines if the Continuous Access Evaluation (CAE) is enabled.</param>
     public AzureIdentityAuthenticationProvider(TokenCredential credential, string[] allowedHosts = null, Microsoft.Kiota.Authentication.Azure.ObservabilityOptions observabilityOptions = null, bool isCaeEnabled = true, params string[] scopes) : base(new AzureIdentityAccessTokenProvider(credential, allowedHosts, observabilityOptions, isCaeEnabled, scopes))
     {
-	}
+    }
     /// <summary>
     /// The <see cref="AzureIdentityAuthenticationProvider"/> constructor
     /// </summary>
@@ -33,5 +33,5 @@ public class AzureIdentityAuthenticationProvider : BaseBearerTokenAuthentication
     [Obsolete("Use the constructor that takes an isCaeEnabled parameter instead.")]
     public AzureIdentityAuthenticationProvider(TokenCredential credential, string[] allowedHosts = null, Microsoft.Kiota.Authentication.Azure.ObservabilityOptions observabilityOptions = null, params string[] scopes) : this(credential, allowedHosts, observabilityOptions, true, scopes)
     {
-	}
+    }
 }

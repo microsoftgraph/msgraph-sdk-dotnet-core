@@ -4,11 +4,11 @@
 
 namespace Microsoft.Graph
 {
-    using Microsoft.Graph.Core.Models;
-    using Microsoft.Kiota.Abstractions;
     using System.Net.Http;
     using System.Threading;
     using System.Threading.Tasks;
+    using Microsoft.Graph.Core.Models;
+    using Microsoft.Kiota.Abstractions;
 
     internal class UploadSessionRequestBuilder
     {

@@ -1,7 +1,5 @@
 ﻿namespace Microsoft.Graph
 {
-    using Microsoft.Kiota.Abstractions;
-    using Microsoft.Kiota.Abstractions.Serialization;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -10,6 +8,8 @@
     using System.Net.Http;
     using System.Text.Json;
     using System.Threading.Tasks;
+    using Microsoft.Kiota.Abstractions;
+    using Microsoft.Kiota.Abstractions.Serialization;
 
     /// <summary>
     /// Handles batch request responses.
@@ -93,10 +93,10 @@
         public async Task<Dictionary<string, HttpStatusCode>> GetResponsesStatusCodesAsync()
         {
             Dictionary<string, HttpStatusCode> statuscodes = new Dictionary<string, HttpStatusCode>();
-            foreach(var response in batchResponses)
+            foreach (var response in batchResponses)
             {
                 var batchStatusCodes = await response.Response.GetResponsesStatusCodesAsync();
-                foreach(var result in batchStatusCodes)
+                foreach (var result in batchStatusCodes)
                 {
                     statuscodes.Add(result.Key, result.Value);
                 }
