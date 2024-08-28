@@ -1,15 +1,15 @@
-// ------------------------------------------------------------------------------
+﻿// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
 namespace Microsoft.Graph
 {
-    using Microsoft.Kiota.Abstractions;
-    using Microsoft.Kiota.Abstractions.Serialization;
     using System;
     using System.Collections.Generic;
     using System.Net.Http;
     using System.Threading.Tasks;
+    using Microsoft.Kiota.Abstractions;
+    using Microsoft.Kiota.Abstractions.Serialization;
 
     /// <summary>
     /// The GraphResponse Object
@@ -33,7 +33,7 @@ namespace Microsoft.Graph
         /// <param name="errorMappings">The errorMappings to use in the event of a non sucess request</param>
         public async Task<T> GetResponseObjectAsync(IResponseHandler responseHandler, Dictionary<string, ParsableFactory<IParsable>> errorMappings = null)
         {
-            return await responseHandler.HandleResponseAsync<HttpResponseMessage,T>(this.ToHttpResponseMessage(), errorMappings).ConfigureAwait(false);
+            return await responseHandler.HandleResponseAsync<HttpResponseMessage, T>(this.ToHttpResponseMessage(), errorMappings).ConfigureAwait(false);
         }
     }
 }

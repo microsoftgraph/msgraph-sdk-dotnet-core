@@ -1,8 +1,8 @@
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using Xunit;
-using System.Collections.Generic;
 
 namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content;
 

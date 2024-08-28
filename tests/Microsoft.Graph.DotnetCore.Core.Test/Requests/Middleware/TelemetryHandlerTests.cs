@@ -4,15 +4,15 @@
 
 namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Middleware
 {
-    using Microsoft.Kiota.Abstractions;
-    using Microsoft.Kiota.Abstractions.Authentication;
-    using Microsoft.Kiota.Http.HttpClientLibrary;
     using System;
     using System.Linq;
     using System.Net.Http;
     using System.Runtime.InteropServices;
     using System.Threading;
     using System.Threading.Tasks;
+    using Microsoft.Kiota.Abstractions;
+    using Microsoft.Kiota.Abstractions.Authentication;
+    using Microsoft.Kiota.Http.HttpClientLibrary;
     using Xunit;
 
     public class TelemetryHandlerTests

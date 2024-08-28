@@ -26,7 +26,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 
             Assert.Equal(expectedBaseUrl, baseClient.RequestAdapter.BaseUrl);
         }
-        
+
         [Fact]
         public void BaseClient_InitializeBaseUrlTrailingSlash()
         {

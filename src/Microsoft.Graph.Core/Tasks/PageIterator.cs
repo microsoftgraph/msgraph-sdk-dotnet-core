@@ -1,15 +1,15 @@
-// ------------------------------------------------------------------------------
+﻿// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
 namespace Microsoft.Graph
 {
-    using Microsoft.Kiota.Abstractions;
-    using Microsoft.Kiota.Abstractions.Serialization;
     using System;
     using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
+    using Microsoft.Kiota.Abstractions;
+    using Microsoft.Kiota.Abstractions.Serialization;
 
     /*
      Spec https://github.com/microsoftgraph/msgraph-sdk-design/blob/main/tasks/PageIteratorTask.md
@@ -21,7 +21,7 @@ namespace Microsoft.Graph
     /// </summary>
     /// <typeparam name="TEntity">The Microsoft Graph entity type returned in the result set.</typeparam>
     /// <typeparam name="TCollectionPage">The Microsoft Graph collection response type returned in the collection response.</typeparam>
-    public class PageIterator<TEntity, TCollectionPage> where TCollectionPage : IParsable,IAdditionalDataHolder,new()
+    public class PageIterator<TEntity, TCollectionPage> where TCollectionPage : IParsable, IAdditionalDataHolder, new()
     {
         private IRequestAdapter _requestAdapter;
         private TCollectionPage _currentPage;
@@ -34,15 +34,24 @@ namespace Microsoft.Graph
         /// <summary>
         /// The @odata.deltaLink returned from a delta query.
         /// </summary>
-        public string Deltalink { get; private set; }
+        public string Deltalink
+        {
+            get; private set;
+        }
         /// <summary>
         /// The @odata.nextLink returned in a paged result.
         /// </summary>
-        public string Nextlink { get; private set; }
+        public string Nextlink
+        {
+            get; private set;
+        }
         /// <summary>
         /// The PageIterator state.
         /// </summary>
-        public PagingState State { get; set; }
+        public PagingState State
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Boolean value representing if the callback is Async
@@ -58,12 +67,12 @@ namespace Microsoft.Graph
         /// <param name="requestConfigurator">A Func delegate that configures the NextPageRequest</param>
         /// <param name="errorMapping">The error mappings to use in case of failed request during page iteration</param>
         /// <returns>A PageIterator&lt;TEntity&gt; that will process additional result pages based on the rules specified in Func&lt;TEntity,bool&gt; processPageItems</returns>
-        public static PageIterator<TEntity, TCollectionPage> CreatePageIterator(IBaseClient client, TCollectionPage page, Func<TEntity, bool> callback, Func<RequestInformation, RequestInformation> requestConfigurator = null, Dictionary<string, ParsableFactory<IParsable>> errorMapping = null )
+        public static PageIterator<TEntity, TCollectionPage> CreatePageIterator(IBaseClient client, TCollectionPage page, Func<TEntity, bool> callback, Func<RequestInformation, RequestInformation> requestConfigurator = null, Dictionary<string, ParsableFactory<IParsable>> errorMapping = null)
         {
             if (client == null)
                 throw new ArgumentNullException(nameof(client));
 
-            return CreatePageIterator(client.RequestAdapter, page, callback, requestConfigurator,errorMapping);
+            return CreatePageIterator(client.RequestAdapter, page, callback, requestConfigurator, errorMapping);
         }
 
         /// <summary>
@@ -75,7 +84,7 @@ namespace Microsoft.Graph
         /// <param name="requestConfigurator">A Func delegate that configures the NextPageRequest</param>
         /// <param name="errorMapping">The error mappings to use in case of failed request during page iteration</param>
         /// <returns>A PageIterator&lt;TEntity&gt; that will process additional result pages based on the rules specified in Func&lt;TEntity,bool&gt; processPageItems</returns>
-        public static PageIterator<TEntity, TCollectionPage> CreatePageIterator(IRequestAdapter requestAdapter, TCollectionPage page, Func<TEntity, bool> callback, Func<RequestInformation, RequestInformation> requestConfigurator = null,Dictionary<string, ParsableFactory<IParsable>> errorMapping = null)
+        public static PageIterator<TEntity, TCollectionPage> CreatePageIterator(IRequestAdapter requestAdapter, TCollectionPage page, Func<TEntity, bool> callback, Func<RequestInformation, RequestInformation> requestConfigurator = null, Dictionary<string, ParsableFactory<IParsable>> errorMapping = null)
         {
             if (requestAdapter == null)
                 throw new ArgumentNullException(nameof(requestAdapter));
@@ -115,7 +124,7 @@ namespace Microsoft.Graph
         /// <param name="requestConfigurator">A Func delegate that configures the NextPageRequest</param>
         /// <param name="errorMapping">The error mappings to use in case of failed request during page iteration</param>
         /// <returns>A PageIterator&lt;TEntity&gt; that will process additional result pages based on the rules specified in Func&lt;TEntity,bool&gt; processPageItems</returns>
-        public static PageIterator<TEntity, TCollectionPage> CreatePageIterator(IBaseClient client, TCollectionPage page, Func<TEntity, Task<bool>> asyncCallback, Func<RequestInformation, RequestInformation> requestConfigurator = null,Dictionary<string, ParsableFactory<IParsable>> errorMapping = null)
+        public static PageIterator<TEntity, TCollectionPage> CreatePageIterator(IBaseClient client, TCollectionPage page, Func<TEntity, Task<bool>> asyncCallback, Func<RequestInformation, RequestInformation> requestConfigurator = null, Dictionary<string, ParsableFactory<IParsable>> errorMapping = null)
         {
             if (client == null)
                 throw new ArgumentNullException(nameof(client));
@@ -132,7 +141,7 @@ namespace Microsoft.Graph
         /// <param name="requestConfigurator">A Func delegate that configures the NextPageRequest</param>
         /// <param name="errorMapping">The error mappings to use in case of failed request during page iteration</param>
         /// <returns>A PageIterator&lt;TEntity&gt; that will process additional result pages based on the rules specified in Func&lt;TEntity,bool&gt; processPageItems</returns>
-        public static PageIterator<TEntity, TCollectionPage> CreatePageIterator(IRequestAdapter requestAdapter, TCollectionPage page, Func<TEntity, Task<bool>> asyncCallback, Func<RequestInformation, RequestInformation> requestConfigurator = null,Dictionary<string, ParsableFactory<IParsable>> errorMapping = null)
+        public static PageIterator<TEntity, TCollectionPage> CreatePageIterator(IRequestAdapter requestAdapter, TCollectionPage page, Func<TEntity, Task<bool>> asyncCallback, Func<RequestInformation, RequestInformation> requestConfigurator = null, Dictionary<string, ParsableFactory<IParsable>> errorMapping = null)
         {
             if (requestAdapter == null)
                 throw new ArgumentNullException(nameof(requestAdapter));
@@ -367,17 +376,17 @@ namespace Microsoft.Graph
         private static string ExtractNextLinkFromParsable(TCollectionPage parsableCollection, string nextLinkPropertyName = "OdataNextLink")
         {
             var nextLinkProperty = parsableCollection.GetType().GetProperty(nextLinkPropertyName);
-            if (nextLinkProperty != null && 
-                nextLinkProperty.GetValue(parsableCollection, null) is string nextLinkString  
+            if (nextLinkProperty != null &&
+                nextLinkProperty.GetValue(parsableCollection, null) is string nextLinkString
                 && !string.IsNullOrEmpty(nextLinkString))
             {
                 return nextLinkString;
             }
-            
+
             // the next link property may not be defined in the response schema so we also check its presence in the additional data bag
-            return parsableCollection.AdditionalData.TryGetValue(CoreConstants.OdataInstanceAnnotations.NextLink,out var nextLink) ? nextLink.ToString() : string.Empty;
+            return parsableCollection.AdditionalData.TryGetValue(CoreConstants.OdataInstanceAnnotations.NextLink, out var nextLink) ? nextLink.ToString() : string.Empty;
         }
-        
+
         private static string GetErrorMessageFromParsable(IParseNode responseParseNode)
         {
             var errorParseNode = responseParseNode.GetChildNode("error");

@@ -4,41 +4,56 @@
 
 namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
 {
-    using Microsoft.Kiota.Abstractions.Serialization;
     using System;
     using System.Collections.Generic;
+    using Microsoft.Kiota.Abstractions.Serialization;
 
-    public class TestChatMessage: IParsable, IAdditionalDataHolder
+    public class TestChatMessage : IParsable, IAdditionalDataHolder
     {
         /// <summary>
         /// Gets or sets chat id.
         /// If the message was sent in a chat, represents the identity of the chat.
         /// </summary>
-        public string ChatId { get; set; }
+        public string ChatId
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Gets or sets created date time.
         /// Timestamp of when the chat message was created.
         /// </summary>
-        public DateTimeOffset? CreatedDateTime { get; set; }
+        public DateTimeOffset? CreatedDateTime
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Gets or sets deleted date time.
         /// Read only. Timestamp at which the chat message was deleted, or null if not deleted.
         /// </summary>
-        public DateTimeOffset? DeletedDateTime { get; set; }
+        public DateTimeOffset? DeletedDateTime
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Gets or sets etag.
         /// Read-only. Version number of the chat message.
         /// </summary>
-        public string Etag { get; set; }
+        public string Etag
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Gets or sets body.
         /// Plaintext/HTML representation of the content of the chat message. Representation is specified by the contentType inside the body. The content is always in HTML if the chat message contains a chatMessageMention.
         /// </summary>
-        public TestItemBody Body { get; set; }
+        public TestItemBody Body
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Gets or sets additional data.

@@ -4,29 +4,38 @@
 
 namespace Microsoft.Graph
 {
-    using Microsoft.Kiota.Abstractions.Serialization;
     using System;
     using System.Collections.Generic;
+    using Microsoft.Kiota.Abstractions.Serialization;
 
     /// <summary>
     /// The IUploadSession interface
     /// </summary>
-    public interface IUploadSession: IParsable, IAdditionalDataHolder
+    public interface IUploadSession : IParsable, IAdditionalDataHolder
     {
         /// <summary>
         /// Expiration date of the upload session
         /// </summary>
-        DateTimeOffset? ExpirationDateTime { get; set; }
+        DateTimeOffset? ExpirationDateTime
+        {
+            get; set;
+        }
 
         /// <summary>
         /// The ranges yet to be uploaded to the server
         /// </summary>
-        List<string> NextExpectedRanges { get; set; }
+        List<string> NextExpectedRanges
+        {
+            get; set;
+        }
 
         /// <summary>
         /// The URL for upload
         /// </summary>
-        string UploadUrl { get; set; }
+        string UploadUrl
+        {
+            get; set;
+        }
 
     }
 }

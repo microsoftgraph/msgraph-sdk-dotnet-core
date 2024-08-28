@@ -4,14 +4,14 @@
 
 namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
 {
-    using Microsoft.Kiota.Abstractions.Serialization;
     using System;
     using System.Collections.Generic;
+    using Microsoft.Kiota.Abstractions.Serialization;
 
     /// <summary>
     /// The type TestEmailAddress.
     /// </summary>
-    public partial class TestEmailAddress: IParsable, IAdditionalDataHolder
+    public partial class TestEmailAddress : IParsable, IAdditionalDataHolder
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TestEmailAddress"/> class.
@@ -25,13 +25,19 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
         /// Gets or sets name.
         /// The display name of the person or entity.
         /// </summary>
-        public string Name { get; set; }
+        public string Name
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Gets or sets address.
         /// The email address of the person or entity.
         /// </summary>
-        public string Address { get; set; }
+        public string Address
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Gets or sets additional data.
@@ -41,7 +47,10 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
         /// <summary>
         /// Gets or sets @odata.type.
         /// </summary>
-        public string ODataType { get; set; }
+        public string ODataType
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Gets the field deserializers for the <see cref="TestEmailAddress"/> instance

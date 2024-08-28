@@ -36,7 +36,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
             var mockClient = new Mock<IBaseClient>();
             mockClient.SetupGet((client) => client.RequestAdapter).Returns(mockRequestAdapter.Object);
             this.baseClient = mockClient.Object;
-            
+
         }
 
         [Fact]
@@ -71,7 +71,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
         {
             // Arrange the sample first page
             var inputEventCount = 17;
-            var originalPage = new TestEventsResponse() { Value = new List<TestEventItem>()};
+            var originalPage = new TestEventsResponse() { Value = new List<TestEventItem>() };
             for (int i = 0; i < inputEventCount; i++)
             {
                 originalPage.Value.Add(new TestEventItem() { Subject = $"Subject{i}" });
@@ -230,7 +230,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
             {
                 originalPage.Value.Add(new TestEventItem() { Subject = $"Subject{i}" });
             }
-            
+
             Func<TestEventItem, bool> processEachEvent = (e) => true;
 
             // Act by calling the iterator
@@ -239,9 +239,9 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
 
             // Assert that paging was paused and got to the next page
             Assert.Equal(PagingState.Delta, eventsDeltaPageIterator.State);
-            Assert.Equal("http://localhost/events?$skip=11",eventsDeltaPageIterator.Deltalink);
+            Assert.Equal("http://localhost/events?$skip=11", eventsDeltaPageIterator.Deltalink);
         }
-        
+
         [Fact]
         public async Task Given_CollectionPage_Delta_Link_Property_It_Iterates_Across_Pages_And_Resumes()
         {
@@ -267,9 +267,9 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
 
             // Assert that paging was paused and got to the next page
             Assert.Equal(PagingState.Delta, eventsDeltaPageIterator.State);
-            Assert.Equal("http://localhost/events?$skip=11",eventsDeltaPageIterator.Deltalink);
+            Assert.Equal("http://localhost/events?$skip=11", eventsDeltaPageIterator.Deltalink);
             Assert.Equal(17, eventBag.Count);
-            
+
             // create new page after the delta
             var nextPage = new TestEventsDeltaResponse() { Value = new List<TestEventItem>() };
             nextPage.OdataNextLink = "http://localhost/events?$skip=18";
@@ -293,16 +293,16 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
                         nextPage.OdataNextLink = null;
                         nextPage.OdataDeltaLink = "http://localhost/events?$skip=145";
                     }
-                    
+
                     return Task.FromResult(nextPage);
                 });
-            
-            
+
+
             // Resume the iteration
             await eventsDeltaPageIterator.IterateAsync();
-            
+
             Assert.Equal(PagingState.Delta, eventsDeltaPageIterator.State);
-            Assert.Equal("http://localhost/events?$skip=145",eventsDeltaPageIterator.Deltalink);
+            Assert.Equal("http://localhost/events?$skip=145", eventsDeltaPageIterator.Deltalink);
             Assert.Equal(37, eventBag.Count);// 17 initial items + 10 items from second page + 10 from last page
         }
 
@@ -439,8 +439,8 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
             };
 
             using var testHttpMessageHandler = new TestHttpMessageHandler();
-            testHttpMessageHandler.AddResponseMapping("http://localhost/events?$skip=11",errorResponseMessage);
-            var customBaseClient = new BaseClient(new BaseGraphRequestAdapter(new AnonymousAuthenticationProvider(),httpClient: GraphClientFactory.Create(finalHandler: testHttpMessageHandler)));
+            testHttpMessageHandler.AddResponseMapping("http://localhost/events?$skip=11", errorResponseMessage);
+            var customBaseClient = new BaseClient(new BaseGraphRequestAdapter(new AnonymousAuthenticationProvider(), httpClient: GraphClientFactory.Create(finalHandler: testHttpMessageHandler)));
             ApiClientBuilder.RegisterDefaultDeserializer<JsonParseNodeFactory>();
 
             // Act by calling the iterator
@@ -449,10 +449,10 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
 
             Assert.Equal(ErrorConstants.Messages.PageIteratorRequestError, serviceException.Message);
             Assert.NotNull(serviceException.InnerException);
-            Assert.Equal("ErrorInvalidParameter : The parameter is not currently supported on the resource.",serviceException.InnerException.Message);
-            Assert.Equal(400,serviceException.ResponseStatusCode);// matching status code
+            Assert.Equal("ErrorInvalidParameter : The parameter is not currently supported on the resource.", serviceException.InnerException.Message);
+            Assert.Equal(400, serviceException.ResponseStatusCode);// matching status code
         }
-        
+
         [Fact]
         public async Task Given_CollectionPage_It_Detects_Next_Link_Loop()
         {
@@ -465,7 +465,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
             }
 
             // Create the 5 events to initialize the next collection page.
-            var nextPage = new TestEventsResponse() { Value = new List<TestEventItem>() , OdataNextLink = "http://localhost/events?$skip=11" };//same next link url
+            var nextPage = new TestEventsResponse() { Value = new List<TestEventItem>(), OdataNextLink = "http://localhost/events?$skip=11" };//same next link url
             var nextPageEventCount = 5;
             for (int i = 0; i < nextPageEventCount; i++)
             {

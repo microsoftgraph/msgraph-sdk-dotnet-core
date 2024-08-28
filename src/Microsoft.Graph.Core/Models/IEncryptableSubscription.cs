@@ -12,6 +12,9 @@ namespace Microsoft.Graph
         /// <summary>
         /// The encryption certificate
         /// </summary>
-        string EncryptionCertificate { get; set; }
+        string EncryptionCertificate
+        {
+            get; set;
+        }
     }
 }

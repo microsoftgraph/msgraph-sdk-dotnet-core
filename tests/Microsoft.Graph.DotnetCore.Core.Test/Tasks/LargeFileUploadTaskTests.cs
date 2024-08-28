@@ -1,16 +1,9 @@
-// ------------------------------------------------------------------------------
+﻿// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
 namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
 {
-    using Microsoft.Graph.Core.Models;
-    using Microsoft.Graph.DotnetCore.Core.Test.Mocks;
-    using Microsoft.Graph.DotnetCore.Core.Test.Requests;
-    using Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels;
-    using Microsoft.Kiota.Abstractions.Authentication;
-    using Microsoft.Kiota.Abstractions.Serialization;
-    using Microsoft.Kiota.Serialization.Json;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -19,6 +12,13 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
     using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
+    using Microsoft.Graph.Core.Models;
+    using Microsoft.Graph.DotnetCore.Core.Test.Mocks;
+    using Microsoft.Graph.DotnetCore.Core.Test.Requests;
+    using Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels;
+    using Microsoft.Kiota.Abstractions.Authentication;
+    using Microsoft.Kiota.Abstractions.Serialization;
+    using Microsoft.Kiota.Serialization.Json;
     using Xunit;
 
     public class LargeFileUploadTests : RequestTestBase
@@ -32,7 +32,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
         [Fact]
         public void ThrowsOnEmptyStream()
         {
-            
+
             var uploadSession = new UploadSession
             {
                 NextExpectedRanges = new List<string>() { "0-" },
@@ -57,9 +57,9 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
             using Stream stream = new MemoryStream(mockData);
             var uploadSession = new UploadSession
             {
-            NextExpectedRanges = new List<string>() { "0-" },
-            UploadUrl = "http://localhost",
-            ExpirationDateTime = DateTimeOffset.Parse("2019-11-07T06:39:31.499Z")
+                NextExpectedRanges = new List<string>() { "0-" },
+                UploadUrl = "http://localhost",
+                ExpirationDateTime = DateTimeOffset.Parse("2019-11-07T06:39:31.499Z")
             };
 
             int maxSliceSize = 200 * 1024;//slice size that is 200 KB

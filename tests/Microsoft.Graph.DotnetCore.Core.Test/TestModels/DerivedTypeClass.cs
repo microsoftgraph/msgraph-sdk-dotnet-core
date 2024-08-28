@@ -4,9 +4,9 @@
 
 namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels
 {
-    using Microsoft.Kiota.Abstractions.Serialization;
     using System;
     using System.Collections.Generic;
+    using Microsoft.Kiota.Abstractions.Serialization;
 
     /// <summary>
     /// A property bag class for testing derived type deserialization.
@@ -16,22 +16,34 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels
         /// <summary>
         /// Gets or sets enumType.
         /// </summary>
-        public EnumType? EnumType { get; set; }
+        public EnumType? EnumType
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Gets or sets id.
         /// </summary>
-        public string Name { get; set; }
+        public string Name
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Gets or sets id.
         /// </summary>
-        public IEnumerable<DateTestClass> MemorableDates { get; set; }
+        public IEnumerable<DateTestClass> MemorableDates
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Gets or sets link.
         /// </summary>
-        public string WebUrl { get; set; }
+        public string WebUrl
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Gets the field deserializers for the class

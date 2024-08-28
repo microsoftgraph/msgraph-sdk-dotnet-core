@@ -16,17 +16,26 @@ namespace Microsoft.Graph
         /// <summary>
         /// A unique batch request id property.
         /// </summary>
-        public string RequestId { get; private set; }
+        public string RequestId
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// A http request message for an individual batch request operation.
         /// </summary>
-        public HttpRequestMessage Request { get; private set; }
+        public HttpRequestMessage Request
+        {
+            get; private set;
+        }
 
         /// <summary>
         /// An OPTIONAL array of batch request ids specifying the order of execution for individual batch requests.
         /// </summary>
-        public List<string> DependsOn { get; set; }
+        public List<string> DependsOn
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Constructs a new <see cref="BatchRequestStep"/>.

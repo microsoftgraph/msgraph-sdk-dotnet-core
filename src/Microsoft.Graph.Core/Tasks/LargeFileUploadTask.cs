@@ -1,27 +1,30 @@
-// ------------------------------------------------------------------------------
+﻿// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
 namespace Microsoft.Graph
 {
-    using Microsoft.Graph.Core.Models;
-    using Microsoft.Kiota.Abstractions.Serialization;
-    using Microsoft.Kiota.Abstractions.Authentication;
     using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Net.Http;
-    using System.Threading.Tasks;
     using System.Threading;
+    using System.Threading.Tasks;
+    using Microsoft.Graph.Core.Models;
     using Microsoft.Kiota.Abstractions;
+    using Microsoft.Kiota.Abstractions.Authentication;
+    using Microsoft.Kiota.Abstractions.Serialization;
 
     /// <summary>
     /// Task to help with resumable large file uploads.
     /// </summary>
-    public class LargeFileUploadTask<T> where T : IParsable,new()
+    public class LargeFileUploadTask<T> where T : IParsable, new()
     {
         private const int DefaultMaxSliceSize = 5 * 1024 * 1024;
-        private IUploadSession Session { get; set; }
+        private IUploadSession Session
+        {
+            get; set;
+        }
         private readonly IRequestAdapter _requestAdapter;
         private readonly Stream _uploadStream;
         private readonly int _maxSliceSize;
@@ -88,7 +91,7 @@ namespace Microsoft.Graph
         {
             HttpClient httpClient = GraphClientFactory.Create(); //no auth
             httpClient.SetFeatureFlag(FeatureFlag.FileUploadTask);
-            return new BaseGraphRequestAdapter(new AnonymousAuthenticationProvider(),httpClient: httpClient){ BaseUrl = uploadUrl };
+            return new BaseGraphRequestAdapter(new AnonymousAuthenticationProvider(), httpClient: httpClient) { BaseUrl = uploadUrl };
         }
 
         /// <summary>
@@ -108,7 +111,7 @@ namespace Microsoft.Graph
                 {
                     try
                     {
-                        return await uploadSliceRequestBuilder.PutAsync(requestBodyStream,cancellationToken).ConfigureAwait(false);
+                        return await uploadSliceRequestBuilder.PutAsync(requestBodyStream, cancellationToken).ConfigureAwait(false);
                     }
                     catch (ServiceException exception)
                     {
@@ -206,7 +209,7 @@ namespace Microsoft.Graph
 
                 ThrowIfUploadCancelled(cancellationToken, trackedExceptions);
             }
-            
+
             throw new TaskCanceledException("Upload failed too many times. See InnerException for list of exceptions that occured.", new AggregateException(trackedExceptions.ToArray()));
         }
 

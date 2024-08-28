@@ -4,15 +4,15 @@
 
 namespace Microsoft.Graph
 {
-    using Microsoft.Kiota.Abstractions;
     using System;
     using System.Net;
     using System.Net.Http;
     using System.Net.Http.Headers;
+    using Microsoft.Kiota.Abstractions;
     /// <summary>
     /// The GraphResponse Object
     /// </summary>
-    public class GraphResponse :IDisposable
+    public class GraphResponse : IDisposable
     {
         /// <summary>
         /// The GraphResponse Constructor
@@ -21,24 +21,24 @@ namespace Microsoft.Graph
         /// <param name="httpResponseMessage">The response</param>
         public GraphResponse(RequestInformation requestInformation, HttpResponseMessage httpResponseMessage)
         {
-            this.httpResponseMessage = httpResponseMessage ?? 
+            this.httpResponseMessage = httpResponseMessage ??
                                throw new ArgumentException(string.Format(ErrorConstants.Messages.NullParameter, nameof(httpResponseMessage)));
             this.RequestInformation = requestInformation ??
                                throw new ArgumentException(string.Format(ErrorConstants.Messages.NullParameter, nameof(requestInformation)));
         }
 
         private readonly HttpResponseMessage httpResponseMessage;
-        
+
         /// <summary>
         /// The Response Status code
         /// </summary>
         public HttpStatusCode StatusCode => httpResponseMessage.StatusCode;
-        
+
         /// <summary>
         /// The Response Content
         /// </summary>
         public HttpContent Content => httpResponseMessage.Content;
-        
+
         /// <summary>
         /// The Response Headers
         /// </summary>

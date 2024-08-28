@@ -1,21 +1,21 @@
-// ------------------------------------------------------------------------------
+﻿// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
 namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 {
+    using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Net.Http;
     using System.Text;
     using System.Text.Json;
     using System.Threading.Tasks;
-    using Xunit;
     using Microsoft.Graph;
     using Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels;
-    using System.Linq;
-    using System;
     using Microsoft.Kiota.Abstractions.Serialization;
     using Microsoft.Kiota.Serialization.Json;
+    using Xunit;
 
     public class ResponseHandlerTests
     {
@@ -61,20 +61,20 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         {
             // Arrange
             var deltaResponseHandler = new DeltaResponseHandler<TestEventDeltaCollectionResponse>();
-        
+
             // Contains string, int, and boolean arrays.
             var testString = "{\"@odata.context\":\"https://graph.microsoft.com/v1.0/$metadata#Collection(user)\",\"@odata.nextLink\":\"https://graph.microsoft.com/v1.0/users/delta?$skiptoken=R0usmci39O\",\"value\":[{\"id\":\"AAMkADVxTAAA=\",\"arrayOfString\":[\"SMTP:alexd@contoso.com\",\"SMTP:meganb@contoso.com\"]},{\"id\":\"AAMkADVxUAAA=\",\"arrayOfBool\":[true,false]},{\"id\":\"AAMkADVxVAAA=\",\"arrayOfInt\":[2,5]}]}";
-        
+
             var hrm = new HttpResponseMessage()
             {
                 Content = new StringContent(testString,
                                 Encoding.UTF8,
                                 CoreConstants.MimeTypeNames.Application.Json)
             };
-        
+
             // Act
             var deltaServiceLibResponse = await deltaResponseHandler.HandleResponseAsync<HttpResponseMessage, TestEventDeltaCollectionResponse>(hrm, null);
-        
+
             var collectionPage = deltaServiceLibResponse.Value;
             var stringCollection = collectionPage[0].AdditionalData["arrayOfString"] as UntypedArray;
             UntypedString actualStringValue = stringCollection.GetValue().ElementAt(0) as UntypedString; //value[0].arrayOfString[0]
@@ -91,7 +91,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             Assert.Equal("SMTP:alexd@contoso.com", actualStringValue.GetValue());
             Assert.False(actualBoolValue.GetValue());
             Assert.Equal(5, actualIntValue.GetValue());
-        
+
             // Assert that the change manifest is set.
             Assert.Equal("arrayOfString[1]", arrayOfString.GetValue()); // The third change is the second string array item.
             Assert.Equal("arrayOfBool[1]", arrayOfBool.GetValue());
@@ -103,33 +103,33 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         {
             // Arrange
             var deltaResponseHandler = new DeltaResponseHandler<TestEventDeltaCollectionResponse>();
-        
+
             // TestString represents a page of results with a nextLink. There are two changed events.
             // The events have key:value properties, key:object properties, and key:array properties.
             // To view and format this test string, replace all \" with ", and use a JSON formatter
             // to make it pretty.
             var testString = "{\"@odata.context\":\"https://graph.microsoft.com/v1.0/$metadata#Collection(event)\",\"@odata.nextLink\":\"https://graph.microsoft.com/v1.0/me/calendarView/delta?$skiptoken=R0usmci39OQxqJrxK4\",\"value\":[{\"@odata.type\":\"#microsoft.graph.event\",\"@odata.etag\":\"EZ9r3czxY0m2jz8c45czkwAAFXcvIw==\",\"subject\":\"Get food\",\"body\":{\"contentType\":\"html\",\"content\":\"\"},\"start\":{\"dateTime\":\"2016-12-10T19:30:00.0000000\",\"timeZone\":\"UTC\"},\"end\":{\"dateTime\":\"2016-12-10T21:30:00.0000000\",\"timeZone\":\"UTC\"},\"attendees\":[{\"emailAddress\":{\"name\":\"George\",\"address\":\"george@contoso.onmicrosoft.com\"}},{\"emailAddress\":{\"name\":\"Jane\",\"address\":\"jane@contoso.onmicrosoft.com\"}}],\"organizer\":{\"emailAddress\":{\"name\":\"Samantha Booth\",\"address\":\"samanthab@contoso.onmicrosoft.com\"}},\"id\":\"AAMkADVxTAAA=\"},{\"@odata.type\":\"#microsoft.graph.event\",\"@odata.etag\":\"WEZ9r3czxY0m2jz8c45czkwAAFXcvJA==\",\"subject\":\"Prepare food\",\"body\":{\"contentType\":\"html\",\"content\":\"\"},\"start\":{\"dateTime\":\"2016-12-10T22:00:00.0000000\",\"timeZone\":\"UTC\"},\"end\":{\"dateTime\":\"2016-12-11T00:00:00.0000000\",\"timeZone\":\"UTC\"},\"attendees\":[],\"organizer\":{\"emailAddress\":{\"name\":\"Samantha Booth\",\"address\":\"samanthab@contoso.onmicrosoft.com\"}},\"id\":\"AAMkADVxUAAA=\"}]}";
-        
+
             var hrm = new HttpResponseMessage()
             {
-                Content = new StringContent(testString, 
+                Content = new StringContent(testString,
                                             Encoding.UTF8,
                                             CoreConstants.MimeTypeNames.Application.Json)
             };
-        
+
             // Act
             var deltaServiceLibResponse = await deltaResponseHandler.HandleResponseAsync<HttpResponseMessage, TestEventDeltaCollectionResponse>(hrm, null);
             var collectionPage = deltaServiceLibResponse.Value;
             string attendeeName = collectionPage.First().Attendees.First().EmailAddress.Name;
-            
+
             var collectionPageHasChanges = collectionPage[0].AdditionalData.TryGetValue("changes", out var obj);
-            
+
             // IEventDeltaCollectionPage is what the service library provides.
             // Can't test against the service library model, since it has a reference to the signed
             // public version of this library. see issue #57 for more info.
             // https://github.com/microsoftgraph/msgraph-sdk-dotnet-core/issues/57
             // Service library testing will need to happen in the service library repo once this is published on NuGet.
-            
+
             // Assert
             Assert.NotEmpty(deltaServiceLibResponse.Value);
             Assert.Equal("George", attendeeName); // We maintain the expected response body when we change it.
@@ -169,7 +169,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             var odataContextFromJObject = deltaServiceLibResponse.AdditionalData["@odata.context"] as string;
             var odataDeltaLinkFromJObject = deltaServiceLibResponse.AdditionalData["@odata.deltaLink"] as string;
 
-            Assert.Equal(0 ,itemsCount); // We don't expect items in an empty collection page
+            Assert.Equal(0, itemsCount); // We don't expect items in an empty collection page
             Assert.Equal(odataContext, odataContextFromJObject); // We expect that the odata.context isn't transformed.
             Assert.Equal(odataDeltaLink, odataDeltaLinkFromJObject); // We expect that the odata.deltalink isn't transformed.
         }
@@ -203,7 +203,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                     Content = "Original body",
                     ContentType = TestBodyType.Text
                 },
-                AdditionalData = new Dictionary<string,object>()
+                AdditionalData = new Dictionary<string, object>()
             };
 
             // Act
@@ -275,7 +275,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                     Assert.Equal("George", attendee1.EmailAddress.Name);
                     Assert.Equal("george@contoso.onmicrosoft.com", attendee1.EmailAddress.Address);
                 },
-                attendee2 => 
+                attendee2 =>
                 {
                     Assert.Equal("Jane", attendee2.EmailAddress.Name);
                     Assert.Equal("jane@contoso.onmicrosoft.com", attendee2.EmailAddress.Address);
@@ -336,11 +336,11 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             };
 
             // Act
-            var deltaServiceLibResponse = await deltaResponseHandler.HandleResponseAsync<HttpResponseMessage,TestEventDeltaCollectionResponse>(hrm, null);
+            var deltaServiceLibResponse = await deltaResponseHandler.HandleResponseAsync<HttpResponseMessage, TestEventDeltaCollectionResponse>(hrm, null);
 
             // Assert
             Assert.True(deltaServiceLibResponse.Value[0].AdditionalData.TryGetValue("changes", out object changesElement)); // The first element has a list of changes
-            
+
             // Deserialize the change list to a list of strings
             var firstItemChangeList = JsonSerializer.Deserialize<List<string>>(KiotaJsonSerializer.SerializeAsString(changesElement as UntypedNode));
 

@@ -2,10 +2,10 @@
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
-using Microsoft.Kiota.Abstractions.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Kiota.Abstractions.Serialization;
 
 namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
 {
@@ -13,21 +13,30 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
     /// The type UserEventsCollectionResponse.
     /// </summary>
 
-    public class TestEventDeltaCollectionResponse: IParsable, IAdditionalDataHolder
+    public class TestEventDeltaCollectionResponse : IParsable, IAdditionalDataHolder
     {
         /// <summary>
         /// Gets or sets the event collection value.
         /// </summary>
-        public List<TestEvent> Value { get; set; }
+        public List<TestEvent> Value
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Gets or sets the OdataNextLink string value.
         /// </summary>
-        public string OdataNextLink { get; set; }
+        public string OdataNextLink
+        {
+            get; set;
+        }
         /// <summary>
         /// Gets or sets additional data.
         /// </summary>
-        public IDictionary<string, object> AdditionalData { get; set; }
+        public IDictionary<string, object> AdditionalData
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Gets the field deserializers for the <see cref="TestEventDeltaCollectionResponse"/> instance

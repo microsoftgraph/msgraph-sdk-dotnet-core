@@ -1,13 +1,13 @@
-// ------------------------------------------------------------------------------
+﻿// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
 namespace Microsoft.Graph.Core.Models
 {
-    using Microsoft.Kiota.Abstractions.Serialization;
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Microsoft.Kiota.Abstractions.Serialization;
 
     /// <summary>
     /// Concrete implementation of the IUploadSession interface
@@ -17,17 +17,26 @@ namespace Microsoft.Graph.Core.Models
         /// <summary>
         /// Expiration date of the upload session
         /// </summary>
-        public DateTimeOffset? ExpirationDateTime { get; set; }
+        public DateTimeOffset? ExpirationDateTime
+        {
+            get; set;
+        }
 
         /// <summary>
         /// The ranges yet to be uploaded to the server
         /// </summary>
-        public List<string> NextExpectedRanges { get; set; }
+        public List<string> NextExpectedRanges
+        {
+            get; set;
+        }
 
         /// <summary>
         /// The URL for upload
         /// </summary>
-        public string UploadUrl { get; set; }
+        public string UploadUrl
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
@@ -39,7 +48,7 @@ namespace Microsoft.Graph.Core.Models
         /// </summary>
         public IDictionary<string, Action<IParseNode>> GetFieldDeserializers()
         {
-            return new Dictionary<string, Action<IParseNode>> (StringComparer.OrdinalIgnoreCase)
+            return new Dictionary<string, Action<IParseNode>>(StringComparer.OrdinalIgnoreCase)
             {
                 {"expirationDateTime", (n) => { ExpirationDateTime = n.GetDateTimeOffsetValue(); } },
                 {"nextExpectedRanges", (n) => { NextExpectedRanges = n.GetCollectionOfPrimitiveValues<string>().ToList(); } },

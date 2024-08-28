@@ -4,9 +4,9 @@
 
 namespace Microsoft.Graph
 {
-    using Microsoft.Kiota.Abstractions.Serialization;
     using System;
     using System.Collections.Generic;
+    using Microsoft.Kiota.Abstractions.Serialization;
 
     /// <summary>
     /// The type ResourceData.
@@ -17,12 +17,18 @@ namespace Microsoft.Graph
         /// <summary>
         /// Gets or sets additional data.
         /// </summary>
-        public IDictionary<string, object> AdditionalData { get; set; }
+        public IDictionary<string, object> AdditionalData
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Gets or sets @odata.type.
         /// </summary>
-        public string ODataType { get; set; }
+        public string ODataType
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Gets the field deserializers for the <see cref="TestResourceData"/> instance

@@ -2,9 +2,9 @@
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
-using Microsoft.Kiota.Abstractions.Serialization;
 using System;
 using System.Collections.Generic;
+using Microsoft.Kiota.Abstractions.Serialization;
 
 namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
 {
@@ -27,47 +27,71 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
         /// Gets or sets id.
         /// Read-only.
         /// </summary>
-        public string Id { get; set; }
+        public string Id
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Gets or sets @odata.type.
         /// </summary>
-        public string ODataType { get; set; }
+        public string ODataType
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Gets or sets additional data.
         /// </summary>
-        public IDictionary<string, object> AdditionalData { get; set; }
+        public IDictionary<string, object> AdditionalData
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Gets or sets subject.
         /// The text of the event's subject line.
         /// </summary>
-        public string Subject { get; set; }
+        public string Subject
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Gets or sets body.
         /// The body of the message associated with the event. It can be in HTML or text format.
         /// </summary>
-        public TestItemBody Body { get; set; }
+        public TestItemBody Body
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Gets or sets end.
         /// The date, time, and time zone that the event ends. By default, the end time is in UTC.
         /// </summary>
-        public TestDateTimeTimeZone End { get; set; }
+        public TestDateTimeTimeZone End
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Gets or sets start.
         /// The date, time, and time zone that the event starts. By default, the start time is in UTC.
         /// </summary>
-        public TestDateTimeTimeZone Start { get; set; }
+        public TestDateTimeTimeZone Start
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Gets or sets attendees.
         /// The collection of attendees for the event.
         /// </summary>
-        public IEnumerable<TestAttendee> Attendees { get; set; }
+        public IEnumerable<TestAttendee> Attendees
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Gets the field deserializers for the <see cref="TestEvent"/> instance

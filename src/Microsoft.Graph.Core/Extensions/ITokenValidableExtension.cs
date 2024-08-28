@@ -4,16 +4,16 @@
 
 namespace Microsoft.Graph
 {
-    using Microsoft.IdentityModel.Protocols.OpenIdConnect;
-    using Microsoft.IdentityModel.Tokens;
-    using Microsoft.IdentityModel.Protocols;
-    using Microsoft.IdentityModel.Validators;
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.IdentityModel.Tokens.Jwt;
     using System.Linq;
     using System.Threading.Tasks;
-    using System.IdentityModel.Tokens.Jwt;
-    using System.ComponentModel;
+    using Microsoft.IdentityModel.Protocols;
+    using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+    using Microsoft.IdentityModel.Tokens;
+    using Microsoft.IdentityModel.Validators;
 
     /// <summary>
     /// Contains extension methods for <see cref="ITokenValidableExtension"/>
@@ -35,7 +35,7 @@ namespace Microsoft.Graph
         [Obsolete("This method is obsolete. Use the async version instead.")]
         [EditorBrowsable(EditorBrowsableState.Never)]
 #pragma warning disable VSTHRD200 // Use "Async" suffix for async methods
-        public static async Task<bool> AreTokensValid<T1,T2>(this ITokenValidable<T1, T2> collection, IEnumerable<Guid> tenantIds, IEnumerable<Guid> appIds,
+        public static async Task<bool> AreTokensValid<T1, T2>(this ITokenValidable<T1, T2> collection, IEnumerable<Guid> tenantIds, IEnumerable<Guid> appIds,
 #pragma warning restore VSTHRD200 // Use "Async" suffix for async methods
             string wellKnownUri = "https://login.microsoftonline.com/common/.well-known/openid-configuration",
             IEnumerable<string> issuerFormats = null) where T1 : IEncryptedContentBearer<T2> where T2 : IDecryptableContent
@@ -52,18 +52,18 @@ namespace Microsoft.Graph
         /// If you are not using the public cloud you need to pass the value corresponding to your national deployment.</param>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="tenantIds"/> or <paramref name="appIds"/> is null or empty</exception>
         /// <returns>Are tokens valid or not.</returns>
-        public static async Task<bool> AreTokensValidAsync<T1,T2>(this ITokenValidable<T1, T2> collection, IEnumerable<Guid> tenantIds, IEnumerable<Guid> appIds,
+        public static async Task<bool> AreTokensValidAsync<T1, T2>(this ITokenValidable<T1, T2> collection, IEnumerable<Guid> tenantIds, IEnumerable<Guid> appIds,
             string wellKnownUri = "https://login.microsoftonline.com/common/.well-known/openid-configuration",
             IEnumerable<string> issuerFormats = null) where T1 : IEncryptedContentBearer<T2> where T2 : IDecryptableContent
         {
             if ((collection.ValidationTokens == null || !collection.ValidationTokens.Any()) && collection.Value.All(x => x.EncryptedContent == null))
                 return true;
-            
+
             if (tenantIds == null || !tenantIds.Any())
                 throw new ArgumentNullException(nameof(tenantIds));
             if (appIds == null || !appIds.Any())
                 throw new ArgumentNullException(nameof(appIds));
-            if(!(issuerFormats?.Any() ?? false))
+            if (!(issuerFormats?.Any() ?? false))
                 issuerFormats = new string[] { "https://sts.windows.net/{0}/", "https://login.microsoftonline.com/{0}/v2.0" };
 
             var configurationManager = new ConfigurationManager<OpenIdConnectConfiguration>(wellKnownUri, new OpenIdConnectConfigurationRetriever());
@@ -72,11 +72,11 @@ namespace Microsoft.Graph
             var appIdsToValidate = appIds.Select(x => x.ToString());
             foreach (var issuerFormat in issuerFormats)
             {
-                var issuersToValidate = tenantIds.Select(x => string.Format(issuerFormat,x));
+                var issuersToValidate = tenantIds.Select(x => string.Format(issuerFormat, x));
                 var result = collection.ValidationTokens.Select(x => IsTokenValid(x, handler, openIdConfig, issuersToValidate, appIdsToValidate))
                             .Aggregate(static (z, y) => z && y);
 
-                if(result)
+                if (result)
                     return result;// no need to try the other issuer if this one worked.
             }
 
@@ -98,7 +98,7 @@ namespace Microsoft.Graph
                     IssuerSigningKeys = openIdConfig.SigningKeys
                 };
                 tokenValidationParameters.EnableAadSigningKeyIssuerValidation();
-                handler.ValidateToken(token,  tokenValidationParameters, out _);
+                handler.ValidateToken(token, tokenValidationParameters, out _);
             }
             catch
             {

@@ -4,11 +4,11 @@
 
 namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
 {
-    using Microsoft.Kiota.Abstractions.Serialization;
     using System;
     using System.Collections.Generic;
+    using Microsoft.Kiota.Abstractions.Serialization;
 
-    public class TestAttendee : TestRecipient,IParsable, IAdditionalDataHolder
+    public class TestAttendee : TestRecipient, IParsable, IAdditionalDataHolder
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TestAttendee"/> class.

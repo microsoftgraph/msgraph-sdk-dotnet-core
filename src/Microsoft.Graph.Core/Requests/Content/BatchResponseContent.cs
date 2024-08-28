@@ -1,11 +1,9 @@
-// ------------------------------------------------------------------------------
+﻿// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
 namespace Microsoft.Graph
 {
-    using Microsoft.Kiota.Abstractions;
-    using Microsoft.Kiota.Abstractions.Serialization;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -15,6 +13,8 @@ namespace Microsoft.Graph
     using System.Text;
     using System.Text.Json;
     using System.Threading.Tasks;
+    using Microsoft.Kiota.Abstractions;
+    using Microsoft.Kiota.Abstractions.Serialization;
     /// <summary>
     /// Handles batch request responses.
     /// </summary>
@@ -47,7 +47,7 @@ namespace Microsoft.Graph
             if (jBatchResponseObject == null)
                 return responseMessages;
 
-            if(jBatchResponseObject.RootElement.TryGetProperty(CoreConstants.BatchRequest.Responses, out JsonElement jResponses) && jResponses.ValueKind == JsonValueKind.Array)
+            if (jBatchResponseObject.RootElement.TryGetProperty(CoreConstants.BatchRequest.Responses, out JsonElement jResponses) && jResponses.ValueKind == JsonValueKind.Array)
             {
                 foreach (JsonElement jResponseItem in jResponses.EnumerateArray())
                     responseMessages.Add(jResponseItem.GetProperty(CoreConstants.BatchRequest.Id).ToString(), GetResponseMessageFromJObject(jResponseItem));
@@ -139,7 +139,7 @@ namespace Microsoft.Graph
         /// Gets the @NextLink of a batch response.
         /// </summary>
         /// <returns></returns>
-        [Obsolete("This method is deprecated as a batch response does not contain a next link",true)]
+        [Obsolete("This method is deprecated as a batch response does not contain a next link", true)]
         public async Task<string> GetNextLinkAsync()
         {
             jBatchResponseObject = jBatchResponseObject ?? await GetBatchResponseContentAsync().ConfigureAwait(false);
@@ -161,7 +161,7 @@ namespace Microsoft.Graph
         /// <returns>Returns true if status code is between 200 and 300.</returns>
         public static bool IsSuccessStatusCode(HttpStatusCode statusCode)
         {
-            return ((int)statusCode >= 200) && ((int)statusCode <= 299); 
+            return ((int)statusCode >= 200) && ((int)statusCode <= 299);
         }
 
         /// <summary>
@@ -190,7 +190,7 @@ namespace Microsoft.Graph
                     // try to add the header to the request message otherwise add it to the content message if the content is set
                     if (!responseMessage.Headers.TryAddWithoutValidation(headerKeyValue.Name, headerKeyValue.Value.ToString()) && responseMessage.Content != null)
                     {
-                        if(headerKeyValue.Name.Equals("Content-Type",StringComparison.OrdinalIgnoreCase))
+                        if (headerKeyValue.Name.Equals("Content-Type", StringComparison.OrdinalIgnoreCase))
                             responseMessage.Content.Headers.ContentType = MediaTypeHeaderValue.Parse(headerKeyValue.Value.ToString()); // we do this to override the default and to allow content types with parameters e.g. Content-Type: application/json; odata=verbose
                         else
                             responseMessage.Content.Headers.TryAddWithoutValidation(headerKeyValue.Name, headerKeyValue.Value.ToString());// Try to add the headers we couldn't add to the HttpResponseMessage to the HttpContent
@@ -215,7 +215,7 @@ namespace Microsoft.Graph
         /// <returns>A batch response content as <see cref="JsonDocument"/>.</returns>
         private async Task<JsonDocument> GetBatchResponseContentAsync()
         {
-            if (this.batchResponseMessage.Content == null || this.batchResponseMessage.Content.Headers.ContentLength == 0 )
+            if (this.batchResponseMessage.Content == null || this.batchResponseMessage.Content.Headers.ContentLength == 0)
                 return null;
 
             try

@@ -4,8 +4,8 @@
 
 namespace Microsoft.Graph.DotnetCore.Core.Test.Mocks
 {
-    using Moq;
     using System;
+    using Moq;
     public class MockProgress : Mock<IProgress<AsyncOperationStatus>>
     {
         public MockProgress()

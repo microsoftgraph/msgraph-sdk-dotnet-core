@@ -6,7 +6,7 @@ namespace Microsoft.Graph
 {
     using System;
     using Microsoft.Kiota.Abstractions;
-    
+
     /// <summary>
     /// Graph client exception.
     /// </summary>

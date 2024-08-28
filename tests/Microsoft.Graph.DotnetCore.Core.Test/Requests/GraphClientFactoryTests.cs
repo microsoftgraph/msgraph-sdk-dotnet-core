@@ -1,22 +1,22 @@
-// ------------------------------------------------------------------------------
+﻿// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
 namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 {
-    using Mocks;
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Net;
     using System.Net.Http;
     using System.Net.Http.Headers;
     using System.Reflection;
     using System.Threading;
     using System.Threading.Tasks;
-    using System.Net;
-    using Xunit;
     using Microsoft.Kiota.Http.HttpClientLibrary.Middleware;
     using Microsoft.Kiota.Http.HttpClientLibrary.Middleware.Options;
+    using Mocks;
+    using Xunit;
 
     public class GraphClientFactoryTests : IDisposable
     {
@@ -139,7 +139,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             var handlers = GraphClientFactory.CreateDefaultHandlers();
             handlers.Add(new GraphTelemetryHandler());
 
-            ArgumentException exception =  Assert.Throws<ArgumentException>(() => GraphClientFactory.CreatePipeline(handlers));
+            ArgumentException exception = Assert.Throws<ArgumentException>(() => GraphClientFactory.CreatePipeline(handlers));
 
             Assert.Contains($"{typeof(GraphTelemetryHandler)} has a duplicate handler.", exception.Message);
         }
@@ -150,7 +150,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             var timeout = TimeSpan.FromSeconds(200);
             var baseAddress = new Uri("https://localhost");
             var cacheHeader = new CacheControlHeaderValue();
-            
+
             using (HttpClient client = GraphClientFactory.Create())
             {
                 client.Timeout = timeout;
@@ -262,7 +262,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         public void CreateClient_WithInnerHandlerReference()
         {
             DelegatingHandler[] handlers = new DelegatingHandler[1];
-            handlers[0] = new RetryHandler() 
+            handlers[0] = new RetryHandler()
             {
                 InnerHandler = this.testHttpMessageHandler
             };
@@ -306,7 +306,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             var finalHandler = new MockHttpHandler();
 
             // Act
-            using (var client = GraphClientFactory.Create(handlers: GraphClientFactory.CreateDefaultHandlers(), finalHandler: finalHandler, disposeHandler: shouldDisposeHandler)) 
+            using (var client = GraphClientFactory.Create(handlers: GraphClientFactory.CreateDefaultHandlers(), finalHandler: finalHandler, disposeHandler: shouldDisposeHandler))
             {
                 Assert.NotNull(client);
             }

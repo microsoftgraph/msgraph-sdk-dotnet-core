@@ -4,36 +4,48 @@
 
 namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels
 {
-    using Microsoft.Kiota.Abstractions;
-    using Microsoft.Kiota.Abstractions.Serialization;
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Microsoft.Kiota.Abstractions;
+    using Microsoft.Kiota.Abstractions.Serialization;
 
     /// <summary>
     /// Test class for testing serialization of Date.
     /// </summary>
-    public class DateTestClass: IParsable
+    public class DateTestClass : IParsable
     {
         /// <summary>
         /// Gets or sets nullableDate.
         /// </summary>
-        public Date? NullableDate { get; set; }
+        public Date? NullableDate
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Gets or sets dateCollection.
         /// </summary>
-        public IEnumerable<Date?> DateCollection { get; set; }
+        public IEnumerable<Date?> DateCollection
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Gets or sets InvalidType.
         /// </summary>
-        public int? InvalidType { get; set; }
+        public int? InvalidType
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Gets or sets IgnoredNumber
         /// </summary>
-        public int IgnoredNumber { get; set; }
+        public int IgnoredNumber
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Gets or sets AdditionalData

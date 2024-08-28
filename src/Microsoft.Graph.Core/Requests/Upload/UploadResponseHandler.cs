@@ -1,16 +1,16 @@
-// ------------------------------------------------------------------------------
+﻿// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
 namespace Microsoft.Graph
 {
-    using Microsoft.Graph.Core.Models;
     using System.IO;
     using System.Net;
     using System.Net.Http;
-    using System.Threading.Tasks;
-    using Microsoft.Kiota.Abstractions.Serialization;
     using System.Text.Json;
+    using System.Threading.Tasks;
+    using Microsoft.Graph.Core.Models;
+    using Microsoft.Kiota.Abstractions.Serialization;
 
     /// <summary>
     /// The ResponseHandler for upload requests
@@ -34,7 +34,7 @@ namespace Microsoft.Graph
         /// <typeparam name="T">The type to return</typeparam>
         /// <param name="response">The HttpResponseMessage to handle.</param>
         /// <returns></returns>
-        public async Task<UploadResult<T>> HandleResponseAsync<T>(HttpResponseMessage response) where T : IParsable,new()
+        public async Task<UploadResult<T>> HandleResponseAsync<T>(HttpResponseMessage response) where T : IParsable, new()
         {
             if (response.Content == null)
             {

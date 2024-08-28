@@ -41,6 +41,9 @@ jobs:
       - name: Install needed dotnet workloads
         run: dotnet workload install android macos ios maccatalyst
 
+      - name: Lint the code
+        run: dotnet format --verify-no-changes
+        
       - name: Restore nuget dependencies
         run: dotnet restore ${{ env.solutionName }}
 

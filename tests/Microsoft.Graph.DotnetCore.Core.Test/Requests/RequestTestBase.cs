@@ -4,9 +4,9 @@
 
 namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 {
-    using Microsoft.Graph.DotnetCore.Core.Test.Mocks;
     using System;
     using System.Net.Http;
+    using Microsoft.Graph.DotnetCore.Core.Test.Mocks;
     public class RequestTestBase : IDisposable
     {
         protected string baseUrl = "https://localhost/v1.0";

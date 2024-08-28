@@ -4,9 +4,9 @@
 
 namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
 {
-    using Microsoft.Kiota.Abstractions.Serialization;
     using System;
     using System.Collections.Generic;
+    using Microsoft.Kiota.Abstractions.Serialization;
 
     /// <summary>
     /// The type DateTimeTimeZone.
@@ -25,13 +25,19 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
         /// Gets or sets dateTime.
         /// A single point of time in a combined date and time representation ({date}T{time}; for example, 2017-08-29T04:00:00.0000000).
         /// </summary>
-        public string DateTime { get; set; }
+        public string DateTime
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Gets or sets timeZone.
         /// Represents a time zone, for example, 'Pacific Standard Time'. See below for more possible values.
         /// </summary>
-        public string TimeZone { get; set; }
+        public string TimeZone
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Gets or sets additional data.
@@ -41,7 +47,10 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels
         /// <summary>
         /// Gets or sets @odata.type.
         /// </summary>
-        public string ODataType { get; set; }
+        public string ODataType
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Gets the field deserializers for the <see cref="TestDateTimeTimeZone"/> instance

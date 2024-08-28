@@ -4,20 +4,20 @@
 
 namespace Microsoft.Graph
 {
-    using Microsoft.Kiota.Abstractions;
-    using Microsoft.Kiota.Abstractions.Serialization;
     using System;
     using System.Net;
     using System.Net.Http;
     using System.Text.Json;
     using System.Threading;
     using System.Threading.Tasks;
+    using Microsoft.Kiota.Abstractions;
+    using Microsoft.Kiota.Abstractions.Serialization;
 
     /// <summary>
     /// Monitor for async operations to the Graph service on the client.
     /// </summary>
     /// <typeparam name="T">The object type to return.</typeparam>
-    public class AsyncMonitor<T> : IAsyncMonitor<T> where T: IParsable, new()
+    public class AsyncMonitor<T> : IAsyncMonitor<T> where T : IParsable, new()
     {
         private AsyncOperationStatus asyncOperationStatus;
         private IBaseClient client;
@@ -37,7 +37,7 @@ namespace Microsoft.Graph
             this.monitorUrl = monitorUrl;
             this.parseNodeFactory = parseNodeFactory as IAsyncParseNodeFactory ?? ParseNodeFactoryRegistry.DefaultInstance;
         }
-        
+
         /// <summary>
         /// Poll to check for completion of an async call to the Graph service.
         /// </summary>
@@ -48,10 +48,10 @@ namespace Microsoft.Graph
         {
             while (!cancellationToken.IsCancellationRequested)
             {
-                var requestInformation = new RequestInformation() { HttpMethod = Method.GET , UrlTemplate = this.monitorUrl};
+                var requestInformation = new RequestInformation() { HttpMethod = Method.GET, UrlTemplate = this.monitorUrl };
                 var nativeResponseHandler = new NativeResponseHandler();
                 requestInformation.SetResponseHandler(nativeResponseHandler);
-                await this.client.RequestAdapter.SendNoContentAsync(requestInformation, cancellationToken:cancellationToken).ConfigureAwait(false);
+                await this.client.RequestAdapter.SendNoContentAsync(requestInformation, cancellationToken: cancellationToken).ConfigureAwait(false);
                 using var responseMessage = nativeResponseHandler.Value as HttpResponseMessage;
 
                 // The monitor service will return an Accepted status for any monitor operation that hasn't completed.
@@ -93,7 +93,7 @@ namespace Microsoft.Graph
 
                 await Task.Delay(CoreConstants.PollingIntervalInMs, cancellationToken).ConfigureAwait(false);
             }
-            
+
             return default(T);
         }
     }

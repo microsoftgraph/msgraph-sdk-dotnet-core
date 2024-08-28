@@ -1,13 +1,13 @@
-// ------------------------------------------------------------------------------
+﻿// ------------------------------------------------------------------------------
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
 namespace Microsoft.Graph
 {
-    using Microsoft.Kiota.Abstractions;
-    using Microsoft.Kiota.Abstractions.Serialization;
     using System;
     using System.Collections.Generic;
+    using Microsoft.Kiota.Abstractions;
+    using Microsoft.Kiota.Abstractions.Serialization;
 
     /// <summary>
     /// Graph service exception.
@@ -48,7 +48,7 @@ namespace Microsoft.Graph
         /// <param name="rawResponseBody">The raw JSON response body.</param>
         public ServiceException(string message,
                                 System.Net.Http.Headers.HttpResponseHeaders responseHeaders,
-                                int statusCode, 
+                                int statusCode,
                                 string rawResponseBody,
                                 Exception innerException = null)
             : this(message, responseHeaders, statusCode, innerException)
@@ -61,15 +61,24 @@ namespace Microsoft.Graph
         /// <summary>
         /// The HTTP response headers from the response.
         /// </summary>
-        public new System.Net.Http.Headers.HttpResponseHeaders ResponseHeaders { get; private set; }
-        
+        public new System.Net.Http.Headers.HttpResponseHeaders ResponseHeaders
+        {
+            get; private set;
+        }
+
         /// <summary>
         /// Provide the raw JSON response body.
         /// </summary>
-        public string RawResponseBody { get; private set; }
+        public string RawResponseBody
+        {
+            get; private set;
+        }
 
         /// <summary>Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.</summary>
-        public IDictionary<string, object> AdditionalData { get; set; }
+        public IDictionary<string, object> AdditionalData
+        {
+            get; set;
+        }
 
         /// <summary>
         /// Checks if a given error code has been returned in the response at any level in the error stack.
@@ -82,13 +91,13 @@ namespace Microsoft.Graph
             {
                 throw new ArgumentException("errorCode cannot be null or empty", nameof(errorCode));
             }
-            
-            if (RawResponseBody is not null && RawResponseBody.IndexOf(errorCode,StringComparison.OrdinalIgnoreCase) >= 0)
+
+            if (RawResponseBody is not null && RawResponseBody.IndexOf(errorCode, StringComparison.OrdinalIgnoreCase) >= 0)
             {
                 return true;
             }
-            
-            if (!string.IsNullOrWhiteSpace(Message) && Message.IndexOf(errorCode,StringComparison.OrdinalIgnoreCase) >= 0)
+
+            if (!string.IsNullOrWhiteSpace(Message) && Message.IndexOf(errorCode, StringComparison.OrdinalIgnoreCase) >= 0)
             {
                 return true;
             }

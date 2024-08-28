@@ -4,13 +4,13 @@
 
 namespace Microsoft.Graph.DotnetCore.Core.Test.Extensions
 {
-    using Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels;
-    using Microsoft.Kiota.Abstractions.Serialization;
-    using Microsoft.Kiota.Serialization.Json;
     using System;
     using System.Security;
     using System.Security.Cryptography.X509Certificates;
     using System.Threading.Tasks;
+    using Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels;
+    using Microsoft.Kiota.Abstractions.Serialization;
+    using Microsoft.Kiota.Serialization.Json;
     using Xunit;
 
     public class IDecryptableContentExtensionsTests
@@ -98,8 +98,8 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Extensions
             var chatMessage = await testChangeNotificationEncryptedContent.DecryptAsync<TestChatMessage>((_, thumbprint) => Task.FromResult(this._certificate));
 
             // Assert that decryption is okay
-            Assert.Equal("1625126194597",chatMessage.Etag);
-            Assert.Equal("Hello World",chatMessage.Body.Content);
+            Assert.Equal("1625126194597", chatMessage.Etag);
+            Assert.Equal("Hello World", chatMessage.Body.Content);
             Assert.Equal(TestBodyType.Text, chatMessage.Body.ContentType);
         }
 
