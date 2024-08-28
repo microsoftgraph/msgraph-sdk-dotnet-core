@@ -41,7 +41,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             };
 
             // Act
-            var uploadResult = await responseHandler.HandleResponse<TestDriveItem>(hrm);
+            var uploadResult = await responseHandler.HandleResponseAsync<TestDriveItem>(hrm);
             var driveItem = uploadResult.ItemResponse;
 
             //Assert
@@ -65,7 +65,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             hrm.StatusCode = HttpStatusCode.Created;//upload successful!
 
             // Act
-            var uploadResult = await responseHandler.HandleResponse<TestDriveItem>(hrm);
+            var uploadResult = await responseHandler.HandleResponseAsync<TestDriveItem>(hrm);
             var fileAttachment = uploadResult.ItemResponse;
 
             //Assert
@@ -92,7 +92,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             };
 
             // Act
-            var uploadResult = await responseHandler.HandleResponse<TestDriveItem>(hrm);
+            var uploadResult = await responseHandler.HandleResponseAsync<TestDriveItem>(hrm);
             var uploadSession = uploadResult.UploadSession;
 
             //Assert
@@ -126,7 +126,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             };
 
             // Act
-            var serviceException = await Assert.ThrowsAsync<ServiceException>(() => responseHandler.HandleResponse<TestDriveItem>(hrm));
+            var serviceException = await Assert.ThrowsAsync<ServiceException>(() => responseHandler.HandleResponseAsync<TestDriveItem>(hrm));
 
             //Assert
             Assert.NotNull(serviceException);
@@ -158,7 +158,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             };
 
             // Act
-            var serviceException = await Assert.ThrowsAsync<ServiceException>(() => responseHandler.HandleResponse<TestDriveItem>(hrm));
+            var serviceException = await Assert.ThrowsAsync<ServiceException>(() => responseHandler.HandleResponseAsync<TestDriveItem>(hrm));
 
             //Assert
             Assert.NotNull(serviceException);

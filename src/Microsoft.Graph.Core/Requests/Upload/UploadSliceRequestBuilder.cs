@@ -7,6 +7,7 @@ namespace Microsoft.Graph
     using Microsoft.Kiota.Abstractions;
     using Microsoft.Kiota.Abstractions.Serialization;
     using System;
+    using System.ComponentModel;
     using System.IO;
     using System.Net.Http;
     using System.Threading;
@@ -71,18 +72,28 @@ namespace Microsoft.Graph
         /// is true, then the item has completed, and the value is the created item from the server.</returns>
         public async Task<UploadResult<T>> PutAsync(Stream stream, CancellationToken cancellationToken = default)
         {
-            var requestInformation = this.CreatePutRequestInformationAsync(stream);
+            var requestInformation = this.CreatePutRequestInformation(stream);
             var nativeResponseHandler = new NativeResponseHandler();
             requestInformation.SetResponseHandler(nativeResponseHandler);
             await this.RequestAdapter.SendNoContentAsync(requestInformation, cancellationToken: cancellationToken).ConfigureAwait(false);
-            return await this.ResponseHandler.HandleResponse<T>(nativeResponseHandler.Value as HttpResponseMessage).ConfigureAwait(false);
+            return await this.ResponseHandler.HandleResponseAsync<T>(nativeResponseHandler.Value as HttpResponseMessage).ConfigureAwait(false);
         }
 
         /// <summary>
         /// Create <see cref="RequestInformation"/> instance to upload the file slice
         /// <param name="stream">The <see cref="Stream"/> to upload</param>
         /// </summary>
-        public RequestInformation CreatePutRequestInformationAsync(Stream stream)
+        [Obsolete("Use CreatePutRequestInformation instead")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+#pragma warning disable VSTHRD200 // Use "Async" suffix for async methods
+        public RequestInformation CreatePutRequestInformationAsync(Stream stream) => CreatePutRequestInformation(stream);
+#pragma warning restore VSTHRD200 // Use "Async" suffix for async methods
+
+        /// <summary>
+        /// Create <see cref="RequestInformation"/> instance to upload the file slice
+        /// <param name="stream">The <see cref="Stream"/> to upload</param>
+        /// </summary>
+        public RequestInformation CreatePutRequestInformation(Stream stream)
         {
             _ = stream ?? throw new ArgumentNullException(nameof(stream));
             var requestInfo = new RequestInformation

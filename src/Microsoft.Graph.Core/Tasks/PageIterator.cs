@@ -169,7 +169,7 @@ namespace Microsoft.Graph
         /// <returns>A boolean value that indicates whether the callback cancelled 
         /// iterating across the page results or whether there are more pages to page. 
         /// A return value of false indicates that the iterator should stop iterating.</returns>
-        private async Task<bool> IntrapageIterate()
+        private async Task<bool> IntrapageIterateAsync()
         {
             State = PagingState.IntrapageIteration;
 
@@ -304,7 +304,7 @@ namespace Microsoft.Graph
             // Iterate over the contents of queue. The queue could be from the initial page
             // results passed to the iterator, the results of a delta query, or from a 
             // previously cancelled iteration that gets resumed.
-            bool shouldContinueInterpageIteration = await IntrapageIterate();
+            bool shouldContinueInterpageIteration = await IntrapageIterateAsync();
 
             // Request more pages if they are available.
             while (shouldContinueInterpageIteration && !token.IsCancellationRequested)
@@ -314,7 +314,7 @@ namespace Microsoft.Graph
 
                 // Iterate over items added to the queue by InterpageIterateAsync and
                 // determine whether there are more pages to request.
-                shouldContinueInterpageIteration = await IntrapageIterate();
+                shouldContinueInterpageIteration = await IntrapageIterateAsync();
             }
         }
 

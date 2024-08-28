@@ -54,11 +54,11 @@ namespace Microsoft.Graph
             {
                 // Gets the response string with response headers and status code
                 // set on the response body object.
-                var responseString = await GetResponseString(responseMessage).ConfigureAwait(false);
+                var responseString = await GetResponseStringAsync(responseMessage).ConfigureAwait(false);
 
                 // Get the response body object with the change list 
                 // set on each response item.
-                var responseWithChangeList = await GetResponseBodyWithChangelist(responseString).ConfigureAwait(false);
+                var responseWithChangeList = await GetResponseBodyWithChangelistAsync(responseString).ConfigureAwait(false);
                 using var responseWithChangeListStream = new MemoryStream(Encoding.UTF8.GetBytes(responseWithChangeList));
 
                 var responseParseNode = await parseNodeFactory.GetRootParseNodeAsync(CoreConstants.MimeTypeNames.Application.Json, responseWithChangeListStream);
@@ -73,7 +73,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="hrm">The response object</param>
         /// <returns>The full response string to return</returns>
-        private async Task<string> GetResponseString(HttpResponseMessage hrm)
+        private async Task<string> GetResponseStringAsync(HttpResponseMessage hrm)
         {
             var responseContent = "";
 
@@ -106,7 +106,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="deltaResponseBody">The entire response body as a string.</param>
         /// <returns>A task with a string representation of the response body. The changes are set on each response item.</returns>
-        private async Task<string> GetResponseBodyWithChangelist(string deltaResponseBody)
+        private async Task<string> GetResponseBodyWithChangelistAsync(string deltaResponseBody)
         {
             // This is the JsonDocument that we will replace. We should probably
             // return a string instead.
@@ -123,7 +123,7 @@ namespace Microsoft.Graph
 
                 foreach (var deltaObject in pageOfDeltaObjects.EnumerateArray())
                 {
-                    var updatedObjectJsonDocument = await DiscoverChangedProperties(deltaObject).ConfigureAwait(false);
+                    var updatedObjectJsonDocument = await DiscoverChangedPropertiesAsync(deltaObject).ConfigureAwait(false);
                     updatedObjectsWithChangeList.Add(updatedObjectJsonDocument.RootElement);
                 }
 
@@ -145,13 +145,13 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="responseItem">The item to inspect for properties.</param>
         /// <returns>The item with the 'changes' property set on it.</returns>
-        private async Task<JsonDocument> DiscoverChangedProperties(JsonElement responseItem)
+        private async Task<JsonDocument> DiscoverChangedPropertiesAsync(JsonElement responseItem)
         {
             // List of changed properties.
             var changes = new List<string>();
 
             // Get the list of changed properties on the item.
-            await GetObjectProperties(responseItem, changes).ConfigureAwait(false);
+            await GetObjectPropertiesAsync(responseItem, changes).ConfigureAwait(false);
 
             // Add the changes object to the response item.
 #if NET5_0_OR_GREATER
@@ -170,7 +170,7 @@ namespace Microsoft.Graph
         /// <param name="changes">The list of properties returned in the response.</param>
         /// <param name="parentName">The parent object of this changed object.</param>
         /// <returns></returns>
-        private async Task GetObjectProperties(JsonElement changedObject, List<string> changes, string parentName = "")
+        private async Task GetObjectPropertiesAsync(JsonElement changedObject, List<string> changes, string parentName = "")
         {
             if (!string.IsNullOrEmpty(parentName))
             {
@@ -184,7 +184,7 @@ namespace Microsoft.Graph
                     case JsonValueKind.Object:
                     {
                         string parent = parentName + property.Name;
-                        await GetObjectProperties(property.Value, changes, parent).ConfigureAwait(false);
+                        await GetObjectPropertiesAsync(property.Value, changes, parent).ConfigureAwait(false);
                         break;
                     }
                     case JsonValueKind.Array:
@@ -207,7 +207,7 @@ namespace Microsoft.Graph
 
                             if (arrayItem.ValueKind == JsonValueKind.Object)
                             {
-                                await GetObjectProperties(arrayItem, changes, parentWithIndex).ConfigureAwait(false);
+                                await GetObjectPropertiesAsync(arrayItem, changes, parentWithIndex).ConfigureAwait(false);
                             }
                             else // Assuming that this is a Value item.
                             {
