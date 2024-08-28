@@ -41,7 +41,7 @@ namespace Microsoft.Graph
         {
             if (response is HttpResponseMessage responseMessage && responseMessage.Content != null && typeof(T).IsAssignableFrom(typeof(ModelType)))
             {
-                await ValidateSuccessfulResponse(responseMessage, errorMappings).ConfigureAwait(false);
+                await ValidateSuccessfulResponseAsync(responseMessage, errorMappings).ConfigureAwait(false);
                 using var responseStream = await responseMessage.Content.ReadAsStreamAsync().ConfigureAwait(false);
                 var jsonParseNode = await _jsonParseNodeFactory.GetRootParseNodeAsync(responseMessage.Content.Headers?.ContentType?.MediaType?.ToLowerInvariant(), responseStream);
                 return (ModelType)(object)jsonParseNode.GetObjectValue<T>((parsable) => new T());
@@ -56,7 +56,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="httpResponseMessage">The <see cref="HttpResponseMessage"/> to validate</param>
         /// <param name="errorMapping">The errorMappings to use in the event of failed requests</param>
-        private async Task ValidateSuccessfulResponse(HttpResponseMessage httpResponseMessage, Dictionary<string, ParsableFactory<IParsable>> errorMapping)
+        private async Task ValidateSuccessfulResponseAsync(HttpResponseMessage httpResponseMessage, Dictionary<string, ParsableFactory<IParsable>> errorMapping)
         {
             if (httpResponseMessage.IsSuccessStatusCode)
                 return;

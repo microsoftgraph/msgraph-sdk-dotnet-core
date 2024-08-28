@@ -34,7 +34,7 @@ namespace Microsoft.Graph
         /// <typeparam name="T">The type to return</typeparam>
         /// <param name="response">The HttpResponseMessage to handle.</param>
         /// <returns></returns>
-        public async Task<UploadResult<T>> HandleResponse<T>(HttpResponseMessage response) where T : IParsable,new()
+        public async Task<UploadResult<T>> HandleResponseAsync<T>(HttpResponseMessage response) where T : IParsable,new()
         {
             if (response.Content == null)
             {

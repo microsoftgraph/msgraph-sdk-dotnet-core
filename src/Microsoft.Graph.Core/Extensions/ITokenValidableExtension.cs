@@ -13,6 +13,7 @@ namespace Microsoft.Graph
     using System.Linq;
     using System.Threading.Tasks;
     using System.IdentityModel.Tokens.Jwt;
+    using System.ComponentModel;
 
     /// <summary>
     /// Contains extension methods for <see cref="ITokenValidableExtension"/>
@@ -31,7 +32,27 @@ namespace Microsoft.Graph
         /// If you are not using the public cloud you need to pass the value corresponding to your national deployment.</param>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="tenantIds"/> or <paramref name="appIds"/> is null or empty</exception>
         /// <returns>Are tokens valid or not.</returns>
+        [Obsolete("This method is obsolete. Use the async version instead.")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+#pragma warning disable VSTHRD200 // Use "Async" suffix for async methods
         public static async Task<bool> AreTokensValid<T1,T2>(this ITokenValidable<T1, T2> collection, IEnumerable<Guid> tenantIds, IEnumerable<Guid> appIds,
+#pragma warning restore VSTHRD200 // Use "Async" suffix for async methods
+            string wellKnownUri = "https://login.microsoftonline.com/common/.well-known/openid-configuration",
+            IEnumerable<string> issuerFormats = null) where T1 : IEncryptedContentBearer<T2> where T2 : IDecryptableContent
+            => await AreTokensValidAsync(collection, tenantIds, appIds, wellKnownUri, issuerFormats).ConfigureAwait(false);
+        /// <summary>
+        /// Validates tokens attached with the notification collection. If the result is false, the notification collection should be discarded.
+        /// </summary>
+        /// <param name="collection">Collection instance of <see cref="ITokenValidable{T1,T2}"/></param>
+        /// <param name="tenantIds">List of tenant ids that notifications might be originating from.</param>
+        /// <param name="appIds">List of application id (client ids) that subscriptions have been created from.</param>
+        /// <param name="wellKnownUri">Well known URL to get the signing certificates for the tokens.
+        /// If you are not using the public cloud you need to pass the value corresponding to your national deployment.</param>
+        /// <param name="issuerFormats">Issuer formats for the "aud" claim in the tokens.
+        /// If you are not using the public cloud you need to pass the value corresponding to your national deployment.</param>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="tenantIds"/> or <paramref name="appIds"/> is null or empty</exception>
+        /// <returns>Are tokens valid or not.</returns>
+        public static async Task<bool> AreTokensValidAsync<T1,T2>(this ITokenValidable<T1, T2> collection, IEnumerable<Guid> tenantIds, IEnumerable<Guid> appIds,
             string wellKnownUri = "https://login.microsoftonline.com/common/.well-known/openid-configuration",
             IEnumerable<string> issuerFormats = null) where T1 : IEncryptedContentBearer<T2> where T2 : IDecryptableContent
         {
