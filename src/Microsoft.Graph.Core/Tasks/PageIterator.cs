@@ -10,6 +10,9 @@ namespace Microsoft.Graph
     using System.Threading.Tasks;
     using Microsoft.Kiota.Abstractions;
     using Microsoft.Kiota.Abstractions.Serialization;
+#if NET5_0_OR_GREATER
+    using System.Diagnostics.CodeAnalysis;
+#endif
 
     /*
      Spec https://github.com/microsoftgraph/msgraph-sdk-design/blob/main/tasks/PageIteratorTask.md
@@ -21,7 +24,11 @@ namespace Microsoft.Graph
     /// </summary>
     /// <typeparam name="TEntity">The Microsoft Graph entity type returned in the result set.</typeparam>
     /// <typeparam name="TCollectionPage">The Microsoft Graph collection response type returned in the collection response.</typeparam>
+#if NET5_0_OR_GREATER
+    public class PageIterator<TEntity, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)]TCollectionPage> where TCollectionPage : IParsable, IAdditionalDataHolder, new()
+#else
     public class PageIterator<TEntity, TCollectionPage> where TCollectionPage : IParsable, IAdditionalDataHolder, new()
+#endif
     {
         private IRequestAdapter _requestAdapter;
         private TCollectionPage _currentPage;
@@ -364,7 +371,7 @@ namespace Microsoft.Graph
         /// <exception cref="ArgumentException">Thrown when the object doesn't contain a collection inside it</exception>
         private static List<TEntity> ExtractEntityListFromParsable(TCollectionPage parsableCollection)
         {
-            return parsableCollection.GetType().GetProperty("Value")?.GetValue(parsableCollection, null) as List<TEntity> ?? throw new ArgumentException("The Parsable does not contain a collection property");
+            return typeof(TCollectionPage).GetProperty("Value")?.GetValue(parsableCollection, null) as List<TEntity> ?? throw new ArgumentException("The Parsable does not contain a collection property");
         }
 
         /// <summary>
@@ -375,7 +382,7 @@ namespace Microsoft.Graph
         /// <returns></returns>
         private static string ExtractNextLinkFromParsable(TCollectionPage parsableCollection, string nextLinkPropertyName = "OdataNextLink")
         {
-            var nextLinkProperty = parsableCollection.GetType().GetProperty(nextLinkPropertyName);
+            var nextLinkProperty = typeof(TCollectionPage).GetProperty(nextLinkPropertyName);
             if (nextLinkProperty != null &&
                 nextLinkProperty.GetValue(parsableCollection, null) is string nextLinkString
                 && !string.IsNullOrEmpty(nextLinkString))

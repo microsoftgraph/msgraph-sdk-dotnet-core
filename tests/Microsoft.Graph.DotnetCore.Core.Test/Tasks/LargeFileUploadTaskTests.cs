@@ -27,6 +27,30 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
         {
             // register the default serialization instance as the generator would.
             ParseNodeFactoryRegistry.DefaultInstance.ContentTypeAssociatedFactories.TryAdd(CoreConstants.MimeTypeNames.Application.Json, new JsonParseNodeFactory());
+            SerializationWriterFactoryRegistry.DefaultInstance.ContentTypeAssociatedFactories.TryAdd(CoreConstants.MimeTypeNames.Application.Json, new JsonSerializationWriterFactory());
+        }
+
+        [Fact]
+        public void ObsoleteMethodWorksWithIParsable()
+        {
+            var uploadSession = new MockUploadSessionWithoutUploadSessionInterface
+            {
+                NextExpectedRanges = new List<string>() { "0-" },
+                UploadUrl = "http://localhost",
+                ExpirationDateTime = DateTimeOffset.Parse("2019-11-07T06:39:31.499Z")
+            };
+
+            int maxSliceSize = 200 * 1024;//slice size that is 200 KB
+
+            // Act 
+            var exception = Assert.Throws<ArgumentException>(() =>
+            {
+                using Stream stream = new MemoryStream();
+#pragma warning disable CS0618 // Type or member is obsolete
+                return new LargeFileUploadTask<TestDriveItem>(uploadSession, stream, maxSliceSize);
+#pragma warning restore CS0618 // Type or member is obsolete
+            });
+            Assert.NotNull(exception);
         }
 
         [Fact]
@@ -49,6 +73,42 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
                 return new LargeFileUploadTask<TestDriveItem>(uploadSession, stream, maxSliceSize);
             });
             Assert.NotNull(exception);
+        }
+        [Fact]
+        public void ParsesUploadSessionWithoutSerialization()
+        {
+
+            var uploadSession = new UploadSession
+            {
+                NextExpectedRanges = new List<string>() { "0-" },
+                UploadUrl = "http://localhost",
+                ExpirationDateTime = DateTimeOffset.Parse("2019-11-07T06:39:31.499Z")
+            };
+
+            var parsedSession = LargeFileUploadTask<TestDriveItem>.ExtractSessionFromParsable(uploadSession);
+
+            Assert.Equal(uploadSession.UploadUrl, parsedSession.UploadUrl);
+            Assert.Equal(uploadSession.ExpirationDateTime, parsedSession.ExpirationDateTime);
+            Assert.Equal(uploadSession.NextExpectedRanges.Count, parsedSession.NextExpectedRanges.Count);
+            Assert.Equal(uploadSession.NextExpectedRanges[0], parsedSession.NextExpectedRanges[0]);
+        }
+        [Fact]
+        public void ParsesUploadSessionWithSerializationForModelsWithoutInterface()
+        {
+
+            var uploadSession = new MockUploadSessionWithoutUploadSessionInterface
+            {
+                NextExpectedRanges = new List<string>() { "0-" },
+                UploadUrl = "http://localhost",
+                ExpirationDateTime = DateTimeOffset.Parse("2019-11-07T06:39:31.499Z")
+            };
+
+            var parsedSession = LargeFileUploadTask<TestDriveItem>.ExtractSessionFromParsable(uploadSession);
+
+            Assert.Equal(uploadSession.UploadUrl, parsedSession.UploadUrl);
+            Assert.Equal(uploadSession.ExpirationDateTime, parsedSession.ExpirationDateTime);
+            Assert.Equal(uploadSession.NextExpectedRanges.Count, parsedSession.NextExpectedRanges.Count);
+            Assert.Equal(uploadSession.NextExpectedRanges[0], parsedSession.NextExpectedRanges[0]);
         }
         [Fact]
         public void AllowsVariableSliceSize()
@@ -117,28 +177,43 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
                 ExpirationDateTime = DateTimeOffset.Parse("2019-11-07T06:39:31.499Z")
             };
 
+            var uploadSessionWithoutInterface = new MockUploadSessionWithoutUploadSessionInterface()
+            {
+                NextExpectedRanges = new List<string>() { "0-" },
+                UploadUrl = "http://localhost",
+                ExpirationDateTime = DateTimeOffset.Parse("2019-11-07T06:39:31.499Z")
+            };
+
             int maxSliceSize = 320 * 1024;
 
             // Act 
-            var fileUploadTask = new LargeFileUploadTask<TestDriveItem>(uploadSession, stream, maxSliceSize);
-            var uploadSlices = fileUploadTask.GetUploadSliceRequests();
+            var fileUploadTaskWithInterface = new LargeFileUploadTask<TestDriveItem>(uploadSession, stream, maxSliceSize);
+#pragma warning disable CS0618 // Type or member is obsolete
+            var fileUploadTaskWithObsoleteMember = new LargeFileUploadTask<TestDriveItem>(uploadSessionWithoutInterface, stream, maxSliceSize);
+#pragma warning restore CS0618 // Type or member is obsolete
+            var tasks = new[] { fileUploadTaskWithInterface, fileUploadTaskWithObsoleteMember };
 
-            // Assert
-            //We have only 4 slices
-            Assert.Equal(4, uploadSlices.Count());
-
-            long currentRangeBegins = 0;
-            foreach (var uploadSlice in uploadSlices)
+            foreach (var fileUploadTask in tasks)
             {
-                Assert.Equal(stream.Length, uploadSlice.TotalSessionLength);
-                Assert.Equal(currentRangeBegins, uploadSlice.RangeBegin);
-                currentRangeBegins += maxSliceSize;
-            }
+                var uploadSlices = fileUploadTask.GetUploadSliceRequests().ToArray();
 
-            //The last slice is a a bit smaller than the rest
-            var lastUploadSlice = uploadSlices.Last();
-            Assert.Equal(stream.Length - 1, lastUploadSlice.RangeEnd);
-            Assert.Equal(stream.Length % maxSliceSize, lastUploadSlice.RangeLength); //verify the last slice is the right size
+                // Assert
+                //We have only 4 slices
+                Assert.Equal(4, uploadSlices.Length);
+
+                long currentRangeBegins = 0;
+                foreach (var uploadSlice in uploadSlices)
+                {
+                    Assert.Equal(stream.Length, uploadSlice.TotalSessionLength);
+                    Assert.Equal(currentRangeBegins, uploadSlice.RangeBegin);
+                    currentRangeBegins += maxSliceSize;
+                }
+
+                //The last slice is a bit smaller than the rest
+                var lastUploadSlice = uploadSlices[^1];
+                Assert.Equal(stream.Length - 1, lastUploadSlice.RangeEnd);
+                Assert.Equal(stream.Length % maxSliceSize, lastUploadSlice.RangeLength); //verify the last slice is the right size
+            }
         }
 
         [Fact]

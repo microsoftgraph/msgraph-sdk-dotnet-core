@@ -6,14 +6,17 @@ namespace Microsoft.Graph
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.IO;
     using System.Net.Http;
+    using System.Text.Json;
     using System.Threading;
     using System.Threading.Tasks;
     using Microsoft.Graph.Core.Models;
     using Microsoft.Kiota.Abstractions;
     using Microsoft.Kiota.Abstractions.Authentication;
     using Microsoft.Kiota.Abstractions.Serialization;
+    using Microsoft.Kiota.Serialization.Json;
 
     /// <summary>
     /// Task to help with resumable large file uploads.
@@ -40,7 +43,23 @@ namespace Microsoft.Graph
         /// <param name="maxSliceSize">Max size(in bytes) of each slice to be uploaded. Defaults to 5MB. When uploading to OneDrive or SharePoint, this value needs to be a multiple of 320 KiB (327,680 bytes).
         /// If less than 0, default value of 5 MiB is used.</param>
         /// <param name="requestAdapter"><see cref="IRequestAdapter"/> to use for making upload requests. The client should not set Auth headers as upload urls do not need them.</param>
-        public LargeFileUploadTask(IParsable uploadSession, Stream uploadStream, int maxSliceSize = -1, IRequestAdapter requestAdapter = null)
+        [Obsolete("Use the overload that takes in IUploadSession instead.")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public LargeFileUploadTask(IParsable uploadSession, Stream uploadStream, int maxSliceSize = -1,
+            IRequestAdapter requestAdapter = null) : this(ExtractSessionFromParsable(uploadSession), uploadStream, maxSliceSize, requestAdapter)
+        {
+        }
+
+        /// <summary>
+        /// Task to help with resumable large file uploads. Generates slices based on <paramref name="uploadSession"/>
+        /// information, and can control uploading of requests.
+        /// </summary>
+        /// <param name="uploadSession">Session information of type <see cref="IUploadSession"/>></param>
+        /// <param name="uploadStream">Readable, seekable stream to be uploaded. Length of session is determined via uploadStream.Length</param>
+        /// <param name="maxSliceSize">Max size(in bytes) of each slice to be uploaded. Defaults to 5MB. When uploading to OneDrive or SharePoint, this value needs to be a multiple of 320 KiB (327,680 bytes).
+        /// If less than 0, default value of 5 MiB is used.</param>
+        /// <param name="requestAdapter"><see cref="IRequestAdapter"/> to use for making upload requests. The client should not set Auth headers as upload urls do not need them.</param>
+        public LargeFileUploadTask(IUploadSession uploadSession, Stream uploadStream, int maxSliceSize = -1, IRequestAdapter requestAdapter = null)
         {
             if (!uploadStream.CanRead || !uploadStream.CanSeek)
             {
@@ -50,8 +69,8 @@ namespace Microsoft.Graph
             {
                 throw new ArgumentException("Must a stream that is not empty");
             }
-            this.Session = ExtractSessionFromParsable(uploadSession);
-            this._requestAdapter = requestAdapter ?? this.InitializeAdapter(Session.UploadUrl);
+            this.Session = uploadSession;
+            this._requestAdapter = requestAdapter ?? InitializeAdapter(Session.UploadUrl);
             this._uploadStream = uploadStream;
             this._rangesRemaining = this.GetRangesRemaining(Session);
             this._maxSliceSize = maxSliceSize < 0 ? DefaultMaxSliceSize : maxSliceSize;
@@ -63,23 +82,26 @@ namespace Microsoft.Graph
         /// <param name="uploadSession"><see cref="IParsable"/> to initialize an <see cref="IUploadSession"/> from</param>
         /// <returns>A <see cref="IUploadSession"/> instance</returns>
         /// <exception cref="NotImplementedException"></exception>
-        private IUploadSession ExtractSessionFromParsable(IParsable uploadSession)
+        internal static IUploadSession ExtractSessionFromParsable(IParsable uploadSession)
         {
-            if (!uploadSession.GetFieldDeserializers().ContainsKey("expirationDateTime"))
+            if (uploadSession is IUploadSession uploadSessionCast)
+            {
+                return uploadSessionCast;
+            }
+
+            // this scenario (unlikely) will occur in the event the model in the service libraries hasn't been updated to implement the IUploadSession interface from core.
+            var fieldDeserializers = uploadSession.GetFieldDeserializers();
+            if (!fieldDeserializers.ContainsKey("expirationDateTime"))
                 throw new ArgumentException("The Parsable does not contain the 'expirationDateTime' property");
-            if (!uploadSession.GetFieldDeserializers().ContainsKey("nextExpectedRanges"))
+            if (!fieldDeserializers.ContainsKey("nextExpectedRanges"))
                 throw new ArgumentException("The Parsable does not contain the 'nextExpectedRanges' property");
-            if (!uploadSession.GetFieldDeserializers().ContainsKey("uploadUrl"))
+            if (!fieldDeserializers.ContainsKey("uploadUrl"))
                 throw new ArgumentException("The Parsable does not contain the 'uploadUrl' property");
 
-            var uploadSessionType = uploadSession.GetType();
-
-            return new UploadSession()
-            {
-                ExpirationDateTime = uploadSessionType.GetProperty("ExpirationDateTime").GetValue(uploadSession, null) as DateTimeOffset?,
-                NextExpectedRanges = uploadSessionType.GetProperty("NextExpectedRanges").GetValue(uploadSession, null) as List<string>,
-                UploadUrl = uploadSessionType.GetProperty("UploadUrl").GetValue(uploadSession, null) as string
-            };
+            // convert to local type as we don't have the type info for the upload session just that it implements IParsable
+            using var uploadSessionStream = KiotaJsonSerializer.SerializeAsStream(uploadSession, false);// just in case there's a backing store 
+            var uploadSessionJsonNode = new JsonParseNode(JsonDocument.Parse(uploadSessionStream).RootElement);
+            return uploadSessionJsonNode.GetObjectValue(UploadSession.CreateFromDiscriminatorValue);
         }
 
         /// <summary>
@@ -87,7 +109,7 @@ namespace Microsoft.Graph
         /// </summary>
         /// <param name="uploadUrl">Url to perform the upload to from the session</param>
         /// <returns></returns>
-        private IRequestAdapter InitializeAdapter(string uploadUrl)
+        private static BaseGraphRequestAdapter InitializeAdapter(string uploadUrl)
         {
             HttpClient httpClient = GraphClientFactory.Create(); //no auth
             httpClient.SetFeatureFlag(FeatureFlag.FileUploadTask);
@@ -196,7 +218,7 @@ namespace Microsoft.Graph
                         return uploadResult;
                     }
 
-                    ThrowIfUploadCancelled(cancellationToken, trackedExceptions);
+                    ThrowIfUploadCancelled(trackedExceptions, cancellationToken);
                 }
 
                 await this.UpdateSessionStatusAsync(cancellationToken).ConfigureAwait(false);
@@ -207,7 +229,7 @@ namespace Microsoft.Graph
                     await Task.Delay(2000 * uploadTries * uploadTries, cancellationToken).ConfigureAwait(false);
                 }
 
-                ThrowIfUploadCancelled(cancellationToken, trackedExceptions);
+                ThrowIfUploadCancelled(trackedExceptions, cancellationToken);
             }
 
             throw new TaskCanceledException("Upload failed too many times. See InnerException for list of exceptions that occured.", new AggregateException(trackedExceptions.ToArray()));
@@ -292,7 +314,7 @@ namespace Microsoft.Graph
                 : sizeBasedOnRange;
         }
 
-        private void ThrowIfUploadCancelled(CancellationToken cancellationToken, ICollection<Exception> trackedExceptions)
+        private static void ThrowIfUploadCancelled(ICollection<Exception> trackedExceptions, CancellationToken cancellationToken)
         {
             if (cancellationToken.IsCancellationRequested)
                 throw new OperationCanceledException("File upload cancelled. See InnerException for list of exceptions that occured.", new AggregateException(trackedExceptions));

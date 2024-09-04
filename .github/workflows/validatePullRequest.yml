@@ -40,12 +40,12 @@ jobs:
 
       - name: Install needed dotnet workloads
         run: dotnet workload install android macos ios maccatalyst
+     
+      - name: Restore nuget dependencies
+        run: dotnet restore ${{ env.solutionName }}
 
       - name: Lint the code
         run: dotnet format --verify-no-changes
-        
-      - name: Restore nuget dependencies
-        run: dotnet restore ${{ env.solutionName }}
 
       - name: Build
         run: dotnet build ${{ env.solutionName }} -c Debug /p:UseSharedCompilation=false,IncludeMauiTargets=true
@@ -56,4 +56,17 @@ jobs:
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
 
+  validate-trimming:
+    name: Validate Project for Trimming
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4.1.7
 
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.x
+
+      - name: Validate Trimming warnings
+        run: dotnet publish -c Release -r win-x64 /p:TreatWarningsAsErrors=true /warnaserror -f net8.0
+        working-directory: ./tests/Microsoft.Graph.DotnetCore.Core.Trimming
