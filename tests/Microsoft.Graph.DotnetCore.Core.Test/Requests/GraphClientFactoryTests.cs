@@ -198,7 +198,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         }
 
         [Fact]
-        public async Task SendRequest_Redirect()
+        public async Task SendRequest_RedirectAsync()
         {
             var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, "http://example.org/foo");
             var redirectResponse = new HttpResponseMessage(HttpStatusCode.MovedPermanently);
@@ -218,7 +218,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         }
 
         [Fact]
-        public async Task SendRequest_Retry()
+        public async Task SendRequest_RetryAsync()
         {
             var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, "http://example.org/foo");
             httpRequestMessage.Content = new StringContent("Hello World");

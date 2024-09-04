@@ -27,7 +27,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         }
 
         [Fact]
-        public async Task HandleUserResponse()
+        public async Task HandleUserResponseAsync()
         {
             // Arrange
             var responseHandler = new ResponseHandler<TestUser>();
@@ -57,7 +57,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         /// </summary>
         /// <returns></returns>
         [Fact]
-        public async Task HandleEventDeltaResponseWithArrayOfPrimitives()
+        public async Task HandleEventDeltaResponseWithArrayOfPrimitivesAsync()
         {
             // Arrange
             var deltaResponseHandler = new DeltaResponseHandler<TestEventDeltaCollectionResponse>();
@@ -99,7 +99,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         }
 
         [Fact]
-        public async Task HandleEventDeltaResponse()
+        public async Task HandleEventDeltaResponseAsync()
         {
             // Arrange
             var deltaResponseHandler = new DeltaResponseHandler<TestEventDeltaCollectionResponse>();
@@ -144,7 +144,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         /// </summary>
         /// <returns></returns>
         [Fact]
-        public async Task HandleEventDeltaResponseWithEmptyCollectionPage()
+        public async Task HandleEventDeltaResponseWithEmptyCollectionPageAsync()
         {
             // Arrange
             var deltaResponseHandler = new DeltaResponseHandler<TestEventDeltaCollectionResponse>();
@@ -175,7 +175,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         }
 
         [Fact]
-        public async Task HandleEventDeltaResponseWithNullValues()
+        public async Task HandleEventDeltaResponseWithNullValuesAsync()
         {
             // Arrange
             var deltaResponseHandler = new DeltaResponseHandler<TestEventDeltaCollectionResponse>();
@@ -210,7 +210,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             var deltaServiceLibResponse = await deltaResponseHandler.HandleResponseAsync<HttpResponseMessage, TestEventDeltaCollectionResponse>(hrm, null);
             var eventsDeltaCollectionPage = deltaServiceLibResponse.Value;
             eventsDeltaCollectionPage[0].AdditionalData.TryGetValue("changes", out object changes);
-            var changeList = JsonSerializer.Deserialize<List<string>>(KiotaJsonSerializer.SerializeAsString(changes as UntypedArray));
+            var changeList = JsonSerializer.Deserialize<List<string>>(await KiotaJsonSerializer.SerializeAsStringAsync(changes as UntypedArray));
 
             // Updating a non-schematized property on a model such as instance annotations, open types,
             // and schema extensions. We can assume that a customer's  model would not use a dictionary.
@@ -288,7 +288,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         /// </summary>
         /// <returns></returns>
         [Fact]
-        public async Task HandleEventDeltaResponseWithRemovedItem()
+        public async Task HandleEventDeltaResponseWithRemovedItemAsync()
         {
             // Arrange
             var deltaResponseHandler = new DeltaResponseHandler<TestEventDeltaCollectionResponse>();
@@ -307,14 +307,14 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             var deltaServiceLibResponse = await deltaResponseHandler.HandleResponseAsync<HttpResponseMessage, TestEventDeltaCollectionResponse>(hrm, null);
             var eventsDeltaCollectionPage = deltaServiceLibResponse.Value;
             eventsDeltaCollectionPage[0].AdditionalData.TryGetValue("changes", out object changes);
-            var changeList = JsonSerializer.Deserialize<List<string>>(KiotaJsonSerializer.SerializeAsString(changes as UntypedArray));
+            var changeList = JsonSerializer.Deserialize<List<string>>(await KiotaJsonSerializer.SerializeAsStringAsync(changes as UntypedArray));
 
             // Assert
             Assert.True(changeList.Exists(x => x.Equals("@removed.reason")));
         }
 
         [Fact]
-        public async Task HandleEventDeltaResponseWithEmptyCollectionProperty()
+        public async Task HandleEventDeltaResponseWithEmptyCollectionPropertyAsync()
         {
             // Arrange
             var deltaResponseHandler = new DeltaResponseHandler<TestEventDeltaCollectionResponse>();
@@ -342,7 +342,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             Assert.True(deltaServiceLibResponse.Value[0].AdditionalData.TryGetValue("changes", out object changesElement)); // The first element has a list of changes
 
             // Deserialize the change list to a list of strings
-            var firstItemChangeList = JsonSerializer.Deserialize<List<string>>(KiotaJsonSerializer.SerializeAsString(changesElement as UntypedNode));
+            var firstItemChangeList = JsonSerializer.Deserialize<List<string>>(await KiotaJsonSerializer.SerializeAsStringAsync(changesElement as UntypedNode));
 
             Assert.NotNull(firstItemChangeList);
             Assert.NotEmpty(firstItemChangeList);

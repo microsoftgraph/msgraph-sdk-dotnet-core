@@ -24,7 +24,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Middleware
         }
 
         [Fact]
-        public async Task TelemetryHandlerShouldSetTelemetryHeaderWithDefaults()
+        public async Task TelemetryHandlerShouldSetTelemetryHeaderWithDefaultsAsync()
         {
             var configuredTelemetryHandler = new GraphTelemetryHandler();
             configuredTelemetryHandler.InnerHandler = new FakeSuccessHandler();
@@ -56,7 +56,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Middleware
         }
 
         [Fact]
-        public async Task TelemetryHandlerShouldSetTelemetryHeaderWithCustomConfiguration()
+        public async Task TelemetryHandlerShouldSetTelemetryHeaderWithCustomConfigurationAsync()
         {
             var clientOptions = new GraphClientOptions
             {

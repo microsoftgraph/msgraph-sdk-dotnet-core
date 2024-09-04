@@ -64,7 +64,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Extensions
         }
 
         [Fact]
-        public async Task DecryptableContentCanBeDecryptedWithCertificate()
+        public async Task DecryptableContentCanBeDecryptedWithCertificateAsync()
         {
             // Arrange
             var testChangeNotificationEncryptedContent = new TestChangeNotificationEncryptedContent

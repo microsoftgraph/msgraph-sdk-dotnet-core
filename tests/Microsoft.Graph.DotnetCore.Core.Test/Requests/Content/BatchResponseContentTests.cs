@@ -229,7 +229,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
 
 
         [Fact]
-        public async Task BatchResponseContent_GetResponseByIdAsyncWithDeseirializer()
+        public async Task BatchResponseContent_GetResponseByIdAsyncWithDeseirializerAsync()
         {
             // Arrange
             string responseJSON = "{\"responses\":"
@@ -295,7 +295,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
         }
 
         [Fact]
-        public async Task BatchResponseContent_GetResponseByIdAsyncWithDeserializerWorksWithDateTimeOffsets()
+        public async Task BatchResponseContent_GetResponseByIdAsyncWithDeserializerWorksWithDateTimeOffsetsAsync()
         {
             // Arrange an example Event object with a few properties
             string responseJSON = "\n{\n" +

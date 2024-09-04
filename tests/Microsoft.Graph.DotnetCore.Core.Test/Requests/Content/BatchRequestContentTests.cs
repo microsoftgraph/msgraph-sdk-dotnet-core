@@ -2,6 +2,7 @@
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
+#pragma warning disable CS0618 // Type or member is obsolete
 namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
 {
     using System;
@@ -184,7 +185,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
         }
 
         [Fact]
-        public async Task BatchRequestContent_NewBatchWithFailedRequests()
+        public async Task BatchRequestContent_NewBatchWithFailedRequestsAsync()
         {
             BatchRequestContentCollection batchRequestContent = new BatchRequestContentCollection(client);
             var requestIds = new List<string>();
@@ -208,7 +209,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
         }
 
         [Fact]
-        public async Task BatchRequestContent_NewBatchWithFailedRequests2()
+        public async Task BatchRequestContent_NewBatchWithFailedRequests2Async()
         {
             BatchRequestContentCollection batchRequestContent = new BatchRequestContentCollection(client);
             var requestIds = new List<string>();
@@ -230,7 +231,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
         }
 
         [Fact]
-        public async Task BatchRequestContent_NewBatchWithFailedRequestsWithBody()
+        public async Task BatchRequestContent_NewBatchWithFailedRequestsWithBodyAsync()
         {
             BatchRequestContentCollection batchRequestContent = new BatchRequestContentCollection(client);
             var requestIds = new List<string>();
@@ -311,7 +312,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
         }
 
         [Fact]
-        public async System.Threading.Tasks.Task BatchRequestContent_GetBatchRequestContentSupportsNonJsonPayload()
+        public async System.Threading.Tasks.Task BatchRequestContent_GetBatchRequestContentSupportsNonJsonPayloadAsync()
         {
             using var fileStream = File.Open("ms-logo.png", FileMode.Open);
             BatchRequestStep batchRequestStep1 = new BatchRequestStep("1", new HttpRequestMessage(HttpMethod.Get, REQUEST_URL));
@@ -364,7 +365,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
         }
 
         [Fact]
-        public async System.Threading.Tasks.Task BatchRequestContent_GetBatchRequestContentFromStepAsyncDoesNotModifyDateTimes()
+        public async System.Threading.Tasks.Task BatchRequestContent_GetBatchRequestContentFromStepAsyncDoesNotModifyDateTimesAsync()
         {
             // System.Text.Json is strict on json content by default. So make sure that there are no
             // trailing comma's and special characters
@@ -468,7 +469,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
         }
 
         [Fact]
-        public async Task BatchRequest_GetBathRequestContentAsyncRetainsInsertionOrder()
+        public async Task BatchRequest_GetBathRequestContentAsyncRetainsInsertionOrderAsync()
         {
             BatchRequestStep batchRequestStep1 = new BatchRequestStep("1", new HttpRequestMessage(HttpMethod.Get, REQUEST_URL));
             BatchRequestStep batchRequestStep2 = new BatchRequestStep(Guid.NewGuid().ToString(), new HttpRequestMessage(HttpMethod.Get, REQUEST_URL), new List<string> { "1" });
@@ -537,7 +538,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
         }
 
         [Fact]
-        public async Task BatchRequestContent_AddBatchRequestStepWithBaseRequest()
+        public async Task BatchRequestContent_AddBatchRequestStepWithBaseRequestAsync()
         {
             // Arrange
             RequestInformation requestInformation = new RequestInformation() { HttpMethod = Method.GET, UrlTemplate = REQUEST_URL };
@@ -556,7 +557,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
         }
 
         [Fact]
-        public async Task BatchRequestContent_AddBatchRequestStepWithBaseRequestWithHeaderOptions()
+        public async Task BatchRequestContent_AddBatchRequestStepWithBaseRequestWithHeaderOptionsAsync()
         {
             // Create a BatchRequestContent from a BaseRequest object
             BatchRequestContent batchRequestContent = new BatchRequestContent(client);
@@ -593,7 +594,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
         }
 
         [Fact]
-        public async Task BatchRequestContent_AddBatchRequestStepWithBaseRequestToBatchRequestContentWithMaxSteps()
+        public async Task BatchRequestContent_AddBatchRequestStepWithBaseRequestToBatchRequestContentWithMaxStepsAsync()
         {
             // Arrange
             BatchRequestContent batchRequestContent = new BatchRequestContent(client);
@@ -623,7 +624,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
         [InlineData("https://graph.microsoft.com/beta/users/abcbeta123@wonderemail.com/events", "/users/abcbeta123@wonderemail.com/events")]
         [InlineData("https://graph.microsoft.com/v1.0/users?$filter=identities/any(id:id/issuer%20eq%20'$74707853-18b3-411f-ad57-2ef65f6fdeb0'%20and%20id/issuerAssignedId%20eq%20'**bobbetancourt@fakeemail.com**')", "/users?$filter=identities/any(id:id/issuer eq '$74707853-18b3-411f-ad57-2ef65f6fdeb0' and id/issuerAssignedId eq '**bobbetancourt@fakeemail.com**')")]
         [InlineData("https://graph.microsoft.com/beta/users?$filter=identities/any(id:id/issuer%20eq%20'$74707853-18b3-411f-ad57-2ef65f6fdeb0'%20and%20id/issuerAssignedId%20eq%20'**bobbetancourt@fakeemail.com**')&$top=1", "/users?$filter=identities/any(id:id/issuer eq '$74707853-18b3-411f-ad57-2ef65f6fdeb0' and id/issuerAssignedId eq '**bobbetancourt@fakeemail.com**')&$top=1")]
-        public async Task BatchRequestContent_AddBatchRequestStepWithBaseRequestProperlySetsVersion(string requestUrl, string expectedUrl)
+        public async Task BatchRequestContent_AddBatchRequestStepWithBaseRequestProperlySetsVersionAsync(string requestUrl, string expectedUrl)
         {
             // Arrange
             BatchRequestStep batchRequestStep = new BatchRequestStep("1", new HttpRequestMessage(HttpMethod.Get, requestUrl));
@@ -647,7 +648,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
 
         [Theory]
         [InlineData("https://graph.microsoft.com/v1.0/drives/b%21ynG/items/74707853-18b3-411f-ad57-2ef65f6fdeb0:/test.txt:/textfilecontentbytes", "/drives/b!ynG/items/74707853-18b3-411f-ad57-2ef65f6fdeb0:/test.txt:/textfilecontentbytes")]
-        public async Task BatchRequestContent_AddBatchRequestPutStepWithBaseRequestProperlyEncodedURI(string requestUrl, string expectedUrl)
+        public async Task BatchRequestContent_AddBatchRequestPutStepWithBaseRequestProperlyEncodedURIAsync(string requestUrl, string expectedUrl)
         {
             // Arrange
             BatchRequestStep batchRequestStep = new BatchRequestStep("1", new HttpRequestMessage(HttpMethod.Put, requestUrl));
