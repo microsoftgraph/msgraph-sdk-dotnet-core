@@ -2,7 +2,6 @@
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
-#pragma warning disable CS0618 // Type or member is obsolete
 namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 {
     using System.Collections.Generic;
@@ -34,7 +33,9 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             BatchRequestStep requestStep2 = new BatchRequestStep("2", httpRequestMessage2, new List<string> { "1" });
 
             // 4.3 Add batch request steps to BatchRequestContent.
+#pragma warning disable CS0618 // Type or member is obsolete use the BatchRequestContentCollection for making batch requests
             BatchRequestContent batchRequestContent = new BatchRequestContent(baseClient, requestStep1, requestStep2);
+#pragma warning restore CS0618 // Type or member is obsolete use the BatchRequestContentCollection for making batch requests
             var requestInformation = await batchRequestBuilder.ToPostRequestInformationAsync(batchRequestContent);
 
             // Assert

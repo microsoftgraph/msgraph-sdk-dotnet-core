@@ -2,7 +2,7 @@
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
-#pragma warning disable CS0618 // Type or member is obsolete
+#pragma warning disable CS0618 // Type or member is obsolete Guidance is to use the BatchRequestContentCollection for making batch requests
 namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
 {
     using System;
