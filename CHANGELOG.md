@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project does adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.1.21](https://github.com/microsoftgraph/msgraph-sdk-dotnet-core/compare/3.1.20...3.1.21) (2024-09-04)
+
+
+### Bug Fixes
+
+* resolve trimming warnings in project ([6036cf7](https://github.com/microsoftgraph/msgraph-sdk-dotnet-core/commit/6036cf71013e2bbcc6485adbb456df9c1556893b))
+
 ## [3.1.20](https://github.com/microsoftgraph/msgraph-sdk-dotnet-core/compare/3.1.19...3.1.20) (2024-08-28)
 
 
