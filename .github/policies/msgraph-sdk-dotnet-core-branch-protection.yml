@@ -36,6 +36,7 @@ configuration:
     # Required status checks to pass before merging. Values can be any string, but if the value does not correspond to any existing status check, the status check will be stuck on pending for status since nothing exists to push an actual status
     requiredStatusChecks:
     - Build and Test # Contains CodeQL
+    - Validate Project for Trimming
     - license/cla
     # Require branches to be up to date before merging. boolean
     requiresStrictStatusChecks: true
