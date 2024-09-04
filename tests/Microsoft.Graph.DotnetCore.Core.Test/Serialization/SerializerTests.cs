@@ -2,6 +2,8 @@
 //  Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.  See License in the project root for license information.
 // ------------------------------------------------------------------------------
 
+
+
 namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
 {
     using System;
@@ -9,6 +11,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
     using System.IO;
     using System.Linq;
     using System.Text;
+    using System.Threading.Tasks;
     using Microsoft.Graph.Core.Models;
     using Microsoft.Graph.DotnetCore.Core.Test.TestModels;
     using Microsoft.Graph.DotnetCore.Core.Test.TestModels.ServiceModels;
@@ -25,7 +28,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
         }
 
         [Fact]
-        public void DeserializeDerivedType()
+        public async Task DeserializeDerivedTypeAsync()
         {
             var id = "id";
             var name = "name";
@@ -35,7 +38,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
                 id,
                 name);
 
-            var derivedType = KiotaJsonSerializer.Deserialize<DerivedTypeClass>(stringToDeserialize);
+            var derivedType = await KiotaJsonSerializer.DeserializeAsync<DerivedTypeClass>(stringToDeserialize);
 
             Assert.NotNull(derivedType);
             Assert.Equal(id, derivedType.Id);
@@ -43,7 +46,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
         }
 
         [Fact]
-        public void DeserializeDerivedTypeFromAbstractParent()
+        public async Task DeserializeDerivedTypeFromAbstractParentAsync()
         {
             var id = "id";
             var name = "name";
@@ -54,7 +57,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
                 name);
 
             //The type information from "@odata.type" should lead to correctly deserializing to the derived type
-            var derivedType = KiotaJsonSerializer.Deserialize<AbstractEntityType>(stringToDeserialize) as DerivedTypeClass;
+            var derivedType = await KiotaJsonSerializer.DeserializeAsync<AbstractEntityType>(stringToDeserialize) as DerivedTypeClass;
 
             Assert.NotNull(derivedType);
             Assert.Equal(id, derivedType.Id);
@@ -63,7 +66,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
 
 
         [Fact]
-        public void DeserializeInvalidODataType()
+        public async Task DeserializeInvalidODataTypeAsync()
         {
             var id = "id";
             var givenName = "name";
@@ -73,7 +76,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
                 id,
                 givenName);
 
-            var instance = KiotaJsonSerializer.Deserialize<DerivedTypeClass>(stringToDeserialize);
+            var instance = await KiotaJsonSerializer.DeserializeAsync<DerivedTypeClass>(stringToDeserialize);
 
             Assert.NotNull(instance);
             Assert.Equal(id, instance.Id);
@@ -82,7 +85,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
         }
 
         [Fact]
-        public void DeserializerFollowsNamingProperty()
+        public async Task DeserializerFollowsNamingPropertyAsync()
         {
             var id = "id";
             var givenName = "name";
@@ -94,7 +97,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
                 givenName,
                 link);
 
-            var instance = KiotaJsonSerializer.Deserialize<DerivedTypeClass>(stringToDeserialize);
+            var instance = await KiotaJsonSerializer.DeserializeAsync<DerivedTypeClass>(stringToDeserialize);
 
             Assert.NotNull(instance);
             Assert.Equal(id, instance.Id);
@@ -104,7 +107,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
         }
 
         [Fact]
-        public void DeserializeUnknownEnumValue()
+        public async Task DeserializeUnknownEnumValueAsync()
         {
             var enumValue = "newValue";
             var id = "id";
@@ -114,7 +117,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
                 enumValue,
                 id);
 
-            var instance = KiotaJsonSerializer.Deserialize<DerivedTypeClass>(stringToDeserialize);
+            var instance = await KiotaJsonSerializer.DeserializeAsync<DerivedTypeClass>(stringToDeserialize);
 
             Assert.NotNull(instance);
             Assert.Equal(id, instance.Id);
@@ -123,14 +126,14 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
         }
 
         [Fact]
-        public void DeserializeDateEnumerableValue()
+        public async Task DeserializeDateEnumerableValueAsync()
         {
             var now = DateTimeOffset.UtcNow;
             var tomorrow = now.AddDays(1);
 
             var stringToDeserialize = string.Format("{{\"dateCollection\":[\"{0}\",\"{1}\"]}}", now.ToString("yyyy-MM-dd"), tomorrow.ToString("yyyy-MM-dd"));
 
-            var deserializedObject = KiotaJsonSerializer.Deserialize<DateTestClass>(stringToDeserialize);
+            var deserializedObject = await KiotaJsonSerializer.DeserializeAsync<DateTestClass>(stringToDeserialize);
 
             Assert.Equal(2, deserializedObject.DateCollection.Count());
             Assert.True(deserializedObject.DateCollection.Any(
@@ -148,7 +151,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
 
 
         [Fact]
-        public void DeserializeMemorableDatesValue()
+        public async Task DeserializeMemorableDatesValueAsync()
         {
             var now = DateTimeOffset.UtcNow;
             var tomorrow = now.AddDays(1);
@@ -167,7 +170,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
             // Serialize
             var serializedStream = KiotaJsonSerializer.SerializeAsStream(derivedTypeInstance);
             // De serialize
-            var deserializedInstance = KiotaJsonSerializer.Deserialize<DerivedTypeClass>(serializedStream);
+            var deserializedInstance = await KiotaJsonSerializer.DeserializeAsync<DerivedTypeClass>(serializedStream);
 
             Assert.Equal(derivedTypeInstance.Name, deserializedInstance.Name);
             Assert.Equal(derivedTypeInstance.Id, deserializedInstance.Id);
@@ -175,13 +178,13 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
         }
 
         [Fact]
-        public void DeserializeDateValue()
+        public async Task DeserializeDateValueAsync()
         {
             var now = DateTimeOffset.UtcNow;
 
             var stringToDeserialize = string.Format("{{\"nullableDate\":\"{0}\"}}", now.ToString("yyyy-MM-dd"));
 
-            var dateClass = KiotaJsonSerializer.Deserialize<DateTestClass>(stringToDeserialize);
+            var dateClass = await KiotaJsonSerializer.DeserializeAsync<DateTestClass>(stringToDeserialize);
 
             Assert.Equal(now.Year, dateClass.NullableDate.Value.Year);
             Assert.Equal(now.Month, dateClass.NullableDate.Value.Month);
@@ -192,7 +195,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
         // This test validates we do not experience an InvalidCastException in scenarios where the api could return a type in the odata.type string the is not assignable to the type defined in the metadata.
         // A good example is the ResourceData type which can have the odata.type specified as ChatMessage(which derives from entity) and can't be assigned to it. Extra properties will therefore be found in AdditionalData.
         // https://docs.microsoft.com/en-us/graph/api/resources/resourcedata?view=graph-rest-1.0#json-representation
-        public void DeserializeUnrelatedTypesInOdataType()
+        public async Task DeserializeUnrelatedTypesInOdataTypeAsync()
         {
             // Arrange
             var resourceDataString = "{\r\n" +
@@ -203,7 +206,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
                                      "}";
 
             // Act
-            var resourceData = KiotaJsonSerializer.Deserialize<TestResourceData>(resourceDataString);
+            var resourceData = await KiotaJsonSerializer.DeserializeAsync<TestResourceData>(resourceDataString);
 
             // Assert
             Assert.IsType<TestResourceData>(resourceData);
@@ -215,7 +218,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
         }
 
         [Fact]
-        public void NewAbstractDerivedClassInstance()
+        public async Task NewAbstractDerivedClassInstanceAsync()
         {
             var entityId = "entityId";
             var additionalKey = "key";
@@ -227,7 +230,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
                 additionalKey,
                 additionalValue);
 
-            var instance = KiotaJsonSerializer.Deserialize<AbstractEntityType>(stringToDeserialize);
+            var instance = await KiotaJsonSerializer.DeserializeAsync<AbstractEntityType>(stringToDeserialize);
 
             Assert.NotNull(instance);
             Assert.Equal(entityId, instance.Id);
@@ -236,7 +239,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
         }
 
         [Fact]
-        public void SerializeAndDeserializeKnownEnumValue()
+        public async Task SerializeAndDeserializeKnownEnumValueAsync()
         {
             var instance = new DerivedTypeClass
             {
@@ -251,15 +254,13 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
 
 
             // Serialize
-            var serializedStream = KiotaJsonSerializer.SerializeAsStream(instance);
+            var serializeAsString = await KiotaJsonSerializer.SerializeAsStringAsync(instance);
 
             //Assert
-            var streamReader = new StreamReader(serializedStream);
-            Assert.Equal(expectedSerializedStream, streamReader.ReadToEnd());
+            Assert.Equal(expectedSerializedStream, serializeAsString);
 
             // De serialize
-            serializedStream.Position = 0; //reset the stream to be read again
-            var newInstance = KiotaJsonSerializer.Deserialize<DerivedTypeClass>(serializedStream);
+            var newInstance = await KiotaJsonSerializer.DeserializeAsync<DerivedTypeClass>(serializeAsString);
 
             Assert.NotNull(newInstance);
             Assert.Equal(instance.Id, instance.Id);
@@ -324,7 +325,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
         }
 
         [Fact]
-        public void SerializeDateValue()
+        public async Task SerializeDateValueAsync()
         {
             var now = DateTimeOffset.UtcNow;
 
@@ -335,16 +336,14 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
                 NullableDate = new Date(now.Year, now.Month, now.Day),
             };
 
-            using var jsonSerializerWriter = new JsonSerializationWriter();
-            jsonSerializerWriter.WriteObjectValue(string.Empty, date);
-            var serializedString = KiotaJsonSerializer.SerializeAsString(date);
+            var serializedString = await KiotaJsonSerializer.SerializeAsStringAsync(date);
 
             // Assert
             Assert.Equal(expectedSerializedString, serializedString);
         }
 
         [Fact]
-        public void DerivedTypeConverterIgnoresPropertyWithJsonIgnore()
+        public async Task DerivedTypeConverterIgnoresPropertyWithJsonIgnoreAsync()
         {
             var now = DateTimeOffset.UtcNow;
 
@@ -357,14 +356,14 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
             };
 
             // Assert
-            var serializedString = KiotaJsonSerializer.SerializeAsString(date);
+            var serializedString = await KiotaJsonSerializer.SerializeAsStringAsync(date);
 
             Assert.Equal(expectedSerializedString, serializedString);
             Assert.DoesNotContain("230", serializedString);
         }
 
         [Fact]
-        public void SerializeObjectWithAdditionalDataWithDerivedTypeConverter()
+        public async Task SerializeObjectWithAdditionalDataWithDerivedTypeConverterAsync()
         {
             // This example class uses the derived type converter
             // Arrange
@@ -387,13 +386,13 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
                                            "}";
 
             // Act
-            var serializedJsonString = KiotaJsonSerializer.SerializeAsString(testItemBody);
+            var serializedJsonString = await KiotaJsonSerializer.SerializeAsStringAsync(testItemBody);
             // Assert
             Assert.Equal(expectedSerializedString, serializedJsonString);
         }
 
         [Fact]
-        public void SerializeObjectWithEmptyAdditionalData()
+        public async Task SerializeObjectWithEmptyAdditionalDataAsync()
         {
             // This example class uses the derived type converter with an empty/unset AdditionalData
             // Arrange
@@ -409,7 +408,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
                                            "}";
 
             // Act
-            var serializedString = KiotaJsonSerializer.SerializeAsString(testItemBody);
+            var serializedString = await KiotaJsonSerializer.SerializeAsStringAsync(testItemBody);
 
             //Assert
             Assert.Equal(expectedSerializedString, serializedString);
@@ -417,7 +416,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
         }
 
         [Fact]
-        public void SerializeObjectWithAdditionalDataWithoutDerivedTypeConverter()
+        public async Task SerializeObjectWithAdditionalDataWithoutDerivedTypeConverterAsync()
         {
             // This example class does NOT use the derived type converter to act as a control
             // Arrange
@@ -439,7 +438,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
 
             // Act
             // Assert
-            var serializedJsonString = KiotaJsonSerializer.SerializeAsString(testEmailAddress);
+            var serializedJsonString = await KiotaJsonSerializer.SerializeAsStringAsync(testEmailAddress);
             Assert.Equal(expectedSerializedString, serializedJsonString);
         }
 
@@ -463,7 +462,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
         }
 
         [Fact]
-        public void SerializeUploadSessionValues()
+        public async Task SerializeUploadSessionValuesAsync()
         {
             // Arrange
             var uploadSession = new UploadSession()
@@ -475,17 +474,17 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
             var expectedString = @"{""expirationDateTime"":""2016-11-20T18:23:45.9356913+00:00"",""nextExpectedRanges"":[""0 - 1000""],""uploadUrl"":""http://localhost""}";
             // Act
             // Assert
-            var serializedJsonString = KiotaJsonSerializer.SerializeAsString(uploadSession);
+            var serializedJsonString = await KiotaJsonSerializer.SerializeAsStringAsync(uploadSession);
             // Expect the string to be ISO 8601-1:2019 format
             Assert.Equal(expectedString, serializedJsonString);
         }
 
         [Fact]
-        public void DeserializeUploadSessionValues()
+        public async Task DeserializeUploadSessionValuesAsync()
         {
             // Act 1
             const string camelCasedPayload = @"{""expirationDateTime"":""2016-11-20T18:23:45.9356913+00:00"",""nextExpectedRanges"":[""0 - 1000""],""uploadUrl"":""http://localhost""}";
-            var uploadSession = KiotaJsonSerializer.Deserialize<UploadSession>(camelCasedPayload);
+            var uploadSession = await KiotaJsonSerializer.DeserializeAsync<UploadSession>(camelCasedPayload);
             Assert.NotNull(uploadSession);
             Assert.NotNull(uploadSession.ExpirationDateTime);
             Assert.NotNull(uploadSession.NextExpectedRanges);
@@ -493,7 +492,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Serialization
 
             // Act 1
             const string pascalCasedPayload = @"{""ExpirationDateTime"":""2016-11-20T18:23:45.9356913+00:00"",""NextExpectedRanges"":[""0 - 1000""],""uploadUrl"":""http://localhost""}";
-            var uploadSession2 = KiotaJsonSerializer.Deserialize<UploadSession>(pascalCasedPayload);
+            var uploadSession2 = await KiotaJsonSerializer.DeserializeAsync<UploadSession>(pascalCasedPayload);
             Assert.NotNull(uploadSession2);
             Assert.NotNull(uploadSession2.ExpirationDateTime);
             Assert.NotNull(uploadSession2.NextExpectedRanges);

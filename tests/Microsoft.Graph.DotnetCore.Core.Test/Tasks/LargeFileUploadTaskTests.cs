@@ -142,7 +142,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
         }
 
         [Fact]
-        public async Task HandlesCancellationToken()
+        public async Task HandlesCancellationTokenAsync()
         {
             byte[] mockData = new byte[1000000];//create a stream of about 1M so we can split it into a few 320K slices
             var requestUrl = "https://localhost/";

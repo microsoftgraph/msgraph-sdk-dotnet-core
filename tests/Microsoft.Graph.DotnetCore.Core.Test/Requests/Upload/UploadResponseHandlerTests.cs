@@ -26,7 +26,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         [Theory]
         [InlineData(HttpStatusCode.Created)]
         [InlineData(HttpStatusCode.OK)]
-        public async Task GetDriveItemOnCompletedUpload(HttpStatusCode statusCode)
+        public async Task GetDriveItemOnCompletedUploadAsync(HttpStatusCode statusCode)
         {
             // Arrange
             var responseHandler = new UploadResponseHandler();
@@ -53,7 +53,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         }
 
         [Fact]
-        public async Task GetFileAttachmentLocationItemOnCompletedUpload()
+        public async Task GetFileAttachmentLocationItemOnCompletedUploadAsync()
         {
             // Arrange
             var responseHandler = new UploadResponseHandler();
@@ -75,7 +75,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         }
 
         [Fact]
-        public async Task GetUploadSessionOnProgressingUpload()
+        public async Task GetUploadSessionOnProgressingUploadAsync()
         {
             // Arrange
             var responseHandler = new UploadResponseHandler();
@@ -106,7 +106,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         }
 
         [Fact]
-        public async Task ThrowsServiceExceptionOnErrorResponse()
+        public async Task ThrowsServiceExceptionOnErrorResponseAsync()
         {
             // Arrange
             var responseHandler = new UploadResponseHandler();
@@ -135,7 +135,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         }
 
         [Fact]
-        public async Task ThrowsSerializationErrorOnInvalidJson()
+        public async Task ThrowsSerializationErrorOnInvalidJsonAsync()
         {
             // Arrange
             var responseHandler = new UploadResponseHandler();

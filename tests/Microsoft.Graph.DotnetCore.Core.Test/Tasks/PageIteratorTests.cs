@@ -67,7 +67,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
         }
 
         [Fact]
-        public async Task Given_Concrete_Generated_CollectionPage_It_Iterates_Page_Items()
+        public async Task Given_Concrete_Generated_CollectionPage_It_Iterates_Page_ItemsAsync()
         {
             // Arrange the sample first page
             var inputEventCount = 17;
@@ -95,7 +95,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
         }
 
         [Fact]
-        public async Task Given_Concrete_Generated_CollectionPage_It_Stops_Iterating_Page_Items()
+        public async Task Given_Concrete_Generated_CollectionPage_It_Stops_Iterating_Page_ItemsAsync()
         {
             // Arrange the sample first page
             var inputEventCount = 10;
@@ -125,7 +125,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
         }
 
         [Fact]
-        public async Task Given_CollectionPage_It_Stops_Iterating_Across_Pages()
+        public async Task Given_CollectionPage_It_Stops_Iterating_Across_PagesAsync()
         {
             // Arrange the sample first page
             // Create the 17 events to initialize the original collection page.
@@ -173,7 +173,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
         }
 
         [Fact]
-        public async Task Given_CollectionPage_Without_Next_Link_Property_It_Iterates_Across_Pages()
+        public async Task Given_CollectionPage_Without_Next_Link_Property_It_Iterates_Across_PagesAsync()
         {
             // // Arrange the sample first page of 17 events to initialize the original collection page.
             var originalPage = new TestEventsDeltaResponse() { Value = new List<TestEventItem>() };
@@ -220,7 +220,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
         }
 
         [Fact]
-        public async Task Given_CollectionPage_Delta_Link_Property_It_Iterates_Across_Pages()
+        public async Task Given_CollectionPage_Delta_Link_Property_It_Iterates_Across_PagesAsync()
         {
             // // Arrange the sample first page of 17 events to initialize the original collection page.
             var originalPage = new TestEventsDeltaResponse() { Value = new List<TestEventItem>() };
@@ -243,7 +243,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
         }
 
         [Fact]
-        public async Task Given_CollectionPage_Delta_Link_Property_It_Iterates_Across_Pages_And_Resumes()
+        public async Task Given_CollectionPage_Delta_Link_Property_It_Iterates_Across_Pages_And_ResumesAsync()
         {
             // // Arrange the sample first page of 17 events to initialize the original collection page.
             var eventBag = new List<TestEventItem>();
@@ -307,7 +307,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
         }
 
         [Fact]
-        public async Task Given_CollectionPage_It_Iterates_Across_Pages_With_Async_Delegate()
+        public async Task Given_CollectionPage_It_Iterates_Across_Pages_With_Async_DelegateAsync()
         {
             // // Arrange the sample first page of 17 events to initialize the original collection page.
             var originalPage = new TestEventsResponse() { Value = new List<TestEventItem>(), OdataNextLink = "http://localhost/events?$skip=11" };
@@ -355,7 +355,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
         }
 
         [Fact]
-        public async Task Given_CollectionPage_It_Iterates_Across_Pages()
+        public async Task Given_CollectionPage_It_Iterates_Across_PagesAsync()
         {
             // // Arrange the sample first page of 17 events to initialize the original collection page.
             var originalPage = new TestEventsResponse() { Value = new List<TestEventItem>(), OdataNextLink = "http://localhost/events?$skip=11" };
@@ -402,7 +402,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
         }
 
         [Fact]
-        public async Task Given_ApiError_It_Shows_Helpful_Message()
+        public async Task Given_ApiError_It_Shows_Helpful_MessageAsync()
         {
             // // Arrange the sample first page of 17 events to initialize the original collection page.
             var originalPage = new TestEventsResponse() { Value = new List<TestEventItem>(), OdataNextLink = "http://localhost/events?$skip=11" };
@@ -454,7 +454,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
         }
 
         [Fact]
-        public async Task Given_CollectionPage_It_Detects_Next_Link_Loop()
+        public async Task Given_CollectionPage_It_Detects_Next_Link_LoopAsync()
         {
             // Create the 17 events to initialize the original collection page.
             var originalPage = new TestEventsResponse() { Value = new List<TestEventItem>(), OdataNextLink = "http://localhost/events?$skip=11" };
@@ -490,7 +490,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
         }
 
         [Fact]
-        public async Task Given_CollectionPage_It_Handles_Empty_NextPage()
+        public async Task Given_CollectionPage_It_Handles_Empty_NextPageAsync()
         {
             try
             {
@@ -540,7 +540,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
         }
 
         [Fact]
-        public async Task Given_RequestConfigurator_It_Is_Invoked()
+        public async Task Given_RequestConfigurator_It_Is_InvokedAsync()
         {
             // Create the 17 events to initialize the original collection page.
             var originalPage = new TestEventsResponse() { Value = new List<TestEventItem>(), OdataNextLink = "http://localhost/events?$skip=11" };

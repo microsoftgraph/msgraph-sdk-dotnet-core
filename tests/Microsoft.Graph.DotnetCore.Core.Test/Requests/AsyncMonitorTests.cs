@@ -50,14 +50,14 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         }
 
         [Fact]
-        public async Task PollForOperationCompletionAsync_IsCancelled()
+        public async Task PollForOperationCompletionAsync_IsCancelledAsync()
         {
             var item = await this.asyncMonitor.PollForOperationCompletionAsync(this.progress.Object, new CancellationToken(true));
             Assert.Null(item);
         }
 
         [Fact]
-        public async Task PollForOperationCompletionAsync_OperationCompleted()
+        public async Task PollForOperationCompletionAsync_OperationCompletedAsync()
         {
             bool called = false;
             this.progress.Setup(
@@ -96,7 +96,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         }
 
         [Fact]
-        public async Task PollForOperationCompletionAsync_OperationCancelled()
+        public async Task PollForOperationCompletionAsync_OperationCancelledAsync()
         {
             this.requestAdapter
                 .Setup(requestAdapter => requestAdapter.SendNoContentAsync(It.IsAny<RequestInformation>(), It.IsAny<Dictionary<string, ParsableFactory<IParsable>>>(), It.IsAny<CancellationToken>()))
@@ -112,7 +112,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         }
 
         [Fact]
-        public async Task PollForOperationCompletionAsync_OperationDeleteFailed()
+        public async Task PollForOperationCompletionAsync_OperationDeleteFailedAsync()
         {
             this.requestAdapter
                 .Setup(requestAdapter => requestAdapter.SendNoContentAsync(It.IsAny<RequestInformation>(), It.IsAny<Dictionary<string, ParsableFactory<IParsable>>>(), It.IsAny<CancellationToken>()))
@@ -128,7 +128,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         }
 
         [Fact]
-        public async Task PollForOperationCompletionAsync_OperationFailed()
+        public async Task PollForOperationCompletionAsync_OperationFailedAsync()
         {
             this.requestAdapter
                 .Setup(requestAdapter => requestAdapter.SendNoContentAsync(It.IsAny<RequestInformation>(), It.IsAny<Dictionary<string, ParsableFactory<IParsable>>>(), It.IsAny<CancellationToken>()))
@@ -144,7 +144,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         }
 
         [Fact]
-        public async Task PollForOperationCompletionAsync_OperationNull()
+        public async Task PollForOperationCompletionAsync_OperationNullAsync()
         {
             this.requestAdapter
                 .Setup(requestAdapter => requestAdapter.SendNoContentAsync(It.IsAny<RequestInformation>(), It.IsAny<Dictionary<string, ParsableFactory<IParsable>>>(), It.IsAny<CancellationToken>()))
