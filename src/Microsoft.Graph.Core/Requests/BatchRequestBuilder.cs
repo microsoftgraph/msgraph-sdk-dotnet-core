@@ -123,7 +123,11 @@ namespace Microsoft.Graph.Core.Requests
             var responseStringContent = string.Empty;
             if (httpResponseMessage.Content != null)
             {
+#if NET5_0_OR_GREATER
+                responseStringContent = await httpResponseMessage.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+#else
                 responseStringContent = await httpResponseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
+#endif
             }
 
             throw new ServiceException(ErrorConstants.Messages.BatchRequestError, httpResponseMessage.Headers, (int)httpResponseMessage.StatusCode, responseStringContent);
