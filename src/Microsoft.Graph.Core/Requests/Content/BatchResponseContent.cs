@@ -32,7 +32,9 @@ namespace Microsoft.Graph
         public BatchResponseContent(HttpResponseMessage httpResponseMessage, Dictionary<string, ParsableFactory<IParsable>> errorMappings = null)
         {
             this.batchResponseMessage = httpResponseMessage ?? throw new ArgumentNullException(nameof(httpResponseMessage));
-            this.apiErrorMappings = errorMappings ?? new();
+            this.apiErrorMappings = errorMappings ?? new Dictionary<string, ParsableFactory<IParsable>>(StringComparer.OrdinalIgnoreCase) {
+                {"XXX", (parsable) => new ServiceException(ErrorConstants.Messages.BatchRequestError, new Exception(parsable.GetErrorMessage())) }
+            };
         }
 
         /// <summary>

@@ -7,10 +7,12 @@ namespace Microsoft.Graph.Core.Requests
     using System;
     using System.Collections.Generic;
     using System.Net.Http;
+    using System.Text.Json;
     using System.Threading;
     using System.Threading.Tasks;
     using Microsoft.Kiota.Abstractions;
     using Microsoft.Kiota.Abstractions.Serialization;
+    using Microsoft.Kiota.Serialization.Json;
 
     /// <summary>
     /// The type BatchRequestBuilder
@@ -58,7 +60,9 @@ namespace Microsoft.Graph.Core.Requests
             var nativeResponseHandler = new NativeResponseHandler();
             requestInfo.SetResponseHandler(nativeResponseHandler);
             await this.RequestAdapter.SendNoContentAsync(requestInfo, cancellationToken: cancellationToken);
-            return new BatchResponseContent(nativeResponseHandler.Value as HttpResponseMessage, errorMappings);
+            var httpResponseMessage = nativeResponseHandler.Value as HttpResponseMessage;
+            await ThrowIfFailedResponseAsync(httpResponseMessage, cancellationToken);
+            return new BatchResponseContent(httpResponseMessage, errorMappings);
         }
 
         /// <summary>
@@ -98,6 +102,35 @@ namespace Microsoft.Graph.Core.Requests
             requestInfo.Content = await batchRequestContent.GetBatchRequestContentAsync(cancellationToken).ConfigureAwait(false);
             requestInfo.Headers.Add("Content-Type", CoreConstants.MimeTypeNames.Application.Json);
             return requestInfo;
+        }
+
+        private static async Task ThrowIfFailedResponseAsync(HttpResponseMessage httpResponseMessage, CancellationToken cancellationToken)
+        {
+            if (httpResponseMessage.IsSuccessStatusCode) return;
+
+            if (httpResponseMessage is { Content.Headers.ContentType.MediaType: string contentTypeMediaType } && contentTypeMediaType.StartsWith(CoreConstants.MimeTypeNames.Application.Json, StringComparison.OrdinalIgnoreCase))
+            {
+#if NET5_0_OR_GREATER
+                using var responseContent = await httpResponseMessage.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
+#else
+                using var responseContent = await httpResponseMessage.Content.ReadAsStreamAsync().ConfigureAwait(false);
+#endif
+                using var document = await JsonDocument.ParseAsync(responseContent, cancellationToken: cancellationToken).ConfigureAwait(false);
+                var parsable = new JsonParseNode(document.RootElement);
+                throw new ServiceException(ErrorConstants.Messages.BatchRequestError, httpResponseMessage.Headers, (int)httpResponseMessage.StatusCode, new Exception(parsable.GetErrorMessage()));
+            }
+
+            var responseStringContent = string.Empty;
+            if (httpResponseMessage.Content != null)
+            {
+#if NET5_0_OR_GREATER
+                responseStringContent = await httpResponseMessage.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+#else
+                responseStringContent = await httpResponseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
+#endif
+            }
+
+            throw new ServiceException(ErrorConstants.Messages.BatchRequestError, httpResponseMessage.Headers, (int)httpResponseMessage.StatusCode, responseStringContent);
         }
     }
 }

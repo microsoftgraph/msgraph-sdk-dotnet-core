@@ -115,8 +115,7 @@ namespace Microsoft.Graph
                 _processPageItemCallback = callback,
                 _requestConfigurator = requestConfigurator,
                 _errorMapping = errorMapping ?? new Dictionary<string, ParsableFactory<IParsable>>(StringComparer.OrdinalIgnoreCase) {
-                    {"4XX", (parsable) => new ServiceException(ErrorConstants.Messages.PageIteratorRequestError,new Exception(GetErrorMessageFromParsable(parsable))) },
-                    {"5XX", (parsable) => new ServiceException(ErrorConstants.Messages.PageIteratorRequestError,new Exception(GetErrorMessageFromParsable(parsable))) }
+                    {"XXX", (parsable) => new ServiceException(ErrorConstants.Messages.PageIteratorRequestError,new Exception(parsable.GetErrorMessage())) }
                 },
                 State = PagingState.NotStarted
             };
@@ -172,15 +171,14 @@ namespace Microsoft.Graph
                 _asyncProcessPageItemCallback = asyncCallback,
                 _requestConfigurator = requestConfigurator,
                 _errorMapping = errorMapping ?? new Dictionary<string, ParsableFactory<IParsable>>(StringComparer.OrdinalIgnoreCase) {
-                    {"4XX", (parsable) => new ServiceException(ErrorConstants.Messages.PageIteratorRequestError,new Exception(GetErrorMessageFromParsable(parsable))) },
-                    {"5XX", (parsable) =>new ServiceException(ErrorConstants.Messages.PageIteratorRequestError,new Exception(GetErrorMessageFromParsable(parsable))) },
+                    {"XXX", (parsable) => new ServiceException(ErrorConstants.Messages.PageIteratorRequestError,new Exception(parsable.GetErrorMessage())) }
                 },
                 State = PagingState.NotStarted
             };
         }
 
         /// <summary>
-        /// Iterate across the content of a a single results page with the callback.
+        /// Iterate across the content of a single results page with the callback.
         /// </summary>
         /// <returns>A boolean value that indicates whether the callback cancelled 
         /// iterating across the page results or whether there are more pages to page. 
@@ -392,13 +390,6 @@ namespace Microsoft.Graph
 
             // the next link property may not be defined in the response schema so we also check its presence in the additional data bag
             return parsableCollection.AdditionalData.TryGetValue(CoreConstants.OdataInstanceAnnotations.NextLink, out var nextLink) ? nextLink.ToString() : string.Empty;
-        }
-
-        private static string GetErrorMessageFromParsable(IParseNode responseParseNode)
-        {
-            var errorParseNode = responseParseNode.GetChildNode("error");
-            // concatenate the error code and message
-            return $"{errorParseNode?.GetChildNode("code")?.GetStringValue()} : {errorParseNode?.GetChildNode("message")?.GetStringValue()}";
         }
     }
 
