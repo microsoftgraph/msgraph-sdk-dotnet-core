@@ -7,10 +7,12 @@ namespace Microsoft.Graph.Core.Requests
     using System;
     using System.Collections.Generic;
     using System.Net.Http;
+    using System.Text.Json;
     using System.Threading;
     using System.Threading.Tasks;
     using Microsoft.Kiota.Abstractions;
     using Microsoft.Kiota.Abstractions.Serialization;
+    using Microsoft.Kiota.Serialization.Json;
 
     /// <summary>
     /// The type BatchRequestBuilder
@@ -58,7 +60,9 @@ namespace Microsoft.Graph.Core.Requests
             var nativeResponseHandler = new NativeResponseHandler();
             requestInfo.SetResponseHandler(nativeResponseHandler);
             await this.RequestAdapter.SendNoContentAsync(requestInfo, cancellationToken: cancellationToken);
-            return new BatchResponseContent(nativeResponseHandler.Value as HttpResponseMessage, errorMappings);
+            var httpResponseMessage = nativeResponseHandler.Value as HttpResponseMessage;
+            await ThrowIfFailedResponseAsync(httpResponseMessage);
+            return new BatchResponseContent(httpResponseMessage, errorMappings);
         }
 
         /// <summary>
@@ -98,6 +102,27 @@ namespace Microsoft.Graph.Core.Requests
             requestInfo.Content = await batchRequestContent.GetBatchRequestContentAsync(cancellationToken).ConfigureAwait(false);
             requestInfo.Headers.Add("Content-Type", CoreConstants.MimeTypeNames.Application.Json);
             return requestInfo;
+        }
+
+        private static async Task ThrowIfFailedResponseAsync(HttpResponseMessage httpResponseMessage)
+        {
+            if (httpResponseMessage.IsSuccessStatusCode) return;
+
+            if (CoreConstants.MimeTypeNames.Application.Json.Equals(httpResponseMessage.Content?.Headers?.ContentType?.MediaType, StringComparison.OrdinalIgnoreCase))
+            {
+                using var responseContent = await httpResponseMessage.Content.ReadAsStreamAsync().ConfigureAwait(false);
+                using var document = await JsonDocument.ParseAsync(responseContent).ConfigureAwait(false);
+                var parsable = new JsonParseNode(document.RootElement);
+                throw new ServiceException(ErrorConstants.Messages.BatchRequestError, httpResponseMessage.Headers, (int)httpResponseMessage.StatusCode, new Exception(parsable.GetErrorMessage()));
+            }
+
+            var responseStringContent = string.Empty;
+            if (httpResponseMessage.Content != null)
+            {
+                responseStringContent = await httpResponseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
+            }
+
+            throw new ServiceException(ErrorConstants.Messages.BatchRequestError, httpResponseMessage.Headers, (int)httpResponseMessage.StatusCode, responseStringContent);
         }
     }
 }

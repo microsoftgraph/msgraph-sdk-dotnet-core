@@ -83,6 +83,8 @@ namespace Microsoft.Graph
 
             internal static string PageIteratorRequestError = "Error occured when making a request with the page iterator. See inner exception for more details.";
 
+            internal static string BatchRequestError = "Error occured when making the batch request. See inner exception for more details.";
+
             public static string InvalidProxyArgument = "Proxy cannot be set more once. Proxy can only be set on the proxy or defaultHttpHandler argument and not both.";
         }
     }
