@@ -112,11 +112,10 @@ namespace Microsoft.Graph.Core.Requests
             {
 #if NET5_0_OR_GREATER
                 using var responseContent = await httpResponseMessage.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
-                using var document = await JsonDocument.ParseAsync(responseContent, cancellationToken: cancellationToken).ConfigureAwait(false);
 #else
                 using var responseContent = await httpResponseMessage.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                using var document = await JsonDocument.ParseAsync(responseContent).ConfigureAwait(false);
 #endif
+                using var document = await JsonDocument.ParseAsync(responseContent, cancellationToken: cancellationToken).ConfigureAwait(false);
                 var parsable = new JsonParseNode(document.RootElement);
                 throw new ServiceException(ErrorConstants.Messages.BatchRequestError, httpResponseMessage.Headers, (int)httpResponseMessage.StatusCode, new Exception(parsable.GetErrorMessage()));
             }
