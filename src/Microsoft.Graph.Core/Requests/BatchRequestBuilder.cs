@@ -61,7 +61,7 @@ namespace Microsoft.Graph.Core.Requests
             requestInfo.SetResponseHandler(nativeResponseHandler);
             await this.RequestAdapter.SendNoContentAsync(requestInfo, cancellationToken: cancellationToken);
             var httpResponseMessage = nativeResponseHandler.Value as HttpResponseMessage;
-            await ThrowIfFailedResponseAsync(httpResponseMessage);
+            await ThrowIfFailedResponseAsync(httpResponseMessage, cancellationToken);
             return new BatchResponseContent(httpResponseMessage, errorMappings);
         }
 
@@ -104,14 +104,19 @@ namespace Microsoft.Graph.Core.Requests
             return requestInfo;
         }
 
-        private static async Task ThrowIfFailedResponseAsync(HttpResponseMessage httpResponseMessage)
+        private static async Task ThrowIfFailedResponseAsync(HttpResponseMessage httpResponseMessage, CancellationToken cancellationToken)
         {
             if (httpResponseMessage.IsSuccessStatusCode) return;
 
-            if (httpResponseMessage is { Content.Headers.ContentType.MediaType: string contentTypeMediaType } && !string.IsNullOrEmpty(contentTypeMediaType) && contentTypeMediaType.StartsWith(CoreConstants.MimeTypeNames.Application.Json, StringComparison.OrdinalIgnoreCase))
+            if (httpResponseMessage is { Content.Headers.ContentType.MediaType: string contentTypeMediaType } && contentTypeMediaType.StartsWith(CoreConstants.MimeTypeNames.Application.Json, StringComparison.OrdinalIgnoreCase))
             {
+#if NET5_0_OR_GREATER
+                using var responseContent = await httpResponseMessage.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
+                using var document = await JsonDocument.ParseAsync(responseContent, cancellationToken: cancellationToken).ConfigureAwait(false);
+#else
                 using var responseContent = await httpResponseMessage.Content.ReadAsStreamAsync().ConfigureAwait(false);
                 using var document = await JsonDocument.ParseAsync(responseContent).ConfigureAwait(false);
+#endif
                 var parsable = new JsonParseNode(document.RootElement);
                 throw new ServiceException(ErrorConstants.Messages.BatchRequestError, httpResponseMessage.Headers, (int)httpResponseMessage.StatusCode, new Exception(parsable.GetErrorMessage()));
             }
