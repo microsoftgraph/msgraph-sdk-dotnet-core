@@ -108,7 +108,7 @@ namespace Microsoft.Graph.Core.Requests
         {
             if (httpResponseMessage.IsSuccessStatusCode) return;
 
-            if (httpResponseMessage is { Content.Headers.ContentType.MediaType: string contentTypeMediaType } && !string.IsNullOrEmpty(contentTypeMediaType) && contentTypeMediaType.StartsWith(CoreConstants.MimeTypeNames.Application.Json, StringComparison.OrdinalIgnoreCase))
+            if (httpResponseMessage is { Content.Headers.ContentType.MediaType: string contentTypeMediaType } && contentTypeMediaType.StartsWith(CoreConstants.MimeTypeNames.Application.Json, StringComparison.OrdinalIgnoreCase))
             {
                 using var responseContent = await httpResponseMessage.Content.ReadAsStreamAsync().ConfigureAwait(false);
                 using var document = await JsonDocument.ParseAsync(responseContent).ConfigureAwait(false);
