@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project does adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.1.22](https://github.com/microsoftgraph/msgraph-sdk-dotnet-core/compare/3.1.21...3.1.22) (2024-09-10)
+
+
+### Bug Fixes
+
+* adds missing cancellation token parameter ([2213321](https://github.com/microsoftgraph/msgraph-sdk-dotnet-core/commit/22133215fc2279a9b686f3ba81cbcd5c3bac54e9))
+* moves parse async out of the condition since it always accepts a cancellation token ([f29e4cd](https://github.com/microsoftgraph/msgraph-sdk-dotnet-core/commit/f29e4cd33bf6c1e3e541aa21614aabaa52570cc5))
+* resolved handling of larger batch request message ([c78b39d](https://github.com/microsoftgraph/msgraph-sdk-dotnet-core/commit/c78b39d44e7e43054322ea124a35d380bcda6c79))
+
 ## [3.1.21](https://github.com/microsoftgraph/msgraph-sdk-dotnet-core/compare/3.1.20...3.1.21) (2024-09-04)
 
 
