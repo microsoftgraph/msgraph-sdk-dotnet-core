@@ -4,7 +4,6 @@
 
 namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Net.Http;
@@ -231,7 +230,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             // Update the value on a complex type property's value. Developer can't just replace the body
             // as that could result in overwriting other unchanged property. Essentially, they need to inspect
             // every leaf node in the selected property set.
-            if (changeList.Exists(x => x.Equals("body.content"))) // 
+            if (changeList.Exists(x => x.Equals("body.content"))) //
             {
                 if (myModel.Body == null)
                 {
@@ -247,7 +246,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             var attendeesChangelist = changeList.FindAll(x => x.Contains("attendees"));
             if (attendeesChangelist.Count > 0)
             {
-                // This is where if we provided the delta response as a JSON object, 
+                // This is where if we provided the delta response as a JSON object,
                 // we could let the developer use JMESPath to query the changes.
                 if (changeList.Exists(x => x.Equals("attendees[0].emailAddress.name")))
                 {
@@ -259,7 +258,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
                     }
                     else // Attendees list is being updated.
                     {
-                        // We need to inspect each object, and determine which objects and properties 
+                        // We need to inspect each object, and determine which objects and properties
                         // need to be initialized and/or updated.
                     }
                 }
@@ -324,7 +323,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             // To view and format this test string, replace all \" with ", and use a JSON formatter
             // to make it pretty.
 
-            // In this scenario the attendees for the first event have been removed and the api has returned 
+            // In this scenario the attendees for the first event have been removed and the api has returned
             // an empty collection to the property
             var testString = "{\"@odata.context\":\"https://graph.microsoft.com/v1.0/$metadata#Collection(event)\",\"@odata.nextLink\":\"https://graph.microsoft.com/v1.0/me/calendarView/delta?$skiptoken=R0usmci39OQxqJrxK4\",\"value\":[{\"@odata.type\":\"#microsoft.graph.event\",\"@odata.etag\":\"EZ9r3czxY0m2jz8c45czkwAAFXcvIw==\",\"subject\":\"Get food\",\"body\":{\"contentType\":\"html\",\"content\":\"\"},\"start\":{\"dateTime\":\"2016-12-10T19:30:00.0000000\",\"timeZone\":\"UTC\"},\"end\":{\"dateTime\":\"2016-12-10T21:30:00.0000000\",\"timeZone\":\"UTC\"},\"attendees\":[],\"organizer\":{\"emailAddress\":{\"name\":\"Samantha Booth\",\"address\":\"samanthab@contoso.onmicrosoft.com\"}},\"id\":\"AAMkADVxTAAA=\"},{\"@odata.type\":\"#microsoft.graph.event\",\"@odata.etag\":\"WEZ9r3czxY0m2jz8c45czkwAAFXcvJA==\",\"subject\":\"Prepare food\",\"body\":{\"contentType\":\"html\",\"content\":\"\"},\"start\":{\"dateTime\":\"2016-12-10T22:00:00.0000000\",\"timeZone\":\"UTC\"},\"end\":{\"dateTime\":\"2016-12-11T00:00:00.0000000\",\"timeZone\":\"UTC\"},\"attendees\":[],\"organizer\":{\"emailAddress\":{\"name\":\"Samantha Booth\",\"address\":\"samanthab@contoso.onmicrosoft.com\"}},\"id\":\"AAMkADVxUAAA=\"}]}";
 

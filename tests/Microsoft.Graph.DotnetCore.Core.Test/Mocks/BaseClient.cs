@@ -4,7 +4,6 @@
 
 namespace Microsoft.Graph.DotnetCore.Core.Test.Mocks
 {
-    using System.Net.Http;
     using Microsoft.Graph.Core.Requests;
     using Microsoft.Kiota.Abstractions;
     using Microsoft.Kiota.Abstractions.Authentication;

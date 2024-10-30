@@ -4,9 +4,6 @@
 
 using System.Collections.Generic;
 using System.IO;
-using System.Net.Http;
-using System.Threading.Tasks;
-using Microsoft.Kiota.Http.HttpClientLibrary.Extensions;
 using Xunit;
 
 namespace Microsoft.Graph.DotnetCore.Core.Test.Helpers
