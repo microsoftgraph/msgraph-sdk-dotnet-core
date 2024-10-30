@@ -36,7 +36,29 @@ For an example of authenticating a UWP app using the V2 Authentication Endpoint,
 You can create an instance of **HttpClient** that is pre-configured for making requests to Microsoft Graph APIs using `GraphClientFactory`.
 
 ```cs
-HttpClient httpClient = GraphClientFactory.Create( version: "beta");
+// The client credentials flow requires that you request the
+// /.default scope, and pre-configure your permissions on the
+// app registration in Azure. An administrator must grant consent
+// to those permissions beforehand.
+var scopes = new[] { "https://graph.microsoft.com/.default" };
+
+// Values from app registration
+var clientId = "YOUR_CLIENT_ID";
+var tenantId = "YOUR_TENANT_ID";
+var clientSecret = "YOUR_CLIENT_SECRET";
+
+// using Azure.Identity;
+var options = new ClientSecretCredentialOptions
+{
+    AuthorityHost = AzureAuthorityHosts.AzurePublicCloud,
+};
+
+// https://learn.microsoft.com/dotnet/api/azure.identity.clientsecretcredential
+var clientSecretCredential = new ClientSecretCredential(
+    tenantId, clientId, clientSecret, options);
+
+HttpClient httpClient = GraphClientFactory.create(tokenCredential: clientSecretCredential, version: "beta");
+
 ```
 
 For more information on initializing a client instance, see the [library overview](https://docs.microsoft.com/en-us/graph/sdks/sdks-overview)
