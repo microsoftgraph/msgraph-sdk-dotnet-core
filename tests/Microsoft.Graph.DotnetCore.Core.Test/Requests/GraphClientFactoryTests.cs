@@ -318,7 +318,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         }
 
         [Fact]
-        public async Task CreateClientWithAuthenticationProviderAuthenticatesRequest()
+        public async Task CreateClientWithAuthenticationProviderAuthenticatesRequestAsync()
         {
             var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, "https://graph.microsoft.com/me");
             var responseMessage = new HttpResponseMessage(HttpStatusCode.OK);
@@ -334,7 +334,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         }
 
         [Fact]
-        public async Task CreateClientWithTokenCredentialAuthenticatesRequest()
+        public async Task CreateClientWithTokenCredentialAuthenticatesRequestAsync()
         {
             var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, "https://graph.microsoft.com/me");
             var responseMessage = new HttpResponseMessage(HttpStatusCode.OK);
