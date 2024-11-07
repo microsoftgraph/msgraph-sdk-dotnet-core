@@ -159,15 +159,7 @@ namespace Microsoft.Graph
             HttpMessageHandler finalHandler = null,
             bool disposeHandler = true)
         {
-            if (handlers == null)
-            {
-                handlers = CreateDefaultHandlers();
-            }
-            var handlerList = handlers.ToList();
-            handlerList.Add(new AuthorizationHandler(
-                new AzureIdentityAuthenticationProvider(tokenCredential, null, null, true)
-            ));
-            return Create(handlerList, version, nationalCloud, proxy, finalHandler, disposeHandler);
+            return Create(new AzureIdentityAuthenticationProvider(tokenCredential, null, null, true), handlers, version, nationalCloud, proxy, finalHandler, disposeHandler);
         }
 
         /// <summary>
