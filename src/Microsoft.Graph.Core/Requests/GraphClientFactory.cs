@@ -9,6 +9,7 @@ namespace Microsoft.Graph
     using System.Net;
     using System.Net.Http;
     using System.Net.Http.Headers;
+    using System.Threading;
     using Azure.Core;
     using Microsoft.Graph.Authentication;
     using Microsoft.Kiota.Abstractions.Authentication;
@@ -119,7 +120,7 @@ namespace Microsoft.Graph
         /// <param name="proxy">The proxy to be used with the created client</param>
         /// <param name="finalHandler">The last HttpMessageHandler to HTTP calls.</param>
         /// <param name="disposeHandler">true if the inner handler should be disposed of by Dispose(), false if you intend to reuse the inner handler..</param>
-        /// <returns></returns>
+        /// <returns>An <see cref="HttpClient"/> instance with the configured handlers</returns>
         public static HttpClient Create(
             BaseBearerTokenAuthenticationProvider authenticationProvider,
             IEnumerable<DelegatingHandler> handlers = null,
@@ -133,21 +134,22 @@ namespace Microsoft.Graph
             {
                 handlers = CreateDefaultHandlers();
             }
-            handlers = handlers.Append(new AuthorizationHandler(authenticationProvider));
-            return Create(handlers, version, nationalCloud, proxy, finalHandler, disposeHandler);
+            var handlerList = handlers.ToList();
+            handlerList.Add(new AuthorizationHandler(authenticationProvider));
+            return Create(handlerList, version, nationalCloud, proxy, finalHandler, disposeHandler);
         }
 
         /// <summary>
         /// Creates a new <see cref="HttpClient"/> instance configured to authenticate requests using the provided <see cref="TokenCredential"/>.
         /// </summary>
-        /// <param name="tokenCredential">Token credential object use to initialise an <see cref="AzureIdentityAuthenticationProvider"></param>
+        /// <param name="tokenCredential">Token credential object use to initialise an <see cref="AzureIdentityAuthenticationProvider"/></param>
         /// <param name="handlers">Custom middleware pipeline to which the Authorization handler is appended. If null, default handlers are initialised</param>
         /// <param name="version">The Graph version to use in the base URL</param>
         /// <param name="nationalCloud">The national cloud endpoint to use</param>
         /// <param name="proxy">The proxy to be used with the created client</param>
         /// <param name="finalHandler">The last HttpMessageHandler to HTTP calls</param>
-        /// <param name="disposeHandler">true if the inner handler should be disposed of by Dispose(), false if you intend to reuse the inner handler..</param>
-        /// <returns></returns>
+        /// <param name="disposeHandler">true if the inner handler should be disposed of by Dispose(), false if you intend to reuse the inner handler.</param>
+        /// <returns>An <see cref="HttpClient"/> instance with the configured handlers</returns>
         public static HttpClient Create(
             TokenCredential tokenCredential,
             IEnumerable<DelegatingHandler> handlers = null,
@@ -161,10 +163,11 @@ namespace Microsoft.Graph
             {
                 handlers = CreateDefaultHandlers();
             }
-            handlers = handlers.Append(new AuthorizationHandler(
+            var handlerList = handlers.ToList();
+            handlerList.Add(new AuthorizationHandler(
                 new AzureIdentityAuthenticationProvider(tokenCredential, null, null, true)
             ));
-            return Create(handlers, version, nationalCloud, proxy, finalHandler, disposeHandler);
+            return Create(handlerList, version, nationalCloud, proxy, finalHandler, disposeHandler);
         }
 
         /// <summary>
