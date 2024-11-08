@@ -68,8 +68,6 @@ and this project does adheres to [Semantic Versioning](https://semver.org/spec/v
 * start sha for release please ([a6a422f](https://github.com/microsoftgraph/msgraph-sdk-dotnet-core/commit/a6a422f0d9362111573a4628e3abe6a18610185b))
 * updates dependencies dependabot forgot ([cfc2686](https://github.com/microsoftgraph/msgraph-sdk-dotnet-core/commit/cfc2686dc21c8256e79d764d986d269570152639))
 
-## [Unreleased]
-
 ## [3.1.15] - 2024-08-09
 
 ### Changed
