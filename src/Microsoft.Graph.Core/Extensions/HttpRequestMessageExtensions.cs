@@ -6,11 +6,8 @@ namespace Microsoft.Graph
 {
     using System;
     using System.Collections.Generic;
-    using System.IO;
     using System.Linq;
     using System.Net.Http;
-    using System.Threading.Tasks;
-    using Microsoft.Kiota.Http.HttpClientLibrary.Extensions;
 
     /// <summary>
     /// Contains extension methods for <see cref="HttpRequestMessage"/>

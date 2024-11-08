@@ -6,7 +6,6 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.TestModels
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using Microsoft.Kiota.Abstractions;
     using Microsoft.Kiota.Abstractions.Serialization;
 

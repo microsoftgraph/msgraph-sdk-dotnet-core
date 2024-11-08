@@ -9,10 +9,8 @@ namespace Microsoft.Graph
     using System.Security.Cryptography;
     using System.Security.Cryptography.X509Certificates;
     using System.Text;
-    using System.Text.Json;
     using System.Threading.Tasks;
     using Microsoft.Kiota.Abstractions.Serialization;
-    using Microsoft.Kiota.Serialization.Json;
 
     /// <summary>
     /// Contains extension methods for <see cref="IDecryptableContentExtensions"/>
@@ -43,7 +41,7 @@ namespace Microsoft.Graph
 
         /// <summary>
         /// Validates the signature and decrypted content attached with the notification.
-        /// https://docs.microsoft.com/en-us/graph/webhooks-with-resource-data#decrypting-resource-data-from-change-notifications 
+        /// https://docs.microsoft.com/en-us/graph/webhooks-with-resource-data#decrypting-resource-data-from-change-notifications
         /// </summary>
         /// <param name="encryptedContent">The encrypted content of type <see cref="IDecryptableContent"/></param>
         /// <param name="certificateProvider">Certificate provider to decrypt the content.

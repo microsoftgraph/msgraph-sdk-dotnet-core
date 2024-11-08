@@ -10,12 +10,14 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
     using System.Net;
     using System.Net.Http;
     using System.Net.Http.Headers;
-    using System.Reflection;
     using System.Threading;
     using System.Threading.Tasks;
+    using Azure.Core;
+    using Microsoft.Kiota.Abstractions.Authentication;
     using Microsoft.Kiota.Http.HttpClientLibrary.Middleware;
     using Microsoft.Kiota.Http.HttpClientLibrary.Middleware.Options;
     using Mocks;
+    using Moq;
     using Xunit;
 
     public class GraphClientFactoryTests : IDisposable
@@ -313,6 +315,40 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
 
             // Assert
             Assert.Equal(shouldDisposeHandler, finalHandler.Disposed);
+        }
+
+        [Fact]
+        public async Task CreateClientWithAuthenticationProviderAuthenticatesRequestAsync()
+        {
+            var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, "https://graph.microsoft.com/me");
+            var responseMessage = new HttpResponseMessage(HttpStatusCode.OK);
+            this.testHttpMessageHandler.SetHttpResponse(responseMessage);
+
+            var authProvider = new Mock<BaseBearerTokenAuthenticationProvider>(new MockAccessTokenProvider("token").Object);
+
+            using (HttpClient client = GraphClientFactory.Create(authenticationProvider: authProvider.Object, finalHandler: this.testHttpMessageHandler))
+            {
+                var response = await client.SendAsync(httpRequestMessage, new CancellationToken());
+                Assert.Equal("Bearer token", response.RequestMessage.Headers.Authorization.ToString());
+            }
+        }
+
+        [Fact]
+        public async Task CreateClientWithTokenCredentialAuthenticatesRequestAsync()
+        {
+            var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, "https://graph.microsoft.com/me");
+            var responseMessage = new HttpResponseMessage(HttpStatusCode.OK);
+            this.testHttpMessageHandler.SetHttpResponse(responseMessage);
+
+            var tokenCredential = new Mock<TokenCredential>();
+            tokenCredential.Setup(x => x.GetTokenAsync(It.IsAny<TokenRequestContext>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new AccessToken("mockToken", DateTimeOffset.UtcNow.AddMinutes(10)));
+
+            using (HttpClient client = GraphClientFactory.Create(tokenCredential: tokenCredential.Object, finalHandler: this.testHttpMessageHandler))
+            {
+                var response = await client.SendAsync(httpRequestMessage, new CancellationToken());
+                Assert.Equal("Bearer mockToken", response.RequestMessage.Headers.Authorization.ToString());
+            }
         }
 
         private class MockHttpHandler : HttpMessageHandler

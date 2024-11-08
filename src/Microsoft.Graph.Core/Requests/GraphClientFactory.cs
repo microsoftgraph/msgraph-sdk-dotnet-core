@@ -10,6 +10,9 @@ namespace Microsoft.Graph
     using System.Net.Http;
     using System.Net.Http.Headers;
     using System.Threading;
+    using Azure.Core;
+    using Microsoft.Graph.Authentication;
+    using Microsoft.Kiota.Abstractions.Authentication;
     using Microsoft.Kiota.Http.HttpClientLibrary;
     using Microsoft.Kiota.Http.HttpClientLibrary.Middleware;
 
@@ -105,6 +108,58 @@ namespace Microsoft.Graph
             client.BaseAddress = DetermineBaseAddress(nationalCloud, version);
             client.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue { NoCache = true, NoStore = true };
             return client;
+        }
+
+        /// <summary>
+        ///    Creates a new <see cref="HttpClient"/> instance configured to authenticate requests using the provided <see cref="BaseBearerTokenAuthenticationProvider"/>.
+        /// </summary>
+        /// <param name="authenticationProvider">The authentication provider to initialise the Authorization handler</param>
+        /// <param name="handlers">Custom middleware pipeline to which the Authorization handler is appended. If null, default handlers are initialised</param>
+        /// <param name="version">The Graph version to use in the base URL</param>
+        /// <param name="nationalCloud">The national cloud endpoint to use</param>
+        /// <param name="proxy">The proxy to be used with the created client</param>
+        /// <param name="finalHandler">The last HttpMessageHandler to HTTP calls.</param>
+        /// <param name="disposeHandler">true if the inner handler should be disposed of by Dispose(), false if you intend to reuse the inner handler..</param>
+        /// <returns>An <see cref="HttpClient"/> instance with the configured handlers</returns>
+        public static HttpClient Create(
+            BaseBearerTokenAuthenticationProvider authenticationProvider,
+            IEnumerable<DelegatingHandler> handlers = null,
+            string version = "v1.0",
+            string nationalCloud = Global_Cloud,
+            IWebProxy proxy = null,
+            HttpMessageHandler finalHandler = null,
+            bool disposeHandler = true)
+        {
+            if (handlers == null)
+            {
+                handlers = CreateDefaultHandlers();
+            }
+            var handlerList = handlers.ToList();
+            handlerList.Add(new AuthorizationHandler(authenticationProvider));
+            return Create(handlerList, version, nationalCloud, proxy, finalHandler, disposeHandler);
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="HttpClient"/> instance configured to authenticate requests using the provided <see cref="TokenCredential"/>.
+        /// </summary>
+        /// <param name="tokenCredential">Token credential object use to initialise an <see cref="AzureIdentityAuthenticationProvider"/></param>
+        /// <param name="handlers">Custom middleware pipeline to which the Authorization handler is appended. If null, default handlers are initialised</param>
+        /// <param name="version">The Graph version to use in the base URL</param>
+        /// <param name="nationalCloud">The national cloud endpoint to use</param>
+        /// <param name="proxy">The proxy to be used with the created client</param>
+        /// <param name="finalHandler">The last HttpMessageHandler to HTTP calls</param>
+        /// <param name="disposeHandler">true if the inner handler should be disposed of by Dispose(), false if you intend to reuse the inner handler.</param>
+        /// <returns>An <see cref="HttpClient"/> instance with the configured handlers</returns>
+        public static HttpClient Create(
+            TokenCredential tokenCredential,
+            IEnumerable<DelegatingHandler> handlers = null,
+            string version = "v1.0",
+            string nationalCloud = Global_Cloud,
+            IWebProxy proxy = null,
+            HttpMessageHandler finalHandler = null,
+            bool disposeHandler = true)
+        {
+            return Create(new AzureIdentityAuthenticationProvider(tokenCredential, null, null, true), handlers, version, nationalCloud, proxy, finalHandler, disposeHandler);
         }
 
         /// <summary>
@@ -211,7 +266,7 @@ namespace Microsoft.Graph
             return new WinHttpHandler { Proxy = proxy, AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate , WindowsProxyUsePolicy = proxyPolicy, SendTimeout = Timeout.InfiniteTimeSpan, ReceiveDataTimeout = Timeout.InfiniteTimeSpan, ReceiveHeadersTimeout = Timeout.InfiniteTimeSpan };
 #elif NET6_0_OR_GREATER
             //use resilient configs when we can https://learn.microsoft.com/en-us/aspnet/core/fundamentals/http-requests?view=aspnetcore-5.0#alternatives-to-ihttpclientfactory-1
-            return new SocketsHttpHandler { Proxy = proxy, AllowAutoRedirect = false, AutomaticDecompression = DecompressionMethods.All, PooledConnectionLifetime = TimeSpan.FromMinutes(1)}; 
+            return new SocketsHttpHandler { Proxy = proxy, AllowAutoRedirect = false, AutomaticDecompression = DecompressionMethods.All, PooledConnectionLifetime = TimeSpan.FromMinutes(1)};
 #else
             return new HttpClientHandler { Proxy = proxy, AllowAutoRedirect = false, AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate };
 #endif

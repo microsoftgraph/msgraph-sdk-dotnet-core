@@ -4,7 +4,6 @@
 
 namespace Microsoft.Graph
 {
-    using System;
     using System.Collections.Generic;
     using System.Net.Http;
     using System.Threading.Tasks;
@@ -27,7 +26,7 @@ namespace Microsoft.Graph
         }
 
         /// <summary>
-        /// Gets the deserialized object 
+        /// Gets the deserialized object
         /// </summary>
         /// <param name="responseHandler">The response handler to use for the reponse</param>
         /// <param name="errorMappings">The errorMappings to use in the event of a non sucess request</param>

@@ -4,7 +4,6 @@
 
 namespace Microsoft.Graph
 {
-    using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
@@ -21,7 +20,7 @@ namespace Microsoft.Graph
 #endif
 
     /// <summary>
-    /// PREVIEW 
+    /// PREVIEW
     /// A response handler that exposes the list of changes returned in a response.
     /// This supports scenarios where the service expresses changes to 'null'. The
     /// deserializer can't express changes to null so you can now discover if a property
@@ -56,7 +55,7 @@ namespace Microsoft.Graph
                 // set on the response body object.
                 var responseString = await GetResponseStringAsync(responseMessage).ConfigureAwait(false);
 
-                // Get the response body object with the change list 
+                // Get the response body object with the change list
                 // set on each response item.
                 var responseWithChangeList = await GetResponseBodyWithChangelistAsync(responseString).ConfigureAwait(false);
                 using var responseWithChangeListStream = new MemoryStream(Encoding.UTF8.GetBytes(responseWithChangeList));
@@ -112,7 +111,7 @@ namespace Microsoft.Graph
             // return a string instead.
             using (var responseJsonDocument = JsonDocument.Parse(deltaResponseBody))
             {
-                // An array of delta objects. We will need to process 
+                // An array of delta objects. We will need to process
                 // each one independently of each other.
                 if (!responseJsonDocument.RootElement.TryGetProperty("value", out var pageOfDeltaObjects))
                 {
@@ -193,7 +192,7 @@ namespace Microsoft.Graph
                             var arrayEnumerator = property.Value.EnumerateArray();
                             if (!arrayEnumerator.Any())
                             {
-                                // Handle the edge case when the change involves changing to an empty array 
+                                // Handle the edge case when the change involves changing to an empty array
                                 // as we can't observe elements in an empty collection in the foreach loop below
                                 changes.Add(parent);
                                 break;
