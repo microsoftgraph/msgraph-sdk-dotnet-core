@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project does adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.2.0](https://github.com/microsoftgraph/msgraph-sdk-dotnet-core/compare/3.1.22...3.2.0) (2024-11-08)
+
+
+### Features
+
+* Add create() overloads to GraphClientFactory that enable requests to be authenticated ([ce6a88b](https://github.com/microsoftgraph/msgraph-sdk-dotnet-core/commit/ce6a88b658e377692f93b48c0685cef7ba30f225))
+
 ## [3.1.22](https://github.com/microsoftgraph/msgraph-sdk-dotnet-core/compare/3.1.21...3.1.22) (2024-09-10)
 
 
@@ -60,8 +67,6 @@ and this project does adheres to [Semantic Versioning](https://semver.org/spec/v
 * remove v in tag from configuration ([a6a422f](https://github.com/microsoftgraph/msgraph-sdk-dotnet-core/commit/a6a422f0d9362111573a4628e3abe6a18610185b))
 * start sha for release please ([a6a422f](https://github.com/microsoftgraph/msgraph-sdk-dotnet-core/commit/a6a422f0d9362111573a4628e3abe6a18610185b))
 * updates dependencies dependabot forgot ([cfc2686](https://github.com/microsoftgraph/msgraph-sdk-dotnet-core/commit/cfc2686dc21c8256e79d764d986d269570152639))
-
-## [Unreleased]
 
 ## [3.1.15] - 2024-08-09
 
