@@ -8,12 +8,12 @@ namespace Microsoft.Graph
     using Microsoft.Kiota.Abstractions;
     using Microsoft.Kiota.Abstractions.Authentication;
     using Microsoft.Kiota.Abstractions.Serialization;
-    using Microsoft.Kiota.Http.HttpClientLibrary;
+    using Microsoft.Kiota.Bundle;
 
     /// <summary>
     /// The <see cref="IRequestAdapter"/> instance for use with microsoft graph
     /// </summary>
-    public class BaseGraphRequestAdapter : HttpClientRequestAdapter
+    public class BaseGraphRequestAdapter : DefaultRequestAdapter
     {
         /// <summary>
         /// The public constructor for <see cref="BaseGraphRequestAdapter"/>
