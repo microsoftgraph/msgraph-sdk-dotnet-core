@@ -78,6 +78,6 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'net462' ">
-    <PackageReference Include="System.Net.Http.WinHttpHandler" Version="[6.0,9.0)" />
+    <PackageReference Include="System.Net.Http.WinHttpHandler" Version="[6.0,)" />
   </ItemGroup>
 </Project>
