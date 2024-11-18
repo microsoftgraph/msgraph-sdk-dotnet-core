@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project does adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.2.1](https://github.com/microsoftgraph/msgraph-sdk-dotnet-core/compare/3.2.0...3.2.1) (2024-11-18)
+
+
+### Bug Fixes
+
+* removes upper bound on System.Net.Http.WinHttpHandler ([72aa793](https://github.com/microsoftgraph/msgraph-sdk-dotnet-core/commit/72aa793b90964335c051d7ba1c06d2f9f6aa5524))
+* removes upper bound on System.Net.Http.WinHttpHandler ([4f50933](https://github.com/microsoftgraph/msgraph-sdk-dotnet-core/commit/4f509338ed4440ae3f3e4cc6fe7069ce7bd3ee37))
+
 ## [3.2.0](https://github.com/microsoftgraph/msgraph-sdk-dotnet-core/compare/3.1.22...3.2.0) (2024-11-08)
 
 
