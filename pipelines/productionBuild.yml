@@ -78,7 +78,7 @@ extends:
             pwsh: true
           enabled: true
         - powershell: |
-            dotnet workload install android macos ios maccatalyst 
+            dotnet workload install android macos ios maccatalyst
           displayName: 'Install needed dotnet workloads'
         - task: DotNetCoreCLI@2
           displayName: 'dotnet restore'
@@ -243,6 +243,13 @@ extends:
       dependsOn: build
       jobs:
         - deployment: deploy_nuget
+          templateContext:
+            type: releaseJob
+            isProduction: true
+            inputs:
+            - input: pipelineArtifact
+              artifactName: ProductionReleaseArtifact
+              targetPath: $(Pipeline.Workspace)
           pool:
             name: Azure-Pipelines-1ESPT-ExDShared
             os: windows
@@ -258,11 +265,6 @@ extends:
                   inputs:
                     versionSpec: '>=5.2.0'
                     checkLatest: true
-                - task: DownloadPipelineArtifact@2
-                  displayName: Download nupkg from artifacts
-                  inputs:
-                    artifact: ProductionReleaseArtifact
-                    source: current
                 - task: PowerShell@2
                   displayName: 'Get Latest Commit SHA from repo'
                   inputs:
