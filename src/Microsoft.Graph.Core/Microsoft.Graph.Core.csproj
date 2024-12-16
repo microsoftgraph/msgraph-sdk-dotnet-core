@@ -65,7 +65,7 @@
     <PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="8.2.0" />
     <PackageReference Include="Microsoft.IdentityModel.Validators" Version="8.2.0" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.Kiota.Bundle" Version="1.15.2" />
+    <PackageReference Include="Microsoft.Kiota.Bundle" Version="1.16.0" />
     <PackageReference Include="Microsoft.Kiota.Authentication.Azure" Version="1.15.2" />
     <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="17.12.19">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
