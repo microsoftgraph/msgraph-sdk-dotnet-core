@@ -77,7 +77,8 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             using ParametersNameDecodingHandler odataQueryHandler = (ParametersNameDecodingHandler)redirectHandler.InnerHandler;
             using UserAgentHandler userAgentHandler = (UserAgentHandler)odataQueryHandler.InnerHandler;
             using HeadersInspectionHandler headersInspectionHandler = (HeadersInspectionHandler)userAgentHandler.InnerHandler;
-            using GraphTelemetryHandler telemetryHandler = (GraphTelemetryHandler)headersInspectionHandler.InnerHandler;
+            using BodyInspectionHandler bodyInspectionHandler = (BodyInspectionHandler)headersInspectionHandler.InnerHandler;
+            using GraphTelemetryHandler telemetryHandler = (GraphTelemetryHandler)bodyInspectionHandler.InnerHandler;
             using MockRedirectHandler innerMost = (MockRedirectHandler)telemetryHandler.InnerHandler;
 
             Assert.NotNull(telemetryHandler);
@@ -106,7 +107,8 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             using ParametersNameDecodingHandler odataQueryHandler = (ParametersNameDecodingHandler)redirectHandler.InnerHandler;
             using UserAgentHandler userAgentHandler = (UserAgentHandler)odataQueryHandler.InnerHandler;
             using HeadersInspectionHandler headersInspectionHandler = (HeadersInspectionHandler)userAgentHandler.InnerHandler;
-            using GraphTelemetryHandler telemetryHandler = (GraphTelemetryHandler)headersInspectionHandler.InnerHandler;
+            using BodyInspectionHandler bodyInspectionHandler = (BodyInspectionHandler)headersInspectionHandler.InnerHandler;
+            using GraphTelemetryHandler telemetryHandler = (GraphTelemetryHandler)bodyInspectionHandler.InnerHandler;
             using MockRedirectHandler innerMost = (MockRedirectHandler)telemetryHandler.InnerHandler;
 
             Assert.NotNull(telemetryHandler);
