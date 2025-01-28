@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project does adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.2.3](https://github.com/microsoftgraph/msgraph-sdk-dotnet-core/compare/3.2.2...3.2.3) (2025-01-28)
+
+
+### Bug Fixes
+
+* fixes performance issue when using the `AddBatchRequestStepAsync` method due to the client trying to authenticate the request on conversion ([a5b3950](https://github.com/microsoftgraph/msgraph-sdk-dotnet-core/commit/a5b395051ea92f2b92c3fa0a758e41322ddd62c4))
+
 ## [3.2.2](https://github.com/microsoftgraph/msgraph-sdk-dotnet-core/compare/3.2.1...3.2.2) (2025-01-10)
 
 
