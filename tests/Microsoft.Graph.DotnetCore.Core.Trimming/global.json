@@ -1,6 +1,6 @@
 {
   "sdk": {
-    "version": "8.0.101", /* https://github.com/dotnet/maui/wiki/.NET-7-and-.NET-MAUI */
+    "version": "9.0.102", /* https://github.com/dotnet/maui/wiki/.NET-7-and-.NET-MAUI */
     "rollForward": "major"
   }
 }
