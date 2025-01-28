@@ -181,7 +181,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
 
             Assert.False(isSuccess);
             Assert.True(batchRequestContent.BatchRequestSteps.Count.Equals(2));
-            Assert.Same(batchRequestStep2.DependsOn.First(), batchRequestContent.BatchRequestSteps["2"].DependsOn.First());
+            Assert.Same(batchRequestStep2.DependsOn[0], batchRequestContent.BatchRequestSteps["2"].DependsOn[0]);
         }
 
         [Fact]
@@ -312,6 +312,29 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
         }
 
         [Fact]
+        public async System.Threading.Tasks.Task BatchRequestContent_GetBatchRequestContentFromRequestInformationDoesNotAddAuthHeaderAsync()
+        {
+            BatchRequestContent batchRequestContent = new BatchRequestContent(client);
+            RequestInformation requestInformation = new RequestInformation() { HttpMethod = Method.GET, UrlTemplate = REQUEST_URL };
+            await batchRequestContent.AddBatchRequestStepAsync(requestInformation, "2");
+
+            string requestContent;
+            // We get the contents of the stream as string for comparison.
+            using (Stream requestStream = await batchRequestContent.GetBatchRequestContentAsync())
+            using (StreamReader reader = new StreamReader(requestStream))
+            {
+                requestContent = await reader.ReadToEndAsync();
+            }
+
+            string expectedContent = "{\"requests\":[{\"id\":\"2\",\"url\":\"/me\",\"method\":\"GET\"}]}"; //Auth Header Absent.
+
+            Assert.NotNull(requestContent);
+            Assert.IsType<BaseGraphRequestAdapter>(batchRequestContent.RequestAdapter);
+            Assert.True(batchRequestContent.BatchRequestSteps.Count.Equals(1));
+            Assert.Equal(expectedContent, requestContent);
+        }
+
+        [Fact]
         public async System.Threading.Tasks.Task BatchRequestContent_GetBatchRequestContentSupportsNonJsonPayloadAsync()
         {
             using var fileStream = File.Open("ms-logo.png", FileMode.Open);
@@ -331,7 +354,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
             string requestContent;
             // we do this to get a version of the json that is indented
             using (Stream requestStream = await batchRequestContent.GetBatchRequestContentAsync())
-            using (JsonDocument jsonDocument = JsonDocument.Parse(requestStream))
+            using (JsonDocument jsonDocument = await JsonDocument.ParseAsync(requestStream))
             {
                 requestContent = JsonSerializer.Serialize(jsonDocument.RootElement, new JsonSerializerOptions() { WriteIndented = true });
             }
@@ -409,7 +432,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
             string requestContent;
             // we do this to get a version of the json that is indented
             using (Stream requestStream = await batchRequestContent.GetBatchRequestContentAsync())
-            using (JsonDocument jsonDocument = JsonDocument.Parse(requestStream))
+            using (JsonDocument jsonDocument = await JsonDocument.ParseAsync(requestStream))
             {
                 requestContent = JsonSerializer.Serialize(jsonDocument.RootElement, new JsonSerializerOptions() { WriteIndented = true });
             }
@@ -532,7 +555,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
 
             // Assert
             var exception = Assert.Throws<ArgumentException>(() => batchRequestContent.AddBatchRequestStep(extraHttpRequestMessage));//Assert we throw exception on excess add
-            //Assert.Equal(ErrorConstants.Codes.MaximumValueExceeded, exception.Error.Code);
+            Assert.Equal(ErrorConstants.Messages.MaximumValueExceeded, exception.Message);
             Assert.NotNull(batchRequestContent.BatchRequestSteps);
             Assert.True(batchRequestContent.BatchRequestSteps.Count.Equals(CoreConstants.BatchRequest.MaxNumberOfRequests));
         }
@@ -612,7 +635,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
             var exception = await Assert.ThrowsAsync<ArgumentException>(() => batchRequestContent.AddBatchRequestStepAsync(extraRequestInformation));
 
             // Assert
-            //Assert.Equal(ErrorConstants.Codes.MaximumValueExceeded, exception.Error.Code);
+            Assert.Equal(ErrorConstants.Messages.MaximumValueExceeded, exception.Message);
             Assert.NotNull(batchRequestContent.BatchRequestSteps);
             Assert.True(batchRequestContent.BatchRequestSteps.Count.Equals(CoreConstants.BatchRequest.MaxNumberOfRequests));
         }

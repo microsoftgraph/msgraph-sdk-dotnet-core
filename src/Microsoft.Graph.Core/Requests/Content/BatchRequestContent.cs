@@ -17,6 +17,7 @@ namespace Microsoft.Graph
     using System.Threading;
     using System.Threading.Tasks;
     using Microsoft.Kiota.Abstractions;
+    using Microsoft.Kiota.Abstractions.Authentication;
 
     /// <summary>
     /// A <see cref="HttpContent"/> implementation to handle json batch requests.
@@ -71,7 +72,7 @@ namespace Microsoft.Graph
             if (batchRequestSteps == null)
                 throw new ArgumentNullException(nameof(batchRequestSteps));
 
-            if (batchRequestSteps.Count() > CoreConstants.BatchRequest.MaxNumberOfRequests)
+            if (batchRequestSteps.Length > CoreConstants.BatchRequest.MaxNumberOfRequests)
                 throw new ArgumentException(string.Format(ErrorConstants.Messages.MaximumValueExceeded, "Number of batch request steps", CoreConstants.BatchRequest.MaxNumberOfRequests));
 
             this.Headers.ContentType = new MediaTypeHeaderValue(CoreConstants.MimeTypeNames.Application.Json);
@@ -87,7 +88,12 @@ namespace Microsoft.Graph
                 AddBatchRequestStep(requestStep);
             }
 
-            this.RequestAdapter = requestAdapter ?? throw new ArgumentNullException(nameof(requestAdapter));
+            // as we only use the adapter to serialize request using the `ConvertToNativeRequestAsync` interface,
+            // we don't want to make extra request to the authentication provider as the request does not need the authentication header.
+            this.RequestAdapter = new BaseGraphRequestAdapter(new AnonymousAuthenticationProvider())
+            {
+                BaseUrl = requestAdapter.BaseUrl
+            };
         }
 
         /// <summary>
