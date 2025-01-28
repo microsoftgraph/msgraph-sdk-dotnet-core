@@ -555,7 +555,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
 
             // Assert
             var exception = Assert.Throws<ArgumentException>(() => batchRequestContent.AddBatchRequestStep(extraHttpRequestMessage));//Assert we throw exception on excess add
-            Assert.Equal(ErrorConstants.Messages.MaximumValueExceeded, exception.Message);
+            Assert.Equal(string.Format(ErrorConstants.Messages.MaximumValueExceeded, "Number of batch request steps", CoreConstants.BatchRequest.MaxNumberOfRequests), exception.Message);
             Assert.NotNull(batchRequestContent.BatchRequestSteps);
             Assert.True(batchRequestContent.BatchRequestSteps.Count.Equals(CoreConstants.BatchRequest.MaxNumberOfRequests));
         }
@@ -635,7 +635,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
             var exception = await Assert.ThrowsAsync<ArgumentException>(() => batchRequestContent.AddBatchRequestStepAsync(extraRequestInformation));
 
             // Assert
-            Assert.Equal(ErrorConstants.Messages.MaximumValueExceeded, exception.Message);
+            Assert.Equal(string.Format(ErrorConstants.Messages.MaximumValueExceeded, "Number of batch request steps", CoreConstants.BatchRequest.MaxNumberOfRequests), exception.Message);
             Assert.NotNull(batchRequestContent.BatchRequestSteps);
             Assert.True(batchRequestContent.BatchRequestSteps.Count.Equals(CoreConstants.BatchRequest.MaxNumberOfRequests));
         }
