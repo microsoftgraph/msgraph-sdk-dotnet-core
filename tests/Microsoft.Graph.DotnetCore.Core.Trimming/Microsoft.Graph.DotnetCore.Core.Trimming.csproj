@@ -10,7 +10,6 @@
         <PublishTrimmed>true</PublishTrimmed>
         <PublishAot>true</PublishAot>
         <NoWarn>IL3000</NoWarn> <!-- Ignore IL3000 warning as it references a code outside our control -->
-        <SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
     </PropertyGroup>
     <ItemGroup>
       <ProjectReference Include="..\..\src\Microsoft.Graph.Core\Microsoft.Graph.Core.csproj" />
