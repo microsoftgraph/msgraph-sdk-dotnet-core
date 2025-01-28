@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project does adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.2.2](https://github.com/microsoftgraph/msgraph-sdk-dotnet-core/compare/3.2.1...3.2.2) (2025-01-10)
+
+
+### Bug Fixes
+
+* update kiota dependencies to expose the BodyInspectionHandler ([32aac7b](https://github.com/microsoftgraph/msgraph-sdk-dotnet-core/commit/32aac7b5753f0f3a42012b9bf6c810b1bce1f36f))
+
 ## [3.2.1](https://github.com/microsoftgraph/msgraph-sdk-dotnet-core/compare/3.2.0...3.2.1) (2024-11-18)
 
 
