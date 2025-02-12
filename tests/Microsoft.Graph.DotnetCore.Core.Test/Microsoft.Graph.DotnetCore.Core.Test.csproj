@@ -34,7 +34,7 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <ProjectReference Include="..\..\src\Microsoft.Graph.Core\Microsoft.Graph.Core.csproj" />
-    <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="17.12.19">
+    <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="17.13.2">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
