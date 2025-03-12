@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project does adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.2.4](https://github.com/microsoftgraph/msgraph-sdk-dotnet-core/compare/3.2.3...3.2.4) (2025-03-12)
+
+
+### Bug Fixes
+
+* ensures valid handler is returned in browser scenarios ([869a498](https://github.com/microsoftgraph/msgraph-sdk-dotnet-core/commit/869a498234fefa69cb3afd7c7e77a445a89f8498))
+* ensures valid handler is returned in browser scenarios ([5268497](https://github.com/microsoftgraph/msgraph-sdk-dotnet-core/commit/52684971eb816feb41a90be2ca3048515773746c))
+
 ## [3.2.3](https://github.com/microsoftgraph/msgraph-sdk-dotnet-core/compare/3.2.2...3.2.3) (2025-01-28)
 
 
