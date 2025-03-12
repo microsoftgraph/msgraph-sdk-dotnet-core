@@ -10,6 +10,7 @@ namespace Microsoft.Graph
     using System.Net.Http;
     using System.Net.Http.Headers;
     using System.Runtime.InteropServices;
+    using System.Threading;
     using Azure.Core;
     using Microsoft.Graph.Authentication;
     using Microsoft.Kiota.Abstractions.Authentication;
