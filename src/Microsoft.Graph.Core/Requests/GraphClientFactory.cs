@@ -9,6 +9,7 @@ namespace Microsoft.Graph
     using System.Net;
     using System.Net.Http;
     using System.Net.Http.Headers;
+    using System.Runtime.InteropServices;
     using System.Threading;
     using Azure.Core;
     using Microsoft.Graph.Authentication;
@@ -253,6 +254,11 @@ namespace Microsoft.Graph
         /// </returns>
         internal static HttpMessageHandler GetNativePlatformHttpHandler(IWebProxy proxy = null)
         {
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Create("browser")))
+            {
+                // We can't produce a browser specific binary as the TFM is only available in net8 and above.
+                return new HttpClientHandler { AllowAutoRedirect = false };
+            }
 #if IOS || MACCATALYST
             return new NSUrlSessionHandler { AllowAutoRedirect = false };
 #elif MACOS
