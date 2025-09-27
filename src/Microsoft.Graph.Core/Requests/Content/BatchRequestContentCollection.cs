@@ -183,7 +183,13 @@ namespace Microsoft.Graph
             {
                 if (steps.ContainsKey(response.Key) && !BatchResponseContent.IsSuccessStatusCode(response.Value))
                 {
-                    request.AddBatchRequestStep(steps[response.Key].Request);
+                    var step = steps[response.Key];
+                    var newStep = new BatchRequestStep(
+                        requestId: step.RequestId,
+                        httpRequestMessage: step.Request,
+                        dependsOn: step.DependsOn?.ToList());
+
+                    request.AddBatchRequestStep(newStep);
                 }
             }
             return request;
