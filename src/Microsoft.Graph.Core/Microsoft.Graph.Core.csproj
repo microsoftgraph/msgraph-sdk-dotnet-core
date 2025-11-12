@@ -30,8 +30,7 @@
     <PackageReleaseNotes>
 - https://github.com/microsoftgraph/msgraph-sdk-dotnet-core/blob/main/CHANGELOG.md
     </PackageReleaseNotes>
-    <!-- By default let the Maui targets be excluded to make contribution for external parties easier and dependabot updates. They can be enabled by adding `-p:IncludeMauiTargets=true` to the target build/restore command which is done in the CI.-->
-    <TargetFrameworks>netstandard2.0;net462;$(MauiTargets)</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;netstandard2.1;net8.0;net9.0;net10.0</TargetFrameworks>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <Deterministic>true</Deterministic>

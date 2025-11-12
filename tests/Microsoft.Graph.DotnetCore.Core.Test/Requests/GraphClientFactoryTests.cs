@@ -273,7 +273,11 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             // Creation should ignore the InnerHandler on RetryHandler
             HttpClient client = GraphClientFactory.Create(handlers: handlers);
             Assert.NotNull(client);
+#if NETFRAMEWORK
+            Assert.IsType<HttpClientHandler>(handlers[0].InnerHandler);
+#else
             Assert.IsType<SocketsHttpHandler>(handlers[0].InnerHandler);
+#endif
         }
 
         [Fact]

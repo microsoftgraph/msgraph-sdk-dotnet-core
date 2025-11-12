@@ -250,15 +250,25 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
             // Create cancelled token
             var cancellationTokenSource = new CancellationTokenSource();
             CancellationToken cancellationToken = cancellationTokenSource.Token;
-            cancellationTokenSource.Cancel();
 
             // Create task
             IBaseClient baseClient = new BaseClient(new BaseGraphRequestAdapter(new AnonymousAuthenticationProvider(), httpClient: GraphClientFactory.Create(finalHandler: testHttpMessageHandler)));
             var fileUploadTask = new LargeFileUploadTask<TestDriveItem>(uploadSession, stream, maxSliceSize, baseClient.RequestAdapter);
 
             // Assert that the task is cancellable
+#if NETFRAMEWORK
+            cancellationTokenSource.Cancel();
+            var cancellationException = await Assert.ThrowsAsync<OperationCanceledException>(() => fileUploadTask.UploadAsync(cancellationToken: cancellationToken));
+            Assert.Contains("File upload cancelled.", cancellationException.Message);
+#elif NET10_0_OR_GREATER
+            await cancellationTokenSource.CancelAsync();
+            var cancellationException = await Assert.ThrowsAsync<OperationCanceledException>(() => fileUploadTask.UploadAsync(cancellationToken: cancellationToken));
+            Assert.Contains("File upload cancelled.", cancellationException.Message);
+#else
+            await cancellationTokenSource.CancelAsync();
             var cancellationException = await Assert.ThrowsAsync<TaskCanceledException>(() => fileUploadTask.UploadAsync(cancellationToken: cancellationToken));
             Assert.Contains("A task was canceled", cancellationException.Message);
+#endif
         }
     }
 }

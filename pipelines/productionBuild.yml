@@ -54,13 +54,17 @@ extends:
           clean: true
           fetchDepth: 1
         - task: UseDotNet@2
-          displayName: 'Use .NET 6'
+          displayName: 'Use .NET 8'
           inputs:
-            version: 6.x
+            version: 8.x
         - task: UseDotNet@2
-          displayName: 'Use .NET 9 for trimming validation'
+          displayName: 'Use .NET 9'
           inputs:
             version: 9.x
+        - task: UseDotNet@2
+          displayName: 'Use .NET 10 for trimming validation'
+          inputs:
+            version: 10.x
         - task: PowerShell@2
           displayName: 'Set Java Home to use Java 11'
           inputs:
