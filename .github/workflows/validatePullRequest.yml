@@ -33,6 +33,42 @@ jobs:
         with:
           distribution: 'microsoft'
           java-version: '11'
+        
+      
+      - name: Install Android SDK (API 31)
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $env:ANDROID_SDK_ROOT = "$env:USERPROFILE\android-sdk"
+          New-Item -ItemType Directory -Force -Path $env:ANDROID_SDK_ROOT | Out-Null
+          
+          $zip = "$env:TEMP\cmdline-tools.zip"
+          Invoke-WebRequest -UseBasicParsing `
+            -Uri "https://dl.google.com/android/repository/commandlinetools-win-11076708_latest.zip" `
+            -OutFile $zip
+
+          Expand-Archive -Path $zip -DestinationPath "$env:ANDROID_SDK_ROOT" -Force
+          New-Item -ItemType Directory -Force -Path "$env:ANDROID_SDK_ROOT\cmdline-tools\latest" | Out-Null
+          Get-ChildItem "$env:ANDROID_SDK_ROOT\cmdline-tools" -Exclude latest | `
+            ForEach-Object { Move-Item $_.FullName "$env:ANDROID_SDK_ROOT\cmdline-tools\latest" -Force }
+
+          $sdk = "$env:ANDROID_SDK_ROOT\cmdline-tools\latest\bin\sdkmanager.bat"
+          cmd /c "echo y | `"$sdk`" --licenses"
+          & $sdk --install "platforms;android-31" "build-tools;31.0.0" "platform-tools"
+
+          $jar = Join-Path $env:ANDROID_SDK_ROOT "platforms\android-31\android.jar"
+          if (!(Test-Path $jar)) { throw "android.jar not found at $jar" }
+
+          echo "ANDROID_SDK_ROOT=$env:ANDROID_SDK_ROOT" >> $env:GITHUB_ENV
+          
+      - name: Install Android dependencies for net6.0-android
+        shell: pwsh
+        run: |
+          dotnet build `
+            -t:InstallAndroidDependencies `
+            -f net6.0-android `
+            "-p:AndroidSdkDirectory=$env:ANDROID_SDK_ROOT"
+
 
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v3
