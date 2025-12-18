@@ -32,7 +32,7 @@ jobs:
         uses: actions/setup-java@v5
         with:
           distribution: 'microsoft'
-          java-version: '11' 
+          java-version: '17' 
 
       - name: Install Android SDK cmdline-tools & accept licenses 
         shell: pwsh
