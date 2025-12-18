@@ -28,11 +28,11 @@ jobs:
         with:
           dotnet-version: 6.0.x
 
-      - name: Setup JDK for android targets
-        uses: actions/setup-java@v5
-        with:
-          distribution: 'microsoft'
-          java-version: '11'
+      # - name: Setup JDK for android targets
+      #   uses: actions/setup-java@v5
+      #   with:
+      #     distribution: 'microsoft'
+      #     java-version: '11'
         
       
       - name: Install Android SDK (API 31)
@@ -60,7 +60,7 @@ jobs:
           if (!(Test-Path $jar)) { throw "android.jar not found at $jar" }
 
           echo "ANDROID_SDK_ROOT=$env:ANDROID_SDK_ROOT" >> $env:GITHUB_ENV
-          
+
       - name: Install Android dependencies for net6.0-android
         shell: pwsh
         run: |
