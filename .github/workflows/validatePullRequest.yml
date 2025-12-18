@@ -20,21 +20,21 @@ jobs:
       solutionName: Microsoft.Graph.Core.sln
       relativePath: ./src/Microsoft.Graph.Core
     steps:
-      - uses: actions/checkout@v4.1.7
+      - uses: actions/checkout@v5
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         with:
           dotnet-version: 6.0.x
 
       - name: Setup JDK for android targets
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: 'microsoft'
           java-version: '11'
 
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@v3
+        uses: github/codeql-action/init@v4
         with:
           languages: csharp
 
@@ -54,16 +54,16 @@ jobs:
         run: dotnet test ${{ env.solutionName }} --no-build --verbosity normal -c Debug /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=opencover
 
       - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v3
+        uses: github/codeql-action/analyze@v4
 
   validate-trimming:
     name: Validate Project for Trimming
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4.1.7
+      - uses: actions/checkout@v6
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         with:
           dotnet-version: 9.x
 
