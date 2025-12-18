@@ -3,6 +3,6 @@
    <MauiTargets>net6.0</MauiTargets>
  </PropertyGroup>
  <PropertyGroup>
-   <MauiTargets Condition="'$(IncludeMauiTargets)'=='true'">$(MauiTargets);net6.0-android;net6.0-ios;net6.0-maccatalyst;net6.0-macos;net6.0-windows</MauiTargets>
+   <MauiTargets Condition="'$(IncludeMauiTargets)'=='true'">$(MauiTargets);net8.0-android;net8.0-ios;net8.0-maccatalyst;net8.0-macos;net8.0-windows</MauiTargets>
  </PropertyGroup>
 </Project>
