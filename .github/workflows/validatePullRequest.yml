@@ -31,7 +31,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: 'microsoft'
-          java-version: '16'
+          java-version: '11'
 
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v3
