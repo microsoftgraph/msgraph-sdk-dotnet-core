@@ -28,7 +28,7 @@ jobs:
         with:
           dotnet-version: 6.0.x
 
-      - name: Setup JDK 17 for android targets
+      - name: Setup JDK 17 for android setup
         uses: actions/setup-java@v5
         with:
           distribution: 'microsoft'
@@ -52,6 +52,12 @@ jobs:
 
       - name: Lint the code
         run: dotnet format --verify-no-changes
+
+      - name: Switch back to JDK 11 for build
+        uses: actions/setup-java@v5
+        with:
+          distribution: 'microsoft'
+          java-version: '11'
 
       - name: Build
         run: dotnet build ${{ env.solutionName }} -c Debug /p:UseSharedCompilation=false,IncludeMauiTargets=true
