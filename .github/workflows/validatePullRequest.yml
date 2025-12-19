@@ -9,7 +9,7 @@ on:
   merge_group:
 
 permissions:
-  contents: read
+  contents: read #those permissions are required to run the codeql analysis
   actions: read
   security-events: write
 
@@ -28,11 +28,11 @@ jobs:
         with:
           dotnet-version: 6.0.x
 
-      - name: Setup JDK 11 
+      - name: Setup JDK 17 for android targets
         uses: actions/setup-java@v5
         with:
           distribution: 'microsoft'
-          java-version: '11' 
+          java-version: '17'
 
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
