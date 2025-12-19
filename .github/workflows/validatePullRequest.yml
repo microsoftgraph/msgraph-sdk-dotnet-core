@@ -15,7 +15,7 @@ permissions:
 jobs:
   build:
     name: Build and Test
-    runs-on: windows-latest
+    runs-on: windows-2022
     env:
       solutionName: Microsoft.Graph.Core.sln
       relativePath: ./src/Microsoft.Graph.Core
@@ -58,7 +58,7 @@ jobs:
 
   validate-trimming:
     name: Validate Project for Trimming
-    runs-on: windows-latest
+    runs-on: windows-2022
     steps:
       - uses: actions/checkout@v4.1.7
 
