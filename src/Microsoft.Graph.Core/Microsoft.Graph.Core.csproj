@@ -73,7 +73,7 @@
     <PackageReference Include="Microsoft.Kiota.Serialization.Form" Version="1.21.1" />
     <PackageReference Include="Microsoft.Kiota.Http.HttpClientLibrary" Version="1.21.1" />
     <PackageReference Include="Microsoft.Kiota.Serialization.Multipart" Version="1.21.1" />
-    <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="17.13.2">
+    <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="17.14.15">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
