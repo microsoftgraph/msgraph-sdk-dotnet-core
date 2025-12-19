@@ -62,6 +62,7 @@
       <PackagePath></PackagePath>
     </None>
   </ItemGroup>
+  <!-- Verify all PackageReferences here are up to date before releasing new version -->
   <ItemGroup>
     <PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="8.15.0" />
     <PackageReference Include="Microsoft.IdentityModel.Validators" Version="8.6.1" />
