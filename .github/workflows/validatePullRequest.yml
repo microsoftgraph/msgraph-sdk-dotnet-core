@@ -6,13 +6,12 @@ on:
     branches: [ 'feature/*', 'main' ]
   pull_request:
     branches: [ 'feature/*', 'main' ]
-  merge_group:
 
 permissions:
   contents: read #those permissions are required to run the codeql analysis
   actions: read
   security-events: write
-
+  
 jobs:
   build:
     name: Build and Test
@@ -28,16 +27,11 @@ jobs:
         with:
           dotnet-version: 6.0.x
 
-      - name: Setup JDK 17 for android setup
+      - name: Setup JDK for android targets
         uses: actions/setup-java@v5
         with:
           distribution: 'microsoft'
-          java-version: '17'
-
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
-        with:
-          cmdline-tools-version: 10406996
+          java-version: '11'
 
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v3
@@ -46,18 +40,12 @@ jobs:
 
       - name: Install needed dotnet workloads
         run: dotnet workload install android macos ios maccatalyst
-
+     
       - name: Restore nuget dependencies
         run: dotnet restore ${{ env.solutionName }}
 
       - name: Lint the code
         run: dotnet format --verify-no-changes
-
-      - name: Switch back to JDK 11 for build
-        uses: actions/setup-java@v5
-        with:
-          distribution: 'microsoft'
-          java-version: '11'
 
       - name: Build
         run: dotnet build ${{ env.solutionName }} -c Debug /p:UseSharedCompilation=false,IncludeMauiTargets=true
