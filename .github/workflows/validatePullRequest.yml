@@ -6,7 +6,8 @@ on:
     branches: [ 'feature/*', 'main' ]
   pull_request:
     branches: [ 'feature/*', 'main' ]
-
+  merge_group:
+    
 permissions:
   contents: read #those permissions are required to run the codeql analysis
   actions: read
