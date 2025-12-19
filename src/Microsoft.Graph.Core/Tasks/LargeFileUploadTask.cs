@@ -63,11 +63,11 @@ namespace Microsoft.Graph
         {
             if (!uploadStream.CanRead || !uploadStream.CanSeek)
             {
-                throw new ArgumentException("Must provide stream that can read and seek");
+                throw new ArgumentException("Must provide a stream that can read and seek", nameof(uploadStream));
             }
             if (uploadStream.Length < 1)
             {
-                throw new ArgumentException("Must a stream that is not empty");
+                throw new ArgumentException("Must provide a stream that is not empty", nameof(uploadStream));
             }
             this.Session = uploadSession;
             this._requestAdapter = requestAdapter ?? InitializeAdapter(Session.UploadUrl);
