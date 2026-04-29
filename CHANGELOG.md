@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project does adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.2.6](https://github.com/microsoftgraph/msgraph-sdk-dotnet-core/compare/3.2.5...3.2.6) (2026-04-29)
+
+
+### Bug Fixes
+
+* downgrade coverlet packages to 6.0.4 for net6.0 compatibility ([22aa370](https://github.com/microsoftgraph/msgraph-sdk-dotnet-core/commit/22aa370558d7459dca898dc5b2b1756710fae868))
+* **security:** upgrade .NET SDK to 10.0.202 ([7d7aebb](https://github.com/microsoftgraph/msgraph-sdk-dotnet-core/commit/7d7aebb6f55cdf27a5c777ad1be3fe3e80ff5c36))
+
 ## [3.2.5](https://github.com/microsoftgraph/msgraph-sdk-dotnet-core/compare/3.2.4...3.2.5) (2025-12-19)
 
 
