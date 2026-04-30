@@ -78,7 +78,7 @@ extends:
             pwsh: true
           enabled: true
         - powershell: |
-            dotnet workload install android macos ios maccatalyst
+            dotnet workload install android ios maccatalyst
           displayName: 'Install needed dotnet workloads'
         - task: DotNetCoreCLI@2
           displayName: 'dotnet restore'

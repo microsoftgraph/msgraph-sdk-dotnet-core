@@ -261,8 +261,6 @@ namespace Microsoft.Graph
             }
 #if IOS || MACCATALYST
             return new NSUrlSessionHandler { AllowAutoRedirect = false };
-#elif MACOS
-            return new Foundation.NSUrlSessionHandler { AllowAutoRedirect = false };
 #elif ANDROID
             return new Xamarin.Android.Net.AndroidMessageHandler { Proxy = proxy, AllowAutoRedirect = false, AutomaticDecompression = DecompressionMethods.All };
 #elif NETFRAMEWORK

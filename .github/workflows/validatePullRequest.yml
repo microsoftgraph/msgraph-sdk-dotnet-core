@@ -45,7 +45,7 @@ jobs:
           languages: csharp
 
       - name: Install needed dotnet workloads
-        run: dotnet workload install android macos ios maccatalyst
+        run: dotnet workload install android ios maccatalyst
      
       - name: Restore nuget dependencies
         run: dotnet restore ${{ env.solutionName }}
