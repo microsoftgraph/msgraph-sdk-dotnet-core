@@ -21,7 +21,7 @@
     <AssemblyOriginatorKeyFile>35MSSharedLib1024.snk</AssemblyOriginatorKeyFile>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <!-- x-release-please-start-version -->
-    <VersionPrefix>3.2.5</VersionPrefix>
+    <VersionPrefix>3.2.6</VersionPrefix>
     <!-- x-release-please-end -->
     <!-- VersionPrefix minor version should not be set when the change comes from the generator. It will be updated automatically. -->
     <!-- VersionPrefix minor version must be manually set when making manual changes to code. -->
@@ -65,22 +65,22 @@
   </ItemGroup>
   <!-- Verify all PackageReferences here are up to date before releasing new version -->
   <ItemGroup>
-    <PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="8.15.0" />
-    <PackageReference Include="Microsoft.IdentityModel.Validators" Version="8.6.1" />
+    <PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="8.16.0" />
+    <PackageReference Include="Microsoft.IdentityModel.Validators" Version="8.16.0" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.Kiota.Abstractions" Version="1.21.1" />
-    <PackageReference Include="Microsoft.Kiota.Authentication.Azure" Version="1.21.1" />
-    <PackageReference Include="Microsoft.Kiota.Serialization.Json" Version="1.21.1" />
-    <PackageReference Include="Microsoft.Kiota.Serialization.Text" Version="1.21.1" />
-    <PackageReference Include="Microsoft.Kiota.Serialization.Form" Version="1.21.1" />
-    <PackageReference Include="Microsoft.Kiota.Http.HttpClientLibrary" Version="1.21.1" />
-    <PackageReference Include="Microsoft.Kiota.Serialization.Multipart" Version="1.21.1" />
+    <PackageReference Include="Microsoft.Kiota.Abstractions" Version="1.22.1" />
+    <PackageReference Include="Microsoft.Kiota.Authentication.Azure" Version="1.22.1" />
+    <PackageReference Include="Microsoft.Kiota.Serialization.Json" Version="1.22.1" />
+    <PackageReference Include="Microsoft.Kiota.Serialization.Text" Version="1.22.1" />
+    <PackageReference Include="Microsoft.Kiota.Serialization.Form" Version="1.22.1" />
+    <PackageReference Include="Microsoft.Kiota.Http.HttpClientLibrary" Version="1.22.1" />
+    <PackageReference Include="Microsoft.Kiota.Serialization.Multipart" Version="1.22.1" />
     <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="17.14.15">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
   </ItemGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'net462' ">
-    <PackageReference Include="System.Net.Http.WinHttpHandler" Version="[6.0,)" />
+    <PackageReference Include="System.Net.Http.WinHttpHandler" Version="9.0.14" />
   </ItemGroup>
 </Project>
