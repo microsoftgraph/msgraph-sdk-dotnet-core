@@ -54,11 +54,11 @@ extends:
           clean: true
           fetchDepth: 1
         - task: UseDotNet@2
-          displayName: 'Use .NET 6'
+          displayName: 'Use .NET 8'
           inputs:
-            version: 6.x
+            version: 8.x
         - task: UseDotNet@2
-          displayName: 'Use .NET 10 for trimming validation'
+          displayName: 'Use .NET 10'
           inputs:
             version: 10.x
         - task: PowerShell@2
@@ -78,7 +78,7 @@ extends:
             pwsh: true
           enabled: true
         - powershell: |
-            dotnet workload install android macos ios maccatalyst
+            dotnet workload install android ios maccatalyst
           displayName: 'Install needed dotnet workloads'
         - task: DotNetCoreCLI@2
           displayName: 'dotnet restore'

@@ -15,7 +15,7 @@ public class BatchRequestContentStepsTests
         _steps = new BatchRequestContentSteps();
         _steps.Add("1", new BatchRequestStep("1", new HttpRequestMessage(HttpMethod.Get, "https://graph.microsoft.com/v1.0/me")));
         _steps["2"] = new BatchRequestStep("2", new HttpRequestMessage(HttpMethod.Post, "https://graph.microsoft.com/v1.0/me"));
-        _steps["uuid-123"] = new BatchRequestStep("uuid-123", new HttpRequestMessage(HttpMethod.Patch, "https://graph.microsoft.com/v1.0/me"));
+        _steps["uuid-123"] = new BatchRequestStep("uuid-123", new HttpRequestMessage(new HttpMethod("PATCH"), "https://graph.microsoft.com/v1.0/me"));
     }
 
     [Fact]

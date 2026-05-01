@@ -16,17 +16,17 @@ permissions:
 jobs:
   build:
     name: Build and Test
-    runs-on: windows-2022
+    runs-on: windows-latest
     env:
       solutionName: Microsoft.Graph.Core.sln
       relativePath: ./src/Microsoft.Graph.Core
     steps:
       - uses: actions/checkout@v6
 
-      - name: Setup .NET 6
+      - name: Setup .NET 8
         uses: actions/setup-dotnet@v5
         with:
-          dotnet-version: 6.0.x
+          dotnet-version: 8.0.x
 
       - name: Setup .NET 10
         uses: actions/setup-dotnet@v5
@@ -45,7 +45,7 @@ jobs:
           languages: csharp
 
       - name: Install needed dotnet workloads
-        run: dotnet workload install android macos ios maccatalyst
+        run: dotnet workload install android ios maccatalyst
      
       - name: Restore nuget dependencies
         run: dotnet restore ${{ env.solutionName }}
@@ -64,7 +64,7 @@ jobs:
 
   validate-trimming:
     name: Validate Project for Trimming
-    runs-on: windows-2022
+    runs-on: windows-latest
     steps:
       - uses: actions/checkout@v6
 
@@ -74,5 +74,5 @@ jobs:
           dotnet-version: 10.x
 
       - name: Validate Trimming warnings
-        run: dotnet publish -c Release -r win-x64 /p:TreatWarningsAsErrors=true /warnaserror -f net9.0
+        run: dotnet publish -c Release -r win-x64 /p:TreatWarningsAsErrors=true /warnaserror -f net10.0
         working-directory: ./tests/Microsoft.Graph.DotnetCore.Core.Trimming

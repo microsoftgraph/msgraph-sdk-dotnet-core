@@ -78,7 +78,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Helpers
                 // reset stream to middle and read again
                 substream.Seek(5, SeekOrigin.Begin);
                 readBytes = streamReader.ReadToEnd();
-                Assert.Equal(segment[5..], readBytes);
+                Assert.Equal(segment.Substring(5), readBytes);
 
                 // reset stream and read again
                 substream.Position = 0;
