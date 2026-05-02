@@ -65,8 +65,8 @@
   </ItemGroup>
   <!-- Verify all PackageReferences here are up to date before releasing new version -->
   <ItemGroup>
-    <PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="8.16.0" />
-    <PackageReference Include="Microsoft.IdentityModel.Validators" Version="8.16.0" />
+    <PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="8.18.0" />
+    <PackageReference Include="Microsoft.IdentityModel.Validators" Version="8.18.0" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
     <PackageReference Include="Microsoft.Kiota.Abstractions" Version="1.22.1" />
     <PackageReference Include="Microsoft.Kiota.Authentication.Azure" Version="1.22.1" />
