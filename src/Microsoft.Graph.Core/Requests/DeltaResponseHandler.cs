@@ -28,7 +28,7 @@ namespace Microsoft.Graph
     /// </summary>
     public class DeltaResponseHandler<T> : IResponseHandler where T : IParsable, new()
     {
-        private readonly IAsyncParseNodeFactory parseNodeFactory;
+        private readonly IParseNodeFactory parseNodeFactory;
 
         /// <summary>
         /// Constructs a new <see cref="DeltaResponseHandler{T}"/>.
@@ -36,7 +36,7 @@ namespace Microsoft.Graph
         /// <param name="parseNodeFactory"> The <see cref="IParseNodeFactory"/> to use for response handling</param>
         public DeltaResponseHandler(IParseNodeFactory parseNodeFactory = null)
         {
-            this.parseNodeFactory = parseNodeFactory as IAsyncParseNodeFactory ?? ParseNodeFactoryRegistry.DefaultInstance;
+            this.parseNodeFactory = parseNodeFactory ?? ParseNodeFactoryRegistry.DefaultInstance;
         }
 
         /// <summary>

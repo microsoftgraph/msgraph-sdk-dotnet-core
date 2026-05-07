@@ -16,7 +16,7 @@ namespace Microsoft.Graph
     /// </summary>
     public class ResponseHandler<T> : IResponseHandler where T : IParsable, new()
     {
-        private readonly IAsyncParseNodeFactory _jsonParseNodeFactory;
+        private readonly IParseNodeFactory _jsonParseNodeFactory;
 
         /// <summary>
         /// Constructs a new <see cref="ResponseHandler{T}"/>.
@@ -24,7 +24,7 @@ namespace Microsoft.Graph
         /// <param name="parseNodeFactory"> The <see cref="IParseNodeFactory"/> to use for response handling</param>
         public ResponseHandler(IParseNodeFactory parseNodeFactory = null)
         {
-            _jsonParseNodeFactory = parseNodeFactory as IAsyncParseNodeFactory ?? ParseNodeFactoryRegistry.DefaultInstance; ;
+            _jsonParseNodeFactory = parseNodeFactory ?? ParseNodeFactoryRegistry.DefaultInstance;
         }
 
         /// <summary>
