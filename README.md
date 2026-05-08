@@ -1,7 +1,6 @@
 # Microsoft Graph .NET Core Client Library
 
-[![Build Status](https://dev.azure.com/microsoftgraph/Graph%20Developer%20Experiences/_apis/build/status%2FDotnet%2FDotnet%20Core%20Production?repoName=microsoftgraph%2Fmsgraph-sdk-dotnet-core&branchName=andrueastman%2FContributions)](https://dev.azure.com/microsoftgraph/Graph%20Developer%20Experiences/_build/latest?definitionId=197&repoName=microsoftgraph%2Fmsgraph-sdk-dotnet-core&branchName=andrueastman%2FContributions)
-[![NuGet Version](https://buildstats.info/nuget/Microsoft.Graph.Core)](https://www.nuget.org/packages/Microsoft.Graph.Core/)
+[![NuGet Version](https://img.shields.io/nuget/v/Microsoft.Graph.Core.svg)](https://www.nuget.org/packages/Microsoft.Graph.Core/)
 
 Integrate the [Microsoft Graph API](https://graph.microsoft.com) into your .NET
 project!
