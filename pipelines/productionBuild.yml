@@ -2,25 +2,14 @@
 # Licensed under the MIT License.
 trigger:
   branches:
-    include:
-    - main
-  paths:
-    include:
-    - src/*
-    exclude:
-    - .github/*
-    - build/*
-    - docs/*
-    - pipelines/*
-    - scripts/*
-    - .gitignore
-    - CONTRIBUTING.md
-    - LICENSE.txt
-    - Microsoft.Graph.Core.sln
-    - README.md
-    - THIRD PARTY NOTICES
-    - appveyor.yml
+    exclude: # prevents normal branch CI runs
+      - '*'
+  tags:
+    include: # ex v3.24.0
+      - "v*"
+
 pr: none
+
 variables:
   PACKAGE_NAME: 'microsoft.graph.core'
   PROJECT_PATH: '.\src\Microsoft.Graph.Core\Microsoft.Graph.Core.csproj'
@@ -54,11 +43,11 @@ extends:
           clean: true
           fetchDepth: 1
         - task: UseDotNet@2
-          displayName: 'Use .NET 6'
+          displayName: 'Use .NET 8'
           inputs:
-            version: 6.x
+            version: 8.x
         - task: UseDotNet@2
-          displayName: 'Use .NET 10 for trimming validation'
+          displayName: 'Use .NET 10'
           inputs:
             version: 10.x
         - task: PowerShell@2
@@ -78,7 +67,7 @@ extends:
             pwsh: true
           enabled: true
         - powershell: |
-            dotnet workload install android macos ios maccatalyst
+            dotnet workload install android ios maccatalyst
           displayName: 'Install needed dotnet workloads'
         - task: DotNetCoreCLI@2
           displayName: 'dotnet restore'
@@ -239,7 +228,7 @@ extends:
             TargetFolder: '$(Build.ArtifactStagingDirectory) '
 
     - stage: deploy
-      condition: and(contains(variables['build.sourceBranch'], 'refs/heads/main'), succeeded())
+      condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/')) # only deploy when tagged.
       dependsOn: build
       jobs:
         - deployment: deploy_nuget

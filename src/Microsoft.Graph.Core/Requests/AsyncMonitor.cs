@@ -23,7 +23,7 @@ namespace Microsoft.Graph
 
         internal string monitorUrl;
 
-        private readonly IAsyncParseNodeFactory parseNodeFactory;
+        private readonly IParseNodeFactory parseNodeFactory;
         /// <summary>
         /// Construct an Async Monitor.
         /// </summary>
@@ -34,7 +34,7 @@ namespace Microsoft.Graph
         {
             this.client = client;
             this.monitorUrl = monitorUrl;
-            this.parseNodeFactory = parseNodeFactory as IAsyncParseNodeFactory ?? ParseNodeFactoryRegistry.DefaultInstance;
+            this.parseNodeFactory = parseNodeFactory ?? ParseNodeFactoryRegistry.DefaultInstance;
         }
 
         /// <summary>
