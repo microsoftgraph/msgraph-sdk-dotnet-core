@@ -17,7 +17,7 @@ namespace Microsoft.Graph
     /// </summary>
     internal class UploadResponseHandler
     {
-        private readonly IAsyncParseNodeFactory _parseNodeFactory;
+        private readonly IParseNodeFactory _parseNodeFactory;
 
         /// <summary>
         /// Constructs a new <see cref="UploadResponseHandler"/>.
@@ -25,7 +25,7 @@ namespace Microsoft.Graph
         /// <param name="parseNodeFactory"> The <see cref="IParseNodeFactory"/> to use for response handling</param>
         public UploadResponseHandler(IParseNodeFactory parseNodeFactory = null)
         {
-            _parseNodeFactory = parseNodeFactory as IAsyncParseNodeFactory ?? ParseNodeFactoryRegistry.DefaultInstance;
+            _parseNodeFactory = parseNodeFactory ?? ParseNodeFactoryRegistry.DefaultInstance;
         }
 
         /// <summary>

@@ -2,25 +2,14 @@
 # Licensed under the MIT License.
 trigger:
   branches:
-    include:
-    - main
-  paths:
-    include:
-    - src/*
-    exclude:
-    - .github/*
-    - build/*
-    - docs/*
-    - pipelines/*
-    - scripts/*
-    - .gitignore
-    - CONTRIBUTING.md
-    - LICENSE.txt
-    - Microsoft.Graph.Core.sln
-    - README.md
-    - THIRD PARTY NOTICES
-    - appveyor.yml
+    exclude: # prevents normal branch CI runs
+      - '*'
+  tags:
+    include: # ex v3.24.0
+      - "v*"
+
 pr: none
+
 variables:
   PACKAGE_NAME: 'microsoft.graph.core'
   PROJECT_PATH: '.\src\Microsoft.Graph.Core\Microsoft.Graph.Core.csproj'
@@ -239,7 +228,7 @@ extends:
             TargetFolder: '$(Build.ArtifactStagingDirectory) '
 
     - stage: deploy
-      condition: and(contains(variables['build.sourceBranch'], 'refs/heads/main'), succeeded())
+      condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/')) # only deploy when tagged.
       dependsOn: build
       jobs:
         - deployment: deploy_nuget
