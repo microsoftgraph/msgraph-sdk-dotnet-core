@@ -13,6 +13,7 @@
     ".": {
       "package-name": "Microsoft.Graph.Core",
       "changelog-path": "CHANGELOG.md",
+      "release-as": "4.0.1",
       "extra-files": [
         "src/Microsoft.Graph.Core/Microsoft.Graph.Core.csproj"
       ]

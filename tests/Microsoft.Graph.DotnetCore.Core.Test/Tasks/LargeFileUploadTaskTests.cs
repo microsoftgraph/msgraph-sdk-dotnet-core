@@ -210,7 +210,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
                 }
 
                 //The last slice is a bit smaller than the rest
-                var lastUploadSlice = uploadSlices[^1];
+                var lastUploadSlice = uploadSlices[uploadSlices.Length - 1];
                 Assert.Equal(stream.Length - 1, lastUploadSlice.RangeEnd);
                 Assert.Equal(stream.Length % maxSliceSize, lastUploadSlice.RangeLength); //verify the last slice is the right size
             }
@@ -250,15 +250,18 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Tasks
             // Create cancelled token
             var cancellationTokenSource = new CancellationTokenSource();
             CancellationToken cancellationToken = cancellationTokenSource.Token;
+#if NET8_0_OR_GREATER
+            await cancellationTokenSource.CancelAsync();
+#else
             cancellationTokenSource.Cancel();
+#endif
 
             // Create task
             IBaseClient baseClient = new BaseClient(new BaseGraphRequestAdapter(new AnonymousAuthenticationProvider(), httpClient: GraphClientFactory.Create(finalHandler: testHttpMessageHandler)));
             var fileUploadTask = new LargeFileUploadTask<TestDriveItem>(uploadSession, stream, maxSliceSize, baseClient.RequestAdapter);
 
             // Assert that the task is cancellable
-            var cancellationException = await Assert.ThrowsAsync<TaskCanceledException>(() => fileUploadTask.UploadAsync(cancellationToken: cancellationToken));
-            Assert.Contains("A task was canceled", cancellationException.Message);
+            var cancellationException = await Assert.ThrowsAnyAsync<OperationCanceledException>(() => fileUploadTask.UploadAsync(cancellationToken: cancellationToken));
         }
     }
 }

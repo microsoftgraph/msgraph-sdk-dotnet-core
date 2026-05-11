@@ -601,7 +601,11 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
             Assert.True(batchRequestContent.BatchRequestSteps[batchRequestStepId].Request.Content.Headers.Any());
 
             // we do this to get a version of the json payload that is indented
+#if NETFRAMEWORK
+            using var requestStream = await batchRequestContent.GetBatchRequestContentAsync();
+#else
             await using var requestStream = await batchRequestContent.GetBatchRequestContentAsync();
+#endif
             using var jsonDocument = await JsonDocument.ParseAsync(requestStream);
             string requestContentString = JsonSerializer.Serialize(jsonDocument.RootElement, new JsonSerializerOptions() { WriteIndented = true });
 

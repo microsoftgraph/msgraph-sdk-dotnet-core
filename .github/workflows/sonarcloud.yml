@@ -41,7 +41,7 @@ jobs:
         uses: actions/setup-dotnet@v5
         with:
           dotnet-version: |
-            6.x
+            8.x
             10.x
       - uses: actions/checkout@v6
         with:
@@ -72,8 +72,10 @@ jobs:
           CoverletOutputFormat: "opencover" # https://github.com/microsoft/vstest/issues/4014#issuecomment-1307913682
         shell: pwsh
         run: |
-          ./.sonar/scanner/dotnet-sonarscanner begin /k:"microsoftgraph_msgraph-sdk-dotnet-core" /o:"microsoftgraph2" /d:sonar.scanner.scanAll=false /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="tests/Microsoft.Graph.DotnetCore.Core.Test/coverage.opencover.xml"
+          $ErrorActionPreference = 'Stop'
+          $PSNativeCommandUseErrorActionPreference = $true
+          ./.sonar/scanner/dotnet-sonarscanner begin /k:"microsoftgraph_msgraph-sdk-dotnet-core" /o:"microsoftgraph2" /d:sonar.scanner.scanAll=false /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="tests/Microsoft.Graph.DotnetCore.Core.Test/coverage.net8.0.opencover.xml"
           dotnet workload restore
-          dotnet build
-          dotnet test Microsoft.Graph.Core.sln --no-build --verbosity normal /p:CollectCoverage=true /p:CoverletOutputFormat=opencover --framework net6.0
+          dotnet build /p:UseSharedCompilation=false
+          dotnet test Microsoft.Graph.Core.sln --no-build --verbosity normal /p:CollectCoverage=true /p:CoverletOutputFormat=opencover --framework net8.0
           ./.sonar/scanner/dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
