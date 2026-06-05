@@ -1,6 +1,9 @@
 trigger: none
 pr: none
 
+variables:
+  NUGET_FEED_URI: 'https://microsoftgraph.pkgs.visualstudio.com/0985d294-5762-4bc2-a565-161ef349ca3e/_packaging/GraphDeveloperExperiences_Public/nuget/v3/index.json'
+
 schedules:
   - cron: '0 0 * * *'
     displayName: Daily builds
@@ -64,7 +67,7 @@ extends:
                   <configuration>
                     <packageSources>
                       <clear />
-                      <add key="GraphDeveloperExperiences_Public" value="https://microsoftgraph.pkgs.visualstudio.com/0985d294-5762-4bc2-a565-161ef349ca3e/_packaging/GraphDeveloperExperiences_Public/nuget/v3/index.json" />
+                      <add key="GraphDeveloperExperiences_Public" value="$(NUGET_FEED_URI)" />
                     </packageSources>
                   </configuration>
                   "@ | Set-Content -Path "$(Build.SourcesDirectory)\nuget.config" -Encoding UTF8
