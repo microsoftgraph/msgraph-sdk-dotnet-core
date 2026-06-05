@@ -49,7 +49,10 @@ extends:
                   packageType: 'sdk'
                   useGlobalJson: true
 
-              - script: dotnet restore Microsoft.Graph.Core.sln
+              - task: NuGetAuthenticate@1
+                displayName: Authenticate to Azure Artifacts
+
+              - script: dotnet restore Microsoft.Graph.Core.sln --configfile nuget.config
                 displayName: Restore dependencies
                 workingDirectory: $(Build.SourcesDirectory)
 
