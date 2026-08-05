@@ -63,8 +63,12 @@ extends:
           inputs:
             targetType: filePath
             filePath: 'scripts\ValidateUpdatedNugetVersion.ps1'
-            arguments: '-packageName "$(PACKAGE_NAME)" -projectPath "$(PROJECT_PATH)"'
+            # Look up the latest published version via the CFS central feed (which upstreams
+            # nuget.org) instead of api.nuget.org, to satisfy 1ES network isolation (CFSClean).
+            arguments: '-packageName "$(PACKAGE_NAME)" -projectPath "$(PROJECT_PATH)" -registrationsBaseUrl "https://pkgs.dev.azure.com/microsoftgraph/0985d294-5762-4bc2-a565-161ef349ca3e/_packaging/GraphDeveloperExperiences_Public/nuget/v3/registrations2"'
             pwsh: true
+          env:
+            SYSTEM_ACCESSTOKEN: $(System.AccessToken)
           enabled: true
         - powershell: |
             dotnet workload install android ios maccatalyst
