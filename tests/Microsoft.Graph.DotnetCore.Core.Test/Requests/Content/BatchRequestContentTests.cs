@@ -719,7 +719,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
                 { okId, HttpStatusCode.OK }
             };
 
-            var successOverrides = new[] { HttpStatusCode.NotFound };
+            var successOverrides = new HashSet<HttpStatusCode> { HttpStatusCode.NotFound };
 
             var retryBatch = batchRequestContent.NewBatchWithFailedRequests(responseStatusCodes, successOverrides);
 
@@ -787,6 +787,31 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
 
             Assert.Equal(id1, retryBatch.BatchRequestSteps[id1].RequestId);
             Assert.Equal(id3, retryBatch.BatchRequestSteps[id3].RequestId);
+        }
+
+        [Fact]
+        public async Task BatchRequestContent_NewBatchWithFailedRequests_NullSuccessSetMatchesSingleArgOverloadAsync()
+        {
+            var batchRequestContent = new BatchRequestContentCollection(client);
+
+            var req1 = new RequestInformation { HttpMethod = Method.GET, UrlTemplate = REQUEST_URL };
+            var req2 = new RequestInformation { HttpMethod = Method.GET, UrlTemplate = REQUEST_URL };
+
+            var failedId = await batchRequestContent.AddBatchRequestStepAsync(req1);
+            var okId = await batchRequestContent.AddBatchRequestStepAsync(req2);
+
+            var responseStatusCodes = new Dictionary<string, HttpStatusCode>
+            {
+                { failedId, HttpStatusCode.BadGateway },
+                { okId, HttpStatusCode.OK }
+            };
+
+            var singleArgBatch = batchRequestContent.NewBatchWithFailedRequests(responseStatusCodes);
+            var nullSetBatch = batchRequestContent.NewBatchWithFailedRequests(responseStatusCodes, null);
+
+            Assert.Equal(singleArgBatch.BatchRequestSteps.Keys.OrderBy(key => key), nullSetBatch.BatchRequestSteps.Keys.OrderBy(key => key));
+            Assert.Single(nullSetBatch.BatchRequestSteps);
+            Assert.Equal(failedId, nullSetBatch.BatchRequestSteps[failedId].RequestId);
         }
 
     }
