@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project does adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.0.1](https://github.com/microsoftgraph/msgraph-sdk-dotnet-core/compare/4.0.1...4.0.1) (2026-08-12)
+
+
+### Bug Fixes
+
+* daily CI pipeline configuration ([#1063](https://github.com/microsoftgraph/msgraph-sdk-dotnet-core/issues/1063)) ([6c45365](https://github.com/microsoftgraph/msgraph-sdk-dotnet-core/commit/6c45365c976f29a0a805bedefdeefd35ea87ad3e))
+
 ## [4.0.1](https://github.com/microsoftgraph/msgraph-sdk-dotnet-core/compare/4.0.0...4.0.1) (2026-05-08)
 
 
