@@ -96,7 +96,7 @@ extends:
           inputs:
             projects: '$(Build.SourcesDirectory)\src\Microsoft.Graph.Core\Microsoft.Graph.Core.csproj'
             arguments: '-c Release --no-incremental -p:IncludeMauiTargets=true'
-        - task: EsrpCodeSigning@5
+        - task: EsrpCodeSigning@6
           displayName: 'ESRP DLL Strong Name (Microsoft.Graph.Core)'
           inputs:
             ConnectedServiceName: 'Federated DevX ESRP Managed Identity Connection'
@@ -130,7 +130,7 @@ extends:
             MaxConcurrency: 50
             MaxRetryAttempts: 5
             PendingAnalysisWaitTimeoutMinutes: 5
-        - task: EsrpCodeSigning@5
+        - task: EsrpCodeSigning@6
           displayName: 'ESRP DLL CodeSigning (Microsoft.Graph.Core)'
           inputs:
             ConnectedServiceName: 'Federated DevX ESRP Managed Identity Connection'
@@ -188,7 +188,7 @@ extends:
         - powershell: |
             dotnet pack $env:BUILD_SOURCESDIRECTORY/src/Microsoft.Graph.Core/Microsoft.Graph.Core.csproj /p:IncludeSymbols=true /p:SymbolPackageFormat=snupkg --no-build --output $env:BUILD_ARTIFACTSTAGINGDIRECTORY --configuration Release
           displayName: dotnet pack
-        - task: EsrpCodeSigning@5
+        - task: EsrpCodeSigning@6
           displayName: 'ESRP NuGet CodeSigning (Microsoft.Graph.Core)'
           inputs:
             ConnectedServiceName: 'Federated DevX ESRP Managed Identity Connection'
