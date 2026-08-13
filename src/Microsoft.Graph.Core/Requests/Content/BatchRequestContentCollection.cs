@@ -177,15 +177,41 @@ namespace Microsoft.Graph
         /// <returns>new <see cref="BatchRequestContentCollection"/> with all failed requests.</returns>
         public BatchRequestContentCollection NewBatchWithFailedRequests(Dictionary<string, HttpStatusCode> responseStatusCodes)
         {
+            return NewBatchWithFailedRequests(responseStatusCodes, null);
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="BatchRequestContentCollection"/> with all <see cref="BatchRequestStep"/> that failed.
+        /// </summary>
+        /// <param name="responseStatusCodes">A dictionary with response codes, get by executing batchResponseContentCollection.GetResponsesStatusCodesAsync()</param>
+        /// <param name="statusCodesToTreatAsSuccess">Optional additional HTTP status codes to also treat as successful. Success is determined by <see cref="BatchResponseContent.IsSuccessStatusCode(HttpStatusCode)"/> OR membership in this set</param>
+        /// <returns>new <see cref="BatchRequestContentCollection"/> with all failed requests.</returns>
+        public BatchRequestContentCollection NewBatchWithFailedRequests(Dictionary<string, HttpStatusCode> responseStatusCodes, HashSet<HttpStatusCode> statusCodesToTreatAsSuccess)
+        {
             var request = new BatchRequestContentCollection(this.requestAdapter, batchRequestLimit);
-            var steps = this.BatchRequestSteps;
-            foreach (var response in responseStatusCodes)
+            if (responseStatusCodes == null || responseStatusCodes.Count == 0)
             {
-                if (steps.ContainsKey(response.Key) && !BatchResponseContent.IsSuccessStatusCode(response.Value))
+                return request;
+            }
+
+            bool IsSuccess(HttpStatusCode code) =>
+                BatchResponseContent.IsSuccessStatusCode(code)
+                || (statusCodesToTreatAsSuccess?.Contains(code) ?? false);
+
+            var steps = this.BatchRequestSteps;
+            foreach (var kvp in responseStatusCodes)
+            {
+                if (steps.TryGetValue(kvp.Key, out var step) && !IsSuccess(kvp.Value))
                 {
-                    request.AddBatchRequestStep(steps[response.Key].Request);
+                    var newStep = new BatchRequestStep(
+                        requestId: step.RequestId,
+                        httpRequestMessage: step.Request,
+                        dependsOn: step.DependsOn?.ToList());
+
+                    request.AddBatchRequestStep(newStep);
                 }
             }
+
             return request;
         }
     }
