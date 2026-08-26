@@ -13,6 +13,7 @@ namespace Microsoft.Graph
     using System.Threading;
     using Azure.Core;
     using Microsoft.Graph.Authentication;
+    using Microsoft.Kiota.Abstractions;
     using Microsoft.Kiota.Abstractions.Authentication;
     using Microsoft.Kiota.Http.HttpClientLibrary;
     using Microsoft.Kiota.Http.HttpClientLibrary.Middleware;
@@ -170,7 +171,21 @@ namespace Microsoft.Graph
         /// <returns></returns>
         public static IList<DelegatingHandler> CreateDefaultHandlers(GraphClientOptions graphClientOptions = null)
         {
-            var handlers = KiotaClientFactory.CreateDefaultHandlers();
+            return CreateDefaultHandlers(graphClientOptions, null);
+        }
+
+        /// <summary>
+        /// Create a default set of middleware for calling Microsoft Graph, letting callers configure the
+        /// underlying Kiota handlers (for example a custom <see cref="Microsoft.Kiota.Http.HttpClientLibrary.Middleware.Options.RetryHandlerOption"/>)
+        /// without having to remove and reinsert a handler afterwards.
+        /// </summary>
+        /// <param name="graphClientOptions">The <see cref="GraphClientOptions"/> to use with the client</param>
+        /// <param name="optionsForHandlers">The request options to configure the default Kiota handlers with. See
+        /// <see cref="KiotaClientFactory.CreateDefaultHandlers(IRequestOption[])"/> for the handlers that read these options.</param>
+        /// <returns></returns>
+        public static IList<DelegatingHandler> CreateDefaultHandlers(GraphClientOptions graphClientOptions, IRequestOption[] optionsForHandlers)
+        {
+            var handlers = KiotaClientFactory.CreateDefaultHandlers(optionsForHandlers);
             handlers.Add(new GraphTelemetryHandler(graphClientOptions));// add the telemetry handler last.
 
             return handlers;
