@@ -166,6 +166,7 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             // RetryHandler.RetryOption is internal to the Kiota library, so we reach it with reflection
             // to prove the option we passed in is the one the handler ended up with.
             var retryOptionProperty = typeof(RetryHandler).GetProperty("RetryOption", BindingFlags.NonPublic | BindingFlags.Instance);
+            Assert.NotNull(retryOptionProperty);
             var actualRetryOption = (RetryHandlerOption)retryOptionProperty.GetValue(retryHandler);
 
             Assert.Same(retryOption, actualRetryOption);
