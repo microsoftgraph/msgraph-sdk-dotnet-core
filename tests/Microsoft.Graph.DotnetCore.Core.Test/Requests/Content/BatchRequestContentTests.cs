@@ -696,5 +696,127 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
             // Assert we added successfully and contents are as expected and URI is not encoded
             Assert.Equal(expectedContent, System.Text.RegularExpressions.Regex.Unescape(requestContent));
         }
+
+
+        [Fact]
+        public async Task BatchRequestContent_NewBatchWithFailedRequests_Files404_TreatedAsSuccessAsync()
+        {
+            var batchRequestContent = new BatchRequestContentCollection(client);
+
+            var listChildren = new RequestInformation
+            {
+                HttpMethod = Method.GET,
+                UrlTemplate = "https://graph.microsoft.com/v1.0/me/drive/root/children"
+            };
+            var listChildrenId = await batchRequestContent.AddBatchRequestStepAsync(listChildren);
+
+            var getExistingFile = new RequestInformation
+            {
+                HttpMethod = Method.GET,
+                UrlTemplate = "https://graph.microsoft.com/v1.0/me/drive/items/existing"
+            };
+            var okId = await batchRequestContent.AddBatchRequestStepAsync(getExistingFile);
+
+            var responseStatusCodes = new Dictionary<string, HttpStatusCode>
+            {
+                { listChildrenId, HttpStatusCode.NotFound },
+                { okId, HttpStatusCode.OK }
+            };
+
+            var successOverrides = new HashSet<HttpStatusCode> { HttpStatusCode.NotFound };
+
+            var retryBatch = batchRequestContent.NewBatchWithFailedRequests(responseStatusCodes, successOverrides);
+
+            Assert.Empty(retryBatch.BatchRequestSteps);
+        }
+
+
+        [Fact]
+        public async Task BatchRequestContent_NewBatchWithFailedRequests_Files404_AndOk_MixesCorrectlyAsync()
+        {
+            var batchRequestContent = new BatchRequestContentCollection(client);
+
+            var getMissingFile = new RequestInformation
+            {
+                HttpMethod = Method.GET,
+                UrlTemplate = "https://graph.microsoft.com/v1.0/me/drive/items/missing"
+            };
+            var getExistingFile = new RequestInformation
+            {
+                HttpMethod = Method.GET,
+                UrlTemplate = "https://graph.microsoft.com/v1.0/me/drive/items/existing"
+            };
+
+            var missingId = await batchRequestContent.AddBatchRequestStepAsync(getMissingFile);
+            var okId = await batchRequestContent.AddBatchRequestStepAsync(getExistingFile);
+
+            var responseStatusCodes = new Dictionary<string, HttpStatusCode>
+            {
+                { missingId, HttpStatusCode.NotFound },
+                { okId, HttpStatusCode.OK }
+            };
+
+            var retryBatch = batchRequestContent.NewBatchWithFailedRequests(responseStatusCodes, null);
+
+            Assert.Single(retryBatch.BatchRequestSteps);
+            Assert.True(retryBatch.BatchRequestSteps.ContainsKey(missingId));
+            Assert.False(retryBatch.BatchRequestSteps.ContainsKey(okId));
+        }
+
+        [Fact]
+        public async Task BatchRequestContent_NewBatchWithFailedRequests_PreservesRequestIdsAsync()
+        {
+            var batchRequestContent = new BatchRequestContentCollection(client);
+
+            var req1 = new RequestInformation { HttpMethod = Method.GET, UrlTemplate = REQUEST_URL };
+            var req2 = new RequestInformation { HttpMethod = Method.GET, UrlTemplate = REQUEST_URL };
+            var req3 = new RequestInformation { HttpMethod = Method.GET, UrlTemplate = REQUEST_URL };
+
+            var id1 = await batchRequestContent.AddBatchRequestStepAsync(req1);
+            var id2 = await batchRequestContent.AddBatchRequestStepAsync(req2);
+            var id3 = await batchRequestContent.AddBatchRequestStepAsync(req3);
+
+            var responseStatusCodes = new Dictionary<string, HttpStatusCode>
+            {
+                { id1, HttpStatusCode.BadGateway },
+                { id2, HttpStatusCode.OK },
+                { id3, (HttpStatusCode)429 }
+            };
+
+            var retryBatch = batchRequestContent.NewBatchWithFailedRequests(responseStatusCodes);
+
+            Assert.Equal(2, retryBatch.BatchRequestSteps.Count);
+            Assert.True(retryBatch.BatchRequestSteps.ContainsKey(id1));
+            Assert.True(retryBatch.BatchRequestSteps.ContainsKey(id3));
+
+            Assert.Equal(id1, retryBatch.BatchRequestSteps[id1].RequestId);
+            Assert.Equal(id3, retryBatch.BatchRequestSteps[id3].RequestId);
+        }
+
+        [Fact]
+        public async Task BatchRequestContent_NewBatchWithFailedRequests_NullSuccessSetMatchesSingleArgOverloadAsync()
+        {
+            var batchRequestContent = new BatchRequestContentCollection(client);
+
+            var req1 = new RequestInformation { HttpMethod = Method.GET, UrlTemplate = REQUEST_URL };
+            var req2 = new RequestInformation { HttpMethod = Method.GET, UrlTemplate = REQUEST_URL };
+
+            var failedId = await batchRequestContent.AddBatchRequestStepAsync(req1);
+            var okId = await batchRequestContent.AddBatchRequestStepAsync(req2);
+
+            var responseStatusCodes = new Dictionary<string, HttpStatusCode>
+            {
+                { failedId, HttpStatusCode.BadGateway },
+                { okId, HttpStatusCode.OK }
+            };
+
+            var singleArgBatch = batchRequestContent.NewBatchWithFailedRequests(responseStatusCodes);
+            var nullSetBatch = batchRequestContent.NewBatchWithFailedRequests(responseStatusCodes, null);
+
+            Assert.Equal(singleArgBatch.BatchRequestSteps.Keys.OrderBy(key => key), nullSetBatch.BatchRequestSteps.Keys.OrderBy(key => key));
+            Assert.Single(nullSetBatch.BatchRequestSteps);
+            Assert.Equal(failedId, nullSetBatch.BatchRequestSteps[failedId].RequestId);
+        }
+
     }
 }
