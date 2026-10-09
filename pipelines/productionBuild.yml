@@ -13,6 +13,7 @@ pr: none
 variables:
   PACKAGE_NAME: 'microsoft.graph.core'
   PROJECT_PATH: '.\src\Microsoft.Graph.Core\Microsoft.Graph.Core.csproj'
+  NuGetOrganizationName: 'microsoftgraph'
 resources:
   repositories:
   - repository: 1ESPipelineTemplates
@@ -253,11 +254,6 @@ extends:
             runOnce:
               deploy:
                 steps:
-                - task: NuGetToolInstaller@1
-                  displayName: 'Use NuGet >=5.2.0'
-                  inputs:
-                    versionSpec: '>=5.2.0'
-                    checkLatest: true
                 - task: PowerShell@2
                   displayName: 'Get Latest Commit SHA from repo'
                   inputs:
@@ -272,14 +268,34 @@ extends:
                     filePath: $(Pipeline.Workspace)\scripts\GetNugetPackageVersion.ps1
                     pwsh: true
                     arguments: '-packageDirPath "$(Pipeline.Workspace)/"'
-                - task: 1ES.PublishNuget@1
-                  displayName: 'Push release to NuGet.org'
+                - task: CopyFiles@2
+                  displayName: 'Stage NuGet packages for ESRP release'
                   inputs:
-                    command: push
-                    packageParentPath: '$(Pipeline.Workspace)'
-                    packagesToPush: '$(Pipeline.Workspace)\Microsoft.Graph.Core.*.nupkg'
-                    nuGetFeedType: external
-                    publishFeedCredentials: 'microsoftgraph NuGet connection'
+                    SourceFolder: '$(Pipeline.Workspace)'
+                    Contents: |
+                      Microsoft.Graph.Core.*.nupkg
+                      Microsoft.Graph.Core.*.snupkg
+                    TargetFolder: '$(Pipeline.Workspace)\nuget-packages\$(NuGetOrganizationName)'
+                - task: EsrpRelease@14
+                  displayName: 'ESRP Release - NuGet'
+                  inputs:
+                    connectedservicename: 'Federated DevX ESRP Managed Identity Connection'
+                    usemanagedidentity: false
+                    keyvaultname: 'akv-prod-eastus'
+                    authcertname: 'ReferenceLibraryPrivateCert'
+                    signcertname: 'ReferencePackagePublisherCertificate'
+                    clientid: '65035b7f-7357-4f29-bf25-c5ee5c3949f8'
+                    intent: 'packagedistribution'
+                    contenttype: 'NuGet'
+                    organizationname: '$(NuGetOrganizationName)'
+                    contentsource: 'Folder'
+                    folderlocation: '$(Pipeline.Workspace)\nuget-packages\$(NuGetOrganizationName)'
+                    waitforreleasecompletion: true
+                    owners: 'christiano@microsoft.com,ramsess@microsoft.com,gavinbarron@microsoft.com,jingjingjia@microsoft.com,peombwa@microsoft.com,treicys@microsoft.com'
+                    approvers: 'christiano@microsoft.com,ramsess@microsoft.com,gavinbarron@microsoft.com,jingjingjia@microsoft.com,peombwa@microsoft.com,treicys@microsoft.com'
+                    serviceendpointurl: 'https://api.esrp.microsoft.com/'
+                    mainpublisher: 'ESRPRELPACMAN'
+                    domaintenantid: 'cdc5aeea-15c5-4db6-b079-fcadd2505dc2'
                 - task: GitHubRelease@1
                   displayName: 'GitHub release (create)'
                   inputs:
