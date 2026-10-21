@@ -13,6 +13,16 @@ All pull requests should be submitted against the **main** branch or a specific 
 
 Some things to note about this project:
 
+## Publishing NuGet packages
+
+The release pipeline in `pipelines/productionBuild.yml` builds and signs `Microsoft.Graph.Core`.
+Publishing runs only for tags after approval through the `nuget-org` environment. It stages only
+the package and symbol files for an ESRP submission using `NuGetOrganizationName`, then waits for
+release completion before updating the GitHub release assets. The NuGet publishing identity
+[`microsoftgraph`](https://www.nuget.org/profiles/microsoftgraph) is an owner listed on the
+[package page](https://www.nuget.org/packages/Microsoft.Graph.Core); do not derive it from the
+GitHub organization or package authors.
+
 ## Commit message format
 To support our automated release process, pull requests are required to follow the [Conventional Commit](https://www.conventionalcommits.org/en/v1.0.0/)
 format.
