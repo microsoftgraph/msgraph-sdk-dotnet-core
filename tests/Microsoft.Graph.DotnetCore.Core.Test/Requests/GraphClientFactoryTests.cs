@@ -10,9 +10,11 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
     using System.Net;
     using System.Net.Http;
     using System.Net.Http.Headers;
+    using System.Reflection;
     using System.Threading;
     using System.Threading.Tasks;
     using Azure.Core;
+    using Microsoft.Kiota.Abstractions;
     using Microsoft.Kiota.Abstractions.Authentication;
     using Microsoft.Kiota.Http.HttpClientLibrary.Middleware;
     using Microsoft.Kiota.Http.HttpClientLibrary.Middleware.Options;
@@ -146,6 +148,30 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
             ArgumentException exception = Assert.Throws<ArgumentException>(() => GraphClientFactory.CreatePipeline(handlers));
 
             Assert.Contains($"{typeof(GraphTelemetryHandler)} has a duplicate handler.", exception.Message);
+        }
+
+        [Fact]
+        public void CreateDefaultHandlers_Should_Forward_RetryHandlerOption_To_RetryHandler()
+        {
+            var retryOption = new RetryHandlerOption
+            {
+                MaxRetry = 7,
+                Delay = 3
+            };
+
+            var defaultHandlers = GraphClientFactory.CreateDefaultHandlers(new GraphClientOptions(), new IRequestOption[] { retryOption });
+
+            var retryHandler = defaultHandlers.OfType<RetryHandler>().Single();
+
+            // RetryHandler.RetryOption is internal to the Kiota library, so we reach it with reflection
+            // to prove the option we passed in is the one the handler ended up with.
+            var retryOptionProperty = typeof(RetryHandler).GetProperty("RetryOption", BindingFlags.NonPublic | BindingFlags.Instance);
+            Assert.NotNull(retryOptionProperty);
+            var actualRetryOption = (RetryHandlerOption)retryOptionProperty.GetValue(retryHandler);
+
+            Assert.Same(retryOption, actualRetryOption);
+            Assert.Equal(7, actualRetryOption.MaxRetry);
+            Assert.Equal(3, actualRetryOption.Delay);
         }
 
         [Fact]
