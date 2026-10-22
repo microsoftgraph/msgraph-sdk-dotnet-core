@@ -27,3 +27,8 @@ updates:
   open-pull-requests-limit: 10
   cooldown:
     default-days: 7
+  groups:
+    # init and analyze must be on the same version or the CodeQL job fails
+    codeql-action:
+      patterns:
+        - "github/codeql-action*"
