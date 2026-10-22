@@ -189,7 +189,7 @@ namespace Microsoft.Graph
 
             while (_pageItemQueue.Count != 0) // && shouldContinue)
             {
-                bool shouldContinue = IsProcessPageItemCallbackAsync ? await _asyncProcessPageItemCallback(_pageItemQueue.Dequeue()) : _processPageItemCallback(_pageItemQueue.Dequeue());
+                bool shouldContinue = IsProcessPageItemCallbackAsync ? await _asyncProcessPageItemCallback(_pageItemQueue.Dequeue()).ConfigureAwait(false) : _processPageItemCallback(_pageItemQueue.Dequeue());
 
                 // Cancel processing of items in the page and stop requesting more pages.
                 if (!shouldContinue)
@@ -261,7 +261,7 @@ namespace Microsoft.Graph
                 };
                 // if we have a request configurator, modify the request as desired then execute it to get the next page
                 nextPageRequestInformation = _requestConfigurator == null ? nextPageRequestInformation : _requestConfigurator(nextPageRequestInformation);
-                _currentPage = await _requestAdapter.SendAsync<TCollectionPage>(nextPageRequestInformation, (parseNode) => new TCollectionPage(), _errorMapping, token);
+                _currentPage = await _requestAdapter.SendAsync<TCollectionPage>(nextPageRequestInformation, (parseNode) => new TCollectionPage(), _errorMapping, token).ConfigureAwait(false);
 
                 var pageItems = ExtractEntityListFromParsable(_currentPage);
                 // Add all of the items returned in the response to the queue.
@@ -318,7 +318,7 @@ namespace Microsoft.Graph
             // Iterate over the contents of queue. The queue could be from the initial page
             // results passed to the iterator, the results of a delta query, or from a 
             // previously cancelled iteration that gets resumed.
-            bool shouldContinueInterpageIteration = await IntrapageIterateAsync();
+            bool shouldContinueInterpageIteration = await IntrapageIterateAsync().ConfigureAwait(false);
 
             // Request more pages if they are available.
             while (shouldContinueInterpageIteration && !token.IsCancellationRequested)
@@ -328,7 +328,7 @@ namespace Microsoft.Graph
 
                 // Iterate over items added to the queue by InterpageIterateAsync and
                 // determine whether there are more pages to request.
-                shouldContinueInterpageIteration = await IntrapageIterateAsync();
+                shouldContinueInterpageIteration = await IntrapageIterateAsync().ConfigureAwait(false);
             }
         }
 
