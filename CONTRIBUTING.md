@@ -13,6 +13,18 @@ All pull requests should be submitted against the **main** branch or a specific 
 
 Some things to note about this project:
 
+## Building and testing
+
+Install the .NET 11 SDK selected by `global.json` and the .NET 10 runtime to run
+the retained .NET 10 tests. On Windows, run `dotnet build Microsoft.Graph.Core.sln`
+and `dotnet test Microsoft.Graph.Core.sln`. The test project targets .NET Framework
+4.6.2, .NET 10, and .NET 11; on other platforms, select `--framework net10.0`
+or `--framework net11.0` when running tests.
+
+Validate trimming and Native AOT with
+`dotnet publish tests\Microsoft.Graph.DotnetCore.Core.Trimming\Microsoft.Graph.DotnetCore.Core.Trimming.csproj -c Release -r win-x64 -f net11.0 /p:TreatWarningsAsErrors=true /warnaserror`
+on Windows with the Native AOT build prerequisites installed.
+
 ## Publishing NuGet packages
 
 The release pipeline in `pipelines/productionBuild.yml` builds and signs `Microsoft.Graph.Core`.

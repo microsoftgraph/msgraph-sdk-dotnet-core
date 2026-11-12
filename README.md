@@ -5,7 +5,7 @@
 Integrate the [Microsoft Graph API](https://graph.microsoft.com) into your .NET
 project!
 
-The Microsoft Graph .NET Core Client Library contains core classes and interfaces used by [Microsoft.Graph Client Library](https://github.com/microsoftgraph/msgraph-sdk-dotnet) to send native HTTP requests to [Microsoft Graph API](https://graph.microsoft.com). The latest core client library targets .NetStandard 2.0.
+The Microsoft Graph .NET Core Client Library contains core classes and interfaces used by [Microsoft.Graph Client Library](https://github.com/microsoftgraph/msgraph-sdk-dotnet) to send native HTTP requests to [Microsoft Graph API](https://graph.microsoft.com). The core client library targets .NET Standard 2.0 and 2.1, .NET Framework 4.6.2, .NET 10, and .NET 11. A dedicated .NET 8 target is no longer provided. Optional .NET 10 MAUI targets remain available when building with `-p:IncludeMauiTargets=true`.
 
 ## Installation via NuGet
 
