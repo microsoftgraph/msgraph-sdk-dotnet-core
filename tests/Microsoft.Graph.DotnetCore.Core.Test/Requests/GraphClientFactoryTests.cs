@@ -71,7 +71,8 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         [Fact]
         public void Should_CreatePipeline_Without_HttpMessageHandlerInput()
         {
-            using UriReplacementHandler<UriReplacementHandlerOption> uriReplacementHandler = (UriReplacementHandler<UriReplacementHandlerOption>)GraphClientFactory.CreatePipeline(handlers, new MockRedirectHandler());
+            using UriReplacementHandler<GraphUriReplacementHandlerOption> graphUriReplacementHandler = (UriReplacementHandler<GraphUriReplacementHandlerOption>)GraphClientFactory.CreatePipeline(handlers, new MockRedirectHandler());
+            using UriReplacementHandler<UriReplacementHandlerOption> uriReplacementHandler = (UriReplacementHandler<UriReplacementHandlerOption>)graphUriReplacementHandler.InnerHandler;
             using RetryHandler retryHandler = (RetryHandler)uriReplacementHandler.InnerHandler;
             using RedirectHandler redirectHandler = (RedirectHandler)retryHandler.InnerHandler;
             using ParametersNameDecodingHandler odataQueryHandler = (ParametersNameDecodingHandler)redirectHandler.InnerHandler;
@@ -101,7 +102,8 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests
         [Fact]
         public void CreatePipelineWithHttpMessageHandlerInput()
         {
-            using UriReplacementHandler<UriReplacementHandlerOption> uriReplacementHandler = (UriReplacementHandler<UriReplacementHandlerOption>)GraphClientFactory.CreatePipeline(handlers, new MockRedirectHandler());
+            using UriReplacementHandler<GraphUriReplacementHandlerOption> graphUriReplacementHandler = (UriReplacementHandler<GraphUriReplacementHandlerOption>)GraphClientFactory.CreatePipeline(handlers, new MockRedirectHandler());
+            using UriReplacementHandler<UriReplacementHandlerOption> uriReplacementHandler = (UriReplacementHandler<UriReplacementHandlerOption>)graphUriReplacementHandler.InnerHandler;
             using RetryHandler retryHandler = (RetryHandler)uriReplacementHandler.InnerHandler;
             using RedirectHandler redirectHandler = (RedirectHandler)retryHandler.InnerHandler;
             using ParametersNameDecodingHandler odataQueryHandler = (ParametersNameDecodingHandler)redirectHandler.InnerHandler;

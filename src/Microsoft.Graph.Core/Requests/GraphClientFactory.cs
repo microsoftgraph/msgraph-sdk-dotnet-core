@@ -171,6 +171,7 @@ namespace Microsoft.Graph
         public static IList<DelegatingHandler> CreateDefaultHandlers(GraphClientOptions graphClientOptions = null)
         {
             var handlers = KiotaClientFactory.CreateDefaultHandlers();
+            handlers.Insert(0, new UriReplacementHandler<GraphUriReplacementHandlerOption>(new GraphUriReplacementHandlerOption()));
             handlers.Add(new GraphTelemetryHandler(graphClientOptions));// add the telemetry handler last.
 
             return handlers;

@@ -88,6 +88,20 @@ if (response.IsSuccessStatusCode)
 }
 ```
 
+## Current-user request builders
+
+The SDK can reuse `/users/{user-id}` request builders for `Me` by setting the user ID
+to `CoreConstants.ReplacementConstants.UserIdTokenToReplace`. The default
+`GraphClientFactory` pipeline rewrites this reserved `/users/TokenToReplace` path
+to `/me` before sending the request; it does not resolve or fetch a user ID.
+Batch request steps apply the same replacement before serialization.
+
+If you supply your own `HttpClient` or middleware pipeline, include
+`UriReplacementHandler<GraphUriReplacementHandlerOption>` configured with
+`new GraphUriReplacementHandlerOption()` to retain this behavior. Custom request
+adapters must provide equivalent rewriting. Ordinary user IDs and query values
+are not replaced.
+
 ## Documentation and resources
 
 * [Microsoft Graph API](https://graph.microsoft.com)

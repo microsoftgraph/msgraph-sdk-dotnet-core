@@ -15,6 +15,27 @@ namespace Microsoft.Graph
         public const int PollingIntervalInMs = 5000;
 
         /// <summary>
+        /// Constants used to reuse user request builders for the current user.
+        /// </summary>
+        public static class ReplacementConstants
+        {
+            /// <summary>
+            /// Reserved user ID used by current-user request builders.
+            /// </summary>
+            public const string UserIdTokenToReplace = "TokenToReplace";
+
+            /// <summary>
+            /// Synthetic users endpoint replaced before sending a request.
+            /// </summary>
+            public const string UsersEndpointWithReplaceToken = "/users/" + UserIdTokenToReplace;
+
+            /// <summary>
+            /// Current-user endpoint.
+            /// </summary>
+            public const string MeEndpoint = "/me";
+        }
+
+        /// <summary>
         /// Header constants.
         /// </summary>
         public static class Headers

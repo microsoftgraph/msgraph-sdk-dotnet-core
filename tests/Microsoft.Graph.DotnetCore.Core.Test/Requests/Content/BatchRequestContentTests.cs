@@ -48,6 +48,52 @@ namespace Microsoft.Graph.DotnetCore.Core.Test.Requests.Content
             Assert.True(batchRequestContent.BatchRequestSteps.Count.Equals(0));
         }
 
+        [Theory]
+        [InlineData(false, false)]
+        [InlineData(true, false)]
+        [InlineData(false, true)]
+        public async Task BatchRequestContent_ReplacesCurrentUserBeforeSerializationAsync(bool useRequestInformation, bool usePrebuiltStep)
+        {
+            const string url = "https://graph.microsoft.com/v1.0/users/TokenToReplace/messages?$select=subject";
+            using var content = new BatchRequestContent(client);
+            if (useRequestInformation)
+            {
+                var requestInfo = new RequestInformation
+                {
+                    HttpMethod = Method.POST,
+                    URI = new Uri(url)
+                };
+                requestInfo.Headers.Add("ConsistencyLevel", "eventual");
+                requestInfo.SetStreamContent(new MemoryStream(Encoding.UTF8.GetBytes("{\"subject\":\"test\"}")), "application/json");
+                await content.AddBatchRequestStepAsync(requestInfo, "current-user");
+            }
+            else
+            {
+                var request = new HttpRequestMessage(HttpMethod.Post, url)
+                {
+                    Content = new StringContent("{\"subject\":\"test\"}", Encoding.UTF8, "application/json")
+                };
+                request.Headers.Add("ConsistencyLevel", "eventual");
+                if (usePrebuiltStep)
+                {
+                    content.AddBatchRequestStep(new BatchRequestStep("current-user", request));
+                }
+                else
+                {
+                    content.AddBatchRequestStep(request);
+                }
+            }
+
+            using var stream = await content.GetBatchRequestContentAsync();
+            using var document = await JsonDocument.ParseAsync(stream);
+            var step = document.RootElement.GetProperty("requests")[0];
+            Assert.Equal("/me/messages?$select=subject", step.GetProperty("url").GetString());
+            Assert.Equal("POST", step.GetProperty("method").GetString());
+            Assert.Equal("test", step.GetProperty("body").GetProperty("subject").GetString());
+            Assert.Equal("eventual", step.GetProperty("headers").GetProperty("ConsistencyLevel").GetString());
+            Assert.Equal("https://graph.microsoft.com/v1.0/me/messages?$select=subject", content.BatchRequestSteps.Values.Single().Request.RequestUri.AbsoluteUri);
+        }
+
         [Fact]
         public void BatchRequestContent_InitializeWithSerializer()
         {
