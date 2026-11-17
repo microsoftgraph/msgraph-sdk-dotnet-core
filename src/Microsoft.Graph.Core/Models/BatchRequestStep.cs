@@ -48,6 +48,7 @@ namespace Microsoft.Graph
             RequestId = (!string.IsNullOrEmpty(requestId)) ? requestId : throw new ArgumentNullException(nameof(requestId));
 
             Request = httpRequestMessage ?? throw new ArgumentNullException(nameof(httpRequestMessage));
+            Request.RequestUri = new GraphUriReplacementHandlerOption().Replace(Request.RequestUri);
 
             DependsOn = dependsOn;
         }
